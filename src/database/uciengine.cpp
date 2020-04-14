@@ -107,7 +107,7 @@ void UCIEngine::setMpv(int mpv)
 
 void UCIEngine::setMoveTime(const EngineParameter &mt)
 {
-    if (m_moveTime.ms_totalTime != mt.ms_totalTime)
+    if ((m_moveTime.ms_totalTime != mt.ms_totalTime) || (m_moveTime.analysisMode != mt.analysisMode))
     {
         Engine::setMoveTime(mt);
         if(isAnalyzing())
@@ -137,7 +137,7 @@ void UCIEngine::go()
     {
         if (hasOption("UCI_AnalyseMode"))
         {
-            send(QString("setoption name UCI_AnalyseMode value %1").arg(m_moveTime.ms_totalTime==0? "true":"false"));
+            send(QString("setoption name UCI_AnalyseMode value %1").arg((m_moveTime.ms_totalTime==0 || m_moveTime.analysisMode) ? "true":"false"));
         }
         if (!m_moveTime.ms_totalTime)
         {

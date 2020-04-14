@@ -24,6 +24,7 @@ public:
         bookMove     = 0;
         engineStarts = false;
         searchDepth        = -1;
+        analysisMode = false;
     }
 
     EngineParameter(int mt=0)
@@ -40,6 +41,7 @@ public:
         bookMove     = 0;
         engineStarts = false;
         searchDepth        = -1;
+        analysisMode = false;
     }
 
     QString timeAsString() const
@@ -65,6 +67,7 @@ public:
 
     /// per move in GONG, total in SUDDEN_DEATH
     int ms_totalTime;
+    bool analysisMode;
     unsigned int ms_white;  ///< SUDDEN_DEATH only
     unsigned int ms_black;  ///< SUDDEN_DEATH only
     int movesToDo;          ///< SUDDEN_DEATH only

@@ -298,7 +298,7 @@ bool Game::mergeAsVariation(Game& otherGame)
     NagSet nags;
 
     QString san = otherGame.moveToSan(MoveOnly, PreviousMove, CURRENT_MOVE, &ann, &nags);
-    if(NO_MOVE != dbAddSanVariation(san, ann, nags))
+    if(NO_MOVE != dbAddSanVariation(m_currentNode, san, ann, nags))
     {
         while(!otherGame.atLineEnd())
         {
@@ -642,7 +642,7 @@ MoveId Game::addVariation(const MoveList& moveList, const QString& annotation)
 MoveId Game::addVariation(const QString& sanMove, const QString& annotation, NagSet nags)
 {
     Game state = *this;
-    MoveId retVal = dbAddSanVariation(sanMove, annotation, nags);
+    MoveId retVal = dbAddSanVariation(m_currentNode, sanMove, annotation, nags);
     dbIndicateAnnotationsOnBoard(m_currentNode);
     if (retVal != NO_MOVE)
     {
@@ -660,7 +660,7 @@ MoveId Game::dbAddVariation(const Move& move, const QString& annotation, NagSet 
     m_moveNodes[previousNode].variations.append(node);
     m_moveNodes[previousNode].nextNode = saveNextNode;
 
-    return (m_moveNodes.size() - 1);
+    return node;
 }
 
 MoveId Game::dbAddLine(const MoveList& moveList, const QString& annotation)
@@ -718,21 +718,17 @@ MoveId Game::dbAddVariation(const MoveList& moveList, const QString& annotation)
     return varStart;
 }
 
-MoveId Game::dbAddSanVariation(const QString& sanMove, const QString& annotation, NagSet nags)
+MoveId Game::dbAddSanVariation(MoveId node, const QString& sanMove, const QString& annotation, NagSet nags)
 {
-    MoveId previousNode = m_currentNode;
     MoveId saveNextNode = m_moveNodes[m_currentNode].nextNode;
-    MoveId node = dbAddSanMove(sanMove, annotation, nags);
-    if(node == NO_MOVE)
+    MoveId newNode = dbAddSanMove(sanMove, annotation, nags);
+    if(newNode != NO_MOVE)
     {
-        return node;
+        m_moveNodes[newNode].parentNode = node;
+        m_moveNodes[node].variations.append(newNode);
+        m_moveNodes[node].nextNode = saveNextNode;
     }
-
-    m_moveNodes[m_currentNode].parentNode = previousNode;
-    m_moveNodes[previousNode].variations.append(node);
-    m_moveNodes[previousNode].nextNode = saveNextNode;
-
-    return (m_moveNodes.size() - 1);
+    return newNode;
 }
 
 void Game::dbPromoteVariation(MoveId variation)
@@ -1083,6 +1079,20 @@ bool Game::editAnnotation(QString annotation, MoveId moveId, Position position)
         return true;
     }
     return false;
+}
+
+bool Game::dbAppendAnnotation(QString a, MoveId moveId, Position position)
+{
+    QString s = annotation();
+    s.append(a);
+    return dbSetAnnotation(s, moveId, position);
+}
+
+bool Game::dbPrependAnnotation(QString a, MoveId moveId, Position position)
+{
+    QString s = annotation();
+    s.prepend(a);
+    return dbSetAnnotation(s, moveId, position);
 }
 
 bool Game::dbSetAnnotation(QString annotation, MoveId moveId, Position position)
@@ -2231,8 +2241,8 @@ void Game::compact()
             t[n] = s;\
         }
 
-        GAME_UPDATE_ANNOT(variationStartAnnotations, m_variationStartAnnotations);
-        GAME_UPDATE_ANNOT(annotations, m_annotations);
+        GAME_UPDATE_ANNOT(variationStartAnnotations, m_variationStartAnnotations)
+        GAME_UPDATE_ANNOT(annotations, m_annotations)
     }
 
     // update nodes links to other nodes in shrinked list (prev, next, variations)
