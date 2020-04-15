@@ -264,11 +264,11 @@ void WBEngine::parseEndOfGame(const QString& command, const QString& message)
     analysis.setEndOfGame(true);
     if (command == "1-0" || message.contains("1-0"))
     {
-        analysis.setScore(999);
+        analysis.setScore(30000);
     }
     else if (command == "0-1" || message.contains("0-1"))
     {
-        analysis.setScore(-999);
+        analysis.setScore(-30000);
     }
     else if (command == "1/2-1/2")
     {
@@ -276,7 +276,7 @@ void WBEngine::parseEndOfGame(const QString& command, const QString& message)
     }
     else if (message.isEmpty())
     {
-        analysis.setScore(m_board.toMove() == White ? 999 : -999);
+        analysis.setScore(m_board.toMove() == White ? 30000 : -30000);
     }
     sendAnalysis(analysis);
 }

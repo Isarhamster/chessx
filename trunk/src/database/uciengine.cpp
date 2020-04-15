@@ -369,6 +369,14 @@ void UCIEngine::parseAnalysis(const QString& message)
                 if(type == "mate")
                 {
                     analysis.setMovesToMate(score);
+                    if(m_board.toMove() == Black)
+                    {
+                        analysis.setScore(-30000);
+                    }
+                    else
+                    {
+                        analysis.setScore(30000);
+                    }
                 }
                 else if(m_board.toMove() == Black)
                 {

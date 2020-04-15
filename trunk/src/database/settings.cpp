@@ -449,6 +449,8 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/AutoSaveAndContinue", false);
     map.insert("/Board/BackwardAnalysis", false);
     map.insert("/Board/AnalyseOnlyMainline", true);
+    map.insert("/Board/AnnotateScore", false);
+    map.insert("/Board/AddAnnotation", "");
     map.insert("/Board/BlunderCheck", 0);
     map.insert("/Board/AutoPromoteToQueen", false);
     map.insert("/Board/AlwaysScale", false);
