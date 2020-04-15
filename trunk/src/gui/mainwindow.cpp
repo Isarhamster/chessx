@@ -184,9 +184,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_ficsConsole->setEnabled(false);
 
     /* Game view */
-    DockWidgetEx* gameTextDock = new DockWidgetEx(tr("Game Text"), this);
+    DockWidgetEx* gameTextDock = new DockWidgetEx(tr("Notation"), this);
     gameTextDock->setObjectName("GameTextDock");
-    gameTextDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
     m_gameWindow = new GameWindow(gameTextDock);
     connect(this, SIGNAL(reconfigure()), m_gameWindow, SLOT(slotReconfigure()));
@@ -228,6 +227,9 @@ MainWindow::MainWindow() : QMainWindow(),
     m_gameTitle = new QLabel;
     connect(m_gameTitle, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
     gameTextDock->setTitleBarWidget(m_gameTitle);
+
+    m_menuView->addAction(gameTextDock->toggleViewAction());
+    gameTextDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_E);
 
     /* Game List */
     m_gameList->setMinimumSize(150, 100);
@@ -473,9 +475,6 @@ MainWindow::MainWindow() : QMainWindow(),
 
     /* Setup the dimensions of all widgets and the main board */
     slotReconfigure();
-    BoardViewEx* view = qobject_cast<BoardViewEx*>(m_tabWidget->currentWidget());
-    view->slotReconfigure();
-    view->saveConfig();
 
     /* Display main window */
     show();
@@ -529,7 +528,7 @@ void MainWindow::setupAnalysisWidget(DockWidgetEx* analysisDock, AnalysisWidget*
 {
     analysisDock->setWidget(analysis);
     // addDockWidget(Qt::RightDockWidgetArea, analysisDock);
-    connect(analysis, SIGNAL(addVariation(Analysis)),
+    connect(analysis, SIGNAL(addVariation(Analysis, QString)),
             SLOT(slotGameAddVariation(Analysis, QString)));
     connect(analysis, SIGNAL(addVariation(QString)),
             SLOT(slotGameAddVariation(QString)));
@@ -621,6 +620,8 @@ void MainWindow::closeEvent(QCloseEvent* e)
         m_ficsConsole->saveConfig();
         m_mainAnalysis->saveConfig();
         m_secondaryAnalysis->saveConfig();
+        BoardViewEx* frame = BoardViewFrame(m_boardView);
+        frame->saveConfig();
 
         AppSettings->setLayout(this);
         AppSettings->beginGroup("/MainWindow/");

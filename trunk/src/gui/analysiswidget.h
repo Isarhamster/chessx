@@ -100,7 +100,7 @@ private slots:
     void slotPinChanged(bool);
 
 signals:
-    void addVariation(const Analysis& analysis);
+    void addVariation(const Analysis& analysis, const QString&);
     void addVariation(const QString& san);
     void requestBoard();
     void receivedBestMove(const Analysis& analysis);

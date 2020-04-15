@@ -270,7 +270,7 @@ public slots:
     void slotAutoPlayTimeout();
     /** Auto Play Timeout - make next move! */
     void slotEngineTimeout(const Analysis& analysis);
-    void addAutoNag(Color toMove, int score, int lastScore, int threashold, MoveId node);
+    void addAutoNag(Color toMove, int scoreText, int lastScore, int threashold, MoveId node);
     /** Filter was changed - update status bar information */
     void slotFilterChanged(bool selectGame=true);
     /** Evaluate number of filter entries to enable buttons properly */
@@ -647,6 +647,8 @@ private:
     Color UserColor();
     void truncateVariation(Game::Position position = Game::AfterMove);
     bool handleGameEnd(const Analysis& analysis, QAction* action);
+    bool gameAddAnalysis(const Analysis& analysis, QString annotation);
+    QString scoreText(const Analysis& analysis);
 
     /* Dialogs  */
     GameList* m_gameList;
