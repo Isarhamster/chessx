@@ -1868,27 +1868,49 @@ void MainWindow::slotGameDumpBoard()
     qDebug() << "Board:" << game().board().toFen() << "//" << game().board().getHashValue();
 }
 
-void MainWindow::slotGameAddVariation(const Analysis& analysis, QString annotation)
+QString MainWindow::scoreText(const Analysis& analysis)
 {
-    QString score = annotation;
-    if (!score.isEmpty()) score += " ";
+    QString s;
     if (analysis.isMate())
     {
         int n = analysis.movesToMate();
-        score += QString(tr("Mate in %1").arg(abs(n)));
+        s = QString(tr("Mate in %1").arg(abs(n)));
     }
     else
     {
-        score += QString::number(analysis.fscore(), 'f', 2);
+        s = QString::number(analysis.fscore(), 'f', 2);
     }
-    if (game().atLineEnd())
+    return s;
+}
+
+bool MainWindow::gameAddAnalysis(const Analysis& analysis, QString annotation)
+{
+    Move m = analysis.variation().first();
+    if(!game().currentNodeHasMove(m.from(), m.to()))
     {
-        game().addLine(analysis.variation(), score);
+        if (!annotation.isEmpty()) annotation += " ";
+        annotation += scoreText(analysis);
+        if (AppSettings->getValue("/Board/AnnotateScore").toBool())
+        {
+            game().dbPrependAnnotation(scoreText(analysis)+" ");
+            UpdateGameText();
+        }
+        if (game().atLineEnd())
+        {
+            game().addLine(analysis.variation(), annotation);
+        }
+        else
+        {
+            game().addVariation(analysis.variation(), annotation);
+        }
+        return true;
     }
-    else
-    {
-        game().addVariation(analysis.variation(), score);
-    }
+    return false;
+}
+
+void MainWindow::slotGameAddVariation(const Analysis& analysis, QString annotation)
+{
+    gameAddAnalysis(analysis, annotation);
 }
 
 bool MainWindow::addVariationFromSan(const QString& san)
@@ -2087,7 +2109,7 @@ void MainWindow::slotToggleAutoAnalysis()
     {
         setEngineMoveTime(m_mainAnalysis);
         m_AutoInsertLastBoard.clear();
-        lastScore = -999;
+        lastScore = -9999;
         lastNode = NO_MOVE;
         m_todoAutoAnalysis.clear();
         if(!m_mainAnalysis->isEngineConfigured())
@@ -2410,7 +2432,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                     int score = 10000*analysis.getScoreTb();
                     lastNode = game().currentMove();
                     QString text = AppSettings->getValue("/Board/AddAnnotation").toString() + "/TB " + ((score>0)?tr("White wins"):((score<0)?tr("Black wins"):tr("Draw")));
-                    if (!threashold || ((lastScore != -999) && (abs(score-lastScore) > threashold)))
+                    if (!threashold || ((lastScore != -9999) && (abs(score-lastScore) > threashold)))
                     {
                         if (!threashold || AppSettings->getValue("/Board/BackwardAnalysis").toBool())
                         {
@@ -2433,27 +2455,41 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 {
                     int score = a.score();
                     lastNode = game().currentMove();
-                    if (!threashold || ((lastScore != -999) && (abs(score-lastScore) > threashold)))
+                    if (!threashold || ((lastScore != -9999) && (abs(score-lastScore) > threashold)))
                     {
-                        Move m = a.variation().first();
                         if (!threashold || AppSettings->getValue("/Board/BackwardAnalysis").toBool())
                         {
-                            if(!game().currentNodeHasMove(m.from(), m.to()))
+                            if (!gameAddAnalysis(a, AppSettings->getValue("/Board/AddAnnotation").toString()))
                             {
-                                slotGameAddVariation(a, AppSettings->getValue("/Board/AddAnnotation").toString());
+                                if (AppSettings->getValue("/Board/AnnotateScore").toBool())
+                                {
+                                    game().dbPrependAnnotation(scoreText(a)+" ");
+                                    UpdateGameText();
+                                }
                             }
                         }
                         else
                         {
+                            Move m = a.variation().first();
                             game().dbPrependAnnotation(AppSettings->getValue("/Board/AddAnnotation").toString(), lastNode);
                             addAutoNag(m.color(), score, lastScore, threashold, lastNode);
+                            if (AppSettings->getValue("/Board/AnnotateScore").toBool())
+                            {
+                                game().dbPrependAnnotation(scoreText(a)+" ");
+                            }
+                            UpdateGameText();
                         }
-                    }                
+                    }
+                    else if (AppSettings->getValue("/Board/AnnotateScore").toBool())
+                    {
+                        game().dbPrependAnnotation(scoreText(a)+" ");
+                        UpdateGameText();
+                    }
                     lastScore = score;
                 }
                 else /* Should not happen */
                 {
-                    lastScore = -999;
+                    lastScore = -9999;
                     lastNode = NO_MOVE;
                 }
             }
@@ -2682,7 +2718,7 @@ void MainWindow::AutoMoveAtEndOfGame()
                     if (AppSettings->getValue("/Board/BackwardAnalysis").toBool())
                     {         
                         game().moveToEnd();
-                        lastScore = -999;
+                        lastScore = -9999;
                         lastNode = NO_MOVE;
                     }
                 }
@@ -2702,7 +2738,7 @@ void MainWindow::AutoMoveAtEndOfGame()
         {
             // Still need to analyse a variation
             MoveId nextVariation = m_todoAutoAnalysis.takeLast();
-            lastScore = -999;
+            lastScore = -9999;
             lastNode = NO_MOVE;
             game().dbMoveToId(nextVariation);
             if (AppSettings->getValue("/Board/BackwardAnalysis").toBool())

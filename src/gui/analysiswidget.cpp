@@ -428,7 +428,7 @@ void AnalysisWidget::slotLinkClicked(const QUrl& url)
     int mpv = url.toString().toInt() - 1;
     if(mpv >= 0 && mpv < m_analyses.count())
     {
-        emit addVariation(m_analyses[mpv]);
+        emit addVariation(m_analyses[mpv], "");
     }
     else if(mpv == -1)
     {
