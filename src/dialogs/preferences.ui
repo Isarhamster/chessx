@@ -23,7 +23,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -642,59 +642,77 @@
        <item row="0" column="0">
         <widget class="QGroupBox" name="gbBoardOptions">
          <property name="title">
-          <string>Autoplayer</string>
+          <string>Automatic Analysis</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_8">
-          <item row="4" column="1">
-           <widget class="QLineEdit" name="editAddAnnotation"/>
-          </item>
-          <item row="0" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
            <widget class="QCheckBox" name="cbSaveAndContinue">
             <property name="text">
              <string>Automatically save game and continue with next</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item>
+           <widget class="QCheckBox" name="cbBackwardAnalysis">
+            <property name="text">
+             <string>Analyse backwards (forward only adds NAGs ('!','?'&quot;)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="cbAnalyseOnlyMainline">
             <property name="text">
              <string>Mainline only</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QCheckBox" name="cbBackwardAnalysis">
+          <item>
+           <widget class="QCheckBox" name="cbAnnotateScore">
             <property name="text">
-             <string>Auto Analysis backwards</string>
+             <string>Always annotate engine score</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_17">
-            <property name="text">
-             <string>Blunder Check Limit (centi-pawn)</string>
+          <item>
+           <layout class="QFormLayout" name="formLayout">
+            <property name="labelAlignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_18">
-            <property name="text">
-             <string>Add Annotation at end of line</string>
-            </property>
-            <property name="buddy">
-             <cstring>editAddAnnotation</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QSpinBox" name="editBlunderCheck">
-            <property name="maximum">
-             <number>1000</number>
-            </property>
-            <property name="singleStep">
-             <number>10</number>
-            </property>
-           </widget>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_18">
+              <property name="text">
+               <string>Add Annotation at end of line</string>
+              </property>
+              <property name="buddy">
+               <cstring>editAddAnnotation</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="editAddAnnotation">
+              <property name="placeholderText">
+               <string>Marks auto-generated move</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_17">
+              <property name="text">
+               <string>Blunder Check Limit (centi-pawn)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QSpinBox" name="editBlunderCheck">
+              <property name="maximum">
+               <number>1000</number>
+              </property>
+              <property name="singleStep">
+               <number>10</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
