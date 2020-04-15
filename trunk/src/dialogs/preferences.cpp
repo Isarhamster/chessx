@@ -464,6 +464,7 @@ void PreferencesDialog::restoreSettings()
     ui.cbBackwardAnalysis->setChecked(AppSettings->getValue("BackwardAnalysis").toBool());
     ui.cbAnalyseOnlyMainline->setChecked(AppSettings->getValue("AnalyseOnlyMainline").toBool());
     ui.editAddAnnotation->setText(AppSettings->getValue("AddAnnotation").toString());
+    ui.cbAnnotateScore->setChecked(AppSettings->getValue("AnnotateScore").toBool());
     ui.editBlunderCheck->setValue(AppSettings->getValue("BlunderCheck").toInt());
 
     ui.cbPromoteToQueen->setChecked(AppSettings->getValue("AutoPromoteToQueen").toBool());
@@ -615,6 +616,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("AutoSaveAndContinue", QVariant(ui.cbSaveAndContinue->isChecked()));
     AppSettings->setValue("BackwardAnalysis", QVariant(ui.cbBackwardAnalysis->isChecked()));
     AppSettings->setValue("AnalyseOnlyMainline", QVariant(ui.cbAnalyseOnlyMainline->isChecked()));
+    AppSettings->setValue("AnnotateScore", QVariant(ui.cbAnnotateScore->isChecked()));
     AppSettings->setValue("AddAnnotation", QVariant(ui.editAddAnnotation->text()));
     AppSettings->setValue("BlunderCheck", QVariant(ui.editBlunderCheck->value()));
     AppSettings->setValue("AutoPromoteToQueen", QVariant(ui.cbPromoteToQueen->isChecked()));
