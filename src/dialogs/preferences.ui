@@ -655,7 +655,7 @@
           <item>
            <widget class="QCheckBox" name="cbBackwardAnalysis">
             <property name="text">
-             <string>Analyse backwards (forward only adds NAGs ('!','?'&quot;)</string>
+             <string>Analyse backwards (forward only adds NAGs '!','?'&quot;)</string>
             </property>
            </widget>
           </item>
