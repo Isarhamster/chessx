@@ -657,8 +657,8 @@ private:
     EventListWidget* m_eventList;
     DatabaseList* m_databaseList;
     /* Main gui parts */
-    BoardView* m_boardView;
-    QSplitter* m_boardSplitter;
+    QPointer<BoardView> m_boardView;
+    QPointer<QSplitter> m_boardSplitter;
     ChessBrowser* m_gameView;
     OpeningTreeWidget* m_openingTreeWidget;
     QPointer<QProgressBar> m_progressBar;

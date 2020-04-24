@@ -95,3 +95,20 @@ void CommentDialog::clearTextSlot()
 {
     ui.textEdit->setPlainText("");
 }
+
+void CommentDialog::accept()
+{
+    QString s1 = ui.textEdit->toPlainText();
+    if(s1.contains('}'))
+    {
+        int n = s1.indexOf('}');
+        QTextCursor cursor(ui.textEdit->document());
+        QTextCharFormat fmt = cursor.charFormat();
+        fmt.setBackground(Qt::red);
+        cursor.setPosition(n, QTextCursor::MoveAnchor);
+        cursor.setPosition(n+1, QTextCursor::KeepAnchor);
+        cursor.setCharFormat(fmt);
+        return;
+    }
+    QDialog::accept();
+}
