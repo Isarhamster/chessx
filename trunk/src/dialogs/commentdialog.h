@@ -22,6 +22,7 @@ protected slots:
     void clearTextSlot();
 
 private:
+    void accept();
     Ui::CommentDialog ui;
     static enum TimeMode lastTimeMode;
 };

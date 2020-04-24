@@ -1108,6 +1108,8 @@ bool Game::dbSetAnnotation(QString annotation, MoveId moveId, Position position)
     int nags;
     moveCount(&moves, &comments, &nags);
 
+    annotation.remove('}'); // Just make sure a comment does not destroy the database
+
     if(position == AfterMove)
     {
         if(annotation.isEmpty())

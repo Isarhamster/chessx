@@ -3570,6 +3570,9 @@ BoardView* MainWindow::CreateBoardView()
 {
     if (!databaseInfo()->IsBook())
     {
+        BoardViewEx* frame = BoardViewFrame(m_boardView);
+        if (frame) frame->saveConfig(); // So that we can restore the layout below!
+
         BoardViewEx* boardViewEx = new BoardViewEx(m_tabWidget);
         BoardView* boardView = boardViewEx->boardView();
         boardView->configure();
