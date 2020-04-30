@@ -1663,43 +1663,43 @@ Bitte Installation prüfen.</translation>
         <translation>Kommentar ändern</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1210"/>
+        <location filename="../src/database/game.cpp" line="1212"/>
         <source>Colorize square</source>
         <translation>Felder einfärben</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1257"/>
+        <location filename="../src/database/game.cpp" line="1259"/>
         <source>Paint arrow</source>
         <translation>Pfeil einzeichnen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1400"/>
+        <location filename="../src/database/game.cpp" line="1402"/>
         <source>Add nag</source>
         <translation>Auszeichnung hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1413"/>
+        <location filename="../src/database/game.cpp" line="1415"/>
         <source>Set nags</source>
         <translation>Auszeichnung setzen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1559"/>
-        <location filename="../src/database/game.cpp" line="1594"/>
+        <location filename="../src/database/game.cpp" line="1561"/>
+        <location filename="../src/database/game.cpp" line="1596"/>
         <source>Move variation</source>
         <translation>Variante verschieben</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1620"/>
+        <location filename="../src/database/game.cpp" line="1622"/>
         <source>Enumerate variations</source>
         <translation>Aufzählung in Varianten</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="2036"/>
+        <location filename="../src/database/game.cpp" line="2038"/>
         <source>Set result</source>
         <translation>Ergebnis setzen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="2061"/>
+        <location filename="../src/database/game.cpp" line="2063"/>
         <source>Set variant</source>
         <translation>Setze Variante</translation>
     </message>
@@ -2150,37 +2150,37 @@ Shall I download a database?</source>
         <translation>Suche...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3745"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3748"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Neue Partie&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3848"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3851"/>
         <source>Infinite</source>
         <translation>Unendlich</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3911"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3914"/>
         <source>Build book</source>
         <translation>Buch erzeugen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3930"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3933"/>
         <source>Book built</source>
         <translation>Buch fertig</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3945"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3948"/>
         <source>Could not build book</source>
         <translation>Konnte kein Buch erstellen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3945"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3948"/>
         <source>Polyglot Error</source>
         <translation>Polyglot Fehler</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3946"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3949"/>
         <source>Book build finished with Error</source>
         <translation>Buchbinden fehlgeschlagen</translation>
     </message>
@@ -4377,9 +4377,8 @@ Shall I download a database?</source>
         <translation>Autoanalyse</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="658"/>
         <source>Analyse backwards (forward only adds NAGs (&apos;!&apos;,&apos;?&apos;&quot;)</source>
-        <translation>Rückwärts analysieren (vorwärts werden nur NAGs (&apos;!&apos;,&apos;?&apos;) eingefügt)</translation>
+        <translation type="vanished">Rückwärts analysieren (vorwärts werden nur NAGs (&apos;!&apos;,&apos;?&apos;) eingefügt)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="672"/>
@@ -4569,6 +4568,11 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.ui" line="1336"/>
         <source>Try to use Timeseal</source>
         <translation>Versuche timeseal zu verwenden</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="658"/>
+        <source>Analyse backwards (forward only adds NAGs &apos;!&apos;,&apos;?&apos;&quot;)</source>
+        <translation>Rückwärts analysieren (vorwärts werden nur NAGs (&apos;!&apos;,&apos;?&apos;) eingefügt)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1260"/>
