@@ -65,6 +65,9 @@ public:
    HistoryLabel(const QString & text, QWidget * parent = 0, Qt::WindowFlags f = nullptr);
    Q_SLOT void setText(const QString & text, bool dontStore=false);
 
+   int getMaxSize() const;
+   void setMaxSize(int value);
+
 protected:
    virtual void mouseDoubleClickEvent(QMouseEvent *e);
 
@@ -72,6 +75,8 @@ protected:
    QStringList m_history;
    QStringListModel* m_model;
    QHistoryListView* m_view;
+   int maxSize;
+   bool itemsRemoved;
    void init();
    void initView();
    Q_SLOT void showHistory();
