@@ -1,0 +1,427 @@
+add_subdirectory(quazip)
+
+add_library(bitboard STATIC
+  database/bitboard.cpp
+  database/bitboard.h
+  database/bitfind.h
+  database/move.h
+  database/piece.cpp
+  database/piece.h
+  database/square.h
+)
+
+target_include_directories(bitboard
+  PUBLIC
+    database
+)
+
+target_link_libraries(bitboard
+  PRIVATE
+    qt_config
+  PUBLIC
+    Qt5::Core
+)
+
+if (cxx_std_11 IN_LIST CMAKE_CXX_COMPILE_FEATURES)
+  target_compile_definitions(bitboard
+    PUBLIC
+      USE_C11
+  )
+endif()
+
+add_library(board STATIC
+  database/board.cpp
+  database/board.h
+  guess/attacks.h
+  guess/common.h
+  guess/error.h
+  guess/guess.cpp
+  guess/guess.h
+  guess/guessengine.cpp
+  guess/guessengine.h
+  guess/hash.h
+  guess/misc.cpp
+  guess/misc.h
+  guess/movelist.cpp
+  guess/movelist.h
+  guess/position.cpp
+  guess/position.h
+  guess/recog.cpp
+  guess/recog.h
+  guess/sqlist.h
+  guess/sqmove.h
+  guess/sqset.h
+)
+
+target_include_directories(board
+  PUBLIC
+    guess
+)
+
+target_link_libraries(board
+  PRIVATE
+    qt_config
+  PUBLIC
+    bitboard
+)
+
+add_library(eco STATIC
+  database/ecopositions.cpp
+  database/ecopositions.h
+  guess/compileeco.cpp
+  guess/compileeco.h
+)
+
+target_link_libraries(eco
+  PRIVATE
+    qt_config
+  PUBLIC
+    board
+    Qt5::Core
+)
+
+add_library(database STATIC
+  database/abk.h
+  database/analysis.cpp
+  database/analysis.h
+  database/annotation.cpp
+  database/annotation.h
+  database/arenabook.cpp
+  database/arenabook.h
+  database/circularbuffer.h
+  database/clipboarddatabase.cpp
+  database/clipboarddatabase.h
+  database/ctg.h
+  database/ctgbookwriter.cpp
+  database/ctgbookwriter.h
+  database/ctgdatabase.cpp
+  database/ctgdatabase.h
+  database/database.cpp
+  database/database.h
+  database/databaseconversion.cpp
+  database/databaseconversion.h
+  database/databaseinfo.cpp
+  database/databaseinfo.h
+  database/datesearch.cpp
+  database/datesearch.h
+  database/downloadmanager.cpp
+  database/downloadmanager.h
+  database/duplicatesearch.cpp
+  database/duplicatesearch.h
+  database/ecoinfo.cpp
+  database/ecoinfo.h
+  database/editaction.cpp
+  database/editaction.h
+  database/elosearch.cpp
+  database/elosearch.h
+  database/engine.cpp
+  database/engine.h
+  database/enginedata.cpp
+  database/enginedata.h
+  database/enginelist.cpp
+  database/enginelist.h
+  database/engineoptiondata.cpp
+  database/engineoptiondata.h
+  database/engineparameter.h
+  database/eventinfo.cpp
+  database/eventinfo.h
+  database/ficsclient.cpp
+  database/ficsclient.h
+  database/ficsdatabase.cpp
+  database/ficsdatabase.h
+  database/filter.cpp
+  database/filter.h
+  database/filtermodel.cpp
+  database/filtermodel.h
+  database/filteroperator.h
+  database/filtersearch.cpp
+  database/filtersearch.h
+  database/game.cpp
+  database/game.h
+  database/gameid.h
+  database/gameundocommand.h
+  database/historylist.cpp
+  database/historylist.h
+  database/index.cpp
+  database/index.h
+  database/indexitem.cpp
+  database/indexitem.h
+  database/memorydatabase.cpp
+  database/memorydatabase.h
+  database/movedata.cpp
+  database/movedata.h
+  database/nag.cpp
+  database/nag.h
+  database/numbersearch.cpp
+  database/numbersearch.h
+  database/openingtree.cpp
+  database/openingtree.h
+  database/openingtreethread.cpp
+  database/openingtreethread.h
+  database/output.cpp
+  database/output.h
+  database/outputoptions.cpp
+  database/outputoptions.h
+  database/partialdate.cpp
+  database/partialdate.h
+  database/pdbtest.cpp
+  database/pdbtest.h
+  database/pgndatabase.cpp
+  database/pgndatabase.h
+  database/playerdata.cpp
+  database/playerdata.h
+  database/playerdatabase.cpp
+  database/playerdatabase.h
+  database/playerinfo.cpp
+  database/playerinfo.h
+  database/polyglotdatabase.cpp
+  database/polyglotdatabase.h
+  database/polyglotwriter.cpp
+  database/polyglotwriter.h
+  database/positionsearch.cpp
+  database/positionsearch.h
+  database/refcount.cpp
+  database/refcount.h
+  database/result.cpp
+  database/result.h
+  database/search.cpp
+  database/search.h
+  database/settings.cpp
+  database/settings.h
+  database/spellchecker.cpp
+  database/spellchecker.h
+  database/streamdatabase.cpp
+  database/streamdatabase.h
+  database/tablebase.cpp
+  database/tablebase.h
+  database/tags.cpp
+  database/tags.h
+  database/tagsearch.cpp
+  database/tagsearch.h
+  database/telnetclient.cpp
+  database/telnetclient.h
+  database/threadedguess.cpp
+  database/threadedguess.h
+  database/uciengine.cpp
+  database/uciengine.h
+  database/version.h
+  database/wbengine.cpp
+  database/wbengine.h
+)
+
+target_include_directories(database
+  PUBLIC
+    database
+  PRIVATE
+    gui
+)
+
+target_link_libraries(database
+  PRIVATE
+    qt_config
+    Qt5::Widgets
+  PUBLIC
+    board
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Network
+)
+
+add_library(gui STATIC
+  dialogs/aboutdlg.cpp
+  dialogs/aboutdlg.h
+  dialogs/aboutdlg.ui
+  dialogs/actiondialog.cpp
+  dialogs/actiondialog.h
+  dialogs/actiondialog.ui
+  dialogs/boardsearchdialog.cpp
+  dialogs/boardsearchdialog.h
+  dialogs/boardsearchdialog.ui
+  dialogs/commentdialog.cpp
+  dialogs/commentdialog.h
+  dialogs/commentdialog.ui
+  dialogs/copydialog.cpp
+  dialogs/copydialog.h
+  dialogs/copydialog.ui
+  dialogs/dlgsavebook.cpp
+  dialogs/dlgsavebook.h
+  dialogs/dlgsavebook.ui
+  dialogs/matchparameterdlg.cpp
+  dialogs/matchparameterdlg.h
+  dialogs/matchparameterdlg.ui
+  dialogs/preferences.cpp
+  dialogs/preferences.h
+  dialogs/preferences.ui
+  dialogs/promotiondialog.cpp
+  dialogs/promotiondialog.h
+  dialogs/promotiondialog.ui
+  dialogs/quicksearch.cpp
+  dialogs/quicksearch.h
+  dialogs/quicksearch.ui
+  dialogs/readaheaddlg.cpp
+  dialogs/readaheaddlg.h
+  dialogs/readaheaddlg.ui
+  dialogs/recipientaddressdialog.cpp
+  dialogs/recipientaddressdialog.h
+  dialogs/recipientaddressdialog.ui
+  dialogs/renametagdialog.cpp
+  dialogs/renametagdialog.h
+  dialogs/renametagdialog.ui
+  dialogs/savedialog.cpp
+  dialogs/savedialog.h
+  dialogs/savedialog.ui
+  dialogs/tagdialog.cpp
+  dialogs/tagdialog.h
+  dialogs/tagdialog.ui
+  gui/GameMimeData.h
+  gui/analysiswidget.cpp
+  gui/analysiswidget.h
+  gui/analysiswidget.ui
+  gui/boardsetup.cpp
+  gui/boardsetup.h
+  gui/boardsetup.ui
+  gui/boardsetuptoolbutton.cpp
+  gui/boardsetuptoolbutton.h
+  gui/boardtheme.cpp
+  gui/boardtheme.h
+  gui/boardview.cpp
+  gui/boardview.h
+  gui/boardviewex.cpp
+  gui/boardviewex.h
+  gui/boardviewex.ui
+  gui/chartwidget.cpp
+  gui/chartwidget.h
+  gui/chessbrowser.cpp
+  gui/chessbrowser.h
+  gui/colorlist.cpp
+  gui/colorlist.h
+  gui/databaselist.cpp
+  gui/databaselist.h
+  gui/databaselistmodel.cpp
+  gui/databaselistmodel.h
+  gui/digitalclock.cpp
+  gui/digitalclock.h
+  gui/dockwidgetex.cpp
+  gui/dockwidgetex.h
+  gui/ecolistwidget.cpp
+  gui/ecolistwidget.h
+  gui/ecothread.h
+  gui/engineoptiondialog.cpp
+  gui/engineoptiondialog.h
+  gui/engineoptiondialog.ui
+  gui/engineoptionlist.cpp
+  gui/engineoptionlist.h
+  gui/engineoptionmodel.cpp
+  gui/engineoptionmodel.h
+  gui/eventlistwidget.cpp
+  gui/eventlistwidget.h
+  gui/exclusiveactiongroup.cpp
+  gui/exclusiveactiongroup.h
+  gui/exttool.cpp
+  gui/exttool.h
+  gui/ficsconsole.cpp
+  gui/ficsconsole.h
+  gui/ficsconsole.ui
+  gui/gamelist.cpp
+  gui/gamelist.h
+  gui/gamelistsortmodel.cpp
+  gui/gamelistsortmodel.h
+  gui/gamewindow.cpp
+  gui/gamewindow.h
+  gui/gamewindow.ui
+  gui/helpbrowser.cpp
+  gui/helpbrowser.h
+  gui/helpbrowsershell.cpp
+  gui/helpbrowsershell.h
+  gui/helpbrowsershell.ui
+  gui/historylabel.cpp
+  gui/historylabel.h
+  gui/kbaction.cpp
+  gui/kbaction.h
+  gui/listwidgetex.cpp
+  gui/listwidgetex.h
+  gui/loadquery.cpp
+  gui/loadquery.h
+  gui/loadquery.ui
+  gui/logstream.cpp
+  gui/logstream.h
+  gui/mainwindow.cpp
+  gui/mainwindow.h
+  gui/mainwindowabout.cpp
+  gui/mainwindowactions.cpp
+  gui/messagedialog.cpp
+  gui/messagedialog.h
+  gui/ooo/converter.cpp
+  gui/ooo/converter.h
+  gui/ooo/document.cpp
+  gui/ooo/document.h
+  gui/ooo/formatproperty.cpp
+  gui/ooo/formatproperty.h
+  gui/ooo/kzip.cpp
+  gui/ooo/kzip.h
+  gui/ooo/styleinformation.cpp
+  gui/ooo/styleinformation.h
+  gui/ooo/styleparser.cpp
+  gui/ooo/styleparser.h
+  gui/openingtreewidget.cpp
+  gui/openingtreewidget.h
+  gui/openingtreewidget.ui
+  gui/plaintextedit.cpp
+  gui/plaintextedit.h
+  gui/playerlistwidget.cpp
+  gui/playerlistwidget.h
+  gui/qled.cpp
+  gui/qled.h
+  gui/shellhelper.cpp
+  gui/shellhelper.h
+  gui/simplelabel.cpp
+  gui/simplelabel.h
+  gui/style.cpp
+  gui/style.h
+  gui/tableview.cpp
+  gui/tableview.h
+  gui/tagdetailwidget.ui
+  gui/textbrowserex.h
+  gui/textedit.cpp
+  gui/textedit.h
+  gui/toolmainwindow.cpp
+  gui/toolmainwindow.h
+  gui/translatingslider.cpp
+  gui/translatingslider.h
+)
+
+target_include_directories(gui
+  PUBLIC
+    dialogs
+    gui
+)
+
+target_link_libraries(gui
+  PRIVATE
+    qt_config
+    eco
+    quazip
+    Qt5::PrintSupport
+    Qt5::Svg
+  PUBLIC
+    database
+    Qt5::Widgets
+    Qt5::Xml
+)
+
+if (ENABLE_SOUNDS)
+  target_compile_definitions(gui
+    PRIVATE
+      USE_SOUND
+  )
+  target_link_libraries(gui PRIVATE Qt5::Multimedia)
+endif()
+
+if (ENABLE_TTS)
+  target_compile_definitions(gui
+    PRIVATE
+      USE_SPEECH
+  )
+  target_link_libraries(gui PRIVATE Qt5::TextToSpeech)
+endif()
+
