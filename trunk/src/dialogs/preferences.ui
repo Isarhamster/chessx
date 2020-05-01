@@ -23,7 +23,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -1258,6 +1258,16 @@
            <widget class="QCheckBox" name="darkTheme">
             <property name="text">
              <string>Dark Theme</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_22">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Changing the theme requires restarting the application!</string>
             </property>
            </widget>
           </item>

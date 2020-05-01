@@ -406,6 +406,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_statusFilter->setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
     m_statusApp = new HistoryLabel();
+    m_statusApp->setMaxSize(128);
     statusBar()->addPermanentWidget(m_statusApp,1);
     m_statusApp->setFrameStyle(QFrame::Panel | QFrame::Sunken);
 

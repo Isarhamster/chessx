@@ -33,6 +33,8 @@ void HistoryLabel::init()
     connect(showHistory, SIGNAL(triggered()), SLOT(showHistory()));
     addAction(showHistory);
     setContextMenuPolicy(Qt::ActionsContextMenu);
+    maxSize = 64;
+    itemsRemoved = false;
 }
 
 void HistoryLabel::initView()
@@ -55,6 +57,21 @@ void HistoryLabel::mouseDoubleClickEvent( QMouseEvent * e )
     }
 }
 
+int HistoryLabel::getMaxSize() const
+{
+    return maxSize;
+}
+
+void HistoryLabel::setMaxSize(int value)
+{
+    maxSize = value;
+    while (m_history.size()>maxSize)
+    {
+        m_history.removeLast();
+        itemsRemoved = true;
+    }
+}
+
 void HistoryLabel::showHistory()
 {
     if (!m_view)
@@ -62,15 +79,20 @@ void HistoryLabel::showHistory()
         initView();
     }
     if (m_view->isVisible()) return;
-    m_model->setStringList(m_history);
-    QModelIndex lastRow(m_model->index(m_history.size()-1));
-    int bottomY = m_view->visualRect(lastRow).bottom();
-    int widthHint = m_view->sizeHint().width();
-    if (bottomY < m_view->sizeHint().height())
+    QStringList l = m_history;
+    if (itemsRemoved)
     {
-        m_view->resize(widthHint, bottomY + 2);
-        m_view->move(mapToGlobal(QPoint(0, height()-bottomY)));
+        l.append("...");
     }
+    m_model->setStringList(l);
+
+    QPoint pos = QCursor::pos();
+    pos.setX(pos.x() - m_view->sizeHint().width());
+    pos.setY(pos.y() - m_view->sizeHint().height());
+    if (pos.x()<0) pos.setX(0);
+    if (pos.y()<0) pos.setY(0);
+
+    m_view->move(pos);
     m_view->show();
 }
 
@@ -80,13 +102,20 @@ void HistoryLabel::setText(const QString &text, bool dontStore)
     if (!text.isEmpty() && !dontStore)
     {
         m_history.prepend(text);
-        if (m_history.size()>20)
+
+        if (m_history.size()>maxSize)
         {
             m_history.removeLast();
+            itemsRemoved = true;
+        }
+        QStringList l = m_history;
+        if (itemsRemoved)
+        {
+            l.append("...");
         }
         if (m_view && m_view->isVisible())
         {
-            m_model->setStringList(m_history);
+            m_model->setStringList(l);
         }
     }
     QLabel::setText(text);
