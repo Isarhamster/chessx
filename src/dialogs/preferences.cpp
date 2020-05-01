@@ -579,7 +579,7 @@ void PreferencesDialog::restoreSettings()
     ui.cbSoundOn->setCurrentIndex(AppSettings->getValue("Move").toInt());
     ui.cbScreenReader->setChecked(AppSettings->getValue("ScreenReader").toBool());
 #else
-    ui.cbSoundOn->setChecked(false);
+    ui.cbSoundOn->setCurrentIndex(0);
     ui.cbSoundOn->setEnabled(false);
     ui.cbScreenReader->setChecked(false);
     ui.cbScreenReader->setEnabled(false);
