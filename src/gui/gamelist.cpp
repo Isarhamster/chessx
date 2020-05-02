@@ -626,8 +626,10 @@ void GameList::slotHideDeletedGames()
     }
 }
 
-void GameList::startDrag(Qt::DropActions /*supportedActions*/)
+void GameList::startDrag(Qt::DropActions supportedActions)
 {
+    TableView::startDrag(supportedActions);
+
     GameMimeData *mimeData = new GameMimeData;
     mimeData->source = m_model->filter()->database()->filename();
     foreach(QModelIndex index, selectionModel()->selectedRows())
@@ -673,6 +675,24 @@ void GameList::startDrag(Qt::DropActions /*supportedActions*/)
 
 void GameList::dragEnterEvent(QDragEnterEvent *event)
 {
+    TableView::dragEnterEvent(event);
+    const QMimeData *mimeData = event->mimeData();
+    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+
+    if (gameMimeData && (m_model->filter()->database()->filename() == gameMimeData->source))
+    {
+        event->acceptProposedAction();
+    }
+    else if(dbMimeData || gameMimeData || (mimeData && mimeData->hasUrls()))
+    {
+        event->acceptProposedAction();
+    }
+}
+
+void GameList::dragMoveEvent(QDragMoveEvent *event)
+{
+    TableView::dragMoveEvent(event);
     const QMimeData *mimeData = event->mimeData();
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
@@ -685,18 +705,6 @@ void GameList::dragEnterEvent(QDragEnterEvent *event)
     {
         event->acceptProposedAction();
     }
-}
-
-void GameList::dragMoveEvent(QDragMoveEvent *event)
-{
-    const QMimeData *mimeData = event->mimeData();
-    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
-    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
-
-    if(dbMimeData || gameMimeData || (mimeData && mimeData->hasUrls()))
-    {
-        event->acceptProposedAction();
-    }
     else
     {
         event->ignore();
@@ -705,27 +713,32 @@ void GameList::dragMoveEvent(QDragMoveEvent *event)
 
 void GameList::dragLeaveEvent(QDragLeaveEvent *event)
 {
+    TableView::dragLeaveEvent(event);
     event->accept();
 }
 
 void GameList::dropEvent(QDropEvent *event)
 {
-    const QMimeData *mimeData = event->mimeData();
-    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
-    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+    TableView::dropEvent(event);
+    if (event->dropAction())
+    {
+        const QMimeData *mimeData = event->mimeData();
+        const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+        const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
 
-    if(dbMimeData || (mimeData && mimeData->hasUrls()))
-    {
-        m_model->startUpdate();
-        emit signalDropEvent(event);
-        m_model->endUpdate();
-    }
-    else if (gameMimeData)
-    {
-        emit requestAppendGames(m_model->filter()->database()->filename(), gameMimeData->m_indexList, gameMimeData->source);
-    }
-    else
-    {
-        event->ignore();
+        if(dbMimeData || (mimeData && mimeData->hasUrls()))
+        {
+            m_model->startUpdate();
+            emit signalDropEvent(event);
+            m_model->endUpdate();
+        }
+        else if (gameMimeData)
+        {
+            emit requestAppendGames(m_model->filter()->database()->filename(), gameMimeData->m_indexList, gameMimeData->source);
+        }
+        else
+        {
+            event->ignore();
+        }
     }
 }

@@ -12,6 +12,7 @@
 #include <QClipboard>
 #include <QHeaderView>
 #include <QMenu>
+#include <QScrollBar>
 #include <QWheelEvent>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -44,6 +45,8 @@ TableView::TableView(QWidget *parent)
 
     connect(horizontalHeader(), SIGNAL(customContextMenuRequested(const QPoint&)),
             this, SLOT(ShowContextMenu(const QPoint&)));
+    connect(&m_dragTimer, SIGNAL(timeout()), this, SLOT(SlotDragTimer()));
+    m_dragTimer.setSingleShot(true);
 }
 
 TableView::~TableView()
@@ -284,3 +287,52 @@ QImage TableView::renderToImage() const
     delete pTableView;
     return image;
 }
+
+void TableView::startDrag(Qt::DropActions supportedActions)
+{
+    m_dragTimer.stop();
+}
+
+void TableView::dragEnterEvent(QDragEnterEvent *event)
+{
+    m_dragTimer.stop();
+}
+
+void TableView::dragMoveEvent(QDragMoveEvent *event)
+{
+}
+
+void TableView::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    m_dragTimer.start(250);
+}
+
+void TableView::dropEvent(QDropEvent *event)
+{
+    m_dragTimer.stop();
+}
+
+void TableView::SlotDragTimer()
+{
+    //qDebug()<< "TableView::SlotDragTimer" << Qt::endl;
+    QPoint p = QCursor::pos();
+    QPoint tl = mapToGlobal(pos());
+    QRect r = rect();
+    if (p.x()>tl.x() && p.x()<tl.x()+r.width())
+    {
+        if (p.y()<tl.y()) // Move above the view
+        {
+            verticalScrollBar()->setValue(verticalScrollBar()->value()-10);
+        }
+        else if (p.y()>tl.y()+r.height()) // Move below the view
+        {
+            verticalScrollBar()->setValue(verticalScrollBar()->value()+10);
+        }
+        m_dragTimer.start();
+    }
+    else // Move to the left or right of the view
+    {
+        m_dragTimer.stop();
+    }
+}
+

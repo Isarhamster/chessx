@@ -7,8 +7,8 @@
 #ifndef TABLEVIEW_H
 #define TABLEVIEW_H
 
-#include <QtCore>
 #include <QTableView>
+#include <QTimer>
 
 /**
 	The TableView class is a specialized version of QTableView with automatic
@@ -39,6 +39,14 @@ public slots:
     virtual void slotReconfigure();
     /** Show context menu on header view */
     virtual void ShowContextMenu(const QPoint&);
+    void SlotDragTimer();
+protected: // overrides
+    void startDrag(Qt::DropActions supportedActions);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragMoveEvent(QDragMoveEvent *event);
+    void dragLeaveEvent(QDragLeaveEvent *event);
+    void dropEvent(QDropEvent *event);
+
 protected:
     QString renderHTMLitem(int row,int column) const;
     QString renderHTMLrow(int row) const;
@@ -51,6 +59,7 @@ private:
     void setFontSize(int fontSize);
     Qt::Alignment m_alignDecoration;
     QStyleOptionViewItem::Position m_posDecoration;
+    QTimer m_dragTimer;
 };
 
 #endif

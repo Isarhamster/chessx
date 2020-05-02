@@ -21,6 +21,12 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
+#ifdef Q_OS_WIN32
+#define LINK_MODIFIER Qt::AltModifier
+#else // MAC OS
+#define LINK_MODIFIER Qt::MetaModifier
+#endif
+
 DatabaseList::DatabaseList(QWidget *parent) :
     TableView(parent)
 {
@@ -315,28 +321,48 @@ void DatabaseList::update(const QString& s)
 
 void DatabaseList::dragEnterEvent(QDragEnterEvent *event)
 {
-    m_lastModifier = event->keyboardModifiers();
+    TableView::dragEnterEvent(event);
+    m_lastModifier = qApp->keyboardModifiers();
 
     const QMimeData *mimeData = event->mimeData();
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
 
-    if(gameMimeData || dbMimeData || (mimeData && mimeData->hasUrls()))
+    if(gameMimeData)
     {
-        event->acceptProposedAction();
+        event->setDropAction(Qt::CopyAction);
+        event->accept();
+    }
+    else if(dbMimeData && dbMimeData->hasUrls())
+    {
+        event->setDropAction(Qt::CopyAction);
+        event->accept();
+    }
+    else if(mimeData && mimeData->hasUrls())
+    {
+        if (m_lastModifier & LINK_MODIFIER)
+        {
+            event->setDropAction(Qt::LinkAction);
+        }
+        else
+        {
+            event->setDropAction(Qt::MoveAction);
+        }
+        event->accept();
     }
 }
 
 void DatabaseList::dragMoveEvent(QDragMoveEvent *event)
 {
-    m_lastModifier = event->keyboardModifiers();
-
+    TableView::dragMoveEvent(event);
+    m_lastModifier = qApp->keyboardModifiers();
     const QMimeData *mimeData = event->mimeData();
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
     bool accept = true;
     if(gameMimeData)
     {
+        event->setDropAction(Qt::CopyAction);
         QModelIndex index = indexAt(event->pos());
         if(index.isValid())
         {
@@ -349,6 +375,7 @@ void DatabaseList::dragMoveEvent(QDragMoveEvent *event)
     }
     else if(dbMimeData && dbMimeData->hasUrls())
     {
+        event->setDropAction(Qt::CopyAction);
         QModelIndex index = indexAt(event->pos());
         if(index.isValid())
         {
@@ -365,62 +392,68 @@ void DatabaseList::dragMoveEvent(QDragMoveEvent *event)
             }
         }
     }
+    else if(mimeData && mimeData->hasUrls())
+    {
+        if(m_lastModifier & LINK_MODIFIER)
+        {
+            event->setDropAction(Qt::LinkAction);
+        }
+        else
+        {
+            event->setDropAction(Qt::MoveAction);
+        }
+    }
 
     if (accept)
     {
-        event->acceptProposedAction();
-    }
-    else
-    {
-        event->ignore();
+        event->accept();
     }
 }
 
 void DatabaseList::dragLeaveEvent(QDragLeaveEvent *event)
 {
+    TableView::dragLeaveEvent(event);
     event->accept();
 }
 
 void DatabaseList::dropEvent(QDropEvent *event)
 {
-    // TODO - test where the files come from in case of gameMimeData !!!!!!!!! -> crash
-    const QMimeData *mimeData = event->mimeData();
-    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
-    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
-    if(gameMimeData)
+    TableView::dropEvent(event);
+    if (event->dropAction())
     {
-        QModelIndex index = indexAt(event->pos());
-        appendGameToDataBase(index, gameMimeData->m_indexList, gameMimeData->source);
-    }
-    else if(dbMimeData && dbMimeData->hasUrls())
-    {
-        QList<QUrl> urlList = dbMimeData->urls();
-        foreach(QUrl url, urlList)
+        // TODO - test where the files come from in case of gameMimeData !!!!!!!!! -> crash
+        const QMimeData *mimeData = event->mimeData();
+        const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+        const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+        if(gameMimeData)
         {
-            QString s = url.toString();
-            appendDataBaseToDataBase(event->pos(), s);
+            QModelIndex index = indexAt(event->pos());
+            appendGameToDataBase(index, gameMimeData->m_indexList, gameMimeData->source);
         }
-    }
-    else if(mimeData && mimeData->hasUrls())
-    {
-        QList<QUrl> urlList = mimeData->urls();
-        foreach(QUrl url, urlList)
+        else if(dbMimeData && dbMimeData->hasUrls())
         {
-            QString ts = url.toString();
-
-#ifdef Q_OS_WIN32
-#define LINK_MODIFIER Qt::AltModifier
-#else // MAC OS
-#define LINK_MODIFIER Qt::MetaModifier
-#endif
-
-            if(m_lastModifier & LINK_MODIFIER)
+            QList<QUrl> urlList = dbMimeData->urls();
+            foreach(QUrl url, urlList)
             {
-                emit requestLinkDatabase(ts);
+                QString s = url.toString();
+                appendDataBaseToDataBase(event->pos(), s);
             }
-            else
+        }
+        else if(mimeData && mimeData->hasUrls())
+        {
+            QList<QUrl> urlList = mimeData->urls();
+            foreach(QUrl url, urlList)
             {
-                emit requestOpenDatabase(ts, false);
+                QString ts = url.toString();
+
+                if(m_lastModifier & LINK_MODIFIER)
+                {
+                    emit requestLinkDatabase(ts);
+                }
+                else
+                {
+                    emit requestOpenDatabase(ts, false);
+                }
             }
         }
     }
@@ -467,10 +500,11 @@ void DatabaseList::startToDrag()
     pDrag->setMimeData(mimeData);
     pDrag->setPixmap(pixmap);
 
-    pDrag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+    pDrag->exec(Qt::CopyAction, Qt::LinkAction);
 }
 
-void DatabaseList::startDrag(Qt::DropActions /*supportedActions*/)
+void DatabaseList::startDrag(Qt::DropActions supportedActions)
 {
+    TableView::startDrag(supportedActions);
     startToDrag();
 }
