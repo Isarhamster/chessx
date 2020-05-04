@@ -7,6 +7,7 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "bitboard.h"
 #include "boardtheme.h"
 #include "settings.h"
 
@@ -26,13 +27,24 @@
 #endif // _MSC_VER
 
 Settings::Settings() : QSettings(IniFormat, UserScope, "chessx", "chessx")
-{}
+{
+    initialize();
+}
 
 Settings::Settings(const QString &fileName) : QSettings(fileName, IniFormat)
-{}
+{
+    initialize();
+}
 
 Settings::~Settings()
 {}
+
+void Settings::initialize()
+{
+    beginGroup("GameText");
+    BitBoard::PieceNames::custom().set(getValue("PieceString").toString());
+    endGroup();
+}
 
 bool Settings::layout(QWidget* w)
 {
@@ -497,6 +509,15 @@ QVariant Settings::getValue(const QString &key) const
         }
     }
     return value(key);
+}
+
+void Settings::setValue(const QString &key, const QVariant& val)
+{
+    QSettings::setValue(key, val);
+    if (key == "PieceString" && group() == "GameText")
+    {
+        BitBoard::PieceNames::custom().set(val.toString());
+    }
 }
 
 QString Settings::getThemePath(QString effect, QString pieces) const
