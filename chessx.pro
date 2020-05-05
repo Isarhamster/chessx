@@ -92,7 +92,8 @@ HEADERS += src/database/board.h \
 	src/database/playerdata.h \
 	src/database/databaseconversion.h \
 	src/database/engine.h \
-	src/database/wbengine.h \
+    src/database/sciddatabase.h \
+        src/database/wbengine.h \
 	src/database/uciengine.h \
 	src/database/search.h \
 	src/database/database.h \
@@ -264,6 +265,7 @@ SOURCES += src/database/board.cpp \
 	src/database/playerdatabase.cpp \
 	src/database/playerdata.cpp \
 	src/database/engine.cpp \
+        src/database/sciddatabase.cpp \
 	src/database/wbengine.cpp \
 	src/database/uciengine.cpp \
 	src/database/search.cpp \

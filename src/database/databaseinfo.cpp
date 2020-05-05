@@ -14,6 +14,7 @@
 #include "ctgdatabase.h"
 #include "databaseinfo.h"
 #include "ficsdatabase.h"
+#include "sciddatabase.h"
 #include "filter.h"
 #include "game.h"
 #include "gameundocommand.h"
@@ -55,6 +56,10 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filte
     if (IsFicsDB())
     {
         m_database = new FicsDatabase;
+    }
+    else if (isScidDb())
+    {
+        m_database = new ScidDatabase();
     }
     else if (IsPolyglotBook())
     {
@@ -355,6 +360,12 @@ bool DatabaseInfo::isNative() const
 bool DatabaseInfo::isClipboard() const
 {
     return database() && database()->IsClipboard();
+}
+
+bool DatabaseInfo::isScidDb() const
+{
+    QFileInfo fi(m_filename);
+    return (fi.suffix().toLower() == "si4");
 }
 
 bool DatabaseInfo::IsFicsDB() const

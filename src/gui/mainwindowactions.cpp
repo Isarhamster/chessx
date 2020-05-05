@@ -113,9 +113,15 @@ void MainWindow::slotFileNew()
 
 void MainWindow::slotFileOpen()
 {
+    QStringList filters;
+    filters << tr("PGN databases (*.pgn)")
+           << tr("Scid databases (*.si4)")
+           << tr("Polyglot books (*.bin)")
+           << tr("Arena books (*.abk)")
+           << tr("Chessbase books (*.ctg)");
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Open database"),
                         AppSettings->value("/General/DefaultDataPath").toString(),
-                        tr("PGN databases (*.pgn);;Polyglot books (*.bin);;Arena books (*.abk);;Chessbase books (*.ctg)"));
+                        filters.join(";;"));
     foreach(QString file, files)
     {
         if(!file.isEmpty())

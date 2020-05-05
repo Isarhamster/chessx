@@ -96,6 +96,7 @@ public:
     bool IsLoaded() const;
     bool IsUtf8() const;
 
+    bool isScidDb() const;
     bool IsFicsDB() const;
     bool IsChessbaseBook() const;
     bool IsPolyglotBook() const;
