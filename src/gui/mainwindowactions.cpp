@@ -3254,12 +3254,15 @@ void MainWindow::updateLastGameList()
     const CircularBuffer<GameId>& gameList = databaseInfo()->lastGames();
     const Index* index = databaseInfo()->database()->index();
     m_recentGames->clear();
-    if (index) foreach(GameId n, gameList)
+    if (index)
     {
-        QString white = index->tagValue(TagNameWhite,n);
-        QString black = index->tagValue(TagNameBlack,n);
-        QAction* action = m_recentGames->addAction(QString::number(n)+" : "+white+"-"+black, this, SLOT(slotLoadRecentGame()));
-        action->setData(n);
+        foreach(GameId n, gameList)
+        {
+            QString white = index->tagValue(TagNameWhite,n);
+            QString black = index->tagValue(TagNameBlack,n);
+            QAction* action = m_recentGames->addAction(QString::number(n)+" : "+white+"-"+black, this, SLOT(slotLoadRecentGame()));
+            action->setData(n);
+        }
     }
 }
 
