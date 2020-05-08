@@ -1877,22 +1877,26 @@ void GameX::moveToLineEnd()
     }
 }
 
-int GameX::forward(int count)
+int GameX::dbForward(int count)
 {
     int moved = 0;
-    while((m_moveNodes[m_currentNode].nextNode != NO_MOVE) && (moved < count))
+    while ((m_moveNodes[m_currentNode].nextNode != NO_MOVE) && (moved < count))
     {
         m_currentNode = m_moveNodes[m_currentNode].nextNode;
         ++moved;
 
         m_currentBoard->doMove(m_moveNodes[m_currentNode].move);
     }
+    return moved;
+}
 
-    if(moved)
+int GameX::forward(int count)
+{
+    int moved = dbForward(count);
+    if (moved)
     {
         indicateAnnotationsOnBoard(m_currentNode);
     }
-
     return moved;
 }
 

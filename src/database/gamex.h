@@ -227,6 +227,7 @@ public :
     void moveToId(MoveId moveId);
     /** Move forward the given number of moves, returns actual number of moves made */
     int forward(int count = 1);
+    int dbForward(int count = 1);
     /** Move back the given number of moves, returns actual number of moves undone */
     int backward(int count = 1);
     int dbBackward(int count = 1);
