@@ -14,8 +14,8 @@ greaterThan(QT_MAJOR_VERSION, 4) {
    CONFIG += sound
    # Comment out speech for Linux if libspeechdis not available
    CONFIG += speech
-   # Comment out c++11 for all non-C++11 compilers, Qt5 is required in addition
-   CONFIG += c++11
+   # Scid requires c++17
+   CONFIG += c++17
    # Add lc0 to package
    CONFIG += lc0
 }
@@ -54,6 +54,44 @@ macx {
   QMAKE_LFLAGS_DEBUG += -m64 -O0
   QMAKE_CXXFLAGS_DEBUG *= -m64 -O0
 }
+
+HEADERS += \
+    dep/scid/code/src/board_def.h \
+    dep/scid/code/src/bytebuf.h \
+    dep/scid/code/src/codec.h \
+    dep/scid/code/src/codec_native.h \
+    dep/scid/code/src/codec_scid4.h \
+    dep/scid/code/src/common.h \
+    dep/scid/code/src/containers.h \
+    dep/scid/code/src/date.h \
+    dep/scid/code/src/error.h \
+    dep/scid/code/src/fastgame.h \
+    dep/scid/code/src/filebuf.h \
+    dep/scid/code/src/hfilter.h \
+    dep/scid/code/src/index.h \
+    dep/scid/code/src/indexentry.h \
+    dep/scid/code/src/game.h \
+    dep/scid/code/src/matsig.h \
+    dep/scid/code/src/movetree.h \
+    dep/scid/code/src/misc.h \
+    dep/scid/code/src/namebase.h \
+    dep/scid/code/src/position.h \
+    dep/scid/code/src/sortcache.h \
+    dep/scid/code/src/stored.h \
+    dep/scid/code/src/textbuf.h \
+    dep/scid/code/src/tree.h
+
+SOURCES += \
+    dep/scid/code/src/codec_scid4.cpp \
+    dep/scid/code/src/game.cpp \
+    dep/scid/code/src/matsig.cpp \
+    dep/scid/code/src/misc.cpp \
+    dep/scid/code/src/position.cpp \
+    dep/scid/code/src/sortcache.cpp \
+    dep/scid/code/src/stored.cpp \
+    dep/scid/code/src/textbuf.cpp
+
+INCLUDEPATH += dep/scid/code/src
 
 FORMS += \
     src/dialogs/readaheaddlg.ui \
