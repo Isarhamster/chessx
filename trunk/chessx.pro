@@ -56,6 +56,7 @@ macx {
 }
 
 FORMS += \
+    src/dialogs/readaheaddlg.ui \
     src/dialogs/savedialog.ui \
     src/dialogs/copydialog.ui \
     src/dialogs/renametagdialog.ui \
@@ -117,6 +118,7 @@ HEADERS += src/database/board.h \
 	src/database/enginedata.h \
 	src/database/analysis.h \
 	src/database/editaction.h \
+    src/dialogs/readaheaddlg.h \
 	src/guess/attacks.h \
 	src/guess/common.h \
 	src/guess/guessengine.h \
@@ -287,6 +289,7 @@ SOURCES += src/database/board.cpp \
 	src/database/enginedata.cpp \
 	src/database/analysis.cpp \
 	src/database/editaction.cpp \
+    src/dialogs/readaheaddlg.cpp \
 	src/guess/guessengine.cpp \
 	src/guess/guess.cpp \
 	src/guess/misc.cpp \
