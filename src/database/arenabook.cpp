@@ -4,7 +4,7 @@
 
 #include "arenabook.h"
 #include "abk.h"
-#include "game.h"
+#include "gamex.h"
 #include "tags.h"
 
 #include <QMutexLocker>

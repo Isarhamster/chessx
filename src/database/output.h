@@ -11,7 +11,7 @@
 #ifndef OUTPUT_H_INCLUDED
 #define OUTPUT_H_INCLUDED
 
-#include "game.h"
+#include "gamex.h"
 #include "outputoptions.h"
 #include "database.h"
 #include "filter.h"

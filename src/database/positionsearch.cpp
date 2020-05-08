@@ -4,7 +4,7 @@
 
 #include "positionsearch.h"
 
-#include "game.h"
+#include "gamex.h"
 #include "database.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)

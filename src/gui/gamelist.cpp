@@ -26,7 +26,7 @@
 #include "tags.h"
 #include "tagsearch.h"
 
-#include "game.h"
+#include "gamex.h"
 #include "output.h"
 
 #include <qevent.h>

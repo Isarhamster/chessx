@@ -12,7 +12,7 @@
 #include <QFile>
 #include "annotation.h"
 #include "ecopositions.h"
-#include "game.h"
+#include "gamex.h"
 #include "tags.h"
 
 using namespace chessx;

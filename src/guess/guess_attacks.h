@@ -16,7 +16,7 @@
 #define SCID_ATTACKS_H
 
 #ifndef SCID_COMMON_H
-#include "common.h"
+#include "guess_common.h"
 #endif
 
 namespace Guess

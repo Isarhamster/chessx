@@ -3,7 +3,7 @@
 ****************************************************************************/
 
 #include "database.h"
-#include "game.h"
+#include "gamex.h"
 #include "settings.h"
 #include "tagdialog.h"
 #include "tags.h"

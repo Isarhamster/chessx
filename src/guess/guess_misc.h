@@ -16,8 +16,8 @@
 #ifndef SCID_MISC_H
 #define SCID_MISC_H
 
-#include "common.h"
-#include "error.h"
+#include "guess_common.h"
+#include "guess_error.h"
 #include <ctype.h>   // For isspace(), etc
 
 namespace Guess

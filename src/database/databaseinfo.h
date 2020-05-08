@@ -11,7 +11,7 @@
 #define DATABASEINFO_H__
 
 #include "circularbuffer.h"
-#include "game.h"
+#include "gamex.h"
 #include "gameid.h"
 
 #include <QString>

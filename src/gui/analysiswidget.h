@@ -10,7 +10,7 @@
 #ifndef ANALYSIS_WIDGET_H_INCLUDED
 #define ANALYSIS_WIDGET_H_INCLUDED
 
-#include "engine.h"
+#include "enginex.h"
 #include "movedata.h"
 #include "ui_analysiswidget.h"
 #include <QtGui>

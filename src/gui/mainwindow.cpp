@@ -27,7 +27,7 @@
 #include "ficsclient.h"
 #include "ficsconsole.h"
 #include "ficsdatabase.h"
-#include "game.h"
+#include "gamex.h"
 #include "gamelist.h"
 #include "GameMimeData.h"
 #include "gamewindow.h"

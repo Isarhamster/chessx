@@ -10,7 +10,7 @@
 #include "chartwidget.h"
 #include "chessbrowser.h"
 #include "settings.h"
-#include "game.h"
+#include "gamex.h"
 #include "GameMimeData.h"
 
 #include <QMenu>

@@ -15,7 +15,7 @@
 #ifndef SCID_SQMOVE_H
 #define SCID_SQMOVE_H
 
-#include "common.h"
+#include "guess_common.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sqMove

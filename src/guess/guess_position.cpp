@@ -12,13 +12,13 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "common.h"
-#include "misc.h"
-#include "position.h"
-#include "attacks.h"
-#include "sqlist.h"
-#include "sqset.h"
-#include "hash.h"
+#include "guess_common.h"
+#include "guess_misc.h"
+#include "guess_position.h"
+#include "guess_attacks.h"
+#include "guess_sqlist.h"
+#include "guess_sqset.h"
+#include "guess_hash.h"
 #include "bitfind.h"
 
 #include <stdio.h>

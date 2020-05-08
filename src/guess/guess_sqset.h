@@ -15,7 +15,7 @@
 #ifndef SCID_SQSET_H
 #define SCID_SQSET_H
 
-#include "common.h"
+#include "guess_common.h"
 
 namespace Guess
 {

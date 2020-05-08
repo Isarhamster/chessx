@@ -85,13 +85,13 @@ FORMS += \
 
 HEADERS += src/database/board.h \
     src/database/annotation.h \
+    src/database/enginex.h \
+    src/database/gamex.h \
 	src/database/move.h \
-	src/database/game.h \
 	src/database/partialdate.h \
 	src/database/playerdatabase.h \
 	src/database/playerdata.h \
 	src/database/databaseconversion.h \
-	src/database/engine.h \
     src/database/sciddatabase.h \
         src/database/wbengine.h \
 	src/database/uciengine.h \
@@ -119,20 +119,20 @@ HEADERS += src/database/board.h \
 	src/database/enginedata.h \
 	src/database/analysis.h \
 	src/database/editaction.h \
-    src/dialogs/readaheaddlg.h \
-	src/guess/attacks.h \
-	src/guess/common.h \
-	src/guess/guessengine.h \
-	src/guess/error.h \
+    src/guess/guess_attacks.h \
+    src/guess/guess_common.h \
+    src/guess/guess_compileeco.h \
+    src/guess/guess_error.h \
 	src/guess/guess.h \
-	src/guess/hash.h \
-	src/guess/misc.h \
-	src/guess/movelist.h \
-	src/guess/position.h \
-	src/guess/recog.h \
-	src/guess/sqlist.h \
-	src/guess/sqmove.h \
-	src/guess/sqset.h \
+    src/guess/guess_guessengine.h \
+    src/guess/guess_hash.h \
+    src/guess/guess_misc.h \
+    src/guess/guess_movelist.h \
+    src/guess/guess_position.h \
+    src/guess/guess_recog.h \
+    src/guess/guess_sqlist.h \
+    src/guess/guess_sqmove.h \
+    src/guess/guess_sqset.h \
 	src/gui/mainwindow.h \
 	src/gui/boardview.h \
 	src/gui/boardtheme.h \
@@ -183,7 +183,6 @@ HEADERS += src/database/board.h \
     src/database/ecoinfo.h \
     src/gui/textbrowserex.h \
     src/gui/loadquery.h \
-    src/guess/compileeco.h \
     src/database/pdbtest.h \
     src/gui/kbaction.h \
     src/gui/translatingslider.h \
@@ -211,6 +210,7 @@ HEADERS += src/database/board.h \
     src/dialogs/dlgsavebook.h \
     src/dialogs/promotiondialog.h \
     src/dialogs/recipientaddressdialog.h \
+    src/dialogs/readaheaddlg.h \
     src/dialogs/renametagdialog.h \
     src/dialogs/savedialog.h \
     src/dialogs/tagdialog.h \
@@ -259,12 +259,12 @@ HEADERS += src/database/board.h \
 
 SOURCES += src/database/board.cpp \
     src/database/annotation.cpp \
-	src/database/game.cpp \
 	src/database/databaseconversion.cpp \
+    src/database/enginex.cpp \
+    src/database/gamex.cpp \
 	src/database/partialdate.cpp \
 	src/database/playerdatabase.cpp \
 	src/database/playerdata.cpp \
-	src/database/engine.cpp \
         src/database/sciddatabase.cpp \
 	src/database/wbengine.cpp \
 	src/database/uciengine.cpp \
@@ -291,13 +291,13 @@ SOURCES += src/database/board.cpp \
 	src/database/enginedata.cpp \
 	src/database/analysis.cpp \
 	src/database/editaction.cpp \
-    src/dialogs/readaheaddlg.cpp \
-	src/guess/guessengine.cpp \
+    src/guess/guess_compileeco.cpp \
 	src/guess/guess.cpp \
-	src/guess/misc.cpp \
-	src/guess/movelist.cpp \
-	src/guess/position.cpp \
-	src/guess/recog.cpp \
+    src/guess/guess_guessengine.cpp \
+    src/guess/guess_misc.cpp \
+    src/guess/guess_movelist.cpp \
+    src/guess/guess_position.cpp \
+    src/guess/guess_recog.cpp \
 	src/gui/mainwindow.cpp \
 	src/gui/mainwindowactions.cpp \
 	src/gui/mainwindowabout.cpp \
@@ -342,7 +342,6 @@ SOURCES += src/database/board.cpp \
     src/gui/ecolistwidget.cpp \
     src/database/ecoinfo.cpp \
     src/gui/loadquery.cpp \
-    src/guess/compileeco.cpp \
     src/database/pdbtest.cpp \
     src/gui/kbaction.cpp \
     src/gui/translatingslider.cpp \
@@ -370,6 +369,7 @@ SOURCES += src/database/board.cpp \
     src/dialogs/dlgsavebook.cpp \
     src/dialogs/promotiondialog.cpp \
     src/dialogs/recipientaddressdialog.cpp \
+    src/dialogs/readaheaddlg.cpp \
     src/dialogs/renametagdialog.cpp \
     src/dialogs/savedialog.cpp \
     src/dialogs/tagdialog.cpp \

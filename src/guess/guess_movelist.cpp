@@ -12,7 +12,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "movelist.h"
+#include "guess_movelist.h"
 #include <algorithm>
 #include <QDebug>
 

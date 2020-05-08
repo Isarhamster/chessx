@@ -12,7 +12,7 @@
 #define DATABASE_H_INCLUDED
 
 #include "filter.h"
-#include "game.h"
+#include "gamex.h"
 #include "index.h"
 #include "refcount.h"
 #include "move.h"

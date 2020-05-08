@@ -7,7 +7,7 @@
 
 #include <QThread>
 #include "ecopositions.h"
-#include "game.h"
+#include "gamex.h"
 #include "settings.h"
 
 /** @ingroup GUI

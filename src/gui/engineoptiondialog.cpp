@@ -4,7 +4,7 @@
 
 #include "engineoptiondialog.h"
 #include "ui_engineoptiondialog.h"
-#include "engine.h"
+#include "enginex.h"
 #include "settings.h"
 
 #include <QtCore>

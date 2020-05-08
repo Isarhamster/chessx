@@ -12,10 +12,10 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "common.h"
-#include "misc.h"
-#include "error.h"
-#include "misc.h"
+#include "guess_common.h"
+#include "guess_misc.h"
+#include "guess_error.h"
+#include "guess_misc.h"
 
 #include <QtCore>
 

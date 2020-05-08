@@ -15,7 +15,7 @@
 
 class QTextStream;
 
-#include "engine.h"
+#include "enginex.h"
 
 /** @ingroup Feature
 * The UCIEngine class provides an interface to Winboard/XBoard engines.

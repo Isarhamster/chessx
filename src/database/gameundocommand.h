@@ -2,7 +2,7 @@
 #define GAMEUNDOCOMMAND_H
 
 #include "databaseinfo.h"
-#include "game.h"
+#include "gamex.h"
 
 #include <QString>
 #include <QObject>

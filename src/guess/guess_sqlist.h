@@ -15,7 +15,7 @@
 #ifndef SCID_SQLIST_H
 #define SCID_SQLIST_H
 
-#include "common.h"
+#include "guess_common.h"
 
 namespace Guess
 {

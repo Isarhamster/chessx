@@ -6,7 +6,7 @@
 #define TAGDIALOG_H
 
 #include <QDialog>
-#include "game.h"
+#include "gamex.h"
 
 class IndexX;
 

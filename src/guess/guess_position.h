@@ -16,10 +16,10 @@
 #ifndef SCID_POSITION_H
 #define SCID_POSITION_H
 
-#include "common.h"
-#include "movelist.h"
-#include "sqlist.h"
-#include "sqset.h"
+#include "guess_common.h"
+#include "guess_movelist.h"
+#include "guess_sqlist.h"
+#include "guess_sqset.h"
 
 #include <QtCore>
 

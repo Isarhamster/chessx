@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "error.h"
+#include "guess_error.h"
 
 #include <QtCore>
 
@@ -764,7 +764,7 @@ extern directionT  sqDir[66][66];
 // sqMove[66][11]: a table of the square resulting from a move in a
 //    certain direction from a square.
 //    For example, sqMove[A1][UP] == A2; sqMove[A1][DOWN] == NULL_SQUARE.
-#include "sqmove.h"
+#include "guess_sqmove.h"
 
 // square_Move(): Return the new square resulting from moving in
 //      direction d from x.

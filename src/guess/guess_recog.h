@@ -12,8 +12,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "guessengine.h"
-#include "position.h"
+#include "guess_guessengine.h"
+#include "guess_position.h"
 
 namespace Guess
 {

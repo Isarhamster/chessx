@@ -18,7 +18,7 @@
 #define GAMELIST_H_INCLUDED
 
 #include "tableview.h"
-#include "game.h"
+#include "gamex.h"
 
 #include <QPointer>
 #include <QSortFilterProxyModel>

@@ -16,7 +16,7 @@
 #ifndef SCID_MOVELIST_H
 #define SCID_MOVELIST_H
 
-#include "common.h"
+#include "guess_common.h"
 #include <QList>
 #include <QString>
 

@@ -9,7 +9,7 @@
  ***************************************************************************/
 
 #include "settings.h"
-#include "engine.h"
+#include "enginex.h"
 #include "wbengine.h"
 #include "uciengine.h"
 

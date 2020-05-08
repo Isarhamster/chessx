@@ -3,7 +3,7 @@
 ****************************************************************************/
 
 #include "datesearch.h"
-#include "game.h"
+#include "gamex.h"
 #include "database.h"
 
 using namespace chessx;

@@ -7,7 +7,7 @@
 
 #include "board.h"
 #include "database.h"
-#include "game.h"
+#include "gamex.h"
 #include "movedata.h"
 
 struct ABK_MOVE;

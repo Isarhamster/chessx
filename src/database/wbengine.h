@@ -15,7 +15,7 @@
 
 class QTextStream;
 
-#include "engine.h"
+#include "enginex.h"
 
 /** @ingroup Feature
   The WBEngine class provides an interface to a Winboard chess engine.

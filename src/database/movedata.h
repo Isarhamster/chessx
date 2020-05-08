@@ -5,7 +5,7 @@
 #ifndef MOVEDATA_H
 #define MOVEDATA_H
 
-#include "game.h"
+#include "gamex.h"
 #include "move.h"
 
 class MoveData

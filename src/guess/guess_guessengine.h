@@ -23,7 +23,7 @@
 
 #include <stdarg.h>
 
-#include "position.h"
+#include "guess_position.h"
 
 #if (QT_VERSION < QT_VERSION_CHECK(4, 7, 0))
 #include <QTime>

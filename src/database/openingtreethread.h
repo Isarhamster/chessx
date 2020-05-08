@@ -6,7 +6,7 @@
 #define OPENINGTREETHREAD_H
 
 #include "filter.h"
-#include "game.h"
+#include "gamex.h"
 #include "movedata.h"
 
 #include <QPointer>

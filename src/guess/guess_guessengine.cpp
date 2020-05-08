@@ -12,9 +12,9 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "attacks.h"
-#include "guessengine.h"
-#include "recog.h"
+#include "guess_attacks.h"
+#include "guess_guessengine.h"
+#include "guess_recog.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )

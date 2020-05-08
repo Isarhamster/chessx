@@ -5,7 +5,7 @@
 #ifndef GAMEWINDOW_H
 #define GAMEWINDOW_H
 
-#include "game.h"
+#include "gamex.h"
 #include "nag.h"
 #include "toolmainwindow.h"
 

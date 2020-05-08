@@ -16,7 +16,7 @@
 
 #include "database.h"
 #include "filtermodel.h"
-#include "game.h"
+#include "gamex.h"
 #include "messagedialog.h"
 #include "partialdate.h"
 #include "savedialog.h"
