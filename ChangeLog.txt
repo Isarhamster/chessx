@@ -1,5 +1,5 @@
-This will install version 1.5.2 of ChessX.
-March 2020: Version 1.5.2
+This will install version 1.5.4 of ChessX.
+March 2020: Version 1.5.4
 - New Feature: Support lc0 for Mac OS
 - New feature: blunder checking
 - New feature: Speak moves

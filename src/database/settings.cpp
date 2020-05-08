@@ -455,6 +455,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/AutoPromoteToQueen", false);
     map.insert("/Board/AlwaysScale", false);
     map.insert("/Board/PlayerTurnBoard", "");
+    map.insert("/Board/ReadAhead", 4);
 
     map.insert("/Match/Mode", 0);
     map.insert("/Match/TotalTime", 3000);
