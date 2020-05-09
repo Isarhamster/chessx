@@ -55,6 +55,8 @@ public:
     virtual bool parseFile() = 0;
     /** File-based database name */
     virtual QString filename() const = 0;
+    /** Database size on disk (in bytes) */
+    virtual qint64 diskSize() const;
     /** Determine if index files are supported */
     virtual bool hasIndexFile() const { return false; }
 

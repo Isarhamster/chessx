@@ -29,6 +29,12 @@ Database::~Database()
 {
 }
 
+qint64 Database::diskSize() const
+{
+    QFileInfo fi(filename());
+    return fi.size();
+}
+
 bool Database::isUtf8() const
 {
     return m_utf8;
