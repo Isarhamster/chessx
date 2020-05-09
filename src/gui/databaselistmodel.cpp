@@ -37,8 +37,9 @@ void DatabaseRegistry::remove(DatabaseInfo* dbi)
     m_databases.removeAt(m_databases.indexOf(dbi));
 }
 
-DatabaseListModel::DatabaseListModel(QObject *parent) :
-    QAbstractItemModel(parent)
+DatabaseListModel::DatabaseListModel(DatabaseRegistry* registry, QObject* parent)
+    : QAbstractItemModel(parent)
+    , m_registry(registry)
 {
     m_columnNames << tr("Favorite") << tr("Name") << tr("Size") << tr("Open") << tr("Path") << tr("Format") << tr("Date") << tr("Read");
 }

@@ -302,7 +302,7 @@ MainWindow::MainWindow() : QMainWindow(),
     // Database List
     DockWidgetEx* dbListDock = new DockWidgetEx(tr("Databases"), this);
     dbListDock->setObjectName("Databases");
-    m_databaseList = new DatabaseList(this);
+    m_databaseList = new DatabaseList(m_registry, this);
     m_databaseList->setMinimumSize(150, 100);
     dbListDock->setWidget(m_databaseList);
     // addDockWidget(Qt::RightDockWidgetArea, dbListDock);

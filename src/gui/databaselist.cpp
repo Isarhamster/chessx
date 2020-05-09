@@ -27,14 +27,14 @@
 #define LINK_MODIFIER Qt::MetaModifier
 #endif
 
-DatabaseList::DatabaseList(QWidget *parent) :
+DatabaseList::DatabaseList(DatabaseRegistry* registry, QWidget* parent) :
     TableView(parent)
 {
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setObjectName("DatabaseList");
     setWindowTitle(tr("Databases"));
     setPosDecoration(QStyleOptionViewItem::Top);
-    m_model = new DatabaseListModel(this);
+    m_model = new DatabaseListModel(registry, this);
 
     m_filterModel = new QSortFilterProxyModel(this);
     m_filterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
