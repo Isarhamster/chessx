@@ -92,6 +92,7 @@ public:
         return m_filename;
     }
     QString dbPath() const;
+    QString dbName() const;
 
     bool IsLoaded() const;
     bool IsUtf8() const;

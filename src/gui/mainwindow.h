@@ -29,6 +29,7 @@ class ChessBrowser;
 class Database;
 class DatabaseInfo;
 class DatabaseList;
+class DatabaseRegistry;
 class DockWidgetEx;
 class DownloadManager;
 class ECOListWidget;
@@ -678,10 +679,11 @@ private:
     QMenu* m_menuView;
 
     /* Local variables */
+    DatabaseRegistry *m_registry;
     HistoryList m_recentFiles;
     QStringList m_favoriteFiles;
     Output* m_output;
-    QList<DatabaseInfo*> m_databases;
+    
     QPointer<DatabaseInfo> m_currentDatabase;
     QString m_eco;
     QTime m_operationTime;

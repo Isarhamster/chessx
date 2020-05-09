@@ -18,6 +18,7 @@
 #include "copydialog.h"
 #include "databaseinfo.h"
 #include "databaselist.h"
+#include "databaselistmodel.h"
 #include "dockwidgetex.h"
 #include "downloadmanager.h"
 #include "ecolistwidget.h"
@@ -103,6 +104,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_lastMessageWasHint(false)
 {
     setObjectName("MainWindow");
+    m_registry = new DatabaseRegistry();
 
     // Style::setStyle(this);
     m_messageTimer = new QTimer(this);
@@ -125,7 +127,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged(bool)));
     connect(pClipDB,SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
-    m_databases.append(pClipDB);
+    m_registry->m_databases.append(pClipDB);
     m_currentDatabase = pClipDB;
 
     /* Game List */
@@ -554,13 +556,13 @@ MainWindow::~MainWindow()
     m_openingTreeWidget->cancel();
     m_ficsConsole->Terminate();
 
-    foreach(DatabaseInfo * database, m_databases)
+    foreach(DatabaseInfo* dbi, m_registry->databases())
     {
         // Avoid any GUI action if a database is closed
-        disconnect(database,SIGNAL(signalGameModified(bool)), this, SLOT(slotGameChanged(bool)));
-        database->close();
+        disconnect(dbi,SIGNAL(signalGameModified(bool)), this, SLOT(slotGameChanged(bool)));
+        dbi->close();
     }
-    qDeleteAll(m_databases.begin(), m_databases.end());
+    delete m_registry;
     delete m_output;
     delete m_progressBar;
     delete m_gameList;
@@ -766,10 +768,9 @@ QString MainWindow::databaseName(int index) const
     }
     else
     {
-        pDbInfo = m_databases[index];
+        pDbInfo = m_registry->databases()[index];
     }
-    QString name = pDbInfo->database() ? pDbInfo->database()->name() : "";
-    return name;
+    return pDbInfo->dbName();
 }
 
 Database* MainWindow::getDatabaseByPath(QString path)
@@ -786,14 +787,7 @@ Database* MainWindow::getDatabaseByPath(QString path)
 
 DatabaseInfo* MainWindow::getDatabaseInfoByPath(QString path)
 {
-    for(int i = 0; i < m_databases.count(); ++i)
-    {
-        if(m_databases[i]->displayName() == path)
-        {
-            return m_databases[i];
-        }
-    }
-    return nullptr;
+    return m_registry->findDisplayName(path);
 }
 
 GameX& MainWindow::game()
@@ -882,16 +876,17 @@ void MainWindow::updateMenuDatabases()
     if (menu)
     {
         menu->clear();
-        int n=1;
-        for(int i = 0; i < m_databases.count(); i++)
+        int n = 1;
+        
+        for (auto dbi: m_registry->databases())
         {
-            if(m_databases[i]->isValid() && !m_databases[i]->IsBook())
+            if (dbi->isValid() && !dbi->IsBook())
             {
                 QAction* action = new QAction(menu);
                 action->setVisible(true);
-                action->setData(QVariant::fromValue(m_databases[i]));
-                action->setText(QString("&%1: %2").arg(n++).arg(databaseName(i)));
-                if (m_databases[i] == m_currentDatabase)
+                action->setData(QVariant::fromValue(dbi));
+                action->setText(QString("&%1: %2").arg(n++).arg(dbi->dbName()));
+                if (dbi == m_currentDatabase)
                 {
                     action->setCheckable(true);
                     action->setChecked(true);
@@ -1076,18 +1071,18 @@ bool MainWindow::ActivateFICSDatabase()
 bool MainWindow::ActivateDatabase(QString fname)
 {
     /* Check if the database is open */
-    for(int i = 0; i < m_databases.count(); i++)
+    for (auto dbi: m_registry->databases())
     {
-        if(m_databases[i]->database()->filename() == fname)
+        if (dbi->database()->filename() == fname)
         {
-            if(m_databases[i]->isValid())
+            if (dbi->isValid())
             {
-                if (!m_databases[i]->IsBook())
+                if (!dbi->IsBook())
                 {
                     autoGroup->untrigger();
-                    if (m_databases[i] != m_currentDatabase)
+                    if (dbi != m_currentDatabase)
                     {
-                        m_currentDatabase = m_databases[i];
+                        m_currentDatabase = dbi;
                         m_databaseList->setFileCurrent(fname);
                         slotDatabaseChanged();
                     }
@@ -1145,7 +1140,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     }
     else
     {
-        m_databases.append(db);
+        m_registry->m_databases.append(db);
     }
 }
 
@@ -1173,7 +1168,7 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
     if(!db->IsLoaded())
     {
         cancelOperation(tr("Cannot open file"));
-        m_databases.removeOne(db);
+        m_registry->m_databases.removeOne(db);
         delete db;
         return;
     }
@@ -1187,14 +1182,14 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
 
     if (!db->IsBook())
     {
-        for(int i = 0; i < m_databases.count(); i++)
+        for (auto dbi: m_registry->databases())
         {
-            if(m_databases[i]->database()->filename() == fname)
+            if (dbi->database()->filename() == fname)
             {
-                if (!m_databases[i]->IsBook())
+                if (!dbi->IsBook())
                 {
                     autoGroup->untrigger();
-                    m_currentDatabase = m_databases[i];
+                    m_currentDatabase = dbi;
                     CreateBoardView();
                 }
                 break;
@@ -1839,18 +1834,18 @@ bool MainWindow::confirmQuit()
     if (!m_scratchPad->saveDocument())
         return false;
 
-    for(int i = 1; i < m_databases.size(); i++)
+    for (auto dbi: m_registry->databases())
     {
-        if (!QuerySaveGame(m_databases[i]))
+        if (!QuerySaveGame(dbi))
         {
             return false;
         }
     }
-    for(int i = 1; i < m_databases.size(); i++)
+    for (auto dbi: m_registry->databases())
     {
-        if(m_databases[i]->isValid() && m_databases[i]->database()->isModified())
+        if (dbi->isValid() && dbi->database()->isModified())
         {
-            modified += m_databases[i]->database()->name() + '\n';
+            modified += dbi->database()->name() + '\n';
         }
     }
     if(!modified.isEmpty())
@@ -1864,10 +1859,13 @@ bool MainWindow::confirmQuit()
         if(response == MessageDialog::Yes)
         {
             Output output(Output::Pgn);
-            for(int i = 1; i < m_databases.size(); i++)
-                if(m_databases[i]->database()->isModified())
-                    output.output(m_databases[i]->database()->filename(),
-                                  *(m_databases[i]->database()));
+            for (auto dbi: m_registry->databases())
+            {
+                if (dbi->database()->isModified())
+                {
+                    output.output(dbi->database()->filename(), *(dbi->database()));
+                }
+            }
         }
     }
 
@@ -1875,7 +1873,7 @@ bool MainWindow::confirmQuit()
     cancelPolyglotWriters();
     m_openingTreeWidget->cancel(); // Make sure we are not grabbing into something that is closed now
 
-    for(int i = m_databases.size() - 1; i; --i)
+    for (int i = m_registry->databases().size() - 1; i; --i)
     {
         slotFileCloseIndex(i, true);
     }
@@ -1889,7 +1887,7 @@ void MainWindow::SwitchToClipboard()
 {
     if (!m_currentDatabase || !m_currentDatabase->isClipboard())
     {
-        m_currentDatabase = m_databases[0]; // Switch to clipboard is always safe
+        m_currentDatabase = m_registry->databases()[0]; // Switch to clipboard is always safe
         activateBoardViewForDbIndex(databaseInfo());
         m_databaseList->setFileCurrent("Clipboard");
         slotDatabaseChanged();

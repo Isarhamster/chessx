@@ -331,6 +331,11 @@ QString DatabaseInfo::dbPath() const
     return database()->filename();
 }
 
+QString DatabaseInfo::dbName() const
+{
+    return database() ? database()->name() : "";
+}
+
 void DatabaseInfo::clearLastGames()
 {
     m_lastGames.clear();

@@ -21,6 +21,7 @@
 #include "guess_compileeco.h"
 #include "databaseinfo.h"
 #include "databaselist.h"
+#include "databaselistmodel.h"
 #include "dlgsavebook.h"
 #include "downloadmanager.h"
 #include "duplicatesearch.h"
@@ -229,7 +230,7 @@ bool MainWindow::closeDatabaseInfo(DatabaseInfo* aboutToClose, bool dontAsk)
             m_openingTreeWidget->cancel();
             m_databaseList->setFileClose(aboutToClose->displayName(), aboutToClose->currentIndex());
 
-            m_databases.removeAt(m_databases.indexOf(aboutToClose));
+            m_registry->remove(aboutToClose);
             aboutToClose->close();
             emit signalDatabaseOpenClose();
             delete aboutToClose;
@@ -249,7 +250,7 @@ void MainWindow::slotFileClose()
 
 void MainWindow::slotFileCloseIndex(int n, bool dontAsk)
 {
-    DatabaseInfo* aboutToClose = m_databases[n];
+    DatabaseInfo* aboutToClose = m_registry->databases()[n];
     if(m_currentDatabase == aboutToClose)
     {
         closeDatabaseInfo(aboutToClose, dontAsk);
@@ -263,9 +264,10 @@ void MainWindow::slotFileCloseIndex(int n, bool dontAsk)
 
 void MainWindow::slotFileCloseName(QString fname)
 {
-    for(int i = 0; i < m_databases.count(); i++)
+    auto dbs = m_registry->databases();
+    for (int i = 0; i < dbs.count(); i++)
     {
-        if(m_databases[i]->database()->filename() == fname)
+        if (dbs[i]->database()->filename() == fname)
         {
             slotFileCloseIndex(i);
             return;
@@ -2839,14 +2841,13 @@ void MainWindow::slotDatabaseChange()
             slotDatabaseChanged();
             if(database()->isReadOnly())
             {
-                for(int i = 0; i < m_databases.count(); ++i)
+                for (auto dbi: m_registry->databases())
                 {
-                    if(m_databases[i] != m_currentDatabase)
+                    if (dbi == m_currentDatabase)
+                        continue;
+                    if (dbi->isValid() && dbi->database()->isReadOnly())
                     {
-                        if(m_databases[i]->isValid() && m_databases[i]->database()->isReadOnly())
-                        {
-                            m_databases[i]->database()->index()->clearCache();
-                        }
+                        dbi->database()->index()->clearCache();
                     }
                 }
             }
@@ -3128,14 +3129,15 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
     QStringList db;
     int cc = 1;
     QList<DatabaseInfo*> targets;
-    for (int i = 0; i < m_databases.count(); ++i)
+    for (auto dbi: m_registry->databases())
     {
-        if ((m_databases[i] != m_currentDatabase) && m_databases[i]->isNative())
-        {
-            db.append(tr("%1. %2 (%3 games)").arg(cc++).arg(databaseName(i))
-                      .arg(m_databases[i]->database()->count()));
-            targets.append(m_databases[i]);
-        }
+        if (dbi == m_currentDatabase)
+            continue;
+        if (!dbi->isNative())
+            continue;
+        db.append(tr("%1. %2 (%3 games)").arg(cc++).arg(dbi->dbName())
+                  .arg(dbi->database()->count()));
+        targets.append(dbi);
     }
     if (db.isEmpty())
     {
@@ -3213,18 +3215,19 @@ void MainWindow::slotDatabaseClearClipboard()
         autoGroup->untrigger();
     }
 
-    m_databases[0]->database()->clear();
-    m_databases[0]->clearLastGames();
+    auto clipDb = m_registry->databases()[0];
+    clipDb->database()->clear();
+    clipDb->clearLastGames();
     if (m_currentDatabase->isClipboard())
     {
         m_gameList->startUpdate();
     }
-    m_databases[0]->filter()->resize(0, false);
+    clipDb->filter()->resize(0, false);
     if (m_currentDatabase->isClipboard())
     {
         m_gameList->endUpdate();
     }
-    m_databases[0]->newGame();
+    clipDb->newGame();
 
     if (m_currentDatabase->isClipboard())
     {
@@ -3895,19 +3898,18 @@ void MainWindow::setEngineMoveTime()
 void MainWindow::slotUpdateOpeningTreeWidget()
 {
     QStringList files;
-    for(int i = 0; i < m_databases.count(); i++)
+    for (auto dbi: m_registry->databases())
     {
-        QString displayName = m_databases[i]->displayName();
-        files << displayName;
+        files << dbi->displayName();
     }
     emit signalUpdateDatabaseList(files);
 }
 
 void MainWindow::slotMakeBook(QString pathIn)
 {
-    for(int i = 0; i < m_databases.count(); i++)
+    for (auto dbi: m_registry->databases())
     {
-        if(m_databases[i]->database()->filename() == pathIn)
+        if (dbi->database()->filename() == pathIn)
         {
             DlgSaveBook dlg(pathIn);
             connect(&dlg, SIGNAL(bookWritten(QString)), SLOT(slotShowInFinder(QString)));
@@ -3923,7 +3925,7 @@ void MainWindow::slotMakeBook(QString pathIn)
                 connect(polyglotWriter, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)), Qt::QueuedConnection);
                 startOperation(tr("Build book"));
                 m_polyglotWriters.append(polyglotWriter);
-                polyglotWriter->writeBookForDatabase(m_databases[i]->database(), out, maxPly, minGame, uniform, result, filterResult);
+                polyglotWriter->writeBookForDatabase(dbi->database(), out, maxPly, minGame, uniform, result, filterResult);
             }
             return;
         }

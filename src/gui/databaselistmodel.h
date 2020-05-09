@@ -9,6 +9,21 @@
 #include <QStringList>
 #include <QList>
 
+class DatabaseInfo;
+
+class DatabaseRegistry
+{
+public:
+    ~DatabaseRegistry();
+
+    QList<DatabaseInfo*> databases() const { return m_databases; }
+    DatabaseInfo* findDisplayName(QString path) const;
+    void remove(DatabaseInfo* dbi);
+
+public: // TODO: make private
+    QList<DatabaseInfo*> m_databases;
+};
+
 enum DatabaseListEntryState
 {
     EDBL_OPEN,     ///< Database is open

@@ -8,10 +8,34 @@
 #include <QFont>
 #include <QPixmap>
 
+#include "databaseinfo.h"
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
 #endif // _MSC_VER
+
+DatabaseRegistry::~DatabaseRegistry()
+{
+    qDeleteAll(m_databases.begin(), m_databases.end());
+}
+
+DatabaseInfo* DatabaseRegistry::findDisplayName(QString path) const
+{
+    for (auto dbi: m_databases)
+    {
+        if (dbi->displayName() == path)
+        {
+            return dbi;
+        }
+    }
+    return nullptr;
+}
+
+void DatabaseRegistry::remove(DatabaseInfo* dbi)
+{
+    m_databases.removeAt(m_databases.indexOf(dbi));
+}
 
 DatabaseListModel::DatabaseListModel(QObject *parent) :
     QAbstractItemModel(parent)
