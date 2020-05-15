@@ -481,7 +481,7 @@ lc0 {
 }
 
 RESOURCES = \
-    resources.qrc
+    resources.qrc translations.qrc
 
 TRANSLATIONS = i18n/chessx_de.ts
 

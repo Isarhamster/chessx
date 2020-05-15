@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="i18n/chessx_de.qm">i18n/chessx_de.qm</file>
+    </qresource>
+</RCC>
+
