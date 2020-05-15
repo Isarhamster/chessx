@@ -143,7 +143,7 @@ void Filter::invert()
 {
     cancel();
     m_count = size() - m_count;
-    for(int i = 0; i < size(); ++i)
+    for(int i = 0, sz = static_cast<int>(size()); i < sz; ++i)
     {
         if(m_vector->at(i))
         {
@@ -163,7 +163,7 @@ void Filter::runSingleSearch(Search* s, FilterOperator op)
     switch (op)
     {
     case FilterOperator::NullOperator:
-        for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
+        for(int searchIndex = 0, sz = static_cast<int>(size()); searchIndex < sz; ++searchIndex)
         {
             if (m_break) break;
             set(searchIndex, s->matches(searchIndex));
@@ -171,7 +171,7 @@ void Filter::runSingleSearch(Search* s, FilterOperator op)
         }
         break;
     case FilterOperator::And:
-        for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
+        for(int searchIndex = 0, sz = static_cast<int>(size()); searchIndex < sz; ++searchIndex)
         {
             if (m_break) break;
             if (contains(searchIndex))
@@ -186,7 +186,7 @@ void Filter::runSingleSearch(Search* s, FilterOperator op)
         }
         break;
     case FilterOperator::Or:
-        for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
+        for(int searchIndex = 0, sz = static_cast<int>(size()); searchIndex < sz; ++searchIndex)
         {
             if (m_break) break;
             if (!contains(searchIndex))
@@ -201,7 +201,7 @@ void Filter::runSingleSearch(Search* s, FilterOperator op)
         }
         break;
     case FilterOperator::Remove:
-        for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
+        for(int searchIndex = 0, sz = static_cast<int>(size()); searchIndex < sz; ++searchIndex)
         {
             if (m_break) break;
             if (contains(searchIndex) && s->matches(searchIndex))

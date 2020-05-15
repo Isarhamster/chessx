@@ -1744,7 +1744,7 @@ void MainWindow::slotMergeActiveGame(GameId gameIndex, QString source)
 void MainWindow::slotMergeAllGames()
 {
     Game g;
-    for(GameId i = 0; i < database()->index()->count(); ++i)
+    for(GameId i = 0, sz = static_cast<GameId>(database()->index()->count()); i < sz; ++i)
     {
         if(i != databaseInfo()->currentIndex())
         {
@@ -1956,7 +1956,7 @@ void MainWindow::slotDatabaseUncomment()
         slotGameChanged(true);
         SimpleSaveGame();
         Game g;
-        for (int i=0; i<database()->index()->count();++i)
+        for (GameId i=0, sz = static_cast<GameId>(database()->index()->count()); i < sz; ++i)
         {
             if(i != databaseInfo()->currentIndex())
             {
@@ -1978,7 +1978,7 @@ void MainWindow::slotDatabaseRemoveTime()
         slotGameChanged(true);
         SimpleSaveGame();
         Game g;
-        for (int i=0; i<database()->index()->count();++i)
+        for (GameId i = 0, sz = static_cast<GameId>(database()->index()->count()); i < sz; ++i)
         {
             if(i != databaseInfo()->currentIndex())
             {
@@ -2000,7 +2000,7 @@ void MainWindow::slotDatabaseRemoveVariations()
         slotGameChanged(true);
         SimpleSaveGame();
         Game g;
-        for (int i=0; i<database()->index()->count();++i)
+        for (GameId i = 0, sz = static_cast<GameId>(database()->index()->count()); i < sz; ++i)
         {
             if(i != databaseInfo()->currentIndex())
             {
@@ -2762,8 +2762,9 @@ void MainWindow::slotFilterChanged(bool selectGame)
     {
         m_gameList->setFocus();
     }
-    quint64 count = databaseInfo()->filter() ? databaseInfo()->filter()->count() : 0;
-    QString f = count == (int)database()->count() ? tr("all") : QString::number(count);
+    quint64 filteredCount = databaseInfo()->filter() ? databaseInfo()->filter()->count() : 0;
+    quint64 databaseCount = database()->count();
+    QString f = filteredCount == databaseCount ? tr("all") : QString::number(filteredCount);
     m_statusFilter->setText(QString(" %1: %2/%3 ").arg(databaseName())
                             .arg(f).arg(database()->count()));
     m_statusFilter->repaint(); // Workaround Bug in Qt 5.11 and 5.12
