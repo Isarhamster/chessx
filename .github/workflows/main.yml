@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, ci-sandbox ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  # install minimum supported Qt version
+  min-check:
+    strategy:
+      matrix:
+        qt: ['5.7']
+    runs-on: ubuntu-latest
+    steps:
+    - name: Cache Qt ${{ matrix.qt }}
+      id: cache-qt
+      uses: actions/cache@v1.2.0
+      with:
+        path: ../Qt-${{ matrix.qt }}
+        key: ${{ runner.os }}-Qt${{ matrix.qt }}-test
+    - name: Install Qt ${{ matrix.qt }}
+      uses: jurplel/install-qt-action@v2.6.2
+      with:
+        version: ${{ matrix.qt }}
+        dir: ${{ github.workspace }}/../Qt-${{ matrix.qt }}
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+    - name: Checkout sources
+      uses: actions/checkout@v2.1.0
+      with:
+        ref: ci-sandbox
+    - name: Configure
+      run: >-
+        cmake -S . -B _build
+        -DENABLE_SOUNDS=OFF
+        -DENABLE_TTS=OFF
+        -DCMAKE_PREFIX_PATH=${{ github.workspace }}/../Qt-${{ matrix.qt }}/${{ matrix.qt }}/gcc_64/lib/cmake/Qt5
+    - name: Build
+      run: cmake --build _build
+
+      #  build:
+      #    strategy:
+      #      matrix:
+      #        os: ['ubuntu-latest', 'windows-latest'] # TODO: add 'macos-latest'
+      #        qt: ['5.12.8']
+      #    runs-on: ${{ matrix.os }}
+      #
+      #    steps:
+      #    - name: Cache Qt
+      #      id: cache-qt
+      #      uses: actions/cache@v1.2.0
+      #      with:
+      #        path: ../Qt-${{ matrix.qt }}
+      #        key: ${{ runner.os }}-Qt-${{ matrix.qt }}
+      #    - name: Install Qt
+      #      uses: jurplel/install-qt-action@v2.6.2
+      #      with:
+      #        dir: ${{ github.workspace }}/../Qt-${{ matrix.qt }}
+      #        version: ${{ matrix.qt }}
+      #        modules: qtspeech
+      #        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+      #    - uses: actions/checkout@v2.1.0
+      #    - name: Configure
+      #      run: qmake
+      #    - name: Build
+      #      run: make
+
