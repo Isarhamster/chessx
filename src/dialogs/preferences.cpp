@@ -214,7 +214,7 @@ void PreferencesDialog::slotEngineUp()
     int index = ui.engineList->currentIndex().row();
     if(index > 0)
     {
-        engineList.swapItemsAt(index, index - 1);
+        engineList.swap(index, index - 1);
         QListWidgetItem* item = ui.engineList->takeItem(index - 1);
         ui.engineList->insertItem(index, item);
     }
@@ -225,7 +225,7 @@ void PreferencesDialog::slotEngineDown()
     int index = ui.engineList->currentIndex().row();
     if(index < ui.engineList->count() - 1)
     {
-        engineList.swapItemsAt(index, index + 1);
+        engineList.swap(index, index + 1);
         QListWidgetItem* item = ui.engineList->takeItem(index + 1);
         ui.engineList->insertItem(index, item);
     }

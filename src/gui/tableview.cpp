@@ -319,7 +319,7 @@ void TableView::dropEvent(QDropEvent *event)
 
 void TableView::SlotDragTimer()
 {
-    //qDebug()<< "TableView::SlotDragTimer" << Qt::endl;
+    //qDebug()<< "TableView::SlotDragTimer" << endl;
     QPoint p = QCursor::pos();
     QPoint tl = mapToGlobal(pos());
     QRect r = rect();

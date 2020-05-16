@@ -288,14 +288,14 @@ bool CtgDatabase::ctg_lookup_entry(int page_index,
  */
 void CtgDatabase::dump_signature(ctg_signature_t* sig) const
 {
-    qDebug() << "Signature length: " << sig->buf_len << Qt::endl;
+    qDebug() << "Signature length: " << sig->buf_len << endl;
 
     // Print as chars.
     for (int i=0; i<sig->buf_len; ++i) {
-        if (i % 8 == 0) qDebug() << Qt::endl;
+        if (i % 8 == 0) qDebug() << endl;
         qDebug() << sig->buf[i] << " ";
     }
-    qDebug() << Qt::endl;
+    qDebug() << endl;
 }
 
 // ---------------------------------------------------------

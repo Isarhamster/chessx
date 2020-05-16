@@ -1557,7 +1557,7 @@ void Game::moveVariationUp(MoveId moveId)
     if(i > 0)
     {
         Game state = *this;
-        v.swapItemsAt(i, i - 1);
+        v.swap(i, i - 1);
         emit signalGameModified(true, state, tr("Move variation"));
     }
 }
@@ -1592,7 +1592,7 @@ void Game::moveVariationDown(MoveId moveId)
     if(i >= 0 && (i + 1) < v.count())
     {
         Game state = *this;
-        v.swapItemsAt(i, i + 1);
+        v.swap(i, i + 1);
         emit signalGameModified(true, state, tr("Move variation"));
     }
 }
@@ -2168,7 +2168,7 @@ void Game::dumpAnnotations(MoveId moveId) const
 
 void Game::dumpAllMoveNodes() const
 {
-    qDebug() << Qt::endl;
+    qDebug() << endl;
     qDebug() << "Current Node: " << m_currentNode;
     for(int i = 0; i < m_moveNodes.size(); ++i)
     {
@@ -2177,8 +2177,8 @@ void Game::dumpAllMoveNodes() const
     }
     int moves, comments, nags;
     moveCount(&moves, &comments, &nags);
-    qDebug() << "Moves: " << moves << " Comments: " << comments << " Nags: " << nags << Qt::endl;
-    qDebug() << "----------------------------------" << Qt::endl;
+    qDebug() << "Moves: " << moves << " Comments: " << comments << " Nags: " << nags << endl;
+    qDebug() << "----------------------------------" << endl;
 }
 
 MoveId Game::findPosition(const Board& position) const

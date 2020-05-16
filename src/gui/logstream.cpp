@@ -48,7 +48,7 @@ SimpleLoggingHandler(QtMsgType type, const QMessageLogContext &, const QString &
          LogStream::s_logStream <<  " Fatal: ";
         break;
     }
-    LogStream::s_logStream << msg.toLatin1().data() << Qt::endl;
+    LogStream::s_logStream << msg.toLatin1().data() << endl;
 }
 
 LogStream::LogStream()
