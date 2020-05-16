@@ -9,12 +9,12 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include "movelist.h"
-#include "piece.h"
-#include "square.h"
+#include "move.h"
 
 #ifndef BITBOARD_H_INCLUDED
 #define BITBOARD_H_INCLUDED
+
+namespace chessx {
 
 enum BoardStatus
 {
@@ -33,6 +33,8 @@ enum
     WhiteBothSides = 5, BlackBothSides = 10,
     AllRights = 15
 };
+
+} // namespace chessx
 
 /** @ingroup Core
  * Keep track of the pieces on a chessboard, provide a Move() factory.
@@ -58,9 +60,9 @@ public:
     /** Set initial chess game position on the board */
     void setStandardPosition();
     /** Set the given piece on the board at the given square */
-    void setAt(const Square s, const Piece p);
+    void setAt(const chessx::Square s, const Piece p);
     /** Remove any piece sitting on given square */
-    void removeAt(const Square s);
+    void removeAt(const chessx::Square s);
     /** Set side to move as that of given color */
     void setToMove(const Color& c);
     /** Swap the side to move */
@@ -68,7 +70,7 @@ public:
     /** Parse given FEN, return true if loaded properly otherwise false */
     bool fromFen(const QString& fen);
     /** Set En Passant Square */
-    void setEnPassantSquare(const Square s);
+    void setEnPassantSquare(const chessx::Square s);
     /** Set En Passant in a file */
     void setEnPassantFile(int f);
     /** From a FICS representation of a board */
@@ -81,7 +83,7 @@ public:
     /** parse SAN or LAN representation of move, and return proper Move() object */
     Move parseMove(const QString& algebraic) const;
     /** Return a proper Move() object given only a from-to move specification */
-    Move prepareMove(const Square& from, const Square& to) const;
+    Move prepareMove(const chessx::Square& from, const chessx::Square& to) const;
 
     // Return a nullMove -- King to the same square
     Move nullMove() const;
@@ -89,11 +91,11 @@ public:
     // Query
     //
     /** Is piece sitting on given square moveable ? */
-    bool isMovable(const Square s) const;
+    bool isMovable(const chessx::Square s) const;
     /** @return piece sitting at given square on the board */
-    Piece pieceAt(Square s) const;
+    Piece pieceAt(chessx::Square s) const;
     /* Get the color of a Piece at square @s */
-    Color colorAt(Square s) const;
+    Color colorAt(chessx::Square s) const;
     /** @return number of ply since a pawn move or capture */
     unsigned int halfMoveClock() const;
     /** Set number of ply since a pawn move or capture */
@@ -113,7 +115,7 @@ public:
     /** @return true if neither side can win the game */
     bool insufficientMaterial() const;
     /** @return the square at which the king of @p color is located */
-    Square kingSquare(Color color) const;
+    chessx::Square kingSquare(Color color) const;
 
     // Query other formats
     //
@@ -159,16 +161,16 @@ public:
     // Validation
     //
     /** Check current position and return "Valid" or problem */
-    BoardStatus validate() const;
+    chessx::BoardStatus validate() const;
     /** Return true if given FEN can be parsed */
     bool isValidFen(const QString& fen) const;
 
     /** Set castling rights. */
-    void setCastlingRights(CastlingRights cr);
+    void setCastlingRights(chessx::CastlingRights cr);
     /** Return the internal castling rights data (used by hash function) */
-    CastlingRights castlingRights() const;
+    chessx::CastlingRights castlingRights() const;
     /** Return square where En passant capture may occur, or "NoEPSquare" */
-    Square enPassantSquare() const;
+    chessx::Square enPassantSquare() const;
 
     bool canTakeEnPassant() const;
     /** Return true if the side to move is in checkmate */
@@ -188,7 +190,7 @@ public:
     static quint64 standardCastlingRooks();
 
     void setCastlingRooks(char file000=0, char file00=0);
-    int CastlingRookIndex(Square rook) const;
+    int CastlingRookIndex(chessx::Square rook) const;
     bool HasRookOnFileForCastling(unsigned char file, bool castle000) const;
 
     bool hasAmbiguousCastlingRooks(char file000 = 0, char file00 = 0) const;
@@ -197,20 +199,20 @@ public:
     /** Test to see if given color has the right to castle on queenside */
     bool canCastleLong(const unsigned int color) const;
     /** Get the castling rook to the given index into m_castlingRook */
-    Square CastlingRook(int index) const;
+    chessx::Square CastlingRook(int index) const;
     /** Return the square of the king if in check, InvalidSquare otherwise */
-    Square kingInCheck() const;
+    chessx::Square kingInCheck() const;
     /** Return true if the given square is attacked by the given color */
-    bool isAttackedBy(const unsigned int color, Square square) const;
+    bool isAttackedBy(const unsigned int color, chessx::Square square) const;
     /** Return number of attacks onto a given square by the given color */
-    int numAttackedBy(const unsigned int color, Square square) const;
+    int numAttackedBy(const unsigned int color, chessx::Square square) const;
     /** Generate all possible moves in a given position */
-    MoveList generateMoves() const;
+    Move::List generateMoves() const;
 protected:
     unsigned int countSetBits(quint64 n) const;
 private:
     /** Test if a king is on a certain row to test castling rights */
-    bool isKingOnRow(Piece p, Square start, Square stop) const;
+    bool isKingOnRow(Piece p, chessx::Square start, chessx::Square stop) const;
     /** Return true if side to move is in check */
     bool isCheck() const;
 
@@ -220,20 +222,20 @@ private:
     /** Return true if making move would put oneself into check */
     bool isIntoCheck(const Move& move) const;
     /** Return true if the given squares are attacked by the given color */
-    bool isAttackedBy(const unsigned int color, Square start, Square stop) const;
+    bool isAttackedBy(const unsigned int color, chessx::Square start, chessx::Square stop) const;
 
     /** Return all squares attacked by a knight on given square */
-    quint64 knightAttacksFrom(const Square s) const;
+    quint64 knightAttacksFrom(const chessx::Square s) const;
     /** Return all squares attacked by a bishop on given square */
-    quint64 bishopAttacksFrom(const Square s) const;
+    quint64 bishopAttacksFrom(const chessx::Square s) const;
     /** Return all squares attacked by a rook on given square */
-    quint64 rookAttacksFrom(const Square s) const;
+    quint64 rookAttacksFrom(const chessx::Square s) const;
     /** Return all squares attacked by a queen on given square */
-    quint64 queenAttacksFrom(const Square s) const;
+    quint64 queenAttacksFrom(const chessx::Square s) const;
     /** Return all squares attacked by a king on given square */
-    quint64 kingAttacksFrom(const Square s) const;
+    quint64 kingAttacksFrom(const chessx::Square s) const;
     /** Return all possible pawn moves from given square */
-    quint64 pawnMovesFrom(const Square s) const;
+    quint64 pawnMovesFrom(const chessx::Square s) const;
 
     /** Remove impossible moves from given bitboard to aid disambiguation */
     void removeIllegal(const Move& move, quint64& b) const;
@@ -242,7 +244,7 @@ private:
     /** Update move with castling details for Chess960, return false if no castle is possible */
     bool prepareCastle960(Move &move) const;
     /** Test that nothing is inbetween the castling pieces */
-    bool isFreeForCastling960(Square from, Square to, Square rook_from, Square rook_to) const;
+    bool isFreeForCastling960(chessx::Square from, chessx::Square to, chessx::Square rook_from, chessx::Square rook_to) const;
 
 
     /** Grant castling rights on the kingside to the given color */
@@ -252,7 +254,7 @@ private:
     /** Revoke all castling rights from the given color */
     void destroyCastle(unsigned int color);
     /** Revoke castling rights from the given color */
-    void destroyCastleInDirection(unsigned int color, Square s);
+    void destroyCastleInDirection(unsigned int color, chessx::Square s);
     /** Update the epSquare value based on a new epFile value */
     void epFile2Square();
 
@@ -260,8 +262,8 @@ private:
     bool fromGoodFen(const QString& fen, bool chess960=false);
     /** Get the rook with index from castling rook storage */
     bool HasRookForCastling(int index) const;
-    Square CastlingKingTarget(int rookIndex) const;
-    Square CastlingRookTarget(int rookIndex) const;
+    chessx::Square CastlingKingTarget(int rookIndex) const;
+    chessx::Square CastlingRookTarget(int rookIndex) const;
     void fixCastlingRooks(bool, char file000=0, char file00=0);
 
     // Actual Bit-board data
@@ -275,7 +277,7 @@ private:
     // Extra state data
     unsigned char m_piece[64];             // type of piece on this square
     unsigned char m_stm;                   // side to move
-    Square        m_ksq[2];                // square of the m_kings
+    chessx::Square        m_ksq[2];                // square of the m_kings
     unsigned char m_epFile;                // file of a possible ep capture
     unsigned char m_epSquare;              // This is requested by hash routine enough that we keep it pre calculated
     unsigned char m_castle;                // flags for castle legality  (these can be merged)
@@ -285,6 +287,8 @@ private:
     unsigned char m_pieceCount[2];         // Number of pieces INCLUDING pawns for each side
     unsigned char m_chess960;              // 0 = standard, 1 = Chess960
 };
+
+namespace chessx {
 
 enum Char64Position
 {
@@ -332,6 +336,8 @@ enum Char64Relation
     C64_REL_EXAMINE = 2              // I am the examiner of this game
 };
 
+} // namespace chessx
+
 extern quint64 bb_PawnAttacks[2][64];
 extern quint64 bb_KnightAttacks[64];
 extern quint64 bb_R45Attacks[64][64];
@@ -364,7 +370,7 @@ const unsigned int bb_ShiftL45[64] =
     1, 10, 19, 28, 37, 46, 55, 64
 };
 
-inline bool BitBoard::isAttackedBy(const unsigned int color, Square square) const
+inline bool BitBoard::isAttackedBy(const unsigned int color, chessx::Square square) const
 {
     if(bb_PawnAttacks[color ^ 1][square] & m_pawns & m_occupied_co[color])
     {
@@ -389,9 +395,9 @@ inline bool BitBoard::isAttackedBy(const unsigned int color, Square square) cons
     return 0;
 };
 
-inline bool BitBoard::isAttackedBy(const unsigned int color, Square start, Square stop) const
+inline bool BitBoard::isAttackedBy(const unsigned int color, chessx::Square start, chessx::Square stop) const
 {
-    Square square = start;
+    chessx::Square square = start;
 
     while(square!=stop)
     {
@@ -418,7 +424,7 @@ inline void BitBoard::destroyCastle(unsigned int color)
     m_castle &= ~(5 << color);
 }
 
-inline void BitBoard::destroyCastleInDirection(unsigned int color, Square s)
+inline void BitBoard::destroyCastleInDirection(unsigned int color, chessx::Square s)
 {
     for (int i = 0; i<4; ++i)
     {
@@ -436,29 +442,29 @@ inline void BitBoard::destroyCastleInDirection(unsigned int color, Square s)
     }
 }
 
-inline quint64 BitBoard::knightAttacksFrom(const Square s) const
+inline quint64 BitBoard::knightAttacksFrom(const chessx::Square s) const
 {
     return bb_KnightAttacks[s];
 }
 
-inline quint64 BitBoard::bishopAttacksFrom(const Square s) const
+inline quint64 BitBoard::bishopAttacksFrom(const chessx::Square s) const
 {
     return bb_R45Attacks[s][(m_occupied_r45 >> bb_ShiftR45[s]) & 63] |
            bb_L45Attacks[s][(m_occupied_l45 >> bb_ShiftL45[s]) & 63];
 }
 
-inline quint64 BitBoard::rookAttacksFrom(const Square s) const
+inline quint64 BitBoard::rookAttacksFrom(const chessx::Square s) const
 {
     return bb_RankAttacks[s][(m_occupied >> ((s & ~7) + 1)) & 63] |
            bb_FileAttacks[s][(m_occupied_l90 >> (((s & 7) << 3) + 1)) & 63];
 }
 
-inline quint64 BitBoard::queenAttacksFrom(const Square s) const
+inline quint64 BitBoard::queenAttacksFrom(const chessx::Square s) const
 {
     return rookAttacksFrom(s) | bishopAttacksFrom(s);
 }
 
-inline quint64 BitBoard::kingAttacksFrom(const Square s)  const
+inline quint64 BitBoard::kingAttacksFrom(const chessx::Square s)  const
 {
     return bb_KingAttacks[s];
 }
@@ -467,11 +473,11 @@ inline void BitBoard::epFile2Square()
 {
     if(m_epFile)
     {
-        m_epSquare = m_epFile + (m_stm == White ? a6 : a3) - 1;
+        m_epSquare = m_epFile + (m_stm == White ? chessx::a6 : chessx::a3) - 1;
     }
     else
     {
-        m_epSquare = NoEPSquare;
+        m_epSquare = chessx::NoEPSquare;
     }
 }
 
@@ -495,9 +501,9 @@ inline bool BitBoard::isCheck() const
     return isAttackedBy(m_stm ^ 1, m_ksq[m_stm]);
 }
 
-inline Square BitBoard::kingInCheck() const
+inline chessx::Square BitBoard::kingInCheck() const
 {
-    return isCheck() ? m_ksq[m_stm] : (Square) InvalidSquare;
+    return isCheck() ? m_ksq[m_stm] : (chessx::Square) chessx::InvalidSquare;
 }
 
 inline unsigned int BitBoard::halfMoveClock() const
@@ -530,12 +536,12 @@ inline bool BitBoard::whiteToMove() const
     return Color(m_stm) == White;
 }
 
-inline Square BitBoard::enPassantSquare() const
+inline chessx::Square BitBoard::enPassantSquare() const
 {
-    return Square(m_epSquare);
+    return chessx::Square(m_epSquare);
 }
 
-inline CastlingRights BitBoard::castlingRights() const
+inline chessx::CastlingRights BitBoard::castlingRights() const
 {
     return m_castle;
 }

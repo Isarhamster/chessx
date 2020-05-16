@@ -13,6 +13,8 @@
 #include <QFileInfo>
 #include <QList>
 
+using namespace chessx;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -43,7 +45,7 @@ static QMap<quint64, QList<Square> > gtmPositions;
 // then use the Scid internal chess engine to decide which is the "best"
 // move to display to the user.
 //
-void updateFinalGuess(const Board& board, Square target, const Move& move)
+void updateFinalGuess(const BoardX& board, Square target, const Move& move)
 {
     Square from = move.from();
     Square to = move.to();
@@ -100,7 +102,7 @@ bool parseAsciiEcoData(const QString& ecoFile)
     ecoStream.setCodec("ISO-8859-1");
 
     QString line;
-    Board board;
+    BoardX board;
     QString ecoCode;
     QRegExp ecoRegExp("[A-Z]\\d{2}[a-z]?");
     QStringList tokenList;
@@ -142,7 +144,7 @@ bool parseAsciiEcoData(const QString& ecoFile)
                 }
 
                 // Guess the move is based on second-to-last move, so undo last move
-                Board guess(board);
+                BoardX guess(board);
                 guess.undoMove(move);
 
                 // We update twice because user might put mouse over

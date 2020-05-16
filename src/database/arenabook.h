@@ -32,11 +32,11 @@ public:
     quint64 positionCount() const;
 
     /** Loads a game at @p index, returns true if successful */
-    virtual bool loadGame(GameId gameId, Game& game);
+    virtual bool loadGame(GameId gameId, GameX& game);
     /** Loads only moves into a game from the given position */
-    virtual void loadGameMoves(GameId id, Game& game);
+    virtual void loadGameMoves(GameId id, GameX& game);
     /** Loads game moves and try to find a position */
-    virtual int findPosition(GameId, const Board &position);
+    virtual int findPosition(GameId, const BoardX &position);
 
     virtual bool hasIndexFile() const { return true; }
     /** Open a book data File */
@@ -49,11 +49,11 @@ private: // BOOK Parser
     QIODevice* m_file;
     quint64 m_posCount;
     quint64 m_count;
-    void add_move(Game *game, const ABK_MOVE* move);
-    void tag_game(Game* game, int ply, GameId index);
+    void add_move(GameX *game, const ABK_MOVE* move);
+    void tag_game(GameX* game, int ply, GameId index);
 
 private: // Game list
-    QVector<Game*> m_games;
+    QVector<GameX*> m_games;
 };
 
 #endif // ARENABOOK_H

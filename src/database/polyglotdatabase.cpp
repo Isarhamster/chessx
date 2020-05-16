@@ -9,6 +9,8 @@
 #include "polyglotdatabase.h"
 #include "board.h"
 
+using namespace  chessx;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -108,12 +110,12 @@ quint64 PolyglotDatabase::positionCount() const
     return m_count;
 }
 
-void PolyglotDatabase::loadGameMoves(GameId, Game &)
+void PolyglotDatabase::loadGameMoves(GameId, GameX &)
 {
 
 }
 
-int PolyglotDatabase::findPosition(GameId, const Board &)
+int PolyglotDatabase::findPosition(GameId, const BoardX &)
 {
     return NO_MOVE;
 }
@@ -409,7 +411,7 @@ void PolyglotDatabase::reset()
 // Book parser
 // ---------------------------------------------------------
 
-quint64 PolyglotDatabase::getHashFromBoard(const Board& board) const
+quint64 PolyglotDatabase::getHashFromBoard(const BoardX& board) const
 {
     quint64 key = 0;
 
@@ -533,7 +535,7 @@ bool PolyglotDatabase::findMove(quint64 key, MoveData& m, bool& done)
     return false;
 }
 
-unsigned int PolyglotDatabase::getMoveMapForBoard(const Board &board, QMap<Move, MoveData>& moves)
+unsigned int PolyglotDatabase::getMoveMapForBoard(const BoardX &board, QMap<Move, MoveData>& moves)
 {
     unsigned int games = 0;
     moves.clear();
@@ -815,10 +817,10 @@ bool PolyglotDatabase::get_move_entry(Move m, book_entry& entry) const
     return true;
 }
 
-void PolyglotDatabase::add_game(Game& g, int result)
+void PolyglotDatabase::add_game(GameX& g, int result)
 {
     int ply = 0;
-    if (Board::standardStartBoard == g.startingBoard())
+    if (BoardX::standardStartBoard == g.startingBoard())
     {
         g.moveToStart();
         while (ply < m_maxPly && !g.atLineEnd())
@@ -859,7 +861,7 @@ void PolyglotDatabase::add_database_chunk(Database* db, int start, int end, vola
         }
 
         if (*breakFlag) return;
-        Game game;
+        GameX game;
         if(db->loadGame(i, game))
         {
             int result = game.resultAsInt();

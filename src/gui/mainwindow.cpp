@@ -121,7 +121,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     /* Create clipboard database */
     DatabaseInfo* pClipDB = new DatabaseInfo(&m_undoGroup, new ClipboardDatabase);
-    connect(pClipDB,SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
+    connect(pClipDB,SIGNAL(signalRestoreState(GameX)), SLOT(slotDbRestoreState(GameX)));
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged(bool)));
     connect(pClipDB,SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
@@ -217,9 +217,9 @@ MainWindow::MainWindow() : QMainWindow(),
     m_gameView->toolBar = m_gameToolBar;
     connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
     connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
-    connect(m_gameView, SIGNAL(queryActiveGame(const Game**)), this, SLOT(slotGetActiveGame(const Game**)));
+    connect(m_gameView, SIGNAL(queryActiveGame(const GameX**)), this, SLOT(slotGetActiveGame(const GameX**)));
     connect(m_gameView, SIGNAL(signalMergeGame(GameId,QString)), this, SLOT(slotMergeActiveGame(GameId,QString)));
-    connect(this, SIGNAL(signalGameLoaded(const Board&)), gameTextDock, SLOT(raise()));
+    connect(this, SIGNAL(signalGameLoaded(const BoardX&)), gameTextDock, SLOT(raise()));
     connect(this, SIGNAL(displayTime(const QString&, Color, const QString&)), m_gameView, SLOT(slotDisplayTime(const QString&, Color, const QString&)));
     gameTextDock->setWidget(m_gameWindow);
     connect(this, SIGNAL(reconfigure()), m_gameView, SLOT(slotReconfigure()));
@@ -240,7 +240,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameList, SIGNAL(requestMergeAllGames()), SLOT(slotMergeAllGames()));
     connect(m_gameList, SIGNAL(requestMergeFilter()), SLOT(slotMergeFilter()));
     connect(m_gameList, SIGNAL(requestDeleteGame(QList<GameId>)), SLOT(slotDatabaseDeleteGame(QList<GameId>)));
-    connect(m_gameList, SIGNAL(requestGameData(Game&)), SLOT(slotGetGameData(Game&)));
+    connect(m_gameList, SIGNAL(requestGameData(GameX&)), SLOT(slotGetGameData(GameX&)));
     connect(m_gameList, SIGNAL(searchProgress(int)), SLOT(slotBoardSearchUpdate(int)));
     connect(m_gameList, SIGNAL(searchFinished()), SLOT(slotBoardSearchFinished()));
 
@@ -533,14 +533,14 @@ void MainWindow::setupAnalysisWidget(DockWidgetEx* analysisDock, AnalysisWidget*
             SLOT(slotGameAddVariation(Analysis, QString)));
     connect(analysis, SIGNAL(addVariation(QString)),
             SLOT(slotGameAddVariation(QString)));
-    connect(this, SIGNAL(boardChange(const Board&, const QString&)), analysis, SLOT(setPosition(const Board&,QString)));
+    connect(this, SIGNAL(boardChange(const BoardX&, const QString&)), analysis, SLOT(setPosition(const BoardX&,QString)));
     connect(this, SIGNAL(reconfigure()), analysis, SLOT(slotReconfigure()));
     // Make sure engine is disabled if dock is hidden
     connect(analysisDock, SIGNAL(visibilityChanged(bool)),
             analysis, SLOT(slotVisibilityChanged(bool)));
     m_menuView->addAction(analysisDock->toggleViewAction());
     analysisDock->hide();
-    connect(this, SIGNAL(signalGameLoaded(const Board&)), analysis, SLOT(slotUciNewGame(const Board&)));
+    connect(this, SIGNAL(signalGameLoaded(const BoardX&)), analysis, SLOT(slotUciNewGame(const BoardX&)));
     connect(this, SIGNAL(signalGameModeChanged(bool)), analysis, SLOT(setDisabled(bool)));
     connect(this, SIGNAL(signalUpdateDatabaseList(QStringList)), analysis, SLOT(slotUpdateBooks(QStringList)));
     connect(analysis, SIGNAL(signalSourceChanged(QString)), this, SLOT(slotUpdateOpeningBook(QString)));
@@ -796,12 +796,12 @@ DatabaseInfo* MainWindow::getDatabaseInfoByPath(QString path)
     return nullptr;
 }
 
-Game& MainWindow::game()
+GameX& MainWindow::game()
 {
     return databaseInfo()->currentGame();
 }
 
-const Game& MainWindow::game() const
+const GameX& MainWindow::game() const
 {
     return databaseInfo()->currentGame();
 }
@@ -1133,7 +1133,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     startOperation(tr("Opening %1...").arg(basefile));
     connect(db->database(), SIGNAL(progress(int)), SLOT(slotOperationProgress(int)), Qt::QueuedConnection);
     connect(db, SIGNAL(LoadFinished(DatabaseInfo*)), this, SLOT(slotDataBaseLoaded(DatabaseInfo*)), Qt::QueuedConnection);
-    connect(db, SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
+    connect(db, SIGNAL(signalRestoreState(GameX)), SLOT(slotDbRestoreState(GameX)));
     connect(db, SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged(bool)));
     connect(db, SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(db, SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
@@ -1276,7 +1276,7 @@ bool MainWindow::gameEditComment(Output::CommentType type)
 
     if((type == Output::Precomment) || (moves <= 0))
     {
-        annotation = game().annotation(CURRENT_MOVE, Game::BeforeMove);
+        annotation = game().annotation(CURRENT_MOVE, GameX::BeforeMove);
     }
     else
     {
@@ -1293,8 +1293,8 @@ bool MainWindow::gameEditComment(Output::CommentType type)
     {
         if(moves > 0)
         {
-            QString spec = game().specAnnotations(CURRENT_MOVE, Game::BeforeMove);
-            game().setAnnotation(dlg.text()+spec, CURRENT_MOVE, Game::BeforeMove);
+            QString spec = game().specAnnotations(CURRENT_MOVE, GameX::BeforeMove);
+            game().setAnnotation(dlg.text()+spec, CURRENT_MOVE, GameX::BeforeMove);
         }
         else
         {
@@ -1956,7 +1956,7 @@ bool MainWindow::QuerySaveGame(DatabaseInfo *dbInfo)
         }
         else if(n == SaveDialog::Discard)
         {
-            dbInfo->setModified(false, Game(), ""); // Do not notify more than once
+            dbInfo->setModified(false, GameX(), ""); // Do not notify more than once
         }
 
         if (shouldNotify)

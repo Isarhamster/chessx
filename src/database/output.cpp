@@ -312,7 +312,7 @@ QString Output::writeDiagram(int n) const
     {
         QImage image;
 
-        Game g = m_game;
+        GameX g = m_game;
         g.forward(1);
 
         BoardView::renderImageForBoard(g.board(), image, QSize(n,n));
@@ -373,8 +373,8 @@ QString Output::writeMove(MoveToWrite moveToWrite)
     }
     // Read comments
     if(m_game.canHaveStartAnnotation(moveId))
-        precommentString = (m_outputType == Pgn) ? m_game.annotation(moveId, Game::BeforeMove) :
-                           m_game.textAnnotation(moveId, Game::BeforeMove);
+        precommentString = (m_outputType == Pgn) ? m_game.annotation(moveId, GameX::BeforeMove) :
+                           m_game.textAnnotation(moveId, GameX::BeforeMove);
 
     QString commentString = (m_outputType == Pgn) ? m_game.annotation(moveId) : m_game.textAnnotation(moveId);
 
@@ -398,14 +398,14 @@ QString Output::writeMove(MoveToWrite moveToWrite)
 
     // *** Determine actual san
     QString san;
-    Game::MoveStringFlags flags = (m_outputType == NotationWidget) ? Game::TranslatePiece : Game::MoveOnly;
+    GameX::MoveStringFlags flags = (m_outputType == NotationWidget) ? GameX::TranslatePiece : GameX::MoveOnly;
     if(moveToWrite == NextMove)
     {
         san = m_game.moveToSan(flags);
     }
     else
     {
-        san = m_game.moveToSan((Game::MoveStringFlags)(flags | Game::MoveOnly), Game::PreviousMove);
+        san = m_game.moveToSan((GameX::MoveStringFlags)(flags | GameX::MoveOnly), GameX::PreviousMove);
     }
 
     if (!san.isEmpty())
@@ -775,7 +775,7 @@ QString Output::writeBasicTagsHTML() const
     return text;
 }
 
-QString Output::output(const Game* game, bool upToCurrentMove)
+QString Output::output(const GameX* game, bool upToCurrentMove)
 {
     QString text = m_header;
     postProcessOutput(text);
@@ -793,7 +793,7 @@ QString Output::output(const Game* game, bool upToCurrentMove)
     return text;
 }
 
-QString Output::outputTags(const Game* game)
+QString Output::outputTags(const GameX* game)
 {
     QString text;
     m_game = *game;
@@ -813,7 +813,7 @@ QString Output::outputTags(const Game* game)
     return text;
 }
 
-QString Output::outputGame(const Game* g, bool upToCurrentMove)
+QString Output::outputGame(const GameX* g, bool upToCurrentMove)
 {
     QString text;
     m_game = *g;
@@ -875,10 +875,10 @@ void Output::postProcessOutput(QString& text) const
     }
 }
 
-void Output::output(QTextStream& out, Filter& filter)
+void Output::output(QTextStream& out, FilterX& filter)
 {
     int percentDone = 0;
-    Game game;
+    GameX game;
     QString header = m_header;
     postProcessOutput(header);
     out << header;
@@ -923,7 +923,7 @@ void Output::output(QTextStream& out, Database& database)
     out << header;
 
     int percentDone = 0;
-    Game game;
+    GameX game;
     for(int i = 0; i < (int)database.count(); ++i)
     {
         if(database.loadGame(i, game))
@@ -951,7 +951,7 @@ void Output::output(QTextStream& out, Database& database)
     database.setModified(false);
 }
 
-void Output::output(const QString& filename, const Game& game)
+void Output::output(const QString& filename, const GameX& game)
 {
     QFile f(filename);
     if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -967,7 +967,7 @@ void Output::output(const QString& filename, const Game& game)
     f.close();
 }
 
-void Output::output(const QString& filename, Filter& filter)
+void Output::output(const QString& filename, FilterX& filter)
 {
     QFile f(filename);
     if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -999,7 +999,7 @@ void Output::output(const QString& filename, Database& database)
     f.close();
 }
 
-bool Output::append(const QString& filename, Game& game)
+bool Output::append(const QString& filename, GameX& game)
 {
     QFile f(filename);
     if(!f.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))

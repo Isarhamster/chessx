@@ -27,6 +27,8 @@
 #include <QSpacerItem>
 #include <QSizePolicy>
 
+using namespace chessx;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -125,9 +127,9 @@ void BoardSetupDialog::restoreLayout()
 BoardSetupDialog::~BoardSetupDialog()
 {}
 
-Board BoardSetupDialog::board() const
+BoardX BoardSetupDialog::board() const
 {
-    Board b = ui.boardView->board();
+    BoardX b = ui.boardView->board();
     return b;
 }
 
@@ -135,7 +137,7 @@ void BoardSetupDialog::chess960posChanged(int value)
 {
     if (value >= 0)
     {
-        Board b;
+        BoardX b;
         b.fromChess960pos(value);
         setBoard(b);
     }
@@ -154,7 +156,7 @@ void BoardSetupDialog::mirrorVertical()
     QStringList rows = fenRows.split("/");
     std::reverse(rows.begin(), rows.end());
     QString newFen = rows.join("/");
-    Board b(newFen);
+    BoardX b(newFen);
     b.setMoveNumber(board().moveNumber());
     b.setHalfMoveClock(board().halfMoveClock());
     setBoard(b);
@@ -171,7 +173,7 @@ void BoardSetupDialog::mirrorHorizontal()
         std::reverse((*iter).begin(), (*iter).end());
     }
     QString newFen = rows.join("/");
-    Board b(newFen);
+    BoardX b(newFen);
     b.setMoveNumber(board().moveNumber());
     b.setHalfMoveClock(board().halfMoveClock());
     setBoard(b);
@@ -199,7 +201,7 @@ void BoardSetupDialog::swapColors()
         }
     }
     QString newFen = rows.join("/");
-    Board b(newFen);
+    BoardX b(newFen);
     b.setMoveNumber(board().moveNumber());
     b.setHalfMoveClock(board().halfMoveClock());
     setBoard(b);
@@ -211,7 +213,7 @@ void BoardSetupDialog::setFlipped(bool flipped)
     ui.boardView->setFlipped(flipped);
 }
 
-void BoardSetupDialog::setBoard(const Board& b)
+void BoardSetupDialog::setBoard(const BoardX& b)
 {
     ui.boardView->setBoard(b);
     ui.moveSpin->setValue(b.moveNumber());
@@ -321,7 +323,7 @@ void BoardSetupDialog::showEvent(QShowEvent *e)
 
 void BoardSetupDialog::slotReset()
 {
-    Board b;
+    BoardX b;
     b.setStandardPosition();
     setBoard(b);
     slotCastlingRights();
@@ -330,7 +332,7 @@ void BoardSetupDialog::slotReset()
 void BoardSetupDialog::accept()
 {
     // Need to make sure the board is updated with move number set by user
-    Board b(ui.boardView->board());
+    BoardX b(ui.boardView->board());
     b.setMoveNumber(ui.moveSpin->value());
     ui.boardView->setBoard(b);
 
@@ -355,7 +357,7 @@ void BoardSetupDialog::reject()
 
 void BoardSetupDialog::slotClear()
 {
-    Board b;
+    BoardX b;
     b.setAt(e1, WhiteKing);
     b.setAt(e8, BlackKing);
     setBoard(b);
@@ -376,7 +378,7 @@ void BoardSetupDialog::slotSelected(Square square, int button)
             piece = static_cast<Piece>(piece + (BlackKing - WhiteKing));
         }
     }
-    Board board = ui.boardView->board();
+    BoardX board = ui.boardView->board();
     if(board.pieceAt(square) == piece)
     {
         piece = Empty;
@@ -399,7 +401,7 @@ void BoardSetupDialog::showSideToMove()
 void BoardSetupDialog::slotToggleSide()
 {
     m_toMove = oppositeColor(m_toMove);
-    Board b = ui.boardView->board();
+    BoardX b = ui.boardView->board();
     b.setToMove(m_toMove);
     setBoard(b);
     repaint(); // Workaround Bug in Qt at least up to version 5.12
@@ -423,7 +425,7 @@ void BoardSetupDialog::slotChangePiece(int dir)
 
 void BoardSetupDialog::slotDroppedPiece(Square s, Piece p)
 {
-    Board b = ui.boardView->board();
+    BoardX b = ui.boardView->board();
     b.setAt(s, p);
     setBoard(b);
     slotCastlingRights();
@@ -431,7 +433,7 @@ void BoardSetupDialog::slotDroppedPiece(Square s, Piece p)
 
 void BoardSetupDialog::slotMovePiece(Square from, Square to)
 {
-    Board b = ui.boardView->board();
+    BoardX b = ui.boardView->board();
     Piece p = b.pieceAt(from);
     b.removeFrom(from);
     b.setAt(to, p);
@@ -441,7 +443,7 @@ void BoardSetupDialog::slotMovePiece(Square from, Square to)
 
 void BoardSetupDialog::slotCopyPiece(Square from, Square to)
 {
-    Board b = ui.boardView->board();
+    BoardX b = ui.boardView->board();
     Piece p = b.pieceAt(from);
     b.setAt(to, p);
     setBoard(b);
@@ -450,7 +452,7 @@ void BoardSetupDialog::slotCopyPiece(Square from, Square to)
 
 void BoardSetupDialog::slotInvalidMove(Square from)
 {
-    Board b = ui.boardView->board();
+    BoardX b = ui.boardView->board();
     Piece p = b.pieceAt(from);
     if(pieceType(p) != King)
     {
@@ -551,7 +553,7 @@ void BoardSetupDialog::slotPasteFen()
     fen.remove(QRegExp("\\[[^\\]]*\\]"));
 
     // Now parse the hopefully naked Fen
-    Board b;
+    BoardX b;
     if(!b.fromFen(fen))
     {
         QString msg = fen.length() ?
@@ -593,7 +595,7 @@ char BoardSetupDialog::castlingFile000() const
 
 void BoardSetupDialog::slotCastlingRights()
 {
-    Board b(board());
+    BoardX b(board());
     CastlingRights cr = 0;
     // Do not test rook positions to allow for Chess960 setups
 
@@ -620,7 +622,7 @@ void BoardSetupDialog::slotCastlingRights()
 
 void BoardSetupDialog::slotEnPassantSquare()
 {
-    Board b(board());
+    BoardX b(board());
     if(ui.epCombo->currentIndex() == 0)
     {
         b.clearEnPassantSquare();
@@ -635,7 +637,7 @@ void BoardSetupDialog::slotEnPassantSquare()
 
 void BoardSetupDialog::slotChess960()
 {
-    Board b(board());
+    BoardX b(board());
     b.setChess960(ui.btCheck960->isChecked());
     setBoard(b);
     slotCastlingRights();
@@ -643,14 +645,14 @@ void BoardSetupDialog::slotChess960()
 
 void BoardSetupDialog::slotHalfmoveClock()
 {
-    Board b(board());
+    BoardX b(board());
     b.setHalfMoveClock(ui.halfmoveSpin->value());
     setBoard(b);
 }
 
 void BoardSetupDialog::slotMoveNumber()
 {
-    Board b(board());
+    BoardX b(board());
     b.setMoveNumber(ui.moveSpin->value());
     setBoard(b);
 }

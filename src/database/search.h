@@ -13,7 +13,8 @@
 #define SEARCH_H_INCLUDED
 
 class Database;
-class Filter;
+
+class FilterX;
 
 #include "filteroperator.h"
 #include "gameid.h"
@@ -47,19 +48,19 @@ public:
     FilterOperator searchOperator() const;
     Search *nextSearch() const;
 
-    Filter *getInputFilter() const;
-    void setInputFilter(Filter *value);
+    FilterX *getInputFilter() const;
+    void setInputFilter(FilterX *value);
 
-    Filter *getOutputFilter() const;
-    void setOutputFilter(Filter *value);
+    FilterX *getOutputFilter() const;
+    void setOutputFilter(FilterX *value);
 
 signals:
     void prepareUpdate(int);
 protected:
     QPointer<Database> m_database;
     QPointer<Search> m_nextSearch;
-    QPointer<Filter> inputFilter;
-    QPointer<Filter> outputFilter;
+    QPointer<FilterX> inputFilter;
+    QPointer<FilterX> outputFilter;
     FilterOperator m_searchOperator;
 };
 

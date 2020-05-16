@@ -16,7 +16,7 @@ Q_DECLARE_METATYPE(DatabaseInfo*)
 class GameUndoCommand : public QUndoCommand
 {
 public:
-    GameUndoCommand(QObject* parent, const Game& from, const Game& to, QString action) :
+    GameUndoCommand(QObject* parent, const GameX& from, const GameX& to, QString action) :
         QUndoCommand(action),
         m_dbInfo(static_cast<DatabaseInfo*>(parent)),
         m_fromGame(from),
@@ -26,8 +26,8 @@ public:
         }
 
     QPointer<DatabaseInfo> m_dbInfo;
-    Game m_fromGame;
-    Game m_toGame;
+    GameX m_fromGame;
+    GameX m_toGame;
     bool m_bInConstructor;
 
     void undo() { m_dbInfo->restoreState(m_fromGame); }

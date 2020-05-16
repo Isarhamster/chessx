@@ -19,7 +19,7 @@ bool GameListSortModel::filterAcceptsRow(int source_row, const QModelIndex & /*s
     return false;
 }
 
-void GameListSortModel::setFilter(Filter* filter)
+void GameListSortModel::setFilter(FilterX* filter)
 {
     m_filter = filter;
 }

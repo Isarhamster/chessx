@@ -34,14 +34,14 @@
  *	Provides a simple interface to a chess engine.
  **/
 
-class Engine : public QObject
+class EngineX : public QObject
 {
     Q_OBJECT
 
 public:
 
     /** Constructs an engine with a given path/command, and log stream */
-    Engine(const QString& name,
+    EngineX(const QString& name,
            const QString& command,
            bool  bTestMode,
            const QString& directory = QString(),
@@ -49,7 +49,7 @@ public:
            bool sendHistory=false);
 
     /** Virtual destructor */
-    virtual ~Engine();
+    virtual ~EngineX();
 
     /** Launch and initialize engine, fire activated() signal when done*/
     void activate();
@@ -61,10 +61,10 @@ public:
     bool isActive();
 
     /** Set a starting position for a game */
-    virtual void setStartPos(const Board& startPos) = 0;
+    virtual void setStartPos(const BoardX& startPos) = 0;
 
     /** Analyzes the given position */
-    virtual bool startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame, QString line) = 0;
+    virtual bool startAnalysis(const BoardX& board, int nv, const EngineParameter &mt, bool bNewGame, QString line) = 0;
 
     /** Stops any analysis */
     virtual void stopAnalysis() = 0;
@@ -73,9 +73,9 @@ public:
     bool isAnalyzing();
 
     /** Create a new engine, pass index into engine settings list */
-    static Engine* newEngine(int index);
-    static Engine* newEngine(int index, bool bTestMode);
-    static Engine* newEngine(EngineList& engineList, int index, bool bTestMode);
+    static EngineX* newEngine(int index);
+    static EngineX* newEngine(int index, bool bTestMode);
+    static EngineX* newEngine(EngineList& engineList, int index, bool bTestMode);
 
     /** Set number of lines. */
     virtual void setMpv(int mpv);

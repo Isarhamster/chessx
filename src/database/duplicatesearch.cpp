@@ -18,7 +18,7 @@ DuplicateSearch::DuplicateSearch(Database *db, DSMode mode):Search(db),m_filter(
    m_mode = mode;
 }
 
-DuplicateSearch::DuplicateSearch(Filter *filter, DSMode mode):Search(filter ? filter->database():nullptr)
+DuplicateSearch::DuplicateSearch(FilterX *filter, DSMode mode):Search(filter ? filter->database():nullptr)
 {
    m_mode = mode;
    m_filter = filter;
@@ -26,7 +26,7 @@ DuplicateSearch::DuplicateSearch(Filter *filter, DSMode mode):Search(filter ? fi
 
 void DuplicateSearch::PrepareFilter(volatile bool &breakFlag)
 {
-    const Index* index = m_database->index();
+    const IndexX* index = m_database->index();
     for (GameId i = 0; (int)i<index->count(); ++i)
     {
         if (!m_filter->contains(i)) continue;
@@ -40,7 +40,7 @@ void DuplicateSearch::PrepareFilter(volatile bool &breakFlag)
             {
                 if (index->isIndexItemEqual(i,j))
                 {
-                    Game gI, gJ;
+                    GameX gI, gJ;
                     m_database->loadGame(i, gI);
                     m_database->loadGame(j, gJ);
                     found = gI.isEqual(gJ);
@@ -58,7 +58,7 @@ void DuplicateSearch::Prepare(volatile bool &breakFlag)
 {
     if (m_database)
     {
-        const Index* index = m_database->index();
+        const IndexX* index = m_database->index();
         m_matches = QBitArray(index->count(), false);
         if (m_filter)
         {
@@ -82,7 +82,7 @@ void DuplicateSearch::Prepare(volatile bool &breakFlag)
                     {
                         if ((m_mode == DS_Both) || (m_mode == DS_Both_All))
                         {
-                            Game gI, gJ;
+                            GameX gI, gJ;
                             m_database->loadGame(i, gI);
                             m_database->loadGame(j, gJ);
                             found = gI.isEqual(gJ);
@@ -93,7 +93,7 @@ void DuplicateSearch::Prepare(volatile bool &breakFlag)
                         }
                         else if (m_mode == DS_Tags_BestGame)
                         {
-                            Game gI, gJ;
+                            GameX gI, gJ;
                             m_database->loadGame(i, gI);
                             m_database->loadGame(j, gJ);
                             if (gJ.isBetterOrEqual(gI))

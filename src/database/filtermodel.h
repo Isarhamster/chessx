@@ -19,7 +19,7 @@
 #include "gameid.h"
 #include "indexitem.h"
 
-class Filter;
+class FilterX;
 class Search;
 
 /** @ingroup Database
@@ -33,7 +33,7 @@ class FilterModel: public QAbstractItemModel
 public:
 
     /** Constructs a FilterModel object using a pointer to a Filter */
-    FilterModel(Filter* filter, QObject *parent = nullptr);
+    FilterModel(FilterX* filter, QObject *parent = nullptr);
     ~FilterModel();
 
     void startUpdate();
@@ -65,8 +65,8 @@ public:
         return !parent.isValid();
     }
     /** Associated filter */
-    Filter* filter();
-    void setFilter(Filter* filter);
+    FilterX* filter();
+    void setFilter(FilterX* filter);
 
     /** Get the column tags. */
     const QStringList GetColumnTags()
@@ -96,7 +96,7 @@ private:
     void cacheTags();
 
     /** A pointer to filter on which the model opperates */
-    QPointer<Filter> m_filter;
+    QPointer<FilterX> m_filter;
     /** The column names of the model */
     QStringList m_columnNames;
     /** Map of columns and database tags */

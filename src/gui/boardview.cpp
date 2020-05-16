@@ -17,7 +17,7 @@
 #include "boardview.h"
 #include "settings.h"
 #include "guess.h"
-#include "movelist.h"
+#include "move.h"
 
 #include <QApplication>
 #include <QSizePolicy>
@@ -28,6 +28,7 @@
 #endif // _MSC_VER
 
 using namespace Qt;
+using namespace chessx;
 
 const int CoordinateSize = 16;
 const int MoveIndicatorSize = 12;
@@ -57,8 +58,8 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     installEventFilter(this);
     setFocusPolicy( Qt::StrongFocus );
 
-    connect(&m_threatGuess, SIGNAL(guessFoundForBoard(Guess::Result, Board)),
-            this, SLOT(showThreat(Guess::Result,Board)), Qt::QueuedConnection);
+    connect(&m_threatGuess, SIGNAL(guessFoundForBoard(Guess::Result, BoardX)),
+            this, SLOT(showThreat(Guess::Result,BoardX)), Qt::QueuedConnection);
 }
 
 BoardView::~BoardView()
@@ -97,7 +98,7 @@ int BoardView::flags() const
     return m_flags;
 }
 
-void BoardView::setBoard(const Board& value, Square from, Square to, bool atLineEnd)
+void BoardView::setBoard(const BoardX& value, Square from, Square to, bool atLineEnd)
 {
     m_clickUsed = true;
     m_board = value;
@@ -131,7 +132,7 @@ void BoardView::getStoredMove(Square& from, Square& to)
     update();
 }
 
-Board BoardView::board() const
+BoardX BoardView::board() const
 {
     return m_board;
 }
@@ -582,14 +583,14 @@ void BoardView::updateThreat()
     removeThreat();
     if(m_showThreat && !(m_flags & SuppressGuessMove) && Guess::guessAllowed())
     {
-        if (board() != Board::standardStartBoard)
+        if (board() != BoardX::standardStartBoard)
         {
             m_threatGuess.guessMove(board());
         }
     }
 }
 
-void BoardView::showThreat(Guess::Result sm, Board b)
+void BoardView::showThreat(Guess::Result sm, BoardX b)
 {
     if (board() == b)
     {
@@ -1495,7 +1496,7 @@ void BoardView::renderImage(QImage &image, double scaling) const
     image = pixmap.toImage();
 }
 
-void BoardView::renderImageForBoard(const Board &b, QImage &image, QSize size)
+void BoardView::renderImageForBoard(const BoardX &b, QImage &image, QSize size)
 {
     BoardView boardView(nullptr, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
     boardView.setBoard(b);

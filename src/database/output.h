@@ -22,7 +22,7 @@
 The Output class converts game to various formats.
 Usage:
 @code
-Game game;
+GameX game;
 PgnDatabase db;
 db.loadGame(0,game);
 Output o(Output::Html,"/usr/local/data/template-file.template");
@@ -107,24 +107,24 @@ public:
     /** Create the output for the given game
      * @return A string containing the game in the specified format
      * @param game A pointer to the game object being output */
-    QString output(const Game* game, bool upToCurrentMove = false);
+    QString output(const GameX* game, bool upToCurrentMove = false);
     /** Create the output for the given game
      * @param filename The filename that the output will be written to.
-     * @param filter A Game object. Exported, using the output(Game* game) method */
-    void output(const QString& filename, const Game& game);
+     * @param filter A GameX object. Exported, using the output(GameX* game) method */
+    void output(const QString& filename, const GameX& game);
     /** Create the output for the given filter
      * @param filename The filename that the output will be written to.
      * @param filter A Filter object. All games in the filter will be output, one
-     *               after the other, using the output(Game* game) method */
-    void output(const QString& filename, Filter& filter);
+     *               after the other, using the output(GameX* game) method */
+    void output(const QString& filename, FilterX& filter);
     /** Create the output for the given database
      * @param filename The filename that the output will be written to.
      * @param database A pointer to a database object. All games in the database will be output, one
-     *               after the other, using the output(Game* game) method */
+     *               after the other, using the output(GameX* game) method */
     void output(const QString& filename, Database& database);
 
     /** Append output to a closed file */
-    bool append(const QString& filename, Game& game);
+    bool append(const QString& filename, GameX& game);
     /** Append a database to a closed file */
     void append(const QString& filename, Database& database);
 
@@ -140,7 +140,7 @@ signals:
     /** Operation progress. */
     void progress(int);
 protected:
-    QString outputTags(const Game *game);
+    QString outputTags(const GameX *game);
 private:
     /* User definable settings */
     OutputOptions m_options;
@@ -161,7 +161,7 @@ private:
     /** Character/string used for newline */
     QString m_newlineChar;
     /** Pointer to the game being exported */
-    Game m_game;
+    GameX m_game;
     /** Map containing the different types of outputs available, and a description of each */
     static QMap<OutputType, QString> m_outputMap;
     /** Map containing the start markup tag for each markup type */
@@ -209,16 +209,16 @@ private:
     /** Create the output for the given filter
      * @param out A textstream that will be used to write the results to
      * @param filter A Filter object. All games in the filter will be output, one
-     *               after the other, using the output(Game* game) method */
-    void output(QTextStream& out, Filter& filter);
+     *               after the other, using the output(GameX* game) method */
+    void output(QTextStream& out, FilterX& filter);
     /** Create the output for the given database
      * @param out A textstream that will be used to write the results to
      * @param database A pointer to a database object. All games in the database will be output, one
-     *               after the other, using the output(Game* game) method */
+     *               after the other, using the output(GameX* game) method */
     void output(QTextStream& out, Database& database);
 
     /** Output of a single game - requires postProcessing */
-    QString outputGame(const Game *g, bool upToCurrentMove);
+    QString outputGame(const GameX *g, bool upToCurrentMove);
     /** postProcessing of a game output or a dataBase output */
     void postProcessOutput(QString& text) const;
 

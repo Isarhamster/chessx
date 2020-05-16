@@ -5,8 +5,6 @@
 #ifndef DUPLICATESEARCH_H
 #define DUPLICATESEARCH_H
 
-class Filter;
-
 #include "search.h"
 #include <QBitArray>
 #include <QMultiHash>
@@ -28,7 +26,7 @@ public:
 
     /** Standard constructor. */
     DuplicateSearch(Database* db, DSMode mode=DS_Both);
-    DuplicateSearch(Filter* filter, DSMode mode=DS_Both_All);
+    DuplicateSearch(FilterX* filter, DSMode mode=DS_Both_All);
     /** Return true if the game at index matches the search */
     virtual int matches(GameId index) const;
 
@@ -39,7 +37,7 @@ private:
     QMultiHash<quint64, GameId> m_hashToGames;
     QBitArray m_matches;
     DSMode m_mode;
-    Filter* m_filter;
+    FilterX* m_filter;
 };
 
 #endif // DUPLICATESEARCH_H

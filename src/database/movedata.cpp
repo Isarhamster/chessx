@@ -4,18 +4,20 @@
 
 #include "movedata.h"
 
+using namespace chessx;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-void MoveData::addGame(Game& g, Color c, MoveType movetype)
+void MoveData::addGame(GameX& g, Color c, MoveType movetype)
 {
     if(!count)
     {
-        san = (movetype == StandardMove) ? g.moveToSan(Game::MoveOnly, Game::PreviousMove)
+        san = (movetype == StandardMove) ? g.moveToSan(GameX::MoveOnly, GameX::PreviousMove)
                : qApp->translate("MoveData", "[end]");
-        localsan = (movetype == StandardMove) ? g.moveToSan(Game::TranslatePiece, Game::PreviousMove)
+        localsan = (movetype == StandardMove) ? g.moveToSan(GameX::TranslatePiece, GameX::PreviousMove)
                : qApp->translate("MoveData", "[end]");
     }
     ++count;

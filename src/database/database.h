@@ -65,22 +65,22 @@ public:
 
     //game retrieval & storage
     /** Loads a game at @p index, returns true if successful */
-    virtual bool loadGame(GameId gameId, Game& game);
+    virtual bool loadGame(GameId gameId, GameX& game);
     /** Load all tags for GameId from index into game object */
-    virtual void loadGameHeaders(GameId gameId, Game& game) const;
+    virtual void loadGameHeaders(GameId gameId, GameX& game) const;
     /** Load a tag into a game */
-    virtual void loadGameHeader(GameId gameId, Game& game, const QString& tag) const;
+    virtual void loadGameHeader(GameId gameId, GameX& game, const QString& tag) const;
     /** Get the tag for a game */
     virtual QString tagValue(GameId gameId, const QString &tag) const;
     virtual QString tagValue(GameId gameId, TagIndex tag) const;
     /** Loads only moves into a game from the given position */
-    virtual void loadGameMoves(GameId index, Game& game) = 0;
+    virtual void loadGameMoves(GameId index, GameX& game) = 0;
     /** Loads game moves and try to find a position */
-    virtual int findPosition(GameId index, const Board& position) = 0;
+    virtual int findPosition(GameId index, const BoardX& position) = 0;
     /** Saves a game at the given position, returns true if successful */
-    virtual bool replace(GameId, Game&);
+    virtual bool replace(GameId, GameX&);
     /** Adds a game to the database */
-    virtual bool appendGame(const Game&);
+    virtual bool appendGame(const GameX&);
     /** Removes a game from the database */
     virtual bool remove(GameId);
     /** Remove all games from a database */
@@ -88,11 +88,11 @@ public:
     /** Undelete a game from the database */
     virtual bool undelete(GameId);
     /** Removes multiple games from the database as specified by the filter */
-    virtual bool remove(const Filter&);
+    virtual bool remove(const FilterX&);
     /** @return pointer to the index of the database */
-    Index *index();
+    IndexX *index();
     /** @return const pointer to the index of the database */
-    const Index *index() const;
+    const IndexX *index() const;
     /** Returns the number of games in the database */
     virtual quint64 count() const;
     /** @return true if the database has been modified. */
@@ -106,10 +106,10 @@ public:
     /** Returns true, if the database is a clipboard database, false otherwise */
     virtual bool IsClipboard() const { return false; }
     /** Get a map of MoveData from a given board position */
-    virtual unsigned int getMoveMapForBoard(const Board& , QMap<Move, MoveData> &) { return 0; }
+    virtual unsigned int getMoveMapForBoard(const BoardX& , QMap<Move, MoveData> &) { return 0; }
 protected:
     /** Copies all tags from @p game to the Index */
-    void setTagsToIndex(const Game& game, GameId id);
+    void setTagsToIndex(const GameX& game, GameId id);
 
 signals:
     /** Signal emitted when some progress is done. */
@@ -117,7 +117,7 @@ signals:
     void dirtyChanged(bool);
 
 protected:
-    Index m_index;
+    IndexX m_index;
     bool m_utf8;
     QMutex m_mutex;
 };

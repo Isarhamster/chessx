@@ -26,7 +26,7 @@
 const unsigned MinAveYear = 1;
 const unsigned MinAveRating = 5;
 
-bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, bool sourceIsFilter, bool bEnd)
+bool OpeningTree::updateFilter(FilterX& f, const BoardX& b, bool updateFilter, bool sourceIsFilter, bool bEnd)
 {
     if(&f == m_filter && updateFilter == m_updateFilter && b == m_board && m_bEnd == bEnd)
     {
@@ -42,9 +42,9 @@ bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, boo
     {
         emit openingTreeUpdateStarted();
         m_bRequestPending = false;
-        connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
-        connect(&oupd, SIGNAL(MoveUpdate(Board*,QList<MoveData>)), this, SLOT(moveUpdated(Board*,QList<MoveData>)), Qt::UniqueConnection);
-        connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
+        connect(&oupd, SIGNAL(UpdateFinished(BoardX*)), this, SLOT(updateFinished(BoardX*)), Qt::UniqueConnection);
+        connect(&oupd, SIGNAL(MoveUpdate(BoardX*,QList<MoveData>)), this, SLOT(moveUpdated(BoardX*,QList<MoveData>)), Qt::UniqueConnection);
+        connect(&oupd, SIGNAL(UpdateTerminated(BoardX*)), this, SLOT(updateTerminated(BoardX*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(progress(int)), SIGNAL(progress(int)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(requestGameFilterUpdate(int,int)), SIGNAL(requestGameFilterUpdate(int,int)), Qt::UniqueConnection);
         return oupd.updateFilter(f, b, m_games, m_updateFilter, m_sourceIsDatabase, m_bEnd);
@@ -67,7 +67,7 @@ void OpeningTree::cancel()
     }
 }
 
-void OpeningTree::updateFinished(Board* b)
+void OpeningTree::updateFinished(BoardX* b)
 {
     emit openingTreeUpdated();
     if(m_bRequestPending)
@@ -76,7 +76,7 @@ void OpeningTree::updateFinished(Board* b)
     }
 }
 
-void OpeningTree::moveUpdated(Board* b, QList<MoveData> moveList)
+void OpeningTree::moveUpdated(BoardX* b, QList<MoveData> moveList)
 {
     if (*b == m_board)
     {
@@ -89,15 +89,15 @@ void OpeningTree::moveUpdated(Board* b, QList<MoveData> moveList)
     }
 }
 
-void OpeningTree::updateTerminated(Board*)
+void OpeningTree::updateTerminated(BoardX*)
 {
     if(m_bRequestPending)
     {
         emit openingTreeUpdateStarted();
         m_bRequestPending = false;
-        connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
-        connect(&oupd, SIGNAL(MoveUpdate(Board*,QList<MoveData>)), this, SLOT(moveUpdated(Board*,QList<MoveData>)), Qt::UniqueConnection);
-        connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
+        connect(&oupd, SIGNAL(UpdateFinished(BoardX*)), this, SLOT(updateFinished(BoardX*)), Qt::UniqueConnection);
+        connect(&oupd, SIGNAL(MoveUpdate(BoardX*,QList<MoveData>)), this, SLOT(moveUpdated(BoardX*,QList<MoveData>)), Qt::UniqueConnection);
+        connect(&oupd, SIGNAL(UpdateTerminated(BoardX*)), this, SLOT(updateTerminated(BoardX*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(progress(int)), SIGNAL(progress(int)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(requestGameFilterUpdate(int,int)), SIGNAL(requestGameFilterUpdate(int,int)), Qt::UniqueConnection);
         oupd.updateFilter(*m_filter, m_board, m_games, m_updateFilter, m_sourceIsDatabase, m_bEnd);
@@ -277,7 +277,7 @@ QString OpeningTree::move(const QModelIndex& index) const
     return index.isValid() ? m_moves[index.row()].san : QString();
 }
 
-Board OpeningTree::board() const
+BoardX OpeningTree::board() const
 {
     return m_board;
 }

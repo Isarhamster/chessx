@@ -8,11 +8,11 @@
 #include <QDialog>
 #include "game.h"
 
+class IndexX;
+
 namespace Ui {
 class TagDialog;
 }
-
-class Index;
 
 class TagDialog : public QDialog
 {
@@ -22,7 +22,7 @@ public:
     explicit TagDialog(QWidget *parent = nullptr);
     ~TagDialog();
 
-    bool editTags(Index* index, Game &game, GameId id);
+    bool editTags(IndexX* index, GameX &game, GameId id);
 
 protected slots:
     void accept();

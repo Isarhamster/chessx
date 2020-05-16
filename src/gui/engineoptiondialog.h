@@ -10,7 +10,7 @@
 #include "engineoptiondata.h"
 #include "enginelist.h"
 
-class Engine;
+class EngineX;
 class QAbstractButton;
 
 namespace Ui
@@ -39,7 +39,7 @@ protected slots:
     void buttonClicked(QAbstractButton *button);
 private:
     Ui::EngineOptionDialog *ui;
-    Engine* m_engine;
+    EngineX* m_engine;
     int m_index;
 };
 

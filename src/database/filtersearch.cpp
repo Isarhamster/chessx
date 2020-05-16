@@ -16,7 +16,7 @@ FilterSearch::FilterSearch() : m_filter(nullptr)
 {
 }
 
-FilterSearch::FilterSearch(Filter* filter) : m_filter(filter)
+FilterSearch::FilterSearch(FilterX* filter) : m_filter(filter)
 {
 }
 
@@ -25,12 +25,12 @@ bool FilterSearch::contains(GameId game) const
     return m_filter->contains(game);
 }
 
-Filter* FilterSearch::filter() const
+FilterX* FilterSearch::filter() const
 {
     return m_filter;
 }
 
-void FilterSearch::setFilter(Filter* filter)
+void FilterSearch::setFilter(FilterX* filter)
 {
     m_filter = filter;
 }

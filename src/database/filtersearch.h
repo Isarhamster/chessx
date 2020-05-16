@@ -7,7 +7,6 @@
 
 #include <QPointer>
 #include "search.h"
-class Filter;
 
 /** @ingroup Search
  *  The FilterSearch class is not a real search class. It is used to
@@ -22,14 +21,14 @@ class FilterSearch : public Search
 
 public:
     FilterSearch();
-    FilterSearch(Filter* filter);
+    FilterSearch(FilterX* filter);
 
     bool contains(GameId game) const;
-    Filter* filter() const;
-    void setFilter(Filter* filter);
+    FilterX* filter() const;
+    void setFilter(FilterX* filter);
     virtual int matches(GameId game) const;
 private:
-    QPointer<Filter> m_filter;
+    QPointer<FilterX> m_filter;
 };
 
 #endif // FILTERSEARCH_H

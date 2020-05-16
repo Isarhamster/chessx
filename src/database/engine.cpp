@@ -23,9 +23,9 @@
 
 /*** Engine ***/
 
-bool Engine::s_allowEngineOutput = true;
+bool EngineX::s_allowEngineOutput = true;
 
-Engine::Engine(const QString& name,
+EngineX::EngineX(const QString& name,
                const QString& command,
                bool bTestMode,
                const QString& directory,
@@ -51,14 +51,14 @@ Engine::Engine(const QString& name,
     m_directory = directory;
 }
 
-Engine* Engine::newEngine(int index)
+EngineX* EngineX::newEngine(int index)
 {
     return newEngine(index, false);
 }
 
-Engine* Engine::newEngine(EngineList& engineList, int index, bool bTestMode)
+EngineX* EngineX::newEngine(EngineList& engineList, int index, bool bTestMode)
 {
-    Engine *engine = nullptr;
+    EngineX *engine = nullptr;
 
     QString name      = engineList[index].name;
     QString command   = engineList[index].command;
@@ -87,9 +87,9 @@ Engine* Engine::newEngine(EngineList& engineList, int index, bool bTestMode)
     return engine;
 }
 
-Engine* Engine::newEngine(int index, bool bTestMode)
+EngineX* EngineX::newEngine(int index, bool bTestMode)
 {
-    Engine *engine = nullptr;
+    EngineX *engine = nullptr;
 
     AppSettings->beginGroup("/Engines/");
     QString key(QString::number(index));
@@ -122,7 +122,7 @@ Engine* Engine::newEngine(int index, bool bTestMode)
     return engine;
 }
 
-Engine::~Engine()
+EngineX::~EngineX()
 {
     if(m_process)
     {
@@ -131,7 +131,7 @@ Engine::~Engine()
     delete m_logStream;
 }
 
-void Engine::activate()
+void EngineX::activate()
 {
     if(m_process)
     {
@@ -154,7 +154,7 @@ void Engine::activate()
     }
 }
 
-void Engine::deactivate()
+void EngineX::deactivate()
 {
     if(m_active)
     {
@@ -166,17 +166,17 @@ void Engine::deactivate()
     }
 }
 
-bool Engine::isActive()
+bool EngineX::isActive()
 {
     return m_active;
 }
 
-bool Engine::isAnalyzing()
+bool EngineX::isAnalyzing()
 {
     return m_analyzing;
 }
 
-void Engine::send(const QString& message)
+void EngineX::send(const QString& message)
 {
     if (s_allowEngineOutput && m_logStream)
     {
@@ -191,7 +191,7 @@ void Engine::send(const QString& message)
     }
 }
 
-void Engine::setActive(bool active)
+void EngineX::setActive(bool active)
 {
     if(active && !m_active)
     {
@@ -209,7 +209,7 @@ void Engine::setActive(bool active)
     }
 }
 
-void Engine::setAnalyzing(bool analyzing)
+void EngineX::setAnalyzing(bool analyzing)
 {
     if(analyzing)
     {
@@ -226,7 +226,7 @@ void Engine::setAnalyzing(bool analyzing)
     }
 }
 
-void Engine::sendAnalysis(const Analysis& analysis)
+void EngineX::sendAnalysis(const Analysis& analysis)
 {
     if (s_allowEngineOutput)
     {
@@ -234,22 +234,22 @@ void Engine::sendAnalysis(const Analysis& analysis)
     }
 }
 
-bool Engine::getSendHistory() const
+bool EngineX::getSendHistory() const
 {
     return m_sendHistory;
 }
 
-void Engine::setMpv(int mpv)
+void EngineX::setMpv(int mpv)
 {
     m_mpv = mpv;
 }
 
-void Engine::setMoveTime(const EngineParameter& mt)
+void EngineX::setMoveTime(const EngineParameter& mt)
 {
     m_moveTime = mt;
 }
 
-void Engine::pollProcess()
+void EngineX::pollProcess()
 {
     QString message;
 
@@ -264,14 +264,14 @@ void Engine::pollProcess()
     }
 }
 
-void Engine::processError(QProcess::ProcessError errMsg)
+void EngineX::processError(QProcess::ProcessError errMsg)
 {
     setActive(false);
     m_process = nullptr;
     emit error(errMsg);
 }
 
-bool Engine::hasOption(const QString& name) const
+bool EngineX::hasOption(const QString& name) const
 {
     bool found = false;
     foreach (EngineOptionData eod, m_options)
@@ -285,7 +285,7 @@ bool Engine::hasOption(const QString& name) const
     return found;
 }
 
-bool Engine::getOption(const QString& name, EngineOptionData& result)
+bool EngineX::getOption(const QString& name, EngineOptionData& result)
 {
     bool found = false;
     foreach (EngineOptionData eod, m_options)
@@ -300,7 +300,7 @@ bool Engine::getOption(const QString& name, EngineOptionData& result)
     return found;
 }
 
-void Engine::logError(const QString& errMsg)
+void EngineX::logError(const QString& errMsg)
 {
     if (s_allowEngineOutput && m_logStream)
     {
@@ -309,12 +309,12 @@ void Engine::logError(const QString& errMsg)
     qDebug() << errMsg;
 }
 
-void Engine::setAllowEngineOutput(bool allow)
+void EngineX::setAllowEngineOutput(bool allow)
 {
     s_allowEngineOutput = allow;
 }
 
-void Engine::processExited()
+void EngineX::processExited()
 {
     setActive(false);
     m_process = nullptr;

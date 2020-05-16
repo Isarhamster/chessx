@@ -8,10 +8,9 @@
 #include <QtCore>
 class QDataStream;
 
-enum SquareNames
-#ifdef USE_C11
-: unsigned char
-#endif // USE_C11
+namespace chessx {
+
+enum SquareNames: unsigned char
 {
     a1, b1, c1, d1, e1, f1, g1, h1,
     a2, b2, c2, d2, e2, f2, g2, h2,
@@ -26,19 +25,9 @@ enum SquareNames
     NoEPSquare = 255
 };
 
-#ifdef USE_C11
 typedef enum SquareNames Square;
-#else
-typedef unsigned char Square;
-#endif // USE_C11
 
-#define File(s)           ((s)&7)
-#define Rank(s)           ((s)>>3)
-
-enum FileNames
-#ifdef USE_C11
-: unsigned char
-#endif // USE_C11
+enum FileNames: unsigned char
 {
     FILE_A,
     FILE_B,
@@ -47,13 +36,10 @@ enum FileNames
     FILE_E,
     FILE_F,
     FILE_G,
-    FILE_H
+    FILE_H,
 };
 
-enum RankNames
-#ifdef USE_C11
-: unsigned char
-#endif // USE_C11
+enum RankNames: unsigned char
 {
     RANK_1,
     RANK_2,
@@ -62,7 +48,7 @@ enum RankNames
     RANK_5,
     RANK_6,
     RANK_7,
-    RANK_8
+    RANK_8,
 };
 
 inline Square SquareFromRankAndFile(unsigned char rank, unsigned char file)
@@ -84,8 +70,6 @@ inline Square SquareMirrorFile(Square s)
 {
     return (Square((s) ^ 0x07));
 }
-
-#ifdef USE_C11
 
 inline Square operator+(Square square, int offset)
 {
@@ -158,7 +142,10 @@ inline QDataStream& operator>>(QDataStream& s, Square& square)
     return s;
 }
 
-#endif // USE_C11
+} // namespace chessx
+
+#define File(s)           ((s)&7)
+#define Rank(s)           ((s)>>3)
 
 #endif // SQUARE_H
 

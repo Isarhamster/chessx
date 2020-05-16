@@ -19,17 +19,17 @@ public:
     ~ThreadedGuess();
 
     void cancel();
-    bool guessMove(Board b);
+    bool guessMove(BoardX b);
 
 protected:
     virtual void run();
 
 signals:
-    void guessFoundForBoard(Guess::Result, Board);
+    void guessFoundForBoard(Guess::Result, BoardX);
 
 private:
     bool m_dontGuess;
-    Board m_board;
+    BoardX m_board;
 };
 
 #endif // THREADEDGUESS_H

@@ -21,7 +21,7 @@ class QTextStream;
   The WBEngine class provides an interface to a Winboard chess engine.
 */
 
-class WBEngine : public Engine
+class WBEngine : public EngineX
 {
     Q_OBJECT
 
@@ -35,10 +35,10 @@ public:
              bool sendHistory);
 
     /** Set a starting position for a game */
-   void setStartPos(const Board& startPos);
+   void setStartPos(const BoardX& startPos);
 
     /** Analyses the the given position */
-    bool startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame, QString line);
+    bool startAnalysis(const BoardX& board, int nv, const EngineParameter &mt, bool bNewGame, QString line);
 
     /** Stops any analysis */
     void stopAnalysis();
@@ -72,7 +72,7 @@ private:
     void v1TurnOffPondering();
     void go();
 
-    Board m_board;
+    BoardX m_board;
 
     bool m_analyze;
     bool m_setboard;

@@ -93,7 +93,7 @@ void TagDialog::validateTag(int /*row*/, int column)
     ui->tagTable->resizeColumnsToContents();
 }
 
-bool TagDialog::editTags(Index* index, Game& game, GameId id)
+bool TagDialog::editTags(IndexX* index, GameX& game, GameId id)
 {
     const TagMap& tags = game.tags();
     int row = 0;

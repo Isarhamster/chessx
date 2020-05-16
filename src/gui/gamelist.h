@@ -24,7 +24,7 @@
 #include <QSortFilterProxyModel>
 #include "filteroperator.h"
 
-class Filter;
+class FilterX;
 class FilterModel;
 class GameListSortModel;
 class Search;
@@ -37,7 +37,7 @@ class GameList : public TableView
 {
     Q_OBJECT
 public:
-    GameList(Filter* filter, QWidget* parent = nullptr);
+    GameList(FilterX* filter, QWidget* parent = nullptr);
     ~GameList();
 
     void keyPressEvent(QKeyEvent* event);
@@ -50,7 +50,7 @@ public:
 
 public slots:
     /** Change current filter/database */
-    void setFilter(Filter* filter);
+    void setFilter(FilterX* filter);
     /** Update filter (called after changing filter outside) */
     void updateFilter(GameId index, int value);
     /** Perform simple search */
@@ -118,7 +118,7 @@ signals:
     void requestCopyGame(QList<GameId>);
     void requestFindDuplicates(QList<GameId>);
     void requestDeleteGame(QList<GameId>);
-    void requestGameData(Game&);
+    void requestGameData(GameX&);
     void signalFirstGameLoaded(bool);
     void signalLastGameLoaded(bool);
     void signalFilterSize(quint64);

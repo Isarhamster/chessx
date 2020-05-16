@@ -206,7 +206,7 @@ void ChessBrowser::setupMenu()
 
 void ChessBrowser::slotContextMenu(const QPoint& pos)
 {
-    const Game* game = nullptr;
+    const GameX* game = nullptr;
     emit queryActiveGame(&game);
 
     // Handle non-game browser
@@ -233,7 +233,7 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
         bool atLineStart = game->atLineStart(m_currentMove);
         bool atGameStart = m_currentMove == 0 || game->atGameStart(m_currentMove - 1);
         bool hasComment = !game->annotation(m_currentMove).isEmpty();
-        bool hasPrecomment = !game->annotation(m_currentMove, Game::BeforeMove).isEmpty();
+        bool hasPrecomment = !game->annotation(m_currentMove, GameX::BeforeMove).isEmpty();
         bool hasNags = !game->nags().isEmpty();
         bool atLineEnd = game->atLineEnd(m_currentMove);
 

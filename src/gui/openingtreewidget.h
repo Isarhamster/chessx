@@ -31,9 +31,9 @@ public:
     OpeningTree* m_openingTree;
 
     QString move(QModelIndex index) const;
-    Board board() const;
-    void updateFilter(Filter& f, const Board& b, bool bEnd);
-    void doSetBoard(Filter& f, const Board& b, bool bEnd);
+    BoardX board() const;
+    void updateFilter(FilterX& f, const BoardX& b, bool bEnd);
+    void doSetBoard(FilterX& f, const BoardX& b, bool bEnd);
     int getFilterIndex(QString& name) const;
     bool shouldAddMove() const;
 
@@ -77,7 +77,7 @@ private:
 class BoardUndoCommand : public QUndoCommand
 {
 public:
-    BoardUndoCommand(QObject* parent, Filter* f, const Board& b, bool bEnd, QString action) :
+    BoardUndoCommand(QObject* parent, FilterX* f, const BoardX& b, bool bEnd, QString action) :
         QUndoCommand(action),
         m_openingTree((OpeningTreeWidget*)parent),
         m_filter(f), m_board(b), m_bEnd(bEnd)
@@ -85,8 +85,8 @@ public:
         }
 
     QPointer<OpeningTreeWidget> m_openingTree;
-    QPointer<Filter> m_filter;
-    Board m_board;
+    QPointer<FilterX> m_filter;
+    BoardX m_board;
     bool m_bEnd;
 
     virtual void undo() { if (m_filter && m_openingTree) m_openingTree->doSetBoard(*m_filter, m_board, m_bEnd); }

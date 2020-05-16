@@ -20,6 +20,8 @@
 #include "ui_boardsetup.h"
 #include "board.h"
 
+using namespace chessx;
+
 class QMenu;
 
 /**  @ingroup GUI
@@ -34,11 +36,11 @@ public:
     /** Destroy the dialog */
     virtual ~BoardSetupDialog();
     /** Set current board */
-    void setBoard(const Board& b);
+    void setBoard(const BoardX& b);
     /** Set current board */
     void setFlipped(bool flipped);
     /** Return current board */
-    Board board() const;
+    BoardX board() const;
 
 protected:
     /** Resize board upon showing it the first time */

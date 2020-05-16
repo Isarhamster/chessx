@@ -43,6 +43,8 @@ quint64 bb_MaskL90[64];
 quint64 bb_MaskL45[64];
 quint64 bb_MaskR45[64];
 
+using namespace chessx;
+
 BitBoard getStandardPosition();
 // Calling the function getStandardPosition for initialization avoids
 // initialization side effects when using BitBoards in other translation
@@ -140,6 +142,12 @@ const quint64 fileNotGH   = ~(fileG | fileH);
 #define ShiftDownRight(b) (((b)>>7)&fileNotA)
 #define SetBit(s)         (bb_Mask[s])
 
+static inline Move& append(Move::List& list)
+{
+    list.push_back(Move());
+    return list.back();
+}
+
 BitBoard::PieceNames::PieceNames(const QString& k, const QString& q, const QString& r, const QString& b, const QString& n)
     :m_names {"", k, q, r, b, n, ""}
 {}
@@ -196,7 +204,7 @@ BitBoard::BitBoard()
 
 bool BitBoard::isCheckmate() const
 {
-    MoveList moves(generateMoves());
+    Move::List moves(generateMoves());
     for(int i = 0; i < moves.size(); ++i)
     {
         if(!isIntoCheck(moves[i]))
@@ -209,7 +217,7 @@ bool BitBoard::isCheckmate() const
 
 bool BitBoard::isStalemate() const
 {
-    MoveList moves(generateMoves());
+    Move::List moves(generateMoves());
     for(int i = 0; i < moves.size(); ++i)
     {
         if(!isIntoCheck(moves[i]))
@@ -1485,7 +1493,7 @@ void BitBoard::setChess960(bool chess960)
     m_chess960 = chess960;
 }
 
-MoveList BitBoard::generateMoves() const
+Move::List BitBoard::generateMoves() const
 {
     // This function is not ready for Chess960
     // don't care the way it is used for the moment
@@ -1493,7 +1501,7 @@ MoveList BitBoard::generateMoves() const
     Square from, to;
     quint64 moves, movers;
 
-    MoveList p;
+    Move::List p;
 
     if(m_stm == White)
     {
@@ -1505,14 +1513,14 @@ MoveList BitBoard::generateMoves() const
                         !isAttackedBy(Black, f1)
                         && !isAttackedBy(Black, g1))
                 {
-                    p.add().genWhiteOO();
+                    append(p).genWhiteOO();
                 }
             if(canCastleLong(White)  && !((B1 | C1 | D1)&m_occupied))
                 if(!isAttackedBy(Black, c1) &&
                         !isAttackedBy(Black, d1)
                         && !isAttackedBy(Black, e1))
                 {
-                    p.add().genWhiteOOO();
+                    append(p).genWhiteOOO();
                 }
         }
 
@@ -1524,7 +1532,7 @@ MoveList BitBoard::generateMoves() const
             while(moves)
             {
                 from = getFirstBitAndClear64<Square>(moves);
-                p.add().genEnPassant(from, m_epSquare);
+                append(p).genEnPassant(from, m_epSquare);
             }
         }
 
@@ -1535,14 +1543,14 @@ MoveList BitBoard::generateMoves() const
             to = getFirstBitAndClear64<Square>(moves);
             if(Rank(to) != 7)
             {
-                p.add().genPawnMove(to - 9, to, m_piece[to]);
+                append(p).genPawnMove(to - 9, to, m_piece[to]);
             }
             else
             {
-                p.add().genCapturePromote(to - 9, to, Queen, m_piece[to]);
-                p.add().genCapturePromote(to - 9, to, Knight, m_piece[to]);
-                p.add().genCapturePromote(to - 9, to, Rook, m_piece[to]);
-                p.add().genCapturePromote(to - 9, to, Bishop, m_piece[to]);
+                append(p).genCapturePromote(to - 9, to, Queen, m_piece[to]);
+                append(p).genCapturePromote(to - 9, to, Knight, m_piece[to]);
+                append(p).genCapturePromote(to - 9, to, Rook, m_piece[to]);
+                append(p).genCapturePromote(to - 9, to, Bishop, m_piece[to]);
             }
         }
         moves = ShiftUpLeft(movers) & m_occupied_co[Black];
@@ -1551,14 +1559,14 @@ MoveList BitBoard::generateMoves() const
             to = getFirstBitAndClear64<Square>(moves);
             if(Rank(to) != 7)
             {
-                p.add().genPawnMove(to - 7, to, m_piece[to]);
+                append(p).genPawnMove(to - 7, to, m_piece[to]);
             }
             else
             {
-                p.add().genCapturePromote(to - 7, to, Queen, m_piece[to]);
-                p.add().genCapturePromote(to - 7, to, Knight, m_piece[to]);
-                p.add().genCapturePromote(to - 7, to, Rook, m_piece[to]);
-                p.add().genCapturePromote(to - 7, to, Bishop, m_piece[to]);
+                append(p).genCapturePromote(to - 7, to, Queen, m_piece[to]);
+                append(p).genCapturePromote(to - 7, to, Knight, m_piece[to]);
+                append(p).genCapturePromote(to - 7, to, Rook, m_piece[to]);
+                append(p).genCapturePromote(to - 7, to, Bishop, m_piece[to]);
             }
         }
 
@@ -1570,14 +1578,14 @@ MoveList BitBoard::generateMoves() const
             to = getFirstBitAndClear64<Square>(moves);
             if(Rank(to) != 7)
             {
-                p.add().genOneForward(to - 8, to);
+                append(p).genOneForward(to - 8, to);
             }
             else
             {
-                p.add().genPromote(to - 8, to, Queen);
-                p.add().genPromote(to - 8, to, Knight);
-                p.add().genPromote(to - 8, to, Rook);
-                p.add().genPromote(to - 8, to, Bishop);
+                append(p).genPromote(to - 8, to, Queen);
+                append(p).genPromote(to - 8, to, Knight);
+                append(p).genPromote(to - 8, to, Rook);
+                append(p).genPromote(to - 8, to, Bishop);
             }
         }
         // pawns 2 forward
@@ -1585,7 +1593,7 @@ MoveList BitBoard::generateMoves() const
         while(moves)
         {
             to = getFirstBitAndClear64<Square>(moves);
-            p.add().genTwoForward(to - 16, to);
+            append(p).genTwoForward(to - 16, to);
         }
 
     }
@@ -1599,14 +1607,14 @@ MoveList BitBoard::generateMoves() const
                         !isAttackedBy(White, f8) &&
                         !isAttackedBy(White, g8))
                 {
-                    p.add().genBlackOO();
+                    append(p).genBlackOO();
                 }
             if(canCastleLong(Black)  && !((B8 | C8 | D8)&m_occupied))
                 if(!isAttackedBy(White, e8) &&
                         !isAttackedBy(White, d8) &&
                         !isAttackedBy(White, c8))
                 {
-                    p.add().genBlackOOO();
+                    append(p).genBlackOOO();
                 }
         }
 
@@ -1618,7 +1626,7 @@ MoveList BitBoard::generateMoves() const
             while(moves)
             {
                 from = getFirstBitAndClear64<Square>(moves);
-                p.add().genEnPassant(from, m_epSquare);
+                append(p).genEnPassant(from, m_epSquare);
             }
         }
 
@@ -1629,14 +1637,14 @@ MoveList BitBoard::generateMoves() const
             to = getFirstBitAndClear64<Square>(moves);
             if(Rank(to) != 0)
             {
-                p.add().genPawnMove(to + 9, to, m_piece[to]);
+                append(p).genPawnMove(to + 9, to, m_piece[to]);
             }
             else
             {
-                p.add().genCapturePromote(to + 9, to, Queen, m_piece[to]);
-                p.add().genCapturePromote(to + 9, to, Knight, m_piece[to]);
-                p.add().genCapturePromote(to + 9, to, Rook, m_piece[to]);
-                p.add().genCapturePromote(to + 9, to, Bishop, m_piece[to]);
+                append(p).genCapturePromote(to + 9, to, Queen, m_piece[to]);
+                append(p).genCapturePromote(to + 9, to, Knight, m_piece[to]);
+                append(p).genCapturePromote(to + 9, to, Rook, m_piece[to]);
+                append(p).genCapturePromote(to + 9, to, Bishop, m_piece[to]);
             }
         }
         moves = ShiftDownRight(movers) & m_occupied_co[White];
@@ -1645,14 +1653,14 @@ MoveList BitBoard::generateMoves() const
             to = getFirstBitAndClear64<Square>(moves);
             if(Rank(to) != 0)
             {
-                p.add().genPawnMove(to + 7, to, m_piece[to]);
+                append(p).genPawnMove(to + 7, to, m_piece[to]);
             }
             else
             {
-                p.add().genCapturePromote(to + 7, to, Queen, m_piece[to]);
-                p.add().genCapturePromote(to + 7, to, Knight, m_piece[to]);
-                p.add().genCapturePromote(to + 7, to, Rook, m_piece[to]);
-                p.add().genCapturePromote(to + 7, to, Bishop, m_piece[to]);
+                append(p).genCapturePromote(to + 7, to, Queen, m_piece[to]);
+                append(p).genCapturePromote(to + 7, to, Knight, m_piece[to]);
+                append(p).genCapturePromote(to + 7, to, Rook, m_piece[to]);
+                append(p).genCapturePromote(to + 7, to, Bishop, m_piece[to]);
             }
         }
 
@@ -1664,14 +1672,14 @@ MoveList BitBoard::generateMoves() const
             to = getFirstBitAndClear64<Square>(moves);
             if(Rank(to) != 0)
             {
-                p.add().genOneForward(to + 8, to);
+                append(p).genOneForward(to + 8, to);
             }
             else
             {
-                p.add().genPromote(to + 8, to, Queen);
-                p.add().genPromote(to + 8, to, Knight);
-                p.add().genPromote(to + 8, to, Rook);
-                p.add().genPromote(to + 8, to, Bishop);
+                append(p).genPromote(to + 8, to, Queen);
+                append(p).genPromote(to + 8, to, Knight);
+                append(p).genPromote(to + 8, to, Rook);
+                append(p).genPromote(to + 8, to, Bishop);
             }
         }
         // pawns 2 forward
@@ -1679,7 +1687,7 @@ MoveList BitBoard::generateMoves() const
         while(moves)
         {
             to = getFirstBitAndClear64<Square>(moves);
-            p.add().genTwoForward(to + 16, to);
+            append(p).genTwoForward(to + 16, to);
         }
     }
 
@@ -1692,7 +1700,7 @@ MoveList BitBoard::generateMoves() const
         while(moves)
         {
             to = getFirstBitAndClear64<Square>(moves);
-            p.add().genKnightMove(from, to, m_piece[to]);
+            append(p).genKnightMove(from, to, m_piece[to]);
         }
     }
     // bishop moves
@@ -1704,7 +1712,7 @@ MoveList BitBoard::generateMoves() const
         while(moves)
         {
             to = getFirstBitAndClear64<Square>(moves);
-            p.add().genBishopMove(from, to, m_piece[to]);
+            append(p).genBishopMove(from, to, m_piece[to]);
         }
     }
     // rook moves
@@ -1716,7 +1724,7 @@ MoveList BitBoard::generateMoves() const
         while(moves)
         {
             to = getFirstBitAndClear64<Square>(moves);
-            p.add().genRookMove(from, to, m_piece[to]);
+            append(p).genRookMove(from, to, m_piece[to]);
         }
     }
     // queen moves
@@ -1728,7 +1736,7 @@ MoveList BitBoard::generateMoves() const
         while(moves)
         {
             to = getFirstBitAndClear64<Square>(moves);
-            p.add().genQueenMove(from, to, m_piece[to]);
+            append(p).genQueenMove(from, to, m_piece[to]);
         }
     }
     // king moves
@@ -1738,7 +1746,7 @@ MoveList BitBoard::generateMoves() const
         to = getFirstBitAndClear64<Square>(moves);
         if(!isAttackedBy(m_stm ^ 1, to))
         {
-            p.add().genKingMove(m_ksq[m_stm], to, m_piece[to]);
+            append(p).genKingMove(m_ksq[m_stm], to, m_piece[to]);
         }
     }
 

@@ -9,6 +9,8 @@
 
 #include <QMutexLocker>
 
+using namespace chessx;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -59,7 +61,7 @@ bool ArenaBook::open(const QString &filename, bool)
     return false;
 }
 
-void ArenaBook::add_move(Game* game, const ABK_MOVE* move)
+void ArenaBook::add_move(GameX* game, const ABK_MOVE* move)
 {
     if ((move->from >> 3) + 1 == 32 && (move->to >> 3) + 1 == 32) return;
 
@@ -75,7 +77,7 @@ void ArenaBook::add_move(Game* game, const ABK_MOVE* move)
     game->dbAddMove(m);
 }
 
-void ArenaBook::tag_game(Game* game, int ply, GameId index)
+void ArenaBook::tag_game(GameX* game, int ply, GameId index)
 {
     // Determine tags
     QString nameWhite = QString("Game %1").arg(m_count+1);
@@ -110,7 +112,7 @@ bool ArenaBook::parseFile()
     ply = 0;
     node[0] = 900;  // offset to first node in abk-file
 
-    Game* game = new Game;
+    GameX* game = new GameX;
 
     while(1)
     {
@@ -142,7 +144,7 @@ bool ArenaBook::parseFile()
                 node[ply] = arena_book[node[ply]].next_sibling;
             }
             ++m_count;
-            game = new Game;
+            game = new GameX;
             for (int i = 0; i < ply; i++)
             {
                 add_move(game, &move_stack[i]);
@@ -174,7 +176,7 @@ quint64 ArenaBook::positionCount() const
     return m_posCount;
 }
 
-bool ArenaBook::loadGame(GameId gameId, Game& game)
+bool ArenaBook::loadGame(GameId gameId, GameX& game)
 {
     if (gameId < count())
     {
@@ -184,15 +186,15 @@ bool ArenaBook::loadGame(GameId gameId, Game& game)
     return false;
 }
 
-void ArenaBook::loadGameMoves(GameId gameId, Game & game)
+void ArenaBook::loadGameMoves(GameId gameId, GameX & game)
 {
     game = *m_games[gameId];
     loadGameHeaders(gameId, game);
 }
 
-int ArenaBook::findPosition(GameId index, const Board &position)
+int ArenaBook::findPosition(GameId index, const BoardX &position)
 {
-    Game g;
+    GameX g;
     loadGameMoves(index, g);
     return g.findPosition(position);
 }

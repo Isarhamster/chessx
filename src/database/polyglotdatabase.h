@@ -120,10 +120,10 @@ public:
     quint64 positionCount() const;
 
     /** Loads only moves into a game from the given position */
-    virtual void loadGameMoves(GameId index, Game& game);
+    virtual void loadGameMoves(GameId index, GameX& game);
     /** Loads game moves and try to find a position */
-    virtual int findPosition(GameId, const Board &position);
-    quint64 getHashFromBoard(const Board &b) const;
+    virtual int findPosition(GameId, const BoardX &position);
+    quint64 getHashFromBoard(const BoardX &b) const;
 
     /** Open a book data File */
     bool openFile(const QString& filename, bool readOnly=false);
@@ -136,7 +136,7 @@ public:
     void book_make(Database& db, volatile bool& breakFlag);
 
     /** Get a map of MoveData from a given board position */
-    unsigned int getMoveMapForBoard(const Board& board, QMap<Move, MoveData> &moves);
+    unsigned int getMoveMapForBoard(const BoardX& board, QMap<Move, MoveData> &moves);
 
 signals:
     void progress(int);
@@ -162,7 +162,7 @@ protected:
     void book_filter();
     void add_database(Database &db, volatile bool &breakFlag);
     void add_database_chunk(Database* db, int start, int end, volatile bool *breakFlag);
-    void add_game(Game &g, int result);
+    void add_game(GameX &g, int result);
     bool get_move_entry(Move m, book_entry &entry) const;
     int get_promotion(Move m) const;
     int make_castling_move(Move m) const;

@@ -14,14 +14,12 @@
 #define BOARD_H_INCLUDED
 
 #include "move.h"
-#include "movelist.h"
 #include "rand64.h"
 #include "bitboard.h"
 
 #include <QString>
 
 #define COMPILED_GUESS_FILE_ID ((quint32)0xCD5CBD03U)
-
 
 /** @ingroup Core
    Track a chess game, and calculate a hash for each position.  This hash
@@ -33,15 +31,15 @@
    everything else the derived methods are used.
 */
 
-class Board : public BitBoard
+class BoardX : public BitBoard
 {
 public:
     /** Empty constructor. Creates empty board with no pieces. */
-    Board();
+    BoardX();
 
-    Board(QString);
+    BoardX(QString);
 
-    static const Board standardStartBoard;
+    static const BoardX standardStartBoard;
 
     /** Resets board, restoring startup position */
     void setStandardPosition();
@@ -62,10 +60,10 @@ public:
     void swapToMove();
 
     /** Sets a piece on the given square **/
-    void setAt(Square s, Piece p);
+    void setAt(chessx::Square s, Piece p);
 
     /** Remove a piece from a given square **/
-    void removeFrom(Square s);
+    void removeFrom(chessx::Square s);
 
     /** Make standard move. */
     inline bool doMove(const Move& m)
@@ -79,25 +77,25 @@ public:
     }
 
     /** Return a suggested move associated with given square based on ECO data */
-    bool ecoMove(const Square square, int* from = nullptr, int* to = nullptr) const;
+    bool ecoMove(const chessx::Square square, int* from = nullptr, int* to = nullptr) const;
 
     /** Load the guess-the-move ECO hash data which is used by ecoMove() method */
     static bool loadEcoFile(const QString& ecoFile);
 
     /** Return a hash based on current and a given square number */
-    quint64 getHashPlusSquare(const Square square) const;
+    quint64 getHashPlusSquare(const chessx::Square square) const;
 
     /** Return hash value associated with current board position */
     quint64 getHashValue() const;
 
     /** Compare one board to another for equality, based on hash values */
-    inline bool operator == (const Board& b) const
+    inline bool operator == (const BoardX& b) const
     {
         return m_hashValue == b.getHashValue();
     }
 
     /** Compare one board to another for differences, based on hash values */
-    inline bool operator != (const Board& b) const
+    inline bool operator != (const BoardX& b) const
     {
         return !(*this == b);
     }
@@ -115,9 +113,9 @@ public:
     QString arrowAnnotation() const;
 
     int ScoreMaterial() const;   
-    int DefendersOfSquare(Square target) const;
+    int DefendersOfSquare(chessx::Square target) const;
 private:
-    static Board getStandardStartBoard();
+    static BoardX getStandardStartBoard();
 
     quint64 m_hashValue;
 
@@ -129,13 +127,13 @@ private:
     /** recalculate hash completely */
     void createHash();
     /** Adjust hash value based on piece sitting on given square */
-    void hashPiece(Square s, Piece p);
+    void hashPiece(chessx::Square s, Piece p);
     /** Adjust hash value based on which side is to move */
     void hashToMove();
     /** Adjust hash value based on the current en passant square */
     void hashEpSquare();
     /** Adjust hash value based on the castling rights each side has */
-    void hashCastlingRights(CastlingRights oldCastlingRights);
+    void hashCastlingRights(chessx::CastlingRights oldCastlingRights);
 };
 
 #endif
