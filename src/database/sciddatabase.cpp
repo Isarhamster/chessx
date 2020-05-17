@@ -246,6 +246,7 @@ bool ScidStorage::readGame(GameX& dst, gamenumT g, bool movesOnly) const
     Game src;
     if (src.DecodeMovesOnly(bbuf) != OK)
         return false;
+    dst.clear();
     ConvertGame(src, dst, movesOnly);
     return true;
 }
