@@ -1,0 +1,10 @@
+*.DS_Store
+*.stash
+*.o
+*/debug/*
+*/generated/*
+chessx.app
+*.user
+Makefile
+*.qm
+*.pb
