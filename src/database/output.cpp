@@ -1019,7 +1019,7 @@ bool Output::append(const QString& filename, Game& game)
             out.setCodec(textCodec);
         }
     }
-    out << Qt::endl;
+    out << endl;
     out << output(&game);
     f.close();
     return true;
@@ -1037,7 +1037,7 @@ void Output::append(const QString& filename, Database& database)
     {
         out.setCodec(QTextCodec::codecForName("utf8"));
     }
-    out << Qt::endl;
+    out << endl;
     output(out, database);
     f.close();
 }

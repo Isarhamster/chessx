@@ -145,7 +145,8 @@ void FilterModel::set(GameId game, int value)
 
 QVariant FilterModel::data(const QModelIndex &index, int role) const
 {
-    if(index.isValid() && index.row() < m_filter->size())
+    int sz = static_cast<int>(m_filter->size());
+    if(index.isValid() && index.row() < sz)
     {
         GameId i = index.row();
         if (VALID_INDEX(i))

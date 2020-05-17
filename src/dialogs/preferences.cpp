@@ -214,7 +214,7 @@ void PreferencesDialog::slotEngineUp()
     int index = ui.engineList->currentIndex().row();
     if(index > 0)
     {
-        engineList.swapItemsAt(index, index - 1);
+        engineList.swap(index, index - 1);
         QListWidgetItem* item = ui.engineList->takeItem(index - 1);
         ui.engineList->insertItem(index, item);
     }
@@ -225,7 +225,7 @@ void PreferencesDialog::slotEngineDown()
     int index = ui.engineList->currentIndex().row();
     if(index < ui.engineList->count() - 1)
     {
-        engineList.swapItemsAt(index, index + 1);
+        engineList.swap(index, index + 1);
         QListWidgetItem* item = ui.engineList->takeItem(index + 1);
         ui.engineList->insertItem(index, item);
     }
@@ -579,7 +579,7 @@ void PreferencesDialog::restoreSettings()
     ui.cbSoundOn->setCurrentIndex(AppSettings->getValue("Move").toInt());
     ui.cbScreenReader->setChecked(AppSettings->getValue("ScreenReader").toBool());
 #else
-    ui.cbSoundOn->setChecked(false);
+    ui.cbSoundOn->setCurrentIndex(0);
     ui.cbSoundOn->setEnabled(false);
     ui.cbScreenReader->setChecked(false);
     ui.cbScreenReader->setEnabled(false);

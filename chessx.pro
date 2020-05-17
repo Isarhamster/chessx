@@ -44,7 +44,7 @@ DEFINES += QT_NO_CAST_TO_ASCII
 DEFINES *= QT_USE_QSTRINGBUILDER
 
 macx {
-  QMAKE_MAC_SDK = macosx10.14
+  QMAKE_MAC_SDK = macosx10.15
   QMAKE_CXXFLAGS += -fvisibility=hidden
   QMAKE_LFLAGS_RELEASE -= -O2
   QMAKE_LFLAGS_RELEASE += -m64 -Ofast
@@ -481,7 +481,7 @@ lc0 {
 }
 
 RESOURCES = \
-    resources.qrc
+    resources.qrc translations.qrc
 
 TRANSLATIONS = i18n/chessx_de.ts
 

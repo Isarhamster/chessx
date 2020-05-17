@@ -290,31 +290,36 @@ QImage TableView::renderToImage() const
 
 void TableView::startDrag(Qt::DropActions supportedActions)
 {
+    Q_UNUSED(supportedActions);
     m_dragTimer.stop();
 }
 
 void TableView::dragEnterEvent(QDragEnterEvent *event)
 {
+    Q_UNUSED(event);
     m_dragTimer.stop();
 }
 
 void TableView::dragMoveEvent(QDragMoveEvent *event)
 {
+    Q_UNUSED(event);
 }
 
 void TableView::dragLeaveEvent(QDragLeaveEvent *event)
 {
+    Q_UNUSED(event);
     m_dragTimer.start(250);
 }
 
 void TableView::dropEvent(QDropEvent *event)
 {
+    Q_UNUSED(event);
     m_dragTimer.stop();
 }
 
 void TableView::SlotDragTimer()
 {
-    //qDebug()<< "TableView::SlotDragTimer" << Qt::endl;
+    //qDebug()<< "TableView::SlotDragTimer" << endl;
     QPoint p = QCursor::pos();
     QPoint tl = mapToGlobal(pos());
     QRect r = rect();

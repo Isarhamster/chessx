@@ -205,6 +205,8 @@ void Index::squeeze()
 
 bool Index::read(QDataStream &in, volatile bool *breakFlag, short version)
 {
+    Q_UNUSED(version);
+
     QWriteLocker m(&m_mutex);
 
     in >> m_tagNames;
