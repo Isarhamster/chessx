@@ -39,7 +39,7 @@ jobs:
     - name: Build
       run: cmake --build _build
     - name: Test
-      run: ./_build/tests/unittests
+      run: cd _build && ctest
 
       #  build:
       #    strategy:
