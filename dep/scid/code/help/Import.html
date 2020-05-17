@@ -1,0 +1,70 @@
+<html>
+<head>
+<title>
+Scid Help: 
+Import window
+</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<STYLE TYPE="text/css">
+<!--
+  body { background: #ffffff; }
+  h1, h2, h3, h4, h5 { color: #990000; }
+  h1 { align: center; }
+-->
+</STYLE>
+</head>
+<body bgcolor="#ffffff">
+<h1>The Import window</h1>
+<p>
+Scid's Import window provides an easy way for you to paste a game
+in <a href="PGN.html">PGN format</a> into Scid from some other application or window.
+</p>
+<p>
+The large white frame in the window is where you type or paste
+the text of the game in PGN format, and the gray frame below it
+provides feedback of any errors or warnings.
+</p>
+
+<h3>Editing the current game with the Import window</h3>
+<p>
+The Import window also doubles as a convenient way to make a few changes
+to the current game: you can paste the current game into the
+Import window (with the <b>Paste current game</b> button), edit the
+text, and click <b>Import</b> when done.
+</p>
+
+<h3>PGN tags in the Import window</h3>
+<p>
+Scid expects to see PGN header tags such as
+<ul>
+<li> <b>[Result "*"]</b> </li>
+</ul>
+before any moves, but you can just paste in a game fragment like
+<ul>
+<li> <b>1.e4 e5 2.Bc4 Bc5 3.Qh5?! Nf6?? 4.Qxf7# 1-0</b> </li>
+</ul>
+without any header tags and Scid will import it.
+</p>
+
+<h3>Using PGN files in Scid</h3>
+<p>
+If you want to use a PGN format file in Scid but do not
+want to convert it with <a href="Pgnscid.html">pgnscid</a> first, there are two
+possible ways.
+</p>
+<p>
+First, you can import the games in the file to an existing database
+with the <b><font color="#007000">[Tools: Import file of PGN games...]</font></b> menu command.
+</p>
+<p>
+The alternative is to open the PGN file directly in Scid. However, PGN
+format files are opened read-only and consume more memory than a
+comparable Scid database, so this is only recommended for relatively
+small PGN files.
+</p>
+
+<p><center><font size=-1>(Updated: Scid 2.5, June 2001)</font></center></p>
+
+</body>
+</html>
+

@@ -1,0 +1,143 @@
+<html>
+<head>
+<title>
+Scid Help: 
+Entering moves
+</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<STYLE TYPE="text/css">
+<!--
+  body { background: #ffffff; }
+  h1, h2, h3, h4, h5 { color: #990000; }
+  h1 { align: center; }
+-->
+</STYLE>
+</head>
+<body bgcolor="#ffffff">
+<h1>Entering chess moves</h1>
+<p>
+In Scid, you can enter the moves for a game using the
+mouse or the keyboard. As you move the mouse over a square,
+it and one other square will change color if there is a legal
+move to or from that square. This is the <b><i><font color="#990000">suggested move</font></i></b>.
+To make this move simply click the <b><i><font color="#990000">left</font></i></b> mouse button.
+You can turn off move suggestion using the Options menu if it annoys you.
+</p>
+<p>
+To make any move other than the suggested move, you can use
+the <b><i><font color="#990000">left</font></i></b> mouse button: just press the button over one square,
+and release it over the other square.
+</p>
+<p>
+If you prefer to make moves with two mouse clicks instead of dragging with
+the mouse button pressed, you can use the <b><i><font color="#990000">middle</font></i></b> button: just
+click on one square then the other.
+</p>
+
+<h4>Retracting a move</h4>
+<p>
+To take back a move, click the right mouse button. This goes back one move,
+and deletes the move if it is the last in the game or variation.
+</p>
+
+<h4>Replacing old moves</h4>
+<p>
+When you enter a move at a point in the game where a move already exists,
+Scid will present a dialog box asking if you really want to replace the
+old move (the old move and all moves after it will be lost), or want
+to add the new move as a variation instead. Some people may find this
+dialog box annoying and always want to replace old moves, so it can be
+turned off with the <b><font color="#007000">[Options: Moves]</font></b> menu option
+"<i>Ask before replacing moves</i>".
+</p>
+
+<h4><a name="Trial">Trial mode</a></h4>
+<p>
+If you are studying a game and reach a position where you want to try
+an alternative variation on the board without altering the game, select
+<b>Try variation</b> from the <b><font color="#007000">[Edit]</font></b> menu to enter trial
+mode. In this mode, you can make temporary moves and changes to the
+game, then return to the original position when you exit trial mode.
+</p>
+
+<h3><a name="Mistakes">Correcting mistakes</a></h3>
+<p>
+If you are entering a game and suddenly see an incorrect move several
+moves earlier, it is possible to correct it without losing the extra
+moves you have added. The only way is to edit the PGN representation
+of the game: open the <a href="Import.html">Import</a> window, select "Paste current
+game", correct the incorrect move, then select "Import".
+</p>
+
+<h3>Keyboard move entry</h3>
+<p>
+To enter moves at the keyboard, simply press letter and digit
+keys. Note that accepted moves should be in <b><i><font color="#990000">SAN notation</font></i></b>,
+<i>without</i> the capture symbol (x) or the promotion symbol (=).
+Moves are matched case-insensitively, so you can type
+[n][f][3] instead of Nf3, for example -- but see the note below
+about conflicts with pawn moves.
+</p>
+<p>
+To ensure that no move is a prefix of any other move, the notation
+for kingside and queenside castling is [O][K] and
+[O][Q] respectively, instead of the usual O-O and O-O-O.
+</p>
+<p>
+As you enter a move, the status bar will show the list of matching moves.
+You can press the [space] bar at any time to choose the first
+matching move in the list and add it to the game.
+To delete a character, press [Backspace] or [Delete].
+</p>
+<p>
+<b>Note</b> that a lower-case letter matches to a pawn first, so a
+[b] can match to a pawn or Bishop, but if there is a conflict
+you must use a capital [B] for the Bishop move.
+</p>
+
+<h4>Auto-Completion</h4>
+<p>
+In the Options menu, you can turn on or off <b><i><font color="#990000">Auto-Completion</font></i></b>
+of moves.
+With auto-completion, a move is made as soon as you have typed enough
+to distinguish it from any other legal move. For example, with
+auto-completion, you would only need to type [n][f] instead
+of [n][f][3] for <b>Nf3</b> in the starting position.
+</p>
+
+<h3><a name="Null">Entering null moves</a></h3>
+<p>
+<a href="Annotating.html\#Null">Null</a> (empty) moves can be useful in variations, where
+you want to skip a move for one side. You can enter a null move with the
+mouse by capturing one king with the other king, or with the keyboard by
+typing "<b>--</b>" (that is, pressing the minus key twice).
+</p>
+
+<h3>Entering common annotation symbols</h3>
+<p>
+You can also add common <a href="NAGs.html">annotation symbols</a> using the keyboard
+in the main window, without needing to use the <a href="Comment.html">comment editor</a>
+window. The following list shows which symbols you can add, and their
+keyboard shortcuts:
+<ul>
+<li> !  : [!][Return] </li>
+<li> ?  : [?][Return] </li>
+<li> !? : [!][?][Return] </li>
+<li> ?! : [?][!][Return] </li>
+<li> !! : [!][!][Return] </li>
+<li> ?? : [?][?][Return] </li>
+<li> </li>
+<li> +- : [+][-] </li>
+<li> +/-: [+][/] </li>
+<li> += : [+][=] </li>
+<li> =  : [=][Return] </li>
+<li> -+ : [-][+] </li>
+<li> -/+: [-][/] </li>
+<li> =+ : [=][+] </li>
+</ul>
+
+<p><center><font size=-1>(Updated: Scid 3.4, July 2002)</font></center></p>
+
+</body>
+</html>
+

@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>
+Scid Help: 
+Comment Editor window
+</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<STYLE TYPE="text/css">
+<!--
+  body { background: #ffffff; }
+  h1, h2, h3, h4, h5 { color: #990000; }
+  h1 { align: center; }
+-->
+</STYLE>
+</head>
+<body bgcolor="#ffffff">
+<h1>The Comment Editor window</h1>
+<p>
+The Comment Editor window lets you add or edit comments and symbolic
+annotation symbols for moves in the active chess game.
+</p>
+
+<h3>Annotation symbols</h3>
+<p>
+Scid uses the <a href="Author.html\#Related">PGN standard</a>
+for annotation symbols, accepting
+<a href="NAGs.html">NAG (numeric annotation glyph)</a> values for annotations.
+Some of the most common symbols (such as "!" or "+-") are displayed
+as symbols, and have a button in the comment editor window for fast
+entry. For other symbols, you can enter the appropriate
+numeric NAG value which is a number from 1 to 255.
+For example, the NAG value 36 means "White has the initiative" and will
+be displayed as "$36" in the <a href="PGN.html">PGN text</a> of the game.
+</p>
+<p>
+See the help page of <a href="NAGs.html">NAG values</a> for NAG values defined
+by the PGN standard.
+</p>
+<p>
+<b>Hint:</b> You can add the common move evaluation symbols (!, ?, !!,
+??, !? and ?!) while in the main window, without needing
+to use the comment editor window, by typing the symbol followed by
+the [Return] key.
+This is especially useful if you are <a href="Moves.html">entering chess moves</a>
+using the keyboard.
+</p>
+
+<h3>Comments</h3>
+<p>
+You can edit comments by typing in the text area provided and using
+the Clear, Revert and Store buttons.
+You do not need to press the Store button to update a comment; it is
+automatically updated whenever you move to another position in the game.
+</p>
+
+<h3>Coloring squares</h3>
+<p>
+You can color any square with any color using a special embedded command
+which can appear anywhere in a comment. The command format is:
+</p>
+<ul>
+<li><b>[%mark square color]</b><li>
+</ul>
+<p>
+where <b>square</b> is a square name like d4 and <b>color</b> is any
+recognized color name (such as red, blue4, darkGreen, lightSteelBlue, etc)
+or RGB code (a <b>#</b> followed by six hexadecimal digits, such as #a0b0c8).
+If the color is omitted, it defaults to <font color="red">red</font>.
+</p>
+<p>
+A comment may contain any number of color commands, but each must have
+in its own <b>[%mark ...]</b> tag.
+For example, the comment text</p>
+<p>
+  Now d6 [%mark d6] is weak and the knight can attack it
+  from b5. [%mark b5 #000070]
+</p>
+<p>
+will color d6 <font color="red">red</font> and b5 with the dark-blue color
+<darkblue>#000070</darkblue>.
+</p>
+
+<h3>Drawing arrows</h3>
+<p>
+You can draw an arrow from one square to another using a special
+comment command similar to the for coloring squares described above.
+The format is:
+</p>
+<ul>
+<li><b>[%arrow fromSquare toSquare color]</b><li>
+</ul>
+<p>
+where <b>fromSquare</b> and <b>toSquare</b> are square names like d4
+and <b>color</b> is any recognized color name (such as red, blue4, etc)
+or RGB code (like #a0b0c0).
+If the color is omitted, it defaults to <font color="red">red</font>.
+</p>
+<p>
+For example, the comment text
+</p>
+<p>
+  The c3-knight and c4-bishop control the weak d5 square.
+  [%arrow c3 d5 red] [%arrow c4 d5 blue]
+</p>
+<p>
+will draw a red arrow from c3 to d5 and a blue one from c4 to d5.
+</p>
+
+<p><center><font size=-1>(Updated: Scid 3.2, February 2002)</font></center></p>
+
+</body>
+</html>
+

@@ -1,0 +1,45 @@
+This directory provides bitmaps with the same size and naming
+conventions as those distributed till xboard-3.**
+These bitmaps are distributed under the GNU GENERAL PUBLIC LICENSE
+coming with xboard.
+
+The bitmaps contained herein were converted from my MetaFont
+version of chess font. These are designed very well to deliver
+good rastered images on low resolution devices. The general
+shape of these fonts are designed after very old typefaces
+used in printing chess books. They are not as fancy as the
+currently used bitmaps of xboard, but I like them in their
+'san serif'-ness - may be others too.
+  The MetaFont source of this font may be obtained from me
+under the GNU GENERAL PUBLIC LICENSE.
+  To convert the pk-Files to bitmaps I used the conversion tool
+mftobdf to generate X11-bdf - fonts, and then used a small C
+program, to write the xbm-files.
+
+5.Feb.1994 Elmar Bartel
+bartel@informatik.tu-muenchen.de
+
+* * *
+
+The 21-pixel bitmaps are also based on Elmar's font, but I hand-tuned
+them quite a bit.  I converted them from the Metafont gf file by
+running gftype and applying a C program of my own to the
+human-readable output.
+
+icon_white and icon_black were produced in the same way.
+
+21 Nov 1995  Tim Mann
+
+* * *
+
+I took the x40x.bm files from Tim's Xboard/bitmap distribution and modified
+them so as to have the light and dark colored square pieces (dark squares have 
+the cross-hatching found in most chess books).  Added empty squares. 
+
+The naming convention for the bitmaps is almost obvious.  The first character
+is the color of the square, the second is the color of the piece, and the
+third is the piece abbreviation (english bias: p, r, n, b, q, k).
+The blank squares are the only exception, they are simply wsq.bm and bsq.bm.
+
+6 Sep 1997 George Barrett
+grbarret@eecs.umich.edu

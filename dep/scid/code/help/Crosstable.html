@@ -1,0 +1,95 @@
+<html>
+<head>
+<title>
+Scid Help: 
+Crosstable window
+</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<STYLE TYPE="text/css">
+<!--
+  body { background: #ffffff; }
+  h1, h2, h3, h4, h5 { color: #990000; }
+  h1 { align: center; }
+-->
+</STYLE>
+</head>
+<body bgcolor="#ffffff">
+<h1>The Crosstable window</h1>
+<p>
+The crosstable window shows the tournament crosstable for the
+current game. Each time you refresh the crosstable window (by
+pressing its Refresh button, by pressing the <b>Return</b> key in the
+crosstable window, or by typing <b>Control+Shift+X</b> in the
+<a href="MainWindow.html">main</a> or <a href="GameList.html">game list</a> windows), Scid
+searches for all games in the same tournament as the current game.
+</p>
+<p>
+Any game played up to <b>three months before or after</b> the current game,
+with the <b>exact same Event and Site tags</b>, is considered to be in
+the tournament.
+</p>
+<p>
+A single left-mouse button click on any result in the crosstable
+loads the corresponding game.
+You can add all the games in the tournament to the
+<a href="Searches.html\#Filter">filter</a>
+with the <b>Add to filter</b> button in the crosstable window.
+</p>
+
+<h4>Crosstable window menus</h4>
+<p>
+The <b><font color="#007000">[File]</font></b> menu lets you print the current table to a file
+in plain text, LaTeX or HTML table format.
+</p>
+<p>
+The <b><font color="#007000">[Display]</font></b> menu allows you to choose the table format:
+<b>All-play-all</b>, <b>Swiss</b> or <b>Knockout</b> or <b>Auto</b>.
+</p>
+<p>
+The all-play-all format (for round-robin-type events) has a limit of 30
+players, but the Swiss format (for tournaments with many players) can
+display up to 200 players and up to 20 rounds. <b>Auto</b>, which chooses
+the best format automatically for each tournament, is the default.
+</p>
+<p>
+Note that Scid uses the <b>Round</b> tag of each game to produce a Swiss
+crosstable, so you will not see any games in the Swiss table for a tournament
+if its games do not have numeric round values: 1, 2, 3, etc.
+</p>
+<p>
+The Display menu also lets you customize the data presented to
+include or exclude ratings, countries and player titles. You can also
+choose whether color allocations in Swiss tables are displayed.
+</p>
+<p>
+The <b>Separate score groups</b> option only affects the layout of the table
+when the players are sorted by score: it causes a blank line to be inserted
+between each group of players with the same score.
+</p>
+<p>
+The <b><font color="#007000">[Sort]</font></b> menu allows you to sort the players by name, rating
+or score; by score is the default.
+</p>
+<p>
+The <b><font color="#007000">[Color]</font></b> menu lets you turn color (hypertext) display on or off.
+Since it can take a long time to format and display large crosstables in
+hypertext, selecting <b>Plain text</b> for large events will save a
+lot of time.
+However, in plain text mode you cannot click on players or games.
+</p>
+
+<h4>Duplicate games in crosstables</h4>
+<p>
+To get good results with the crosstable, you should mark duplicate games
+for deletion and your games should have consistent spelling of player,
+site and event names.
+See the <a href="Maintenance.html">database maintenance</a> page for help on
+deleting duplicate games and editing (or spellchecking)
+player/event/site names.
+</p>
+
+<p><center><font size=-1>(Updated: Scid 3.1, December 2001)</font></center></p>
+
+</body>
+</html>
+

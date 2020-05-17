@@ -1,0 +1,56 @@
+#!/usr/bin/env wish
+
+# wmtest:
+#  Test if your currently-running Unix/Linux window manager has
+#  a bug which causes window raising to be very slow in Tcl/Tk.
+#
+#  Usage:
+#    wmtest
+#    wish wmtest
+#    wish8.3 wmtest
+#  etc...
+
+package require Tk
+
+set start [clock seconds]
+set count 0
+set speed 0
+
+label .t -font {Helvetica 12 bold} -anchor w -justify left \
+  -text "Window raises per second: wait..."
+
+label .desc -font {Helvetica 10} -anchor w -justify left -text {
+This program tries to raise a window 10 times per second, to
+test for a bug that causes window raising to be very slow in
+Tcl/Tk with some window managers.
+
+If your window manager does not have the bug, you should see
+the rate approach the range 8-10 after several seconds and this
+window should raise itself whenever other windows obscure it.
+
+If your window manager has the bug, you will see a much lower
+value (maybe in the range 0-3) and it may be sensitive to the
+window being moved or partially obscured.
+}
+
+label .ver -font {Helvetica 10} -anchor w -justify left \
+  -text "Tcl/Tk version: $tk_version.  Patch level: $tk_patchLevel"
+
+button .quit -text "Exit" -command {destroy .; exit}
+
+pack .t .desc .ver .quit -side top -fill x
+
+proc do_raise {} {
+  global count speed start
+  raise .
+  incr count
+  set now [clock seconds]
+  if {($now - $start) > 2} {
+    set speed [format "%.2f" [expr $count / double($now - $start)]]
+    .t configure -text "Window raises per second: $speed"
+  }
+  after 100 do_raise
+}
+
+after 100 do_raise
+

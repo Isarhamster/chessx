@@ -1,0 +1,10 @@
+---
+Language:               Cpp
+PointerAlignment:       Left
+PenaltyBreakAssignment: 50
+UseTab:                 ForIndentation
+TabWidth:               4
+IndentWidth:            4
+AccessModifierOffset:  -4
+...
+
