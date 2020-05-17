@@ -7,24 +7,29 @@ on:
     branches: [ master ]
 
 jobs:
-  # install minimum supported Qt version
-  min-check:
+  build-unix:
     strategy:
       matrix:
-        qt: ['5.7']
-    runs-on: ubuntu-latest
+        os: ['ubuntu-latest', 'macos-latest']
+    runs-on: ${{ matrix.os }}
+    env:
+      QT_VERSION: '5.14.2'
+
     steps:
-    - name: Cache Qt ${{ matrix.qt }}
+    - name: Install pulseaudio
+      if: ${{ runner.os == 'Linux' }}
+      run: brew install pulseaudio
+    - name: Look for cached Qt ${{ env.QT_VERSION }}
       id: cache-qt
       uses: actions/cache@v1.2.0
       with:
-        path: ../Qt-${{ matrix.qt }}
-        key: ${{ runner.os }}-Qt${{ matrix.qt }}-test
-    - name: Install Qt ${{ matrix.qt }}
+        path: ../Qt${{ env.QT_VERSION }}
+        key: ${{ runner.os }}-Qt${{ env.QT_VERSION }}
+    - name: Install Qt ${{ env.QT_VERSION }}
       uses: jurplel/install-qt-action@v2.6.2
       with:
-        version: ${{ matrix.qt }}
-        dir: ${{ github.workspace }}/../Qt-${{ matrix.qt }}
+        version: ${{ env.QT_VERSION }}
+        dir: ${{ github.workspace }}/../Qt${{ env.QT_VERSION }}
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
     - name: Checkout sources
       uses: actions/checkout@v2.1.0
@@ -33,38 +38,78 @@ jobs:
     - name: Configure
       run: >-
         cmake -S . -B _build
-        -DENABLE_SOUNDS=OFF
-        -DENABLE_TTS=OFF
-        -DCMAKE_PREFIX_PATH=${{ github.workspace }}/../Qt-${{ matrix.qt }}/${{ matrix.qt }}/gcc_64/lib/cmake/Qt5
+        -DCMAKE_PREFIX_PATH="$Qt5_DIR;$(brew --prefix)/opt/pulseaudio/lib/cmake/PulseAudio"
     - name: Build
       run: cmake --build _build
     - name: Test
-      run: cd _build && ctest
+      # TODO: resolve the issue with test runner not being able to open
+      # libpulse-mainloop-glib.so.0 on Linus
+      if: ${{ runner.os != 'Linux' }}
+      run: cd _build && ctest -VV
 
-      #  build:
-      #    strategy:
-      #      matrix:
-      #        os: ['ubuntu-latest', 'windows-latest'] # TODO: add 'macos-latest'
-      #        qt: ['5.12.8']
-      #    runs-on: ${{ matrix.os }}
-      #
-      #    steps:
-      #    - name: Cache Qt
-      #      id: cache-qt
-      #      uses: actions/cache@v1.2.0
-      #      with:
-      #        path: ../Qt-${{ matrix.qt }}
-      #        key: ${{ runner.os }}-Qt-${{ matrix.qt }}
-      #    - name: Install Qt
-      #      uses: jurplel/install-qt-action@v2.6.2
-      #      with:
-      #        dir: ${{ github.workspace }}/../Qt-${{ matrix.qt }}
-      #        version: ${{ matrix.qt }}
-      #        modules: qtspeech
-      #        cached: ${{ steps.cache-qt.outputs.cache-hit }}
-      #    - uses: actions/checkout@v2.1.0
-      #    - name: Configure
-      #      run: qmake
-      #    - name: Build
-      #      run: make
+  build-windows:
+    runs-on: windows-latest
+    env:
+      QT_VERSION: '5.14.2'
+
+    steps:
+    - name: Look for cached Qt ${{ env.QT_VERSION }}
+      id: cache-qt
+      uses: actions/cache@v1.2.0
+      with:
+        path: ../Qt${{ env.QT_VERSION }}
+        key: ${{ runner.os }}-Qt${{ env.QT_VERSION }}
+    - name: Install Qt ${{ env.QT_VERSION }}
+      uses: jurplel/install-qt-action@v2.6.2
+      with:
+        version: ${{ env.QT_VERSION }}
+        dir: ${{ github.workspace }}/../Qt${{ env.QT_VERSION }}
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+    - name: Checkout sources
+      uses: actions/checkout@v2.1.0
+      with:
+        ref: ci-sandbox
+    # - name: Configure
+    #   run: cmake -S . -B _build -DCMAKE_PREFIX_PATH="$Qt5_DIR"
+    # - name: Build
+    #   run: cmake --build _build
+    # - name: Test
+    #   run: cd _build && ctest -VV
+
+  build-min:
+    # it's tempting to use an older "ubuntu-16.04" for speedup
+    # but it comes with GCC 5.4.0 which does not support c++17
+    runs-on: ubuntu-latest
+    env:
+      QT_VERSION: '5.7'
+  
+    steps:
+    - name: Cache Qt ${{ env.QT_VERSION }}
+      id: cache-qt
+      uses: actions/cache@v1.2.0
+      with:
+        path: ../Qt${{ env.QT_VERSION }}
+        key: ${{ runner.os }}-Qt${{ env.QT_VERSION }}
+
+    - name: Install Qt ${{ env.QT_VERSION }}
+      uses: jurplel/install-qt-action@v2.6.2
+      with:
+        version: ${{ env.QT_VERSION }}
+        dir: ${{ github.workspace }}/../Qt${{ env.QT_VERSION }}
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+
+    - name: Checkout sources
+      uses: actions/checkout@v2.1.0
+      with:
+        ref: ci-sandbox
+
+    - name: Configure
+      run: >-
+        cmake -S . -B _build -DCMAKE_PREFIX_PATH="$Qt5_DIR"
+        -DENABLE_SOUNDS=OFF
+        -DENABLE_TTS=OFF
+    - name: Build
+      run: cmake --build _build
+    - name: Test
+      run: cd _build && ctest -V
 
