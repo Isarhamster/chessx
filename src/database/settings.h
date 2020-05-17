@@ -81,6 +81,8 @@ public:
 
     /// Overloading value from QSettings with a single place where defaults come from
     QVariant getValue(const QString &key) const;
+    /// Shadow `QSettings::setValue()` to have a hook for updating global state
+    void setValue(const QString& key, const QVariant& val);
 
     void setMap(const QString& key, const OptionValueList& map);
     void getMap(const QString& key, OptionValueList& map);
@@ -106,6 +108,7 @@ public:
     static QString portableIniPath();
 private:
 
+    void initialize();
     QMap<QString, QVariant> initDefaultValues() const;
     QString m_dataPath;
 

@@ -121,6 +121,36 @@ public:
     QString toFen(bool forceExtendedFEN=false) const;
     /** Return a FEN string in human readable format based on current board position */
     QString toHumanFen() const;
+
+    // Move formatting
+    /** Maps piece type to short string used in SAN */
+    class PieceNames
+    {
+    public:
+        PieceNames();
+        PieceNames(const QString& k, const QString& q, const QString& r, const QString& b, const QString& n);
+
+        /** @returns abbreviation for piece @p type */
+        QString get(PieceType type) const;
+        /** Set abbreviation for a piece @p type */
+        void set(PieceType type, const QString& name);
+        /** Set abbreviations for all piece types at once
+         *  @note This method expects 1 letter per piece.
+         * If called with a string of incompatible length, FAN will be used.
+         */
+        void set(const QString& pieces);
+
+        /** unicode letters (♔♕♖♗♘) aka FAN */
+        static const PieceNames& figurine();
+        /** english convention (KQRBN) */
+        static const PieceNames& english();
+        /** global customizable instance */
+        static PieceNames& custom();
+    private:
+        static const int PieceTypeCount = 7;
+        QString m_names[PieceTypeCount];
+    };
+
     /** Return a SAN string representation of given move */
     QString moveToSan(const Move& move, bool translate = false, bool extend = false) const;
     /** @return a SAN string representing a given move with move number. */
@@ -508,6 +538,18 @@ inline Square BitBoard::enPassantSquare() const
 inline CastlingRights BitBoard::castlingRights() const
 {
     return m_castle;
+}
+
+inline QString BitBoard::PieceNames::get(PieceType type) const
+{
+    Q_ASSERT(0 <= type && type < PieceTypeCount);
+    return m_names[type];
+}
+
+inline void BitBoard::PieceNames::set(PieceType type, const QString &name)
+{
+    Q_ASSERT(0 <= type && type < PieceTypeCount);
+    m_names[type] = name;
 }
 
 #endif // BITBOARD_H_INCLUDED
