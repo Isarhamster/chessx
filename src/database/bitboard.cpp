@@ -10,7 +10,6 @@
  ***************************************************************************/
 
 #include "bitboard.h"
-#include "settings.h"
 #include "square.h"
 #include "bitfind.h"
 
@@ -141,6 +140,48 @@ const quint64 fileNotGH   = ~(fileG | fileH);
 #define ShiftDownRight(b) (((b)>>7)&fileNotA)
 #define SetBit(s)         (bb_Mask[s])
 
+BitBoard::PieceNames::PieceNames(const QString& k, const QString& q, const QString& r, const QString& b, const QString& n)
+    :m_names {"", k, q, r, b, n, ""}
+{}
+
+BitBoard::PieceNames::PieceNames()
+    :PieceNames("K", "Q", "R", "B", "N")
+{}
+
+const BitBoard::PieceNames& BitBoard::PieceNames::figurine()
+{
+    static PieceNames names("&#x2654;", "&#x2655;", "&#x2656;", "&#x2657;", "&#x2658;");
+    return names;
+}
+
+const BitBoard::PieceNames& BitBoard::PieceNames::english()
+{
+    static PieceNames names("K", "Q", "R", "B", "N");
+    return names;
+}
+
+BitBoard::PieceNames& BitBoard::PieceNames::custom()
+{
+    static PieceNames names(figurine());
+    return names;
+}
+
+void BitBoard::PieceNames::set(const QString &pieces)
+{
+    const int expectedLength = PieceTypeCount - 1; // without pawn
+    if (pieces.length() == expectedLength)
+    {
+        set(King, pieces.at(King));
+        set(Queen, pieces.at(Queen));
+        set(Rook, pieces.at(Rook));
+        set(Bishop, pieces.at(Bishop));
+        set(Knight, pieces.at(Knight));
+    }
+    else
+    {
+        *this = figurine();
+    }
+}
 
 /** Initialize a new bitboard, and ensure global data has been initialized */
 BitBoard::BitBoard()
@@ -197,40 +238,9 @@ void BitBoard::removeIllegal(const Move& move, quint64& b) const
     }
 }
 
-inline QString sanPiece(int piece, bool translate = false)
-{
-    if(!translate)
-    {
-        return QString(" KQRBN"[piece]);
-    }
-
-    QString pieceString = AppSettings->getValue("/GameText/PieceString").toString();
-    if(pieceString.length() == 6)
-    {
-        return QString(pieceString.at(piece));
-    }
-
-    switch(piece)
-    {
-    case 0:
-        return " ";
-    case 1:
-        return "&#x2654;";
-    case 2:
-        return "&#x2655;";
-    case 3:
-        return "&#x2656;";
-    case 4:
-        return "&#x2657;";
-    case 5:
-        return "&#x2658;";
-    }
-
-    return " ";
-}
-
 QString BitBoard::moveToSan(const Move& move, bool translate, bool extend) const
 {
+    const PieceNames& abbrev = translate? PieceNames::custom(): PieceNames::english();
     QString san;
     Square from = move.from();
     Square to = move.to();
@@ -264,7 +274,7 @@ QString BitBoard::moveToSan(const Move& move, bool translate, bool extend) const
     {
         if(!isPawn)
         {
-            san += sanPiece(m_piece[from], translate);
+            san += abbrev.get(PieceType(m_piece[from]));
 
             // We may need disambiguation
             quint64 others = 0;
@@ -341,7 +351,7 @@ QString BitBoard::moveToSan(const Move& move, bool translate, bool extend) const
     if(move.isPromotion())
     {
         san += '=';
-        san += sanPiece(move.promoted(), translate);
+        san += abbrev.get(PieceType(move.promoted()));
     }
 
     BitBoard check(*this);
