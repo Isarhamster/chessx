@@ -1,0 +1,391 @@
+#------------------------------------------------------------------------------
+#	Scid (Shane's Chess Information Database)
+#	Copyright (C) 2000-2002, Shane Hudson (sgh@users.sourceforge.net)
+#
+#	Microsoft Visual C++ makefile for use with nmake.exe v1.62+ (VC++ 5.0+)
+#       VC++ 6 and 7
+#------------------------------------------------------------------------------
+#
+#	Usage:
+#
+#	1) Targets are:
+#		release	-- Builds scid.exe (default).
+#		all	-- Builds everything.
+#		clean	-- removes the contents of $(TMP_DIR).
+#		hose	-- removes the contents of $(TMP_DIR) and $(OUT_DIR).
+#		rebuild	-- first cleans then builds release.
+#
+#
+#	2) Macros usable on the commandline:
+#		LANG=<language>
+#			-- This allows you to build the GUI with only english
+#			   and one other language
+#			<language>
+#				portbr		-- Brazilian Portuguese
+#				czech		-- Czech
+#				deutsch		-- German
+#				english		-- English only
+#				spanish		-- Spanish
+#				francais	-- French
+#				hungary		-- Hungarian
+#				italian		-- Italian
+#				nederlan	-- Dutch
+#				norsk		-- Norwegian
+#				polish		-- Polish
+#				russian		-- Russian
+#				serbian		-- Serbian
+#				swedish		-- Swedish
+#
+#		DEBUG=1
+#			-- Builds debug versions of scid.exe.
+#
+#		GLOBAL_OPT=1
+#			-- Enables 'Whole Program Optimization' (VC 7.0+)
+#
+#		TMP_DIR=<path>
+#		OUT_DIR=<path>
+#			-- Allows the intermediate and output directories to be
+#			   changed.
+#			   $(OUT_DIR) is assumed to be .\(Release|Debug) based
+#			   on if debug is requested or not.
+#			   $(TMP_DIR) will be $(OUT_DIR)\Temp by default.
+#
+#		TCL_DIR=<path>
+#			-- Allows the Tcl directory location to be changed. If
+#			   this is not set, the makefile will attempt to locate
+#			   Tcl in its default install directory.
+#			   "C:\Program Files\Tcl"
+#
+#	3) Examples:
+#
+#	Basic syntax of calling nmake looks like this:
+#	nmake -f makefile.vc [target|macrodef [target|macrodef] [...]]
+#
+#	Release
+#		c:\scid_src>nmake -f makefile.vc release
+#
+#	Release with English and French only
+#		c:\scid_src>nmake -f makefile.vc release LANG=francais
+#
+#	Release with Tcl in a non-default directory
+#		c:\scid_src>nmake -f makefile.vc release TCL_DIR="C:\Temp\Tcl"
+#
+#	Everything with Tcl and Tk in a non-default directory
+#		c:\scid_src>nmake -f makefile.vc all TCL_DIR="E:\Tcl" TK_DIR="E:\Tcl"
+#------------------------------------------------------------------------------
+
+!message ===============================================================================
+
+#--------------------------------------------------------------------
+# Environment Setup
+#--------------------------------------------------------------------
+
+##	Set compiler and linker
+#
+CC		= @cl
+LD		= @link
+RC		= @rc
+
+
+##	Set Output and Intermediate directory
+#
+!if "$(OUT_DIR)" == ""
+!if "$(DEBUG)" == "1"
+OUT_DIR		= .\Debug
+!else
+OUT_DIR		= .\Release
+!endif
+!endif
+!message *** Output directory		= '$(OUT_DIR)'
+
+!ifndef TMP_DIR
+TMP_DIR		= $(OUT_DIR)\Temp
+!endif
+!message *** Intermediate directory	= '$(TMP_DIR)'
+
+##	TCL_VERSION: Tcl/Tk version
+#	This should be "85" for Tcl/Tk 8.5, etc.
+#
+TCL_VERSION	= 86
+
+##	SCID_INCLUDES: included files from Tcl/Tk
+#	This will try to find your Tcl/Tk installation.
+#
+!ifndef TCL_DIR
+!if exist("C:\Tcl\include\tcl.h")
+TCL_DIR		= C:\Tcl
+!else
+MSG=^
+*** Don't know where Tcl is.  Set the TCL_DIR macro.
+!error $(MSG)
+!endif
+!else
+!if exist("$(TCL_DIR)\include\tcl.h")
+!elseif exist("$(TCL_DIR)\generic\tcl.h")
+MSG =^
+*** Tcl source found.  The TCL_DIR macro must point to the installed version.
+!error $(MSG)
+!else
+MSG =^
+*** Don't know where Tcl is.  The TCL_DIR macro doesn't appear correct.
+!error $(MSG)
+!endif
+!endif
+TCL_INCLUDES	= -I"$(TCL_DIR)\include"
+!message *** Tcl directory		= '$(TCL_DIR)'
+
+SCID_INCLUDES	= $(TCL_INCLUDES)
+
+!if exist("$(TCL_DIR)\lib\tcl$(TCL_VERSION)t.lib")
+TCL_LIB		= "$(TCL_DIR)\lib\tcl$(TCL_VERSION)t.lib"
+!elseif exist("$(TCL_DIR)\lib\tcl$(TCL_VERSION).lib")
+TCL_LIB		= "$(TCL_DIR)\lib\tcl$(TCL_VERSION).lib"
+!else
+MSG =^
+*** The file tcl$(TCL_VERSION).lib appears to be missing or the wrong version.
+!error $(MSG)
+!endif
+
+##	SCID_TB: Tablebase support.
+#	for no tablebase reading capability.
+#		Use:	SCID_TB =
+#	for tablebase capability.
+#		Use:	SCID_TB = -DSCID_USE_TB
+#	for tablebase capability including 4-1
+#	(King + 3 pieces vs lone king) tablebases.
+#		Use:	SCID_TB = -DSCID_USE_TB -DT41_INCLUDE
+#
+#	Note: With 4-1 (King + 3 pieces vs lone King) tablebases,
+#	older MS compilers need a "/Zm" option to tell them to use
+#	more memory when compiling.
+#
+SCID_TB		= -DSCID_USE_TB -DT41_INCLUDE -Zm101
+
+##	SCID_EXECS: all the executable programs compiled from C++ files.
+#	Note: only "scid.exe" is compiled by default.
+#
+SCID_EXECS = \
+	scid.exe \
+
+##	SCID_OBJS: not all the .obj files that make up Scid, just the standard
+#	files that most of the Scid programs use.
+#
+SCID_OBJS = \
+	$(TMP_DIR)\codec_scid4.obj \
+	$(TMP_DIR)\game.obj \
+	$(TMP_DIR)\matsig.obj \
+	$(TMP_DIR)\misc.obj \
+	$(TMP_DIR)\position.obj \
+	$(TMP_DIR)\stored.obj \
+	$(TMP_DIR)\textbuf.obj \
+	$(TMP_DIR)\scid.res \
+	$(TMP_DIR)\sortcache.obj \
+	$(TMP_DIR)\scidbase.obj \
+	$(TMP_DIR)\spellchk.obj \
+	$(TMP_DIR)\filter.obj \
+	$(TMP_DIR)\searchindex.obj \
+	$(TMP_DIR)\sc_base.obj \
+	$(TMP_DIR)\sc_filter.obj \
+	$(TMP_DIR)\sc_info.obj \
+	$(TMP_DIR)\dbasepool.obj \
+	$(TMP_DIR)\polyglot\attack.obj $(TMP_DIR)\polyglot\board.obj $(TMP_DIR)\polyglot\book.obj \
+	$(TMP_DIR)\polyglot\colour.obj $(TMP_DIR)\polyglot\fen.obj $(TMP_DIR)\polyglot\hash.obj \
+	$(TMP_DIR)\polyglot\list.obj $(TMP_DIR)\polyglot\main.obj $(TMP_DIR)\polyglot\move.obj \
+	$(TMP_DIR)\polyglot\move_do.obj $(TMP_DIR)\polyglot\move_gen.obj $(TMP_DIR)\polyglot\move_legal.obj $(TMP_DIR)\polyglot\option.obj \
+	$(TMP_DIR)\polyglot\piece.obj $(TMP_DIR)\polyglot\random.obj \
+	$(TMP_DIR)\polyglot\san.obj $(TMP_DIR)\polyglot\square.obj $(TMP_DIR)\polyglot\util.obj
+
+
+##	SCID_XOBJS: all the extra .obj files that make up Scid.
+#
+SCID_XOBJS = \
+	$(SCID_OBJS) \
+	$(TMP_DIR)\crosstab.obj \
+	$(TMP_DIR)\engine.obj \
+	$(TMP_DIR)\optable.obj \
+	$(TMP_DIR)\pbook.obj \
+	$(TMP_DIR)\probe.obj \
+	$(TMP_DIR)\recog.obj
+
+
+#--------------------------------------------------------------------
+# Compile flags
+#--------------------------------------------------------------------
+
+##	OPTIMIZE: Optimization
+#	-O2	:Maximize Speed
+#	-Op	:Improve Float Consistency
+#	-GL	:Whole Program Optimization
+#	-QI0f	:Enable Pentium 0x0f Fix
+#
+!if "$(DEBUG)" == "1"
+OPTIMIZE	= -ZI -Fd$(TMP_DIR)\ -Od
+!message *** Build 'Debug' Version	= yes
+!else
+OPTIMIZE	= -O2 /EHsc
+!message *** Build 'Release' Version	= yes
+!if "$(GLOBAL_OPT)" == "1"
+OPTIMIZE	= $(OPTIMIZE) -GL
+!message *** Whole Program Optimization	= yes
+!endif
+!endif
+
+##	WARNINGS: I always compile with all warnings on (-Wall)
+#	Note: (-W2) is the default for MS compiler.
+#
+!if "$(DEBUG)" == "1"
+WARNINGS	= -W3
+!else
+WARNINGS	= -W2
+!endif
+
+##	PROFILE: Set profile for compiling
+#	-DNDEBUG		:Turn off debug code
+#	-DWIN32			:Target Windows 32bit
+#	-DWIN32_LEAN_AND_MEAN	:Speeds building times by excluding some less
+#				 common APIs
+#
+!if "$(DEBUG)" == "1"
+PROFILE		= -D_DEBUG -DDEBUG
+!else
+PROFILE		= -DNDEBUG
+!endif
+PROFILE		= $(PROFILE) -DWIN32 -DWIN32_LEAN_AND_MEAN
+
+##	CFLAGS: C++ compiler flags
+#	-c	:Compile Without linking
+#
+CFLAGS		= $(PROFILE) $(OPTIMIZE) $(WARNINGS) \
+			$(SCID_INCLUDES) -c -nologo -std:c++17
+!message *** CFLAGS: $(CFLAGS)
+
+
+
+#--------------------------------------------------------------------
+# Link flags
+#--------------------------------------------------------------------
+
+##	LDFLAGS: C++ linker flags
+#	-LTCG	:Link-time Code Generation
+#
+!if "$(DEBUG)" == "1"
+LDFLAGS		= -debug:full
+!else
+LDFLAGS		= -opt:icf,3
+!if "$(GLOBAL_OPT)" == "1"
+LDFLAGS		= $(LDFLAGS) -ltcg:status
+!endif
+!endif
+LDFLAGS		= $(LDFLAGS) -nologo
+!message *** LDFLAGS: $(LDFLAGS)
+
+!message ===============================================================================
+!message
+
+
+#--------------------------------------------------------------------
+# Project specific targets
+#--------------------------------------------------------------------
+
+release:	setup scid.exe
+all:		setup $(SCID_EXECS)
+
+setup:
+	@if not exist $(OUT_DIR)\nul \
+		@echo *** Creating directory '$(OUT_DIR)'...
+	@if not exist $(OUT_DIR)\nul mkdir $(OUT_DIR)
+	@if not exist $(TMP_DIR)\nul \
+		@echo *** Creating directory '$(TMP_DIR)'...
+	@if not exist $(TMP_DIR)\nul mkdir $(TMP_DIR)
+	@if not exist $(TMP_DIR)\polyglot\nul \
+		@echo *** Creating directory '$(TMP_DIR)\polyglot'...
+	@if not exist $(TMP_DIR)\polyglot\nul mkdir $(TMP_DIR)\polyglot
+	@if not exist $(OUT_DIR)\books\nul \
+		@echo *** Creating directory '$(OUT_DIR)\books'...
+	@if not exist $(OUT_DIR)\books\nul mkdir $(OUT_DIR)\books
+
+scid.exe: $(TMP_DIR)\scid.obj $(SCID_XOBJS)
+	@echo *** scid.exe
+	$(LD) $(LDFLAGS) $(TMP_DIR)\scid.obj $(SCID_XOBJS) $(TCL_LIB) \
+		/out:$(OUT_DIR)\scid.exe \
+		/subsystem:windows /entry:mainCRTStartup
+
+
+#--------------------------------------------------------------------
+# Special case object file targets
+#--------------------------------------------------------------------
+
+$(TMP_DIR)\scid.obj: src\tkscid.cpp
+	$(CC) $(CFLAGS) /Fo$@ $?
+
+$(TMP_DIR)\probe.obj: src\probe.cpp src\egtb\tbindex.cpp src\egtb\tbdecode.c
+	$(CC) $(CFLAGS) $(SCID_TB) src\probe.cpp /Fo$@
+
+
+#--------------------------------------------------------------------
+# Implicit rules
+#--------------------------------------------------------------------
+
+{src}.cpp{$(TMP_DIR)}.obj:
+	$(CC) $(CFLAGS) -Fo$(TMP_DIR)\ $<
+
+{src\egtb}.cpp{$(TMP_DIR)}.obj:
+	$(CC) $(CFLAGS) -Fo$(TMP_DIR)\ $<
+
+{src\egtb}.c{$(TMP_DIR)}.obj:
+	$(CC) $(CFLAGS) -Fo$(TMP_DIR)\ $<
+
+{src\polyglot}.cpp{$(TMP_DIR)\polyglot}.obj:
+	$(CC) $(CFLAGS) -Fo$(TMP_DIR)\polyglot\ $<
+	
+{resources\win}.rc{$(TMP_DIR)}.res:
+	$(RC) -r -Fo$(TMP_DIR)\$(@B).res $<
+
+
+#--------------------------------------------------------------------
+# Clean up
+#--------------------------------------------------------------------
+
+!if "$(OS)" == "Windows_NT"
+RMDIR		= rmdir /S /Q
+!else
+RMDIR		= deltree /Y
+!endif
+
+##	clean:
+#	This will remove .obj files.
+#
+clean:
+	@echo Cleaning...
+	@echo.
+	@if exist $(TMP_DIR)\nul @echo *** Removing directory '$(TMP_DIR)'...
+	@if exist $(TMP_DIR)\nul $(RMDIR) $(TMP_DIR)
+	@echo.
+	@echo Finished
+	@echo ===============================================================================
+
+##	hose:
+#	This will remove .exe and .obj files.
+#
+hose:
+	@echo Hosing...
+	@echo.
+	@if exist $(OUT_DIR)\nul @echo *** Removing directory '$(OUT_DIR)'...
+	@if exist $(OUT_DIR)\nul $(RMDIR) $(OUT_DIR)
+	@echo.
+	@echo Finished
+	@echo ===============================================================================
+
+##	rebuild:
+#	This will clean and then rebuild .obj and .exe files.
+#
+rebuild:
+	@echo Cleaning...
+	@echo.
+	@$(MAKE) -fmakefile.vc -$(MAKEFLAGS) clean -nologo > nul
+	@echo Building...
+	@echo.
+	@$(MAKE) -fmakefile.vc -$(MAKEFLAGS) -nologo
+	@echo.
+	@echo Finished
+	@echo ===============================================================================

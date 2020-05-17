@@ -1,0 +1,77 @@
+<html>
+<head>
+<title>
+Scid Help: 
+Exporting games
+</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<STYLE TYPE="text/css">
+<!--
+  body { background: #ffffff; }
+  h1, h2, h3, h4, h5 { color: #990000; }
+  h1 { align: center; }
+-->
+</STYLE>
+</head>
+<body bgcolor="#ffffff">
+<h1>Exporting games</h1>
+<p>
+You can use commands under the <b><font color="#007000">[Tools]</font></b> menu to export the current
+game or all games in the current filter to a text file.
+</p>
+<p>
+Three text file formats are available: <a href="PGN.html">PGN</a> (portable game
+notation), HTML (for web pages) and LaTeX (a popular typesetting system).
+</p>
+<p>
+When exporting, you can choose to create a new file, or add the games to
+an existing file of games exported by Scid.
+</p>
+
+<h3>Diagrams</h3>
+<p>
+When exporting in HTML or LaTeX format, Scid will automatically add a
+diagram wherever a diagram <a href="NAGs.html">nag</a> ("D") or a <a href="Comment.html">comment</a>
+that starts with the character "#" appears in the game.
+</p>
+
+<h3><a name="Null">Null moves in PGN Export</a></h3>
+<p>
+Scid allows <a href="Annotating.html\#Null">null (empty) moves</a> to be stored in
+games, as they can be helpful when annotating games using variations.
+However, the PGN standard has no null move concept. So if you export
+Scid games with null moves to a PGN file, other PGN-reading software
+will not be able to read the null moves.
+</p>
+<p>
+To solve this problem, Scid provides an extra option,
+<b>Convert null moves to comments</b>, when exporting games in PGN format.
+If you want to create a PGN file that other software can use, turn this
+option on and variations containing null moves will be converted to
+comments. However, if you want to create a PGN file that can be imported
+back into Scid later with null moves preserved, leave the option off.
+</p>
+
+<h3>HTML Export</h3>
+<p>
+Scid can export games to an HTML file. For diagrams to appear, you will
+need the diagram images (distributed with Scid in the directory
+"<b>bitmaps/</b>") to be in a subdirectory <b>bitmaps/</b> under the
+directory the HTML file is in.
+</p>
+
+<h3>LaTeX Export</h3>
+<p>
+Scid can export games to a LaTeX file.
+Games be printed two columns to a page and moves are in
+figurine algebraic notation.
+</p>
+<p>
+See the <a href="LaTeX.html">Using LaTeX with Scid</a> help page for more information.
+</p>
+
+<p><center><font size=-1>(Updated: Scid 3.4, July 2002)</font></center></p>
+
+</body>
+</html>
+

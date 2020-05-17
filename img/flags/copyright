@@ -1,0 +1,9 @@
+### Original work from Andy Templeton (Palview)
+###     http://www.enpassant.dk/chess/palview/index.htm
+### and where slightly edited by Austin Lockwood for the usage at
+###     http://www.schemingmind.com
+### Usage for scid granted May, 23 2008 :)
+###
+### Each flags dimension is 24x12 pixels.
+#======================================================================
+

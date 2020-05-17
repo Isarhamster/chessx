@@ -1,0 +1,183 @@
+<html>
+<head>
+<title>
+Scid Help: 
+Searches
+</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<STYLE TYPE="text/css">
+<!--
+  body { background: #ffffff; }
+  h1, h2, h3, h4, h5 { color: #990000; }
+  h1 { align: center; }
+-->
+</STYLE>
+</head>
+<body bgcolor="#ffffff">
+<h1>Searches in Scid</h1>
+<p>
+Scid can perform many different types of search on a database.
+The three main types of search are:
+<ul>
+<li><b>1)</b> for the current board, </li>
+<li><b>2)</b> for specified material and piece patterns, and </li>
+<li><b>3)</b> by header information such as players, result, date. </li>
+</ul>
+<p>
+In addition to these, there is also an automatic search mode called the
+<a href="Tree.html">Tree window</a> which is explained separately.
+</p>
+
+<h3><a name="Filter">The Search Filter</a></h3>
+<p>
+Searches in Scid are based on the concept of a <b><i><font color="#990000">filter</font></i></b>.
+The filter represents a subset of the current database; at any time,
+each game is either included in or excluded from the filter.
+</p>
+<p>
+With each type of search, you can choose to restrict the existing
+filter, add to it, or ignore it and search the whole database.
+This choice permits complex searches to be built up incrementally.
+</p>
+<p>
+You can also copy all games in the filter of one database to another,
+using the <a href="Switcher.html">database switcher</a> window.
+</p>
+<p>
+With exact position, <a href="Tree.html">tree</a> or material/pattern searches, the
+move number of the first matching position of each matching game is
+remembered, so when you load each game it will show the matching position
+automatically.
+</p>
+<p>
+<b>Note</b> that searches only apply to the main line moves of a game,
+not to any moves in variations.
+</p>
+
+<h3><a name="Board">Search: Current Board</a></h3>
+<p>
+This search finds games that contain the current displayed position,
+ignoring castling and <i>en passant</i> rights.
+</p>
+<p>
+There are four board search types available. All four require a position
+to have the same exact material and side to move for a match.
+The types are:
+<ul>
+<li> [1] exact (the two positions must match on every square), </li>
+<li> [2] pawns (the pawn structure must match exactly, but other pieces
+     can be anywhere), </li>
+<li> [3] files (the number of white and black pawns on each file must match
+     exactly, but other pieces can be anywhere), and </li>
+<li> [4] material (pawns and pieces can be anywhere). </li>
+</ul>
+<p>
+The pawns search is useful for studying openings by pawn structure, and
+the files and material searches are useful for finding similar positions
+in an endgame.
+</p>
+<p>
+To search for an arbitrary position, you can set the position first
+(from the <b><font color="#007000">[Edit: Setup Start Board]</font></b> menu) and then
+start the search.
+</p>
+<p>
+You can request that the search look in variations (instead of only
+examining actual game moves) by selecting the <b>Look in variations</b>
+checkbox, but this may make the search much slower if your database
+is large and has many games with variations.
+</p>
+
+<h3><a name="Material">Search: Material/Pattern</a></h3>
+<p>
+This search is useful for finding endgame or middlegame themes.
+You can specify minimum and maximum amounts of each type of material,
+and find patterns such as a Bishop on f7, or a pawn on the f-file.
+</p>
+<p>
+A number of common material and pattern settings are provided, such
+as Rook vs. Pawn endings, or isolated Queens pawns.
+</p>
+<p>
+<b>Hints:</b><br>
+The speed of pattern searches can vary widely. You can reduce the time
+needed for a search by setting restrictions intelligently. For example,
+if you set the minimum move number to 20 for an ending, all games that
+end in under 20 moves can be skipped.
+</p>
+
+<h3><a name="Header">Search: Header</a></h3>
+<p>
+This search can be used to find aspects of the game that are
+stored in the header (such as date, result, names, flags and ratings),
+so it does not require any moves to be decoded.
+</p>
+<p>
+For a game to match a Header search, <b>all</b> fields that you
+specify must match.
+</p>
+<p>
+The name fields (White, Black, Event, Site and Round) match on any text
+inside the name, case-insensitive and ignoring spaces.
+</p>
+<p>
+You can do case-sensitive wildcard searches for the White, Black, Event,
+Site and Round fields (with <b>?</b> representing one character and
+<b>*</b> representing zero or more characters) by putting the
+search text in double quotes. For example a search for the site <b>USA</b>
+will find American cities and also <b>Lausanne SUI</b>, which is probably
+not what you wanted! A search for the site <b>"*USA"</b> (remember to
+use the double-quotes) will only match cities in the United States.
+</p>
+<p>
+If you are searching for a particular player (or pair of opponents) as White
+or Black and it does not matter what color they played, select the
+<b>Ignore Colors</b> option.
+</p>
+<p>
+Finally, the Header search can be used to find any text (case-sensitive
+and without wildcards) in the PGN representation of each game.
+You may enter up to three text phrases, and they must all appear in a
+game for it to be a match.
+This search is very useful for searching in the comments or extra tags of
+a game (such as <b>lost on time</b> or <b>Annotator</b>),
+or for a move sequence like <b>Bxh7+</b> and <b>Kxh7</b> for a bishop
+sacrifice on h7 that was accepted.
+However, this type of search can be <i>very</i> slow since all the games that
+match other criteria must be decoded and scanned for the text phrases.
+So it is a good idea to limit these searches as much as possible.
+Here are some examples.
+To find games with under-promotions to a rook,
+search for <b>=R</b> and also set the <b>Promotions</b> flag to Yes.
+When searching for text that would appear in comments, set
+the <b>Comments</b> flag to Yes.
+If you are searching for the moves <b>Bxh7+</b> and <b>Kxh7</b>, you
+may want to restrict the search to games with a 1-0 result and at least 40
+half-moves, for example, or do a material/pattern search first to find
+games where a white bishop moves to h7.
+</p>
+
+<h3><a name="Settings">Saving search settings</a></h3>
+<p>
+The Material/Pattern and Header search windows provide a
+<b><i><font color="#990000">Save settings</font></i></b> button. This lets you save the current
+search settings for later use, to a <b><i><font color="#990000">SearchOptions</font></i></b> file
+(suffix .sso).
+To search using a previously saved SearchOptions (.sso) file, select
+<b><font color="#007000">[Open]</font></b> from the <b><font color="#007000">[Search]</font></b> menu.
+</p>
+
+<h3>Search times and skipped games</h3>
+<p>
+Most searches produce a message indicating the time taken and the number
+of games that were <b><i><font color="#990000">skipped</font></i></b>. A skipped game is one that can
+be excluded from the search without decoding any of its moves, based on
+information stored in the index. See the help page on
+<a href="Formats.html">file formats</a> for more information.
+</p>
+
+<p><center><font size=-1>(Updated: Scid 3.0, November 2001)</font></center></p>
+
+</body>
+</html>
+

@@ -1,0 +1,143 @@
+<html>
+<head>
+<title>
+Scid Help: 
+Tablebases
+</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<STYLE TYPE="text/css">
+<!--
+  body { background: #ffffff; }
+  h1, h2, h3, h4, h5 { color: #990000; }
+  h1 { align: center; }
+-->
+</STYLE>
+</head>
+<body bgcolor="#ffffff">
+<h1>Tablebases</h1>
+
+<p>
+A <b><i><font color="#990000">tablebase</font></i></b> is a file containing the perfect result
+information about all positions of a particular material setup,
+such as King and Rook versus King and Pawn. Tablebases for all
+material situations up to five men (including the Kings) have been
+generated, and some simple 6-men tablebases are also available.
+</p>
+<p>
+Scid can use Nalimov-format tablebases that are used by many modern
+chess engines. These often end with the file suffix <b>.nbw.emd</b>
+or <b>.nbb.emd</b>. All 3-, 4- and 5-men Nalimov tablebases can be
+used in Scid.
+</p>
+
+<h3>Using tablebases in Scid</h3>
+<p>
+To use tablebase files in Scid, simply set their directories by
+selecting <b>Tablebase directory...</b> from the <b><font color="#007000">[Options]</font></b> menu.
+You can select up to 4 directories where your tablebase files are stored.
+You can press a <b>...</b> button to the right of an entry to choose a
+file, to specify that the directory of that file should be used.
+</p>
+<p>
+When a position found in a tablebase file is reached, the game information
+area (below the chessboard) will show tablebase information. You can
+configure the amount of information shown by clicking the right-mouse
+button in that area or selecting <b>Game information</b> from the
+<b><font color="#007000">[Options]</font></b> menu. Selecting the "result and best moves" option
+gives the most useful information, but is much often slower than
+the "result only" option.
+</p>
+
+<h3>The Tablebase window</h3>
+<p>
+You can get even more tablebase information about the current position
+by opening the <b><i><font color="#990000">Tablebase window</font></i></b> (<b><font color="#007000">[Windows]</font></b> menu,
+shortcut: Ctrl+Shift+=). This window shows the result with perfect play
+of all legal moves from the current position.
+</p>
+<p>
+The window has two main parts. The summary frame (on the left) shows
+which tablebases Scid found on your computer and a summary for each
+tablebase. The results frame (on the right) shows optimal results for
+all moves from the current position displayed in the main window.
+</p>
+
+<h4>The summary frame</h4>
+<p>
+The top part of the summary frame lets you select a particular
+tablebase. Those you have available are shown in blue and unavailable
+tablebases are shown in gray, but you can select any tablebase.
+The lower part of the summary frame shows summary information for the
+selected tablebase. (Not all tablebases have a summary recorded in
+Scid yet.)
+</p>
+<p>
+The summary includes the frequency (how many games per million reach a
+position with this material, computed from a database of more than
+600,000 master-level games), a longest mate for either side, and the
+number of mutual (or "reciprocal") zugzwangs. A mutual zugzwang is a
+position where white to move draws and black to move loses, or where
+white to move loses and black to move draws, or where whoever moves
+loses.
+</p>
+<p>
+For some tablebases with mutual zugzwangs, the summary also includes
+a list of all of the zugzwang positions or a selection of them. A full
+list for every tablebase is not feasible since some tablebases have
+thousands of mutual zugzwangs.
+</p>
+<p>
+You can set up a random position from the selected tablebase by pressing
+the <b>Random</b> button.
+</p>
+
+<h4>The results frame</h4>
+<p>
+The results frame is updated whenever the chessboard in the main window
+changes. The first line shows how many moves win (+), draw (=), lose (-),
+or have an unknown result (?). The rest of the frame gives a more detailed
+list of results, ranking them from shortest to longest mates, then draws,
+then longest to shortest losses. All distances are to checkmate.
+</p>
+
+<h4>The results board</h4>
+<p>
+In a tablebase position, it is often useful what the tablebase results
+would be if all the pieces in the current position were on their
+current squares but one particular piece was moved somewhere else.
+For example, you may want to determine how close a king has to be to
+a passed pawn to win or draw a particular position. In endgame books
+this information is often called the <i>winning zone</i> or
+<i>drawing zone</i> of a piece in a position.
+</p>
+<p>
+You can find this information in Scid by pressing the button with an
+image of a chessboard, to show the <b><i><font color="#990000">results board</font></i></b> in the
+tablebase window.
+When you press the left mouse button on any piece in this board, a
+symbol is drawn in each empty square showing what the tablebase result
+would be (with the same side to move as the current main window position)
+if the selected piece was on that square.
+</p>
+<p>
+There are five different symbols a square can have:
+a white <b>#</b> means White wins;
+a black <b>#</b> means Black wins;
+a blue <b>=</b> means the position is drawn;
+a red <b>X</b> means the position is illegal (because the kings are
+adjacent or the side to move is giving check); and
+a red <b>?</b> means the result is unknown because the necessary
+tablebase file is not available.
+</p>
+
+<h3>Obtaining Tablebase files</h3>
+<p>
+See the <a href="Author.html\#Related">related links</a> section for help on finding
+tablebase files on the Internet.
+</p>
+
+<p><center><font size=-1>(Updated: Scid 3.4, September 2002)</font></center></p>
+
+</body>
+</html>
+
