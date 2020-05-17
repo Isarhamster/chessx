@@ -38,6 +38,8 @@ jobs:
         -DCMAKE_PREFIX_PATH=${{ github.workspace }}/../Qt-${{ matrix.qt }}/${{ matrix.qt }}/gcc_64/lib/cmake/Qt5
     - name: Build
       run: cmake --build _build
+    - name: Test
+      run: ./_build/tests/unittests
 
       #  build:
       #    strategy:

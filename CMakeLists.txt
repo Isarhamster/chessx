@@ -4,6 +4,8 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13)
 
 project(chessx LANGUAGES CXX)
 
+add_subdirectory(dep)
+
 # common definitions to use with Qt
 add_library(qt_config INTERFACE)
 target_compile_definitions(qt_config INTERFACE
@@ -131,3 +133,14 @@ if (CMAKE_HOST_APPLE)
   # TODO: embed engines & timeseal
 
 endif()
+
+set(CMAKE_AUTOMOC OFF)
+set(CMAKE_AUTORCC OFF)
+set(CMAKE_AUTOUIC OFF)
+
+option(ENABLE_TESTING "Enable testing" ON)
+if(ENABLE_TESTING)
+  enable_testing()
+  add_subdirectory(tests)
+endif()
+
