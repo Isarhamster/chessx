@@ -42,9 +42,6 @@ jobs:
     - name: Build
       run: cmake --build _build
     - name: Test
-      # TODO: resolve the issue with test runner not being able to open
-      # libpulse-mainloop-glib.so.0 on Linus
-      if: ${{ runner.os != 'Linux' }}
       run: cd _build && ctest -VV
 
   build-windows:
