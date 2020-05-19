@@ -81,7 +81,7 @@ public:
     void setDragged(const Piece &dragged);
 
     void renderImage(QImage& image, double scaling) const;
-    static void renderImageForBoard(const Board& b, QImage& image, QSize size);
+    static QImage renderImageForBoard(const Board& b, QSize size);
 
     virtual QSize sizeHint() const;
 

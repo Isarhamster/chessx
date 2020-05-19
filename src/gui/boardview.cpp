@@ -1495,12 +1495,14 @@ void BoardView::renderImage(QImage &image, double scaling) const
     image = pixmap.toImage();
 }
 
-void BoardView::renderImageForBoard(const Board &b, QImage &image, QSize size)
+QImage BoardView::renderImageForBoard(const Board &b, QSize size)
 {
+    QImage image;
     BoardView boardView(nullptr, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
     boardView.setBoard(b);
     boardView.setMinimumSize(size);
     boardView.resize(size);
     boardView.setEnabled(false);
     boardView.renderImage(image, 1.0);
+    return image;
 }

@@ -28,6 +28,7 @@
 
 #include "game.h"
 #include "output.h"
+#include "boardview.h"
 
 #include <qevent.h>
 #include <QDrag>
@@ -651,7 +652,7 @@ void GameList::startDrag(Qt::DropActions supportedActions)
             Game g;
             if(m_model->filter()->database()->loadGame(gameIndex, g))
             {
-                Output textWriter(Output::Pgn);
+                Output textWriter(Output::Pgn, &BoardView::renderImageForBoard);
                 QString pgn = textWriter.output(&g);
                 if (!text.isEmpty())
                 {

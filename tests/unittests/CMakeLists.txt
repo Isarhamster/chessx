@@ -14,7 +14,7 @@ target_link_libraries(runner
   PRIVATE
     doctest
     database
-    gui
+    eco
 )
 
 add_test(NAME unittests COMMAND runner)
