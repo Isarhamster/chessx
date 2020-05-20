@@ -1,0 +1,84 @@
+
+RCS file: /home/oakden/cvsroot/scripts/sc_remote/sc_remote,v
+Working file: sc_remote
+head: 1.10
+branch:
+locks: strict
+access list:
+symbolic names:
+	start: 1.1.1.1
+	mno: 1.1.1
+keyword substitution: kv
+total revisions: 11;	selected revisions: 11
+description:
+----------------------------
+revision 1.10
+date: 2002/03/24 15:51:19;  author: oakden;  state: Exp;  lines: +175 -11
+Modified Shane's fullname function to add extensions to absolute pathnames
+too.
+
+Added status window, and an option to turn it off.
+
+Tweaked smallTime parameter again (400ms).
+
+Added usage message if called with no arguments.
+----------------------------
+revision 1.9
+date: 2002/03/23 07:55:08;  author: oakden;  state: Exp;  lines: +50 -8
+Added isBusy checking before [send]ing any switchBase command.  Any
+interpreters found busy are added to a deferredSwitch array which is
+processed at the end with timeouts/retries as is done when opening
+bases.
+
+The smallTime parameter was changed to 300ms to make for a maximum wait
+of approx 3 seconds for a Scid to become un-busy.
+
+Changed default for debugging to 0 (as I was doing manually for release)
+----------------------------
+revision 1.8
+date: 2002/03/23 07:10:21;  author: oakden;  state: Exp;  lines: +40 -24
+Merged changes from Shane Hudson:-
+
+"I've tweaked a few comments (adding a reference to the Scid website and
+ changing SCID to Scid, which is how I spell it even though the name
+ originated as an ancronym), and also added code to the fullname proc
+ adding a suffix, so typing "sc_remote mybase" will look for mybase.si3,
+ or mybase.pgn, etc, adding the first Scid-recognised suffix for which
+ it finds a valid file name."
+----------------------------
+revision 1.7
+date: 2002/03/19 20:55:35;  author: oakden;  state: Exp;  lines: +47 -12
+Added command line parsing for scid args.
+Added small pause to allow new scid to register before rebuilding lists.
+Fixed bug - isBusy now checks if SCID has finished starting up as well as
+querying the cursor status.
+----------------------------
+revision 1.6
+date: 2002/03/17 23:25:16;  author: oakden;  state: Exp;  lines: +2 -3
+corrected < to <= in for statement in case clipbase isn't highest numbered slot
+----------------------------
+revision 1.5
+date: 2002/03/17 20:07:11;  author: oakden;  state: Exp;  lines: +2 -3
+*** empty log message ***
+----------------------------
+revision 1.4
+date: 2002/03/17 20:04:43;  author: oakden;  state: Exp;  lines: +28 -17
+debugging function dputs added
+----------------------------
+revision 1.3
+date: 2002/03/17 19:38:21;  author: oakden;  state: Exp;  lines: +1 -1
+changed Header tag to Id tag
+----------------------------
+revision 1.2
+date: 2002/03/17 19:37:23;  author: oakden;  state: Exp;  lines: +2 -0
+added header tag
+----------------------------
+revision 1.1
+date: 2002/03/17 19:29:42;  author: oakden;  state: Exp;
+branches:  1.1.1;
+Initial revision
+----------------------------
+revision 1.1.1.1
+date: 2002/03/17 19:29:42;  author: oakden;  state: Exp;  lines: +0 -0
+Initial import of sc_remote
+=============================================================================

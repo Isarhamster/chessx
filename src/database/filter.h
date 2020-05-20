@@ -24,12 +24,12 @@ class Search;
 class Database;
 
 /** @ingroup Database
-   The Filter class represents a set of games. It is always associated with
+   The FilterX class represents a set of games. It is always associated with
    some Database object. On creation it has the same size as database,
    but it is not automatically resized when database size changes.
 */
 
-class Filter : public QThread
+class FilterX : public QThread
 {
     Q_OBJECT
 public:
@@ -41,19 +41,19 @@ public:
     void cancel();
 
     /** Construct filter of given size. Add all games to the filter. */
-    Filter(Database* database);
-    Filter(Filter const& rhs);
+    FilterX(Database* database);
+    FilterX(FilterX const& rhs);
     /** Destructor. */
-    ~Filter();
+    ~FilterX();
 
-    Filter& operator= (Filter const& rhs);
-    void lock(Filter* locked);
+    FilterX& operator= (FilterX const& rhs);
+    void lock(FilterX* locked);
 
     /** @return a pointer to the database on which the filter is. */
     Database* database();
     const Database* database() const;
     /** Add or remove game @p game . Does nothing if the game is not in filter. */
-    void set(GameId game, Filter::value_type value);
+    void set(GameId game, FilterX::value_type value);
     /** Set all games in the filter to the same value. */
     void setAll(value_type value);
     /** @return true if the game is in the filter. */
@@ -90,7 +90,7 @@ protected:
     QPointer<Search> currentSearch;
     FilterOperator currentSearchOperator;
     volatile bool m_break;
-    QPointer<Filter> m_lock;
+    QPointer<FilterX> m_lock;
 };
 
 #endif // FILTER_H_INCLUDED

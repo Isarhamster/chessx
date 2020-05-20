@@ -22,16 +22,18 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
+using namespace chessx;
+
 QHash<quint64, QList<Square> > ecoGuessPositions;
 
-const Board Board::standardStartBoard = getStandardStartBoard();
+const BoardX BoardX::standardStartBoard = getStandardStartBoard();
 
-Board::Board()
+BoardX::BoardX()
     : m_hashValue(0)
 {
 }
 
-Board::Board(QString fen) : m_hashValue(0)
+BoardX::BoardX(QString fen) : m_hashValue(0)
 {
     if(!fromFen(fen))
     {
@@ -39,14 +41,14 @@ Board::Board(QString fen) : m_hashValue(0)
     }
 }
 
-void Board::clear()
+void BoardX::clear()
 {
     BitBoard::clear();
     m_hashValue = 0;
     m_squareAnnotation = "";
 }
 
-void Board::setStandardPosition()
+void BoardX::setStandardPosition()
 {
     BitBoard::setStandardPosition();
 
@@ -56,7 +58,7 @@ void Board::setStandardPosition()
     m_squareAnnotation = "";
 }
 
-bool Board::fromFen(const QString& fen)
+bool BoardX::fromFen(const QString& fen)
 {
     if(BitBoard::fromFen(fen))
     {
@@ -67,7 +69,7 @@ bool Board::fromFen(const QString& fen)
     return false;
 }
 
-bool Board::from64Char(const QString& qcharboard)
+bool BoardX::from64Char(const QString& qcharboard)
 {
     if (BitBoard::from64Char(qcharboard))
     {
@@ -78,20 +80,20 @@ bool Board::from64Char(const QString& qcharboard)
     return false;
 }
 
-void Board::setAt(Square s, Piece p)
+void BoardX::setAt(Square s, Piece p)
 {
     hashPiece(s, pieceAt(s));
     BitBoard::setAt(s, p);
     hashPiece(s, p);
 }
 
-void Board::removeFrom(Square s)
+void BoardX::removeFrom(Square s)
 {
     hashPiece(s, pieceAt(s));
     removeAt(s);
 }
 
-void Board::setToMove(Color c)
+void BoardX::setToMove(Color c)
 {
     if(toMove() != c)
     {
@@ -100,12 +102,12 @@ void Board::setToMove(Color c)
     }
 }
 
-void Board::swapToMove()
+void BoardX::swapToMove()
 {
     setToMove(oppositeColor(toMove()));
 }
 
-bool Board::doIt(const Move& m, bool undo)
+bool BoardX::doIt(const Move& m, bool undo)
 {
     if(m.isNullMove())
     {
@@ -177,7 +179,7 @@ bool Board::doIt(const Move& m, bool undo)
     return true;
 }
 
-void Board::hashPiece(Square s, Piece p)
+void BoardX::hashPiece(Square s, Piece p)
 {
     if((p > Empty) && (p < InvalidPiece))
     {
@@ -185,12 +187,12 @@ void Board::hashPiece(Square s, Piece p)
     }
 }
 
-void Board::hashToMove()
+void BoardX::hashToMove()
 {
     m_hashValue = m_hashValue ^ RAND_TO_MOVE;
 }
 
-void Board::hashCastlingRights(CastlingRights oldCastlingRights)
+void BoardX::hashCastlingRights(CastlingRights oldCastlingRights)
 {
     oldCastlingRights ^= castlingRights();
     if(oldCastlingRights & WhiteKingside)
@@ -211,7 +213,7 @@ void Board::hashCastlingRights(CastlingRights oldCastlingRights)
     }
 }
 
-void Board::hashEpSquare()
+void BoardX::hashEpSquare()
 {
     int epSquareIndex;
     Square sq = enPassantSquare();
@@ -230,7 +232,7 @@ void Board::hashEpSquare()
     m_hashValue ^= RAND_EN_PASSANT[epSquareIndex];
 }
 
-void Board::createHash()
+void BoardX::createHash()
 {
     m_hashValue = 0;
     for(Square square = a1; square < NumSquares; ++square)
@@ -245,7 +247,7 @@ void Board::createHash()
     hashEpSquare();
 }
 
-bool Board::ecoMove(const Square square, int* from, int* to) const
+bool BoardX::ecoMove(const Square square, int* from, int* to) const
 {
     quint64 key = getHashPlusSquare(square);
     if(ecoGuessPositions.contains(key))
@@ -261,7 +263,7 @@ bool Board::ecoMove(const Square square, int* from, int* to) const
     return false;
 }
 
-bool Board::loadEcoFile(const QString& ecoFile)
+bool BoardX::loadEcoFile(const QString& ecoFile)
 {
     QFile file(ecoFile);
     if(file.open(QIODevice::ReadOnly))
@@ -278,51 +280,51 @@ bool Board::loadEcoFile(const QString& ecoFile)
     return false;
 }
 
-quint64 Board::getHashPlusSquare(const Square square) const
+quint64 BoardX::getHashPlusSquare(const Square square) const
 {
     return m_hashValue ^ RAND_ECO_SQUARE[square];
 }
 
-quint64 Board::getHashValue() const
+quint64 BoardX::getHashValue() const
 {
     return m_hashValue;
 }
 
-void Board::setSquareAnnotation(QString squareAnnotation)
+void BoardX::setSquareAnnotation(QString squareAnnotation)
 {
     m_squareAnnotation = squareAnnotation;
 }
 
-QString Board::squareAnnotation() const
+QString BoardX::squareAnnotation() const
 {
     return m_squareAnnotation;
 }
 
-void Board::setArrowAnnotation(QString arrowAnnotation)
+void BoardX::setArrowAnnotation(QString arrowAnnotation)
 {
     m_arrowAnnotation = arrowAnnotation;
 }
 
-QString Board::arrowAnnotation() const
+QString BoardX::arrowAnnotation() const
 {
     return m_arrowAnnotation;
 }
 
-int Board::ScoreMaterial() const
+int BoardX::ScoreMaterial() const
 {
     QString fen = toFen();
     return Guess::scorePosFromFen(fen.toLatin1());
 }
 
-int Board::DefendersOfSquare(Square target) const
+int BoardX::DefendersOfSquare(Square target) const
 {
     QString fen = toFen();
     return Guess::attackersOnSquare(fen.toLatin1(), target);
 }
 
-Board Board::getStandardStartBoard()
+BoardX BoardX::getStandardStartBoard()
 {
-    Board b;
+    BoardX b;
     b.setStandardPosition();
     return b;
 }

@@ -23,7 +23,7 @@ public:
     static QString findEcoName(QString eco);
     static void terminateEco();
 
-    static bool isEcoPosition(const Board &b, QString &eco);
+    static bool isEcoPosition(const BoardX &b, QString &eco);
 };
 
 #endif // ECOPOSITIONS_H

@@ -1,0 +1,256 @@
+How to integrate my probing code into your chess program
+========================================================
+
+Probing code is located in the file tbindex.cpp. It's really C++, not C,
+file - it use some C++ constructions, so you have to use C++ compiler to
+compile it.
+
+If possible, please do not modify files itself, or at least send all
+modifications to me, so I shall be able to include those in all subsequent
+versions.
+
+I recommend to '#include "tbindex.cpp"' into one of your files; you have to
+have some chess program-specific glue code anyway.
+
+For probing code to compile, you have to declare the following types before
+#include directive:
+    - INDEX  - have to be wide enough to fit all enumerated positions;
+               for 5-pieces tablebases can be 32-bit unsigned integer.
+    - square - any integer type, preferable the fastest on the given machine.
+
+You have to define the following macro:
+    - NEW         - if you want to use my new, more compact tablebase format;
+                    otherwise SJE's schema will be used.
+    - XX          - 'invalid' square - used to specify impossibility of
+                    en-passant capture. Must be any 'square' value except
+                    0..63.
+    - T41_INCLUDE - if you want to probe any 5-man 4+1 table (e.g. KPPPK);
+                    if you will not ever probe those tables (I suppose
+                    most chess program will never do that), you can save
+                    some space by not including corresponding code and
+                    enumeration tables; 
+    - DEBUG       - there are asserts in the code; you have to define it
+                    to turn asserts on.
+
+Enumeration types 'color' and 'piece' are declared in tbindex.cpp. For your
+purposes you must know that white is 0, black is 1; pawn is 1, ..., king is 6;
+A1 is 0, B1 is 1, ..., H8 is 63.
+
+Tablebase probing function expects that you will pass to it 2 arrays that
+contain locations of all white and black pieces on the board. Actually it do
+not access those arrays itself, instead it passes them to the following
+functions or macros that must return location of the specified piece:
+    - SqFindKing   (square *) - return location of the king,
+    - SqFindFirst  (square *, piece),
+    - SqFindSecond (square *, piece),
+    - SqFindThird  (square *, piece) - find location of the first/second/third
+      piece of the given color,
+        - SqFindOne (square *, piece) - (hopefully) more efficient variant of
+          SqFindFirst(); it's called when there is exactly one piece of the
+          given color (plus the king, of course) on the board.
+For example, when calculating index for KBNKQ, indexing code will call
+SqFindFirst (white_squares, x_pieceBishop) and SqFindFirst (white_squares,
+x_pieceKnight) to obtain squares of the white pieces, and SqFindOne
+(white_squares, x_pieceQueen) to obtain square of the black queen. When
+calculating index for KNNKQ, indexing code will call SqFindFirst
+(white_squares, x_pieceKnight) and SqFindSecond (white_squares, x_pieceKnight)
+to obtain squares of the white pieces, and SqFindOne (white_squares,
+x_pieceQueen) to obtain square of the black queen. Please note that to write
+signatures of those functions usually you'll have to declare enum type
+'piece', too - it's declared conditionally in tbindex.cpp. You have to
+declare those functions/macro before '#include "tbgen.cpp"'.
+
+Please note that during initialization code calls malloc() function.
+It will allocate approximately 210Kb of memory if you'll not define
+T41_INCLUDE, and 360Kb, if you'll define it, plus some amount for
+each tablebase it'll find.
+
+Currently the only thread-safe function in the code is L_TbtProbeTable(). If
+you want to use it from the parallel program, you have to define following
+macro:
+    - SMP   - code will be thread-safe; if that macro not defined, code will
+              be not thread-safe, and you'll have to synchronize yourself.
+    - Lock,
+    - UnLock,
+    - LockInit - synchronization primitives (equivalent to their Crafty
+      counterparts).
+
+Following functions and macro are exported:
+
+IInitializeTb (char *path) - initialize data structures, parse specified
+directories and register all tablebases that are there. Path consists of
+several directory names separated by commas, semicolons, or (at non-Windows
+systems) by colons. Directories are searched in the specified order.
+Function returns # of pieces in the "largest" tablebase it found - e.g. 5 if
+it found KRPKR, 4 if it found KBNK, 3 if it found KRK, 0 if no tablebases
+found. You can call this function several times if you want to change
+directories. In that case it will "forget" previously found tablebases.
+Please note that in it will not "forget" tablebases that were read or mapped
+to memory.
+
+FTbSetCacheSize (void *buffer, ULONG size) - set buffer for TB caching.
+Returns false if buffer is too small. You can call this routine as many times
+as you want. Pass 0 as size to turn caching (and probing of all non-loaded-
+to-memory TBs) off. You can call that function as many times as you want.
+
+VTbCloseFiles (void) - close all open TB files; for performance reasons, code
+tries to keep opened as much TB files as possible. On some systems that can
+cause problems when chess program tries to open file for its own purposes.
+So, if fopen() in your code returns NULL, you can call that function and then
+try again.
+
+FReadTableToMemory (int iTB, color side, BYTE * buffer) - load entire TB into
+memory. You have to either pass NULL as buffer (in this case function will
+call malloc() to obtain the memory), or pass buffer that is large enough.
+Function returns false if it cannot load TB. You can call that function even
+if you specified 0 as cache size during FTbSetCacheSize() call. TB cannot be
+unloaded from memory.
+
+FMapTableToMemory (int iTb, color side) - (Win32 only) - map entire file into
+memory. Analogue of FReadTableToMemory().
+
+L_TbtProbeTable (int iTb, color side, INDEX index) - probe TB and return
+either result or 'L_bev_broken' if some error happened. If specified TB was
+loaded to memory, function will return result immediately. Otherwise it will
+try to find needed value in TB cache; in the worst case it have to read chunk
+of a file from disk.
+
+IDescFindFromCounters (int *) - that function returns TB #. It takes as an
+input the 10-element integer array - its zeroth element is number of white
+pawns on the board, first - number of white knights, ..., ninth - number of
+black queens. It returns zero if no such TB registered, TB #, if TB found,
+or negative TB # if you asked for TB with 'wrong' colors, e.g. KPKRP.
+WARNING: that function will return non-zero even if only one of the pair of
+the corresponding TBs registered (e.g. KRK.WTM, but not KRK.BTM). You can use
+FRegistered() function for more precise information - see example.
+Also, you can write your own function that will return TB #, if you prefer
+to do so. Just look at the IDescFindFromCounters source.
+
+PfnIndCalc(iTb, side) - macro that returns function that calculate index of
+the position in the TB.
+
+PfnIndCalc(iTb, side) - function that returns function that calculate index of
+the position in the TB.
+
+FRegistered(iTb, side) - macro that returns true if corresponding TB was found
+during initializing.
+
+FRegisteredFun(iTb, side) - function that returns true if corresponding TB was
+found during initializing.
+
+All functions are declared with 'extern "C"' naming conventions, so that
+you can easily call them from C (not only C++). Please note that even in that
+case you'll have to make a C++ source file, declare there all necessary
+identifiers (see above), and #include 'tbindex.cpp'. In this case, hopefully,
+it'll be not necessary to include detailed knowledge of your program chess
+structures in that C++ file.
+
+The following pseudocode shows how you can probe TB:
+
+#if (program is written in pure C, and tbindex.cpp not included)
+
+/* Have to declare types/constants/functions */
+/* Please note that YOU have to declare types INDEX, square, */
+/* as well as constant XX */
+
+#if defined (_MSC_VER)
+#define	TB_FASTCALL	__fastcall
+#else
+#define	TB_FASTCALL
+#endif
+
+typedef	int color;
+#define	x_colorWhite	0
+#define	x_colorBlack	1
+#define	x_colorNeutral	2
+
+typedef	int piece;
+#define	x_pieceNone	0
+#define	x_piecePawn	1
+#define	x_pieceKnight	2
+#define	x_pieceBishop	3
+#define	x_pieceRook	4
+#define	x_pieceQueen	5
+#define	x_pieceKing	6
+
+#define L_pageL	65536
+#define L_tbbe_ssL      ((L_pageL - 4) / 2)
+#define L_bev_broken    (L_tbbe_ssL + 1)    /* illegal or busted */
+#define L_bev_mi1       L_tbbe_ssL        /* mate in 1 move */
+#define L_bev_mimin     1                 /* mate in 32766 moves */
+#define L_bev_draw      0                 /* draw */
+#define L_bev_limax     (-1)              /* mated in 32765 moves */
+#define L_bev_li0       (-L_tbbe_ssL)     /* mated in 0 moves */
+#define	L_bev_limaxx    (-L_tbbe_ssL - 1) /* mated in 32766 moves */
+#define	L_bev_miminx    (-L_tbbe_ssL - 2) /* mate in 32767 moves */
+
+typedef INDEX (TB_FASTCALL * PfnCalcIndex)
+		(square*, square*, square, int fInverse);
+
+extern int IDescFindFromCounters (int*);
+extern int FRegisteredFun (int, color);
+#define FRegistered FRegisteredFun
+extern PfnCalcIndex PfnIndCalcFun (int, color);
+#define PfnIndCalc PfnIndCalcFun
+extern int TB_FASTCALL L_TbtProbeTable (int, color, INDEX);
+
+#endif
+
+    int    rgiCounters[10];
+    int    iTb;
+    color  side;
+    int    fInvert;
+    square *psqW;
+    square *psqB;
+    square sqEnP;
+    INDEX  ind;
+
+    Initialize rgiCounters
+    iTb = IDescFindFromCounters (rgiCounters);
+    if (0 == iTb)
+        return L_bev_broken; // No such TB
+    if (iTb > 0)
+        {
+        side = side to move;
+        fInvert = false;
+        psqW = pointer to locations of white squares;
+        psqB = pointer to locations of black squares;
+        }
+    else
+        {
+        side = OtherSide (side to move);
+        fInvert = true;
+        psqW = pointer to locations of black squares;
+        psqB = pointer to locations of white squares;
+        iTb = -iTb;
+        }
+    if (!FRegistered(iTb, side))
+        return L_bev_broken;
+    sqEnP = square of en-passant capture, IF IT'S POSSIBLE, or XX
+    ind = PfnIndCalc(iTb, side) (psqW, psqB, sqEnP, fInvert);
+    return L_TbtProbeTable (iTb, side, ind);
+
+Before doing #include 'tbgen.cpp', you can #define the following
+constants; if you'll not do that, default values will be used.
+Constants must be power of 2.
+    - TB_CB_CACHE_SIZE  - # of bytes in one TB cache chunk;
+      default is 8k. With larger chunks you'll speedup search
+      in the LRU lists, but more bytes will be read from disk
+      when needed entry is not in cache. If you'll modify that
+      constant please declare the companion constant
+      LOG2_TB_CB_CACHE_SIZE.
+    - TB_DIRECTORY_SIZE - all cache entries from one TB are kept
+      in several LRU lists; this constant specifies how many lists
+      for each TB will be used. The larger is constant, the shorter
+      average list will be, and the faster average search will be.
+      Default is 32.
+Assuming that you'll reserve 16Mb for TB caching, and will always
+probe exactly the same TB with random index values (very strong
+assumptions), average size of the LRU list (when you will not modify
+default values) will be 8 when using 64Kb chunks, and 64 when using
+8Kb chunks.
+
+Good luck!
+
+Eugene Nalimov
+eugenen@microsoft.com

@@ -4,7 +4,7 @@
 
 #include "positionsearch.h"
 
-#include "game.h"
+#include "gamex.h"
 #include "database.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -18,12 +18,12 @@ PositionSearch::PositionSearch()
 {
 }
 
-PositionSearch::PositionSearch(Database* db, const Board& position):Search(db)
+PositionSearch::PositionSearch(Database* db, const BoardX& position):Search(db)
 {
     setPosition(position);
 }
 
-void PositionSearch::setPosition(const Board& position)
+void PositionSearch::setPosition(const BoardX& position)
 {
     m_position = position;
 }

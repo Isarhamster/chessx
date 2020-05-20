@@ -21,7 +21,7 @@ public:
     ~BoardSearchDialog();
 
     int mode() const;
-    void setBoardList(const QList<Board> &);
+    void setBoardList(const QList<BoardX> &);
     int boardIndex() const;
 protected slots:
     void reject();
@@ -35,7 +35,7 @@ protected:
     void setCurrentBoard();
 private:
     Ui::BoardSearchDialog *ui;
-    QList<Board> m_boardList;
+    QList<BoardX> m_boardList;
     int m_currentBoardIndex;
 };
 

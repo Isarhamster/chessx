@@ -48,22 +48,22 @@ Search *Search::nextSearch() const
     return m_nextSearch;
 }
 
-Filter *Search::getInputFilter() const
+FilterX *Search::getInputFilter() const
 {
     return inputFilter;
 }
 
-void Search::setInputFilter(Filter *value)
+void Search::setInputFilter(FilterX *value)
 {
     inputFilter = value;
 }
 
-Filter *Search::getOutputFilter() const
+FilterX *Search::getOutputFilter() const
 {
     return outputFilter;
 }
 
-void Search::setOutputFilter(Filter *value)
+void Search::setOutputFilter(FilterX *value)
 {
     outputFilter = value;
 }

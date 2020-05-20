@@ -1,8 +1,8 @@
 #include "guess.h"
-#include "position.h"
-#include "guessengine.h"
-#include "common.h"
-#include "movelist.h"
+#include "guess_position.h"
+#include "guess_guessengine.h"
+#include "guess_common.h"
+#include "guess_movelist.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )

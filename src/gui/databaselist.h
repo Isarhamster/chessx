@@ -10,12 +10,13 @@
 
 class QSortFilterProxyModel;
 class DatabaseListModel;
+class DatabaseRegistry;
 
 class DatabaseList : public TableView
 {
     Q_OBJECT
 public:
-    explicit DatabaseList(QWidget *parent = nullptr);
+    explicit DatabaseList(DatabaseRegistry* registry, QWidget *parent = nullptr);
     ~DatabaseList();
     void save() const;
 

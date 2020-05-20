@@ -7,7 +7,7 @@
 
 #include <QSortFilterProxyModel>
 
-class Filter;
+class FilterX;
 
 class GameListSortModel : public QSortFilterProxyModel
 {
@@ -16,12 +16,12 @@ public:
         QSortFilterProxyModel(parent),
         m_filter(nullptr)
     {}
-    void setFilter(Filter* filter);
+    void setFilter(FilterX* filter);
 protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
 private:
-    Filter* m_filter;
+    FilterX* m_filter;
 };
 
 #endif // GAMELISTSORTMODEL_H

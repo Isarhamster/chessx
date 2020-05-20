@@ -16,7 +16,7 @@
 
 #include "database.h"
 #include "filtermodel.h"
-#include "game.h"
+#include "gamex.h"
 #include "messagedialog.h"
 #include "partialdate.h"
 #include "savedialog.h"
@@ -67,7 +67,7 @@ QString formatTagDate(const QString& s)
            PartialDate().fromString(s).asString();
 }
 
-int SaveDialog::save(Database* database, Game& game)
+int SaveDialog::save(Database* database, GameX& game)
 {
     QString gameTitle;
     QString baseName = database->name();

@@ -1,0 +1,759 @@
+<HTML>
+<HEAD>
+  <TITLE>ezsmtp - Easy SMTP client package for text email</TITLE>
+</HEAD>
+<BODY>
+
+<!-- ====================================================================== -->
+
+<H1>NAME</H1>
+
+<DL><DD>
+  <CODE>ezsmtp</CODE> - Easy SMTP client package for text email
+</DD></DL>
+<P>
+
+<!-- ====================================================================== -->
+
+<H1>SYNOPSIS</H1>
+
+<DL><DD><PRE>
+package require ezsmtp ?1.0?
+
+<A HREF="#_config">::ezsmtp::config ?options?</A>
+
+<A HREF="#_send">::ezsmtp::send ?options?</A>
+</PRE></DD></DL>
+<P>
+
+<!-- ====================================================================== -->
+
+<H1>DESCRIPTION</H1>
+
+The <code>ezsmtp</code> package provides an easy interface for sending
+email messages from Tcl 8.0 and newer via a network conversation with
+a local or remote <A HREF="#_REF_RFC821">SMTP</A>-compliant mail
+server.  This package was written to be as portable as possible and is
+known to work on various *nix, Windows, and Mac systems and will
+probably work on more exotic systems like MVS and VMS as long as Tcl's
+sockets function correctly.  This extension attempts to be as
+RFC-compliant as possible, as far as is possible in a relatively small
+code base.  Relevant standards are listed in the <A
+HREF="#_REFERENCES">REFERENCES</A> section at the end of this
+document.
+
+<P>This package provides only the text transport mechanism -- no
+provisions have been made for attachments or other fancier email
+features.  If you require full <A HREF="#_REF_RFC1341">MIME</A>
+support and attachments, you should consider one of the C-code
+packages listed in the `<A HREF="#_SEE_ALSO">SEE ALSO</A>' section.
+Support for non-ascii text encodings is <A
+HREF="#_send_charset">available</A> when run with Tcl 8.1 or newer and
+connected to a <A HREF="#_REF_RFC1652">modern</A> SMTP server.
+
+<P>The <code><A HREF="#_send">::ezsmtp::send</A></code> command puts a
+simple interface around mail sending, requiring either a <code><A
+HREF="#_send_body">-body</A></code> switch to specify the body of the
+message directly or a <code><A
+HREF="#_send_channel">-channel</A></code> switch to read the contents
+of the message from a Tcl channel, such as an opened file or socket.
+One or more recipent email addresses should be specified using the <A
+HREF="#_send_to">-to</A>, <A HREF="#_send_cc">-cc</A>, <A
+HREF="#_send_bcc">-bcc</A>, or respective list-oriented options.
+
+<P>The <code><A HREF="#_config">::ezsmtp::config</A></code> command
+provides a way to change or access the package-wide settings, such as
+the "<A HREF="#_config_from">From</A>" address, <A
+HREF="#_config_mailhost">SMTP server</A>, or <A
+HREF="#_config_logproc">debugging output</A>.
+
+<P>A simple example of its usage is:
+
+<DL><DD><PRE>
+# Ensure the package is loaded
+package require ezsmtp
+
+# (NOTE: You need to set these correctly) Set the SMTP server
+# to smtp.myprovider.com and set my `From' address using the 
+# full-name form.  You only need to do this once.
+ezsmtp::config -mailhost smtp.myprovider.com \
+        -from "My Name &lt;me@myprovider.com&gt;"
+
+# Send a message to the author expressing your enthusiasm.
+ezsmtp::send -to dhagberg@millibits.com \
+        -subject "I like ezsmtp!" \
+        -body "This ezsmtp stuff rocks!\n\nMy Name"
+</PRE></DD></DL>
+
+<P>The in-line comments above provide a fairly good description of
+what's going on.  Note that the body contains two newlines before
+signing the message as `My Name'.  The <code>ezsmtp::send</code> command
+does <em>not</em> perform any line-wrapping other than breaking up
+really long lines (see <A HREF="#_send_body">below</A>).
+
+<P>
+<!-- ====================================================================== -->
+
+<H1>COMMANDS</H1>
+
+<DL>
+
+<DT><H2><A NAME="_config">
+<code>::ezsmtp::config <var>?options?</var></code>
+</A></H2></DT>
+
+  <DD>
+  The <code>::ezsmtp::config</code> command is used to set and query
+  package-wide configuration settings.  If no options are specified,
+  then the current configuration switches and values for all options
+  is returned in list form.  If a single argument is specified, then
+  it should be one of the flags described below.  In this case the
+  current value of that setting is returned.  Otherwise, the options
+  should be a set of flags and values that define the configuration:
+  <P>
+
+  <DL>
+  <DT><A NAME="_config_mailhost">
+  <code>-mailhost</code> <var>hostname</var>
+  </A></DT>
+
+  <DD>Where <var>hostname</var> should specify the TCP/IP host name or
+  IP address of the SMTP server to use for sending email.  Defaults to
+  localhost, which should work on most Unix machines.  Windows and
+  Macintosh users do not (typically) have an SMTP service, so they
+  should always specify the name of their ISP's (or corporate
+  network's) SMTP server.</DD>
+  <P>
+
+  <DT><A NAME="_config_port">
+  <code>-port</code> <var>portval</var>
+  </A></DT>
+
+  <DD>Where <var>portval</var> specifies either a TCP port number or
+  service name (like smtp) upon which to perform the SMTP conversation
+  with the server.  Defaults to 25.</DD>
+  <P>
+
+  <DT><A NAME="_config_from">
+  <code>-from</code> <var>emailaddr</var>
+  </A></DT>
+
+  <DD>Where <var>emailaddr</var> should specify the default email
+  address that mail will be `From', in a form like <code>-from
+  dhagberg@millibits.com</code> or <code>-from "D. J. Hagberg
+  &lt;dhagberg@millibits.com&gt;"</code>.  Note the quotes around the
+  latter form, which are necessary due to the spaces.  Specifying this
+  option with <code>ezsmtp::config</code> eliminates the need to specify
+  it in every <code><A HREF="#_send">ezsmtp::send</A></code>.</DD>
+  <P>
+
+  <DT><A NAME="_config_batchsize">
+  <code>-batchsize</code> <var>number</var>
+  </A></DT>
+
+  <DD>Where <var>number</var> specifies an email recipient batch size,
+  useful for mass-mailings, as SMTP servers typically slow down
+  significantly with large numbers of recipients in a single SMTP
+  conversation.  Setting <var>number</var> to 0 indicates that the
+  mail should be sent in a single batch to all recipients (the
+  default).  Setting <var>number</var> to a larger value indicates the
+  maximum number of recipients in each SMTP conversation, such as
+  10.</DD>
+  <P>
+
+  <DT><A NAME="_config_strictaddr">
+  <code>-strictaddr</code> <var>0|1</var>
+  </A></DT>
+
+  <DD>Sets whether strict RFC 821-compliant email validation should be
+  performed.  Default: 0 which requires either a local-username style
+  address with no `@', or a remote-style address with at least one non-@
+  character preceding and following a single `@' sign.  Set to 1 for
+  strict validation, which has a complicated set of rules documented in
+  the RFC, of which only the common usage cases are allowed.</DD>
+  <P>
+
+  <DT><A NAME="_config_logproc">
+  <code>-logproc</code> <var>procname</var>
+  </A></DT>
+
+  <DD>Sets log message behavior.  If <var>procname</var> is the empty
+  string {}, which is the default, log messages are output to stdout
+  depending on the -verbose setting.  If the user of this library wants
+  to display the log messages differently, they must supply a fully-
+  namespace-qualified procedure name that will be passed a single
+  argument: the message string to be logged.  This procedure will be
+  evaluated at global scope.</DD>
+  <P>
+
+  <DT><A NAME="_config_verbose">
+  <code>-verbose</code> <var>number</var>
+  </A></DT>
+
+  <DD>Where <var>number</var> ranges from 0 to 9.  If <var>number</var>
+  is 0, then no debugging output will be printed.  If <var>number</var>
+  is 1, then the start and end of each SMTP conversation will be
+  printed.  If <var>number</var> is 9, then heaps of debugging info will
+  be printed. The behavior between 2 and 8 is implementation-defined.
+  Defaults to 0.</DD>
+  <P>
+
+  </DL>
+</DD>
+<P>
+
+<!-- ====================================================================== -->
+
+<DT><H2><A NAME="_send">
+<code>::ezsmtp::send <var>?options?</var></code>
+</A></H2></DT>
+
+  <DD>
+  This command is used to send a single message to one or more email
+  recipients, the contents of which must come from either the <A
+  HREF="#_send_body">-body</A> parameter or a Tcl channel (an opened
+  file, socket, etc.) specified by the <A
+  HREF="#_send_channel">-channel</A> parameter.  Recipients may be
+  specified in several different ways as either `To', `Cc', or `Bcc'
+  addressess, which will create email headers of the expected form.
+
+  <P>The following flags may be specified one or more times in the
+  send command.  If specified more than once, the effects will be
+  cumulative.  For example
+
+<P><DL><DD><PRE>
+ezsmtp::send -to a -to b -to c ...
+</PRE></DD></DL>
+
+  <P>will send the message to all three recipients: a, b, and c.  Note
+  that at least one email recipient must be specified via any
+  combination of the <A HREF="#_send_to">-to</A>, <A
+  HREF="#_send_cc">-cc</A>, <A HREF="#_send_bcc">-bcc</A>, <A
+  HREF="#_send_tolist">-tolist</A>, <A
+  HREF="#_send_cclist">-cclist</A>, or <A
+  HREF="#_send_bcclist">-bcclist</A> options.
+  <P>
+
+  <DL>
+
+  <DT><A NAME="_send_to">
+  <code>-to</code> <var>addr</var>
+  </A></DT>
+
+  <DD>Where <var>addr</var> specifies one recipient email address is
+  in a form like <code>username@host.domain</code> or like
+  <code>"Full Name &lt;user@host.domain&gt;"</code>.  The address is
+  added to the `To:' header and to the list of recipients.</DD>
+  <P>
+
+  <DT><A NAME="_send_cc">
+  <code>-cc</code> <var>addr</var>
+  </A></DT>
+
+  <DD>Where <var>addr</var> specifies one recipient email address is
+  in a form like <code>username@host.domain</code> or like
+  <code>"Full Name &lt;user@host.domain&gt;"</code>.  The address is
+  added to the `Cc:' header and to the list of recipients.</DD>
+  <P>
+
+  <DT><A NAME="_send_bcc">
+  <code>-bcc</code> <var>addr</var>
+  </A></DT>
+
+  <DD>Where <var>addr</var> specifies one recipient email address is
+  in a form like <code>username@host.domain</code> or like
+  <code>"Full Name &lt;user@host.domain&gt;"</code>.  The address is
+  added to the list of recipients, but will <em>not</em> be sent in
+  the headers of the email.  Typically used for mail lists or to
+  protect the anonymity of the recipients.</DD>
+  <P>
+
+  <DT><A NAME="_send_replyto">
+  <code>-replyto</code> <var>addr</var>
+  </A></DT>
+
+  <DD>Where <var>addr</var> specifies one recipient email address is
+  in a form like <code>username@host.domain</code> or like
+  <code>"Full Name &lt;user@host.domain&gt;"</code>.  The address is
+  added to the list of `Reply-To:' addresses.  Normally, when the
+  recipient hits the Reply button in their email program, the
+  address(es) listed in this header will be used.</DD>
+  <P>
+  
+  <DT><A NAME="_send_tolist">
+  <code>-tolist</code> <var>addrlist</var>
+  </A></DT>
+
+  <DD>Where <var>addrlist</var> is a well-formed Tcl list of
+  recipients, typically specified using the `list' command like:
+
+<P><DL><DD><PRE>
+ezsmtp::send -tolist [list "Bubba &lt;bubba@c.com&gt;" a@b.com e@f.net] ...
+</PRE></DD></DL>
+
+  <P>Addresses in the list may be specified as described for the <A
+  HREF="#_send_to">-to</A> option and will be added to both the
+  recipient list and the `To:' header.</DD>
+  <P>
+
+  <DT><A NAME="_send_cclist">
+  <code>-cclist</code> <var>addrlist</var>
+  </A></DT>
+
+  <DD>Where <var>addrlist</var> is a well-formed Tcl list of
+  recipients (see <A HREF="#_send_tolist">-tolist</A> above).
+  Addresses in the list may be specified as described for the <A
+  HREF="#_send_cc">-cc</A> option and will be added to both the
+  recipient list and the `Cc:' header.
+  <P>
+
+  <DT><A NAME="_send_bcclist">
+  <code>-bcclist</code> <var>addrlist</var>
+  </A></DT>
+
+  <DD>Where <var>addrlist</var> is a well-formed Tcl list of
+  recipients (see <A HREF="#_send_tolist">-tolist</A> above).
+  Addresses in the list may be specified as described for the <A
+  HREF="#_send_bcc">-bcc</A> option and will be added to the recipient
+  list but <em>not</em> sent in the headers of the email.  Typically
+  used for mailing lists or to protect the anonymity of
+  recipients.</DD>
+  <P>
+
+  <DT><A NAME="_send_replytolist">
+  <code>-replytolist</code> <var>addrlist</var>
+  </A></DT>
+
+  <DD>Where <var>addrlist</var> is a well-formed Tcl list of
+  recipients (see <A HREF="#_send_tolist">-tolist</A> above).
+  Addresses in the list may be specified as described for the <A
+  HREF="#_send_replyto">-replyto</A> option and will be added to the
+  list of `Reply-To:' addresses.  Normally, when the recipient hits
+  the Reply button in their email program, the address(es) listed in
+  this header will be used.</DD>
+  <P>
+
+  <DT><A NAME="_send_headers">
+  <code>-headers</code> <var>keyvaluelist</var>
+  </A></DT>
+
+  <DD>Adds to the set of additional headers to be sent before the body
+  in the current send.  <var>keyvaluelist</var> must be a well-formed
+  Tcl list (see the list command) with an even number of elements that
+  alternate between keys and values.  The keys become the header names
+  and values become their respective values.  Usage is discussed much
+  more extensively in the `<A HREF="#_HEADERS">HEADERS</A>' section
+  below.</DD>
+  <P>
+
+  </DL>
+
+  The following flags and values for <code>ezsmtp::send</code> are
+  intended to be specified once on the send command.  If specified
+  more than once, only the last one will be used.
+  <P>
+
+  <DL>
+  <DT><A NAME="_send_subject">
+  <code>-subject</code> <var>subjtext</var>
+  </A></DT>
+
+  <DD>Where <var>subjtext</var> is a single-line subject to be sent as a
+  `Subject:' header in the outgoing email.</DD>
+  <P>
+
+  <DT><A NAME="_send_body">
+  <code>-body</code> <var>text</var>
+  </A></DT>
+
+  <DD>Note that either the <A HREF="#_send_body">-body</A> or <A
+  HREF="#_send_channel">-channel</A> switch should be specified, never
+  both.  The <var>text</em> value should be one or more lines of text
+  separated by newline (\n) characters, with all line wrapping already
+  performed.  The text will be sent verbatim, line-by-line, except if
+  longer than 998 characters.  Lines longer than 998 characters will
+  be split, not necessarily at word boundaries, to comply with <A
+  HREF="#_REF_RFC821">RFC 821</A>, so it's a really good idea to do
+  line wrapping before passing your text.</DD>
+  <P>
+
+  <DT><A NAME="_send_channel">
+  <code>-channel</code> <var>channame</var>
+  </A></DT>
+
+  <DD>Note that either the <A HREF="#_send_body">-body</A> or <A
+  HREF="#_send_channel">-channel</A> switch should be specified, never
+  both.  <var>channame</var> must be a open Tcl channel, such as one
+  from <code>[file open ...]</code>, from which lines of text may be
+  read and sent as the body of the message.  If one has specified a <A
+  HREF="#_send_batchsize">-batchsize</A> other than 0, the channel
+  must support `<code>tell</code>' and `<code>seek</code>' operations
+  to allow rewinding between batches.  When the mail has been sent,
+  the channel will be in an eof condition but <em>not</em> closed.
+  <strong>Closing the channel is left up to the caller</strong>.
+
+  <P>NOTE: if the channel will contain non-7-bit-ascii characters, it
+  must be <code>fconfigure</code>'d with the correct
+  <code>-encoding</code> before being passed to ezsmtp::send.  This is
+  <em>NOT</em> designed for sending binary data, such as images or
+  other non-textual octet-streams but rather for non-ASCII text.  Also
+  note that lines longer than 998 characters will be broken at exactly
+  998 characters to comply with <A HREF="#_REF_RFC821">RFC 821</A>, so
+  please ensure any data in this channel already has correct line
+  breaks.</DD>
+  <P>
+
+  <DT><A NAME="_send_charset">
+  <code>-charset</code> <var>charsetlist</var>
+  </A></DT>
+
+  <DD><em>NOTE: This option is only applicable when running under Tcl
+  versions 8.1 and newer.  If a character set/encoding other than</em>
+  <code>ascii</code> <em>or</em> <code>{ascii us-ascii}</code> <em>is
+  specified, the SMTP server MUST support the ESMTP 8BITMIME <A
+  HREF="#_REF_RFC1652">[RFC1652]</A> option, else an error will be
+  thrown.</em>
+
+  <P>Specifies the character set/encoding used for the text data in
+  this send as either a one- or two-element Tcl list.  A one-element
+  specification like <code>iso8859-1</code> may be used when the Tcl
+  encoding name from the `<code>encoding names</code>' command is
+  identical to the MIME charset specification <A
+  HREF="#_REF_MCHRSET">[MCHRSET]</A>.  A two-element specification like
+  <code>[list cp1251 windows-1251]</code> must be used when the Tcl
+  encoding name differs from the equivalent MIME charset
+  specification.
+
+  <P>The case of the elements in charsetlist is not significant, nor
+  preserved.  They will be lower-cased for comparison, configuration,
+  and header output purposes.
+
+  <P>This option affects the Content-Type and
+  Content-Transfer-Encoding headers.  If you wish to override the
+  values in these headers, specify a <code>-headers [list content-type
+  VALUE1 content-transfer-encoding VALUE2]</code> option
+  <em>after</em> this option.  This would be necessary if you are
+  doing your own base64 or quoted-printable encoding of the message
+  body.</DD>
+  <P>
+
+  <DT><A NAME="_send_receipt">
+  <code>-receipt</code> <var>returnreceiptspec</var>
+  </A></DT>
+
+  <DD>Specifies that return-receipt delivery status messages should be
+  requested for this send.  Note that not all SMTP servers support
+  delivery status, per the <A HREF="#_REF_RFC1891">RFC 1891</A> spec
+  used in this implementation.  If you request return-receipt delivery
+  status notifications and your specified SMTP server does not support
+  delivery status, an error will be thrown before any message is sent.
+
+  <P>The <var>returnreceiptspec</var> may be either a single boolean
+  element or a key/value list containing return-receipt keywords and
+  values.  If a single boolean element, return receipt is disabled
+  when <code>0</code> or <code>false</code> and enabled with default
+  settings when <code>1</code> or <code>true</code>.  If a key/value
+  list, then the following keywords and values may be specified:
+  <P>
+
+    <DL>
+    <DT><code>delivery</code> <var>0|1</var></DT>
+
+    <DD>Specifies whether successful delivery status messages should
+    be returned.  1 for yes, 0 for no.  Default: 1</DD>
+    <P>
+
+    <DT><code>delay</code> <var>0|1</var></DT>
+
+    <DD>Specifies whether `significantly delayed' status messages
+    should be returned.  1 for yes, 0 for no.  Default: 1</DD>
+    <P>
+
+    <DT><code>nsmail</code> <var>0|1</var></DT>
+
+    <DD>Specifies whether a header should be added to the message that
+    would cause Netscape Mail clients to return a receipt when the
+    receiver opens the message for viewing.  1 for yes, 0 for no.
+    Default: 0</DD>
+    <P>
+
+    <DT><code>returnfull</code> <var>0|1</var></DT>
+
+    <DD>Specifies whether the body of the sent message should be
+    returned instead of only the headers.  1 for the full body, 0 for
+    headers only.  Default: 0</DD>
+    <P>
+
+    <DT><code>envelopeid</code> <var>text</var></DT>
+
+    <DD>Where <var>text</var> specifies an identifier to be returned
+    in any status messages, like <code>ID000601</code>, and will be
+    encoded in an ASCII-only form for transmission.  In its encoded
+    form (which may triple in length), it must be no longer than 38
+    characters.  If <code>text</code> is the empty string {}, then no
+    specific envelope ID will be sent, and the SMTP server's
+    auto-generated envelope ID will be used.  Default: {}</DD>
+
+    <P>
+    </DL>
+  </DL>
+
+  The following options to <code>ezsmtp::send</code> allow one to
+  override the package-wide configurations for a single send.  This
+  may be useful if you want to avoid the extra
+  <code>ezsmtp::config</code> step or change addresses or email
+  servers frequently during operation.
+  <P>
+
+  <DL>
+  <DT><A NAME="_send_from">
+  <code>-from</code> <var>addr</var>
+  </A></DT>
+
+  <DD>Where <var>addr</var> is in a form like
+  <code>username@host.domain</code> or like <code>"Full Name
+  &lt;username@host.domain&gt;"</code>, allowing you to override the
+  default (see <A HREF="#_config_from">ezsmtp::config -from</A>) for
+  this single send.</DD>
+  <P>
+
+  <DT><A NAME="_send_mailhost">
+  <code>-mailhost</code> <var>hostname</var>
+  </A></DT>
+
+  <DD>Hostname or IP address of the SMTP server, allowing you to
+  override the default (see <A HREF="#_config_mailhost">ezsmtp::config
+  -mailhost</A>) for this single send.</DD>
+  <P>
+
+  <DT><A NAME="_send_port">
+  <code>-port</code> <var>portval</var>
+  </A></DT>
+
+  <DD>Where <var>portval</var> specifies either a TCP port number or
+  service name to talk to the SMTP server, allowing you to override
+  the default (see <A HREF="#_config_port">ezsmtp::config -port</A>)
+  for this single send.</DD>
+  <P>
+
+  <DT><A NAME="_send_batchsize">
+  <code>-batchsize</code> <var>number</var>
+  </A></DT>
+
+  <DD>Where <var>number</var> sets the recipient batch size,
+  overriding the system default (see <A
+  HREF="#_config_batchsize">ezsmtp::config -batchsize</A>) for this
+  single send.</DD>
+  <P>
+
+  </DL>
+
+</DD>
+</DL>
+<P>
+
+<!-- ====================================================================== -->
+
+<H1><A NAME="_HEADERS">HEADERS</A></H1>
+
+The <A HREF="#_send_headers"><code>ezsmtp::send -headers
+<var>keyvaluelist</var> ...</code></A> option adds to the set of
+additional headers to be sent before the body in the current send.
+
+<P><var>keyvaluelist</var> must be a well-formed Tcl list (see the Tcl
+list command) with an even number of elements that alternate between
+<em>keys</em> and <em>values</em>.  The <em>keys</em> become the
+header names and <em>values</em> become their respective values.  The
+case of the header names (keys) is not significant, nor maintained, in
+order to comply with <A HREF="#_REF_RFC822">RFC822</A>.  The values
+are maintained verbatim with the exception of handling long lines (in
+order to comply with the same RFC).
+
+<P>Header <em>values</em> should typically be a single line of text
+with no leading or trailing newlines.  Multi-line headers may be
+specified by separating each line with a newline (\n) character.  Each
+line will have all leading/trailing whitespace discarded and
+continuing lines (after the first) will be prepended with a tab (\t)
+per the <A HREF="#_REF_RFC822">RFC822</A> spec.  For example the
+following switch and value:
+
+<DL><DD><PRE>
+-headers [list Content-type text/html x-my-header "This is my header" \
+        x-my-head2 "This is a long header\nwith two lines"]
+</PRE></DD></DL>
+
+<P>would be reformatted when sent as:
+
+<DL><DD><PRE>
+Content-Type: text/html
+X-My-Header: This is my header
+X-My-Head2: This is a long header
+        with two lines
+</PRE></DD></DL>
+
+<P>Default headers that will be sent, if not specified directly are:
+
+<DL><DD><PRE>
+Date: <EM>(see below)</EM><SUP><A HREF="#_head_sup1">1</A></SUP>
+From: <EM>(see below)</EM><SUP><A HREF="#_head_sup2">2</A></SUP>
+Subject: <EM>(see below)</EM><SUP><A HREF="#_head_sup3">3</A></SUP>
+X-Mailer: Tcl ezsmtp Mailer Package
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0
+</PRE></DD></DL>
+
+<OL>
+  <LI><A NAME="_head_sup1">The</A> Date: header will be in an
+  RFC-compliant form like: `Mon, 12 Oct 1999, 23:55:12 +0000'.</LI>
+  <P>
+
+  <LI><A NAME="_head_sup2">The</A> From: header value will be the one
+  specified by <A HREF="#_send_from"><code>ezsmtp::send
+  -from</code></A> or, if not specified, the default from <A
+  HREF="#_config_from"><code>ezsmtp::config -from</code></A>.
+  <P>
+
+  <LI><A NAME="_head_sup3">The</A> Subject: header will be sent with
+  the value of the <A HREF="#_send_subject"><code>-subject</code></A>
+  switch if and only if the switch was specified.</LI>
+  <P>
+
+  <LI>The `To:' and `Cc:' headers will be added if the user had
+  specified recipients via the <A HREF="#_send_to">-to</A>, <A
+  HREF="#_send_cc">-cc</A>, <A HREF="#_send_tolist">-tolist</A>, or <A
+  HREF="#_send_cclist">-cclist</A> options, respectively.  Note that
+  no `Bcc:' header will be sent, in order to preserve the anonymity of
+  recipients, as was the intent of that header.</LI>
+  <P>
+
+  <LI>The `Reply-To:' header will be added if the user had specified
+  one or more reply addresses via the <A
+  HREF="#_send_replyto">-replyto</A> or <A
+  HREF="#_send_replytolist">-replytolist</A> options.</LI>
+  <P>
+</OL>
+
+<P>Any of the above default headers may be overridden by setting them
+explicitly using <code>-headers ...</code>, typically as the
+<em>last</em> option in an <code>ezsmtp::send</code> command.
+
+<P>
+
+<!-- ====================================================================== -->
+
+<H1><A NAME="_SEE_ALSO">SEE ALSO</A></H1>
+
+<DL>
+
+<DT>Andreas Kupries' site</DT>
+
+<DD>Contains links to other email implementations for Tcl, several of
+which support MIME attachments and other useful features.  Located at:
+<A HREF="http://www.purl.org/NET/akupries/soft/mail/"
+>http://www.purl.org/NET/akupries/soft/mail/</A>.
+<P>
+
+</DL>
+
+
+<!-- ====================================================================== -->
+
+<H1><A NAME="_REFERENCES">REFERENCES</A></H1>
+
+<DL>
+
+<DT><A NAME="_REF_RFC821">[RFC821]</A></DT>
+
+<DD>The base specification for the Simple Mail Transport Protocol
+(SMTP), upon which the other RFCs listed below are based, available at
+<A HREF="http://www.faqs.org/rfcs/rfc821.html"
+>http://www.faqs.org/rfcs/rfc821.html</A></DD>
+<P>
+
+<DT><A NAME="_REF_RFC822">[RFC822]</A></DT>
+
+<DD>The base specification for the format of text messages to be sent
+across the Internet.  Describes how headers should be formatted, sets
+limits on body line length, etc.  Available at <A
+HREF="http://www.faqs.org/rfcs/rfc822.html"
+>http://www.faqs.org/rfcs/rfc822.html</A></DD>
+<P>
+
+<DT><A NAME="_REF_RFC1341">[RFC1341]</A></DT>
+
+<DD>The base specification for Multipurpose Internet Mail Extensions
+(MIME), which ezmstp does not currently implement.  Available at <A
+HREF="http://www.faqs.org/rfcs/rfc1341.html"
+>http://www.faqs.org/rfcs/rfc1341.html</A>.</DD>
+<P>
+
+<DT><A NAME="_REF_RFC1521">[RFC1521]</A></DT>
+
+<DD>The base specification for the format of MIME email address
+headers bodies, which ezsmtp <em>does</em> currently implement, at
+least the parts about plain text bodies.  Available at <A
+HREF="http://www.faqs.org/rfcs/rfc1521.html"
+>http://www.faqs.org/rfcs/rfc1521.html</A>.</DD>
+<P>
+
+<DT><A NAME="_REF_RFC1652">[RFC1652]</A></DT>
+
+<DD>The specification for ESMTP 8BITMIME, which your SMTP server must
+support in order for the <A HREF="#_send_charset"><code>ezsmtp::send
+-charset</code></A> option to work.  This is implemented by sendmail
+versions 8.8 and newer (I think) and many other modern SMTP servers.
+The full spec is available at <A
+HREF="http://www.faqs.org/rfcs/rfc1652.html"
+>http://www.faqs.org/rfcs/rfc1652.html</A>.</DD>
+<P>
+
+<DT><A NAME="_REF_RFC1891">[RFC1891]</A></DT>
+
+<DD>The specification for delivery status notification, used for <A
+HREF="#_send_receipt"><code>ezsmtp::send -receipt</code></A>.  The
+full spec is at <A HREF="http://www.faqs.org/rfcs/rfc1891.html"
+>http://www.faqs.org/rfcs/rfc1891.html</A>.</DD>
+<P>
+
+<DT><A NAME="_REF_MCHRSET">[MCHRSET]</A></DT>
+
+<DD>A list of the current IANA-approved MIME charset specifiers may be
+found at: <A
+HREF="ftp://ftp.isi.edu/in-notes/iana/assignments/character-sets"
+>ftp://ftp.isi.edu/in-notes/iana/assignments/character-sets</A></DD>
+<P>
+
+</DL>
+
+
+<!-- ====================================================================== -->
+
+<H1><A NAME="_EXAMPLES">EXAMPLES</A></H1>
+
+The <A HREF="test_examples.txt">test_examples.txt</A> file contains
+some examples of ezsmtp usage that I use to test new and old features
+as I change things.  This may help you understand the basic idea.
+
+<P>If you need help with more complex tasks, <A
+HREF="mailto:dhagberg@millibits.com">email me</A> I would be happy to
+add your question and my answer as a future example in this section.
+
+
+<!-- ====================================================================== -->
+
+<H1><A NAME="_COPYRIGHT">COPYRIGHT</A></H1>
+
+Copyright &#169; 1999-2000 by D. J. Hagberg and other parties.
+
+<P>See the file "<A HREF="license.txt">license.txt</A>" for
+information on usage and redistribution of this file, and for a
+DISCLAIMER OF ALL WARRANTIES.
+
+
+<!-- ====================================================================== -->
+
+<H1><A NAME="_REVISION">REVISION</A></H1>
+
+<code>
+$Id: ezsmtp.html,v 4.3 2011/02/13 18:12:01 arwagner Exp $
+</CENTER>

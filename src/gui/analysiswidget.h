@@ -10,7 +10,7 @@
 #ifndef ANALYSIS_WIDGET_H_INCLUDED
 #define ANALYSIS_WIDGET_H_INCLUDED
 
-#include "engine.h"
+#include "enginex.h"
 #include "movedata.h"
 #include "ui_analysiswidget.h"
 #include <QtGui>
@@ -20,8 +20,6 @@
 	The Analysis widget which shows engine output
 */
 
-class Analysis;
-class Board;
 class Tablebase;
 class Database;
 
@@ -54,7 +52,7 @@ public:
 public slots:
     /** Sets new position. If analysis is active, the current content will be cleared and
     new analysis will be performed. */
-    void setPosition(const Board& board, QString line="");
+    void setPosition(const BoardX& board, QString line="");
     /** Called when configuration was changed (either on startup or from Preferences dialog. */
     void slotReconfigure();
     /** Store current configuration. */
@@ -72,7 +70,7 @@ public slots:
     /** Change the search depth of the engine */
     void setDepth(int n);
     /** Must send ucinewgame next time */
-    void slotUciNewGame(const Board& b);
+    void slotUciNewGame(const BoardX& b);
     /** Called when the list of databases changes */
     void slotUpdateBooks(QStringList);
     /** Called upon entering or leaving game mode */
@@ -122,18 +120,18 @@ private:
 
     QList<Analysis> m_analyses;
     Ui::AnalysisWidget ui;
-    QPointer<Engine> m_engine;
-    Board m_board;
+    QPointer<EngineX> m_engine;
+    BoardX m_board;
     QString m_line;
-    Board m_NextBoard;
+    BoardX m_NextBoard;
     QString m_NextLine;
-    Board m_startPos;
+    BoardX m_startPos;
     QString m_tablebaseEvaluation;
     QString m_tablebaseMove;
     Move m_tb;
     int m_score_tb;
     Tablebase* m_tablebase;
-    Board m_tbBoard;
+    BoardX m_tbBoard;
     EngineParameter m_moveTime;
     bool m_bUciNewGame;
 

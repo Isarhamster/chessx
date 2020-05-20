@@ -13,6 +13,8 @@
 #include <QtDebug>
 #include "database.h"
 
+using namespace chessx;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -27,6 +29,12 @@ Database::~Database()
 {
 }
 
+qint64 Database::diskSize() const
+{
+    QFileInfo fi(filename());
+    return fi.size();
+}
+
 bool Database::isUtf8() const
 {
     return m_utf8;
@@ -37,12 +45,12 @@ void Database::setUtf8(bool utf8)
     m_utf8 = utf8;
 }
 
-Index* Database::index()
+IndexX* Database::index()
 {
     return &m_index;
 }
 
-const Index* Database::index() const
+const IndexX* Database::index() const
 {
     return &m_index;
 }
@@ -78,17 +86,17 @@ bool Database::isReadOnly() const
     return true;
 }
 
-bool Database::loadGame(GameId /*gameId*/, Game& /*game*/)
+bool Database::loadGame(GameId /*gameId*/, GameX& /*game*/)
 {
     return false;
 }
 
-void Database::loadGameHeaders(GameId gameId, Game &game) const
+void Database::loadGameHeaders(GameId gameId, GameX &game) const
 {
     m_index.loadGameHeaders(gameId, game);
 }
 
-void Database::loadGameHeader(GameId gameId, Game &game, const QString &tag) const
+void Database::loadGameHeader(GameId gameId, GameX &game, const QString &tag) const
 {
     m_index.loadGameHeader(gameId, game, tag);
 }
@@ -103,12 +111,12 @@ QString Database::tagValue(GameId gameId, TagIndex tag) const
     return m_index.tagValue_byIndex(tag, gameId);
 }
 
-bool Database::replace(GameId, Game &)
+bool Database::replace(GameId, GameX &)
 {
     return false;
 }
 
-bool Database::appendGame(const Game &)
+bool Database::appendGame(const GameX &)
 {
     return false;
 }
@@ -118,7 +126,7 @@ bool Database::undelete(GameId)
     return false;
 }
 
-bool Database::remove(const Filter &)
+bool Database::remove(const FilterX &)
 {
     return false;
 }
@@ -132,7 +140,7 @@ void Database::clear()
 {
 }
 
-void Database::setTagsToIndex(const Game& game, GameId id)
+void Database::setTagsToIndex(const GameX& game, GameId id)
 {
     const TagMap& tags = game.tags();
     TagMap::const_iterator i = tags.constBegin();

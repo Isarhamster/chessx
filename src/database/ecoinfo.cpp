@@ -102,7 +102,7 @@ void EcoInfo::update()
     QHash<QString, float> playersWhite;
     QHash<QString, float> playersBlack;
 
-    const Index* index = m_database->index();
+    const IndexX* index = m_database->index();
 
     // Determine matching tag values
     ValueIndex eco = index->getValueIndex(m_code);

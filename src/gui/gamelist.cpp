@@ -26,7 +26,7 @@
 #include "tags.h"
 #include "tagsearch.h"
 
-#include "game.h"
+#include "gamex.h"
 #include "output.h"
 #include "boardview.h"
 
@@ -41,7 +41,7 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
+GameList::GameList(FilterX* filter, QWidget* parent) : TableView(parent)
 {
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setObjectName("GameList");
@@ -254,7 +254,7 @@ void GameList::selectRandomGame()
     }
 }
 
-void GameList::setFilter(Filter* filter)
+void GameList::setFilter(FilterX* filter)
 {
 	if (filter)
 	{
@@ -649,7 +649,7 @@ void GameList::startDrag(Qt::DropActions supportedActions)
         QString text;
         foreach(GameId gameIndex, mimeData->m_indexList)
         {
-            Game g;
+            GameX g;
             if(m_model->filter()->database()->loadGame(gameIndex, g))
             {
                 Output textWriter(Output::Pgn, &BoardView::renderImageForBoard);

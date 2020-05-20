@@ -15,7 +15,7 @@
 #include <QAbstractTableModel>
 #include <QPointer>
 
-class Filter;
+class FilterX;
 class OpeningTreeThread;
 
 /** @ingroup Search
@@ -31,7 +31,7 @@ public:
     /** Calculate opening tree from given position, using given filter. It sets
     the filter to contain only game matching position @p b .
     @return true if the update was not cancelled.*/
-    bool updateFilter(Filter& f, const Board& b, bool updateFilter, bool sourceIsFilter, bool bEnd);
+    bool updateFilter(FilterX& f, const BoardX& b, bool updateFilter, bool sourceIsFilter, bool bEnd);
     /** Returns the number of moves in the Opening Tree */
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     /** Returns the number of columns of the Opening Tree */
@@ -50,7 +50,7 @@ public:
     /** Move leading to given entry. */
     QString move(const QModelIndex& index) const;
     /** Current Board */
-    Board board() const;
+    BoardX board() const;
 
     bool bEnd() const;
 
@@ -58,9 +58,9 @@ public slots:
     /** Cancel a running update */
     void cancel();
 protected slots:
-    void updateFinished(Board*);
-    void updateTerminated(Board*);
-    void moveUpdated(Board* b, QList<MoveData> moveList);
+    void updateFinished(BoardX*);
+    void updateTerminated(BoardX*);
+    void moveUpdated(BoardX* b, QList<MoveData> moveList);
 signals:
     void progress(int);
     void requestGameFilterUpdate(int,int);
@@ -75,8 +75,8 @@ private:
     QStringList m_names;
     int m_sortcolumn;
     Qt::SortOrder m_order;
-    Board m_board;
-    QPointer<Filter> m_filter;
+    BoardX m_board;
+    QPointer<FilterX> m_filter;
     bool m_updateFilter;
     bool m_sourceIsDatabase;
     bool m_bEnd;

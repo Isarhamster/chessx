@@ -44,26 +44,26 @@ public:
     /** @return whether the database was modified. */
     void setModified(bool b);
     /** Adds a game to the database */
-    bool appendGame(const Game& game);
+    bool appendGame(const GameX& game);
     /** Removes a game from the database */
     bool remove(GameId gameId);
     /** Undo the deletion of a game */
     bool undelete(GameId gameId);
     /** Saves a game at the given position, returns true if successful */
-    bool replace(GameId gameId, Game& game);
+    bool replace(GameId gameId, GameX& game);
 
     /** Loads a game from the given position, returns true if successful */
-    bool loadGame(GameId gameId, Game& game);
+    bool loadGame(GameId gameId, GameX& game);
     /** Loads only moves into a game from the given position */
-    void loadGameMoves(GameId gameId, Game& game);
-    virtual int findPosition(GameId index, const Board& position);
+    void loadGameMoves(GameId gameId, GameX& game);
+    virtual int findPosition(GameId index, const BoardX& position);
 
 protected:
     virtual void parseGame();
     virtual bool hasIndexFile() const { return false; }
 
 private:
-    QVector <Game*> m_games;
+    QVector <GameX*> m_games;
     bool parseFile();
     bool m_isModified;
     mutable QReadWriteLock m_mutex;

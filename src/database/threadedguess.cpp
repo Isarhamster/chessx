@@ -7,6 +7,8 @@
 
 #include <QMetaType>
 
+using namespace chessx;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -17,7 +19,7 @@ ThreadedGuess::ThreadedGuess()
     m_dontGuess = false;
 
     qRegisterMetaType<Guess::Result>("Guess::Result");
-    qRegisterMetaType<Board>("Board");
+    qRegisterMetaType<BoardX>("BoardX");
 }
 
 ThreadedGuess::~ThreadedGuess()
@@ -34,7 +36,7 @@ void ThreadedGuess::cancel()
     }
 }
 
-bool ThreadedGuess::guessMove(Board b)
+bool ThreadedGuess::guessMove(BoardX b)
 {
     if (isRunning()) return false;
     if (!Guess::guessAllowed()) return false;
@@ -47,7 +49,7 @@ bool ThreadedGuess::guessMove(Board b)
 
 void ThreadedGuess::run()
 {
-    Board b = m_board;
+    BoardX b = m_board;
     b.swapToMove();
     b.clearEnPassantSquare();
     Guess::MoveList moveList;

@@ -1,0 +1,276 @@
+This is history of Phalanx.  Dates are in the form YYYYMMDD.
+
+I         First version to play a legitimate game, it finally knows all rules.
+19970304  I spent a lot of time on tuning transposition table code and
+          extensions. The program scores 78% at large Reinfeld's test set, 10 s
+          per move, on 486+/150.
+
+II        Two killer heuristics added: well known history killers (modified)
+199704??  and `reaction' killers (the killer is connected to the previous enemy
+          move). The tree search is faster, especially at `quiet' positions.
+          Hashtable presearch. Modified hashentry replacement strategy. Better
+          evaluation function, it now knows more about passed pawns, the
+          endgame play is much stronger. Fixed bug at 7-th row pawn push
+          extension routine. Faster output - using sprintf() to prepare the
+          output and then only one printf. New command line options: -t, -T to
+          set the hashtable size.
+
+III       Permanent brain (pondering).  King safety evaluation.  Hung pieces
+19970529  static evaluation.  Null move pruning.  Forward pruning.  Better time
+          heuristics - forced moves are played quickly.  New cmd-line options:
+          -f, -x, -p, -s.
+
+IV        New option -c to determine whether to use cpu or real time.  The
+19970721  internal timing resolution changed to 1/100 of a second.  Xboard
+          compatible editing position.  Removed en-passant capture from
+          quiescence search.  Changes in static-eval function.  Piece list
+          implemented - speedup is between 0 and 20%; more in endgame.  Pinned
+          pieces static evaluation.  Better evaluation of weak pawns.  Trapped
+          bishop and knight evaluation.  Bugfix at extending check evasions.
+          Bugfix: development bonus was computed but not added to total
+          evaluation.  Output change: '!' means turn, '!!' means value out of
+          window.
+
+V         Mostly interface changes, no big improvement in playing strength.
+19970803  Xboard compatibility fixes: 'post' is no more switch, new command
+          'remove'.  Fixed command 'level': 'level 0 5 0' (five minutes per
+          game) should work, also increment (ICS) levels ('level 0 2 12').
+          Increment can be given at command line.  New option -o (polling
+          input) - when running tests, phalanx needs -o-.  New feature of
+          autotesting: all incorrect results are written into file
+          'notfound.fin'.  Small output changes for better compatibility with
+          xboard 3.6.2.  Eliminated some bad turns in evaluation.  Better king
+          safety evaluation - counting safe checks available.
+
+VI        Fixed small efficiency bug in evaluate.c.  Improved time heuristics
+19970915  for increment (ICS) levels.  Optimized hashing - about 5% overall
+          speedup.  Fixed bug in ptime().  User is now allowed to continue play
+          even if the position is drawn by 3-rep., material, or 50 moves rule.
+          Fixed bug - Draw requests are now always ignored, not always accepted
+          :-).  Xboard-compatible 'Illegal move' message.  Binary opening book,
+          created from PGN by bcreate.  This distribution is bigger than any
+          previous because it contains a small example of binary book
+          ('sbook.phalanx', 174kB, 29634 moves).  SAN input accepted.  Static
+          evaluation now better understands middlegame positions without
+          castling.  Added pre-computed tables into static evaluation -> about
+          5% speed improvement.  'Show thinking' mode now shows also a list of
+          book moves if there's a book entry.  I have played a match with
+          previous version (64 games, 2 minutes, increment 12 seconds, on
+          a 486+/150, via xboard, no pondering), new version wins 38.5-25.5.
+
+VII       Courtesy of Pavel Janik ml., new command 'fen'.  Bugfix in command
+19971022  line parser, 'phalanx 0 2 12' now works.  Better time controls: added
+          hard time limit to avoid being flagged.  Pondering bugfix: Phalanx
+          was pondering O-O, but opponent played O-O-O; the move check was
+          incorrect and Phalanx thought that O-O was played; this resulted in
+          'Illegal move' message few moves later.  More pondering safety: the
+          move to be pondered is now checked for legality, before this fix it
+          was simply taken from PV (if present), but PV is not always 100%
+          correct.  More PV safety: search cannot be interrupted during the
+          first iteration, the abort is delayed until the first iteration is
+          finished.  New options: -r <resign value>, -b <+/-> to set opening
+          book on/off.  New commands hard/easy to set pondering on/off.
+          Optimized do_move(): 3% speedup in test positions.  Search
+          optimization: null move is not played if the value in hash table
+          entry is too low.  Output bugfix: output is now readable even at long
+          time searches.  SEE (Static Exchange Evaluator) and more pruning in
+          quiescence search.  RoboFICS compatible commands 'white' and 'black'.
+          Routine for evaluating pawn endgames.  New extension trick that helps
+          in some horizon-effect type positions, it's based on measuring
+          difference between current score and null move result; if current
+          score is much better, the side to move must be under threat and the
+          line is extended, similar trick is also in gnuchess.
+
+VIII      Fixed bug in search(): eliminated useless re-searches -> about 3%
+19971103  speed improvement.  Noise level is now in centiseconds, not in nodes.
+          Improved horizon-effect extensions.  endgame.c: new endgame
+          knowledge, mostly for endgames with minor pieces and pawns: knight
+          and bishop mating, knight+knight (draw), minor vs. minor (draw),
+          minor vs. pawn (draw, but still needs some work, sometimes a pawn
+          wins against a knight), onepawn() as a special case of pawns(), bad
+          bishop (bishop + rook pawn), basics for R+P vs. R, bishops with
+          opposite colors (this is often drawish ending).  New penalty for
+          moving castling-side pawns in middlegame.
+
+IX        Function smove() is now used in both binary book and hashing code, it
+19971205  is cleaner and easier to read, the binary is smaller with this.
+          Bugfix: Phalanx now does not ponder move that leads into a terminal
+          position (checkmate, stalemate), this fixes some unexpected quits
+          (I hope all of them).  Added more limits to horizon-effect extension
+          trigger - there was so many extensions, that version VIII was
+          actually weaker than previous versions, because of lower nominal
+          search depth; these extensions are now used only for major threats.
+          Static eval cache entry is now packed into 4 bytes instead of 8 ->
+          the cache eats only 256K (512K before this).
+
+X         Bugfix in static evaluation of trapped knight at [AH]7.  Better
+19980108  evaluation of trapped bishop ([AH]7) and knight ([AH][87]), now it's
+          using the static exchange evaluator.  Time allocation: alloc more
+          time (+1/8) if pondering is on.  Better understanding of 'trade-down'
+          bonus - if there are no pawns, you often need a rook more to win the
+          game, a minor piece is not enough.  Shallower extensions resulting in
+          greater average search depth.  Easy levels: use new command line
+          option -e <1...100> to select an easy level; 1 is the strongest and
+          100 is the easiest one, Phalanx tries to make human-like blunders.
+          Minor changes in resigning.  Clean up in pbook.phalanx, deleted over
+          100 positions.  Killer heuristics now uses the SEE.  Bugfix in
+          endgame.c: trade bonus did not work for kings and pawns endgames.
+          Simple learning, can be activated by -l+ option; it is off by
+          default, because it's very experimental version.  New version wins
+          engine-engine match with version IX 23:17 (tc 2, inc 8, 486+/150,
+          no learning, no pondering).
+
+XI        Courtesy of Milan Zamazal: long options and user-friendly handling of
+19980125  book files - you can now use environment variables or command line
+          options.  Bugfix in trade bonus: endgame KQ-KBPP was evaluated only
+          about +1.10, but the stronger side is winnig here even without pawns,
+          now it's >+3.00 and Phalanx can solve this Dufrense&Mieses study:
+          8/3Np3/7P/1p3P2/1k6/5K2/1b6/8/w Pf5f6.  Deeper overall extensions,
+          +10% of ply.  More check evasion extensions.  Wider window for 'lazy
+          evaluation', search is now slower but stable.  Minor fixes in forward
+          and null move pruning.  Zero-width search modified for root moves,
+          actually it's no more zero-width; this eliminates some 'blind turns'
+          (a move is evaluated as >=(Alpha+1), but the engine cannot prove it
+          in re-search in full [Alpha,Beta] window).  Minor changes in static
+          evaluation.  Bugfix in time allocation of increment levels.  Changed
+          time heuristics to use more time.
+
+XII       More pruning in quiescence search: moves that have little chance to
+19980301  return the value over alpha are not generated.  Permanent brain is
+          now really 'permanent', if there is no move to ponder in the PV,
+          Phalanx uses short search to pick a move and ponders it.  Bugfix:
+          occasional zero division at very fast time controls, like 10s/game.
+          Some puts() replaced with printf(), puts() is buggy in my gcc (2.7.2)
+          and causes sigsegv when interrupted and called again during the
+          interrupt.  Optimized null move, this speeds up the engine.  Easy
+          levels now use nodes instead of centiseconds for measuring time, the
+          playing strength of easy levels does not depend on cpu power and
+          cpu load.  Resigning now works with RoboFics (via 'tellics resign').
+          Updated FSF address in docs.
+
+XIII      Lots of 'char' and 'short' replaced with 'int' -> speedup on iX86
+19980316  chips (about 10% on my 486, probably more on P6).  Bugfix at 'edit'
+          command, edit was broken for positions with black to move.  New
+          command line option 'bench', 'phalanx bench' runs a 5 cpu-minutes
+          benchmark and reports nodes per second.  Added some interesting lines
+          into the opening book.  Dynamic draw score, it's set to -20 by
+          default.  New command 'rating <phalanx rating> <opponent rating>' to
+          adjust the dynamic draw score, Phalanx tries to avoid draw with
+          weaker opponents, minimal draw score is -20, maximal +20.
+
+XIV       Dynamic draw score did not work for stalemate, now fixed.  Major bug
+19980416  fixed at resigning: if resigning was on, phalanx resigned almost any
+          game after few moves, this was broken from previous version.
+          Simplified computing bounds for lazy evaluation, this was too
+          complicated and slow.  Higher material limit for evaluating position
+          as endgame.  Deeper extensions, +0.1 ply.  Improved move ordering at
+          root search.  Minor optimizations.  More variability in opening book.
+          Disabled scout search near leafs.  Bugfix: type of Nodes changed to
+          'long long' (64 bits on Intel[3456]86), 32-bit integer was not long
+          enough for >24 hour runs.  Bugfix: option -P did not work, now fixed.
+          Added startup messages that show full path of all open files.
+
+XV        Internal iterative deepening.  Cleaned pbook.phalanx.  New "Pc2-c4"
+19980614  code to encourage playing c4 (c5 as black) in closed positions where
+          e4 (e5) is not possible.  Bugfix at computing total material on the
+          board, the variable was sometimes overwritten with unexact value.
+          New xboard compatible commands 'bk' and 'analyze'.  'bk' shows all
+          book moves.  'analyze' starts analysis mode.  Bugfix in bcreate.c: no
+          games on stdin caused segmentation fault.  GNU extensions (long
+          options and snprintf) are now used only if GNUFUN is defined
+          (-DGNUFUN in makefile).  New endgame knowledge: KNP vs. K is
+          sometimes draw.  Small changes in static evaluation.  SIGINT is
+          ignored in polling input mode.  Time information in post lines is
+          shown in centiseconds instead of seconds to follow current draft of
+          xboard chess engine communication protocol.
+
+XVI       Bugfix in analyze mode: there is no extra character after the search
+19980630  depth number in post lines - xboard understands that time info is in
+          centiseconds, not in seconds.  Bugfix in null move pruning: the side
+          that is trying its second move in row must have at least one legal
+          move, this caused segmentation fault if there was none.  Command
+          'hard' does not set pondering on in easy levels.  Bugfix at parsing
+          SAN moves, nc3 was (possibly) interpreted as Pc2-c3.  Command 'level'
+          accepts time in mm:ss form, for example 'level 0 2:30 12'.  Bugfix in
+          kings+pawns endgames - penalty for pawns on one file (doubled) worked
+          as penalty for pawns on one row.  Improved kings+pawns endgames
+          static evaluation.  New command 'xboard' sets xboard compatible mode.
+
+XVII      More variability in pbook.phalanx.  Better sbook.phalanx, generated
+19980804  from wall.pgn.  Changed (and fixed) extensions for check evasions and
+          passed pawn pushes.  Changed evaluation of passed pawns.  phalanx and
+          bcreate integrated into one binary, most of the code was common
+          anyway; book can be created via 'phalanx bcreate' instead of just
+          'bcreate'.  Bigger limit for count of [position,move] in bcreate
+          code, the counter has 32 bits instead of 16.  Performance bugfix in
+          null move pruning.
+
+XVIII     Bugfix in the static exchange evaluator - it let kings slide
+19980906  horizontally.  New styling of board in command "bd"/"d".  New command
+          in edit mode: 's' to switch side to move.  Modified look of edit
+          mode.  Modifications in static evaluation: bishop pair needs
+          mobility; queen has 'king distance' bonus only if it's on a safe
+          square; simpler rook evaluations - smaller bonuses; forpost (outpost)
+          pawn gets more bonus for # of pieces defending it (Aaron Nimzowitsch,
+          "Mein System"); bigger bonus for protected or connected passed pawns.
+          Modified threat extensions - only mate threats are extended.  Bugfix
+          in analysis mode: PV is computed (and shown) even if there is only
+          one legal move.  New feature of command 'level' - 'level N' sets
+          level to N seconds fixed time per move.  Better pbook.phalanx.
+
+XIX       Log file to allow easier debugging/tuning, it is activated via
+19981122  '-g <log file name>' command line parameter.  Positional learning
+          file is created (in current directory) if it does not exist and it no
+          more has to be distributed as empty.  Minor speedups in pawn
+          endgames.  Outside passed pawn detection and evaluation in pawn
+          endgames.  Raised material value needed for evaluating
+          kingside/queenside storming (attack after different castlings), these
+          are not worth evaluating when close to endgame.  Fixed book move
+          selection to make it easier to implement book learning in future (no
+          real change for user).  FICS whispering.  Better pbook.  Bugfix in
+          evaluation of kings+pawns endgames - the evaluation of 'king in the
+          square of pawn' had bad sign (!).  New extension trick: we add big
+          extension after two succesive non-pawn captures that result in pawn
+          endgames - the branching factor is much smaller below that node and
+          we can go deeper without affecting search stability and ... we should
+          do so, because 6 plies subtree evaluation in middlegame is much
+          better than 6 plies in king+pawns.  Timing change: phalanx uses more
+          time if there were turns in last ply level.  Fixed bug in
+          communication with xboard that caused playing too fast in '-mg' mode
+          with 'reuse' on.  Alias 'u' for 'undo'.
+
+XX        Bugfix in xboard mode, long lines of 'tellics whisper ....' were
+19990104  split into several lines.  Better pbook.phalanx.  Fixed code that
+          avoids pseudocastling (moving white king e1-f1-g1 and leaving rook h1
+          undeveloped), now it works also in endgame.  New code to keep
+          pressure against stonewall d-pawn; if black has stonewall, white
+          should keep the c-pawn on c4; previous versions often played c4-c5?,
+          and that is a bad error against humans.  Knights now get penalty in
+          endgames with pawns on both sides of the board (12 to 35 centipawn).
+          Outside passed pawn evaluated in all endgames, not just in
+          kings+pawns.  Minor bug fix in analyze mode with xboard (phalanx
+          aborted search due to unimplemented '.' command).  New side effect of
+          command 'level' - it also sets remaining time to the same value as
+          level time; this does not break anything but might help in the
+          Fritz 5.32 winboard interface.  SAN input now accepts pawn captures
+          in the form 'ef'.  ECO database, ECO codes and names are shown with
+          'bk' command; user has to run 'bk' command once in initial position
+          to activate the ECO feature.  Removed '-T' command line option from
+          help, it might be used to tablebase directory in future.
+
+XXI       Major bug fixed in outside passed pawn evaluation, when one side had
+19990131  no pawns, there was indexing out of range.  Minor penalty for rook on
+          a pawn file in middlegame.  Fixes in pbook.phalanx, as usual.
+
+XXII      Better ICS whispering, it sends only one info per move.  Bugfix in
+20000116  disabling castling flag, now also moves _to_ the A1,H1,A8,H8 squares
+          disable corresponding castling.  Improved pbook.phalanx.  New
+          sbook.phalanx created from "granit" collection.  Modified
+          bcreate so that moves are put into the book in the order of their
+          success rate, the most successful move is later shown as the first
+          one in the list of the book moves.  Bcreate now uses temporary files
+          instead of memory.  Deeper extensions.  Modified and fixed rook
+          static evaluation.  Learning is now on by default.  Phalanx sets
+          the first finger line on ICS, it shows version, size of hashtable,
+          and sizes of the opening books.  Bugfix in benchmark, the resulting
+          number was incorrect on machines that can do over 70kNps.

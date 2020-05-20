@@ -20,7 +20,7 @@
 #include <QVector>
 
 #include "indexitem.h"
-#include "game.h"
+#include "gamex.h"
 
 #define VERSION_INDEX_1_2 0x0001
 #define VERSION_INDEX_1_3 0x0002
@@ -37,13 +37,13 @@
  *
  */
 
-class Index : public QObject
+class IndexX : public QObject
 {
     Q_OBJECT
 
 public:
-    Index();
-    ~Index();
+    IndexX();
+    ~IndexX();
 
     // Set up nearly-empty index
     void init();
@@ -67,10 +67,10 @@ public:
     // Retrieving tags //
     //
     /** Restore all tags for game @p id from Index into @p game object */
-    void loadGameHeaders(GameId id, Game& game) const;
+    void loadGameHeaders(GameId id, GameX& game) const;
 
     /** Restore the value for @p tag for game @p id from Index into @p game object */
-    void loadGameHeader(GameId id, Game& game, const QString& tag) const;
+    void loadGameHeader(GameId id, GameX& game, const QString& tag) const;
 
     /** Get the tag @p tagName for given game index @p gameId */
     QString tagValue(const QString& tagName, GameId gameId) const;

@@ -6,6 +6,8 @@
 #include "tags.h"
 #include "index.h"
 
+using namespace chessx;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -22,7 +24,7 @@ bool StreamDatabase::parseFile()
     return true;
 }
 
-bool StreamDatabase::loadNextGame(Game& game)
+bool StreamDatabase::loadNextGame(GameX& game)
 {
     //indexing game positions in the file, game contents are ignored
     int oldFp = -3;

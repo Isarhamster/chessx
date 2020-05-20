@@ -11,7 +11,7 @@
 #define DATABASEINFO_H__
 
 #include "circularbuffer.h"
-#include "game.h"
+#include "gamex.h"
 #include "gameid.h"
 
 #include <QString>
@@ -21,7 +21,7 @@
 #include <QMetaType>
 
 class Database;
-class Filter;
+class FilterX;
 class QUndoStack;
 class QUndoGroup;
 
@@ -60,13 +60,13 @@ public:
         return m_database;
     }
     /** @return current filter */
-    Filter* filter();
+    FilterX* filter();
     /** @return current game  */
-    Game& currentGame()
+    GameX& currentGame()
     {
         return m_game;
     }
-    const Game& currentGame() const
+    const GameX& currentGame() const
     {
         return m_game;
     }
@@ -83,7 +83,7 @@ public:
     in the database, game will be replaced, else if will be appended at the end. */
     bool saveGame();
 
-    void replaceGame(const Game& game);
+    void replaceGame(const GameX& game);
 
     void updateMaterial();
 
@@ -92,10 +92,12 @@ public:
         return m_filename;
     }
     QString dbPath() const;
+    QString dbName() const;
 
     bool IsLoaded() const;
     bool IsUtf8() const;
 
+    bool isScidDb() const;
     bool IsFicsDB() const;
     bool IsChessbaseBook() const;
     bool IsPolyglotBook() const;
@@ -110,7 +112,7 @@ public:
     bool modified() const;
     bool gameNeedsSaving() const;
 
-    void restoreState(const Game& game);
+    void restoreState(const GameX& game);
 
     QUndoStack *undoStack() const;
 
@@ -131,20 +133,20 @@ protected:
 
 signals:
     void LoadFinished(DatabaseInfo*);
-    void signalRestoreState(const Game &game);
+    void signalRestoreState(const GameX &game);
     void signalGameModified(bool gameNeedsSaving);
     void signalMoveChanged();
 
 
 public slots:
     void dbCleanChanged(bool);
-    void setModified(bool modified, const Game &g, QString action);
+    void setModified(bool modified, const GameX &g, QString action);
 
 private:
     QUndoStack* m_undoStack;
     Database* m_database;
-    QPointer<Filter> m_filter;
-    Game m_game;
+    QPointer<FilterX> m_filter;
+    GameX m_game;
     QString m_filename;
     GameId m_index;
     CircularBuffer<GameId> m_lastGames;

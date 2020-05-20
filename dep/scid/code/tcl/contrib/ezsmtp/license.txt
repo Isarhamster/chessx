@@ -1,0 +1,77 @@
+The rest of the stuff is legalese cribbed mightily from the Tcl/Tk
+license.  Basically, if you like ezsmtp and use it regularly, buy me a
+cold, frosty Stout at the Tcl conference sometime.  Other than that,
+you are under no obligation whatsoever -- do with it what you may but
+please don't sue me....  I'd like to know where ezsmtp is being used,
+so drop me an email and let me know.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+This software is copyrighted by D. J. Hagberg, Jr. and other parties.
+The following terms apply to all files associated with the software
+unless explicitly disclaimed in the individual files.
+
+The authors hereby grant permission to use, copy, modify, distribute,
+and license this software and its documentation for any purpose, provided
+that existing copyright notices are retained in all copies and that this
+notice is included verbatim in any distributions. No written agreement,
+license, or royalty fee is required for any of the authorized uses.
+Modifications to this software may be copyrighted by their authors
+and need not follow the licensing terms described here, provided that
+the new terms are clearly indicated on the first page of each file where
+they apply.
+
+IN NO EVENT SHALL THE AUTHORS OR DISTRIBUTORS BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE, ITS DOCUMENTATION, OR ANY
+DERIVATIVES THEREOF, EVEN IF THE AUTHORS HAVE BEEN ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+
+THE AUTHORS AND DISTRIBUTORS SPECIFICALLY DISCLAIM ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE
+IS PROVIDED ON AN "AS IS" BASIS, AND THE AUTHORS AND DISTRIBUTORS HAVE
+NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
+MODIFICATIONS.
+
+GOVERNMENT USE: If you are acquiring this software on behalf of the
+U.S. government, the Government shall have only "Restricted Rights"
+in the software and related documentation as defined in the Federal
+Acquisition Regulations (FARs) in Clause 52.227.19 (c) (2).  If you
+are acquiring the software on behalf of the Department of Defense, the
+software shall be classified as "Commercial Computer Software" and the
+Government shall have only "Restricted Rights" as defined in Clause
+252.227-7013 (c) (1) of DFARs.  Notwithstanding the foregoing, the
+authors grant the U.S. Government and others acting in its behalf
+permission to use and distribute the software in accordance with the
+terms specified in this license.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+Original version by Keith Vetter <keith@softbook.com>
+Who has stated the following terms in an email of 8-Oct-1999:
+
+  Subject: Re: Your smtp.tcl code
+  Date: Fri, 8 Oct 1999 10:47:32 -0700 (PDT)
+  From: Keith Vetter <keithv@u13.CS.Berkeley.EDU>
+  Reply-To: keith@softbook.com
+  To: dhagberg@millibits.com
+  [ . . . ]
+  Feel free to do whatever you want with the code. I only ask that you
+  include my name and email as the original author. 
+
+For the purposes of protecting the original author:
+
+Portions Copyright 1997-1998 Keith Vetter and the University of California
+
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted, provided
+that the above copyright notice appear in all copies.
+Keith Vetter and the University of California. make no representations
+about the suitability of this software for any It is provided "as is"
+without express or implied warranty.  By use of this software the user
+agrees to  indemnify and hold harmless Keith Vetter and the University
+of California from any claims or liability for loss arising out
+of such use.
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

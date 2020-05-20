@@ -7,7 +7,7 @@
 
 #include <QThread>
 #include "ecopositions.h"
-#include "game.h"
+#include "gamex.h"
 #include "settings.h"
 
 /** @ingroup GUI
@@ -29,7 +29,7 @@ public:
             ok = false;
         }
         QString gtm = AppSettings->gtmPath();
-        if (!Board::loadEcoFile(gtm))
+        if (!BoardX::loadEcoFile(gtm))
         {
             ok = false;
         }

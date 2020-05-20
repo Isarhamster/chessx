@@ -9,6 +9,21 @@
 #include <QStringList>
 #include <QList>
 
+class DatabaseInfo;
+
+class DatabaseRegistry
+{
+public:
+    ~DatabaseRegistry();
+
+    QList<DatabaseInfo*> databases() const { return m_databases; }
+    DatabaseInfo* findDisplayName(QString path) const;
+    void remove(DatabaseInfo* dbi);
+
+public: // TODO: make private
+    QList<DatabaseInfo*> m_databases;
+};
+
 enum DatabaseListEntryState
 {
     EDBL_OPEN,     ///< Database is open
@@ -82,7 +97,7 @@ class DatabaseListModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    explicit DatabaseListModel(QObject *parent = nullptr);
+    explicit DatabaseListModel(DatabaseRegistry* registry, QObject *parent = nullptr);
 
     int getLastIndex(const QString& s) const;
     int stars(const QString& s) const;
@@ -121,6 +136,7 @@ protected:
     void checkFileFavorite();
 
     DatabaseListEntry* FindEntry(QString s);
+    DatabaseRegistry* m_registry;
     QStringList m_columnNames;
     QList<DatabaseListEntry> m_databases;
 

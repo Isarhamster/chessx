@@ -25,6 +25,8 @@
 #include <QWidget>
 #include <QPointer>
 
+using namespace chessx;
+
 class BoardTheme;
 
 /** @ingroup GUI
@@ -50,9 +52,9 @@ public:
     void setFlags(int flags);
     int flags() const;
     /** Update and shows current position. */
-    void setBoard(const Board& value, Square from = InvalidSquare, Square to = InvalidSquare, bool atLineEnd = true);
+    void setBoard(const BoardX& value, Square from = InvalidSquare, Square to = InvalidSquare, bool atLineEnd = true);
     /** @return displayed position. */
-    Board board() const;
+    BoardX board() const;
     /** @return current theme */
     const BoardTheme& theme() const;
     /** @return @p true if board is displayed upside down. */
@@ -81,7 +83,7 @@ public:
     void setDragged(const Piece &dragged);
 
     void renderImage(QImage& image, double scaling) const;
-    static QImage renderImageForBoard(const Board& b, QSize size);
+    static QImage renderImageForBoard(const BoardX& b, QSize size);
 
     virtual QSize sizeHint() const;
 
@@ -158,7 +160,7 @@ protected: //Drag'n'Drop Support
 
     void checkCursor(Qt::KeyboardModifiers modifiers);
 protected slots:
-    void showThreat(Guess::Result sm, Board b);
+    void showThreat(Guess::Result sm, BoardX b);
 private:
     /** Resizes pieces for new board size. */
     void resizeBoard(QSize size);
@@ -216,7 +218,7 @@ private:
 
     void startToDrag(QMouseEvent *event, Square s);
 
-    Board m_board;
+    BoardX m_board;
     BoardTheme m_theme;
     bool m_flipped;
     bool m_showFrame;

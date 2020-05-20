@@ -1,0 +1,2683 @@
+             Changelog
+            ===========
+
+[February 2019]
+scid-4.7.0
+==========
+- New features:
+	* Faster PGN parser with unlimited line length.
+	* Ability to open very large PGN files, up to 4 billion games and 268 million unique names for each type (player, event, etc...)
+	* Games can be copied or added to PGN databases. Replacing a game of a PGN database is disabled (previously the game was saved in memory).
+	* Consistent use of ttk's widgets with a more uniform look (thanks to Uwe Klimmek).
+	* Increased ability to customize the GUI with custom menu colors and custom ttk themes (thanks to Uwe Klimmek).
+	* Redesigned icons for toolbar buttons and analysis-window (thanks to Uwe Klimmek).
+	* High resolution piece sets (thanks to Uwe Klimmek).
+	* The graph window includes time information and bars for engine evaluations (thanks to Uwe Klimmek).
+	* Elo graph and player info window can use data from spellcheck file (thanks to Uwe Klimmek).
+	* Store time information in observed and played FICS games (thanks to Uwe Klimmek).
+	* New evaluations for statistic window (thanks to Uwe Klimmek).
+	* Additional crosstab info: percent (thanks to Uwe Klimmek).
+	* Saved windows layouts include undocked windows (even if they are on a different screens).
+	* Undocked windows can be docked (F9).
+	* Search dialogs have a new button to directly store the search into a new filter.
+	* ECO and opening name are displayed in the statusbar under the board.
+	* Re-written comment window.
+
+- New features for developers:
+	* CMake build
+	* Doxygen documentation
+	* Googletest framework
+	* c++14 standard
+
+- Fixes :
+	https://sourceforge.net/p/scid/bugs/search/?q=status%3Aclosed-accepted+or+status%3Awont-fix+or+status%3Aclosed-fixed+or+status%3Aclosed
+
+- Removed features:
+	* Compressed *.gz files cannot be opened directly.
+
+[May 2015]
+scid-4.6.0
+==========
+- New features:
+	* Statistics inside the gamelist window
+	* "Awesome" search bar inside the gamelist window (see gamelist.tcl for usage)
+	* Autosave windows layout1 if it's empty
+	* Redesign of board status bar and toolbar
+	* Show name, elo and clocks above/below the board
+	* Allow custom size for piece images
+	* Model-View-Controller.
+	  A search has its own gamelist window that can be sorted in different ways.
+	  This implement the classic Model-View-Controller concept.
+	  A scid database (the model) can have multiple views (filters created with searches).
+	  Each view can have multiple controller (gamelist windows, for example the same list of game can be
+	  presented sorted by date in a gamelist window and sorted by average elo in another gamelist).
+	* Allow sounds on Windows without the tcl SnackAudio package
+
+- Fixes :
+	* Fix: slow pgn import (and let the user choose in which base)
+	* Fix: layout did not restore correctly
+	* Fix: do not override the standard ctrl+c ctrl+v
+	* Fix: calculate NameBase frequencies on demand
+
+- Removed features:
+	* flipBoardForPlayerNames
+	* Load game number (use the gamelist window instead)
+	* obsolete executables scidt, pgnscid and eco2epd
+	* obsolete and unsecure src/zlib files
+
+[Novembre 2013]
+scid-4.5.2
+==========
+- New features:
+	* Open multiple gamelist windows
+	* New (faster) position search (used only by gamelist windows at the moment)
+	* Save game to a different database from the current one
+	* Search in a different database from the current one
+	* Faster database opening
+	* Select bases to be automatically loaded ad startup (right click in database switcher -> "load at startup")
+	* Easy customization of piece sets and boards textures (change images inside the new "img" directory)
+	* Windows binaries use tcl/tk 8.6
+
+- Fixes :
+	* Fix: make a proper list from fics responses; thanks to Cristian Stoica
+	* Fix: mouse clicks inside "finish game" toplevel window
+	* Fix: copy and merge games from read-only bases using right-click menu
+	* Fix: Platform consistent MouseWheel behavior on Windows platform; thanks to Cristian Stoica
+	* Fix: Opening Report, move orders reaching the report position; thanks to Mike Curtis
+	* Fix: Code cleanup: reduce global namespace pollution; thanks to Cristian Stoica
+	* Fix: Removed tcscid (duplicate code)
+	* Fix: updated english and italian translations to make clearer the possibility of importing multiple pgn files
+	* Fix: Avoid focus stealing; thanks to Cristian Stoica
+	* Fix: Scid would not load .epd.gz; thanks to Mike Curtis
+	* Fix: When opening an EPD file, the last line was not included in the list; thanks to Mike Curtis
+	* Fix: Bug#44, added "Remove this game from filter" to right-click menu
+	* Fix: sc_filter_freq: bounds checking
+	* Fix: ::search::board: to use ::notify::DatabaseChanged
+	* Fix: Opening Report, Current Popularity; thanks to Mike Curtis
+	* Fix: Search, Current Board, was not refreshing completely; thanks to Mike Curtis
+	* Fix: Bug #43, missing remove above/below from filter
+	* Fix: Bug #42, wrong file dialog when choosing tablebase directory
+	* Fix: Database switcher, right click, reset filter, was not refreshing completely; thanks to Mike Curtis
+	* Fix: Removed unused dependency to tk library (build easier on Mac OS X)
+	* Fix: Fixed Recognizer:: which cures some scidlet endgame blunders; thanks to Mike Curtis
+
+
+[may 2013 ]
+scid-4.5.1
+==========
+- New features:
+	* New "Gamelist window" with:
+		- Dynamic sorting with multiple criteria
+		- Keyboard-friendly (up-down arrow keys to select a game;
+		                     return key to load a game;
+		                     left-right keys to change game position;
+		                     delete key to delete/undelete a game;
+		                     ctrl+delete key to remove a game from filter)
+		- Integrated database switcher
+		- Multiple layouts (columns and sorting)
+		- Current position "mask"
+		- "Find Bar" that can be hidden
+	* Chess engine tournament (comp.tcl imported from scidvspc)
+	* Added horizontal shading for Statistics and Tree Window
+	* New Option: Filter Graphs, save as postscript
+	* New Option: Premove for FICS
+	* New edit command: redo
+
+- Language updates:
+	* finnish translation (thanks to Timo Pirinen)
+
+- Fixes :
+	* Fix: Removed tk.h dependency (update of Mac OS X build process)
+	* Fix: Enable Undo Feature for Setup Start Board
+	* Fix: Do not clobber current game while examining historical FEN in Setup Board
+	* Fix: Setup Board, correct settings for side to move, move number, castling, and en passant
+	* Fix: Broken ComboBox for Setup Start Board, selecting FEN history
+	* Fix: Don't suggest moves while playing on FICS
+	* Fix: ECO Browser displays no information
+	* Fix: Statistics Window, straightened report columns to vertical
+	* Fix: Statistics Window, no stats after 2008
+	* Fix: Filter graphs defaulted to 2007
+	* Fix: Tree graph window, save as postscript
+	* Fix: Redraw tree graph when window is resized.
+	* Fix: engine checkboxes: removed checkboxes for modal config windows using duplicate variables
+	* Fix: Use a more precise OS test in win.tcl.
+	* Fix: Avoid scid crash if analysis engine fail on start
+	* Fix: Menu tree window checkbox
+	* Fix: If main board is flipped, popups should also be flipped
+	* Fix: When switching languages, an open notation window should be updated
+	* Fix: Bug #34, Two different Mini Boards for the same Move
+	* Fix: egtb compile warnings, thanks to Mikhail Kalenkov
+	* Fix: text pasted twice in EPD editor, thanks to Daniel Karlsson
+	* Fix: return value for sc_tree time
+	* Fix: Suppress 'Load Game Number' when no games are present
+	* Fix: Allow White to move against FICS puzzlebot
+	* Fix: Don't assess FICS unrated matches
+
+
+[march 2013 ]
+scid-4.4
+==========
+
+- New features:
+	* Added two buttons (prev/next) to navigate the history of viewed games
+	* Gamelist can sort games; thanks to "SortCache" by Gerd Lorscheid
+	* New "Best games window" with:
+		- show all the games matching the current position
+		- can sort results using up to 9 sort criteria; thanks to "SortCache" by Gerd Lorscheid
+		- "Find Bar" that can be hidden
+		- automatically computed "game rating"
+		- customizable layout
+	* Tree Window can show statistics for filtered games
+    * New option "Include arrow with move highlight", thanks to Mike Curtis
+
+- Language updates:
+	* swedish translation (thanks to Hans Eriksson)
+	* german translation
+	* finnish translation (thanks to Timo Pirinen)
+
+- Fixes :
+	* Fix: screentip fixes thanks to Mike Curtis
+	* Fix: base_open_failure
+	* Fix: wrong braces. Thanks to ASM
+	* Fix: Debian Bug #661091: unable to resign in xfcc.
+	* Fix: Do not reset the FICS password if we log in as guest
+	* Fix: filter was always reset by a new search (bug#661836)
+	* Fix: F11 to switch fullscreen in docking mode (moved open::book to F6)
+	* Fix: Problems with strings containing " in Index::FetchInfo
+	* Fix: Add icon for linux systems
+	* Fix typoes (Thanks to Nicky Chorley)
+	* Fix: "Board search" -> "Search in reference database" -> no filter set in the database switcher (thanks to Gerd Lorscheid)
+	* Roll-back of sc_pos analyze code, that was accidentally removed just prior to the 4.3 release.
+	* Fix: Filter init (thanks to Gerd Lorscheid)
+	* Fix: fix of ttk::bindMouseWheel in gamelist.tcl for tk < 8.5.9
+	* Fix: in game.cpp delete tags before NumTags = 0 (avoided memory leaks)
+	* Fix: sc_sort_store bug
+	* Fix: seg fault when filter == 0
+	* Fix: avoid unnecessary board flip (thanks to Larry Isaacs)
+	* Fix: crash caused by ::windows::switcher::Open
+	* Fix: "OUT OF ORDER" issue in greek translation
+	* Fix: Pgn window recursion
+	* Fix: Added greek language to script in tcl/lang
+	* Fix: Game::GetPartialMoveList returns moves from the actual game position
+	* Fix: sc_base_open open databases in fast mode by default
+	* Fix: ::file::openBaseAsTree unbusyCursor in case of error
+	* Fix: ::file::openBaseAsTree switch back to current base as soon as possible
+	* Fix: the logic of updateBoard is changed to improve responsiveness
+	* Fix: in autoscrollframe scrollbars are created on time 0, otherwise they are not hidden
+	* Fix: the uci command "isready" is used to improve responsiveness
+	* Fix: dialog box values for "finishGame" are saved in options.dat
+	* Fix: prevent verbose uci engines to create excessive fileevent and stuck scid
+	* Fix: progress bar in tree window is displayed only when necessary (to maximize speed)
+	* Fix: ::gbrowser::size is stored in options.dat
+	* Fix: createToplevel raise the window if it already exists
+
+
+[February 2011 ]
+scid-4.3
+==========
+- Mark the Repertoire Editor deprecated, guide users to Masks
+- Improvements
+	* documentation for opening trainer (thanks to Dale Hards)
+	* Some of the programs icons based on GNOME Stock Icons in case png-support is available
+	* Refresh icons for Database switcher (Thanks to Peter Wong and Steven)
+	* Some defaults of Scid's empty config
+	* Gamelist: show delete-flag to the very left of the list by default
+	* Taller information field (Thanks to Milan Zamazal and Gerd Lorscheid)
+	* Replace some buttons in help by proper img tags
+	* Bring Best games / tree graph to front if they exist and the button is pressed again
+	* Toggle autoplay mode was mapped to Ctrl-z instead of Ctrl-Z so it conflicted with undo
+	* Speed improvement for game copy operation
+	* New checking option for games consistency
+	* Improve proportions of USCF piece set
+	* HTML export
+	    - Move nags rendered in same font as the move
+	    - Diagram immediately follows the move (order of diagram and comments are swapped), which is a more common scenario
+	    - Indentation of variations enhanced by putting them in indented div sections
+	    - Current move highlighting, board and diagram colors follow css style definition
+	    - Cursor key navigation works in IE
+	    - Cursor left key navigation works the same way backwards as right works its way forwards, i.e. skipping variations
+	    - Dotted move numbers for black moves in a main line are also applied following a diagram and a variation.
+	* Annotation/analysis
+	    - Added engine thinking time to annotator string
+	    - Stop engine at end of annotation
+	    - UCI engine: Added notion of length of mating line to cp score (shorter is better)
+	    - Added annotation at end of variations
+	    - Added depth to variation scores
+	    - Added option to score all moves (also those which are not annotated)
+	    - Removed option to annotate only not-best-moves, as it is no longer useful now
+	      all-moves does no longer produce lines starting with the played move
+	    - Increased maximum engine thinking time to 999 [sec]
+	    - Removed the blunder signature in the annotation (as we cannot tell how sharp the threshold is)
+	    - Added variation times in multi-pv mode
+	    - If game just follows book till some book end, last book move does not need analysis.
+	    - Blunder-check annotation spots faster mates, regardless of threshold.
+	    - Annotation adds - in all modes - a '?!' nag if the main move is significantly (informant value)
+	      stronger than the best move the engine expected.
+		 - Finish game now allows for a shootout between two UCI engines
+			if two engines are opened.
+	* PGN import always opened in Scid's bin folder, now use last dir instead and store it.
+	* Mask files folder location gets stored and reused
+- New features:
+	* Correspondence Chess:
+		- Allow observation of games on ICCF webchess
+		- Add connector file support to configure game relay from the internet
+		- Make dialogues etc. theme aware for Tk 8.5
+		- Allow for postal games by the Mode "Postal" header. Those
+		  games are not touched but show up in the cc window provided a
+		  suitable PGN is present in the Inbox. (ICCF might generate this
+		  in case of mixed events.)
+		- Add two new headers: WhiteAddress / BlackAddress to hold
+		  postal addresses for eventual postcard printing
+		- Read additional header tags from the database and thus allow
+		  to show e.g. flags if Black/WhiteCountry header is set even if
+		  those tags are not provided by the games in the Inbox
+		- Rewrite of some parts of the update procedure
+		- Code cleanup and performance improvements
+		- Allow scrolling of the CC gamelist by keyboard (PgUp/PgDn, Up/Down)
+	* Show WhiteCountry/BlackCountry in game info area
+	* Initial support for bibliographic links in PGN headers:
+		- A BibTeX-file either named $scidDataDir/Bookshelf.bib or named and located along with the current database is parsed as bibliographic input
+		- Header lines of the form [Bib "<bibtexkey>, <addinfo> ; <bibtexkey>, <addinfo>"]
+		  open a new window with bibliographic reference; <addinfo> e.g. No.27 p.85.
+		- if Bib-header exists a new link shows up in game info area
+		- To handle the bibliographic database 3rd party tools can be
+		  used. A valuable free, open source solution might be
+		  http://jabref.sf.net (or any other bibliography tool for BibTeX)
+	* Best games list:
+		- For annotated games (NAGs, Comments, Variations) show an A in the list
+		- For flagged games show up to 4 flag chars or the number of
+		  flags if there are more than 4 flags present.
+		- Obeys a filter set by header search
+	* Allow to change the board without waiting for tree windows to complete search. (Thanks to Fulvio)
+	* Rework ID linking code
+		- Tags, resolverurls, icons etc. are read from a config file.
+		  This eases up future extensions of IDs known by Scid
+		- If no config exists create a default one handling FIDE, ICCF, DSB, BCF, VIAF, SM
+		- Each ID has to link to a unique page, multiple links are not possible
+		- PND is still special as it is used to link to various complex
+		  locations like Wikipedia (including NLS) and SeeAlso. This is
+		  still treated internally
+	* Comment editor
+		 - now opens by clicking the comment in game info area
+		 - Make board togglable by either alt-b or button and save its state
+		 - recognises Ctrl-A for adding a new variation => easy addition for pre move comments
+		 - Alt-Left/Alt-Right now go one move backward/forward
+		 - Map Alt-N to switch between NAG- and text entry
+		 - Autostore comments as soon as the window looses focus
+	    - Add Ctrl-N shortcut to Edit window to call NAG values help
+	    - Add "Open Comment editor" to PGN context menu
+	    - Add common NAG symbols to PGN context menu (Thanks to G. Lorscheid)
+		 - Comment editor can be opened by the small light bulb button in
+		   the toolbar. This button also signifies if the game already
+		   contains commentary in the current position and if so, shows
+		   them in a tooltip. Technical commentaries (e.g. [%.*] are
+		   ignored.
+		 - Update board in comment editor with current position while
+		   the comment editor is left open. (Joost t' Haart)
+	* Allow suppression of Abort/Adjourn/Draw/Take back requests/offers (thanks to Jose Joao Morais)
+	* Piece sets
+	  - Bauhaus style piece set (thanks to Sandra Snan)
+	  - Fix scaling issue in USCF set
+	* Browse window
+	  - Allow scaling by +/- keys and Ctrl-Mouse wheel
+	  - Use mouse wheel to go through the game
+	* Header searches
+	  - Header searches with open trees now act as a filter, that is
+	  they now restrict the games displayed in Best Games and Game
+	  list. In other words if a header search was performed its
+	  results are no longer reset by the Tree searches. Tree statistics
+	  however are still calculated for the full database.  (Thanks to
+	  Gerd Lorscheid)
+	  - Annotators are now searchable (Thanks to Gerd Lorscheid)
+	  - Easy way to search for all games that are annotated by either
+	  NAGs, comments or variations. (Thanks to Gerd Lorscheid)
+	* API Changes:
+		- ::tooltip::UnSet to remove a tooltip + message
+		- sc_filter clean: unset both db and tree filter
+- Fixes :
+	* Fixed a bug in exception handling of Novag Citrine connection
+	* FICS console uses fixed font
+	* allow Elo-rating corrections up to 2015
+	* Correct move numbers in engine PV output in locked mode
+	  (http://sourceforge.net/tracker/index.php?func=detail&aid=3001826&group_id=26963&atid=389080)
+	* Limit the history list of FEN notation in board setup (thanks to Steve)
+	* Remove some CE-engines not in the default distribution from Makefile.conf
+	* HTML export
+	    - Corrected display of player names (no {} pair around it)
+	    - Move comments are rendered according css style
+	* Duplicate games display did not highlight correctly
+	* It was not possible to remove a tb directory
+	* Allow for Phalanx XXIII as a version of Phalanx, as it includes all patches necessary for Scid
+	* Crash when replacing a game in certain languages (Thanks to Milan Zamazal)
+	* Annotation
+	    - Inrush fix, mainly noticeable with batch annotation without using book
+	    - Repair lockup with UCI engines that announce their bestmove before being stopped
+	      when they see a forced mate (stockfish...)
+	    - Repair lockup with UCI engines that refuse to start doing anything useful when they
+	      are started in a mate position (stockfish...)
+	    - Added "crushing" (+-- or --+) as potential score NAG
+	    - More consistency in starting and stopping analysis
+	* Header search with ignore colours: colours were obeyed for the results (thanks to Gerd Lohrscheid)
+	* Allow suppression of Abort/Adjourn/Draw/Takeback requests on FICS (thanks to Jose Joao Morais)
+	* Reorder piece sets alphabetically
+	* Allow the informant value for "won game" to count up to "mate found" (= 327)
+	* Tiny font can now be set from the GUI
+	* Input engine parameters were not used properly (ID: 2969395)
+	* Minor flaw in Scid.eco (ID: 2963067;  thanks to Daniel Karlsson)
+	* Correction of possible overflow in material signature (ID: 2992119; thanks to Gregor Cramer)
+	* Optimisations for tree search (Thanks to G. Lohrscheidt)
+    * Comment editor text frame scales properly
+	* Some directories did not get stored properly (epd, report)
+	* Entering try mode no longer kills/hides comments in the game.
+- Language updates:
+	* brazilian portugese translation (thanks to Gilberto de Almeida Peres)
+	* nederland translation (thanks to Leander Laruelle)
+	* spanish translation (thanks to Benigno Hernandez)
+	* czech translation (thanks to Milan Zamazal)
+	* NEW: suomi translation (thanks to Timo Pirinen)
+	* NEW: greek translation (thanks to George Fragos; note: this requires fully working utf-8!)
+- Help:
+	* Add UTF-8 NAG-symbols
+
+
+[January 2010 ]
+
+scid-4.2
+==========
+- Features :
+------------
+- Training -> Find best move : make it more user friendly :
+	* The next moves are automatically hidden in PGN window and in game info window
+	* Added buttons above the board to show solution, go to next / previous exercise
+	* Leave the training mode by unchecking the menu entry
+- updated swedish translation (thanks to Hans Eriksson)
+- updated spanish translation (thanks to Pedro Reina)
+- Scid Pocket : added Stockfish 1.6.2 ported to ARM (Windows Mobile)
+- Fixes :
+---------
+- Scid has a limit of 16 millions games per base. Before reaching this limit, the size of the game file could exceed 2 GB, which was not possible on 32 bit systems. So now some of Scid's IO handle large files (64 bit I/O system calls even on 32 bit systems) (but the limit for the game file is still 4 GB, given that games offsets are saved as unsigned integers). So now it is possible to have bases that effectively contain up to 16 M games.
+- FIDE changed the number of rating list per year. Add code to handle this properly. Maximum year for ratings added by spellchecker is _2010_. (Thanks to Joost 't Hart)
+- Searching for !me (own games) was broken
+- Xfcc passwords with XML entities were not handled correctly
+
+scid-4.2.2
+==========
+This maintenance release reverts to 32 bits file I/O. Large file handling across many platforms seems a bit hard too achieve ...
+
+
+[January 2010 ]
+
+scid-4.1
+========
+- Features :
+------------
+- Added the display of arrows when several variations are available. The display can be toggled using the menu Options -> Moves -> Show arrows for variations (Thanks to Fulvio)
+- When playing a move already existing in a variation, the variation is automatically entered into. To add a new variation starting with the same move, the menu Edit-> Add variation must be used (Thanks to Fulvio)
+- Added undo feature (10 undos max). Shortcut is Ctrl-z. 
+    For coders : rollback points are set by calling {sc_game undoPoint} in Tcl or sc_game_save_for_undo() in C++.
+- Updated Scid Pocket to new base format (version 4). Version 4.1 includes Robbolito chess engine, which is by far the best of all ! Really impressive. It outweighs all other engines on Pocket PC.
+- Fixes :
+---------
+- entering comments for last move of a line was broken
+- setting the blunder flag from maintenance window was broken ("?" was considered part of a regular expression)
+- when compacting a game file, custom flags description was lost
+- custom flags description are now committed to index file as soon as they are modified
+- Informant values were overwritten by default values at startup
+- UCI engines : send "go infinite" instead of "go infinite ponder" because it is not handled correctly by some engines and "go infinite" seems sufficient
+- fixed a bug when USCF piece set was selected and the library tkimg not installed (under Linux)
+- UI may be unresponsive when an engine outputs lots of garbage when nearing a mate. Fixed for UCI engines only as I don't have an example of such misbehaviour of an xboard engine.
+- Fixed a possible buffer overflow when parsing a malformed PGN (Thanks to Fulvio)
+- Modified slightly UCI parser in order to get Prodeo to work (there's no guarantee that Prodeo will work as it does not comply to UCI protocol) (Thanks to Shiv Shivaji)
+- Fixed an error popping up when pressing right arrow very quickly with the variations window displayed and engines taking all available CPU
+- Fixed impossibility of stripping comments and variations when display of short headers was turned on.
+- Rewrite of "Review game" code : moves are no longer in comments, engine analysis is updated more often 
+
+
+=============================================================================
+|                                                                             |
+|                              scid-4.0                                       |
+|                                                                             |
+|                           [September 2009]                                  |
+|                                                                             |
+ =============================================================================
+- Fixes :
+---------
+	* serious game play when use book is checked and book name is empty leads to crash (thanks to Benigno Hernández)
+	* Check for engines allowed in eMail games caused an exception (noENG not set)
+	* Internet play (FICS) : 
+	  - the first offer not displayed on the graph
+		- hardened the code to avoid the (rare) case where the opponent moves but Scid does not reflect it. Still the need to see whether it is a FICS bug or a Scid one.
+		- IP address of FICS server is cached (faster login)
+		- in case of a network error, quit FICS without popping tons of error messages
+	* Sound : when another application uses the sound device and once it is released, forces Scid to reset pending sounds hence be able to use sounds again (this has the drawback of limiting maximum sound length to 5 seconds)
+	* Move announcement : if pieces are translated, announces moves using english sounds (as only english announcements are supported)
+	* Tree window : fixed game loading from browse game window (when the Tree was not locked)
+	* fixed status bar detailing some menu entries
+	* fixed context menu in notebook tabs for FICS window
+	* fixed a bug selecting more than 3 times an empty square : entering a move with this square as target was difficult (lower in ::board::colorSquare)
+	* fixed the contextual menu in Mask for the command "Add this move to mask" (display all the possible moves in several menus to fit in screen's height)
+	* Display best games list in Tree : fixed a game not displayed in the listbox if containing the character '
+	* FIX: Display draw offers in CC games
+	* Player finder window : increased entry fields for number of games (10000 is sufficient for human players but not for engines)
+	* when using a Novag Citrine board, the referee mode selected is saved
+	* cleaned up code for Scid versions 2.x (don't think anybody still uses it)
+	* Scid no longer crashes when importing a very long game (current limit is still 32 kB)
+	* Code optimisation in I/O and memory copies. For example stripping PGN Tags is 3 times faster 
+	* Right mouse button takes back a move. It used to also delete the last move of a line. This is inhibited now as there is no possible undo, and the user can have triggered this function by error. 
+	* Game export to HTML + Javascript : export comment before first move, fixed a problem when exporting some variations (which were stripped)
+	* Comment editor : avoid the repetition of last comment when entering a new variation (see line 1235 of main.tcl)
+	* Fixed menus when Scid is compiled without endgame tablebases support (thanks to Vlastimil Babula)
+	* Under non windows systems, no longer try to kill an UCI engine after the quit command has been sent to it. This is necessary for Rybka 3 multiple CPU engine that spawns processes instead of threads (killing the main process before it has the possibility to stop the sub processes may leave processes eating CPU)
+- Features :
+------------
+	* New base format :
+		- import games with a length (encoded) up to 128 kB
+		- 6 new user customizable flags
+		- any base opened in version 3 will be automatically converted to new format in a few seconds (.si3 file is converted to .si4 and then removed, .sg3 and sn3 files are renamed respectively to .sg4 and .sn4)
+	* NAG support : add symbolic NAGs using UTF-8 symbols
+	* Search position : if the search is done in a reference base (not the current one), don't switch to it if the result returns no game
+	* Tree mask : 
+		- added a sub-menu for searching positions in a mask depending upon various criteria (comments, NAG, color, etc.)
+		- added a sub-menu for displaying the Mask content in a tree form
+		- remember the most recent opened masks
+		- new moves can be added to a mask even if there is no corresponding position in the Tree 
+	* FICS : 
+		- save options for finding opponents based on login
+		- display forecast of win / draw / loss score (in fact sends assess when creating the game)
+	* Highlight last move played (switchable and configurable in options menu)
+	* added a new call "sc_game info nextMoveUCI"
+	* new feature to review game. The user guesses moves played from one side of a played game.
+	* game browser : automatically flip board if the main board is flipped
+	* updated Scid icon (thanks to Israel Chauca Fuentes)
+	* First version of VIAF/PND support for hooking up Wikipedia et al.
+	* Correspondence Chess:
+		- Sorting of the gamelist  by various criteria like own clock, opponent clock (Xfcc only)
+		- Do not show games where the player does not have the move (Xfcc only)
+		- Add GUI to set sort criteria
+		- Implement sort by "time per move till next TC" including the next timing period (Suggested by Dhanish)
+		- Add Edit menu to cc window
+- Translations:
+---------------
+	* updated spanish translation (thanks to Benigno Hernández)
+	* updated swedish translation (thanks to Hans Eriksson)
+	* updated german translation
+
+
+[April 2009 ]
+
+scid-3.7.3
+-----------
+Maintenance release of Scid 3.7.2 fixing a bug in search position
+
+
+[April 2009 ]
+
+scid-3.7.2
+-----------
+- Fixes:
+	* Small bug when closing ECO graph window (missing cleanup)
+	* add missing global shortcuts
+	* Bug when changing board pieces while the board was flipped
+	* Closing a locked Tree window : the base switch was incomplete.
+	* Bug with cursor handling (triggered for example by opening the tree window, the tree help and issuing the fill cache command)
+	* Board auto resize while toggling game info display
+	* Bug in "Calculation of variations" training (aka Stoyko exercise)
+	* wrong assignments to ::CorrespondenceChess::num corrected
+	* Game annotation : fixed a wrong NAG code (used -= instead of the correct =+)
+	* Fixed menu in opening report window (docked mode)
+	* FEN pasting : reversed CLIPBOARD and PRIMARY (file edit.tcl)
+	* Endgame tablebase window cleanup when closing (remove its tab)
+	* Twin checker : loads the first pair of twin games (thanks to  J. Wesley Cleveland)  
+	* when no book is found, handle this case correctly (Book window, serious game, ...)
+	* Comment editor window taking a lot of CPU under Windows 
+- FICS : user interface improvements : 
+	* click on a game to observe it
+	* redesign in notebook style
+	* better looking "offers" graph
+	* used icons from http://webdesignledger.com/freebies/21-best-icon-sets-for-designing-web-apps
+	* added a check box to enable standard user variables
+- Correspondence Chess:
+	* Add confirmation dialogue of CC moves. (Suggested by Dhanish)
+	* Add copy cc games list to clipboard. (Suggested by Dhanish)
+	* Add Ctrl-Up/Down scrolling through games. (Suggested by Dhanish)
+	* Ctrl-F12 now also processes the inbox automatically. (Suggested by Dhanish)
+	* Check if mainline is longer then the games mainline, eg. due to a users error (Suggested by Dhanish)
+	* Disable engine analysis in games that do not allow it,  ie. Xfcc noEngines = true. If noEngines is not set assume "engines allowed" (ICCF). (Suggested by Austin)
+	* Strip of text in [] when sending game comments
+	* Show start date for individual challenges in tooltip
+- Spell checker : enhanced user feedback, operation can be cancelled, all names corrected instead of the first 2000 (thanks to Joost Hart)
+- Search 
+	* Header: Allow to search for the special player !me which is mapped to all Playernames defined in Options / Chessboard / My Player names (can be combined with all other header search options as well as saved as search)
+	* Header: Allow to search for the special player !mymove. Similar to !me but the player has to have the move at the end of the game.
+	* Position: added the possibility to search for current position in another opened base (this avoids the use of the Tree window that can also be used for this, but can be found less convenient).
+- User interface:
+	* blindfold play (piece set)
+	* Add SAA/CUA hotkeys for clipboard (Ctrl-Ins, Shift-Ins)
+	* try for www-browser as generic web browser (thanks to Tiurgin)
+	* replace " " in urls for the Windows "start" command by %20 (thanks to Tiurgin)
+	* Ctrl-C/Ctrl-Ins in main window now also copies PGN text of the
+	game to the system clipboard for easy pasting
+	* Ctrl-C/Ctrl-Ins shortcuts for PGN window to copy notation to clipboard
+- Translations:
+	* hungarian updated (thanks to Szőts Gábor)
+	* swedish updated (thanks to Hans Eriksson)
+	* added catalan translation (thanks to Natalia Pares Vives)
+- Game merging : it is now possible to merge directly a game from one base to the current game in another base (see context menu in Game list window)
+- Engines handling : 
+	* renamed Phalanx-XII to phalanx-scid (as Phalanx is no longer maintained we need a way to differentiate them)
+	* try to auto-configure engines (scidlet, toga and phalanx) (thanks to Israel Chauca)
+- Game annotation : book to use is saved (defaults to same book as Book window)
+- HTML export of games (HTML + Javascript) : improved output, better piece sets, no frames (thanks to Charly Founes) 
+- Novag Citrine support : improved interface
+
+
+[March 2009 ]
+
+scid-3.7.1
+-----------
+- Bug fix : dialog to export games locked Scid UI under Windows
+- Correspondence Chess
+  * Fix: Ctrl-F12 did not work from other windows than the main window
+  * New Shortcut: Alt-F12 will open CC window, default DB and fetch the games
+- Changes in user interface:
+	* USCF piece set
+
+
+[March 2009 ]
+
+scid-3.7
+-----------
+- This release requires Tcl/Tk 8.5 or higher
+- Fix : Game annotation, annotating all moves : when the next move was the expected one (calculated by the engine), no annotation was added, which was not coherent with "annotate all moves"
+- Reworked board setup dialog (thanks to Steven Atkinson)
+- Correspondence chess :
+  * Parse "TimeControl" and show in tooltip if it is sent by the server
+- Sound:
+  * Add "alert" sound from the CE to the PC version as well. Use
+    ::utils::sound::PlaySound "sound_alert"
+  * wav-file added to the package
+- Correspondence Chess
+  * Adopt button alignement
+  * Allow to specify the rating system used by the site
+    (if none is given, default to ICCF)
+  * Make window resizable
+  * Make window dockable
+  * Fix: call mailers on windows if installed to dirs with spaces
+  * New email games now show up in the game list immediately, flags
+  are preset for europe to give the user an idea what to set at all.
+  * Show last move in tooltip for the "to move" icon (suggested by Dhanish)
+  * move delete in/outbox button furter away from Process Inbox (suggested by Dhanish)
+  * Yes/No dialogue before cleaning the in/outbox (suggested by Dhanish)
+  * All paths required use $scidDataDir/$scidConfigDir variable if possible. This allows more seamless usage from an USB drive on Windows where the drive letters change all the time.
+  * Improve GUI for non-unique game IDs.
+  * Deleted games are now ignored in search of a sync-target.
+  * Fix: offline state file kept growing infinitely
+  * Cancelled games now no longer show up in the games list (suggested by Austin and wyb)
+- Tools Menu
+  * Remove Novag entry
+  * Add "Connect Hardware" 
+  * Add "Connect Hardware / Configure" usable for Novag & Input Engine
+  * Add "Connect Hardware / Input Engine"
+  * Add "Connect Hardware / Novag Citrine"
+  * Make hardware connect buttons visibility configurable 
+    (remove it needs restart)
+- Novag Citrine
+  * Remove own config (replaced by unified dialogue)
+  * Use unified "Connect Hardware" dialogue and parameters thereof
+  * Use "hardware connect" button
+  * Set button images according to current state
+- Input Engine Support:
+  * Rework of GUI
+  * Handle "illegal moves" (warn user, ignore them)
+  * Add "rotate board"
+  * Add Synchronise button
+  * Add Miniboard to the console
+  * Add NLS
+  * Add Support for DGT XL external clock
+  * Colour various states in move area
+  * To use a DGT Electronic Chess Board  dgtdrv V1.21 or higher is
+    required. (http://dgtdrv.sf.net)
+  * Make window dockable
+- Docs
+  * Update Novag part (as far as possible)
+  * Add "Connect Hardware" with subtopics to english help
+  * Add "Input Engine" including some remarks about DGT
+- NLS
+  * Add tags for all hardware connection dialogues
+  * German translation for the tags added
+- Database information
+  * Add the ability to write Dublin Core metadata for a Scid database
+  by means of Tools / Database information. This includes reading
+  metadata from a sme file.
+  * menu item disabled for future use
+- Mask (Tree window) : 
+	* added menu entry to remove NAG value for a move
+	* added entry in popup menu to enter moves not present in Tree
+	* In training mode, game is annotated if the user made poor moves (related to values in Mask)
+- Book tuning : 
+	* any move can be added to a polyglot book at a given position (thanks to Michel Van den Bergh)
+	* moves present in the book at ply N+1 but where the previous move is not present at ply N, is displayed in the lower part of the book window : see button "other moves" and its tooltip (thanks to Michel Van den Bergh)
+- Plenty of changes in user interface, among others :
+	* New entry in "options -> windows" to show / hide game info panel (this can also be triggered in docked mode by using main board tab)
+	* New option-> Themes (only small parts of Scid are themable, this will be increased in the future)
+	* Removed file combobox.tcl (widget migrated to ttk::combobox)
+	* Windows can be docked inside a main window (options menu) : In docked mode, the most important windows are embedded into a main one. The windows can be reordered by right-clicking on the tab (where the title of the window is) and by dragging tabs from one notebook to another. The menu for each window that has one (marked with a triangle at the left of the tab) is opened by left cliking on the tab.
+- updated dutch translation (thanks to Michel Van den Bergh)
+- updated spanish translation (thanks to Benigno Hernández)
+- Fix : Tree window : when a Mask is opened, the whole line is clickable (not only the part with moves and stats)
+- EPD:
+  * UCI lines are now written in the usual formatted form
+  * acs is added as resulted from the analysis
+- FICS:
+  * console : autoscrolling is turned off if the view is not located at the end of the text
+  * Fix : FICS connection. Better handling of connection error if behind a firewall or network is down, and avoid parsing of incomplete packets (new code ported to Scid Pocket)
+  * Fix : FICS bug when parsing players names and ELO
+  * Dialogues strings added to language files
+- Tree window : when a Tree is updated and the current base is not the Tree's one, the Tree base will automatically load the first game in the filter (so by switching to the Tree's base, the position is already set to the previous one and for example an Opening report can be immediately generated)
+- Import clipboard as game : on Unix systems the X selection is pasted only if the clipboard is empty
+- MacOS : various updates (better support, among them the switch of mouse buttons 2 & 3) (thanks to Israel Chauca Fuentes)
+- Book : 
+	* last opened book is reopened by default
+	* Books should be usable from read only drives as well (without
+	tuning/save of course)
+- Bug : fixed a possible crash when generating a player report when the opened base has no games (segmentation fault)
+- Analysis / Game annotation:
+  * book moves are now translated
+  * Fix: Error when engine list was opened with window already open
+  * Fix: typo for UCI_ShredderbasesPath in preserved UCI_ options
+- Serious game and Tactical game : parameters are saved
+- added spanish ECO file scid-esp.eco (thanks to Benigno Hernández)
+- newly created bases are appended to the recently opened bases in menu (thanks to Benigno Hernández)
+- "Average Elo" and "average year" could be wrong with large databases. Corrected by using 64 bits integers (thanks to Heinz van Saanen)
+- PGN window : colors for current and next moves are now user configurable
+- Bug fix : Scid could crash when using some languages like Hungarian and Swedish (segfault in functions transPieces and transPiecesChar)
+- Added piece translations for hungarian, swedish and norvegian languages
+- Serious and tactical games : fixed repetition detection
+- Changed the way SPF files (data players) are loaded. This spares some memory and Scid's start up is a little bit faster. New script in scripts directory : scf2spi.tcl (thanks to Mikhail Kalenkov)
+- Players' name standardization : strictly follow PGN requests by leaving a period after an initial (standardPlayerName in pgnparse.cpp)
+- Unix version : changed the way the tkscid path is searched to use scid's directory (thanks to Joost´t Hart)
+
+
+[October 2009 ]
+
+scid-3.6.26
+-----------
+- Correspondence chess :
+  * Fix: Variant games were not removed correctly from the inbox on Windows
+  * Fix: clicking beyond the last game in the cc list caused an error
+- Confirm / discard dialog box : rewritten to look a little bit better
+- photos of players are now also searched in Scid shared directory (under photos directory) (Thanks to Mikhail Kalenkov)
+- if "Strip out coloured square/arrow codes" is checked and PGN display is in color, comments are no longer surrounded with {} 
+- PGN window : removed extra lines between moves and comments
+- After closing a base, the current game is reseted
+- After game searches (header, material or board), the first game of the filter is automatically loaded
+- Fix : trying to repair a base already opened is now prohibited
+- Fix : trying to play a tactical game with Phalanx absent would pop an uncaught exception (translation missing)
+- Partial support for Tk 8.5 added
+- Play on internet : a digital clock is displayed inside the analog clock (seems required for blitz games)
+- Windows release : Tcl/Tk is upgraded to version 8.5, so latest piece sets (with transparency effects) are correctly displayed
+- Fix : Scid could crash when generating an opening report from a huge base from particular positions. Bug introduced with Scid 3.6.21 and fixed now (buffer overflow due to moves translation in OpLine::PrintMove)
+- Pocket PC : 
+	* Greko upgraded to 5.9 and then to 6.0 ... (5.7.1 and 5.9 versions were buggy)
+	* Scidlet added as new engine (also added xboard commands "analyze" and "exit" to Scidlet, but only for the PPC version)
+	* Fix : manual draw adjudication when insufficient material (waited for ever for bestmove reply)
+	* added insufficient material detection during engines tournament
+- Fix : when playing on FICS or using a Novag Citrine board, entering moves with the keyboard was not sent
+- Fix : mouse position on squares was inaccurate (if border size was not set to 2), and entering moves sometimes difficult (see ::board::getSquare)
+- Fix : exception handled after closing FICS window, and offers graph opened
+- Fix : tactical game. When aborting a game, the engine used as coach is now correctly stopped. This previously could lead to an UI freeze in some cases.
+- Tactical game : reworked user interface and some enhancements : parameters saving, ability to go back in game (thanks to Steven Atkinson)
+- Serious game : reworked user interface (thanks to Steven Atkinson)
+- Fix : Tree window 
+	* abort refreshing before closing the window
+	* after a search with Tree window opened for current base, don't load automatically the first game in filter, or the Tree will be refreshed, overwriting the filter
+- updated spanish translation (thanks to Benigno Hernández)
+- updated swedish translation (thanks to Hans Eriksson)
+- Fix : finder (Unix systems) : backup of PGN files with upper case extension
+
+
+[September 2008]
+
+scid-3.6.25
+-----------
+- Opening trainer : 
+   * automatic switch to clipbase
+   * trainer window made easier to understand
+- Removed Crafty engine, as tacgame.tcl does not need it any longer. So the two mandatory engines for Scid's features are Toga and Phalanx. Note that any Toga version should work, but only the patched version of Phalanx works.
+- Correspondence Chess: 
+   * do not drop a comment from the move list if one is sent via message.
+   * Add a visual indicator to the game list if a comment was sent by the opponent.
+   * Sort the game list by Site, Event, Round, Result, White, Black
+   * Add highlighting in game list
+   * Add tooltips for buttons
+   * Add tooltip with last message sent with the game (if any)
+   * Add tooltips for columns likely to be shortened (id, event, site)
+   * Add Tooltip translations for english and german
+   * Add basic game info for Resign/Draw (assign/offer/accept)
+   * Add Scrollbar for gamelist
+   * Add extensive icons/indicators help
+   * Add icon/indicators help button
+   * Add binding for ? to access icons/statusindicators help
+   * Save and Restore Xfcc game parameters (who has the move, messages etc.)
+   * Add visual indicator if Xfcc parameters were recently retrieved
+     or are restored from previous fetches
+   * Show time of last Xfcc update from server
+   * Update help files
+   * Mark games with moves sent recently in green till the next update
+   * Disable invalid menu entries in eMail chess (Draw/Resign handling)
+   * remove Next/Prev buttons, they're no longer useful
+- Added "sc_game push copyfast" call that behaves like "sc_game push copy" except there is no memory leak and tags and comments are not copied in the new pushed game.
+- Minor bug fixes :
+   * tactical game against Phalanx (some info was missing)
+   * replacing a game with flags : all flags were not copied (for example tactical flag)
+   * error recovery code if the network drops when playing on FICS
+   * when deleting the last move of a variation by right clicking on board, the empty variation is removed
+   * fixed pgnscid so importing a game over 32 kB does not lead to a segfault (but will output : Fatal error encoding game!)
+   * GAME EDITOR : with comment editor opened, browsing a game would flagged it as "to be saved", even if there was no change in NAGS and comment values
+   * fixed tooltip display bug on MacOs (thanks to Israel Chauca)
+   * when info is available, the first line of engine window displays mate distance
+   * in case of engines not configured for some training stuff, added relevant error messages
+   * fixes on Tooltips display (max width, better placement, auto hide of the tooltip after few seconds, clicking on a tooltip hides it)
+   * it is no longer possible to add NAG codes before the first move of a game or of a variation
+   * when truncating a game, it is flagged as altered so the user will be prompted to save it
+   * PGN window with short header ON. If strip first moves -> the game was displayed incorrectly as empty
+   * The middle mouse button pops up a mini board in PGN window. The position was wrong when the game contains comments : fixed by stripping comments before calling "sc_pos pgnBoard" (a small bug that was many years old !)
+   * After adding variations calculated by an engine, the engine used to restart calculating from scratch
+- Annotation : added an option "mark tactical exercises". The tactical flag will be set to the game and a comment with ****d<depth>sc<score>. This option is only available when annotating with an UCI engine.
+- Training : find best move. Will go to the next tactical position marked with 4 stars (****). See "mark tactical exercises" in Annotation feature. Pressing the right mouse button on "goto last move" (">>") button will go to next tactical exercises. A training base of over 1500 games has been released (not included in Scid package).
+- added extra options to "sc_pos analyze" :
+   * -mindepth. So if the thinking time is short, engine will not analyze for at least depth 4 (previous behavior), but to mindepth value.
+   * -searchdepth : maximum depth of thinking
+- Analysis Window new features:
+   * new button "Show Engine Info" to add an extra line with the info returned by the engine (there is a button to hide/show it, works only with uci engines)
+   * new "Add all variations" button to add to the current game all the multiPV variations of the engine (works only for uci engines)
+   * now the "Add variation(s)" buttons work even at the end of a game (workaround, the variations are added one move before and the last game move is appended at the beginning of every variation)
+   * when a variation is added from analysis window, also the engine name is added
+   * the analysis window switches automatically to history mode when multipv = 1 (like in the 3.6.23 version)
+   * added the max move number indicator to the current move number (works badly with some engines that don't send the "info currmovenumber" string back to gui regularly, we have to wait some time to see the right value)
+   * new "Lock Engine" button (the engine keeps analysing the current position even if the user changes the position on the board)
+   * reordered the buttons on the right side of the window
+   * F4 and F5 starts/stops analysis of engines 1 and 2, respectively.
+- The uci option window is now more large when it opens, in order to contain all the option of an engine.
+- Completed translations of every pending label in italian language file.
+- Fixed the help messages for some tools menus, probably wrong due to a new menu item added in 3.6.24 version (changed the code so that now it's not needed to change all menu indexes for help messages whenever a new menu is added).
+- Finder : added a contextual menu (right mouse button to copy, move, delete and backup bases).
+- updated swedish translation (thanks to Hans Eriksson)
+- Added the scanning of filter files (.sso) from the command line (i.e. scid mydb myfilter, scid opens immediately with mydb filtered by myfilter file)
+- Tuned the startup communication between scid and engines
+- Rybka 3 supported despite a small bug in its command line parser
+- Scid-engine log files: maxsize to 5000 lines (was 500) and flush on every put (to aid problem detection when an engine crashes)
+- Training - Serious game : 
+   * UCI options of engines are now sent, so if an engine has for example an UCI_Elo present and set up, playing a serious game will be done in fact with a weakened engine (then similar to Tactical game that is designed solely for Phalanx usage).
+   * added a "Configure engine" button to tweak an engine before playing (style, strength for example)
+- UCI engine configuration : spinbox entries are now user writable (a check is done to ensure input is correct) and UCI checkbox is ON by default when creating a new engine entry
+- UCI engine output :
+  * display mate indicator in multi variations (M5 instead of +327.00) (thanks to Benigno Hernández)
+  * added move numbers in multi variation lines
+- Tree window : added the ability to view a tree through a mask (or layer) that contains user defined data (NAG codes, color markers, comments)
+  * visible only if a Mask file (*.msk) is opened
+  * the mask can be automatically with a game (as much data as possible will be imported, like variations, NAG codes, comments)
+- Tree window : scores are highlighted when the moves have good or bad results
+   * On average white should score 53.8%
+   Parameter : set scoreHighlight_WhiteExpectedScoreBonus 3.8 ; # on average white achieves a score of 53.8
+   * Check only if at least 15 games played
+   Parameter set scoreHighlight_MinGames 15
+   * Highlight score if score is -3 % (red) or +3% (green) from expected score
+   Parameter set scoreHighlight_Margin 3.0 ; # if +/- this value, something special happened
+- updated spanish translation (thanks to Benigno Hernández)
+- [inhibited] support for online endgame tablebases (up to 6 men tablebases) for Scid PC and Scid Pocket : sites like http://k4it.de and Schredder does not allow queries on their site from other chess applications (even if there is no particular mechanism preventing this). So the code is commented out until a free site offering this service is found.
+- MacOS : support for drag and drop of files (thanks to Israel Chauca)
+- New menu entry in Maintenance menu to repair corrupted bases (equivalent to "scidt -N" in command line)
+
+
+[June 2008]
+
+scid-3.6.24
+-----------
+- added an option menu for Tree windows : Fast Mode. This will dramatically reduce the time needed to refresh the tree window but will not handle some transpositions. It is efficient only if the following procedure is followed :
+   * Sort the database by ECO code
+   * Compact the database
+   * Fill the cache of the database (Tree window menu)
+  using "fast mode" has no drawback on the cache used and the cache data saved is the one that calculates transpositions. This speed enhancement is only useful on system with low RAM compared to database size (for example 1 GB of RAM for a base containing 3 millions games).
+- most used shortcuts are available from all windows (arrows, F2, F3, etc).
+- engine window is compacted and use toolbar-like buttons with tooltips, making room usage more efficient. The escape button closes the window.
+- when searching games with ECO code, games with no ECO code are not included by default
+- ECO lines are translated in search by header dialog
+- removed the frame showing material balance except for the main board
+- Added move announcements when playing on Internet (a simple move is always played when the opponent moves)
+- FICS play : the graph of game offers is added (inspired by JIN), and Time seal is supported (timeseal exec must be installed). When observing a game, previous played moves are retrieved from server.
+- reworked Merida and Fantasy piece sets so that there is no aliasing problem (requires package Img, which should be present everywhere)
+- Fixed a bug (many years old) in Twin games detection : the parameter "Always keep games with variations" was hidden, hence always ON, preventing deletion of twins  
+- changes in code (menus, changes in Crafty) to help compile Scid under Mac Os (thanks to Garth Corral)
+- Engine priority is idle by default on Windows and on other platforms latest setting is kept, but resetted after each start of Scid or there would be no mean to get back to a normal priority on Linux
+- minor bug fixes and enhancements :
+   * Changes in crosstable and tourney finders : hope this will make them more accurate
+   * Header search. 'Defaults' did not reset 'Side to move'
+   *  Click on any line in ECO browser : used to replace game without asking
+   * changed sizes of photos of players when clicking on them 
+   * fixed "coach is watching" that would not detect user's blunders
+   * show variations window improved
+   * up arrow leaves current variation if at start of variation (like z shortcut)
+   * Fix XML decoding issue for CC (special chars like ' & < > " etc.)
+   * Fixed a bug in opening trainer (due to pieces translation)
+   * Fixed a bug in scmerge
+- Correspondence chess: feature complete. xfcc is done internally or via external tools, email chess is handled by external mail programs, sychronisation of either input against a specific local DB, help pages added, automatic setup added, xfcc config dialog available.
+- Pocket PC :
+   * Memory optimisation : will spare 800 kB to 1 MB
+   * Most widgets are now themable (note that some themes don't work well with some resolutions : it is up to the user to make his choice).
+   * Search headers and board completely reworked
+   * Greko 5.7
+- Correspondence Chess: Hook up window with scid's internal geometry manager and add some optional Xfcc flags provided by SchemingMind in near future (player countries, FIDE and ICCF-IDs).
+- Fix bug in email chess which sent the annotated game to your opponent.
+- Hardened the code in sc_base_open so in case of failure in opening a base, things are cleaned up (most of the code concerns Scid Pocket, but some is also used for PC version).
+- updated swedish translation (thanks to Hans Eriksson)
+- updated spanish translation (thanks to Benigno Hernández)
+
+
+[Apr 2008]
+scid-3.6.23
+-----------
+- updated swedish translation (thanks to Hans Eriksson)
+- added piece letters translation for hungarian, norvegian and swedish
+- exporting to PGN uses english piece letters
+- GF_BLOCKSIZE was increased in Scid 3.6.15, but it has more drawbacks (the most important being that operations on PGN tags are 8 times slower during base maintenance) than benefits (block size has to be increased in order to save games over 32 kB). So I put back old values and used Pocket PC code to handle games overlapping blocks and to achieve compatibility between releases.
+- the default engine for tactical exercises is now Toga, simplifying code
+- Open base as tree has been moved from Tools menu to File menu
+- updated swedish translation (thanks to Hans Eriksson)
+- fixed a bug in Internet play : position was re-entered from FEN after each move (making PGN window useless)
+- added NAG symbols conversion to LaTeX (thanks to W.van den Akker)
+- fixed serious game play where 3 fold repetition detection was incorrect
+- fixed internet play where FICS flagged bxc6 Bxc6 as ambiguous moves
+- fixed a bug in tactical training : on Windows the "abort" button sometimes lead to a frozen dialog
+- analysis window : to hide moves, press right mouse button instead of left button (allows copy/paste of lines)
+- Functions commented out for this release (see PG3623 tags in source code : only menus are commented out):
+    * Added correspondence chess support (thanks to Alexander Wagner)
+    * External board support (DGT)
+
+
+[Jan 2008]
+scid-3.6.21
+-----------
+- Bug fix : store comment before displaying vars window
+- Engine's name in Annotator tag : optional now
+- New option in annotation configuration dialog when "short annotations" are selected : add score with Nag codes
+- Board coordinates can be hidden, displayed on 2 sides or 4 sides (Thanks to Uwe Klimmek)
+- Modifications to filter graph and added another filer graph with absolute numbers (Thanks to Uwe Klimmek)
+- added two new piece set : Fantasy & Fantasy2 by Maurizio Monge (Thanks to Uwe Klimmek)
+- added a new Merida2 piece set with outlined pieces (Thanks to Alexander Wagner)
+- added a new Kingdom piece set (from jin)
+- Output of UCI engine is converted to SAN when multipv is 1 
+- updated swedish translation (thanks to Hans Eriksson)
+- Added an option in graph filter to switch the method used to determine players' ELO (estimated or not)
+- Added translations to formerly english only code and updates to german help (thanks to Uwe Klimmek)
+- updates to German and French translations
+- updated swedish translation (thanks to Hans Eriksson)
+- fixed a bug in Tree cache which was not always saved
+- added two new menus to Tree window : the cache can be automatically filled for moves in a game or for all games in a base (this includes all variations).
+- Tree cache sizes are now user configurable from 250 positions to 10000 (previous cache is reseted if the cache size decreased, it is left intact if the size increases).
+- added a new call sc_info language <lang>, which will translate pieces to user's language (for example in PGN window, in Tree window, etc). Currently supported languages are french, german, spanish, italian, czech and nederland. Other languages will keep english pieces abreviation. This option can be turned off in options->moves menu.
+- added photos of the top 100 players available at fide.com. Thanks to the FIDE for allowing the reuse of photos available at their site and to Uwe Klimmek for the compilation and name corrections (which involves a new API "sc_name retrievename").
+- UCI engine configuration : some engines, like Shredder use options starting with UCI_ that should be ignored, but that in fact are important for the user : added a list in uci.tcl to keep those options.
+- updated Crafty to version 21.6
+- added 106 logos of engines, which are displayed in infopanel and in player info window (Thanks to Uwe Klimmek for coding this and to Wilhelm Hudetz for the logos).
+- In "serious game" training, the engine has an extra option (permanent thinking a.k.a. ponder)
+- Added the possibility to play on internet (FICS fresschess.org)
+- minor fixes
+
+scid-3.6.22
+-----------
+- ratings and spelling files from Franz Nagl are made available separately to limit Scid's package size
+- added support for Novag Citrine
+- fixed a bug when closing a base (players names update broken due to sc_name retrievename)
+
+
+[November 2007]
+
+scid-3.6.19
+-----------
+- clean up of configuration files (thanks to Marcin Kasperski)
+- books' path is now configurable through ./configure and Makefile.conf (SHAREDIR) (thanks to Marcin Kasperski)
+- some code added to support Novag's chess board. This code is not finished (and will not be finished until I put a hand on a Novag Citrine), so the menu entries are hidden to the user until further notice.
+- Added a new menu entry : "open base as Tree window" (a kind of shortcut that avoids switching between bases)
+- Refresh of Tree window can be toggled
+- A Tree window can be opened for each base through the command tools-> open base as tree. So now the meaning of "locked" for a tree window has changed. This used to mean display information of *this* base in the Tree window, but now it means, if the Tree window is locked, that closing the Tree implies closing the associated base. This seems natural because using "open base as tree" means the user wants to get a kind of "book/tree" and not really a base. So it makes sense to link base's fate to tree's one. Moreover, as a Tree window, a Graph window and a Best Games window, etc. can be opened for each base, more than 30 windows can be opened related to Trees, so the closing of a Tree window has to clean up things.
+When several Tree windows are opened the top most is refreshed first, then others.
+- Memory leaks fixed (particularly in Game class)
+- New API : sc_tree free to release memory used by Tree windows (sc_tree search). This should only be used for systems with low memory constraints.
+- New API : sc_game truncatefree : when truncating a game, moves are freed. This should only be used for systems with low memory constraints.
+- New API : sc_info logmem : useful with checkmemlog.tcl script to detect memory leaks.
+- New API : sc_var deletefree : when deleting a variation, moves are freed. This should only be used for systems with low memory constraints.
+- modified scmerge so it can take an unlimited number of input files (each separated by a carriage return) (thanks to Marcin Kasperski). Example usage :
+   find . -name '*.si3' | sed s/\\.si3// | scmerge newbase -
+This is necessary because shell command lines have a size limit.
+- Added players' Elo in Score graph title
+- removed explicit iso8859 encodings in some language files (french, italian, nederland, norks, portbr, ...), so that characters are correctly displayed in Tk widgets (like comment editor).
+- added new piece sets to increase max board size (80) (Thanks to Uwe Klimmek)
+- Merida piece sets reworked and added the possibility to use image files for white and black squares. See wsquare.gif and bsquare.gif in bitmaps directory (Thanks to Uwe Klimmek)
+- added menu entries and shortcuts (F2 and F3) to directly starts engines (Thanks to Uwe Klimmek)
+- increased list limit to 1000 in tourney window
+- increased stats window info (Thanks to Uwe Klimmek)
+- when annotating a game, the engine's name may contain "-" or "+" (Rybka for example) which will confuse the parsing of scores inside comments. So those characters are now replaced with spaces in comments, and the score graph window will correctly display info.
+- added an option in the score graph window : if the scores are not related to white's point of view, it is possible to check either "white" or "black" option to get a correct display (Thanks to Uwe Klimmek)
+- updated spelling and rating files : july 2007 (thanks to Franz Nagl)
+- directories for books and training bases are configurable (options menu)
+- minor fixes
+
+scid-3.6.20
+-----------
+- Maintenance release : ECO file was corrupted in Windows binary release.
+- When in a variation, left arrow no longer exits the variation (z key must be pressed to leave variation). That way it is possible to enter a comment at the beginning of a line (before the first move). Good side effect : this fixes a bug when a comment will be duplicated if entered at first move of a line and the back button is pressed while comment editor is opened.
+
+
+[August 2007]
+
+scid-3.6.17
+-----------
+- corrected a bug where some games longer than 64K seemed to be correctly saved in a base, where in fact they can't be loaded again. The length of an encoded game in Scid is still encoded as an unsigned short, hence the game size limit. This limit could easily be changed (Length var in index.h) at reverse compatibility cost. The way games are saved is changed (line 7333+ of tkscid.cpp)
+- corrected the Grünfled and Grünfeld Exchange lines, which were wrong (file tacgame.tcl)
+- added moves announcement in "serious games" and "tactical games"
+- corrected a bug when creating a new EPD file (error message pops up, and a Scid base was created instead of an EPD file)
+- Added the handle of Chess Assistant Null move "Z0" (thanks to Marcin Kasperski)
+- updated spelling and rating files (thanks to Franz Nagl)
+- Added the possibility to play a tactical game from current position (like in serious game mode)
+- When an UCI engine finds a mate it will no longer display a score like +327 but instead M 4 (white mates in 4 moves) or M -7 (black mates in 7 moves)
+- updates in French translation
+- added scrollbars to UCI engine options configuration so engines with huge amount of options are correctly handled (latest Fruit 2.3 for example)
+- changed default piece set and colors (Alpha->Eboard, green/yellow->blue/light blue)
+
+scid-3.6.18
+-----------
+- fixed a bug when importing PGN games : the date was not saved
+
+
+[June 2007]
+
+scid-3.6.15
+-----------
+- added an extra option to game annotation : "annotate all moves" and made some minor changes to annotation process
+- added a filter on engine output (UCI engines under Wine - http://www.winehq.org - sending useless empty lines)
+- after an opening report is generated, games can be merged into a game belonging to another base and all moves of the merged games are copied (instead of the first 20 moves)
+- a click on analysis window (un)hides the lines : only the score is displayed
+- when importing multiple PGN files, the dialog box is not closed after each completion, and information is gathered in a single window
+- UCI engine options were only set in analysis mode : now it is also set when playing serious games
+- updated german translation (thanks to Uwe Klimmek)
+- changed the promotion dialog box to display bitmaps of the chess pieces instead of english text (nicer, and no need for translation)
+- increased BBUF_SIZE so that the import of very particular games (played on internet), with extraordinary long comments (whispers) will no longer fail (of course those buffers are static and it is always possible to make games with comments so long (1 MB) that the import will still end with an error)
+- tournament crosstable : a game was considered in a tournament when its date was between +/- 3 months form current game's date : the value is increased to 12 months as some tournaments last more than 3 months (computer matches, correspondence games, etc)
+- updated swedish translation [thanks to Hans Eriksson]
+- Improvements in UCI engine output : the conversion between long notation to short algebraic notation is done in C code, instead of the old Tcl way, which could not really handle SAN, that is Nb1c3 is now correctly displayed as Nc3 (code reuse from Scid Pocket).
+- added new Scid API : "sc_game setaltered [0|1]"
+- tweaked GF_BLOCKSIZE and buffers handling so that a base generated with blocks of any size is compatible with bases with a block size of 32 kB (in order to ease Pocket PC compatibility). The drawback is that it can lead to very small overhead (buffer is copied and not shared for less than 1% of games read, but this is counterbalanced by a rarer dirty bit for blocks).
+- Pocket PC code is merged with Scid one (use of #define WINCE), except Toga's code which is still in two separate branches (this should be changed when I have found out if Toga should remain a separate process on Pocket PC or be a thread invoked in Tcl interpreter inside a DLL).
+
+scid-3.6.16
+-----------
+- added a new option to sc_info : [sc_info pocket] will return memory info on a Pocket PC
+- corrected "serious game" feature, which was broken as soon as the engine went out of opening
+
+
+[May 2007]
+
+scid-3.6.14
+-----------
+- added an option for PGN output : add spaces conforming to PGN standard. This will be reflected in every place PGN is used (PGN window, PGN export,...)
+- fixed a bug (that existed since Scid 1.9 ?!) where Scid would crash importing some very particular games (played on internet), with extraordinary long comments (whispers)
+- windows OS : 
+   * updated inno setup and cygwin1.dll
+   * by default engine starts in low priority to make UI more responsive
+- the resign value is now configurable and equal to ++-
+- added a draw detection by 3-fold repetition when playing tactical or serious games
+- changes to engine handling (both UCI and x/winboard) so engines will be correctly started whatever position (in previous Scid releases it was necessary to move back/forth to wake up some engines). The drawback is some extra latency at start for x/winboard engines (about 1 second).
+- fixed a bug in opening report where the number of games displayed was limited to 500
+- fixed a bug when adding moves from UCI engines
+- when an engine finishes a game (blue/grey arrow in analysis window), the function will be turned off after a mate.
+- added "ponder off" command so Crafty can be started/stopped with analysis window opened
+- added material balance display aside the board
+- added a new annotation option "short annotations" : scores and comments (like "weak move played score changes from X to Y") will not be used but only NAG values (annotations are less verbose)
+- fixed options setting for some UCI engines. Some engines don't take into account all parameters when they are sent in batch mode, so all option commands are now wrapped with "isready" and "readyok".
+- added a command to opening report : "merge games", which will merge as variations the N best games to current game (with a limited ply depth) - still experimental
+- updated swedish translation [thanks to Hans Eriksson]
+
+
+[April 2007]
+
+scid-3.6.11
+-----------
+- changed book handling : several books can be opened at the same time (in windows or for use by engines)
+- it is possible to play a "serious game" from current board position (and not necessarily from start position)
+- When analysing a game that is not ended by a mate, the best continuation is added as a variation (previously the annotation process would not evaluate the last move and then not give the best line)
+- PGN window : next moves and variations are made visible when moving through a game (instead of just having the last move displayed at bottom). The text window is scrolled to make (if possible) all relevant information visible. 
+- configuration of a serious game : added fixed depth, fixed seconds and fixed nodes per move as "time controls"
+- modified Toga in order to make it more UCI compliant (ie understand "go nodes")
+- added a clock for tactical exercises
+- clock is stopped automatically at end of a game that ends by a mate
+- added statistics on repertoire knowledge and a report on repertoire knowledge (opening trainer feature)
+- added a new API call "sc_var number"
+- added a contextual menu in PGN window to ease game edition (var deletion, promotion, etc.) (the menu is triggered by right mouse button and the mini board is popped up with the middle mouse button)
+- bug fixes :
+   * fixed a bug when the user wanted to start a game and when current opened base was a PGN file (call to sc_game save 0)
+   * fixed Scidlet handling in analysis mode (this engine has no setboard or analyse modes, so it must be particularly handled)
+   * fixed a bug in variations handling (certainly when the user pressed repeatedly some keys too quickly, which would trigger a race condition and an harmless exception)
+
+scid-3.6.12
+-----------
+- added new spelling and rating files (thanks to Franz Nagl)
+- fixed a bug in opening report that would crash (floating point exception due to a division by 0) if all games in base had a score set to *
+- updated swedish translation (thanks to Hans Eriksson)
+- added a "coach is watching you" in serious game (will detect dubious/weak/bad moves on the fly)
+- added a "random level opponent" in tactical games
+- fixed a bug in Crafty handling (regression introduced in 3.6.11)
+
+scid-3.6.13
+-----------
+- fixed a bug in "en passant" moves (7r/pp3k2/2pb4/3pn1P1/P5p1/1P6/2P1NPP1/3R1RK1 w KQkq - 0 1 after f4, gxf3 was considered as illegal)
+- improved non-UCI engines handling (especially for Scidlet)
+- values for informant notation is now entirely configurable and will be reflected in analysis, tactical and serious games
+- game annotation now uses informant symbols (+=, -/+, etc)
+- added a new export file format : HTML + Javascript (games can be replayed online, small boards are added in moves frame). [Thank to Marc Lacrosse for his valuable hints, and at same time, to have proven that Anand is beatable !]
+- fixed an important bug in book tuning
+- put back the "delete last move" triggered by a click on right mouse button. So the use of the mouse is the following : 
+   * left button : enter a move, asking for replacement, variation, etc
+   * middle button : enter a new variation without asking
+   * right button : delete last move if at end of var, else go back one move
+- added a new pieces set : eboard (better look, colorful and in relief) [Thanks to Michal Rudolf to have pointed out the idea, and to eboard and chessx contributors]
+- updated swedish translation [thanks to Hans Eriksson]
+
+
+[March 2007]
+
+scid-3.6.5
+----------
+- moves displayed in book window are now clickable
+- game annotation including all variations
+- a branch of a book can be exported in a game (useful for book makers)
+- added some help information (still needs to be completed)
+- added the detection and configuration of Scorpio as an xboard engine
+- changed engine init in analysis.tcl : engines that don't correctly output their features are now correctly configured (again)
+- some engines don't like do get too many commands at once (like arasan). Added code to handle this.
+- added a new color scheme sent by Shivkumar Shivaji
+- cleaned up some code in analysis.tcl
+
+scid-3.6.6
+----------
+- added clocks for tactical games
+- added a button in analysis window to start / stop engine analysis
+- minor bug corrections
+- photos of players usually hide some comments in the game info window : the photos are now clickable which minimizes them
+
+scid-3.6.7
+----------
+- bug fix in clocks (sometimes - when following specific openings - they went out of sync)
+
+scid-3.6.8
+----------
+- clicking on a clock stops or starts it
+- the variations pop-up window is now clickable (a variation can now be entered either by using right arrow, enter key or mouse button)
+- increased the max number of games in clipboard base to 1.000.000 (this should satisfy all needs)
+- multiple PGN file import
+- fixed a minor bug in tactical game when following a specific opening line
+
+scid-3.6.9
+----------
+- Annotation :
+   - when annotating a game for opening blunders, the Annotator tag is set to "opBlunder X (side)", where X is the move number 
+   - The engine name used for annotation is appended to the Annotator tag and as a comment before inserting engine's variation
+- Using third mouse button will automatically add variations without asking (entering a complex game is faster)
+- EPD support :
+   - added a "sc_epd load" callback in tkscid.cpp
+   - EPD window displays the list of positions which are directly selectable with mouse
+   - EPD file can be automatically annotated (the EPD tags used are : acd, acn, ce and pv)
+- Book :
+   - Book window position and size is saved / restored 
+   - Added book window for auto opening at startup (menu Options -> startup)
+- several fixes in language encodings and translations, added a new swedish translation file (thanks to Hans Eriksson)
+- fixed a minor error in scid help file (thanks to Hans Eriksson)
+- fixed a major (and old) bug in some translations files where procedure names were also translated, hence breaking some of Scid features
+
+scid-3.6.10
+----------- 
+- added the possibility to play (seriously) against an UCI engine (tools->training->serious game): 
+   * setting time per move and increment per move (called "serious game")
+   * follow specific opening lines
+   * choice between several books
+- changes to user interface:
+   * when resizing the configuration window of "tactical game", the list of openings is properly enlarged
+   * Save windows size and position between sessions for tactical games and exercises
+   * save position of the variations popup window
+   * <Return> adds move of analysis engine #1
+   * added a shadow under the text of tablebases diagrams to make them more visible (added an extra parameter to ::board::mark::DrawText) 
+- changes to engines:
+   * some code optimisation in UCI engine protocol
+   * added a button in analysis window of engine #1 : engine can continue (ie play) automatically a game until the end ("demo mode")
+   * fixed a bug in engine #2 handling
+- user can now navigate in tactical exercises using ordinary ways to change game (game list, next/previous game menus, etc.), so it is easy to go back to any exercises to review them
+- updates in help files
+- In "Tools/Training/Tactics", "limit engine analysis time" is now a saved option
+- fixed a bug where if variations exist at current move and the comment editor was opened, the comment was propagated to all moves (this bug did not exist in Scid 3.6.1 !)
+- translations:
+   * updated swedish translation and installation on windows (thanks to Hans Eriksson)
+   * updated Nederland translation (thanks to Leander Laruelle)
+   * added a scid_fr.eco file (french ECO file, thanks to Pascal Georges)
+- and usual minor fixes...
+
+
+[February 2007]
+
+scid-3.6.1-pg.11
+----------------
+- Bug fix : correctly restore askToReplaceMoves value when exiting Scid without closing tactical exercises window (file.tcl)
+- put all proc and vars in isolated namespaces for tactics.tcl, tacgame.tcl and opening.tcl (may prevent some side effects, even if none occurred)
+- translated opening lines for tactical games (currently only translated to French in tcl/lang)
+- added a config file Makefile.conf.darwin (rename it to Makefile.conf before running configure) to compile Crafty under Mac OS X (not tested)
+- added extra checks in tactics in order to determine if a move is the best
+- added support for display of multi-PV (multi principal variations) in order to take advantage of Toga's multi-PV feature (analysis.tcl)
+- simplified the way invertScore works in analysis.tcl (the score is always from white's perspective)
+
+scid-3.6.1-pg.12
+----------------
+- fixed bugs in game annotation and variations handling
+
+scid-3.6.1-pg.13
+----------------
+- added partial UCI support (tested only with Toga 1.2.1)
+- added MultiPV support for UCI engines, and only UCI (inappropriate for xboard engines)
+- optimized the analysis board(don't enter moves when hidden)
+
+scid-3.6.1-pg.14
+----------------
+- fixed a bug when an analysis window is destroyed (tried to flush an already closed pipe)
+- simplified tactical games configuration (the first encountered Phalanx and Crafty engines are used)
+- added an utility script removetoken.tcl to help maintain and clean up language files
+
+scid-3.6.1-pg.15
+----------------
+- fixed bugs (in makeAnalysisMove proc, in UCI promotion, etc.)
+- converted UCI engine output to something more readable
+
+scid-3.6.1-pg.16
+----------------
+- UCI parser (much) improved
+- added dynamic UCI configuration by reading engine's published parameters
+- VERY HUGE memory leak fixed (sc_game push and pop don't free game memory) 
+- optimised conversion UCI -> San notation (takes 0.5 msec at each iteration)
+- In repertoire trainer, value of candidate moves were always displayed : now the option (checkbox) is taken into account
+
+scid-3.6.1-pg.17
+----------------
+- UCI optimisation
+- Fixed UCI options parser to handle the Glaurung engine (multi-word options) and button option
+
+scid-3.6.1-pg.18
+----------------
+- handled the case where an user finished all tactical exercises
+- fixed bugs in lang files (opening translations used in tactical game)
+- changed main line output for UCI engine (more readable)
+- added ELO rating of opponent and date when playing a tactical game
+- Association of PGN and Si3 files under windows
+- added a book window : used a stripped version of Polyglot (PolyGlot 1.4 Copyright 2004-2006 Fabien Letouzey.)
+
+scid-3.6.1-pg.19
+----------------
+- fixed a bug in auto-annotation when only one side is selected for annotation
+- changed entry widgets to spinboxes in autoplay dialog
+- added an option in annotate mode : a reference book can be selected, and the moves present in book are of course not analysed
+- rewrite of annotation and autoplay, which was uselessly complex (and somewhat miscoded)
+
+scid-3.6.2
+----------
+- Simplified Scid-pg name to Scid : wise isn't it ?
+- changed year values in statistics window
+- fixed a bug in UCI engine options window, not all parameters were present in combobox
+- made the UCI engine configuration window a bit more readable
+- fixed a bug where Hash memory to use was not always sent to the engine at a time it will really consider it
+- changed opening table max number of games (spinbox from 0 to 5000)
+- added a book call in tkscid : sc_book update
+- added the possibility to tune by hand an opening book (useful for preparation before entering an engine tournament)
+
+scid-3.6.3
+----------
+- a whole base can be analysed in batch mode
+- fixed a bug in analysis : if the first move out of book is a blunder, it was not correctly annotated
+- automatic finding of boob : base of opening blunders
+- fixes to book annotation
+
+scid-3.6.4
+----------
+- fixed a bug in display of UCI options (for example Rybka's options);
+- Extra quotes were appended to engine names when there were spaces in path, preventing the start of some engines
+
+
+[January 2007]
+
+scid-3.6.1-pg.2
+---------------
+- modified io.c file in Phalanx in order to get correct communication between Scid and Phalanx under Windows in analysis mode
+
+scid-3.6.1-pg.3
+---------------
+- colored squares and arrows can be entered directly on board without the "comment editor" window :
+   - shift + mouse button {1,2,3} for squares
+   - ctrl + mouse button {1,2,3} for arrows
+- removed the ability to go back one move with right mouse click : too risky because if at the end of a line it erases the last move. Use CTRL+DEL or CTRL+BACKSPACE instead.
+   
+scid-3.6.1-pg.4
+---------------
+- modified the way variants are handled : Scid can read recursive variations but the user can no longer enter
+them. I will put this back if someone can tell me any use case of the VAR described at para 8.2.5 of
+PGN standards (modified ::move::Back in move.tcl).
+- when playing a tactical game against Phalanx, it is possible to choose which opening to train against
+
+scid-3.6.1-pg.5
+---------------
+- added the French Exchange line in tactical game
+- added an opening trainer in tools->training menu.
+
+scid-3.6.1-pg.6
+---------------
+- added russian language : still needs feedback to see if it works
+- minor bug fixes and optimizations
+
+scid-3.6.1-pg.7
+---------------
+- removed a bug : move back would not allow to go back to start position (side effect of recursive var handling introduced in pg.4)
+- when navigating through a game, automatically display variations. It is now possible to navigate through a game with variations only with arrow keys, which is far easier and more efficient.
+- fixed a bug in ECO browser (Xunmap)
+- fixed the bug occurring after a board resize when the board was flipped (dirty workaround : see resize2 proc)
+
+scid-3.6.1-pg.8
+---------------
+- fixed a bug in board resize code
+
+scid-3.6.1-pg.9
+---------------
+- tactical game : added a check for Phalanx engine in order to be sure the Phalanx engine chosen is the good one. Users never read manuals and instructions ... Also forbid the user to select Scidlet for analysis, as this engine as no analysis function
+- fixes and updates in language files
+
+scid-3.6.1-pg.10
+----------------
+- Added exercises in Tools -> Training -> Tactics : more than 20000 exercises
+
+
+[December 2006]
+
+scid-3.6.1-pg.1
+---------------
+- Modified Phalanx sources : added a setboard call, and modified io.c file
+- added a new coach function : a game can be played against an engine at a given ELO rate
+- game analysis can now check for blunders and not comment every move
+- a setup.exe is built on windows embedding Phalanx and Crafty (thanks to R. Hyatt for authorising this). If the user
+installs with default configuration, the engines are pre-configured
+
+
+Version 3.6: (February 2003)
+
+ -   Major cleanup of the user interface code.
+
+ -   Improved layout of some dialog windows which were too tall
+     for 800x600 screens.
+
+ -   Revamped the Comment Editor window, to make adding marks and annotation
+     symbols easier.
+
+ -   Improved the database switcher window; it is now fully resizable
+     and only displays open databases.
+
+ -   Increased the maximum number of open databases to 9, including the
+     clipbase.
+
+ -   Added comboboxes to recall history of past values in some entry boxes,
+     e.g. White/Black/Event/Site in the Header Search field. The past value
+     histories are saved between sessions.
+
+ -   Minor interface improvements, e.g. more consistent button sizes.
+
+ -   Fixed pasting of a position in FEN (with Ctrl+Shift+V) which worked
+     in Linux but was broken in Windows.
+
+ -   Improved sorting of round names. If two rounds are equal up to a decimal
+     point, Scid first tries to interpret the text after the dot as a number;
+     for example "4.10" used to be sorted between "4.1" and "4.2" but now
+     it comes after "4.9".
+
+ -   Added move announcement sounds. This was surprisingly easy, using the
+     Tcl/Tk "Snack" sound package.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 3.5: (December 2003)
+
+ -   New "Player Report" window, similar to an opening report but
+     for a particular player instead of an opening.
+
+ -   Opening Report window: New "Favorites" menu.
+
+ -   New option: "My Player Names" under "Options/Chesboard" menu.
+
+ -   Windows version: Scid now has its own icon, and the installer now
+     creates file associations for Scid database (.si3/.sg3/.sn3) files.
+
+ -   Help pages: Renamed Index to Contents; added an Index help page.
+
+ -   Added new search boxes (for Event and Maximum mean Elo) to the
+     Tournament Finder.
+
+ -   Many minor user interface improvements.
+
+ -   Cleaned up config/data/log file names and locations.
+
+ -   Lots of bug fixes and other small improvements, many contributed by
+     Michal Rudolf and others.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 3.4: (January 2003)
+
+ -   Scid now comes with its own built-in chess engine called Scidlet
+     which is used in Scid to suggest moves (for fast mouse move entry)
+     and is also available as a WinBoard engine outside of Scid.
+
+ -   New window: Player Finder, which lists information about players
+     in the current database.
+
+ -   Edit menu: Added "Copy position" (to complement the existing
+     "Paste start board" command) which copies the current position
+     to the clipboard/X-selection in FEN notation.
+
+ -   Moves on the main window chessboard are now animated. Use the
+     "Options / Moves / Animate time" menu to configure the
+     animation speed.
+
+ -   Added a board toolbar icon to optionally show or hide a small
+     box beside the board showing the side to move.
+
+ -   Tree window has a new column showing the percentage of draws.
+
+ -   Maintenance window: added Description field, for storing a
+     short (up to around 100 characters) database description.
+
+ -   Added MouseWheel support. In main window, Wheel moves backwards
+     and forwards in the current game. Wheel scrolls vertically in
+     most windows: Game List, Crosstable, PGN, Opening Report, etc.
+
+ -   Fixed bookmarks so they should now load the correct game
+     even if game numbers are changed by compacting or sorting
+     a database.
+
+ -   Added optional small analysis board to the Analysis window
+     showing the position at the end of the best line of play.
+     Also added "Low CPU priority" checkbox to Analysis window.
+
+ -   Tablebase window: added option of displaying a "results board";
+     select a piece on the board to show tablebase results for that
+     piece relocated to any empty square on the board.
+
+ -   Game browser windows now have an autoplay button.
+
+ -   Added a black border around chessboard squares, with a user
+     settable width in the Options/Colors... dialog box.
+
+ -   Added a toolbar to the repertoire editor window.
+
+ -   Added support for null moves, with the option of preserving
+     them in PGN export (which is non-standard since there is no
+     PGN standard for null moves) or converting them to comments
+     for compliance with other software.
+
+ -   When importing PGN, if a game has a castling move that is not
+     strictly legal because the rook or king had already moved, Scid
+     now accepts the move but logs a warning message. Previously, it
+     would report an error and not import any more moves from the
+     game. This was changed because such castling is fairly common
+     and is the most common cause of illegal moves in master games.
+
+ -   Now supports reading of multiple player photo (.spf) files.
+
+ -   Improved handling of en passant fields in EPD records.
+
+ -   More translatable messages for multi-language support.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 3.3: (May 2002)
+
+ a.  New "Piece Tracker" tool, for finding which squares a
+     particular piece (or all pieces of a certain type) most
+     frequently moves to, in games in the filter.
+
+ b.  New "Filter Graph" window, showing trends (by decade, recent
+     year or rating) for games in the current filter.
+
+ c.  Opening Report: "View LaTeX" now uses dvips and ghostview
+     instead of xdvi.
+
+ d.  Improvements to font selection.
+
+ e.  Added option to strip [%arrow ...] and [%mark ...] codes
+     out of comments in PGN window and export files.
+
+ f.  The Exit dialog now alerts the user to any databases with
+     unsaved game changes.
+
+ g.  More crosstable options. You can choose to show or ignore deleted
+     games. Also, in all-play-all crosstables, column titles can now be
+     configured to be partial player surnames or numbers.
+
+ h.  Delete twins: added options controlling which game to delete for
+     each pair of twin games. Also squashed a small but annoying bug
+     that was causing Scid to miss some twin games (thanks Gerard!)
+
+ i.  Added "Load previous game" and "Load next game" toolbar icons.
+     Also made the toolbar more configurable: you can choose which
+     icons should be displayed.
+
+ j.  Twin checker: added "Share tags" button for combining the tag
+     information of a pair of twin games.
+
+ k.  Opening report window now shows a small board with the report
+     position. Clicking the left mouse button on the board flips it.
+     This allows saving of opening reports in LaTeX or HTML format
+     with the board displayed from the Black perspective.
+
+ l.  Fixed a few small bugs, including rounding of performance
+     ratings in crosstables.
+
+ m.  Maintenance window: new "Strip PGN tags" operation that finds
+     extra PGN tags and allows the user to remove all instances of
+     a particular unwanted tag.
+
+ n.  For Unix users: a new script, "sc_remote" which opens a Scid
+     database or PGN file in an existing, running Scid instance
+     where possible, avoiding opening the same database twice.
+     Contributed by Mark Oakden.
+
+ o.  Added "Load Random Game" menu command in the Game menu. This
+     loads a random game from the current filter.
+
+ p.  Improved the Tablebase window; it now shows which tablebases are
+     available, provides a way to select a tablebase for examination,
+     and has an information summary for most tablebases.
+
+ q.  Added a Recent files list to the main window File menu.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 3.2: (February 2002)
+
+ a.  Material search: added ability to specify a material difference,
+     where Q=9 points, R=5, B=N=3 and P=1. Useful for finding
+     specific endgames (like Rook vs Rook) where one side is up a
+     pawn, for example.
+
+ b.  Header search: added fields for searching by the FIDE title of
+     each player. It does not yet take into account the year in which
+     a player received a title, but should be fairly useful anyway.
+     Also added a Game number range, for easy selection of the first
+     or last games in a database.
+
+ c.  New "Merge game" feature, available from the Game List right
+     mouse menu (and also from the Best games list of the Tree window)
+     for adding the selected game as a variation of the current game.
+     Useful for annotating the opening of a game.
+
+ d.  New "Browse game" feature, available from the Game List right
+     mouse menu, Best games list of the tree window, Crosstable
+     and Opening Report. This opens the selected game in a separate
+     window for browsing, without affecting the current loaded game.
+     This is useful for previewing a game before loading it, and for
+     comparing games. The is no limit to the number of "Browse game"
+     windows that can be open at the same time.
+
+ e.  Keyboard move entry: Ctrl+Backspace now retracts a move, just
+     like the right mouse button in the chessboard area. Also fixed
+     a bug for cases where a pawn and Bishop capture clash (e.g. both
+     bxc4 and Bxc4 are possible) so both moves can be entered with the
+     keyboard; previously, the Bishop capture could be entered from
+     the keyboard but the pawn move required mouse move entry.
+
+ f.  Mouse move entry: if "Show suggested moves" is turned off, you
+     can now use two left mouse button clicks or dragging between
+     two squares to enter moves. Previously, only dragging worked
+     with the left mouse button. Also, a selected piece now moves
+     following the mouse cursor when dragging.
+
+ g.  You can now draw arrows between squares with special commands in
+     comments e.g. "[%arrow g1 f3 red]".
+
+ h.  Spellcheck results window: you can now choose whether to show
+     ambiguous corrections.
+
+ i.  Improved reading of annotations in PGN: some which were causing
+     errors if they appeared after a move without a leading space are
+     now accepted without errors.
+
+ j.  Improved Tree caching so it should now be faster to move back
+     and forward in a game when the Tree is open on a large database.
+
+ k.  Most tall Scid windows have been altered to work better with a
+     smaller resolution such as 800x600, which is common on laptops.
+
+ l.  Large databases should now load a bit faster.
+
+ m.  You can now specify up to four tablebase directories.
+
+ n.  Cleaned up the Scid programming interface; there is now a
+     documentation file (http://scid.sourceforge.net/doc/progref.html)
+     explaining the programming interface for users who want to write
+     programs in Tcl/Tk that access Scid databases.
+
+ o.  New translated languages: Swedish and Norsk. Also, French and
+     Netherlands have been updated for the first time in a while.
+
+ p.  Options / Windows menu: new "Auto-iconify" option for turning off
+     the feature ("d." below) added in 3.1 which iconifies all other
+     Scid windows when the main window is iconified, as a few window
+     managers seem to have trouble with this.
+
+ q.  The length of each game (in halfmoves) as stored in the Index file
+     used to be limited to 255, so any game with more than 128 moves
+     would appear in the Game List or Header searches to only have 128
+     moves. This has been fixed for 3.2. To update an existing database
+     to have correct values, compact its game file.
+
+ r.  Much-improved Analysis engine selection. You can now choose where
+     each engine should be started and sort the Engines list by name,
+     estimated Elo rating or the date when it was last used.
+     Also improved Engine communication, so Scid should work better
+     with a wider range of WinBoard engines now.
+
+ s.  Comment editor: added "Insert mark" button for marking a square
+     or drawing an arrow on the board.
+
+ t.  Improved the look of piece images in the chessboard.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 3.1: (December 2001)
+
+ a.  Opening report improvements: now in color and with many clickable
+     items for selecting or loading games. You can also now exclude an
+     uninteresting move from being shown in the theory table.
+
+ b.  A few improvements to Scid interaction with analysis engines.
+
+ c.  Small fix to autoplay mode, to make it stop when the end of the
+     current game or variation is reached.
+
+ d.  Scid now iconifies all open Scid windows when the main window is
+     iconified, and deiconifies them all when the main window is
+     deiconified. This makes it easy to hide and show all open Scid
+     windows with one mouse click.
+
+ e.  Added a new crosstable display mode, "Auto", which automatically
+     chooses the best table format (All-play-all or Swiss) for the
+     current tournament. Auto is now the default display mode.
+     Also, All-play-all mode has been improved for two-player matches.
+
+ f.  Each Scid database can now store the number of the game to be
+     auto-loaded whenever the database is opened. This option is
+     settable from the Maintenance window.
+
+ g.  You can now color squares with special commands in comments,
+     e.g. "[%mark g4 blue]", "[%mark h2 #000070]", etc.
+
+ h.  Annotate dialog (from the Analysis window) now offers the choice
+     of only adding a variation for moves by one side, or when the
+     first move of the line chosen by the analysis engine is not the
+     same as the game move.
+
+ i.  The game information area now has an option for showing the
+     full comment for the current position, instead of only its
+     first few words.
+
+ j.  The Game List window is now user-configurable; just press the
+     left or right mouse button on a column title for a menu.
+
+ k.  Updated a few out-of-date help pages.
+
+ l.  With keyboard move entry and auto-completion mode turned on,
+     Scid now beeps when adding each move.
+
+ m.  Fixed a few other small bugs from version 3.0.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 3.0: (November 2001)
+
+ a.  Improved index file format (see details below). Databases created
+     with Scid 2.x can be upgraded to the new format when they are
+     first opened in Scid 3.0.
+
+ b.  12 new user-settable "flags" for marking games with various chess
+     characteristics: tactics, pawn structure, interesting endgames,
+     kingside attacks, etc.
+
+ c.  The EventDate tag is now stored in the index file, so it can be
+     used for sorting a database.
+
+ d.  Index format improvements have made tree searches faster for
+     most common early opening positions.
+
+ e.  The improved index format has made most simple endgame searches
+     faster, e.g. for my 500,000-game database, finding all Knight and
+     pawns vs Knight+pawns endgames improved from 2.4 to 1.7 seconds.
+
+ f.  The game list can now display an estimate of how many comments,
+     variations and annotation symbols each game has, not just whether
+     it has any.
+
+ g.  Find Novelty: can now choose to search all games or only games
+     older than the current game.
+
+ h.  Added Edit menu commands to strip all comments or variations
+     from the current game.
+
+ i.  Tree window: New "Best games" window, listing the highest-rated
+     games in the currently displayed tree branch.
+
+ j.  PGN window: Pressing the middle or right mouse button anywhere
+     now pops up a window showing the board position at that location
+     in the game.
+
+ k.  Opening Reports: a few small format improvements, and more options
+     for customising the report sections. The options are now saved to
+     the user options file.
+
+ l.  The Email manager can send mail using SMTP instead of sendmail, so
+     it can now also be used with Windows systems. (Thanks Kayvan!)
+
+ m.  Analysis added from an analysis window to the current game is now
+     added as a real variation (used to only be added as a comment).
+
+ n.  The Database Switcher orientation can now be changed (from
+     horizontal to vertical stacking of databases) using its
+     right-mouse menu.
+
+ o.  New "Bookmarks" feature, for bookmarking important games.
+
+ p.  The Header search can now search the PGN representation of each
+     game for matching text, enabling searches for text in the extra
+     PGN tags or comments of a game.
+
+ q.  A new "Tip of the day" window, which shows a random hint.
+
+ r.  Some of the most commonly-used windows (the switcher, PGN,
+     and tree window) can now set to automatically open at startup.
+
+ s.  Most window locations and sizes are now saved in the options
+     file when "Save Options" is selected.
+
+ t.  Fixed a rare bug that could cause game data corruption when
+     copying games using the Database Switcher window. (Thanks Jens!)
+
+ u.  Unix: user files are now stored in the directory "~/.scid", so
+     the options file is now "~/.scid/scidrc" instead of "~/.scid".
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 2.7: (October 2001)
+
+ a.  New feature: "File Finder" window, for easier finding and
+     opening of Scid databases, PGN, EPD, and Repertoire files.
+
+ b.  New feature: "Tournament finder" window, showing tournaments
+     that meet certain criteria (date, country, average rating, number
+     of players, etc).
+
+ c.  New "Paste start board" command for easier importing of a
+     starting position copied from another program such as XBoard.
+
+ d.  Added new optional "column" style for the PGN window and exported
+     games (LaTeX, HTML or PGN format), which prints the game moves
+     in columns with one move of each side per line. Also a couple
+     of improvements to the display of variations in LaTeX format.
+
+ e.  New feature: "Find Novelty", for finding the first move in the
+     current game not played in any games of the selected database.
+
+ f.  Analysis window: Added new frame showing history of evaluations
+     for the current position.
+
+ g.  Board search: added "Ignore colors" option, to search for the
+     current position with the board flipped and colors reversed.
+
+ h.  Added option to print player ages in crosstables. Ages are
+     computed from spelling file data.
+
+ i.  Improved graph windows, and added ability to save Tree, Ratings
+     and Score graphs to a color or greyscale PostScript file.
+
+ j.  Improved interface for selection of board and piece colors,
+     including a number of predefined schemes suggested by users.
+
+ k.  Scid now adds a default extension (html/pgn/tex/sor) when
+     saving a file, if the user entered a filename with no extension.
+
+ l.  Scid no longer asks for confirmation when copying games to the
+     clipbase, but still asks when copying to any other database.
+
+ m.  Opening report: now even more configurable options.
+
+ n.  PGN importing: now accepts (and ignores) en-passant indicators,
+     as in "exd6ep", "exd6 ep", "exd6e.p.", and "exd6 e.p.".
+     Also now accepts a non-breaking space character (ASCII code 160)
+     as whitespace.
+
+ o.  Bug fix: Training mode with an analysis engine was not playing
+     King moves.
+
+ p.  The File Open menu command can now open any type of file Scid
+     can use: Scid databases, PGN, EPD, and Repertoire files.
+
+ q.  Added Tie-break scores option to crosstables, for printing
+     Sonneborn-Berger scores in All-play-all tables and Bucholz
+     (sum of opponents points) scores in Swiss tables.
+
+ r.  Bugfix: a long tag in a game exported in PGN format could wrap to
+     the next line; it now always printed on one line.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 2.6: (August 2001)
+
+ a.  A new toolbar in the main window for fast easy access to
+     commonly-used menu functions.
+
+ b.  New feature: a "Lock" button in the Tree window, for locking the
+     Tree to the current database. With this, you can use one database
+     while seeing the Tree of another database.
+
+ c.  The Email Manager now lets you keep track of when you received
+     and sent email messages.
+
+ d.  The Game Export functions (in the Tools menu) now have extra user
+     configurable options: whether to use symolic annotations (for
+     example, "! +=" instead of "$2 $14"), and whether to indent
+     variations and comments. Also, with HTML export you can choose
+     from two diagram styles.
+
+ e.  Crosstables can now be saved in LaTeX format; previously they
+     could only be saved as HTML or plain text.
+
+ f.  Twin detection can now optionally compare only the first four
+     letters of each name when comparing player names, instead of
+     requiring an exact match. This helps to detect many more twin
+     games which no not have the same exact spelling of player names.
+
+ g.  Games with a non-standard start position can now be detected as
+     twin games. I cannot remember why they ever were excluded from
+     twin detection, or see any good reason to keep excluding them.
+
+ h.  Some changes to analysis engine code to try and avoid freezing
+     Scid when navigating a game very quickly while an analysis
+     window is open.
+
+ i.  ECO classification: you can now choose to reclassify only games
+     played in the last year or month, which is useful for speeding
+     up reclassification after adding new games to a large database.
+
+ j.  New "Cleaner" command from the Maintenance window, which lets
+     you initiate a sequence of maintenance functions on a database that
+     Scid will perform without requiring user interaction.
+
+ k.  You can now resize the main window height to change the height
+     of the game information area below the chessboard. Also, the
+     first few words of a comment are now displayed in this area,
+     e.g. "(comment: A good move since...)" instead of just
+     indicating there is a comment with "(comment)".
+
+ l.  Clicking the left-mouse button on the main window status bar
+     now cycles to the next database slot.
+
+ m.  Added John Wiegley's "pgnfix" program (that cleans up PGN files)
+     and "eco2pgn" (converts scid.eco to a PGN file) to the scripts
+     directory.
+
+ n.  New "Trial" mode ("Try variation"), for trying out a temporary
+     variation without actually changing the current game.
+  
+ o.  Set the default location Scid looks for the spelling and ECO
+     files (if the user has no options file) to /usr/local/share/scid/,
+     since that is their default "make install" directory.
+
+ p.  Fixed an annoying bug: if you navigated through a game when the
+     comment editor was open, Scid would change the game status to
+     altered even if you had not edited any comment or annotation.
+
+ q.  Updated several help pages and added a footer to each help page
+     indicating its last change, guessing 2.5 for any pages not
+     updated for Scid 2.6.
+
+ r.  New language translation supplied: Brazil Portuguese.
+
+ s.  A few other small tweaks and bug fixes.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 2.5: (June 2001)
+
+ a.  New "Repertoire editor" feature, for managing your opening
+     repertoire and using it to search databases.
+
+ b.  Improved Scid to work better with engines that use the XBoard
+     version 2 protocol. Scid now uses the engine's analyze mode for
+     any engine that uses the new protocol and has an analyze command.
+
+ c.  Analysis window: new "Add Move" button which adds the best-line
+     move to the current game. Also new "Training" button which waits
+     for the autoplay time delay each time the user makes a move, then
+     makes the best-line analysis move -- effectively playing against
+     the user with a fixed amount of time per move.
+
+ d.  Improved the name spellchecker so it points out ambiguous
+     corrections instead of arbitrarily choosing one of them.
+     Each ambiguous correction is now shown in the spellcheck
+     results window with "Ambiguous: " before the correction.
+
+ e.  The spellchecker now also ignores the last five characters in a
+     player name when they are the sequence " (ABC)" where ABC = any
+     three uppercase letters. This means player names with country
+     codes can still be spellchecked.
+
+ f.  The rating difference (in Header search) is now White rating
+     minus Black rating, not an unsigned (absolute) difference between
+     the larger and smaller rating.
+
+ g.  New configurable option in Opening Report, for setting the number
+     of extra note moves (past the last column) in the theory table.
+
+ h.  New "Knockout" mode in the Crosstable window, for better printing
+     of knockout tournaments.
+
+ i.  The Unix/Linux configure script now checks if your system already
+     has the zlib library, and uses it (instead of compiling the version
+     that comes with Scid) if possible.
+
+ j.  The Game List window has a new "Save..." button for saving a
+     text list of the current filter games (one line per game, in a
+     fully configurable format) to a file.
+
+ k.  Added more players and sites to spelling.ssp and ratings.ssp.
+     They now have over 7000 players and over 500 sites.
+
+ l.  The spellcheck file now has general prefix and suffix corrections,
+     which are used to help standardize Event and Site names.
+
+ m.  Scid can now read GZip-compressed spellcheck files, so you can
+     keep ratings.ssp.gz compressed to save disk space.
+
+ n.  New "Tablebase" window, which shows more tablebase details
+     about the current position. It has a Training button for playing
+     against a tablebase.
+
+ o.  Scid can now have two analysis engines open at the same time.
+
+ p.  A few minor bugfixes here and there...
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 2.4: (May 2001)
+
+ a.  New "Training" mode in the Tree window: turn it on and Scid plays
+     against you each time you move, by selecting a random move from
+     the tree (according to the relative frequency of each move).
+
+ b.  Two new columns in the tree window: AvgElo and Performance. Each
+     is only shown when the average rating or performance is based on
+     10 or more ratings. Also added an AvYear column showing the mean
+     year of each move played. These improvements required a change to
+     the tree cache file format, so any old ".stc" files created from
+     earlier Scid versions will be ignored.
+
+ c.  Two new Game menu commands: Load first game and Load last game,
+     for quick access to the first and last games in the filter.
+
+ d.  Extended the Name Editor window to allow replacing the rating
+     for a player (useful for setting a player rating for all games
+     in the current tournament).
+
+ e.  When exporting games, you can choose to export the games with or
+     without comments and variations. Also, you can choose to create
+     a new file or add games to an existing HTML, LaTeX or PGN file
+     of games exported by Scid.
+
+ f.  More multi-language support: deleting twins, name editor window,
+     database compaction, sorting, etc.
+
+ g.  I wrote a program for automatically converting all the Scid help
+     pages in to HTML files. The HTML help files are available in the
+     "help" subdirectory.
+
+ h.  Expanded the scid.eco openings classification file. It now has
+     over 8000 positions, and about 180 of the 500 basic ECO codes
+     now have Scid extensions.
+
+ i.  In the ECO Browser window, you can now click on a line to paste
+     it in the "Import PGN Game" window.
+
+ j.  Added "calendar" dialog box for selecting a date, available from
+     the game save/replace window. This is only available with
+     Tcl/Tk versions 8.3 or newer.
+
+ k.  A few improvements to the Opening report: new subsections listing
+     the most frequent players (as White and as Black) of the report
+     line, and their score with the line. There is also a new column in
+     the theory table: each row shows the number of games contained in
+     all the row notes, and the percentage score of those games.
+     Another improvement is a new "Options" command in the File menu
+     for customising the report.
+
+ l.  Increased the game limit for a Scid database from 3 million
+     to 4 million games, at the request of a user who actually has
+     a database that large.
+
+ m.  New language supported: Czech. Fixed Scid so it should now work
+     properly with languages that use the iso8859-2 character set (Czech
+     and Polish), if appropriate fonts are being used.
+
+ n.  New submenu in Edit menu: "Promote variation to Main line" which
+     swaps a variation at the current position with its parent. Thanks
+     to Manuel Hoelss for writing most of the code for this!
+
+ o.  Each search window now reports search results via a status line at
+     the bottom of the window, instead of showing an annoying message
+     window after each search.
+
+ p.  Most tall Scid windows are now shorter, making Scid more user
+     friendly at low screen resolutions such as 800x600.
+
+ q.  Header search can now search for a rating difference, for example
+     for games where the players were within 100 points of each other.
+
+ r.  Changed the score graph window, when showing scores for a game that
+     has been annotated with crafty's "annotate" command, to expect the
+     scores to always be from White's perspective which has been standard
+     since version crafty 18.1. Earlier crafty versions had the scores
+     from the perspective of the side to move.
+
+ s.  New Tree window File menu commands: "Copy tree text to clipboard"
+     which copies the tree window contents to the clipboard and primary
+     X-selection, for pasting into another application such as a text
+     editor. Also, "Fill cache file" which does a tree search for
+     about 100 common opening positions and saves the tree cache file.
+
+ t.  New maintenance window command: "Add Elo ratings", which uses a 
+     modified version of the spellcheck file with rating history info
+     for each player, and adds Elo ratings for players wherever the
+     rating for each player at the date of each game is known.
+
+ u.  Fixed a couple of memory leaks, and improved memory usage a little.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 2.3: (March 2001)
+
+ a.  The compaction (of name and game files) and database sorting
+     functions that were only available in the "scidt" command-line
+     program, are now available in Scid itself (from the File:
+     Maintenance menu or the Maintenance window). Even PGN files and
+     read-only databases can be sorted, but the sort results are only
+     permanent when sorting a regular (not read-only) Scid database.
+
+ b.  Improved layout of Maintenance and Header search windows, making
+     them wider but shorter which is better for users with low-res
+     screens. Still need to reduce the height of the Delete Twins and
+     Material Search windows...
+
+ c.  Improved the speed of ECO classification, by about 40%.
+
+ d.  Much more multi-language support: game information area, maintenance
+     window, opening report, and the ECO Browser are all multi-language.
+
+ e.  Some updates to help pages, mostly to reflect the changes to
+     database compaction and sorting.
+
+ f.  Ability to make an opened database read-only, to prevent accidental
+     changes. To be writable again, it must be closed and re-opened.
+
+ g.  Improved Help window: it now remembers what part of each page was
+     visible, so when you go back to previous pages, the part you were
+     viewing is displayed.
+
+ h.  Improved usage of estimated ratings: they are now shown in the game
+     list window, in parentheses. They are also used in header searches.
+     They are not yet shown in the crosstable window, but may be in a
+     future version.
+
+ i.  Player name corrections improved: names that appear to be surnames
+     only are now not corrected, unless the user requests that they are.
+     This is useful since these corrections are often wrong.
+     The spelling file is also larger, over 6000 players now.
+
+ j.  When you "Save Options", the current widths of the game list
+     columns are now saved to the options file.
+
+ k.  Better handling of player names when converting from PGN: spaces
+     at the start of a name are removed, and if a name ends " (xxxx)"
+     where xxxx = four digits, that part is removed from the name and
+     treated as an Elo rating, so for example:
+         [White "Kramnik, V (2780)"]
+     is imported as if it was:
+         [White "Kramnik, V"]
+         [WhiteElo "2780"]
+
+ l.  Improved shortcut keys: many control key shortcuts (like Ctrl+L to
+     open the game list, Ctrl+4 to switch to the clipbase, Ctrl+F to
+     reset the filter, etc) are now available in almost all Scid windows.
+
+ m.  Fixed a few small bugs from version 2.2.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 2.2: (January 2001)
+
+ a.  Scid is now released under the Gnu General Public Licence (GPL).
+     Previous versions had a more restrictive licence, but I now feel
+     the GPL protects Scid enough and should encourage more people to
+     use, contribute to, and distribute Scid without having to worry
+     about yet another non-standard copyright licence.
+
+ b.  Added support for showing help pages, menus and status bar messages
+     in other languages.
+
+ c.  Added new types of "current board" search. All require the same
+     exact material and side to move as the current board, but you can
+     search just by pawn structure, or by the files pawns are on. The pawn
+     structure search is very useful for openings, while the pawn files
+     search is good for finding similar endgames.
+
+ d.  New "Opening Report" feature which produces interesting facts about
+     an opening position and an ECO-style theory table.
+
+ e.  The Board, Header and Material search windows are no longer modal,
+     so you can have them all open at any time (and the Search button in
+     each of them is disabled when you are not in an open database).
+
+ f.  Scid now loads game number 1 whenever opening a database, rather than
+     just showing the empty "game 0". Looks much nicer.
+
+ g.  Scid can now read a FEN/EPD string on the command line, as one
+     argument or as multiple arguments. For example, the following lines
+     both open the database "base" with the French defence (1.e4 e6):
+     scid base "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq"
+     scid base rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2
+
+ h.  It is easy to open and use the Tree window, then close it but forget
+     to save the cache file. Added a new Tree window Options menu entry to
+     auto-save the cache file whenever the Tree window is closed.
+
+ i.  Scid nows shows a progress bar when opening a database, which is
+     helpful for large databases.
+
+ j.  It was confusing that Tree searches ignored games marked for deletion,
+     since they will still show up for positions found in the tree cache.
+     The tree now shows all games that match, even deleted games.
+
+ k.  Scid used to encode EventDate value (e.g. [EventDate "2001.10.16"])
+     in 12 bytes, which was a waste since dates can be stored in a more
+     compact format. Scid now uses just 4 bytes when an EventDate tag with
+     a valid date is stored, saving 8 bytes per game. For my TWIC database
+     (where most games have an EventDate) this prunes the game file by
+     almost 10%.
+
+ l.  Header search now also permits searching by Round name.
+
+ m.  New "Goto move number" menu command, with shortcut Ctrl+U.
+
+ n.  Scid now recognizes several rating types, not just Elo. The rating
+     for each player in a game can now be one of 6 types: Elo (for FIDE
+     ratings), Rating (for generic use), Rapid, ICCF, USCF, DWZ and BCF.
+     More may be added in the future.
+
+ o.  Scid can now read coordinate-style notation, e.g. "g1f3" or "g1-f3"
+     for 1.Nf3, which was requested by users for two different purposes:
+     to import games from websites that send moves in this notation instead
+     of proper PGN format, and to accept keyboard move sequences generated
+     by the DGT board.
+
+ p.  Scid now estimates a rating for players with no rating in a game who
+     do have a rating in at least one other game in the database. The
+     estimate is the mean of the highest and lowest rating the player
+     has in all other games in the database. Estimated ratings are
+     indicated with a "*".
+
+ q.  Fixed interference between move entry keys and menu shortcut keys.
+     Before the fix, Alt + a letter key (such as Alt-f for the file menu)
+     added "f" as if it was part of a move entered by the keyboard. Now,
+     letters entered while an Alt key is pressed are not treated as
+     keyboard move entry.
+
+ r.  If there is only one variation at the current position, you can now
+     enter it by just pressing "v" rather than "v1". If there is more than
+     one, you still have to enter the number after the "v" of course.
+
+ s.  Ran some programs over the FIDE October 2000 rating list, automatically
+     adding new players and making corrections to the spellcheck file. It
+     now contains over 5600 players.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 2.1: (November 2000)
+
+ a.  New "ECO Browser" window that shows the positions used for each
+     ECO code (if the ECO file is loaded), and shows the popularity and
+     performance of each ECO code in the current database. Scid no
+     longer uses an EPD file for ECO classification, it now reads the
+     "scid.eco" file directly.
+
+ b.  Scid can now use Nalimov-format endgame tablebase files! Whenever
+     the current position is found in a tablebase file, Scid will show
+     the result and optimal moves in the game information area.
+
+ c.  Major overhaul of "delete duplicates" feature. It is now called
+     "delete twins", and provides many options for adjusting the search
+     for twin games. There is also a "twin checker" window which makes
+     checking a deleted game against its twin easy.
+
+ d.  Added key bindings ("v" followed by a number to enter a variation,
+     "z" to leave) so variations can be browsed without using the mouse.
+     Also improved the game information area so variations are listed,
+     and you can click on them to navigate the game.
+
+ e.  Made adding of variations more consistent. "Add Variation" used to add
+     a variation replacing the last move, but this was inconsistent with
+     all other variation operations which use the next (upcoming) move. Now,
+     a variation of the next move is added, unless there is no next move
+     (already at the end of the game or a line), in which case the variation
+     is added to the previous move (the last move in the line).
+
+ f.  Some improvements to the PGN window: new menus, and more consistent
+     indentation when you select "Indent Comments" or "Indent Variations".
+
+ g.  Several small interface improvements: remembering window sizes
+     and saving them to the options file, etc. Also rearranged some menus,
+     hopefully making them simpler.
+
+ h.  Improvements to the player info window: now in color, and you can easily
+     set the filter to contain all games by the player, or all wins, or all
+     losses with Black, etc.
+
+ i.  Simplified fonts, there are now just three basic fonts (named Regular,
+     Small and Fixed) that Scid uses in all windows.
+
+ j.  Added three more command-line scripts for Unix users of Scid:
+     "sc_spell" which spellchecks a database, "sc_import" which
+     imports files of PGN-format games into a database, and "sc_eco"
+     which recomputes the ECO codes of all games in a database.
+
+ k.  Added "-fast" or "-f" (or "/fast" or "/f" on Windows) command line
+     option to Scid, which makes it start up faster without checking
+     for tablebases, the ECO file or the spellcheck file. Also added
+     "-xtb" option to avoid checking for tablebases, "-xeco" to avoid
+     loading the ECO file, and "-xspell" to not load the spellheck file.
+     Other options: "-s1", "-s2", ... "-s12" sets the initial board size.
+
+ l.  The "splash screen" (Startup info window) now auto-closes itself after
+     startup, at the user's preference.
+
+ m.  Made the "results" section of Header searches aware of the "Ignore
+     colors" setting, so, for example, searching for "Adams, Michael" as
+     White, with "Ignore colors" selected and only "1-0" results will find
+     all wins (as White or Black) by Michael Adams.
+
+ n.  You can now use wildcard-style searches (? = 1 character, * = 0 or more
+     characters) in Header searches, if you put the search text in double
+     quotes, for example: "* GER".
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 2.0: (October 2000 -- long delay but worth the wait I hope!)
+
+ a.  New "Rating Chart" window, which graphs the rating history of
+     one of both of the players in the current game.
+
+ b.  New "Maintenance" window, to make manipulating the delete flags
+     of games and spellchecking names easier.
+
+ c.  Scid can now read GZip (.gz) files. You can open .pgn.gz files
+     wherever you would open .pgn files, and .epd.gz files similarly.
+     Gzip files are opened read-only and will not be modified.
+
+ d.  You can now choose to display coordinates around the board. I find
+     them very annoying, but I know the feature will help users who
+     are new to chess notation.
+
+ e.  The board now looks much nicer, since chess pieces now have
+     outlines (in board sizes 5 and larger).
+
+ f.  The tree window now has a "Graph" button for producing a graphical
+     display of the relative results of moves from the current position.
+
+ g.  A few small interface improvements, such as removing the annoying
+     error box if you try to load the next game when you are already at
+     the last game in the database.
+
+ h.  Increased the game limit from 2 million to 3 million games in a
+     database (yes, some Scid users really have a database that big!)
+
+ i.  Scid now uses less memory for large databases. Although an
+     index file uses 41 bytes per game, Scid was using 56 bytes per
+     game to store the index in memory. It now uses 48 bytes per game
+     instead, a saving of around 15%. This will help Scid run a bit faster
+     for huge databases.
+
+ j.  Improvements to exporting: the text printed at the start and end of
+     the exported file (for example, <html> etc at the start of an HTML
+     file) can now be edited from the Options menu, and is saved when
+     you save options.
+
+ k.  Added new key bindings: Control+Shift+ (left or right arrow) to
+     change the board size.
+
+ l.  Renamed the clipboard database to the "clipbase", to avoid confusion
+     with the "clipboard" in Windows.
+
+ m.  Spellcheck file improvements:
+       - For player names, Scid can now detect surname-last format as well
+           as surname-first, for surnames without spaces in them. Example:
+           "G. Kasparov", will be now corrected to "Kasparov, Gary".
+       - Merged the four files players.txt, events.txt, sites.txt, rounds.txt
+           into one file (spelling.ssp) for simplicity.
+       - Fixed small bug reading the spellcheck file, lines starting with
+           a "%" (biography notes) were being mis-read as player names.
+       - Expanded the players list in the spellcheck file. It now includes
+           most players who have a rating over 2350, with over 5000 players.
+
+ n.  You can now search in variations for exact board searches, but not
+     for material/pattern searches yet.
+
+ o.  Fixed a bug that was causing some games to be corrupted when compacting
+     a large database after sorting it.
+
+ p.  Added numeric locale option, for setting thousands and decimal point
+     characters.
+
+ q.  "Classify games" can now classify the games using basic ECO codes
+     only, if you prefer them instead of the Scid extended codes.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 1.8: (July 2000)
+
+ **  New options for the Crosstable window: can produce all-play-all table
+     or a Swiss tournament table. Can also sort by score, name or rating.
+     Also added option for plain text table, which is much faster for large
+     tournaments.
+     You can also save the crosstable to a file, in plain text or in
+     HTML table format.
+
+ **  New game export modes: Scid can now export the current game or all
+     games in the filter to an HTML or LaTeX file, including printing
+     diagrams wherever there is a diagram symbol or comment in the game.
+
+ **  Improved, simpler main window menu arrangement with new "Windows" menu.
+
+ **  Minor improvements to Player Information window.
+
+ **  Tree window now skips deleted games, since they are usually duplicates
+     and including them taints the statistics.
+
+ **  Move entry: left mouse button still the same (use it to make suggested
+     moves, or to drag between squares) but middle button changed; it now
+     is used to select squares for two-click moving (instead of dragging).
+
+ **  Some people prefer the notation "1. e4 e5" to "1.e4 e5". Now you can
+     have a space after each move number, see the "Options: PGN Window"
+     menu.  Thanks to Joel Rivat for this and other useful suggestions.
+
+ **  Bugfix: When using tree window, squares on the board in the main window
+     would sometimes be left colored gray (from earlier suggested moves)
+     until the mouse moved over them. Now fixed.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 1.7: (May 2000)
+
+ **  First version of Scid for Windows produced.
+
+ **  Scid can now spellcheck the player, event, site and round names in a
+        database, and comes with four spellcheck files (players.txt,
+        sites.txt, events.txt and rounds.txt) for this purpose.
+        This makes the -E (name extension) option of scidt redundant, so
+        it has been removed.
+
+ **  New Player Information window: just click on a player name (in the
+        game information box below the board, or in the crosstable
+        window) to see information about the player: success rate,
+        common openings played, and rating history.
+
+ **  The Crosstable window now uses data from the Players spellcheck file
+        if it has been loaded, showing the FIDE title (gm, im, etc) and
+        most recent country for each player.
+
+ **  The Game list window now has an entry box for entering a specific
+        game number to display in the list, and an entry box for finding
+        the next game that contains some text in its White, Black, Event
+        or Site field.
+
+ **  New "Hints" help page with tips in question-answer format.
+
+ **  PGN importing: Scid can now also read compact algebraic notation
+        captures with no rank, e.g. "ed" for exd5 and "ba=Q" for bxa8=Q.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 1.6: (March 2000)
+
+ **  The Scid-specific book file format (.sbk) has been removed.
+        Scid now reads and writes Book files in the standard EPD
+        (Extended Position Description) format, for compatibility with
+        other chess programs. The EPD format is described in the PGN
+        Standard. Files in the old .sbk format cannot easily be converted
+        to EPD since EPD files store more information.
+
+ **  The standard Scid ECO file is now called scid.eco, not eco.txt, and
+        "eco2book scid.eco" will create the file scid.epd for use in Scid.
+
+ **  Tree window now displays an extra column for each open book file,
+        which shows a summary of the text for the move displayed.
+
+ **  Scid can now open a Book file from the command line, if it is
+        specified with the .epd suffix, e.g.: "scid mybase mybook.epd"
+
+ **  Scid can now import long algebraic notation, e.g. "1.d2-d4 Ng8-f6".
+
+ **  The duplicate deletion feature now marks the shorter of two duplicate
+        games as deleted, or the first in file order if they are have the
+        same number of moves.
+
+ **  Bugfix: when importing PGN games, Scid was not updating the name file,
+        potentially leaving the database corrupted.
+ **  Bugfix: scidt -E, -N and -C options were incorrectly resetting
+        the index type icon back to the default blank icon; they now
+        preserve the icon type.
+ **  Bugfix: Defaults button in Header search was broken, now works.
+ **  Bugfix: Paste game command in Edit menu was broken, now fixed.
+ **  Bugfix: Scid with Tcl/Tk 8.3.0 was crashing when closing the tree
+        window due to a bug in Tcl/Tk version 8.3.0 ONLY. Changed the
+        code to avoid the Tcl/Tk bug, for those using 8.3.0.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 1.5: (March 2000)
+
+ **  New Database switcher window. Provides easier switching between
+        open databases, and copying all filtered games from one
+        database to another using drag-and-drop.
+        Each database has a "type" which is graphically shown in the
+        switcher window; there are about 30 type icons to choose from.
+
+ **  You can now open a PGN file directly in Scid, although PGN files use
+        more memory, are much slower to load and are read-only so this
+        is only recommended for small PGN files.
+
+ **  Added Import games from PGN file command to the Tools menu. You
+        can now import all games from a PGN file to any open database
+        without needing to convert the PGN file with pgnscid first.
+
+ **  In the board window, pressing and releasing the left mouse button on
+        the same square now adds the suggested move for that square -- this
+        means that to add any move other than the suggested move, you now
+        need to drag between the two squares instead of clicking on each
+        square in turn.
+
+ **  Removed Export to clipboard and Import from clipboard commands
+        from the Edit menu, because copying games between any two
+        databases (not only to/from the clipboard) is now provided by
+        the database switcher window (see above).
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 1.4: (March 2000)
+
+ **  New memory-only Clipboard database, for copying games between
+        databases and for use as a temporary database. The clipboard
+        can hold up to 10,000 games.
+
+ **  Scidt -E can now take an optional player names text file that
+        contains correct and alternate spellings for player names.
+        A sample name file "names.txt" with over 3,000 player names is
+        available at the Scid website.
+
+ **  Improved analysis window setup a little, since the changes made
+        in v1.3 were not working with Crafty on some computers.
+
+ **  Crosstable window now displays average Elo rating and corresponding
+        FIDE tournament category, and also shows the rating performance
+        for each player that played five or more games in the tournament.
+        It can also now handle up to 64 players in a tournament.
+        Every second line is now shaded gray for easier reading.
+
+ **  The game information box in the main window now has a popup menu
+        for the right mouse button.
+
+ **  Game list window right-mouse menu now includes commands to delete
+        or undelete all games that are in the current filter.
+
+ **  Header search now allows a restriction on the number of halfmoves
+        in the game. This, combined with the "delete all filtered games"
+        addition above, makes it easy to find and delete all games under
+        a certain length.
+
+ **  Scid now prints startup information to a splash window instead of
+        standard output.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 1.3: (February 2000)
+
+ **  Added duplicate game detection command, in the Files:Maintenance
+        menu. (The Name editor command has also moved to that menu, it
+        used to be in the Tools menu).
+     Two games must have the same Event, Site, Date, Round, White and
+        Black tags, and (mostly) the same moves to be duplicates.
+
+ **  New Crosstable window. Shows the crosstable of all results from
+        the tournament of the current game, for tournaments of up to
+        32 players. You can click on any result in the crosstable to
+        load the game it represents.
+
+ **  New "Autoplay" button in the main window: automatically moves
+        forward one move every second. Ctrl+RightArrow turns replaying
+        on or off, Escape key turns it off. When you use autoplay mode
+        while the analysis window is open, Scid annotates the game by
+        adding the analysis for each move as a comment.
+
+ **  Analysis window no longer uses crafty-specific commands unless it
+        sees "Crafty" at the start of a line, so it should work with
+        most xboard compatible chess programs -- even those that do
+        not have an analyze mode. I have used Crafty, Gnuchess and
+        Phalanx successfully with the analysis window in Scid 1.3.
+
+ **  Changed the default startup light and dark square colors to shades
+        of brown. If you have a "~/.scid" default file, you will have
+        to delete it (or edit it and remove the "set lite" and "set dark"
+        lines) to see the new colors.
+
+ **  Added a frame-resizing bar to the Import window so the error
+        messages frame can be made larger or smaller.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 1.2: (January 2000)
+
+ **  Added Scid treecache file, for storing the contents of the
+        tree cache to speed up tree searches for large databases.
+        Very useful feature, wish I'd done this a long time ago!
+     The button "Write Cache file" in the tree window saves the
+        current cached tree results to a file with the database name
+        and the suffix ".stc".
+     A tree cache file is redundant, and is just removed when any
+        database operation might leave it out of date -- e.g. saving
+        a game, sorting the database, etc.
+
+ **  Added PGN import feature (for a single game) to Scid.
+        Now you can paste PGN-format game text (or just some moves in
+        algebraic format without a PGN header) selected from another
+        window and view the game in Scid, without having to save the
+        text to a file and convert it to Scid format.
+     This feature also doubles as a convenient way to make a few changes
+        to the current game: just open the import window, click on
+        "Paste current game", type the changes, and click "Import".
+
+ **  Added ability to load a particular game number, with the
+        shortcut key Control-G (for "game" or "goto").  The games list
+        shortcut key has been changed to Control-L (for "list").
+
+ **  Changed Header searches: player, event and site names entered
+        for searches are now case-insensitive, and spaces are ignored.
+        Example: "anand,v" will now match "Anand, Viswanathan".
+
+ **  Comments at the start of a variation before any moves, example:
+        1.e4 ({This comment} 1.d4 d5) 1...e5
+        are now saved; in prior versions, they would not get saved.
+
+ **  The game information below the board in the main window is now
+        color-coded, making it is easier to read.
+
+ **  Pgnscid now lets you specify a database name different to the
+        PGN file name -- useful if you want the database to be created
+        in a different directory from the PGN file.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 1.1: (January 2000)
+
+  -  Added "Book windows", support for editing Book files in Scid.
+
+  -  Improved the Game List window a lot, it is now much nicer to use.
+        It now has a proportional spaced font, color-coded columns,
+        and each column can be resized.
+
+  -  Rearranged the Tools menu, using submenus, to group related actions
+        more logically.
+
+  -  Improved error messages when Scid cannot open or create a database.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 1.0: (December 1999)
+
+  -  Added the "Email manager", for sending correspondence chess emails.
+
+  -  Improved the Scid PBook (now just called "Book") format.
+        Classifying games by ECO code is now much faster -- probably
+        about twice as fast.
+
+  -  Added button bars to the Tree and Analysis windows. Added button
+        in analysis window to paste the current evaluation score to the
+        start of the current move's comment.
+
+  -  Improved memory management for comments, fixed a memory leak.
+
+  -  Fixed a very nasty bug: name files with a name that starts with an
+        8-bit ASCII value (greater than 127) could not be opened.
+  -  Fixed a bug that affected writing the name file after multiple
+        changes with the name editor.
+  -  Improved some error messages in scidt and pgnscid.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 0.5: (November 1999)
+
+  Major features at a glance:
+        sorting databases, saving search settings, opening read-only
+        databases, name editor.
+
+  -  Scidt now has a sorting option, to sort databases by many criteria.
+
+  -  Added "Name editor" window, for editing all occurrences of a
+        particular player, event, site or round name.
+
+  -  More online help window pages, including a Quick Guide.
+
+  -  Scid can now open a database where the index or game file is only
+        readable (not writable) in read-only mode, and indicates this
+        with "%%" in the status bar. Very useful for protecting a large
+        database you only use for searches.
+
+  -  Scid now asks the user before replacing a move that already exists in
+        the game, but this can be turned off in the Options menu if the
+        dialog box is annoying.
+
+  -  The right-mouse button in the main window now deletes the last move,
+        instead of just moving backwards.
+
+  -  Material/Pattern searches: you can now specify a length of successive
+        half-moves each game must match the search criteria for. Useful for
+        eliminating games where the search criteria are only met for a
+        move or two.
+
+  -  Header and Material/Pattern searches can be saved to a SearchOptions
+        file (suffix: ".sso") for later use, and used with the "Open"
+        menu entry in the "Search" menu.
+
+  -  Export of filter: can now be to a new Scid database (previously, only
+        exporting to a PGN file was possible). Exporting to an existing
+        Scid database is not implemented yet.
+
+  -  User can now vertically resize the Game list window to alter the number
+        of games shown, and the setting is saved when Options are saved.
+
+  -  Improved key bindings, especially in Help window and Game List window.
+
+  -  Changed "Control+Alt" shortcut keys to "Control+Shift".
+
+  -  Pgnscid now accepts "~" as a symbol for the annotation "Unclear".
+
+  -  Log file for warnings/errors generated by pgnscid now has the
+        suffix ".err" instead of ".log".
+
+  -  Bitmaps for buttons in main window of Scid, which look nicer.
+
+  -  Some bug fixes:
+        -  Fixed memory leak in copying of positions.
+        -  Fixed rarely-occurring bug in reading positions from FEN strings.
+        -  Removed "const char *" to "char *" assignments that are not
+           accepted by new compilers, apparently.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 0.4: (September 1999)
+
+  -  Too many to mention! Some of the more important changes:
+
+  -  Hypertext-style online help within Scid.
+
+  -  Status-bar tips for menus and buttons, describing their meaning.
+
+  -  More options for scidt, the database maintenance utility.
+
+  -  More search facilities, e.g. for games with/without comments,
+     variations, etc.
+
+  -  Most searches that involve decoding moves are a little faster.
+
+  -  Keyboard move entry.
+
+  -  More settable and saveable options.
+
+  -  Nicer NAG (annotation) editing frame in the comment editor window.
+
+  -  More shortcut keys.
+
+  -  Several bug fixes; Scid should be far more stable with large
+     databases now.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 0.3:
+
+  -  Added a font selector dialog box, so fonts can be changed without
+        editing the start.tcl file.
+
+  -  Added options for PGN display. Previously, display was always in color;
+       that can now be turned on or off. User can now choose to indent
+       comments, which is useful for heavily commented games.
+
+  -  Coloring the PGN display is much faster than it was, although it is
+       still a lot slower than plain display.
+
+  -  Added saving of options (to the file .scid in the user's home
+        directory). Saves board size, PGN display options and fonts.
+        The options file is automatically loaded at startup if it exists.
+
+  -  Added a Flip Board option, to have Black on the bottom and White on top.
+
+  -  New search available: on current board. Previously, the only way to do
+        this was to turn on tree mode.
+
+  -  In tree mode, each move now also has its ECO code displayed if it is
+        in the ECO book file.
+
+  -  Added a Setup Start Board dialog box. Previously, Scid supported games
+        with a non-standard starting position but there was no way to
+        setup the initial board from within Scid itself.
+
+  -  Clear game now prompts the user for confirmation if the game has been
+        altered.
+
+  -  There are now many more key shortcuts (e.g. Control + down-arrow to
+        load the next game). Also, the game navigation keys (Home, End, and
+        the arrow keys) now work the same in the PGN window as in the main
+        window.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Version 0.2:
+
+  -  First public release version.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

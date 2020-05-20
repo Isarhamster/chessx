@@ -46,10 +46,10 @@ public:
 
     //game retrieval & storage
     /** Loads a game from the given position, returns true if successful */
-    bool loadGame(GameId gameId, Game& game);
+    bool loadGame(GameId gameId, GameX& game);
     /** Loads only moves into a game from the given position */
-    void loadGameMoves(GameId gameId, Game& game);
-    virtual int findPosition(GameId index, const Board& position);
+    void loadGameMoves(GameId gameId, GameX& game);
+    virtual int findPosition(GameId index, const BoardX& position);
     /** Open a PGN Data File from a string */
     bool openString(const QString& content);
 
@@ -60,15 +60,15 @@ public:
 protected:
     //parsing methods
     /** Reads moves from the file and adds them to the game. Performs position searches if any are active */
-    bool parseMoves(Game* game);
+    bool parseMoves(GameX* game);
     /** Parses a line from the file */
-    void parseLine(Game* game);
+    void parseLine(GameX* game);
     /** Parses a move token from the file */
-    void parseDefaultToken(Game* game, QString token);
+    void parseDefaultToken(GameX* game, QString token);
     /** Parses a token from the file */
-    void parseToken(Game* game, const QStringRef &token);
+    void parseToken(GameX* game, const QStringRef &token);
     /** Parses a comment from the file */
-    void parseComment(Game* game);
+    void parseComment(GameX* game);
     /** Skips past any data which is not valid tag or move data */
     IndexBaseType skipJunk();
     /** Skips past any tag data */
