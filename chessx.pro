@@ -18,6 +18,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
    CONFIG += c++17
    # Add lc0 to package
    # CONFIG += lc0
+   DEFINES += USE_C11
 }
 
 speech {
@@ -28,10 +29,6 @@ speech {
 sound {
    DEFINES += USE_SOUND
    QT += multimedia
-}
-
-c++11 {
-   DEFINES += USE_C11
 }
 
 static { # Everything below takes effect with CONFIG += static

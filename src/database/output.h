@@ -19,7 +19,7 @@
 #include <QtCore>
 #include <QtGui/QImage>
 
-typedef QImage (*BoardRenderingFunc)(const Board &b, QSize pxSize);
+typedef QImage (*BoardRenderingFunc)(const BoardX &b, QSize pxSize);
 
 /** @ingroup Core
 The Output class converts game to various formats.
