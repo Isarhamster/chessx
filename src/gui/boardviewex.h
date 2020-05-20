@@ -7,7 +7,7 @@
 
 #include <QWidget>
 
-#include "game.h"
+#include "gamex.h"
 
 namespace Ui {
 class BoardViewEx;

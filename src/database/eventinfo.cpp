@@ -97,7 +97,7 @@ void EventInfo::update()
 {
     QHash<QString, float> players;
 
-    const Index* index = m_database->index();
+    const IndexX* index = m_database->index();
 
     // Determine matching tag values
     ValueIndex event = index->getValueIndex(m_name);

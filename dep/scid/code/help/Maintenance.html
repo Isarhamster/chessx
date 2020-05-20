@@ -1,0 +1,152 @@
+<html>
+<head>
+<title>
+Scid Help: 
+Database maintenance
+</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<STYLE TYPE="text/css">
+<!--
+  body { background: #ffffff; }
+  h1, h2, h3, h4, h5 { color: #990000; }
+  h1 { align: center; }
+-->
+</STYLE>
+</head>
+<body bgcolor="#ffffff">
+<h1>Database maintenance</h1>
+<p>
+Scid provides a number of tools for maintaining databases,
+available from the Scid <a href="Menus.html\#File">File</a> menu. The
+database <a href="Compact.html">compaction</a> and <a href="Sorting.html">sorting</a>
+functions are explained in separate help pages.
+</p>
+
+<h3>Maintenance window</h3>
+<p>
+Most Scid database maintenance can be done from the Maintenance
+window, which can be opened from the <b><font color="#007000">[File: Maintenance]</font></b>
+or <b><font color="#007000">[Windows]</font></b> menus or the shortcut key <b>Ctrl+M</b>.
+</p>
+<p>
+You can use this window to maintain <a href="Flags.html">game flags</a>,
+spellcheck names, <a href="Compact.html">compact</a> or <a href="Sorting.html">sort</a>
+a database. Note that any operations that are not available
+for the current database (for example, because it may be read-only
+or a PGN file) will be grayed out.
+</p>
+
+<h3><a name="Twins">Deleting twin games</a></h3>
+<p>
+The <b><font color="#007000">[File: Maintenance]</font></b> menu has a command
+<b><font color="#007000">[Delete twin games...]</font></b> for detecting extra copies
+(twins) of games in the database.
+This command finds all pairs of games that are twins and, for each pair,
+flags the shorter game deleted leaving the longer game undeleted.
+Two games are considered to be twins if their players
+(and any other tags that you can optionally specify) match exactly.
+</p>
+<p>
+If you specify the "same moves" option, each pair of games must have the
+same actual moves up to the length of the shorter game (or up to move 60,
+whichever comes first) to be twins.
+</p>
+<p>
+When you have deleted twins, it is a good idea to check that each
+game deleted really is a copy of another game.
+You can do this easily if you selected the
+"<b>Set filter to all deleted games</b>" option in the
+delete twins dialog box. The filter will now contain all deleted games.
+You can browse through them (using the <b>p</b> and <b>n</b> keys) with
+the <b><i><font color="#990000">twins checker</font></i></b> window (available from the maintenance
+menu, or the shortcut key <b>Ctrl+Shift+T</b>) to verify that each game is
+deleted because it actually is a twin of another game.
+</p>
+
+<h3><a name="Editing">Editing player, event, site and round names</a></h3>
+<p>
+You may find mis-spelt names in your databases and want to correct them.
+You can do this in Scid with the <b><i><font color="#990000">Name editor</font></i></b> window
+(shortcut key: <b>Control+Shift+N</b>),
+available from the <b><font color="#007000">[File: Maintenance]</font></b> submenu.
+</p>
+<p>
+Each unique name is only stored once in the name file, so changing a name
+actually changes all occurrences of it.
+</p>
+
+<h3><a name="Spellcheck">Spellchecking names</a></h3>
+<p>
+Scid comes with a <b><i><font color="#990000">spellcheck</font></i></b> file named <b>spelling.ssp</b>,
+for correction of player, event, site and round names.
+Scid will try to load the spellcheck file whenever it starts up; if it
+does not load, you can load it from the <b><font color="#007000">[Options]</font></b> menu.
+</p>
+<p>
+Once the spellcheck file is loaded, you can use it on a
+a Scid database using the spellcheck commands in the
+<b><font color="#007000">[File: Maintenance]</font></b> menu, or from the maintenance window.
+</p>
+<p>
+When you spellcheck a database, Scid produces a list of corrections that you
+can edit before actually making any corrections, so you can remove any
+corrections you do not want to make.
+</p>
+<p>
+Spellchecking is especially useful for standardizing a database so all
+instances of a particular player are spelt the same way.
+For example, with the standard spellcheck file, the names "Kramnik,V.",
+"Vladimir Kramnik", and "V. Kramnik" would all be corrected
+to "Kramnik, Vladimir".
+</p>
+<p>
+The spellcheck file has one
+additional use: when it is loaded, its player data is
+used to enhance the <a href="PInfo.html">player information</a> window and the
+<a href="Crosstable.html">crosstable</a> window:
+you will see FIDE master title
+(<b>gm</b> = International Grandmaster, <b>im</b> = International Master, etc)
+and country information for any player that is
+listed in the spellcheck file. Over 6500 strong players of the past and
+present are listed in the <b>spelling.ssp</b> file that comes with Scid.
+</p>
+
+<h3><a name="Ratings">Adding Elo ratings to games</a></h3>
+<p>
+The "Add Elo ratings..." button in the Maintenance window causes Scid
+to search the current database for games where a player does not have
+a rating, but the spellcheck file has an Elo rating listed for that
+player at the date of the game. Scid will add all such ratings
+automatically. This is very useful for a database of master-level games
+which has few ratings.
+</p>
+<p>
+The spellcheck file "spelling.ssp" that comes with Scid does not contain
+the Elo rating information needed for this function, but a larger version
+of it called "ratings.ssp" is available from the <a href="Author.html">Scid website</a>.
+</p>
+
+<h3><a name="Cleaner">The Cleaner</a></h3>
+<p>
+The Scid <b><i><font color="#990000">Cleaner</font></i></b> (available from the Maintenance window) is
+a tool for doing a number of maintenance tasks on a database in one
+action. You can choose which tasks you want to do, and Scid will
+perform them on the current database without requiring user interaction.
+This is especially useful for maintenance of large databases.
+</p>
+
+<h3>Setting the database autoload game</h3>
+<p>
+The <b><i><font color="#990000">autoload</font></i></b> game of a database is the game automatically
+loaded whenever that database is opened. To change the autoload game of
+a database, use the "Autoload game number..." button. If you always want
+the last game of a database to be opened (regardless of the actual number
+of games in the database), just set it to a very high number such as
+9999999.
+</p>
+
+<p><center><font size=-1>(Updated: Scid 3.1, December 2001)</font></center></p>
+
+</body>
+</html>
+

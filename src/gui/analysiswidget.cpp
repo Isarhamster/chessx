@@ -22,6 +22,8 @@
 #include <QMutexLocker>
 #include <algorithm>
 
+using namespace chessx;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -69,7 +71,7 @@ void AnalysisWidget::startEngine()
             parentWidget()->show();
         }
         ui.variationText->clear();
-        m_engine = Engine::newEngine(index);
+        m_engine = EngineX::newEngine(index);
         ui.vpcount->setEnabled(m_engine->providesMvp());
         ui.label->setEnabled(m_engine->providesMvp());
         if(!m_engine->providesMvp())
@@ -323,7 +325,7 @@ void AnalysisWidget::showAnalysis(Analysis analysis)
     }
 }
 
-void AnalysisWidget::setPosition(const Board& board, QString line)
+void AnalysisWidget::setPosition(const BoardX& board, QString line)
 {
     if (ui.btPin->isChecked())
     {
@@ -389,7 +391,7 @@ void AnalysisWidget::sendBookMoveTimeout()
     {
         Analysis analysis;
         analysis.setElapsedTimeMS(0);
-        MoveList moves;
+        Move::List moves;
         int index = 0;
         if (m_moveTime.bookMove == 1)
         {
@@ -691,7 +693,7 @@ void AnalysisWidget::unPin()
     }
 }
 
-void AnalysisWidget::slotUciNewGame(const Board& b)
+void AnalysisWidget::slotUciNewGame(const BoardX& b)
 {
     m_bUciNewGame = true;
     m_startPos = b;

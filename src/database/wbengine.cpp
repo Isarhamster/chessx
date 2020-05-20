@@ -19,7 +19,7 @@ WBEngine::WBEngine(const QString& name,
                    const QString& command,
                    bool bTestMode,
                    const QString& directory,
-                   bool log, bool sendHistory) : Engine(name, command, bTestMode, directory, log, sendHistory)
+                   bool log, bool sendHistory) : EngineX(name, command, bTestMode, directory, log, sendHistory)
 {
     m_analyze = false;
     m_setboard = false;		// We do not support version 1 xboard protocol, so this _must_ be set true by feature discovery
@@ -57,14 +57,14 @@ void WBEngine::go()
     }
 }
 
-void WBEngine::setStartPos(const Board&)
+void WBEngine::setStartPos(const BoardX&)
 {
 
 }
 
-bool WBEngine::startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool /*bNewGame*/, QString /* line */)
+bool WBEngine::startAnalysis(const BoardX& board, int nv, const EngineParameter &mt, bool /*bNewGame*/, QString /* line */)
 {
-    Engine::setMoveTime(mt);
+    EngineX::setMoveTime(mt);
     m_mpv = nv;
 
     if(isActive() && m_board == board)
@@ -247,7 +247,7 @@ void WBEngine::parseBestMove(const QString& message)
     {
         Analysis analysis;
         Move move = m_board.parseMove(bestMove);
-        MoveList moves;
+        Move::List moves;
         if (move.isLegal())
         {
             moves.append(move);
@@ -338,9 +338,9 @@ void WBEngine::parseAnalysis(const QString& message)
     }
 
     //Variation
-    Board board = m_board;
+    BoardX board = m_board;
     QString sanMove;
-    MoveList moves;
+    Move::List moves;
     int section = 4;
     while((sanMove = trimmed.section(' ', section, section)) != "")
     {

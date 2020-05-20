@@ -1,7 +1,7 @@
 #ifndef GUESS_H
 #define GUESS_H
 
-#include "movelist.h"
+#include "guess_movelist.h"
 
 namespace Guess
 {

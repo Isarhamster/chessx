@@ -19,15 +19,17 @@
 #include <QMainWindow>
 #include <QUndoGroup>
 
+using namespace chessx;
+
 class Analysis;
 class AnalysisWidget;
-class Board;
 class BoardView;
 class BoardViewEx;
 class ChessBrowser;
 class Database;
 class DatabaseInfo;
 class DatabaseList;
+class DatabaseRegistry;
 class DockWidgetEx;
 class DownloadManager;
 class ECOListWidget;
@@ -37,7 +39,6 @@ class EventListWidget;
 class ExclusiveActionGroup;
 class FicsClient;
 class FicsConsole;
-class Game;
 class GameList;
 class GameWindow;
 class HistoryLabel;
@@ -101,8 +102,8 @@ protected:
     /** @return database structure */
     DatabaseInfo* databaseInfo(QString name);
     /** @return active game */
-    Game& game();
-    const Game& game() const;
+    GameX& game();
+    const GameX& game() const;
     /** @return index of active game */
     GameId gameIndex() const;
     /** Edit comment */
@@ -213,7 +214,7 @@ public slots:
     /** Modify game on user's request. */
     void slotGameModify(const EditAction& action);
     /** Get a pointer or Null to the active game. */
-    void slotGetActiveGame(const Game** game);
+    void slotGetActiveGame(const GameX** game);
     /** Merge the game with index @p gameIndex into the active game. */
     void slotMergeActiveGame(QList<GameId> gameIndexList);
     void slotMergeActiveGame(GameId gameIndex, QString source);
@@ -369,9 +370,9 @@ public slots:
     /** Slot that updates internal info upon loading a complete db */
     void slotDataBaseLoaded(DatabaseInfo* db);
     /** Restore game state from a undo or redo operation */
-    void slotDbRestoreState(const Game&);
+    void slotDbRestoreState(const GameX&);
     /** Fill up the current game (drag request from game list) */
-    void slotGetGameData(Game& g);
+    void slotGetGameData(GameX& g);
     /** Copy game from source to destination database by drag'n'drop */
     void copyGames(QString destination, QList<GameId> indexes, QString source);
     /** Copy all games from other database by drag'n'drop */
@@ -490,7 +491,7 @@ protected:
     void copyGame(DatabaseInfo* pTargetDB, DatabaseInfo* pSourceDB, GameId index);
     Database* getDatabaseByPath(QString path);
     DatabaseInfo* getDatabaseInfoByPath(QString path);
-    void updateOpeningTree(const Board& b, bool atEnd);
+    void updateOpeningTree(const BoardX& b, bool atEnd);
     void copyFromDatabase(int preselect = 1, QList<GameId> gameIndexList = QList<GameId>());
 
 protected:
@@ -529,7 +530,7 @@ signals:
     /** Re-read configuration. */
     void reconfigure();
     /** Main game has been updated. */
-    void boardChange(const Board& board, const QString& line);
+    void boardChange(const BoardX& board, const QString& line);
     /** Current database changed. */
     void databaseChanged(DatabaseInfo* databaseInfo);
     /** Emitted upon finishing a file download */
@@ -554,7 +555,7 @@ signals:
     void signalCurrentDBcanBeClosed(bool);
     void signalCurrentDBhasGames(bool);
 
-    void signalGameLoaded(const Board& startPos);
+    void signalGameLoaded(const BoardX& startPos);
 
     void signalVersionFound(int, int, int);
 
@@ -645,7 +646,7 @@ private:
     void setEngineMoveTime(AnalysisWidget* w);
      /** Determine Color the user is using depending upon different match scenarios */
     Color UserColor();
-    void truncateVariation(Game::Position position = Game::AfterMove);
+    void truncateVariation(GameX::Position position = GameX::AfterMove);
     bool handleGameEnd(const Analysis& analysis, QAction* action);
     bool gameAddAnalysis(const Analysis& analysis, QString annotation);
     QString scoreText(const Analysis& analysis);
@@ -678,10 +679,11 @@ private:
     QMenu* m_menuView;
 
     /* Local variables */
+    DatabaseRegistry *m_registry;
     HistoryList m_recentFiles;
     QStringList m_favoriteFiles;
     Output* m_output;
-    QList<DatabaseInfo*> m_databases;
+    
     QPointer<DatabaseInfo> m_currentDatabase;
     QString m_eco;
     QTime m_operationTime;
@@ -697,7 +699,7 @@ private:
     bool m_bMainAnalyisIsNextEngine;
     Move m_MoveForMatch;
     EngineParameter m_EngineParameterForMatch;
-    Board m_AutoInsertLastBoard;
+    BoardX m_AutoInsertLastBoard;
     int lastScore;
     MoveId lastNode;
     QList<MoveId> m_todoAutoAnalysis;

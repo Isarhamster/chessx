@@ -10,7 +10,7 @@
 #ifndef EDITACTION_H
 #define EDITACTION_H
 
-#include "game.h"
+#include "gamex.h"
 #include <QtCore>
 
 /** The EditAction is a ChessBrowser action. */

@@ -7,6 +7,8 @@
 #include <QFile>
 #include <QThread>
 
+using namespace chessx;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -72,7 +74,7 @@ void EcoPositions::terminateEco()
     delete p;
 }
 
-bool EcoPositions::isEcoPosition(const Board& b, QString& eco)
+bool EcoPositions::isEcoPosition(const BoardX& b, QString& eco)
 {
     while (!m_ecoReady) QThread::sleep(1);
     if (!m_ecoPositions) return false;

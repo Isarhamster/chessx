@@ -12,6 +12,8 @@
 #include "ctg.h"
 #include "square.h"
 
+using namespace chessx;
+
 #ifndef ntohl
 #define ntohl(x) (x) // Hack for Linux which does not know ntohl
 #endif
@@ -87,12 +89,12 @@ quint64 CtgDatabase::positionCount() const
     return m_count;
 }
 
-void CtgDatabase::loadGameMoves(GameId, Game &)
+void CtgDatabase::loadGameMoves(GameId, GameX &)
 {
 
 }
 
-int CtgDatabase::findPosition(GameId, const Board &)
+int CtgDatabase::findPosition(GameId, const BoardX &)
 {
     return NO_MOVE;
 }
@@ -306,9 +308,9 @@ void CtgDatabase::dump_signature(ctg_signature_t* sig) const
  * Given source and destination squares for a move, produce the corresponding
  * native format move.
  */
-Move CtgDatabase::squares_to_move(const Board& position, Square from, Square to) const
+Move CtgDatabase::squares_to_move(const BoardX& position, Square from, Square to) const
 {
-    Board b(position);
+    BoardX b(position);
     Move m = b.prepareMove(from, to); // TODO: Check enumeration values
 
     // Check the promotion piece and convert
@@ -322,7 +324,7 @@ Move CtgDatabase::squares_to_move(const Board& position, Square from, Square to)
 
 // ---------------------------------------------------------
 
-Move CtgDatabase::byte_to_move(const Board& pos, uint8_t byte) const
+Move CtgDatabase::byte_to_move(const BoardX& pos, uint8_t byte) const
 {
     const char* piece_code =
         "PNxQPQPxQBKxPBRNxxBKPBxxPxQBxBxxxRBQPxBPQQNxxPBQNQBxNxNQQQBQBxxx"
@@ -387,7 +389,7 @@ Move CtgDatabase::byte_to_move(const Board& pos, uint8_t byte) const
     // Find the piece. Note: the board may be mirrored/flipped.
     bool flip_board = pos.blackToMove();
     Color white = pos.toMove();
-    bool mirror_board = (File(pos.kingSquare(white)) < FILE_E) &&
+    bool mirror_board = (File(pos.kingSquare(white)) < chessx::FILE_E) &&
         (pos.castlingRights() == 0); /* pieces.white.0 is the white king - determine if in left half of board */
     unsigned char file_from = -1, file_to = -1, rank_from = -1, rank_to = -1;
 
@@ -460,7 +462,7 @@ Move CtgDatabase::byte_to_move(const Board& pos, uint8_t byte) const
 
 // ---------------------------------------------------------
 
-void CtgDatabase::position_to_ctg_signature(const Board& pos, ctg_signature_t* sig) const
+void CtgDatabase::position_to_ctg_signature(const BoardX& pos, ctg_signature_t* sig) const
 {
     // Note: initial byte is reserved for length and flags info
     memset(sig, 0, sizeof(ctg_signature_t));
@@ -471,7 +473,7 @@ void CtgDatabase::position_to_ctg_signature(const Board& pos, ctg_signature_t* s
     // on the queenside with no castling rights for either side.
     bool flip_board = pos.blackToMove();
     Color white = pos.toMove();
-    bool mirror_board = (File(pos.kingSquare(white)) < FILE_E) &&
+    bool mirror_board = (File(pos.kingSquare(white)) < chessx::FILE_E) &&
         (pos.castlingRights() == 0);
 
 
@@ -510,7 +512,7 @@ void CtgDatabase::position_to_ctg_signature(const Board& pos, ctg_signature_t* s
     if (pos.enPassantSquare() != InvalidSquare)
     {
         bool epfound = false;
-        MoveList ml = pos.generateMoves();
+        Move::List ml = pos.generateMoves();
         foreach (Move mx, ml)
         {
             if (mx.isEnPassant())
@@ -569,13 +571,13 @@ void CtgDatabase::position_to_ctg_signature(const Board& pos, ctg_signature_t* s
 
 // ---------------------------------------------------------
 
-uint64_t CtgDatabase::move_weight(const Board& pos,
+uint64_t CtgDatabase::move_weight(const BoardX& pos,
         Move move,
         MoveData& md) const
 {
     // Here, the game is needed
     bool reversed = pos.blackToMove();
-    Board b(pos);
+    BoardX b(pos);
     b.doMove(move);
     ctg_entry_t entry;
     bool success = ctg_get_entry(b, &entry);
@@ -600,7 +602,7 @@ uint64_t CtgDatabase::move_weight(const Board& pos,
 
 // ---------------------------------------------------------
 
-bool CtgDatabase::ctg_get_entry(const Board& pos, ctg_entry_t* entry) const
+bool CtgDatabase::ctg_get_entry(const BoardX& pos, ctg_entry_t* entry) const
 {
     ctg_signature_t sig;
     position_to_ctg_signature(pos, &sig);
@@ -620,7 +622,7 @@ bool CtgDatabase::findMove(quint64 /*key*/, MoveData& /*m*/)
     return false;
 }
 
-unsigned int CtgDatabase::getMoveMapForBoard(const Board &pos, QMap<Move, MoveData>& moveList)
+unsigned int CtgDatabase::getMoveMapForBoard(const BoardX &pos, QMap<Move, MoveData>& moveList)
 {
     ctg_entry_t entry;
     if (!ctg_get_entry(pos, &entry)) return 0;

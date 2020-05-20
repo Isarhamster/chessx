@@ -117,12 +117,12 @@ void Analysis::setNodes(quint64 nodes)
     m_nodes = nodes;
 }
 
-MoveList Analysis::variation() const
+Move::List Analysis::variation() const
 {
     return m_variation;
 }
 
-void Analysis::setVariation(const MoveList& variation)
+void Analysis::setVariation(const Move::List& variation)
 {
     m_variation = variation;
 }
@@ -207,9 +207,9 @@ void Analysis::setMovesToMate(int mate)
     m_mateIn = mate;
 }
 
-QString Analysis::toString(const Board& board) const
+QString Analysis::toString(const BoardX& board) const
 {
-    Board testBoard = board;
+    BoardX testBoard = board;
     QString out;
 
     bool whiteToMove = testBoard.toMove() == White;

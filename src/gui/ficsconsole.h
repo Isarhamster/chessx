@@ -117,7 +117,7 @@ private:
     bool gameMode;
     bool puzzleMode;
     bool m_bWhiteToMove;
-    Char64Relation m_lastRelation;
+    chessx::Char64Relation m_lastRelation;
     bool m_bPlayerIsBlack;
     int m_prevTab;
 };

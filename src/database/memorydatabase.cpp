@@ -15,6 +15,8 @@
 #include "settings.h"
 #include "tags.h"
 
+using namespace chessx;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -58,7 +60,7 @@ void MemoryDatabase::setModified(bool b)
     emit dirtyChanged(m_isModified);
 }
 
-bool MemoryDatabase::appendGame(const Game& game)
+bool MemoryDatabase::appendGame(const GameX& game)
 {
     QWriteLocker m(&m_mutex);
     // Add to index
@@ -66,7 +68,7 @@ bool MemoryDatabase::appendGame(const Game& game)
     setTagsToIndex(game, m_count);
 
     // Upate game array
-    Game* newGame = new Game;
+    GameX* newGame = new GameX;
     *newGame = game;
     newGame->clearTags();
     newGame->unmountBoard();
@@ -90,7 +92,7 @@ bool MemoryDatabase::undelete(GameId gameId)
     return true;
 }
 
-bool MemoryDatabase::replace(GameId gameId, Game& game)
+bool MemoryDatabase::replace(GameId gameId, GameX& game)
 {
     QWriteLocker m(&m_mutex);
     if(gameId >= m_count)
@@ -108,7 +110,7 @@ bool MemoryDatabase::replace(GameId gameId, Game& game)
     return true;
 }
 
-void MemoryDatabase::loadGameMoves(GameId gameId, Game& game)
+void MemoryDatabase::loadGameMoves(GameId gameId, GameX& game)
 {
     QReadLocker m(&m_mutex);
     if(gameId >= m_count)
@@ -118,15 +120,15 @@ void MemoryDatabase::loadGameMoves(GameId gameId, Game& game)
     game = *m_games[gameId];
 }
 
-int MemoryDatabase::findPosition(GameId index, const Board &position)
+int MemoryDatabase::findPosition(GameId index, const BoardX &position)
 {
-    Game g;
+    GameX g;
     loadGameMoves(index, g);
     return g.findPosition(position);
 }
 
 
-bool MemoryDatabase::loadGame(GameId gameId, Game& game)
+bool MemoryDatabase::loadGame(GameId gameId, GameX& game)
 {
     QReadLocker m(&m_mutex);
     if(gameId >= m_count || m_index.deleted(gameId))
@@ -143,7 +145,7 @@ bool MemoryDatabase::loadGame(GameId gameId, Game& game)
 void MemoryDatabase::parseGame()
 {
     QWriteLocker m(&m_mutex);
-    Game* game = new Game;
+    GameX* game = new GameX;
 
     QString fen = m_index.tagValue(TagNameFEN, m_count - 1);
     QString variant = m_index.tagValue(TagNameVariant, m_count - 1).toLower();

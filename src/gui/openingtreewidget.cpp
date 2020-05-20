@@ -76,12 +76,12 @@ QString OpeningTreeWidget::move(QModelIndex index) const
     return m_openingTree->move(index);
 }
 
-Board OpeningTreeWidget::board() const
+BoardX OpeningTreeWidget::board() const
 {
     return m_openingTree->board();
 }
 
-void OpeningTreeWidget::updateFilter(Filter& f, const Board& b, bool bEnd)
+void OpeningTreeWidget::updateFilter(FilterX& f, const BoardX& b, bool bEnd)
 {
     if (ui->btPin->isChecked()) return;
 
@@ -97,7 +97,7 @@ bool OpeningTreeWidget::filterGames() const
     return ui->filterGames->isEnabled() && ui->filterGames->isChecked();
 }
 
-void OpeningTreeWidget::doSetBoard(Filter& f, const Board& b, bool bEnd)
+void OpeningTreeWidget::doSetBoard(FilterX& f, const BoardX& b, bool bEnd)
 {
     m_openingBoardView->setBoard(b);
     m_openingTree->updateFilter(f, b, filterGames(), ui->sourceSelector->currentIndex()==1, bEnd);

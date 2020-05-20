@@ -10,6 +10,8 @@
 #include "openingtreethread.h"
 #include "polyglotdatabase.h"
 
+using namespace chessx;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -50,7 +52,7 @@ void OpeningTreeThread::run()
         {
             if (m_sourceIsDatabase || m_filter->contains(i))
             {
-                Game g;
+                GameX g;
                 m_filter->database()->loadGameMoves(i, g);
                 int id = g.findPosition(m_board);
                 if((id != NO_MOVE) && (m_bEnd ? g.atGameEnd(id) : true))
@@ -114,7 +116,7 @@ void OpeningTreeThread::cancel()
     m_break = true;
 }
 
-bool OpeningTreeThread::updateFilter(Filter& f, const Board& b, unsigned int& g, bool updateFilter, bool sourceIsDatabase, bool bEnd)
+bool OpeningTreeThread::updateFilter(FilterX& f, const BoardX& b, unsigned int& g, bool updateFilter, bool sourceIsDatabase, bool bEnd)
 {
     m_break = false;
     m_filter = &f;

@@ -4,7 +4,7 @@
 
 #include "engineoptiondialog.h"
 #include "ui_engineoptiondialog.h"
-#include "engine.h"
+#include "enginex.h"
 #include "settings.h"
 
 #include <QtCore>
@@ -43,7 +43,7 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent,
         ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(false);
     }
     m_index = index;
-    m_engine = Engine::newEngine(engineList, index, true);
+    m_engine = EngineX::newEngine(engineList, index, true);
     m_engine->activate();
 
     connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));

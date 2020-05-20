@@ -1,0 +1,35 @@
+This directory contains metadata for using ChessBase Player Base
+Photos from the Mega DB 2006 + some additional metadata for new
+players. Naming follows FIDE players_list.txt as of 02/2009.
+
+Content:
+~~~~~~~~
+
+* mega-historic.xml.gz  : mainly historic players
+* mega-2006.xml.gz      : meta data for player photos delivered with
+                          Mega 2006 as a simple XML structure
+                          associating the player name with the proper
+                          image file.
+* mega-2007-addon.xml.gz: meta data for files that might be available
+                          on newer Mega DB's. Could be merged with 
+                          mega2006.xml.gz, state: additions in 2007.
+* mega-2008-addon.xml.gz: additions in 2008.
+* Mega2Scid.pl          : very simple perl-hack using ImageMagick and
+                          mpack to convert the original JPG images to
+                          GIF files while scaling them down
+                          appropriately. After conversion they are
+                          recoded to base64 for usage with scid and a
+                          proper spf-files are generated for all files
+                          listed at the beginning of the file. For
+                          further config see the script itself.
+
+                          Note: to speed up conversion /dev/shm is
+                          used as temporary dir, which is the RAM disk
+                          on Linux systems.
+
+                          This script was tested on Linux only, but
+                          should also give a general idea how to
+                          proceed on another OS.
+
+Note: The images themselves might be copyrighted by ChessBase or any
+other authority, therefore they are NOT part of this distribution.

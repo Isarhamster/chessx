@@ -13,7 +13,7 @@ class StreamDatabase : public PgnDatabase
 public:
     StreamDatabase();
 
-    bool loadNextGame(Game &game);
+    bool loadNextGame(GameX &game);
 
 protected:
     virtual bool hasIndexFile() const { return false; }

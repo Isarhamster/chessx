@@ -1,0 +1,29 @@
+#!/bin/sh
+
+input=$1
+target=$2
+
+# input=/opt/chess/stow/Share/share/xboard/src/Themes/Pieces/Merida/
+# target=/tmp/scid
+
+pieces="B K N P Q R b k n p q r"
+
+sizes="25 30 35 40 45 50 55 60 65 70 75 80"
+
+for size in $sizes
+do
+	for pic in $pieces
+	do
+		convert $input/$pic.png -geometry "$size"x"$size>" $target/$pic-$size.png
+	done
+	montage -geometry "$size"x"$size+0+0" -background transparent -tile 6x1 \
+		$target/P-$size.png $target/N-$size.png $target/B-$size.png \
+		$target/R-$size.png $target/Q-$size.png $target/K-$size.png $target/black-$size.gif
+
+	montage -geometry "$size"x"$size+0+0" -background transparent -tile 6x1 \
+		$target/p-$size.png $target/n-$size.png $target/b-$size.png \
+		$target/r-$size.png $target/q-$size.png $target/k-$size.png $target/white-$size.gif
+done
+
+
+

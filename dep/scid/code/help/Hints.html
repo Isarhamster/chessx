@@ -1,0 +1,138 @@
+<html>
+<head>
+<title>
+Scid Help: 
+Scid Hints
+</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<STYLE TYPE="text/css">
+<!--
+  body { background: #ffffff; }
+  h1, h2, h3, h4, h5 { color: #990000; }
+  h1 { align: center; }
+-->
+</STYLE>
+</head>
+<body bgcolor="#ffffff">
+<h1>Scid Hints</h1>
+<p>
+This page contains useful hints in question and answer format to help you
+use Scid better. If you are new to Scid, please read the
+<a href="Guide.html">quick guide</a> first.
+Most of the information on this page is available in more detail on the
+other help pages listed in the <a href="Index.html">index</a>.
+If you think of a useful hint to add to this page, please send it
+to the <a href="Author.html">author of Scid</a>.
+</p>
+
+<h4>Can I get Scid to load a database when it starts?</h4>
+<p>
+Yes, you can add databases, PGN files or <a href="EPD.html">EPD files</a>
+to the command line. For example:
+<ul>
+<li> <b>scid  mybase  games.pgn.gz</b> </li>
+</ul>
+will load the Scid database <b>mybase</b> and also load the
+Gzip-compressed PGN file <b>games.pgn.gz</b>.
+</p>
+
+<h4>Is there an easier way to change the board size than using the
+options menu?</h4>
+<p>
+Yes, you can use the shortcut keys <b>Control+Shift+LeftArrow</b> and
+<b>Control+Shift+RightArrow</b> to decrease or increase the board size.
+</p>
+
+<h4>I am training by playing through a game, so I do not want Scid to
+print the next move in the game information area below the chessboard.
+Can I hide it?</h4>
+<p>
+You can hide the next move by pressing the <b>right</b> mouse button in the
+game information area, and selecting <b>Hide next move</b> from the
+menu that appears.
+</p>
+
+<h4>How can I see the ECO opening code for the current position?</h4>
+<p>
+The ECO code is displayed on the bottom line of the game
+information box, below the chessboard in the <a href="MainWindow.html">main window</a>,
+if you have the ECO classification file (<b>scid.eco</b>) loaded. <br>
+The <a href="ECO.html">ECO codes</a> help page explains how to load the ECO classification
+file and save options so it will be loaded every time you start Scid.
+</p>
+
+<h4>I am entering a game, and I am up to move 30, but just saw that move
+10 was wrong. How can I correct it and keep all the moves after it?</h4>
+<p>
+You can use the <a href="Import.html">Import</a> window; see the
+<a href="Moves.html\#Mistakes">entering moves</a> help page for more information.
+</p>
+
+<h4>How do I copy games from one database to another?</h4>
+<p>
+Use the <a href="Switcher.html">database switcher window</a>: drag from the source
+database to the target database to copy all games in the source database
+<a href="Searches.html\#Filter">filter</a>.
+</p>
+
+<h4>Every time I enter a move where one already exists, I get a
+"Replace move?" dialog box. How do I avoid that?</h4>
+<p>
+Turn it off with the <b>Ask before replacing moves</b> option in the
+<b><font color="#007000">[Options: Moves]</font></b> menu.
+Or, get into the habit of taking back moves using the right-mouse button,
+which actually removes the move from the game if you are at the last move of
+the game.
+</p>
+
+<h4>How do I change column widths in the Game List window?</h4>
+<p>
+Click the left or right mouse button on each column title.
+</p>
+
+<h4>How can I use the tree window on a selection of games, not my whole
+database?</h4>
+<p>
+Use the <a href="Clipbase.html">clipbase</a>. Set your database filter to contain the
+games you want to use the tree on, then copy them to the clipbase using the
+<a href="Switcher.html">database switcher</a>. Then, just open the tree window in the
+clipbase.
+</p>
+
+<h4>The Tree is slow for large databases. How do I speed it up?</h4>
+<p>
+Save the Tree cache often, to save tree results for future use.
+See the caching section of the <a href="Tree.html">Tree</a> help page for details.
+</p>
+
+<h4>How can I edit the PGN representation of the game directly?</h4>
+<p>
+You cannot use the <a href="PGN.html">PGN</a> window to edit the current game, but you can
+still edit its PGN representation using the <a href="Import.html">Import game</a> window.
+Just open it (shortcut key: <b>Control+Shift+I</b>) and then press the
+<b>Paste current game</b> button, then edit the game, then press <b>Import</b>.
+</p>
+
+<h4>My database has several spellings for some player names. How do I
+correct them all?</h4>
+<p>
+You can edit individual names or spellcheck all the names in a database
+with the commands in the <b><font color="#007000">[File: Maintenance]</font></b> menu.
+See the <a href="Maintenance.html\#Editing">maintenance</a> page.
+</p>
+
+<h4>I have two databases open: one with my own games, and a large database of
+grandmaster games. How do I compare one of my games to those in the large
+database?</h4>
+<p>
+In the large database, open the <a href="Tree.html">tree window</a> and press the
+<b><i><font color="#990000">Lock</font></i></b> button to lock the tree to that database. Then switch
+to the other database, and the tree will continue to show data for the
+large database.
+</p>
+
+<p><center><font size=-1>(Updated: Scid 2.6, August 2001)</font></center></p>
+
+</body>
+</html>
+

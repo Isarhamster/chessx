@@ -58,7 +58,7 @@ public slots:
 
 signals:
     void actionRequested(const EditAction& action);
-    void queryActiveGame(const Game** game);
+    void queryActiveGame(const GameX** game);
     void signalMergeGame(GameId gameIndex, QString source);
 
 protected:

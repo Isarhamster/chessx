@@ -6,7 +6,7 @@
 #define OPENINGTREETHREAD_H
 
 #include "filter.h"
-#include "game.h"
+#include "gamex.h"
 #include "movedata.h"
 
 #include <QPointer>
@@ -18,13 +18,13 @@ public:
     OpeningTreeThread();
     void run();
     void cancel();
-    bool updateFilter(Filter& f, const Board& b, unsigned int&, bool updateFilter, bool sourceIsDatabase, bool bEnd);
+    bool updateFilter(FilterX& f, const BoardX& b, unsigned int&, bool updateFilter, bool sourceIsDatabase, bool bEnd);
 
 signals:
     void requestGameFilterUpdate(int index, int value);
-    void MoveUpdate(Board*, QList<MoveData>);
-    void UpdateFinished(Board*);
-    void UpdateTerminated(Board*);
+    void MoveUpdate(BoardX*, QList<MoveData>);
+    void UpdateFinished(BoardX*);
+    void UpdateTerminated(BoardX*);
     void progress(int);
 
 protected:
@@ -33,8 +33,8 @@ private:
     unsigned int* m_games;
 
     bool    m_break;
-    Board   m_board;
-    QPointer<Filter> m_filter;
+    BoardX   m_board;
+    QPointer<FilterX> m_filter;
     bool m_updateFilter;
     bool m_sourceIsDatabase;
     bool m_bEnd;

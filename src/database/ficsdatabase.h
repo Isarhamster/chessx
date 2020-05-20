@@ -6,7 +6,7 @@
 #define FICSDATABASE_H
 
 #include "memorydatabase.h"
-#include "game.h"
+#include "gamex.h"
 
 class FicsDatabase : public MemoryDatabase
 {

@@ -12,9 +12,9 @@
 
 #include <QtCore>
 #include <QTime>
-#include "movelist.h"
+#include "move.h"
 
-class Board;
+class BoardX;
 
 /** The analysis class contains engine analysis. */
 class Analysis
@@ -50,9 +50,9 @@ public:
     /** Set nodes spent on analysis. */
     void setNodes(quint64 nodes);
     /** Main variation. */
-    MoveList variation() const;
+    Move::List variation() const;
     /** Set main variation. */
-    void setVariation(const MoveList& variation);
+    void setVariation(const Move::List& variation);
     /** Is mate. */
     bool isMate() const;
     /** @return moves to mate */
@@ -61,7 +61,7 @@ public:
     void setMovesToMate(int mate);
     /** Moves to mate. */
     /** Convert analysis to formatted text. */
-    QString toString(const Board& board) const;
+    QString toString(const BoardX& board) const;
     /** Assignment operator */
     Analysis& operator=(const Analysis& rhs);
     void setBestMove(bool bestMove);
@@ -94,7 +94,7 @@ private:
     bool m_endOfGame;
     bool m_bookMove;
     quint64 m_nodes;
-    MoveList m_variation;
+    Move::List m_variation;
     int m_elapsedTimeMS;
     Move m_tb;
     int m_scoreTb;

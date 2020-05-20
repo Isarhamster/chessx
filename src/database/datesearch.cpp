@@ -3,8 +3,10 @@
 ****************************************************************************/
 
 #include "datesearch.h"
-#include "game.h"
+#include "gamex.h"
 #include "database.h"
+
+using namespace chessx;
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -45,7 +47,7 @@ void DateSearch::setDateRange(const PartialDate& minDate, const PartialDate& max
 
 int DateSearch::matches(GameId index) const
 {
-    Game g;
+    GameX g;
     m_database->loadGameHeaders(index, g);
     PartialDate date(g.tag("Date"));
 

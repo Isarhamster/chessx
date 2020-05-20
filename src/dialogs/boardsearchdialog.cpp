@@ -91,11 +91,11 @@ void BoardSearchDialog::reject()
 
 void BoardSearchDialog::setCurrentBoard()
 {
-    const Board& b = m_boardList.at(m_currentBoardIndex);
+    const BoardX& b = m_boardList.at(m_currentBoardIndex);
     ui->boardView->setBoard(b);
 }
 
-void BoardSearchDialog::setBoardList(const QList<Board>& list)
+void BoardSearchDialog::setBoardList(const QList<BoardX>& list)
 {
     m_boardList = list;
     ui->boardView->setBoard(list.at(0));

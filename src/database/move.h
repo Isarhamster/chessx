@@ -15,6 +15,7 @@
 #include "square.h"
 
 #include <QString>
+#include <QVector>
 
 class BitBoard;
 
@@ -39,6 +40,7 @@ inline bool isRank(const char c)
 class Move
 {
 public:
+    using List = QVector<Move>;
 
     /** Default constructor, creates an empty (illegal) move */
     Move();
@@ -50,7 +52,7 @@ public:
     }
 
     /** Move entry constructor, untested (illegal) move with only from, and to squares set */
-    Move(const Square from, const Square to);
+    Move(const chessx::Square from, const chessx::Square to);
 
     /** Construct a untested (illegal) Move from a SAN like string */
     inline Move fromUCI(const QByteArray& bs);
@@ -60,15 +62,15 @@ public:
 
     // Query
     /** return Square piece sits on after move */
-    Square to() const;
+    chessx::Square to() const;
     /** return Square piece sat on before move */
-    Square from() const;
+    chessx::Square from() const;
     /** return Square where rook is placed after castling */
-    Square castlingRookTo() const;
+    chessx::Square castlingRookTo() const;
     /** return Square when en-passant is captured. Undefined if there is no en-passant. */
-    Square enPassantSquare() const;
+    chessx::Square enPassantSquare() const;
     /** return Square where rook was placed before castling */
-    Square castlingRookFrom() const;
+    chessx::Square castlingRookFrom() const;
     /** Convert to algebraic notation (e2e4, g8f6 etc.) */
     QString fromSquareString() const;
     QString toSquareString() const;
@@ -183,9 +185,9 @@ private:
     /** Mark this move as validated and fully legal in position */
     void setLegalMove();
     /** Set source square for this move */
-    void setFrom(Square from);
+    void setFrom(chessx::Square from);
     /** Set destination square for this move */
-    void setTo(Square to);
+    void setTo(chessx::Square to);
     /** Mark this move as being made by the Black side */
     void setBlack();
     /** Return piece type of promoted piece (or 0 if none) */
@@ -243,31 +245,31 @@ private:
 inline bool Move::isNullMove() const
 {
     // Must be consistent with Guess::movelist::isNullMove
-    return (to() == a2 && from() == a2);
+    return (to() == chessx::a2 && from() == chessx::a2);
 }
 
 inline Move& Move::setNullMove()
 {
-    m = a2 | (a2 << 6);
+    m = chessx::a2 | (chessx::a2 << 6);
     u = 0;
     return *this;
 }
 
-inline Square Move::from() const
+inline chessx::Square Move::from() const
 {
-    return Square(m & 63);
+    return chessx::Square(m & 63);
 }
 
-inline Square Move::to() const
+inline chessx::Square Move::to() const
 {
-    return Square((m >> 6) & 63);
+    return chessx::Square((m >> 6) & 63);
 }
 
 inline Move::Move()
     : m(0), u(0)
 {}
 
-inline Move::Move(const Square from, const Square to)
+inline Move::Move(const chessx::Square from, const chessx::Square to)
     : m(from | (to << 6)), u(0)
 {}
 
@@ -284,7 +286,7 @@ inline Move Move::fromUCI(const QByteArray& bs)
         c = *(s++);
         if(isRank(c))
         {
-            Square fromSquare = Square((c - '1') * 8 + fromFile);
+            chessx::Square fromSquare = chessx::Square((c - '1') * 8 + fromFile);
             fromFile = -1;
             c = *(s++);
             // Destination square
@@ -294,7 +296,7 @@ inline Move Move::fromUCI(const QByteArray& bs)
                 c = *(s++);
                 if(isRank(c))
                 {
-                    Square toSquare = Square((c - '1') * 8 + f);
+                    chessx::Square toSquare = chessx::Square((c - '1') * 8 + f);
                     Move m(fromSquare, toSquare);
                     c = *(s++);
                     if(c == '=' || c == '(' || QString("QRBN").indexOf(toupper(c))>=0)
@@ -333,14 +335,14 @@ inline Move Move::fromUCI(const QByteArray& bs)
     return Move();
 }
 
-inline Square Move::castlingRookFrom() const
+inline chessx::Square Move::castlingRookFrom() const
 {
-    return Square((to() % 8 == 2) ? to() - 2 : to() + 1);
+    return chessx::Square((to() % 8 == 2) ? to() - 2 : to() + 1);
 }
 
-inline Square Move::castlingRookTo() const
+inline chessx::Square Move::castlingRookTo() const
 {
-    return Square((from() + to()) / 2);
+    return chessx::Square((from() + to()) / 2);
 }
 
 inline QString Move::fromSquareString() const
@@ -398,9 +400,9 @@ inline QString Move::toAlgebraicDebug() const
     return alg;
 }
 
-inline Square Move::enPassantSquare() const
+inline chessx::Square Move::enPassantSquare() const
 {
-    return Square(from() > 31 ? to() - 8 : to() + 8);
+    return chessx::Square(from() > 31 ? to() - 8 : to() + 8);
 }
 
 inline Piece Move::pieceMoved() const
@@ -551,13 +553,13 @@ inline void Move::setLegalMove()
     m |= LEGALITYBIT;
 }
 
-inline void Move::setFrom(Square from)
+inline void Move::setFrom(chessx::Square from)
 {
     m = (m & (~63)) | from;
     m &= ~LEGALITYBIT;
 }
 
-inline void Move::setTo(Square to)
+inline void Move::setTo(chessx::Square to)
 {
     m = (m & (~(63 << 6))) | (to << 6);
     m &= ~LEGALITYBIT;

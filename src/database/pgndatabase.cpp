@@ -23,6 +23,8 @@
 #include "settings.h"
 #include "tags.h"
 
+using namespace chessx;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -379,7 +381,7 @@ void PgnDatabase::close()
     initialise();
 }
 
-void PgnDatabase::loadGameMoves(GameId gameId, Game& game)
+void PgnDatabase::loadGameMoves(GameId gameId, GameX& game)
 {
     QMutexLocker m(&m_mutex);
     if(!m_file || gameId >= m_count)
@@ -400,14 +402,14 @@ void PgnDatabase::loadGameMoves(GameId gameId, Game& game)
     parseMoves(&game);
 }
 
-int PgnDatabase::findPosition(GameId index, const Board &position)
+int PgnDatabase::findPosition(GameId index, const BoardX &position)
 {
-    Game g;
+    GameX g;
     loadGameMoves(index, g);
     return g.findPosition(position);
 }
 
-bool PgnDatabase::loadGame(GameId gameId, Game& game)
+bool PgnDatabase::loadGame(GameId gameId, GameX& game)
 {
     if(!m_file || gameId >= m_count)
     {
@@ -574,7 +576,7 @@ void PgnDatabase::parseTagsIntoIndex()
     }
 }
 
-bool PgnDatabase::parseMoves(Game* game)
+bool PgnDatabase::parseMoves(GameX* game)
 {
     m_gameOver = false;
     m_inComment = false;
@@ -616,7 +618,7 @@ bool PgnDatabase::parseMoves(Game* game)
     return true;
 }
 
-void PgnDatabase::parseLine(Game* game)
+void PgnDatabase::parseLine(GameX* game)
 {
     QVector<QStringRef> list = m_currentLine.splitRef(" ", QString::SkipEmptyParts);
 
@@ -643,7 +645,7 @@ void PgnDatabase::parseLine(Game* game)
     }
 }
 
-inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
+inline void PgnDatabase::parseDefaultToken(GameX* game, QString token)
 {
     //strip any move numbers
     if(token.contains("..."))
@@ -704,7 +706,7 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
                 m_variation = game->dbAddSanVariation(game->currentMove(), token, QString(), nag);
                 if(!m_precomment.isEmpty())
                 {
-                    game->dbSetAnnotation(m_precomment, m_variation, Game::BeforeMove);
+                    game->dbSetAnnotation(m_precomment, m_variation, GameX::BeforeMove);
                     m_precomment.clear();
                     m_inPreComment = false;
                 }
@@ -715,7 +717,7 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
                 m_variation = game->dbAddSanMove(token, QString(), nag);
                 if(!m_precomment.isEmpty())
                 {
-                    game->dbSetAnnotation(m_precomment, m_variation, Game::BeforeMove);
+                    game->dbSetAnnotation(m_precomment, m_variation, GameX::BeforeMove);
                     m_precomment.clear();
                     m_inPreComment = false;
                 }
@@ -724,7 +726,7 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
     }
 }
 
-void PgnDatabase::parseToken(Game* game, const QStringRef& token)
+void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
 {
     // qDebug() << "Parsing Token:" << token << ":";
     switch(token.at(0).toLatin1())
@@ -851,7 +853,7 @@ void PgnDatabase::parseToken(Game* game, const QStringRef& token)
     }
 }
 
-void PgnDatabase::parseComment(Game* game)
+void PgnDatabase::parseComment(GameX* game)
 {
     int end = m_currentLine.indexOf('}');
 

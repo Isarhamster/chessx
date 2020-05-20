@@ -1,0 +1,4316 @@
+
+[ECO	C99 Ruy Lopez: closed, Chigorin, 12...c5d4]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Na5  Bc2 c5  d4 Qc7  N1d2 cd  cd 
+[ECO	C98 Ruy Lopez: closed, Chigorin, Rauzer attack]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Na5  Bc2 c5  d4 Qc7  N1d2 Nc6  dc 
+[ECO	C98 Ruy Lopez: closed, Chigorin, 12...Nc6]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Na5  Bc2 c5  d4 Qc7  N1d2 Nc6  
+[ECO	C97 Ruy Lopez: closed, Chigorin, Yugoslav system]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Na5  Bc2 c5  d4 Qc7  N1d2 Bd7  Nf1 f8e8  Ne3 g6  
+[ECO	C97 Ruy Lopez: closed, Chigorin defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Na5  Bc2 c5  d4 Qc7  
+[ECO	C96 Ruy Lopez: closed, Keres  defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Na5  Bc2 c5  d4 Nd7  
+[ECO	C96 Ruy Lopez: closed, Borisenko defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Na5  Bc2 c5  d4 Nc6  
+[ECO	C96 Ruy Lopez: closed ]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Na5  Bc2 c5  
+[ECO	C96 Ruy Lopez: closed, Rossolimo defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Na5  Bc2 c6  d4 Qc7  
+[ECO	C96 Ruy Lopez: closed ]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Na5  Bc2 
+[ECO	C95 Ruy Lopez: closed, Breyer, Simagin variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Nb8  d4 N8d7  Nh4 
+[ECO	C95 Ruy Lopez: closed, Breyer, Gligori\'c variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Nb8  d4 N8d7  N1d2 Bb7  Bc2 c5  
+[ECO	C95 Ruy Lopez: closed, Breyer, Borisenko variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Nb8  d4 N8d7  
+[ECO	C95 Ruy Lopez: closed, Breyer, 10.d4]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Nb8  d4 
+[ECO	C94 Ruy Lopez: closed, Breyer defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Nb8  
+[ECO	C93 Ruy Lopez: closed, Smyslov defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 h6  
+[ECO	C92 Ruy Lopez: closed, Flohr-Zaitsev system ]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Bb7  
+[ECO	C92 Ruy Lopez: closed, Ragozin-Petrosian  variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Nd7  
+[ECO	C92 Ruy Lopez: closed, Kholmov variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 Be6  
+[ECO	C92 Ruy Lopez: closed, Keres  variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 a5  
+[ECO	C92 Ruy Lopez: closed, 9.h3]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+h3 
+[ECO	C91 Ruy Lopez: closed, Bogolyubov variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+d4 Bg4  
+[ECO	C91 Ruy Lopez: closed, 9.d4]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+d4 
+[ECO	C90 Ruy Lopez: closed, Suetin variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+a3 
+[ECO	C90 Ruy Lopez: closed, Lutikov variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+Bc2 
+[ECO	C90 Ruy Lopez: closed, Pilnik variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+d3 
+[ECO	C90 Ruy Lopez: closed ]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d6  
+[ECO	C89 Ruy Lopez: Marshall, Herman Steiner variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d5  
+ed e4  
+[ECO	C89 Ruy Lopez: Marshall, main line, Spassky variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d5  
+ed Nd5  Ne5 Ne5  Re5 c6  d4 Bd6  Re1 Qh4  g3 Qh3  Be3 Bg4  Qd3 a8e8  
+Nd2 Re6  a4 Qh5  
+[ECO	C89 Ruy Lopez: Marshall, main line, 14...Qh3]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d5  
+ed Nd5  Ne5 Ne5  Re5 c6  d4 Bd6  Re1 Qh4  g3 Qh3  
+[ECO	C89 Ruy Lopez: Marshall, main line, 12.d2d4]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d5  
+ed Nd5  Ne5 Ne5  Re5 c6  d4 
+[ECO	C89 Ruy Lopez: Marshall, Kevitz variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d5  
+ed Nd5  Ne5 Ne5  Re5 c6  Bd5 cd  d4 Bd6  Re3 
+[ECO	C89 Ruy Lopez: Marshall counter-attack, 11...c6]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d5  
+ed Nd5  Ne5 Ne5  Re5 c6  
+[ECO	C89 Ruy Lopez: Marshall counter-attack]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 d5  
+[ECO	C?? Ruy Lopez: closed, 8.c3]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  c3 
+[ECO	C88 Ruy Lopez: closed, anti-Marshall 8.a4]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  a4 
+[ECO	C88 Ruy Lopez: closed, 7...O-O]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 o-o  
+[ECO	C88 Ruy Lopez: Trajkovi\'c counter-attack]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 Bb7  
+[ECO	C88 Ruy Lopez: Noah's ark trap]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 d6  d4 Nd4  
+Nd4 ed  Qd4 c5  
+[ECO	C88 Ruy Lopez: closed, 7...d6, 8.d4]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 d6  d4 
+[ECO	C88 Ruy Lopez: closed, Balla variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 d6  c3 Na5  
+Bc2 c5  d4 Qc7  a4 
+[ECO	C88 Ruy Lopez: closed, Leonhardt variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 d6  c3 Na5  
+Bc2 c5  d4 Qc7  h3 Nc6  d5 Nb8  N1d2 g5  
+[ECO	C88 Ruy Lopez: closed]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 b5  Bb3 
+[ECO	C79 Ruy Lopez: Kecskem\'et variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 d6  c3 o-o  d4 Bd7  
+N1d2 Be8  
+[ECO	C87 Ruy Lopez: closed, Averbach variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Re1 d6  
+[ECO	C86 Ruy Lopez: Worrall attack, solid line]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Qe2 b5  Bb3 d6  
+[ECO	C86 Ruy Lopez: Worrall attack, sharp line]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Qe2 b5  Bb3 o-o  
+[ECO	C86 Ruy Lopez: Worrall attack]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Qe2 
+[ECO	C85 Ruy Lopez: Exchange variation doubly deferred ]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  Bc6 
+[ECO	C84 Ruy Lopez: closed, Basque gambit ]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  d4 ed  e5 Ne4  c3 
+[ECO	C84 Ruy Lopez: closed, centre attack]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  d4 
+[ECO	C84 Ruy Lopez: closed defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Be7  
+[ECO	C83 Ruy Lopez: open, Breslau variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+c3 Be7  Re1 o-o  Nd4 Ne5  
+[ECO	C83 Ruy Lopez: open, Tarrasch trap]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+c3 Be7  Re1 o-o  Nd4 Qd7  Ne6 fe  Re4 
+[ECO	C83 Ruy Lopez: open, 9...Be7, 10.Re1]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+c3 Be7  Re1 
+[ECO	C83 Ruy Lopez: open, Malkin variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+c3 Be7  N1d2 o-o  Qe2 
+[ECO	C83 Ruy Lopez: open, classical defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+c3 Be7  
+[ECO	C82 Ruy Lopez: open, Motzko attack, Nenarokov variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+c3 Bc5  Qd3 Ne7  
+[ECO	C82 Ruy Lopez: open, Motzko attack]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+c3 Bc5  Qd3 
+[ECO	C82 Ruy Lopez: open, Dilworth variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+c3 Bc5  N1d2 o-o  Bc2 Nf2  
+[ECO	C82 Ruy Lopez: open, St. Petersburg variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+c3 Bc5  N1d2 
+[ECO	C82 Ruy Lopez: open, Italian variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+c3 Bc5  
+[ECO	C82 Ruy Lopez: open, Berlin variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+c3 Nc5  
+[ECO	C82 Ruy Lopez: open, 9.c3]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+c3 
+[ECO	C81 Ruy Lopez: open, Howell attack, Adam variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+Qe2 Be7  c4 
+[ECO	C81 Ruy Lopez: open, Howell attack, Ekstr\"om variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+Qe2 Be7  Rd1 o-o  c4 bc  Bc4 Qd7  
+[ECO	C81 Ruy Lopez: open, Howell attack]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+Qe2 
+[ECO	C80 Ruy Lopez: open, Bernstein variation, Karpov gambit]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+N1d2 Nc5  c3 d4  Ng5 
+[ECO	C80 Ruy Lopez: open, Bernstein variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+N1d2 
+[ECO	C80 Ruy Lopez: open, 8...Be6]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Be6  
+[ECO	C80 Ruy Lopez: open, Zukertort variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de Ne7  
+[ECO	C80 Ruy Lopez: open, 8.de]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  de 
+[ECO	C80 Ruy Lopez: open, Harksen gambit]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  c4 
+[ECO	C80 Ruy Lopez: open, Berger variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  a4 Nd4  
+Nd4 ed  Nc3 
+[ECO	C80 Ruy Lopez: open, Schlechter defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 d5  a4 Nd4  
+[ECO	C80 Ruy Lopez: open, 7.Bb3]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Bb3 
+[ECO	C80 Ruy Lopez: open, Richter variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  d5 
+[ECO	C80 Ruy Lopez: open, Friess attack]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  Ne5 
+[ECO	C80 Ruy Lopez: open, 6.d4 b5]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 b5  
+[ECO	C80 Ruy Lopez: open, Riga variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 ed  
+[ECO	C80 Ruy Lopez: open, 6.d4]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  d4 
+[ECO	C80 Ruy Lopez: open, Knorre variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  Nc3 
+[ECO	C80 Ruy Lopez: open, Tartakower variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  Qe2 
+[ECO	C80 Ruy Lopez: open  defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Ne4  
+[ECO	C79 Ruy Lopez: Steinitz defence deferred, Boleslavsky variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o d6  Bc6 bc  d4 Ne4  Re1 f5  
+de d5  Nc3 
+[ECO	C79 Ruy Lopez: Steinitz defence deferred, Rubinstein variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o d6  Bc6 bc  d4 Ne4  
+[ECO	C79 Ruy Lopez: Steinitz defence deferred, Lipnitsky variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o d6  Bc6 bc  d4 Bg4  
+[ECO	C79 Ruy Lopez: Steinitz defence deferred ]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o d6  
+[ECO	C78 Ruy Lopez: M\"oller defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o Bc5  
+[ECO	C78 Ruy Lopez: Archangelsk  variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o b5  Bb3 Bb7  
+[ECO	C78 Ruy Lopez: Rabinovich variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o b5  Bb3 d6  Ng5 d5  ed Nd4  
+Re1 Bc5  Re5 Kf8  
+[ECO	C78 Ruy Lopez: ...b5 & ...d6]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o b5  Bb3 d6  
+[ECO	C78 Ruy Lopez: Wing attack]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o b5  Bb3 Be7  a4 
+[ECO	C78 Ruy Lopez: 5.O-O]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  o-o 
+[ECO	C77 Ruy Lopez: Morphy defence, Duras variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  d3 d6  c4 
+[ECO	C77 Ruy Lopez: Anderssen variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  d3 
+[ECO	C77 Ruy Lopez: Wormald attack, Gr\"unfeld variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  Qe2 b5  Bb3 Be7  d4 d6  c3 Bg4  
+[ECO	C77 Ruy Lopez: Wormald  attack]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  Qe2 
+[ECO	C77 Ruy Lopez: Treybal  variation ]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  Bc6 
+[ECO	C77 Ruy Lopez: four knights  variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  Nc3 
+[ECO	C77 Ruy Lopez: Morphy defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nf6  
+[ECO	C76 Ruy Lopez: modern Steinitz defence, fianchetto  variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 d6  c3 Bd7  d4 g6  
+[ECO	C75 Ruy Lopez: modern Steinitz defence, Rubinstein variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 d6  c3 Bd7  d4 N8e7  
+[ECO	C75 Ruy Lopez: modern Steinitz defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 d6  c3 Bd7  
+[ECO	C74 Ruy Lopez: Siesta, Kopayev variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 d6  c3 f5  ef Bf5  o-o 
+[ECO	C74 Ruy Lopez: modern Steinitz defence, siesta variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 d6  c3 f5  
+[ECO	C74 Ruy Lopez: modern Steinitz defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 d6  c3 
+[ECO	C73 Ruy Lopez: modern Steinitz defence, Alapin variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 d6  Bc6 bc  d4 f6  
+[ECO	C73 Ruy Lopez: modern Steinitz defence, Richter variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 d6  Bc6 bc  d4 
+[ECO	C?? Ruy Lopez: modern Steinitz defence, exchange variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 d6  Bc6 bc  
+[ECO	C72 Ruy Lopez: modern Steinitz defence, 5.O-O]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 d6  o-o 
+[ECO	C71 Ruy Lopez: modern Steinitz defence, Duras  variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 d6  c4 
+[ECO	C71 Ruy Lopez: modern Steinitz defence, Three knights variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 d6  Nc3 
+[ECO	C71 Ruy Lopez: Noah's ark trap]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 d6  d4 b5  Bb3 Nd4  Nd4 ed  Qd4 c5  
+[ECO	C71 Ruy Lopez: modern Steinitz defence]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 d6  
+[ECO	C70 Ruy Lopez: Schliemann defence deferred]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 f5  
+[ECO	C70 Ruy Lopez: Taimanov  variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 b5  Bb3 Na5  
+[ECO	C70 Ruy Lopez: Graz variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 b5  Bb3 Bc5  
+[ECO	C70 Ruy Lopez: Caro variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 b5  
+[ECO	C70 Ruy Lopez: Classical defence deferred]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Bc5  
+[ECO	C70 Ruy Lopez: Alapin's defence deferred]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Bb4  
+[ECO	C70 Ruy Lopez: Bird's defence deferred]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 Nd4  
+[ECO	C70 Ruy Lopez: Cozio defence deferred]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 N8e7  
+[ECO	C70 Ruy Lopez: fianchetto defence deferred]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 g6  
+[ECO	C70 Ruy Lopez]
+e4 e5  Nf3 Nc6  Bb5 a6  Ba4 
+[ECO	C69 Ruy Lopez: exchange, Bronstein variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Bc6 dc  o-o Qd6  
+[ECO	C69 Ruy Lopez: exchange, Gligori\'c variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Bc6 dc  o-o f6  
+[ECO	C69 Ruy Lopez: exchange variation, Alapin gambit]
+e4 e5  Nf3 Nc6  Bb5 a6  Bc6 dc  o-o Bg4  h3 h5  
+[ECO	C69 Ruy Lopez: exchange variation, 5.O-O]
+e4 e5  Nf3 Nc6  Bb5 a6  Bc6 dc  o-o 
+[ECO	C68 Ruy Lopez: exchange, Romanovsky variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Bc6 dc  Nc3 f6  d3 
+[ECO	C68 Ruy Lopez: exchange, Keres variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Bc6 dc  Nc3 
+[ECO	C68 Ruy Lopez: exchange, Alekhine variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Bc6 dc  d4 ed  Qd4 Qd4  Nd4 Bd7  
+[ECO	C68 Ruy Lopez: exchange variation]
+e4 e5  Nf3 Nc6  Bb5 a6  Bc6 
+[ECO	C67 Ruy Lopez: Berlin defence, Rosenthal variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o Ne4  d4 a6  
+[ECO	C67 Ruy Lopez: Berlin defence, Minckwitz variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o Ne4  d4 Be7  de 
+[ECO	C67 Ruy Lopez: Berlin defence, Trifunovi\'c variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o Ne4  d4 Be7  Qe2 d5  
+[ECO	C67 Ruy Lopez: Berlin defence, Cordel variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o Ne4  d4 Be7  Qe2 Nd6  Bc6 bc  de Nf5  
+[ECO	C67 Ruy Lopez: Berlin defence, Winawer attack]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o Ne4  d4 Be7  Qe2 Nd6  Bc6 bc  de Nb7  
+Nd4 
+[ECO	C67 Ruy Lopez: Berlin defence, Pillsbury variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o Ne4  d4 Be7  Qe2 Nd6  Bc6 bc  de Nb7  
+b3 
+[ECO	C67 Ruy Lopez: Berlin defence, Zukertort variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o Ne4  d4 Be7  Qe2 Nd6  Bc6 bc  de Nb7  
+c4 
+[ECO	C67 Ruy Lopez: Berlin defence, Rio de Janeiro variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o Ne4  d4 Be7  Qe2 Nd6  Bc6 bc  de Nb7  
+Nc3 o-o  Re1 Nc5  Nd4 Ne6  Be3 Nd4  Bd4 c5  
+[ECO	C67 Ruy Lopez: open Berlin defence, 5...Be7]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o Ne4  d4 Be7  
+[ECO	C67 Ruy Lopez: open Berlin defence, Showalter variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o Ne4  d4 Nd6  Ba4 
+[ECO	C67 Ruy Lopez: open Berlin defence, l'Hermet variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o Ne4  d4 Nd6  de 
+[ECO	C67 Ruy Lopez: Berlin defence, open variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o Ne4  
+[ECO	C66 Ruy Lopez: closed Berlin defence, Chigorin variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o d6  d4 Nd7  
+[ECO	C66 Ruy Lopez: closed Berlin defence, Wolf variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o d6  d4 Bd7  Nc3 ed  
+[ECO	C66 Ruy Lopez: closed Berlin defence, Showalter variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o d6  d4 Bd7  Nc3 Be7  Bc6 
+[ECO	C66 Ruy Lopez: closed Berlin defence, Bernstein variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o d6  d4 Bd7  Nc3 Be7  Bg5 
+[ECO	C66 Ruy Lopez: Berlin defence, Tarrasch trap]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o d6  d4 Bd7  Nc3 Be7  Re1 o-o  
+[ECO	C66 Ruy Lopez: Berlin defence, hedgehog variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o d6  d4 Bd7  Nc3 Be7  
+[ECO	C66 Ruy Lopez: Berlin defence, 4.O-O, d6]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o d6  
+[ECO	C65 Ruy Lopez: Berlin defence, Beverwijk variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o Bc5  
+[ECO	C65 Ruy Lopez: Berlin defence, 4.O-O]
+e4 e5  Nf3 Nc6  Bb5 Nf6  o-o 
+[ECO	C65 Ruy Lopez: Berlin defence, Kaufmann variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  d3 Bc5  Be3 
+[ECO	C65 Ruy Lopez: Berlin defence, Duras variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  d3 d6  c4 
+[ECO	C65 Ruy Lopez: Berlin defence, Anderssen variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  d3 d6  Bc6 
+[ECO	C65 Ruy Lopez: Berlin defence, Mortimer trap]
+e4 e5  Nf3 Nc6  Bb5 Nf6  d3 Ne7  Ne5 c6  
+[ECO	C65 Ruy Lopez: Berlin defence, Mortimer variation]
+e4 e5  Nf3 Nc6  Bb5 Nf6  d3 Ne7  
+[ECO	C65 Ruy Lopez: Berlin defence, Nyholm attack]
+e4 e5  Nf3 Nc6  Bb5 Nf6  d4 ed  o-o 
+[ECO	C65 Ruy Lopez: Berlin defence]
+e4 e5  Nf3 Nc6  Bb5 Nf6  
+[ECO	C64 Ruy Lopez: Cordel gambit]
+e4 e5  Nf3 Nc6  Bb5 Bc5  c3 f5  
+[ECO	C64 Ruy Lopez: classical defence, Boden variation]
+e4 e5  Nf3 Nc6  Bb5 Bc5  c3 Qe7  
+[ECO	C64 Ruy Lopez: classical defence, Charousek variation]
+e4 e5  Nf3 Nc6  Bb5 Bc5  c3 Bb6  
+[ECO	C64 Ruy Lopez: classical defence, Benelux variation  ]
+e4 e5  Nf3 Nc6  Bb5 Bc5  c3 Nf6  o-o o-o  d4 Bb6  
+[ECO	C64 Ruy Lopez: classical defence, 4.c3]
+e4 e5  Nf3 Nc6  Bb5 Bc5  c3 
+[ECO	C64 Ruy Lopez: classical defence, Zaitsev variation]
+e4 e5  Nf3 Nc6  Bb5 Bc5  o-o Nd4  b4 
+[ECO	C64 Ruy Lopez: classical  defence]
+e4 e5  Nf3 Nc6  Bb5 Bc5  
+[ECO	C63 Ruy Lopez: Schliemann defence, Berger variation]
+e4 e5  Nf3 Nc6  Bb5 f5  Nc3 
+[ECO	C63 Ruy Lopez: Schliemann defence]
+e4 e5  Nf3 Nc6  Bb5 f5  
+[ECO	C62 Ruy Lopez: old Steinitz defence, semi-Duras variation]
+e4 e5  Nf3 Nc6  Bb5 d6  d4 Bd7  c4 
+[ECO	C62 Ruy Lopez: old Steinitz defence, Nimzovich attack]
+e4 e5  Nf3 Nc6  Bb5 d6  d4 Bd7  Nc3 Nf6  Bc6 
+[ECO	C62 Ruy Lopez: old Steinitz defence]
+e4 e5  Nf3 Nc6  Bb5 d6  
+[ECO	C61 Ruy Lopez: Bird's defence, Paulsen variation]
+e4 e5  Nf3 Nc6  Bb5 Nd4  Nd4 ed  o-o Ne7  
+[ECO	C61 Ruy Lopez: Bird's defence]
+e4 e5  Nf3 Nc6  Bb5 Nd4  
+[ECO	C60 Ruy Lopez: Cozio defence, Paulsen variation]
+e4 e5  Nf3 Nc6  Bb5 N8e7  Nc3 g6  
+[ECO	C60 Ruy Lopez: Cozio defence]
+e4 e5  Nf3 Nc6  Bb5 N8e7  
+[ECO	C60 Ruy Lopez: fianchetto  defence]
+e4 e5  Nf3 Nc6  Bb5 g6  
+[ECO	C60 Ruy Lopez: Alapin's defence]
+e4 e5  Nf3 Nc6  Bb5 Bb4  
+[ECO	C60 Ruy Lopez: Brentano defence]
+e4 e5  Nf3 Nc6  Bb5 g5  
+[ECO	C60 Ruy Lopez: Vinogradov variation]
+e4 e5  Nf3 Nc6  Bb5 Qe7  
+[ECO	C60 Ruy Lopez: Lucena defence]
+e4 e5  Nf3 Nc6  Bb5 Be7  
+[ECO	C60 Ruy Lopez: Pollock defence]
+e4 e5  Nf3 Nc6  Bb5 Na5  
+[ECO	C60 Ruy Lopez: Nuremberg variation]
+e4 e5  Nf3 Nc6  Bb5 f6  
+[ECO	C60 Ruy Lopez ]
+e4 e5  Nf3 Nc6  Bb5 
+[ECO	C59 two knights defence: Steinitz variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Na5  Bb5 c6  dc bc  Be2 h6  
+Nh3 
+[ECO	C59 two knights defence: G\"oring variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Na5  Bb5 c6  dc bc  Be2 h6  
+Nf3 e4  Ne5 Qc7  
+[ECO	C59 two knights defence: Knorre variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Na5  Bb5 c6  dc bc  Be2 h6  
+Nf3 e4  Ne5 Bd6  d4 Qc7  Bd2 
+[ECO	C59 Two knights defence]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Na5  Bb5 c6  dc bc  Be2 h6  
+[ECO	C?? Two knights defence]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Na5  Bb5 c6  dc bc  Be2 
+[ECO	C58 two knights defence: Blackburne variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Na5  Bb5 c6  dc bc  Qf3 cb  
+[ECO	C58 two knights defence: Colman variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Na5  Bb5 c6  dc bc  Qf3 Rb8  
+[ECO	C58 two knights defence: Paoli variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Na5  Bb5 c6  dc bc  Qf3 Qc7  
+Bd3 
+[ECO	C58 two knights defence: Bogolyubov variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Na5  Bb5 c6  dc bc  Qf3 
+[ECO	C58 Two knights defence]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Na5  Bb5 
+[ECO	C58 two knights defence: Mar\'oczy variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Na5  d3 h6  Nf3 e4  Qe2 Nc4  
+dc Be7  
+[ECO	C58 two knights defence: Yankovich variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Na5  d3 h6  Nf3 e4  Qe2 Nc4  
+dc Bc5  N3d2 
+[ECO	C58 two knights defence: Kieseritsky variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Na5  d3 
+[ECO	C?? two knights defence]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Na5  
+[ECO	C57 two knights defence: Fegatello attack, Polerio defence]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Nd5  Nf7 Kf7  Qf3 Ke6  Nc3 Ne7  
+[ECO	C57 two knights defence: Fegatello attack, Leonhardt variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Nd5  Nf7 Kf7  Qf3 Ke6  Nc3 Nb4  
+Qe4 c6  a3 Na6  d4 Nc7  
+[ECO	C57 two knights defence: Fegatello attack]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Nd5  Nf7 
+[ECO	C57 two knights defence: Pincus variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Nd5  d4 Bb4  
+[ECO	C57 two knights defence: Lolli attack]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Nd5  d4 
+[ECO	C57 two knights defence: Fritz, Gruber variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Nd4  c3 b5  Bf1 Nd5  Ne4 
+[ECO	C57 two knights defence: Fritz variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed Nd4  
+[ECO	C57 two knights defence: Ulvestad variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 d5  ed b5  
+[ECO	C57 two knights defence: Wilkes Barre  variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 Bc5  
+[ECO	C57 Two knights defence]
+e4 e5  Nf3 Nc6  Bc4 Nf6  Ng5 
+[ECO	C56 two knights defence: Canal variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 ed  o-o Ne4  Re1 d5  Nc3 
+[ECO	C56 two knights defence: Yurdansky attack]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 ed  o-o Ne4  Re1 d5  Bd5 Qd5  Nc3 Qa5  
+Ne4 Be6  Bg5 h6  Bh4 g5  Nf6 Ke7  b4 
+[ECO	C56 Two knights defence]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 ed  o-o Ne4  
+[ECO	C55 two knights: Max Lange attack, Krause variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 ed  o-o Bc5  e5 Ng4  c3 
+[ECO	C55 two knights: Max Lange attack, Steinitz variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 ed  o-o Bc5  e5 Ng4  
+[ECO	C55 two knights: Max Lange attack, Schlechter variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 ed  o-o Bc5  e5 d5  ef dc  Re1 Be6  
+fg 
+[ECO	C55 two knights: Max Lange attack, Loman defence]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 ed  o-o Bc5  e5 d5  ef dc  Re1 Be6  
+Ng5 g6  
+[ECO	C55 two knights: Max Lange attack, Rubinstein variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 ed  o-o Bc5  e5 d5  ef dc  Re1 Be6  
+Ng5 Qd5  Nc3 Qf5  N3e4 Bf8  
+[ECO	C55 two knights: Max Lange attack, Marshall variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 ed  o-o Bc5  e5 d5  ef dc  Re1 Be6  
+Ng5 Qd5  Nc3 Qf5  N3e4 
+[ECO	C55 two knights: Max Lange attack, Berger variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 ed  o-o Bc5  e5 d5  ef dc  Re1 Be6  
+Ng5 Qd5  Nc3 Qf5  g4 Qg6  N3e4 Bb6  f4 o-o-o  
+[ECO	C55 two knights: Max Lange attack]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 ed  o-o Bc5  e5 
+[ECO	C55 Two knights defence]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 ed  o-o 
+[ECO	C55 Two knights defence, Perreux variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 ed  Ng5 
+[ECO	C55 Two knights defence, Keidanz variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 ed  e5 d5  Bb5 Ne4  Nd4 Bc5  Nc6 Bf2  
+Kf1 Qh4  
+[ECO	C55 Two knights defence]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d4 
+[ECO	C55 Two knights defence ]
+e4 e5  Nf3 Nc6  Bc4 Nf6  d3 
+[ECO	C55 Giuoco piano: Holzhausen attack]
+e4 e5  Nf3 Nc6  Bc4 Nf6  o-o Bc5  d4 Bd4  Nd4 Nd4  Bg5 d6  f4 Qe7  
+fe de  Nc3 
+[ECO	C55 Giuoco piano]
+e4 e5  Nf3 Nc6  Bc4 Nf6  o-o Bc5  d4 Bd4  Nd4 Nd4  Bg5 d6  
+[ECO	C55 Giuoco piano: Rosentreter variation]
+e4 e5  Nf3 Nc6  Bc4 Nf6  o-o Bc5  d4 Bd4  Nd4 Nd4  Bg5 h6  Bh4 g5  
+f4 
+[ECO	C55 Two knights defence]
+e4 e5  Nf3 Nc6  Bc4 Nf6  
+[ECO	C54 Giuoco Piano: M\"oller, bayonet attack]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  cd Bb4  Nc3 Ne4  o-o Bc3  
+d5 Bf6  Re1 Ne7  Re4 d6  g4 
+[ECO	C54 Giuoco Piano: Therkatz-Herzog variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  cd Bb4  Nc3 Ne4  o-o Bc3  
+d5 Bf6  Re1 Ne7  Re4 d6  Bg5 Bg5  Ng5 o-o  Nh7 
+[ECO	C54 Giuoco Piano: M\"oller  attack]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  cd Bb4  Nc3 Ne4  o-o Bc3  
+d5 
+[ECO	C54 Giuoco Piano: Steinitz variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  cd Bb4  Nc3 Ne4  o-o Bc3  
+bc d5  Ba3 
+[ECO	C54 Giuoco Piano]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  cd Bb4  Nc3 Ne4  o-o Bc3  
+[ECO	C54 Giuoco Piano: Aitken variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  cd Bb4  Nc3 Ne4  o-o Nc3  
+bc Bc3  Ba3 
+[ECO	C54 Giuoco Piano: Bernstein variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  cd Bb4  Nc3 Ne4  o-o Nc3  
+bc Bc3  Qb3 d5  
+[ECO	C54 Giuoco Piano: Greco variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  cd Bb4  Nc3 Ne4  o-o Nc3  
+[ECO	C54 Giuoco Piano: Greco's attack]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  cd Bb4  Nc3 
+[ECO	C54 Giuoco Piano: Cracow variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  cd Bb4  Kf1 
+[ECO	C54 Giuoco Piano: Krause variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  cd Bb4  Bd2 Ne4  Bb4 Nb4  
+Bf7 Kf7  Qb3 d5  Ne5 Kf6  f3 
+[ECO	C54 Giuoco Piano]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  cd 
+[ECO	C53 Giuoco Piano: Anderssen variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  e5 d5  Bb5 Ne4  cd Bb4  
+[ECO	C53 Giuoco Piano]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  e5 d5  
+[ECO	C53 Giuoco Piano: Ghulam Kassim variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 ed  e5 Ne4  Bd5 Nf2  Kf2 dc  
+Kg3 
+[ECO	C53 Giuoco Piano]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  d4 
+[ECO	C53 Giuoco Piano: Bird's attack]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  b4 
+[ECO	C53 Giuoco Piano]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Nf6  
+[ECO	C53 Giuoco Piano: Eisinger variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Qe7  d4 Bb6  d5 Nb8  d6 
+[ECO	C53 Giuoco Piano: Mestel variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Qe7  d4 Bb6  Bg5 
+[ECO	C53 Giuoco Piano: Tarrasch variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Qe7  d4 Bb6  o-o Nf6  a4 a6  Re1 d6  
+h3 
+[ECO	C53 Giuoco Piano: centre-holding variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Qe7  d4 Bb6  
+[ECO	C53 Giuoco Piano: close variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 Qe7  
+[ECO	C53 Giuoco Piano: LaBourdonnais variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 d6  d4 ed  cd Bb6  
+[ECO	C53 Giuoco Piano]
+e4 e5  Nf3 Nc6  Bc4 Bc5  c3 
+[ECO	C52 Evans gambit: Alapin-Steinitz variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  o-o d6  d4 Bg4  
+[ECO	C52 Evans gambit: Sanders-Alapin variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  o-o d6  d4 Bd7  
+[ECO	C52 Evans gambit: Lasker defence]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  o-o d6  d4 Bb6  
+[ECO	C52 Evans gambit: Waller attack]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  o-o d6  d4 ed  Qb3 
+[ECO	C52 Evans gambit]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  o-o d6  
+[ECO	C52 Evans gambit: Richardson attack]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  o-o Nf6  d4 o-o  Ne5 
+[ECO	C52 Evans gambit]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  o-o 
+[ECO	C52 Evans gambit: Sokolsky variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  d4 d6  Bg5 
+[ECO	C52 Evans gambit: Levenfish variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  d4 d6  Qb3 Qd7  de de  
+o-o Bb6  Ba3 Na5  Ne5 
+[ECO	C52 Evans gambit: Tartakower attack]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  d4 d6  Qb3 
+[ECO	C52 Evans gambit]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  d4 d6  
+[ECO	C52 Evans gambit: Leonhardt variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  d4 b5  
+[ECO	C52 Evans gambit: compromised defence, Potter variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  d4 ed  o-o dc  Qb3 Qf6  
+e5 Qg6  Nc3 N8e7  Rd1 
+[ECO	C52 Evans gambit: compromised defence, Paulsen variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  d4 ed  o-o dc  Qb3 Qf6  
+e5 Qg6  Nc3 N8e7  Ba3 
+[ECO	C52 Evans gambit: compromised defence]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  d4 ed  o-o dc  
+[ECO	C52 Evans gambit]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Ba5  
+[ECO	C51 Evans gambit: Cordel variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Be7  d4 Na5  
+[ECO	C51 Evans gambit: 5...Be7]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Be7  
+[ECO	C51 Evans gambit: Mayet defence]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Bf8  
+[ECO	C51 Evans gambit: Stone-Ware variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Bd6  
+[ECO	C51 Evans gambit: Fraser-Mortimer attack]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Bc5  d4 ed  o-o d6  cd Bb6  
+Nc3 Bg4  Qa4 Bd7  Qb3 Na5  Bf7 Kf8  Qc2 
+[ECO	C51 Evans gambit: Fraser attack]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Bc5  d4 ed  o-o d6  cd Bb6  
+Nc3 Bg4  Qa4 
+[ECO	C51 Evans gambit]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Bc5  d4 ed  o-o d6  cd Bb6  
+Nc3 Bg4  
+[ECO	C51 Evans gambit: Steinitz variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Bc5  d4 ed  o-o d6  cd Bb6  
+Nc3 Na5  Bg5 f6  Be3 
+[ECO	C51 Evans gambit: G\"oring attack]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Bc5  d4 ed  o-o d6  cd Bb6  
+Nc3 Na5  Bg5 
+[ECO	C51 Evans gambit: Morphy attack]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Bc5  d4 ed  o-o d6  cd Bb6  
+Nc3 
+[ECO	C51 Evans gambit: Paulsen variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Bc5  d4 ed  o-o d6  cd Bb6  
+d5 Na5  Bb2 Ne7  
+[ECO	C51 Evans gambit: Ulvestad variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Bc5  d4 ed  o-o d6  cd Bb6  
+d5 Na5  Bb2 
+[ECO	C51 Evans gambit: normal variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  c3 Bc5  d4 ed  o-o d6  cd Bb6  
+[ECO	C51 Evans gambit]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb4  
+[ECO	C51 Evans counter-gambit]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 d5  
+[ECO	C51 Evans gambit declined, Cordel variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb6  Bb2 
+[ECO	C51 Evans gambit declined, Showalter variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb6  a4 a6  Nc3 
+[ECO	C51 Evans gambit declined, 5.a4]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb6  a4 
+[ECO	C51 Evans gambit declined, Hicken variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb6  b5 Na5  Ne5 Qg5  Qf3 Qe5  Qf7 Kd8  
+Bb2 
+[ECO	C51 Evans gambit declined, V\'asquez variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb6  b5 Na5  Ne5 Qg5  Bf7 Ke7  Qh5 
+[ECO	C51 Evans gambit declined, Hirschbach variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb6  b5 Na5  Ne5 Qg5  
+[ECO	C51 Evans gambit declined, Pavlov variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb6  b5 Na5  Ne5 Nh6  d4 d6  Bh6 de  
+Bg7 Rg8  Bf7 Kf7  Be5 Qg5  Nd2 
+[ECO	C51 Evans gambit declined, Lange variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 Bb6  b5 Na5  Ne5 Nh6  
+[ECO	C51 Evans gambit declined]
+e4 e5  Nf3 Nc6  Bc4 Bc5  b4 
+[ECO	C50 Giuoco Pianissimo: Canal variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  d3 Nf6  Nc3 d6  Bg5 
+[ECO	C50 Giuoco Pianissimo: Italian four knights variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  d3 Nf6  Nc3 
+[ECO	C50 Giuoco Pianissimo]
+e4 e5  Nf3 Nc6  Bc4 Bc5  d3 Nf6  
+[ECO	C50 Giuoco Pianissimo: Dubois variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  d3 f5  Ng5 f4  
+[ECO	C50 Giuoco Pianissimo]
+e4 e5  Nf3 Nc6  Bc4 Bc5  d3 
+[ECO	C50 Giuoco Piano: Jerome gambit]
+e4 e5  Nf3 Nc6  Bc4 Bc5  Bf7 
+[ECO	C50 Giuoco Piano: four knights variation]
+e4 e5  Nf3 Nc6  Bc4 Bc5  Nc3 Nf6  
+[ECO	C50 Giuoco Piano]
+e4 e5  Nf3 Nc6  Bc4 Bc5  
+[ECO	C50 Hungarian defence: Tartakower variation]
+e4 e5  Nf3 Nc6  Bc4 Be7  d4 ed  c3 Nf6  e5 Ne4  
+[ECO	C50 Hungarian defence]
+e4 e5  Nf3 Nc6  Bc4 Be7  
+[ECO	C50 Rousseau gambit]
+e4 e5  Nf3 Nc6  Bc4 f5  
+[ECO	C50 Blackburne shilling gambit]
+e4 e5  Nf3 Nc6  Bc4 Nd4  Ne5 Qg5  Nf7 Qg2  Rf1 Qe4  Be2 Nf3  
+[ECO	C50 King's pawn game]
+e4 e5  Nf3 Nc6  Bc4 
+[ECO	C49 Four knights: Nimzovich  variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  o-o o-o  Bc6 
+[ECO	C49 Four knights: symmetrical, Mar\'oczy system]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  o-o o-o  d3 d6  Ne2 
+[ECO	C49 Four knights: symmetrical, Tarrasch variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  o-o o-o  d3 d6  Bg5 Be6  
+[ECO	C49 Four knights: symmetrical, Blake variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  o-o o-o  d3 d6  Bg5 Ne7  Nh4 c6  
+Bc4 d5  Bb3 Qd6  
+[ECO	C49 Four knights: symmetrical, Pillsbury variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  o-o o-o  d3 d6  Bg5 Ne7  
+[ECO	C49 Four knights: symmetrical, Capablanca variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  o-o o-o  d3 d6  Bg5 Bc3  bc Qe7  
+Re1 Nd8  d4 Bg4  
+[ECO	C49 Four knights: symmetrical, Metger unpin]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  o-o o-o  d3 d6  Bg5 Bc3  bc Qe7  
+[ECO	C49 Four knights: symmetrical variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  o-o o-o  d3 d6  
+[ECO	C49 Four knights: Svenonius variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  o-o o-o  d3 Bc3  bc d5  
+[ECO	C49 Four knights: Janowski variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  o-o o-o  d3 Bc3  bc d6  Re1 
+[ECO	C49 Four knights]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  o-o o-o  d3 Bc3  
+[ECO	C49 Four knights: Alatortsev variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  o-o o-o  d3 Qe7  Ne2 d5  
+[ECO	C49 Four knights: double Ruy Lopez]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  o-o o-o  d3 
+[ECO	C49 Four knights: Gunsberg counter-attack]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  o-o o-o  Nd5 Nd5  ed e4  
+[ECO	C49 Four knights: double Ruy Lopez]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bb4  
+[ECO	C48 Four knights: Rubinstein counter-gambit, Henneberger variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Nd4  o-o 
+[ECO	C48 Four knights: Rubinstein counter-gambit, exchange variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Nd4  Nd4 
+[ECO	C48 Four knights: Rubinstein counter-gambit Mar\'oczy variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Nd4  Be2 Nf3  Bf3 Bc5  o-o o-o  d3 d6  
+Na4 Bb6  
+[ECO	C48 Four knights: Rubinstein counter-gambit, 5.Be2]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Nd4  Be2 
+[ECO	C48 Four knights: Rubinstein counter-gambit, Bogolyubov variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Nd4  Ne5 Qe7  f4 
+[ECO	C48 Four knights: Rubinstein counter-gambit]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Nd4  
+[ECO	C48 Four knights: Marshall variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bc5  o-o o-o  Ne5 Nd4  
+[ECO	C48 Four knights: Bardeleben variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bc5  o-o o-o  Ne5 Ne5  d4 Bd6  f4 Nc6  
+e5 Bb4  
+[ECO	C48 Four knights: Spanish, classical defence]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 Bc5  
+[ECO	C48 Four knights: Spielmann variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 a6  Bc6 dc  Ne5 Ne4  Ne4 Qd4  o-o Qe5  
+Re1 Be6  d4 Qd5  
+[ECO	C48 Four knights: Ranken variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 a6  Bc6 
+[ECO	C48 Four knights: Spanish variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bb5 
+[ECO	C47 Four knights: Belgrade gambit]
+e4 e5  Nf3 Nc6  Nc3 Nf6  d4 ed  Nd5 
+[ECO	C47 Four knights: Scotch, 4...exd4]
+e4 e5  Nf3 Nc6  Nc3 Nf6  d4 ed  
+[ECO	C47 Four knights: Scotch, Krause variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  d4 Bb4  Ne5 
+[ECO	C47 Four knights: Scotch variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  d4 
+[ECO	C46 Four knights: Gunsberg variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  a3 
+[ECO	C46 Four knights: Italian variation]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Bc4 
+[ECO	C46 Four knights: Schultze-M\"uller gambit]
+e4 e5  Nf3 Nc6  Nc3 Nf6  Ne5 
+[ECO	C46 Four knights game]
+e4 e5  Nf3 Nc6  Nc3 Nf6  
+[ECO	C46 Three knights: Steinitz, Rosenthal variation]
+e4 e5  Nf3 Nc6  Nc3 g6  d4 ed  Nd5 
+[ECO	C46 Three knights: Steinitz variation]
+e4 e5  Nf3 Nc6  Nc3 g6  
+[ECO	C46 Three knights: Winawer defence ]
+e4 e5  Nf3 Nc6  Nc3 f5  
+[ECO	C46 Three knights: Schlechter variation]
+e4 e5  Nf3 Nc6  Nc3 Bb4  Nd5 Nf6  
+[ECO	C46 Three knights game]
+e4 e5  Nf3 Nc6  Nc3 
+[ECO	C45 Scotch: Romanishin variation]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Bc5  Nb3 Bb4  
+[ECO	C45 Scotch: Potter variation]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Bc5  Nb3 
+[ECO	C45 Scotch: Blumenfeld attack]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Bc5  Be3 Qf6  Nb5 
+[ECO	C45 Scotch: Meitner variation]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Bc5  Be3 Qf6  c3 N8e7  Nc2 
+[ECO	C45 Scotch: Paulsen, Gunsberg defence]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Bc5  Be3 Qf6  c3 N8e7  Bb5 Nd8  
+[ECO	C45 Scotch: Paulsen attack]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Bc5  Be3 Qf6  c3 N8e7  Bb5 
+[ECO	C45 Scotch: Gottschall variation]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Bc5  Be3 Qf6  c3 N8e7  Qd2 d5  Nb5 Be3  
+Qe3 o-o  Nc7 Rb8  Nd5 Nd5  ed Nb4  
+[ECO	C45 Scotch: Blackburne attack]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Bc5  Be3 Qf6  c3 N8e7  Qd2 
+[ECO	C45 Scotch game]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Bc5  
+[ECO	C45 Scotch: Tartakower variation]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Nf6  Nc6 bc  Nd2 
+[ECO	C45 Scotch: Mieses variation]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Nf6  Nc6 bc  e5 
+[ECO	C45 Scotch: Schmidt variation]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Nf6  
+[ECO	C45 Scotch: Steinitz variation]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Qh4  Nc3 
+[ECO	C45 Scotch: Fraser attack]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Qh4  Nf3 
+[ECO	C45 Scotch: Rosenthal variation]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Qh4  Nb5 Bb4  Bd2 Qe4  Be2 Kd8  o-o Bd2  
+Nd2 Qg6  
+[ECO	C45 Scotch game]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Qh4  Nb5 Bb4  Bd2 
+[ECO	C45 Scotch: Berger variation]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Qh4  Nb5 Bb4  Nd2 Qe4  Be2 Qg2  Bf3 Qh3  
+Nc7 Kd8  Na8 Nf6  a3 
+[ECO	C45 Scotch: Horwitz attack]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Qh4  Nb5 
+[ECO	C45 Scotch: Pulling counter-attack]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Qh4  
+[ECO	C45 Scotch: Ghulam Kassim variation]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 Nd4  Qd4 d6  Bd3 
+[ECO	C45 Scotch game]
+e4 e5  Nf3 Nc6  d4 ed  Nd4 
+[ECO	C44 Scotch gambit: Dubois-R\'eti defence]
+e4 e5  Nf3 Nc6  d4 ed  Bc4 Nf6  
+[ECO	C44 Scotch gambit: Benima defence]
+e4 e5  Nf3 Nc6  d4 ed  Bc4 Be7  
+[ECO	C44 Scotch gambit: Cochrane variation]
+e4 e5  Nf3 Nc6  d4 ed  Bc4 Bb4  c3 dc  bc Ba5  e5 
+[ECO	C44 Scotch gambit]
+e4 e5  Nf3 Nc6  d4 ed  Bc4 Bb4  c3 dc  bc 
+[ECO	C44 Scotch gambit: Hanneken variation]
+e4 e5  Nf3 Nc6  d4 ed  Bc4 Bb4  c3 dc  o-o cb  Bb2 Nf6  Ng5 o-o  
+e5 Ne5  
+[ECO	C44 Scotch gambit]
+e4 e5  Nf3 Nc6  d4 ed  Bc4 Bb4  
+[ECO	C44 Scotch gambit: Vitzhum attack]
+e4 e5  Nf3 Nc6  d4 ed  Bc4 Bc5  Ng5 Nh6  Qh5 
+[ECO	C44 Scotch gambit: Cochrane-Shumov defence]
+e4 e5  Nf3 Nc6  d4 ed  Bc4 Bc5  Ng5 Nh6  Nf7 Nf7  Bf7 Kf7  Qh5 g6  
+Qc5 d5  
+[ECO	C44 Scotch gambit]
+e4 e5  Nf3 Nc6  d4 ed  Bc4 Bc5  Ng5 
+[ECO	C44 Scotch gambit: Anderssen  counter-attack]
+e4 e5  Nf3 Nc6  d4 ed  Bc4 Bc5  o-o d6  c3 Bg4  
+[ECO	C44 Scotch gambit]
+e4 e5  Nf3 Nc6  d4 ed  Bc4 
+[ECO	C44 Scotch: G\"oring gambit, Bardeleben variation]
+e4 e5  Nf3 Nc6  d4 ed  c3 dc  Nc3 Bb4  Bc4 Nf6  
+[ECO	C44 Scotch: G\"oring gambit]
+e4 e5  Nf3 Nc6  d4 ed  c3 dc  Nc3 Bb4  
+[ECO	C44 Scotch: Sea-cadet mate]
+e4 e5  Nf3 Nc6  d4 ed  c3 dc  Nc3 d6  Bc4 Bg4  o-o Ne5  Ne5 Bd1  
+Bf7 Ke7  Nd5 
+[ECO	C44 Scotch: G\"oring gambit]
+e4 e5  Nf3 Nc6  d4 ed  c3 
+[ECO	C44 Scotch: Relfsson gambit ]
+e4 e5  Nf3 Nc6  d4 ed  Bb5 
+[ECO	C44 Scotch: Cochrane variation]
+e4 e5  Nf3 Nc6  d4 Nd4  Ne5 Ne6  Bc4 c6  o-o Nf6  Nf7 
+[ECO	C44 Scotch: Lolli variation]
+e4 e5  Nf3 Nc6  d4 Nd4  
+[ECO	C44 Scotch opening]
+e4 e5  Nf3 Nc6  d4 
+[ECO	C44 Ponziani counter-gambit, Cordel variation]
+e4 e5  Nf3 Nc6  c3 f5  d4 d6  d5 fe  Ng5 Nb8  Ne4 Nf6  Bd3 Be7  
+[ECO	C44 Ponziani counter-gambit, Schmidt attack]
+e4 e5  Nf3 Nc6  c3 f5  d4 d6  d5 
+[ECO	C44 Ponziani counter-gambit]
+e4 e5  Nf3 Nc6  c3 f5  
+[ECO	C44 Ponziani: Romanishin variation]
+e4 e5  Nf3 Nc6  c3 Be7  
+[ECO	C44 Ponziani: R\'eti variation]
+e4 e5  Nf3 Nc6  c3 N8e7  
+[ECO	C44 Ponziani: Fraser defence]
+e4 e5  Nf3 Nc6  c3 Nf6  d4 Ne4  d5 Bc5  
+[ECO	C44 Ponziani: Jaenisch counter-attack]
+e4 e5  Nf3 Nc6  c3 Nf6  
+[ECO	C44 Ponziani: Steinitz variation]
+e4 e5  Nf3 Nc6  c3 d5  Qa4 f6  
+[ECO	C44 Ponziani: Leonhardt variation]
+e4 e5  Nf3 Nc6  c3 d5  Qa4 Nf6  
+[ECO	C44 Ponziani: Caro variation]
+e4 e5  Nf3 Nc6  c3 d5  Qa4 Bd7  
+[ECO	C44 Ponziani opening]
+e4 e5  Nf3 Nc6  c3 
+[ECO	C44 Tayler opening]
+e4 e5  Nf3 Nc6  Be2 Nf6  d4 
+[ECO	C44 Inverted Hanham]
+e4 e5  Nf3 Nc6  Be2 Nf6  d3 d5  N1d2 
+[ECO	C44 Inverted Hungarian]
+e4 e5  Nf3 Nc6  Be2 
+[ECO	C44 Dresden opening]
+e4 e5  Nf3 Nc6  c4 
+[ECO	C44 Konstantinopolsky opening]
+e4 e5  Nf3 Nc6  g3 
+[ECO	C44 Irish  gambit]
+e4 e5  Nf3 Nc6  Ne5 Ne5  d4 
+[ECO	C44 King's pawn game]
+e4 e5  Nf3 Nc6  
+[ECO	C43 Petrov: modern attack, Trifunovi\'c variation]
+e4 e5  Nf3 Nf6  d4 Ne4  Bd3 d5  Ne5 Bd6  o-o o-o  c4 Be5  
+[ECO	C43 Petrov: modern attack, Symmetrical variation]
+e4 e5  Nf3 Nf6  d4 Ne4  
+[ECO	C43 Petrov: Urusov gambit]
+e4 e5  Nf3 Nf6  d4 ed  Bc4 
+[ECO	C43 Petrov: modern attack, Bardeleben variation]
+e4 e5  Nf3 Nf6  d4 ed  e5 Ne4  Qe2 Nc5  Nd4 Nc6  
+[ECO	C43 Petrov: modern attack, Steinitz variation]
+e4 e5  Nf3 Nf6  d4 ed  e5 Ne4  Qe2 
+[ECO	C43 Petrov: modern attack, main line]
+e4 e5  Nf3 Nf6  d4 ed  e5 Ne4  Qd4 
+[ECO	C43 Petrov: modern  attack]
+e4 e5  Nf3 Nf6  d4 
+[ECO	C42 Petrov: Italian variation]
+e4 e5  Nf3 Nf6  Bc4 
+[ECO	C42 Petrov three knights game]
+e4 e5  Nf3 Nf6  Nc3 
+[ECO	C42 Petrov: Damiano variation]
+e4 e5  Nf3 Nf6  Ne5 Ne4  
+[ECO	C42 Petrov: Paulsen attack]
+e4 e5  Nf3 Nf6  Ne5 d6  Nc4 
+[ECO	C42 Petrov: Cochrane gambit]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf7 
+[ECO	C42 Petrov: classical attack, close variation]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  d4 Nf6  
+[ECO	C42 Petrov: classical attack, Marshall trap]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  d4 d5  Bd3 Bd6  o-o o-o  c4 Bg4  
+cd f5  Re1 Bh2  
+[ECO	C42 Petrov: classical attack, Tarrasch variation]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  d4 d5  Bd3 Bd6  o-o o-o  c4 Bg4  
+[ECO	C42 Petrov: classical attack, Marshall variation]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  d4 d5  Bd3 Bd6  
+[ECO	C42 Petrov: classical attack, Mason variation]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  d4 d5  Bd3 Be7  o-o o-o  
+[ECO	C42 Petrov: classical attack, Jaenisch variation]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  d4 d5  Bd3 Be7  o-o Nc6  c4 
+[ECO	C42 Petrov: classical attack, Mar\'oczy variation]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  d4 d5  Bd3 Be7  o-o Nc6  Re1 Bg4  
+c3 f5  c4 Bh4  
+[ECO	C42 Petrov: classical attack, Krause variation]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  d4 d5  Bd3 Be7  o-o Nc6  Re1 Bg4  
+c3 f5  c4 
+[ECO	C42 Petrov: classical attack, Berger variation]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  d4 d5  Bd3 Be7  o-o Nc6  Re1 Bg4  
+c3 f5  N1d2 
+[ECO	C42 Petrov: classical attack, Chigorin variation]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  d4 d5  Bd3 Be7  o-o Nc6  Re1 
+[ECO	C42 Petrov: classical attack]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  d4 
+[ECO	C42 Petrov: Cozio  attack]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  Qe2 
+[ECO	C42 Petrov: Nimzovich attack]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  Nc3 
+[ECO	C42 Petrov: Kaufmann attack]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  c4 
+[ECO	C42 Petrov: French attack]
+e4 e5  Nf3 Nf6  Ne5 d6  Nf3 Ne4  d3 
+[ECO	C42 Petrov's defence]
+e4 e5  Nf3 Nf6  
+[ECO	C41 Philidor: Hanham, Delmar variation]
+e4 e5  Nf3 d6  d4 Nd7  Bc4 c6  c3 
+[ECO	C41 Philidor: Hanham, Schlechter variation]
+e4 e5  Nf3 d6  d4 Nd7  Bc4 c6  Nc3 
+[ECO	C41 Philidor: Hanham, Berger variation]
+e4 e5  Nf3 d6  d4 Nd7  Bc4 c6  Ng5 Nh6  f4 Be7  o-o o-o  c3 d5  
+[ECO	C41 Philidor: Hanham, Kmoch variation]
+e4 e5  Nf3 d6  d4 Nd7  Bc4 c6  Ng5 
+[ECO	C41 Philidor: Hanham, Steiner variation]
+e4 e5  Nf3 d6  d4 Nd7  Bc4 c6  o-o Be7  de 
+[ECO	C41 Philidor: Hanham, Krause variation]
+e4 e5  Nf3 d6  d4 Nd7  Bc4 c6  o-o 
+[ECO	C41 Philidor: Hanham variation]
+e4 e5  Nf3 d6  d4 Nd7  
+[ECO	C41 Philidor: Nimzovich, Klein variation]
+e4 e5  Nf3 d6  d4 Nf6  Bc4 
+[ECO	C41 Philidor: Nimzovich, Locock variation]
+e4 e5  Nf3 d6  d4 Nf6  Ng5 
+[ECO	C41 Philidor: Nimzovich, Rellstab variation]
+e4 e5  Nf3 d6  d4 Nf6  de Ne4  Qd5 
+[ECO	C41 Philidor: Nimzovich, Sokolsky variation]
+e4 e5  Nf3 d6  d4 Nf6  de Ne4  N1d2 
+[ECO	C41 Philidor: Nimzovich variation]
+e4 e5  Nf3 d6  d4 Nf6  de 
+[ECO	C41 Philidor: Nimzovich, L\"arobok variation]
+e4 e5  Nf3 d6  d4 Nf6  Nc3 N8d7  Bc4 Be7  Ng5 o-o  Bf7 
+[ECO	C41 Philidor: Nimzovich, Sozin variation]
+e4 e5  Nf3 d6  d4 Nf6  Nc3 N8d7  Bc4 Be7  o-o o-o  Qe2 c6  a4 ed  
+[ECO	C41 Philidor: Improved Hanham variation]
+e4 e5  Nf3 d6  d4 Nf6  Nc3 N8d7  
+[ECO	C41 Philidor: Nimzovich  variation]
+e4 e5  Nf3 d6  d4 Nf6  
+[ECO	C41 Philidor: Larsen variation]
+e4 e5  Nf3 d6  d4 ed  Nd4 g6  
+[ECO	C41 Philidor: Berger variation]
+e4 e5  Nf3 d6  d4 ed  Nd4 Nf6  Nc3 Be7  Be2 o-o  o-o c5  Nf3 Nc6  
+Bg5 Be6  Re1 
+[ECO	C41 Philidor: exchange variation]
+e4 e5  Nf3 d6  d4 ed  Nd4 Nf6  
+[ECO	C41 Philidor: Paulsen attack]
+e4 e5  Nf3 d6  d4 ed  Nd4 d5  ed 
+[ECO	C41 Philidor: exchange variation]
+e4 e5  Nf3 d6  d4 ed  Nd4 
+[ECO	C41 Philidor: Boden variation]
+e4 e5  Nf3 d6  d4 ed  Qd4 Bd7  
+[ECO	C41 Philidor: exchange variation]
+e4 e5  Nf3 d6  d4 ed  
+[ECO	C41 Philidor: Philidor counter-gambit, Zukertort variation]
+e4 e5  Nf3 d6  d4 f5  Nc3 
+[ECO	C41 Philidor: Philidor counter-gambit, Berger variation]
+e4 e5  Nf3 d6  d4 f5  de fe  Ng5 d5  e6 Bc5  Nc3 
+[ECO	C41 Philidor: Philidor counter-gambit, del Rio attack]
+e4 e5  Nf3 d6  d4 f5  de fe  Ng5 d5  e6 
+[ECO	C41 Philidor: Philidor counter-gambit]
+e4 e5  Nf3 d6  d4 f5  
+[ECO	C41 Philidor's defence]
+e4 e5  Nf3 d6  d4 
+[ECO	C41 Philidor: L\'opez counter-gambit, Jaenisch variation]
+e4 e5  Nf3 d6  Bc4 f5  d4 ed  Ng5 Nh6  Nh7 
+[ECO	C41 Philidor: L\'opez counter-gambit]
+e4 e5  Nf3 d6  Bc4 f5  
+[ECO	C41 Philidor: Steinitz variation]
+e4 e5  Nf3 d6  Bc4 Be7  c3 
+[ECO	C41 Philidor's defence]
+e4 e5  Nf3 d6  
+[ECO	C40 Latvian: corkscrew counter-gambit]
+e4 e5  Nf3 f5  Bc4 fe  Ne5 Nf6  
+[ECO	C40 Latvian: Polerio variation]
+e4 e5  Nf3 f5  Bc4 fe  Ne5 d5  
+[ECO	C40 Latvian: Behting variation]
+e4 e5  Nf3 f5  Bc4 fe  Ne5 Qg5  Nf7 Qg2  Rf1 d5  Nh8 Nf6  
+[ECO	C40 Latvian gambit, 3.Bc4]
+e4 e5  Nf3 f5  Bc4 
+[ECO	C40 Latvian: Fraser defence]
+e4 e5  Nf3 f5  Ne5 Nc6  
+[ECO	C40 Latvian: Nimzovich variation]
+e4 e5  Nf3 f5  Ne5 Qf6  d4 d6  Nc4 fe  Ne3 
+[ECO	C40 Latvian counter-gambit]
+e4 e5  Nf3 f5  
+[ECO	C40 QP counter-gambit: Maroczy gambit]
+e4 e5  Nf3 d5  ed Bd6  
+[ECO	C40 QP counter-gambit ]
+e4 e5  Nf3 d5  
+[ECO	C40 Damiano's defence]
+e4 e5  Nf3 f6  
+[ECO	C40 Greco defence]
+e4 e5  Nf3 Qf6  
+[ECO	C40 Gunderam defence]
+e4 e5  Nf3 Qe7  
+[ECO	C40 King's knight opening]
+e4 e5  Nf3 
+[ECO	C39 KGA: Kieseritsky, Rice gambit]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 Nf6  Bc4 d5  ed Bd6  o-o 
+[ECO	C39 KGA: Kieseritsky, Berlin defence, 6.Bc4]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 Nf6  Bc4 
+[ECO	C39 KGA: Kieseritsky, Berlin defence, Rivi\`ere variation]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 Nf6  Ng4 d5  
+[ECO	C39 KGA: Kieseritsky, Berlin defence]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 Nf6  
+[ECO	C39 KGA: Kieseritsky, Kolisch defence]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 d6  
+[ECO	C39 KGA: Kieseritsky, Neumann defence]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 Nc6  
+[ECO	C39 KGA: Kieseritsky, Polerio defence]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 Be7  
+[ECO	C39 KGA: Kieseritsky, Salvio defence, Cozio variation]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 Qe7  d4 f5  Bc4 
+[ECO	C39 KGA: Kieseritsky, Salvio  defence]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 Qe7  
+[ECO	C39 KGA: Kieseritsky, Brentano defence, Caro variation]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 d5  d4 Nf6  Bf4 Ne4  Nd2 
+[ECO	C39 KGA: Kieseritsky, Brentano defence]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 d5  d4 Nf6  Bf4 
+[ECO	C39 KGA: Kieseritsky, Brentano defence, Kaplanek variation]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 d5  d4 Nf6  ed Qd5  Nc3 Bb4  
+Kf2 
+[ECO	C39 KGA: Kieseritsky, Brentano  defence]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 d5  
+[ECO	C39 KGA: Kieseritsky, long whip defence, Jaenisch variation]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 h5  Bc4 Rh7  d4 Bh6  Nc3 
+[ECO	C39 KGA: Kieseritsky, long whip  defence]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 h5  
+[ECO	C39 KGA: Kieseritsky, Paulsen defence]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ne5 Bg7  
+[ECO	C39 KGA: Allgaier, Schlechter defence]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ng5 Nf6  
+[ECO	C39 KGA: Allgaier, Urusov attack]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ng5 h6  Nf7 Kf7  Bc4 d5  Bd5 Kg7  
+d4 
+[ECO	C39 KGA: Allgaier, Walker attack]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ng5 h6  Nf7 Kf7  Bc4 
+[ECO	C39 KGA: Allgaier, Blackburne gambit]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ng5 h6  Nf7 Kf7  Nc3 
+[ECO	C39 KGA: Allgaier, Cook variation]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ng5 h6  Nf7 Kf7  d4 d5  Bf4 de  
+Bc4 Kg7  Be5 
+[ECO	C39 KGA: Allgaier, Thorold variation]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ng5 h6  Nf7 Kf7  d4 
+[ECO	C39 KGA: Allgaier, Horny defence]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ng5 h6  Nf7 Kf7  Qg4 Nf6  Qf4 Bd6  
+[ECO	C39 KGA: Allgaier gambit]
+e4 e5  f4 ef  Nf3 g5  h4 g4  Ng5 
+[ECO	C39 King's knight's gambit]
+e4 e5  f4 ef  Nf3 g5  h4 
+[ECO	C38 KGA: Philidor gambit, Schultz variation]
+e4 e5  f4 ef  Nf3 g5  Bc4 Bg7  h4 h6  d4 d6  Qd3 
+[ECO	C38 KGA: Greco gambit]
+e4 e5  f4 ef  Nf3 g5  Bc4 Bg7  h4 h6  d4 d6  Nc3 c6  hg hg  
+Rh8 Bh8  Ne5 
+[ECO	C38 KGA: Philidor gambit]
+e4 e5  f4 ef  Nf3 g5  Bc4 Bg7  h4 
+[ECO	C38 KGA: Hanstein gambit]
+e4 e5  f4 ef  Nf3 g5  Bc4 Bg7  o-o 
+[ECO	C38 King's knight's gambit]
+e4 e5  f4 ef  Nf3 g5  Bc4 Bg7  
+[ECO	C37 KGA: Muzio gambit, Brentano defence]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  o-o d5  
+[ECO	C37 KGA: Muzio gambit, Kling and Horwitz counter-attack]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  o-o Qe7  
+[ECO	C37 KGA: Muzio gambit, Holloway defence]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  o-o gf  Qf3 Nc6  
+[ECO	C37 KGA: Muzio gambit, From defence]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  o-o gf  Qf3 Qe7  
+[ECO	C37 KGA: double Muzio gambit]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  o-o gf  Qf3 Qf6  e5 Qe5  Bf7 
+[ECO	C37 KGA: Muzio gambit, Paulsen variation]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  o-o gf  Qf3 Qf6  e5 Qe5  d3 Bh6  
+Nc3 Ne7  Bd2 N8c6  a1e1 
+[ECO	C37 KGA: Muzio gambit]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  o-o 
+[ECO	C37 KGA: Herzfeld gambit]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  Ne5 Qh4  Kf1 Nc6  
+[ECO	C37 KGA: Cochrane gambit]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  Ne5 Qh4  Kf1 f3  
+[ECO	C37 KGA: Salvio gambit, Anderssen counter-attack]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  Ne5 Qh4  Kf1 Nh6  d4 d6  
+[ECO	C37 KGA: Silberschmidt gambit]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  Ne5 Qh4  Kf1 Nh6  d4 f3  
+[ECO	C37 KGA: Salvio gambit]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  Ne5 
+[ECO	C37 KGA: MacDonnell gambit]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  Nc3 
+[ECO	C37 KGA: Ghulam Kassim gambit]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  d4 
+[ECO	C37 KGA: Lolli gambit, Young variation]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  Bf7 Kf7  o-o gf  Qf3 Qf6  d4 Qd4  
+Be3 Qf6  Nc3 
+[ECO	C37 KGA: Lolli gambit ]
+e4 e5  f4 ef  Nf3 g5  Bc4 g4  Bf7 
+[ECO	C37 KGA: Blachly gambit]
+e4 e5  f4 ef  Nf3 g5  Bc4 Nc6  
+[ECO	C37 KGA: King's knight's gambit]
+e4 e5  f4 ef  Nf3 g5  Bc4 
+[ECO	C37 KGA: S\o rensen gambit]
+e4 e5  f4 ef  Nf3 g5  d4 g4  Ne5 
+[ECO	C37 KGA: Rosentreter gambit]
+e4 e5  f4 ef  Nf3 g5  d4 
+[ECO	C37 KGA: Quaade gambit]
+e4 e5  f4 ef  Nf3 g5  Nc3 
+[ECO	C36 KGA: Abbazia defence, Botvinnik variation]
+e4 e5  f4 ef  Nf3 d5  ed Nf6  Bb5 c6  dc bc  Bc4 Nd5  
+[ECO	C36 KGA: Abbazia defence, modern variation]
+e4 e5  f4 ef  Nf3 d5  ed Nf6  
+[ECO	C36 KGA: Abbazia defence ]
+e4 e5  f4 ef  Nf3 d5  
+[ECO	C35 KGA: Cunningham, Euwe defence]
+e4 e5  f4 ef  Nf3 Be7  Bc4 Nf6  
+[ECO	C35 KGA: Cunningham, three pawns gambit]
+e4 e5  f4 ef  Nf3 Be7  Bc4 Bh4  g3 fg  o-o gh  Kh1 
+[ECO	C35 KGA: Cunningham, Bertin gambit]
+e4 e5  f4 ef  Nf3 Be7  Bc4 Bh4  g3 
+[ECO	C35 KGA: Cunningham defence]
+e4 e5  f4 ef  Nf3 Be7  
+[ECO	C34 KGA: Schallop defence]
+e4 e5  f4 ef  Nf3 Nf6  
+[ECO	C34 KGA: Becker defence]
+e4 e5  f4 ef  Nf3 h6  
+[ECO	C34 KGA: Fischer defence]
+e4 e5  f4 ef  Nf3 d6  
+[ECO	C34 KGA: Gianutio counter-gambit]
+e4 e5  f4 ef  Nf3 f5  
+[ECO	C34 KGA: Bonsch-Osmolovsky variation]
+e4 e5  f4 ef  Nf3 Ne7  
+[ECO	C34 King's knight's gambit]
+e4 e5  f4 ef  Nf3 
+[ECO	C33 KGA: bishop's gambit, Jaenisch variation]
+e4 e5  f4 ef  Bc4 Nf6  Nc3 c6  
+[ECO	C33 KGA: bishop's gambit, Paulsen attack]
+e4 e5  f4 ef  Bc4 Nf6  Nc3 Bb4  e5 
+[ECO	C33 KGA: bishop's gambit, Bogolyubov variation]
+e4 e5  f4 ef  Bc4 Nf6  Nc3 
+[ECO	C33 KGA: bishop's gambit, Cozio  defence]
+e4 e5  f4 ef  Bc4 Nf6  
+[ECO	C33 KGA: bishop's gambit, Morphy variation]
+e4 e5  f4 ef  Bc4 d5  Bd5 Nf6  
+[ECO	C33 KGA: bishop's gambit, Anderssen variation]
+e4 e5  f4 ef  Bc4 d5  Bd5 c6  
+[ECO	C33 KGA: bishop's gambit, Bor\'en-Svenonius variation]
+e4 e5  f4 ef  Bc4 d5  Bd5 Qh4  Kf1 Bd6  
+[ECO	C33 KGA: bishop's gambit, Gifford variation]
+e4 e5  f4 ef  Bc4 d5  Bd5 Qh4  Kf1 g5  g3 
+[ECO	C33 KGA: bishop's gambit, Bledow variation]
+e4 e5  f4 ef  Bc4 d5  
+[ECO	C33 KGA: L\'opez-Gianutio counter-gambit, Hein variation]
+e4 e5  f4 ef  Bc4 f5  Qe2 Qh4  Kd1 fe  Nc3 Kd8  
+[ECO	C33 KGA: bishop's gambit, L\'opez-Gianutio counter-gambit]
+e4 e5  f4 ef  Bc4 f5  
+[ECO	C33 KGA: bishop's gambit, Ruy L\'opez defence]
+e4 e5  f4 ef  Bc4 c6  
+[ECO	C33 KGA: bishop's gambit, Maurian defence]
+e4 e5  f4 ef  Bc4 Nc6  
+[ECO	C33 KGA: bishop's gambit, Steinitz defence]
+e4 e5  f4 ef  Bc4 Ne7  
+[ECO	C33 KGA: bishop's gambit, Bryan counter-gambit]
+e4 e5  f4 ef  Bc4 b5  
+[ECO	C33 KGA: bishop's gambit, Bryan counter-gambit]
+e4 e5  f4 ef  Bc4 Qh4  Kf1 b5  
+[ECO	C33 KGA: bishop's gambit, Boden defence]
+e4 e5  f4 ef  Bc4 Qh4  Kf1 Nc6  
+[ECO	C33 KGA: bishop's gambit, classical defence, Cozio attack]
+e4 e5  f4 ef  Bc4 Qh4  Kf1 g5  Qf3 
+[ECO	C33 KGA: bishop's gambit, Fraser variation]
+e4 e5  f4 ef  Bc4 Qh4  Kf1 g5  Nc3 Bg7  g3 fg  Qf3 
+[ECO	C33 KGA: bishop's gambit, McDonnell attack]
+e4 e5  f4 ef  Bc4 Qh4  Kf1 g5  Nc3 Bg7  g3 
+[ECO	C33 KGA: bishop's gambit, McDonnell attack]
+e4 e5  f4 ef  Bc4 Qh4  Kf1 g5  Nc3 Bg7  d4 Ne7  g3 
+[ECO	C33 KGA: bishop's gambit, classical defence]
+e4 e5  f4 ef  Bc4 Qh4  Kf1 g5  Nc3 Bg7  d4 Ne7  
+[ECO	C33 KGA: bishop's gambit, Grimm attack]
+e4 e5  f4 ef  Bc4 Qh4  Kf1 g5  Nc3 Bg7  d4 d6  e5 
+[ECO	C33 KGA: bishop's gambit, classical defence]
+e4 e5  f4 ef  Bc4 Qh4  Kf1 g5  
+[ECO	C33 KGA: bishop's gambit, Greco variation]
+e4 e5  f4 ef  Bc4 Qh4  Kf1 Bc5  
+[ECO	C33 KGA: bishop's gambit, Chigorin's attack]
+e4 e5  f4 ef  Bc4 Qh4  Kf1 d5  Bd5 g5  g3 
+[ECO	C33 KGA: bishop's gambit]
+e4 e5  f4 ef  Bc4 
+[ECO	C33 KGA: Lesser bishop's  gambit]
+e4 e5  f4 ef  Be2 
+[ECO	C33 KGA: Breyer gambit]
+e4 e5  f4 ef  Qf3 
+[ECO	C33 KGA: Keres  gambit]
+e4 e5  f4 ef  Nc3 
+[ECO	C33 KGA: Villemson  gambit]
+e4 e5  f4 ef  d4 
+[ECO	C33 KGA: Carrera  gambit]
+e4 e5  f4 ef  Qe2 
+[ECO	C33 KGA: Schurig gambit]
+e4 e5  f4 ef  Bd3 
+[ECO	C33 KGA: Pawn's gambit ]
+e4 e5  f4 ef  h4 
+[ECO	C33 KGA: Orsini gambit]
+e4 e5  f4 ef  b3 
+[ECO	C33 KGA: Tumbleweed gambit]
+e4 e5  f4 ef  Kf2 
+[ECO	C33 King's gambit accepted]
+e4 e5  f4 ef  
+[ECO	C32 KGD: Falkbeer, R\'eti variation]
+e4 e5  f4 d5  ed e4  d3 Nf6  Qe2 
+[ECO	C32 KGD: Falkbeer, Keres variation]
+e4 e5  f4 d5  ed e4  d3 Nf6  Nd2 
+[ECO	C32 KGD: Falkbeer, Charousek variation]
+e4 e5  f4 d5  ed e4  d3 Nf6  de Ne4  Qe2 Qd5  Nd2 f5  g4 
+[ECO	C32 KGD: Falkbeer, Charousek gambit]
+e4 e5  f4 d5  ed e4  d3 Nf6  de Ne4  Qe2 
+[ECO	C32 KGD: Falkbeer, Tarrasch variation]
+e4 e5  f4 d5  ed e4  d3 Nf6  de Ne4  Nf3 Bc5  Qe2 Bf5  g4 o-o  
+[ECO	C32 KGD: Falkbeer, main line, 7...Bf5]
+e4 e5  f4 d5  ed e4  d3 Nf6  de Ne4  Nf3 Bc5  Qe2 Bf5  
+[ECO	C32 KGD: Falkbeer, Alapin variation]
+e4 e5  f4 d5  ed e4  d3 Nf6  de Ne4  Nf3 Bc5  Qe2 Bf2  Kd1 Qd5  
+N3d2 
+[ECO	C32 KGD: Falkbeer, 5.de]
+e4 e5  f4 d5  ed e4  d3 Nf6  de 
+[ECO	C31 KGD: Falkbeer, Morphy gambit]
+e4 e5  f4 d5  ed e4  d3 Nf6  Nc3 Bb4  Bd2 e3  
+[ECO	C31 KGD: Falkbeer, 4.d3]
+e4 e5  f4 d5  ed e4  d3 
+[ECO	C31 KGD: Falkbeer, Nimzovich variation]
+e4 e5  f4 d5  ed e4  Bb5 
+[ECO	C31 KGD: Falkbeer, Rubinstein variation]
+e4 e5  f4 d5  ed e4  Nc3 Nf6  Qe2 
+[ECO	C31 KGD: Falkbeer, 3...e4]
+e4 e5  f4 d5  ed e4  
+[ECO	C31 KGD: Nimzovich counter-gambit]
+e4 e5  f4 d5  ed c6  
+[ECO	C31 KGD: Falkbeer counter-gambit]
+e4 e5  f4 d5  ed 
+[ECO	C31 KGD: Falkbeer, Milner-Barry variation]
+e4 e5  f4 d5  Nc3 
+[ECO	C31 KGD: Falkbeer, Tartakower variation]
+e4 e5  f4 d5  Nf3 
+[ECO	C31 KGD: Falkbeer counter-gambit]
+e4 e5  f4 d5  
+[ECO	C30 KGD: 2...Nf6]
+e4 e5  f4 Nf6  
+[ECO	C30 KGD: classical, Heath variation]
+e4 e5  f4 Bc5  Nf3 d6  b4 
+[ECO	C30 KGD: classical, Soldatenkov variation]
+e4 e5  f4 Bc5  Nf3 d6  fe 
+[ECO	C30 KGD: classical, R\'eti variation]
+e4 e5  f4 Bc5  Nf3 d6  c3 f5  fe de  d4 ed  Bc4 
+[ECO	C30 KGD: classical counter-gambit]
+e4 e5  f4 Bc5  Nf3 d6  c3 f5  
+[ECO	C30 KGD: classical, Marshall attack]
+e4 e5  f4 Bc5  Nf3 d6  c3 Bg4  fe de  Qa4 
+[ECO	C30 KGD: classical, 4.c3]
+e4 e5  f4 Bc5  Nf3 d6  c3 
+[ECO	C30 KGD: classical, Hanham variation]
+e4 e5  f4 Bc5  Nf3 d6  Nc3 Nd7  
+[ECO	C30 KGD: classical, Svenonius variation]
+e4 e5  f4 Bc5  Nf3 d6  Nc3 Nf6  Bc4 Nc6  d3 Bg4  h3 Bf3  Qf3 ef  
+[ECO	C30 KGD: classical variation]
+e4 e5  f4 Bc5  
+[ECO	C30 KGD: Norwalde variation, B\"ucker gambit]
+e4 e5  f4 Qf6  Nf3 Qf4  Nc3 Bb4  Bc4 
+[ECO	C30 KGD: Norwalde variation]
+e4 e5  f4 Qf6  
+[ECO	C30 KGD: Mafia defence]
+e4 e5  f4 c5  
+[ECO	C30 KGD: Keene's defence]
+e4 e5  f4 Qh4  g3 Qe7  
+[ECO	C30 King's gambit]
+e4 e5  f4 
+[ECO	C29 Vienna gambit, Steinitz variation]
+e4 e5  Nc3 Nf6  f4 d5  d3 
+[ECO	C29 Vienna gambit, Wurzburger trap]
+e4 e5  Nc3 Nf6  f4 d5  fe Ne4  d3 Qh4  g3 Ng3  Nf3 Qh5  Nd5 
+[ECO	C29 Vienna gambit]
+e4 e5  Nc3 Nf6  f4 d5  fe Ne4  d3 
+[ECO	C29 Vienna gambit: Heyde variation]
+e4 e5  Nc3 Nf6  f4 d5  fe Ne4  Qf3 f5  d4 
+[ECO	C29 Vienna gambit: Bardeleben variation]
+e4 e5  Nc3 Nf6  f4 d5  fe Ne4  Qf3 f5  
+[ECO	C29 Vienna gambit: Paulsen attack]
+e4 e5  Nc3 Nf6  f4 d5  fe Ne4  Qf3 
+[ECO	C29 Vienna gambit: Breyer variation]
+e4 e5  Nc3 Nf6  f4 d5  fe Ne4  Nf3 Be7  
+[ECO	C29 Vienna gambit: Kaufmann variation]
+e4 e5  Nc3 Nf6  f4 d5  fe Ne4  Nf3 Bg4  Qe2 
+[ECO	C29 Vienna gambit]
+e4 e5  Nc3 Nf6  f4 d5  
+[ECO	C?? Vienna gambit]
+e4 e5  Nc3 Nf6  f4 
+[ECO	C28 Vienna game]
+e4 e5  Nc3 Nf6  Bc4 Nc6  
+[ECO	C27 Boden-Kieseritsky gambit: Lichtenhein defence]
+e4 e5  Nc3 Nf6  Bc4 Ne4  Nf3 d5  
+[ECO	C27 Boden-Kieseritsky gambit]
+e4 e5  Nc3 Nf6  Bc4 Ne4  Nf3 
+[ECO	C27 Vienna: Alekhine variation]
+e4 e5  Nc3 Nf6  Bc4 Ne4  Qh5 Nd6  Bb3 Be7  Nf3 Nc6  Ne5 
+[ECO	C27 Vienna game]
+e4 e5  Nc3 Nf6  Bc4 Ne4  Qh5 Nd6  Bb3 Be7  
+[ECO	C27 Vienna: Adams' gambit]
+e4 e5  Nc3 Nf6  Bc4 Ne4  Qh5 Nd6  Bb3 Nc6  d4 
+[ECO	C27 Vienna: `Frankenstein-Dracula' variation]
+e4 e5  Nc3 Nf6  Bc4 Ne4  Qh5 Nd6  Bb3 Nc6  Nb5 g6  Qf3 f5  Qd5 Qe7  
+Nc7 Kd8  Na8 b6  
+[ECO	C27 Vienna game]
+e4 e5  Nc3 Nf6  Bc4 Ne4  
+[ECO	C26 Vienna game]
+e4 e5  Nc3 Nf6  Bc4 
+[ECO	C26 Vienna: Paulsen-Mieses variation]
+e4 e5  Nc3 Nf6  g3 
+[ECO	C26 Vienna: Mengarini variation]
+e4 e5  Nc3 Nf6  a3 
+[ECO	C26 Vienna: Falkbeer variation]
+e4 e5  Nc3 Nf6  
+[ECO	C25 Vienna: Pierce gambit, Rushmere attack]
+e4 e5  Nc3 Nc6  f4 ef  Nf3 g5  d4 g4  Bc4 gf  o-o d5  ed Bg4  
+dc 
+[ECO	C25 Vienna: Pierce gambit]
+e4 e5  Nc3 Nc6  f4 ef  Nf3 g5  d4 
+[ECO	C25 Vienna: Hamppe-Muzio, Dubois variation]
+e4 e5  Nc3 Nc6  f4 ef  Nf3 g5  Bc4 g4  o-o gf  Qf3 Ne5  Qf4 Qf6  
+[ECO	C25 Vienna: Hamppe-Muzio gambit]
+e4 e5  Nc3 Nc6  f4 ef  Nf3 g5  Bc4 g4  o-o 
+[ECO	C25 Vienna: Hamppe-Allgaier gambit, Alapin variation]
+e4 e5  Nc3 Nc6  f4 ef  Nf3 g5  h4 g4  Ng5 d6  
+[ECO	C25 Vienna: Hamppe-Allgaier gambit]
+e4 e5  Nc3 Nc6  f4 ef  Nf3 g5  h4 g4  Ng5 
+[ECO	C25 Vienna gambit]
+e4 e5  Nc3 Nc6  f4 ef  Nf3 
+[ECO	C25 Vienna: Steinitz gambit, Fraser-Minckwitz variation]
+e4 e5  Nc3 Nc6  f4 ef  d4 Qh4  Ke2 b6  
+[ECO	C25 Vienna: Steinitz gambit, Zukertort defence]
+e4 e5  Nc3 Nc6  f4 ef  d4 Qh4  Ke2 d5  
+[ECO	C25 Vienna: Steinitz gambit]
+e4 e5  Nc3 Nc6  f4 ef  d4 
+[ECO	C25 Vienna gambit]
+e4 e5  Nc3 Nc6  f4 
+[ECO	C25 Vienna: Fyfe gambit]
+e4 e5  Nc3 Nc6  d4 
+[ECO	C25 Vienna: Paulsen variation]
+e4 e5  Nc3 Nc6  g3 
+[ECO	C25 Vienna game, Max Lange defence]
+e4 e5  Nc3 Nc6  
+[ECO	C25 Vienna: Zhuravlev countergambit]
+e4 e5  Nc3 Bb4  Qg4 Nf6  
+[ECO	C25 Vienna game]
+e4 e5  Nc3 
+[ECO	C24 Bishop's opening: Urusov gambit, Panov variation]
+e4 e5  Bc4 Nf6  d4 ed  Nf3 d5  ed Bb4  c3 Qe7  
+[ECO	C24 Bishop's opening: Urusov gambit]
+e4 e5  Bc4 Nf6  d4 ed  Nf3 
+[ECO	C24 Bishop's opening: Ponziani gambit]
+e4 e5  Bc4 Nf6  d4 
+[ECO	C24 Bishop's opening: Greco gambit]
+e4 e5  Bc4 Nf6  f4 
+[ECO	C24 Bishop's opening: Berlin defence]
+e4 e5  Bc4 Nf6  
+[ECO	C23 Bishop's opening: Four pawns' gambit]
+e4 e5  Bc4 Bc5  b4 Bb4  f4 ef  Nf3 Be7  d4 Bh4  g3 fg  o-o gh  
+Kh1 
+[ECO	C23 Bishop's opening: MacDonnell double gambit]
+e4 e5  Bc4 Bc5  b4 Bb4  f4 
+[ECO	C23 Bishop's opening: Wing gambit]
+e4 e5  Bc4 Bc5  b4 
+[ECO	C23 Bishop's opening: Lewis gambit]
+e4 e5  Bc4 Bc5  d4 
+[ECO	C23 Bishop's opening: del Rio variation]
+e4 e5  Bc4 Bc5  c3 Qg5  
+[ECO	C23 Bishop's opening: Lewis counter-gambit]
+e4 e5  Bc4 Bc5  c3 d5  
+[ECO	C23 Bishop's opening: Pratt variation]
+e4 e5  Bc4 Bc5  c3 Nf6  d4 ed  e5 d5  ef dc4  Qh5 o-o  
+[ECO	C23 Bishop's opening: Philidor variation]
+e4 e5  Bc4 Bc5  c3 
+[ECO	C23 Bishop's opening: Lopez gambit]
+e4 e5  Bc4 Bc5  Qe2 Nc6  c3 Nf6  f4 
+[ECO	C23 Bishop's opening: Classical variation]
+e4 e5  Bc4 Bc5  
+[ECO	C23 Bishop's opening: Calabrese counter-gambit, Jaenisch variation]
+e4 e5  Bc4 f5  d3 
+[ECO	C23 Bishop's opening: Calabrese counter-gambit]
+e4 e5  Bc4 f5  
+[ECO	C23 Bishop's opening: Lisitsyn variation]
+e4 e5  Bc4 c6  d4 d5  ed cd  Bb5 Bd7  Bd7 Nd7  de Ne5  Ne2 
+[ECO	C23 Bishop's opening: Philidor counter-attack]
+e4 e5  Bc4 c6  
+[ECO	C23 Bishop's opening]
+e4 e5  Bc4 
+[ECO	C22 Centre game: Hall variation]
+e4 e5  d4 ed  Qd4 Nc6  Qc4 
+[ECO	C22 Centre game: Kupreichik variation]
+e4 e5  d4 ed  Qd4 Nc6  Qe3 Nf6  Nc3 Bb4  Bd2 o-o  o-o-o Re8  Bc4 d6  
+Nh3 
+[ECO	C22 Centre game: Berger variation]
+e4 e5  d4 ed  Qd4 Nc6  Qe3 Nf6  
+[ECO	C22 Centre game: l'Hermet variation]
+e4 e5  d4 ed  Qd4 Nc6  Qe3 f5  
+[ECO	C22 Centre game: Charousek variation]
+e4 e5  d4 ed  Qd4 Nc6  Qe3 Bb4  c3 Be7  
+[ECO	C22 Centre game: Paulsen attack]
+e4 e5  d4 ed  Qd4 Nc6  Qe3 
+[ECO	C22 Centre game]
+e4 e5  d4 ed  Qd4 Nc6  
+[ECO	C?? Centre game]
+e4 e5  d4 ed  Qd4 
+[ECO	C21 Danish gambit: S\o rensen defence]
+e4 e5  d4 ed  c3 d5  
+[ECO	C21 Danish gambit: Schlechter defence]
+e4 e5  d4 ed  c3 dc  Bc4 cb  Bb2 d5  
+[ECO	C21 Danish gambit: Collijn defence]
+e4 e5  d4 ed  c3 dc  Bc4 cb  Bb2 Qe7  
+[ECO	C21 Danish gambit]
+e4 e5  d4 ed  c3 
+[ECO	C21 Halasz gambit]
+e4 e5  d4 ed  f4 
+[ECO	C21 Centre game, Kieseritsky variation]
+e4 e5  d4 ed  Nf3 c5  Bc4 b5  
+[ECO	C21 Centre game]
+e4 e5  d4 ed  
+[ECO	C20 Alapin's opening]
+e4 e5  Ne2 
+[ECO	C20 KP: Lopez opening]
+e4 e5  c3 
+[ECO	C20 KP: Napoleon's opening]
+e4 e5  Qf3 
+[ECO	C20 KP: Patzer opening]
+e4 e5  Qh5 
+[ECO	C20 KP: King's head opening]
+e4 e5  f3 
+[ECO	C20 KP: Mengarini's opening]
+e4 e5  a3 
+[ECO	C20 KP: Indian opening]
+e4 e5  d3 
+[ECO	C20 King's pawn game]
+e4 e5  
+[ECO	B99 Sicilian: Najdorf, 7...Be7 main line]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Bg5 e6  f4 Be7  Qf3 Qc7  
+o-o-o N8d7  
+[ECO	B98 Sicilian: Najdorf variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Bg5 e6  f4 Be7  Qf3 Qc7  
+[ECO	B98 Sicilian: Najdorf, G\"oteborg  variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Bg5 e6  f4 Be7  Qf3 h6  
+Bh4 g5  
+[ECO	B98 Sicilian: Najdorf, Browne variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Bg5 e6  f4 Be7  Qf3 h6  
+Bh4 Qc7  
+[ECO	B98 Sicilian: Najdorf, 7...Be7]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Bg5 e6  f4 Be7  
+[ECO	B97 Sicilian: Najdorf, Poisoned pawn variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Bg5 e6  f4 Qb6  Qd2 Qb2  
+Rb1 Qa3  
+[ECO	B97 Sicilian: Najdorf, 7...Qb6]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Bg5 e6  f4 Qb6  
+[ECO	B96 Sicilian: Najdorf, Polugayevsky, Simagin variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Bg5 e6  f4 b5  e5 de  
+fe Qc7  Qe2 
+[ECO	B96 Sicilian: Najdorf, Polugayevsky variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Bg5 e6  f4 b5  
+[ECO	B96 Sicilian: Najdorf, 7.f4]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Bg5 e6  f4 
+[ECO	B95 Sicilian: Najdorf, 6...e6]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Bg5 e6  
+[ECO	B94 Sicilian: Najdorf, Ivkov variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Bg5 N8d7  Bc4 Qa5  Qd2 e6  
+o-o-o b5  Bb3 Bb7  h1e1 Nc5  e5 
+[ECO	B94 Sicilian: Najdorf, 6.Bg5]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Bg5 
+[ECO	B93 Sicilian: Najdorf, 6.f4]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  f4 
+[ECO	B92 Sicilian: Najdorf, Opo\v censky variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Be2 
+[ECO	B91 Sicilian: Najdorf, Zagreb  variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  g3 
+[ECO	B90 Sicilian: Najdorf, Byrne  attack]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Be3 
+[ECO	B90 Sicilian: Najdorf, Lipnitzky attack]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  Bc4 
+[ECO	B90 Sicilian: Najdorf, Adams attack]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  h3 
+[ECO	B90 Sicilian: Najdorf]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 a6  
+[ECO	B89 Sicilian: Velimirovi\'c attack]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Bc4 Nc6  Be3 Be7  Qe2 
+[ECO	B89 Sicilian: Sozin, 7.Be3]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Bc4 Nc6  Be3 
+[ECO	B88 Sicilian: Sozin, Fischer variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Bc4 Nc6  Bb3 Be7  Be3 o-o  
+f4 
+[ECO	B88 Sicilian: Sozin, Leonhardt variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Bc4 Nc6  
+[ECO	B87 Sicilian: Sozin with ...a6 and ...b5]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Bc4 a6  Bb3 b5  
+[ECO	B86 Sicilian: Sozin attack]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Bc4 
+[ECO	B85 Sicilian: Scheveningen, classical main line]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Be2 a6  o-o Qc7  f4 Nc6  
+Be3 Be7  Qe1 o-o  
+[ECO	B85 Sicilian: Scheveningen, classical]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Be2 a6  o-o Qc7  f4 Nc6  
+Be3 
+[ECO	B85 Sicilian: Scheveningen, classical, Mar\'oczy system]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Be2 a6  o-o Qc7  f4 Nc6  
+Kh1 Be7  a4 
+[ECO	B85 Sicilian: Scheveningen, classical variation with ...Qc7 and ...Nc6]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Be2 a6  o-o Qc7  f4 Nc6  
+[ECO	B84 Sicilian: Scheveningen , classical variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Be2 a6  o-o Qc7  
+[ECO	B84 Sicilian: Scheveningen, classical, Nd7 system]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Be2 a6  o-o N8d7  
+[ECO	B84 Sicilian: Scheveningen , classical variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Be2 a6  
+[ECO	B83 Sicilian: modern Scheveningen, main line with Nb3]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Be2 Nc6  o-o Be7  Be3 o-o  
+f4 Bd7  Nb3 
+[ECO	B83 Sicilian: modern Scheveningen, main line]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Be2 Nc6  o-o Be7  Be3 o-o  
+f4 
+[ECO	B83 Sicilian: modern Scheveningen]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Be2 Nc6  
+[ECO	B83 Sicilian: Scheveningen, 6.Be2]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Be2 
+[ECO	B82 Sicilian: Scheveningen, Tal variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  f4 Nc6  Be3 Be7  Qf3 
+[ECO	B82 Sicilian: Scheveningen, 6.f4]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  f4 
+[ECO	B81 Sicilian: Scheveningen, Keres attack]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  g4 
+[ECO	B80 Sicilian: Scheveningen, fianchetto variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  g3 
+[ECO	B80 Sicilian: Scheveningen, Vitoli\'n\'s variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Bb5 
+[ECO	B80 Sicilian: Scheveningen, English variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  Be3 a6  Qd2 
+[ECO	B80 Sicilian: Scheveningen variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e6  
+[ECO	B79 Sicilian: dragon, Yugoslav attack, 12.h4]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  f3 o-o  Qd2 Nc6  
+Bc4 Bd7  o-o-o Qa5  Bb3 f8c8  h4 
+[ECO	B78 Sicilian: dragon, Yugoslav attack, 10.O-O-O]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  f3 o-o  Qd2 Nc6  
+Bc4 Bd7  o-o-o 
+[ECO	B77 Sicilian: dragon, Yugoslav attack, 9...Bd7]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  f3 o-o  Qd2 Nc6  
+Bc4 Bd7  
+[ECO	B77 Sicilian: dragon, Yugoslav attack, Byrne variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  f3 o-o  Qd2 Nc6  
+Bc4 a5  
+[ECO	B77 Sicilian: dragon, Yugoslav attack, 9.Bc4]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  f3 o-o  Qd2 Nc6  
+Bc4 
+[ECO	B76 Sicilian: dragon, Yugoslav attack, Rauser variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  f3 o-o  Qd2 Nc6  
+o-o-o 
+[ECO	B76 Sicilian: dragon, Yugoslav attack, 7...O-O]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  f3 o-o  
+[ECO	B75 Sicilian: dragon, Yugoslav attack]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  f3 
+[ECO	B74 Sicilian: dragon, classical, Alekhine variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  Be2 Nc6  o-o o-o  
+Nb3 a5  
+[ECO	B74 Sicilian: dragon, classical, R\'eti-Tartakower variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  Be2 Nc6  o-o o-o  
+Nb3 Be6  f4 Qc8  
+[ECO	B74 Sicilian: dragon, classical, Bernard defence]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  Be2 Nc6  o-o o-o  
+Nb3 Be6  f4 Na5  f5 Bc4  Bd3 Bd3  cd d5  
+[ECO	B74 Sicilian: dragon, classical, Spielmann variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  Be2 Nc6  o-o o-o  
+Nb3 Be6  f4 Na5  f5 Bc4  Bd3 
+[ECO	B74 Sicilian: dragon, classical, Stockholm attack]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  Be2 Nc6  o-o o-o  
+Nb3 Be6  f4 Na5  f5 Bc4  Na5 Be2  Qe2 Qa5  g4 
+[ECO	B74 Sicilian: dragon, classical, 9.Nb3]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  Be2 Nc6  o-o o-o  
+Nb3 
+[ECO	B73 Sicilian: dragon, classical, Richter variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  Be2 Nc6  o-o o-o  
+Qd2 
+[ECO	B73 Sicilian: dragon, classical, Zollner gambit]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  Be2 Nc6  o-o o-o  
+f4 Qb6  e5 
+[ECO	B73 Sicilian: dragon, classical, 8.O-O]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  Be2 Nc6  o-o 
+[ECO	B72 Sicilian: dragon, classical, Nottingham variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  Be2 Nc6  Nb3 
+[ECO	B72 Sicilian: dragon, classical, Grigoriev variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  Be2 Nc6  Qd2 o-o  
+o-o-o 
+[ECO	B72 Sicilian: dragon, classical, Amsterdam variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  Be2 Nc6  Qd2 
+[ECO	B72 Sicilian: dragon, classical attack]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 Bg7  Be2 
+[ECO	B72 Sicilian: dragon, 6.Be3]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  Be3 
+[ECO	B71 Sicilian: dragon, Levenfish; Flohr variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  f4 N8d7  
+[ECO	B71 Sicilian: dragon, Levenfish variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  f4 
+[ECO	B70 Sicilian: dragon variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 g6  
+[ECO	B69 Sicilian: Richter-Rauzer, Rauzer attack, 7...a6 defence, 11.Bxf6]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  Qd2 a6  o-o-o Bd7  
+f4 Be7  Nf3 b5  Bf6 
+[ECO	B68 Sicilian: Richter-Rauzer, Rauzer attack, 7...a6 defence, 9...Be7]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  Qd2 a6  o-o-o Bd7  
+f4 Be7  
+[ECO	B67 Sicilian: Richter-Rauzer, Rauzer attack, 7...a6 defence, 8...Bd7]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  Qd2 a6  o-o-o Bd7  
+[ECO	B66 Sicilian: Richter-Rauzer, Rauzer attack, 7...a6]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  Qd2 a6  
+[ECO	B65 Sicilian: Richter-Rauzer, Rauzer attack, 7...Be7 defence, 9...Nxd4]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  Qd2 Be7  o-o-o o-o  
+f4 Nd4  Qd4 
+[ECO	B65 Sicilian: Richter-Rauzer, Rauzer attack, 7...Be7 defence, 9...Nxd4]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  Qd2 Be7  o-o-o o-o  
+f4 Nd4  
+[ECO	B64 Sicilian: Richter-Rauzer, Rauzer attack, Geller variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  Qd2 Be7  o-o-o o-o  
+f4 e5  
+[ECO	B64 Sicilian: Richter-Rauzer, Rauzer attack, 7...Be7 defence, 9.f4]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  Qd2 Be7  o-o-o o-o  
+f4 
+[ECO	B63 Sicilian: Richter-Rauzer, Rauzer attack, 7...Be7]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  Qd2 Be7  
+[ECO	B63 Sicilian: Richter-Rauzer, Rauzer attack]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  Qd2 
+[ECO	B62 Sicilian: Richter-Rauzer, Keres variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  Qd3 
+[ECO	B62 Sicilian: Richter-Rauzer, Richter attack]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  Nc6 
+[ECO	B62 Sicilian: Richter-Rauzer, Margate  variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  Bb5 
+[ECO	B62 Sicilian: Richter-Rauzer, Pod\v ebrady variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  Nb3 
+[ECO	B62 Sicilian: Richter-Rauzer, 6...e6]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 e6  
+[ECO	B61 Sicilian: Richter-Rauzer, Larsen variation, 7.Qd2]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 Bd7  Qd2 
+[ECO	B60 Sicilian: Richter-Rauzer, Larsen variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 Bd7  
+[ECO	B60 Sicilian: Richter-Rauzer, Bondarevsky variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 g6  
+[ECO	B60 Sicilian: Richter-Rauzer]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bg5 
+[ECO	B59 Sicilian: Boleslavsky variation, 7.Nb3]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 Nf6  Nc3 d6  Be2 e5  Nb3 
+[ECO	B58 Sicilian: Boleslavsky, Louma variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 Nf6  Nc3 d6  Be2 e5  Nc6 
+[ECO	B58 Sicilian: Boleslavsky variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 Nf6  Nc3 d6  Be2 e5  
+[ECO	B58 Sicilian: classical]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 Nf6  Nc3 d6  Be2 
+[ECO	B57 Sicilian: Sozin, Benk\"o variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bc4 Qb6  
+[ECO	B57 Sicilian: Magnus Smith trap]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bc4 g6  Nc6 bc  e5 
+[ECO	B57 Sicilian: Sozin, not Scheveningen]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  Bc4 
+[ECO	B56 Sicilian]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 Nc6  
+[ECO	B56 Sicilian: Venice attack]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 e5  Bb5 
+[ECO	B56 Sicilian]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  Nc3 
+[ECO	B55 Sicilian: Prins variation, Venice attack]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  f3 e5  Bb5 
+[ECO	B54 Sicilian: Prins  variation]
+e4 c5  Nf3 d6  d4 cd  Nd4 Nf6  f3 
+[ECO	B54 Sicilian]
+e4 c5  Nf3 d6  d4 cd  Nd4 
+[ECO	B53 Sicilian: Chekhover, Zaitsev variation]
+e4 c5  Nf3 d6  d4 cd  Qd4 Nc6  Bb5 Qd7  
+[ECO	B53 Sicilian, Chekhover variation]
+e4 c5  Nf3 d6  d4 cd  Qd4 
+[ECO	B?? Sicilian: Tartakower variation]
+e4 c5  Nf3 d6  d4 cd  c3 
+[ECO	B?? Sicilian]
+e4 c5  Nf3 d6  d4 cd  
+[ECO	B?? Sicilian: Cortlever  variation]
+e4 c5  Nf3 d6  d4 Nf6  
+[ECO	B52 Sicilian: Canal-Sokolsky attack, Sokolsky variation]
+e4 c5  Nf3 d6  Bb5 Bd7  Bd7 Qd7  c4 
+[ECO	B52 Sicilian: Canal-Sokolsky attack, Bronstein gambit]
+e4 c5  Nf3 d6  Bb5 Bd7  Bd7 Qd7  o-o Nc6  c3 Nf6  d4 
+[ECO	B52 Sicilian: Canal-Sokolsky attack, 3...Bd7]
+e4 c5  Nf3 d6  Bb5 Bd7  
+[ECO	B51 Sicilian: Canal-Sokolsky  attack]
+e4 c5  Nf3 d6  Bb5 
+[ECO	B50 Sicilian: wing gambit deferred]
+e4 c5  Nf3 d6  b4 
+[ECO	B50 Sicilian]
+e4 c5  Nf3 d6  
+[ECO	B49 Sicilian: Taimanov variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 Nc6  Nc3 Qc7  Be3 a6  Be2 
+[ECO	B48 Sicilian: Taimanov variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 Nc6  Nc3 Qc7  Be3 
+[ECO	B47 Sicilian: Taimanov  variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 Nc6  Nc3 Qc7  
+[ECO	B46 Sicilian: Taimanov variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 Nc6  Nc3 a6  
+[ECO	B45 Sicilian: Taimanov, American attack]
+e4 c5  Nf3 e6  d4 cd  Nd4 Nc6  Nc3 Nf6  N4b5 Bb4  Nd6 
+[ECO	B45 Sicilian: Taimanov variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 Nc6  Nc3 
+[ECO	B44 Sicilian, Sz\'en variation, Dely-Kasparov gambit]
+e4 c5  Nf3 e6  d4 cd  Nd4 Nc6  Nb5 d6  c4 Nf6  N1c3 a6  Na3 d5  
+[ECO	B44 Sicilian, Sz\'en, hedgehog variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 Nc6  Nb5 d6  c4 Nf6  N1c3 a6  Na3 Be7  
+Be2 o-o  o-o b6  
+[ECO	B44 Sicilian, Sz\'en  variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 Nc6  Nb5 
+[ECO	B44 Sicilian defence]
+e4 c5  Nf3 e6  d4 cd  Nd4 Nc6  
+[ECO	B43 Sicilian: Kan, 5.Nc3]
+e4 c5  Nf3 e6  d4 cd  Nd4 a6  Nc3 
+[ECO	B42 Sicilian: Kan, Swiss cheese variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 a6  Bd3 g6  
+[ECO	B42 Sicilian: Kan, Polugaievsky variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 a6  Bd3 Bc5  
+[ECO	B42 Sicilian: Kan, Gipslis variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 a6  Bd3 Nf6  o-o d6  c4 g6  
+[ECO	B42 Sicilian: Kan, 5.Bd3]
+e4 c5  Nf3 e6  d4 cd  Nd4 a6  Bd3 
+[ECO	B41 Sicilian: Kan, Mar\'oczy bind - Bronstein variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 a6  c4 Nf6  Nc3 Bb4  Bd3 Nc6  Bc2 
+[ECO	B41 Sicilian: Kan, Mar\'oczy bind ]
+e4 c5  Nf3 e6  d4 cd  Nd4 a6  c4 
+[ECO	B41 Sicilian: Kan variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 a6  
+[ECO	B40 Sicilian: Pin, Koch variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 Nf6  Nc3 Bb4  e5 
+[ECO	B40 Sicilian: Pin, Jaffe variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 Nf6  Nc3 Bb4  Bd3 e5  
+[ECO	B40 Sicilian: Pin variation ]
+e4 c5  Nf3 e6  d4 cd  Nd4 Nf6  Nc3 Bb4  
+[ECO	B40 Sicilian: Anderssen variation]
+e4 c5  Nf3 e6  d4 cd  Nd4 Nf6  
+[ECO	B40 Sicilian defence]
+e4 c5  Nf3 e6  d4 cd  
+[ECO	B40 Sicilian: Marshall variation]
+e4 c5  Nf3 e6  d4 d5  
+[ECO	B40 Sicilian defence]
+e4 c5  Nf3 e6  
+[ECO	B39 Sicilian: accelerated fianchetto, Breyer variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 g6  c4 Bg7  Be3 Nf6  Nc3 Ng4  
+[ECO	B38 Sicilian: accelerated fianchetto, Mar\'oczy bind, 6.Be3]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 g6  c4 Bg7  Be3 
+[ECO	B37 Sicilian: accelerated fianchetto, Simagin variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 g6  c4 Bg7  Nc2 d6  Be2 Nh6  
+[ECO	B37 Sicilian: accelerated fianchetto, Mar\'oczy bind, 5...Bg7]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 g6  c4 Bg7  
+[ECO	B36 Sicilian: accelerated fianchetto, Gurgenidze variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 g6  c4 Nf6  Nc3 Nd4  Qd4 d6  
+[ECO	B36 Sicilian: accelerated fianchetto, Mar\'oczy bind]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 g6  c4 
+[ECO	B35 Sicilian: accelerated fianchetto, modern variation with Bc4]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 g6  Nc3 Bg7  Be3 Nf6  Bc4 
+[ECO	B34 Sicilian: accelerated fianchetto, modern variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 g6  Nc3 
+[ECO	B34 Sicilian: accelerated fianchetto, exchange variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 g6  Nc6 
+[ECO	B33 Sicilian: Sveshnikov variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 Nf6  Nc3 e5  N4b5 d6  Bg5 a6  Na3 b5  
+Bf6 gf  Nd5 f5  
+[ECO	B33 Sicilian: Pelikan, Chelyabinsk variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 Nf6  Nc3 e5  N4b5 d6  Bg5 a6  Na3 b5  
+[ECO	B33 Sicilian: Pelikan, Bird variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 Nf6  Nc3 e5  N4b5 d6  Bg5 a6  Na3 Be6  
+[ECO	B33 Sicilian: Pelikan  variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 Nf6  Nc3 e5  
+[ECO	B33 Sicilian defence]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 Nf6  
+[ECO	B32 Sicilian: Labourdonnais-L\"owenthal  variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 e5  Nb5 d6  
+[ECO	B32 Sicilian: Labourdonnais-L\"owenthal variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 e5  
+[ECO	B32 Sicilian: Nimzovich variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 d5  
+[ECO	B32 Sicilian: Flohr variation]
+e4 c5  Nf3 Nc6  d4 cd  Nd4 Qc7  
+[ECO	B32 Sicilian defence]
+e4 c5  Nf3 Nc6  d4 
+[ECO	B31 Sicilian: Nimzovich-Rossolimo attack, Gurgenidze variation]
+e4 c5  Nf3 Nc6  Bb5 g6  o-o Bg7  Re1 e5  b4 
+[ECO	B31 Sicilian: Nimzovich-Rossolimo attack ]
+e4 c5  Nf3 Nc6  Bb5 g6  
+[ECO	B30 Sicilian: Nimzovich-Rossolimo attack ]
+e4 c5  Nf3 Nc6  Bb5 
+[ECO	B30 Sicilian defence]
+e4 c5  Nf3 Nc6  
+[ECO	B29 Sicilian: Nimzovich-Rubinstein; Rubinstein counter-gambit]
+e4 c5  Nf3 Nf6  e5 Nd5  Nc3 e6  Nd5 ed  d4 Nc6  
+[ECO	B29 Sicilian: Nimzovich-Rubinstein variation]
+e4 c5  Nf3 Nf6  
+[ECO	B28 Sicilian: O'Kelly variation]
+e4 c5  Nf3 a6  
+[ECO	B27 Sicilian: Acton extension]
+e4 c5  Nf3 g6  c4 Bh6  
+[ECO	B27 Sicilian: Hungarian variation]
+e4 c5  Nf3 g6  
+[ECO	B27 Sicilian: Katalimov variation]
+e4 c5  Nf3 b6  
+[ECO	B27 Sicilian: Quinteros variation]
+e4 c5  Nf3 Qc7  
+[ECO	B27 Sicilian: Stiletto  variation]
+e4 c5  Nf3 Qa5  
+[ECO	B27 Sicilian defence]
+e4 c5  Nf3 
+[ECO	B26 Sicilian: closed, 6.Be3]
+e4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  d3 d6  Be3 
+[ECO	B25 Sicilian: closed, 6.f4 e5 ]
+e4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  d3 d6  f4 e5  
+[ECO	B25 Sicilian: closed, 6.f4]
+e4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  d3 d6  f4 
+[ECO	B25 Sicilian: closed, 6.Ne2 e5 ]
+e4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  d3 d6  N1e2 e5  
+[ECO	B25 Sicilian: closed]
+e4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  d3 d6  
+[ECO	B24 Sicilian: closed, Smyslov variation]
+e4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  d3 e6  Be3 Nd4  N3e2 
+[ECO	B24 Sicilian: closed]
+e4 c5  Nc3 Nc6  g3 
+[ECO	B23 Sicilian: Grand Prix attack, Schofman variation]
+e4 c5  Nc3 Nc6  f4 g6  Nf3 Bg7  Bc4 e6  f5 
+[ECO	B23 Sicilian: Grand Prix attack]
+e4 c5  Nc3 Nc6  f4 
+[ECO	B23 Sicilian: chameleon variation]
+e4 c5  Nc3 Nc6  N1e2 
+[ECO	B23 Sicilian: closed, 2...Nc6]
+e4 c5  Nc3 Nc6  
+[ECO	B23 Sicilian: closed, Korchnoi variation]
+e4 c5  Nc3 e6  g3 d5  
+[ECO	B23 Sicilian: closed]
+e4 c5  Nc3 
+[ECO	B22 Sicilian: 2.c3, Heidenfeld variation]
+e4 c5  c3 Nf6  e5 Nd5  Nf3 Nc6  Na3 
+[ECO	B22 Sicilian: Alapin's variation ]
+e4 c5  c3 
+[ECO	B21 Sicilian: Smith-Morra gambit, Chicago defence]
+e4 c5  d4 cd  c3 dc  Nc3 Nc6  Nf3 d6  Bc4 e6  o-o a6  Qe2 b5  
+Bb3 Ra7  
+[ECO	B21 Sicilian: Smith-Morra gambit]
+e4 c5  d4 cd  c3 
+[ECO	B21 Sicilian: Andreaschek gambit]
+e4 c5  d4 cd  Nf3 e5  c3 
+[ECO	B21 Sicilian: Smith-Morra gambit]
+e4 c5  d4 
+[ECO	B21 Sicilian: Grand Prix attack]
+e4 c5  f4 
+[ECO	B20 Sicilian: Keres variation ]
+e4 c5  Ne2 
+[ECO	B20 Sicilian: wing gambit, Carlsbad variation]
+e4 c5  b4 cb  a3 ba  
+[ECO	B20 Sicilian: wing gambit, Marienbad variation]
+e4 c5  b4 cb  a3 d5  ed Qd5  Bb2 
+[ECO	B20 Sicilian: wing gambit, Marshall variation]
+e4 c5  b4 cb  a3 
+[ECO	B20 Sicilian: wing gambit, Santasiere variation]
+e4 c5  b4 cb  c4 
+[ECO	B20 Sicilian: wing gambit]
+e4 c5  b4 
+[ECO	B20 Sicilian: Steinitz variation]
+e4 c5  g3 
+[ECO	B20 Sicilian: Gloria variation]
+e4 c5  c4 d6  Nc3 Nc6  g3 h5  
+[ECO	B20 Sicilian defence]
+e4 c5  
+[ECO	C19 French: Winawer, advance, positional main line]
+e4 e6  d4 d5  Nc3 Bb4  e5 c5  a3 Bc3  bc Ne7  Nf3 
+[ECO	C19 French: Winawer, advance, Smyslov variation]
+e4 e6  d4 d5  Nc3 Bb4  e5 c5  a3 Bc3  bc Ne7  a4 
+[ECO	C18 French: Winawer, advance, poisoned pawn, Konstantinopolsky variation]
+e4 e6  d4 d5  Nc3 Bb4  e5 c5  a3 Bc3  bc Ne7  Qg4 Qc7  Qg7 Rg8  
+Qh7 cd  Ne2 
+[ECO	C18 French: Winawer, advance, poisoned pawn, Euwe-Gligori\'c variation]
+e4 e6  d4 d5  Nc3 Bb4  e5 c5  a3 Bc3  bc Ne7  Qg4 Qc7  Qg7 Rg8  
+Qh7 cd  Kd1 
+[ECO	C18 French: Winawer, advance, poisoned pawn variation]
+e4 e6  d4 d5  Nc3 Bb4  e5 c5  a3 Bc3  bc Ne7  Qg4 
+[ECO	C18 French: Winawer, advance, 6...Ne7]
+e4 e6  d4 d5  Nc3 Bb4  e5 c5  a3 Bc3  bc Ne7  
+[ECO	C18 French: Winawer, classical variation]
+e4 e6  d4 d5  Nc3 Bb4  e5 c5  a3 Bc3  bc Qc7  
+[ECO	C18 French: Winawer, advance variation]
+e4 e6  d4 d5  Nc3 Bb4  e5 c5  a3 Bc3  bc 
+[ECO	C17 French: Winawer, advance, Rauzer variation]
+e4 e6  d4 d5  Nc3 Bb4  e5 c5  a3 cd  ab dc  Nf3 
+[ECO	C17 French: Winawer, advance, 5.a3]
+e4 e6  d4 d5  Nc3 Bb4  e5 c5  a3 
+[ECO	C17 French: Winawer, advance, Russian variation]
+e4 e6  d4 d5  Nc3 Bb4  e5 c5  Qg4 
+[ECO	C17 French: Winawer, advance, Bogolyubov variation]
+e4 e6  d4 d5  Nc3 Bb4  e5 c5  Bd2 
+[ECO	C17 French: Winawer, advance variation]
+e4 e6  d4 d5  Nc3 Bb4  e5 c5  
+[ECO	C16 French: Winawer, Petrosian variation]
+e4 e6  d4 d5  Nc3 Bb4  e5 Qd7  
+[ECO	C16 French: Winawer, advance variation]
+e4 e6  d4 d5  Nc3 Bb4  e5 
+[ECO	C15 French: Winawer, Alekhine gambit, Kan variation]
+e4 e6  d4 d5  Nc3 Bb4  Ne2 de  a3 Bc3  Nc3 Nc6  
+[ECO	C15 French: Winawer, Alekhine gambit]
+e4 e6  d4 d5  Nc3 Bb4  Ne2 de  a3 Bc3  
+[ECO	C15 French: Winawer, Alekhine gambit, Alatortsev variation]
+e4 e6  d4 d5  Nc3 Bb4  Ne2 de  a3 Be7  Ne4 Nf6  N2g3 o-o  Be2 Nc6  
+[ECO	C15 French: Winawer, Alekhine  gambit]
+e4 e6  d4 d5  Nc3 Bb4  Ne2 
+[ECO	C15 French: Winawer, fingerslip variation]
+e4 e6  d4 d5  Nc3 Bb4  Bd2 
+[ECO	C15 French: Winawer, Kondratiyev variation]
+e4 e6  d4 d5  Nc3 Bb4  Bd3 c5  ed Qd5  Bd2 
+[ECO	C15 French: Winawer  variation]
+e4 e6  d4 d5  Nc3 Bb4  
+[ECO	C14 French: classical, St\a hlberg variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 N6d7  Be7 Qe7  f4 o-o  Nf3 c5  
+Qd2 Nc6  o-o-o c4  
+[ECO	C14 French: classical, Steinitz variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 N6d7  Be7 Qe7  f4 
+[ECO	C14 French: classical, Pollock variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 N6d7  Be7 Qe7  Qg4 
+[ECO	C14 French: classical, Alapin variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 N6d7  Be7 Qe7  Nb5 
+[ECO	C14 French: classical, Rubinstein variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 N6d7  Be7 Qe7  Qd2 
+[ECO	C14 French: classical, Tarrasch variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 N6d7  Be7 Qe7  Bd3 
+[ECO	C14 French: classical variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 N6d7  Be7 Qe7  
+[ECO	C13 French: Albin-Alekhine-Ch\^atard attack, Spielmann variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 N6d7  h4 o-o  
+[ECO	C13 French: Albin-Alekhine-Ch\^atard attack, Teichmann variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 N6d7  h4 f6  
+[ECO	C13 French: Albin-Alekhine-Ch\^atard attack, Breyer variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 N6d7  h4 c5  
+[ECO	C13 French: Albin-Alekhine-Ch\^atard attack, Mar\'oczy variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 N6d7  h4 a6  
+[ECO	C13 French: Albin-Alekhine-Ch\^atard attack]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 N6d7  h4 
+[ECO	C13 French: classical, Tartakower variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 Ne4  
+[ECO	C13 French: classical, Frankfurt variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 Ng8  Be3 b6  
+[ECO	C13 French: classical, Vistaneckis  variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  e5 Ng8  
+[ECO	C13 French: classical, Anderssen-Richter variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  Bf6 Bf6  e5 Be7  Qg4 
+[ECO	C13 French: classical, Anderssen variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  Bf6 
+[ECO	C13 French: classical]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Be7  
+[ECO	C12 French: MacCutcheon, Lasker variation, 8...g6]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Bb4  e5 h6  Bd2 Bc3  bc Ne4  Qg4 g6  
+[ECO	C12 French: MacCutcheon, Duras variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Bb4  e5 h6  Bd2 Bc3  bc Ne4  Qg4 Kf8  
+Bc1 
+[ECO	C12 French: MacCutcheon, Lasker variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Bb4  e5 h6  Bd2 Bc3  
+[ECO	C12 French: MacCutcheon, Tartakower variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Bb4  e5 h6  Bd2 N6d7  
+[ECO	C12 French: MacCutcheon, Dr. Olland  variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Bb4  e5 h6  Bc1 
+[ECO	C12 French: MacCutcheon, Janowski variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Bb4  e5 h6  Be3 
+[ECO	C12 French: MacCutcheon, Bernstein variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Bb4  e5 h6  Bh4 
+[ECO	C12 French: MacCutcheon, Grigoriev variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Bb4  e5 h6  ef hg  fg Rg8  h4 gh  
+Qg4 
+[ECO	C12 French: MacCutcheon, Chigorin variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Bb4  e5 h6  ef 
+[ECO	C12 French: MacCutcheon, advance variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Bb4  e5 
+[ECO	C12 French: MacCutcheon, Bogolyubov variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Bb4  ed Qd5  Bf6 gf  Qd2 Qa5  
+[ECO	C12 French: MacCutcheon variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 Bb4  
+[ECO	C11 French: Burn variation]
+e4 e6  d4 d5  Nc3 Nf6  Bg5 de  
+[ECO	C11 French: Steinitz, Gledhill attack]
+e4 e6  d4 d5  Nc3 Nf6  e5 N6d7  Qg4 
+[ECO	C11 French: Steinitz, Boleslavsky variation]
+e4 e6  d4 d5  Nc3 Nf6  e5 N6d7  f4 c5  Nf3 Nc6  Be3 
+[ECO	C11 French: Steinitz variation]
+e4 e6  d4 d5  Nc3 Nf6  e5 N6d7  f4 c5  Nf3 
+[ECO	C11 French: Steinitz, Brodsky-Jones variation]
+e4 e6  d4 d5  Nc3 Nf6  e5 N6d7  f4 c5  dc Nc6  a3 Bc5  Qg4 o-o  
+Nf3 f6  
+[ECO	C11 French: Steinitz variation]
+e4 e6  d4 d5  Nc3 Nf6  e5 N6d7  f4 c5  dc Nc6  
+[ECO	C11 French: Steinitz, Bradford attack]
+e4 e6  d4 d5  Nc3 Nf6  e5 N6d7  f4 c5  dc Bc5  Qg4 
+[ECO	C11 French: Steinitz variation]
+e4 e6  d4 d5  Nc3 Nf6  e5 
+[ECO	C11 French: Henneberger variation]
+e4 e6  d4 d5  Nc3 Nf6  Be3 
+[ECO	C11 French: Swiss variation]
+e4 e6  d4 d5  Nc3 Nf6  Bd3 
+[ECO	C11 French defence]
+e4 e6  d4 d5  Nc3 Nf6  
+[ECO	C10 French: Frere  variation]
+e4 e6  d4 d5  Nc3 de  Ne4 Qd5  
+[ECO	C10 French: Rubinstein, Capablanca line]
+e4 e6  d4 d5  Nc3 de  Ne4 Nd7  Nf3 N8f6  Nf6 Nf6  Ne5 
+[ECO	C10 French: Rubinstein variation]
+e4 e6  d4 d5  Nc3 de  Ne4 Nd7  
+[ECO	C10 French: Fort Knox variation]
+e4 e6  d4 d5  Nc3 de  Ne4 Bd7  Nf3 Bc6  
+[ECO	C10 French: Rubinstein variation]
+e4 e6  d4 d5  Nc3 de  
+[ECO	C10 French: Marshall variation]
+e4 e6  d4 d5  Nc3 c5  
+[ECO	C10 French: Paulsen variation]
+e4 e6  d4 d5  Nc3 
+[ECO	C09 French: Tarrasch, open variation, main line]
+e4 e6  d4 d5  Nd2 c5  ed ed  N1f3 Nc6  
+[ECO	C08 French: Tarrasch, open, 4.ed ed]
+e4 e6  d4 d5  Nd2 c5  ed ed  
+[ECO	C07 French: Tarrasch, Eliskases variation]
+e4 e6  d4 d5  Nd2 c5  ed Qd5  N1f3 cd  Bc4 Qd8  
+[ECO	C07 French: Tarrasch, open variation]
+e4 e6  d4 d5  Nd2 c5  
+[ECO	C06 French: Tarrasch, Leningrad variation]
+e4 e6  d4 d5  Nd2 Nf6  e5 N6d7  Bd3 c5  c3 Nc6  Ne2 cd  cd Nb6  
+[ECO	C06 French: Tarrasch, closed variation, main line]
+e4 e6  d4 d5  Nd2 Nf6  e5 N6d7  Bd3 c5  c3 Nc6  Ne2 cd  cd 
+[ECO	C05 French: Tarrasch, closed variation]
+e4 e6  d4 d5  Nd2 Nf6  e5 N6d7  Bd3 c5  c3 Nc6  
+[ECO	C05 French: Tarrasch, Botvinnik variation]
+e4 e6  d4 d5  Nd2 Nf6  e5 N6d7  Bd3 c5  c3 b6  
+[ECO	C05 French: Tarrasch, closed variation]
+e4 e6  d4 d5  Nd2 Nf6  
+[ECO	C04 French: Tarrasch, Guimard main line]
+e4 e6  d4 d5  Nd2 Nc6  N1f3 Nf6  
+[ECO	C03 French: Tarrasch, Guimard variation]
+e4 e6  d4 d5  Nd2 Nc6  
+[ECO	C03 French: Tarrasch, Haberditz variation]
+e4 e6  d4 d5  Nd2 f5  
+[ECO	C03 French: Tarrasch]
+e4 e6  d4 d5  Nd2 
+[ECO	C02 French: advance, Euwe variation]
+e4 e6  d4 d5  e5 c5  c3 Nc6  Nf3 Bd7  
+[ECO	C02 French: advance, Milner-Barry gambit]
+e4 e6  d4 d5  e5 c5  c3 Nc6  Nf3 Qb6  Bd3 
+[ECO	C02 French: advance, Paulsen attack]
+e4 e6  d4 d5  e5 c5  c3 Nc6  Nf3 
+[ECO	C02 French: advance variation]
+e4 e6  d4 d5  e5 c5  c3 Nc6  
+[ECO	C02 French: advance, Wade variation]
+e4 e6  d4 d5  e5 c5  c3 Qb6  Nf3 Bd7  
+[ECO	C02 French: advance variation]
+e4 e6  d4 d5  e5 c5  c3 
+[ECO	C02 French: advance, Nimzovich system]
+e4 e6  d4 d5  e5 c5  Nf3 
+[ECO	C02 French: advance, Nimzovich variation]
+e4 e6  d4 d5  e5 c5  Qg4 
+[ECO	C02 French: advance, Steinitz variation]
+e4 e6  d4 d5  e5 c5  dc 
+[ECO	C02 French: advance variation]
+e4 e6  d4 d5  e5 
+[ECO	C01 French: exchange, Bogolyubov variation]
+e4 e6  d4 d5  ed ed  Nc3 Nf6  Bg5 Nc6  
+[ECO	C01 French: exchange, Svenonius variation]
+e4 e6  d4 d5  ed ed  Nc3 Nf6  Bg5 
+[ECO	C01 French: exchange variation]
+e4 e6  d4 d5  ed 
+[ECO	C00 French: Alapin variation]
+e4 e6  d4 d5  Be3 
+[ECO	C00 French: Schlechter variation]
+e4 e6  d4 d5  Bd3 
+[ECO	C00 French defence]
+e4 e6  d4 d5  
+[ECO	C00 St. George defence]
+e4 e6  d4 a6  
+[ECO	C00 Lengfellner system]
+e4 e6  d4 d6  
+[ECO	C00 French defence]
+e4 e6  d4 
+[ECO	C00 French: Reversed Philidor formation]
+e4 e6  d3 d5  Nd2 Nf6  N1f3 Nc6  Be2 
+[ECO	C00 French: King's Indian attack]
+e4 e6  d3 
+[ECO	C00 French: Chigorin variation]
+e4 e6  Qe2 
+[ECO	C00 French: Two knights variation]
+e4 e6  Nc3 d5  Nf3 
+[ECO	C00 French: Pelikan variation]
+e4 e6  Nc3 d5  f4 
+[ECO	C00 French defence]
+e4 e6  Nc3 
+[ECO	C00 French: Wing gambit]
+e4 e6  Nf3 d5  e5 c5  b4 
+[ECO	C00 French defence]
+e4 e6  Nf3 
+[ECO	C00 French: Labourdonnais variation]
+e4 e6  f4 
+[ECO	C00 French: Steinitz attack]
+e4 e6  e5 
+[ECO	C00 French: R\'eti  variation]
+e4 e6  b3 
+[ECO	C00 French defence, Steiner variation]
+e4 e6  c4 
+[ECO	C00 French defence]
+e4 e6  
+[ECO	B19 Caro-Kann: classical, Spassky variation]
+e4 c6  d4 d5  Nc3 de  Ne4 Bf5  Ng3 Bg6  h4 h6  Nf3 Nd7  h5 
+[ECO	B19 Caro-Kann: classical, 7...Nd7]
+e4 c6  d4 d5  Nc3 de  Ne4 Bf5  Ng3 Bg6  h4 h6  Nf3 Nd7  
+[ECO	B18 Caro-Kann: classical, 6.h4]
+e4 c6  d4 d5  Nc3 de  Ne4 Bf5  Ng3 Bg6  h4 
+[ECO	B18 Caro-Kann: classical, Mar\'oczy attack]
+e4 c6  d4 d5  Nc3 de  Ne4 Bf5  Ng3 Bg6  f4 
+[ECO	B18 Caro-Kann: classical, Flohr variation]
+e4 c6  d4 d5  Nc3 de  Ne4 Bf5  Ng3 Bg6  Nh3 
+[ECO	B18 Caro-Kann: classical variation]
+e4 c6  d4 d5  Nc3 de  Ne4 Bf5  
+[ECO	B17 Caro-Kann: Steinitz variation]
+e4 c6  d4 d5  Nc3 de  Ne4 Nd7  
+[ECO	B16 Caro-Kann: Bronstein-Larsen variation]
+e4 c6  d4 d5  Nc3 de  Ne4 Nf6  Nf6 gf  
+[ECO	B15 Caro-Kann: Forg\'acs variation]
+e4 c6  d4 d5  Nc3 de  Ne4 Nf6  Nf6 ef  Bc4 
+[ECO	B15 Caro-Kann: Tartakower  variation]
+e4 c6  d4 d5  Nc3 de  Ne4 Nf6  Nf6 ef  
+[ECO	B15 Caro-Kann: Alekhine gambit]
+e4 c6  d4 d5  Nc3 de  Ne4 Nf6  Bd3 
+[ECO	B15 Caro-Kann defence]
+e4 c6  d4 d5  Nc3 de  Ne4 
+[ECO	B15 Caro-Kann: Rasa-Studier gambit]
+e4 c6  d4 d5  Nc3 de  f3 
+[ECO	B15 Caro-Kann: Gurgenidze system]
+e4 c6  d4 d5  Nc3 g6  
+[ECO	B15 Caro-Kann: Gurgenidze counter-attack]
+e4 c6  d4 d5  Nc3 b5  
+[ECO	B15 Caro-Kann defence]
+e4 c6  d4 d5  Nc3 
+[ECO	B14 Caro-Kann: Panov-Botvinnik attack, 5...g6]
+e4 c6  d4 d5  ed cd  c4 Nf6  Nc3 g6  
+[ECO	B14 Caro-Kann: Panov-Botvinnik attack, 5...e6]
+e4 c6  d4 d5  ed cd  c4 Nf6  Nc3 e6  
+[ECO	B13 Caro-Kann: Panov-Botvinnik, Reifir  variation]
+e4 c6  d4 d5  ed cd  c4 Nf6  Nc3 Nc6  Bg5 Qb6  
+[ECO	B13 Caro-Kann: Panov-Botvinnik, Czerniak variation]
+e4 c6  d4 d5  ed cd  c4 Nf6  Nc3 Nc6  Bg5 Qa5  
+[ECO	B13 Caro-Kann: Panov-Botvinnik, normal variation]
+e4 c6  d4 d5  ed cd  c4 Nf6  Nc3 Nc6  Bg5 e6  
+[ECO	B13 Caro-Kann: Panov-Botvinnik, Herzog defence]
+e4 c6  d4 d5  ed cd  c4 Nf6  Nc3 Nc6  Bg5 dc  d5 Na5  
+[ECO	B13 Caro-Kann: Panov-Botvinnik attack]
+e4 c6  d4 d5  ed cd  c4 Nf6  Nc3 
+[ECO	B13 Caro-Kann: Panov-Botvinnik, Gunderam attack]
+e4 c6  d4 d5  ed cd  c4 Nf6  c5 
+[ECO	B13 Caro-Kann: Panov-Botvinnik attack]
+e4 c6  d4 d5  ed cd  c4 
+[ECO	B13 Caro-Kann: exchange, Rubinstein variation]
+e4 c6  d4 d5  ed cd  Bd3 Nc6  c3 Nf6  Bf4 
+[ECO	B13 Caro-Kann: exchange variation]
+e4 c6  d4 d5  ed 
+[ECO	B12 Caro-Kann: advance, Short variation]
+e4 c6  d4 d5  e5 Bf5  c3 e6  Be2 
+[ECO	B12 Caro-Kann: advance variation]
+e4 c6  d4 d5  e5 
+[ECO	B12 Caro-Kann: Edinburgh variation]
+e4 c6  d4 d5  Nd2 Qb6  
+[ECO	B12 Caro-Kann: 3.Nd2]
+e4 c6  d4 d5  Nd2 
+[ECO	B12 Caro-Kann: Tartakower  variation]
+e4 c6  d4 d5  f3 
+[ECO	B12 Caro-Kann defence]
+e4 c6  d4 d5  
+[ECO	B12 Caro-Masi defence]
+e4 c6  d4 Nf6  
+[ECO	B12 de Bruycker defence]
+e4 c6  d4 Na6  Nc3 Nc7  
+[ECO	B12 Caro-Kann defence]
+e4 c6  d4 
+[ECO	B11 Caro-Kann: two knights, 3...Bg4]
+e4 c6  Nc3 d5  Nf3 Bg4  
+[ECO	B10 Caro-Kann: two knights variation]
+e4 c6  Nc3 d5  Nf3 
+[ECO	B10 Caro-Kann: Goldman  variation]
+e4 c6  Nc3 d5  Qf3 
+[ECO	B10 Caro-Kann defence]
+e4 c6  Nc3 
+[ECO	B10 Caro-Kann: closed  variation]
+e4 c6  d3 
+[ECO	B10 Caro-Kann: anti-anti-Caro-Kann defence]
+e4 c6  c4 d5  
+[ECO	B10 Caro-Kann: anti-Caro-Kann defence]
+e4 c6  c4 
+[ECO	B10 Caro-Kann: Hillbilly attack]
+e4 c6  Bc4 
+[ECO	B10 Caro-Kann defence]
+e4 c6  
+[ECO	B09 Pirc: Austrian attack, Ljubojevi\'c variation]
+e4 d6  d4 Nf6  Nc3 g6  f4 Bg7  Bc4 
+[ECO	B09 Pirc: Austrian attack, dragon formation]
+e4 d6  d4 Nf6  Nc3 g6  f4 Bg7  Nf3 c5  
+[ECO	B09 Pirc: Austrian attack, 6.Bd3]
+e4 d6  d4 Nf6  Nc3 g6  f4 Bg7  Nf3 o-o  Bd3 
+[ECO	B09 Pirc: Austrian attack, 6.Be3]
+e4 d6  d4 Nf6  Nc3 g6  f4 Bg7  Nf3 o-o  Be3 
+[ECO	B09 Pirc: Austrian attack, 6.e5]
+e4 d6  d4 Nf6  Nc3 g6  f4 Bg7  Nf3 o-o  e5 
+[ECO	B09 Pirc: Austrian attack]
+e4 d6  d4 Nf6  Nc3 g6  f4 Bg7  Nf3 o-o  
+[ECO	B09 Pirc: Austrian attack]
+e4 d6  d4 Nf6  Nc3 g6  f4 
+[ECO	B08 Pirc: classical system, 5.Be2]
+e4 d6  d4 Nf6  Nc3 g6  Nf3 Bg7  Be2 
+[ECO	B08 Pirc: classical, h3 system]
+e4 d6  d4 Nf6  Nc3 g6  Nf3 Bg7  h3 
+[ECO	B08 Pirc: classical  system]
+e4 d6  d4 Nf6  Nc3 g6  Nf3 Bg7  
+[ECO	B?? Pirc: classical  system]
+e4 d6  d4 Nf6  Nc3 g6  Nf3 
+[ECO	B07 Pirc: bayonet  attack]
+e4 d6  d4 Nf6  Nc3 g6  Be2 Bg7  h4 
+[ECO	B07 Pirc: Chinese variation]
+e4 d6  d4 Nf6  Nc3 g6  Be2 Bg7  g4 
+[ECO	B07 Pirc defence]
+e4 d6  d4 Nf6  Nc3 g6  Be2 
+[ECO	B07 Pirc: Byrne variation]
+e4 d6  d4 Nf6  Nc3 g6  Bg5 
+[ECO	B07 Pirc: Holmov system]
+e4 d6  d4 Nf6  Nc3 g6  Bc4 
+[ECO	B07 Pirc: Sveshnikov system]
+e4 d6  d4 Nf6  Nc3 g6  g3 
+[ECO	B07 Pirc: 150 attack]
+e4 d6  d4 Nf6  Nc3 g6  Be3 c6  Qd2 
+[ECO	B07 Pirc defence]
+e4 d6  d4 Nf6  Nc3 g6  
+[ECO	B07 Pirc: Ufimtsev-Pytel variation]
+e4 d6  d4 Nf6  Nc3 c6  
+[ECO	B07 Pirc defence]
+e4 d6  d4 Nf6  
+[ECO	A82 Balogh defence]
+e4 d6  d4 f5  
+[ECO	C00 Lengfellner system]
+e4 d6  d4 e6  
+[ECO	B06 Robatsch defence: Pseudo-Austrian attack]
+e4 g6  d4 Bg7  Nc3 d6  f4 
+[ECO	B06 Robatsch defence: two knights, Suttles variation]
+e4 g6  d4 Bg7  Nc3 d6  Nf3 c6  
+[ECO	B06 Robatsch defence: two knights variation]
+e4 g6  d4 Bg7  Nc3 d6  Nf3 
+[ECO	B06 Robatsch  defence]
+e4 g6  d4 Bg7  Nc3 d6  
+[ECO	B06 Robatsch defence: Gurgenidze variation]
+e4 g6  d4 Bg7  Nc3 c6  f4 d5  e5 h5  
+[ECO	B06 Robatsch defence]
+e4 g6  d4 Bg7  Nc3 
+[ECO	B06 Robatsch defence: three pawns attack]
+e4 g6  d4 Bg7  f4 
+[ECO	B07 Robatsch defence: Geller's system]
+e4 g6  d4 Bg7  Nf3 d6  c3 
+[ECO	A41 Robatsch defence: Rossolimo variation]
+e4 g6  d4 Bg7  Nf3 d6  c4 Bg4  
+[ECO	B06 Robatsch  defence]
+e4 g6  d4 Bg7  
+[ECO	B06 Norwegian defence]
+e4 g6  d4 Nf6  e5 Nh5  g4 Ng7  
+[ECO	B06 Robatsch  defence]
+e4 g6  
+[ECO	B05 Alekhine's defence: modern, Vitolins attack]
+e4 Nf6  e5 Nd5  d4 d6  Nf3 Bg4  c4 Nb6  d5 
+[ECO	B05 Alekhine's defence: modern, Alekhine variation]
+e4 Nf6  e5 Nd5  d4 d6  Nf3 Bg4  c4 
+[ECO	B05 Alekhine's defence: modern, Panov variation]
+e4 Nf6  e5 Nd5  d4 d6  Nf3 Bg4  h3 
+[ECO	B05 Alekhine's defence: modern, Flohr variation]
+e4 Nf6  e5 Nd5  d4 d6  Nf3 Bg4  Be2 c6  
+[ECO	B05 Alekhine's defence: modern variation, 4...Bg4]
+e4 Nf6  e5 Nd5  d4 d6  Nf3 Bg4  
+[ECO	B04 Alekhine's defence: modern, Keres variation]
+e4 Nf6  e5 Nd5  d4 d6  Nf3 g6  Bc4 Nb6  Bb3 Bg7  a4 
+[ECO	B04 Alekhine's defence: modern, fianchetto variation]
+e4 Nf6  e5 Nd5  d4 d6  Nf3 g6  
+[ECO	B04 Alekhine's defence: modern, Schmid variation]
+e4 Nf6  e5 Nd5  d4 d6  Nf3 Nb6  
+[ECO	B04 Alekhine's defence: modern, Larsen variation]
+e4 Nf6  e5 Nd5  d4 d6  Nf3 de  
+[ECO	B04 Alekhine's defence: modern variation]
+e4 Nf6  e5 Nd5  d4 d6  Nf3 
+[ECO	B03 Alekhine's defence: four pawns attack, Trifunovi\'c variation]
+e4 Nf6  e5 Nd5  d4 d6  c4 Nb6  f4 Bf5  
+[ECO	B03 Alekhine's defence: four pawns attack, fianchetto variation]
+e4 Nf6  e5 Nd5  d4 d6  c4 Nb6  f4 g6  
+[ECO	B03 Alekhine's defence: four pawns attack, Planinc variation]
+e4 Nf6  e5 Nd5  d4 d6  c4 Nb6  f4 g5  
+[ECO	B03 Alekhine's defence: four pawns attack, Tartakower variation]
+e4 Nf6  e5 Nd5  d4 d6  c4 Nb6  f4 de  fe Nc6  Be3 Bf5  Nc3 e6  
+Nf3 Qd7  Be2 o-o-o  o-o Be7  
+[ECO	B03 Alekhine's defence: four pawns attack, 7.Be3]
+e4 Nf6  e5 Nd5  d4 d6  c4 Nb6  f4 de  fe Nc6  Be3 
+[ECO	B03 Alekhine's defence: four pawns attack, Ilyin-Genevsky variation]
+e4 Nf6  e5 Nd5  d4 d6  c4 Nb6  f4 de  fe Nc6  Nf3 Bg4  e6 fe  
+c5 
+[ECO	B03 Alekhine's defence: four pawns attack, 6...Nc6]
+e4 Nf6  e5 Nd5  d4 d6  c4 Nb6  f4 de  fe Nc6  
+[ECO	B03 Alekhine's defence: four pawns attack, Korchnoi variation]
+e4 Nf6  e5 Nd5  d4 d6  c4 Nb6  f4 de  fe Bf5  Nc3 e6  Nf3 Be7  
+Be2 o-o  o-o f6  
+[ECO	B03 Alekhine's defence: four pawns attack]
+e4 Nf6  e5 Nd5  d4 d6  c4 Nb6  f4 
+[ECO	B03 Alekhine's defence: exchange, Karpov variation]
+e4 Nf6  e5 Nd5  d4 d6  c4 Nb6  ed cd  Nf3 g6  Be2 Bg7  o-o o-o  
+h3 Nc6  Nc3 Bf5  Bf4 
+[ECO	B03 Alekhine's defence: exchange variation]
+e4 Nf6  e5 Nd5  d4 d6  c4 Nb6  ed 
+[ECO	B03 Alekhine's defence]
+e4 Nf6  e5 Nd5  d4 d6  c4 
+[ECO	B03 Alekhine's defence: Balogh variation]
+e4 Nf6  e5 Nd5  d4 d6  Bc4 
+[ECO	B03 Alekhine's defence]
+e4 Nf6  e5 Nd5  d4 d6  
+[ECO	B03 Alekhine's defence: O'Sullivan gambit]
+e4 Nf6  e5 Nd5  d4 b5  
+[ECO	B03 Alekhine's defence]
+e4 Nf6  e5 Nd5  d4 
+[ECO	B02 Alekhine's defence: two pawns' attack, Mikenas variation]
+e4 Nf6  e5 Nd5  c4 Nb6  c5 Nd5  Bc4 e6  Nc3 d6  
+[ECO	B02 Alekhine's defence: two pawns'  attack]
+e4 Nf6  e5 Nd5  c4 Nb6  c5 
+[ECO	B02 Alekhine's defence: Steiner variation]
+e4 Nf6  e5 Nd5  c4 Nb6  b3 
+[ECO	B02 Alekhine's defence]
+e4 Nf6  e5 Nd5  c4 
+[ECO	B02 Alekhine's defence: Welling variation]
+e4 Nf6  e5 Nd5  b3 
+[ECO	B02 Alekhine's defence: S\"amisch attack]
+e4 Nf6  e5 Nd5  Nc3 
+[ECO	B02 Alekhine's defence: Kmoch variation]
+e4 Nf6  e5 Nd5  Bc4 Nb6  Bb3 c5  d3 
+[ECO	B02 Alekhine's defence]
+e4 Nf6  e5 Nd5  
+[ECO	B02 Alekhine's defence: Brooklyn defence]
+e4 Nf6  e5 Ng8  
+[ECO	B02 Alekhine's defence: Mokele Mbembe  variation]
+e4 Nf6  e5 Ne4  
+[ECO	B02 Alekhine's defence: Krejcik variation]
+e4 Nf6  Bc4 
+[ECO	B02 Alekhine's defence: Mar\'oczy variation]
+e4 Nf6  d3 
+[ECO	B02 Alekhine's defence: Spielmann variation]
+e4 Nf6  Nc3 d5  e5 N6d7  e6 
+[ECO	B02 Alekhine's defence: Scandinavian variation]
+e4 Nf6  Nc3 d5  
+[ECO	B02 Alekhine's defence]
+e4 Nf6  
+[ECO	B01 Scandinavian: Richter variation]
+e4 d5  ed Nf6  d4 g6  
+[ECO	B01 Scandinavian: Kiel variation]
+e4 d5  ed Nf6  d4 Nd5  c4 Nb4  
+[ECO	B01 Scandinavian: Marshall variation]
+e4 d5  ed Nf6  d4 Nd5  
+[ECO	B01 Scandinavian defence]
+e4 d5  ed Nf6  d4 
+[ECO	B01 Scandinavian gambit]
+e4 d5  ed Nf6  c4 c6  
+[ECO	B01 Scandinavian: Icelandic gambit]
+e4 d5  ed Nf6  c4 e6  
+[ECO	B01 Scandinavian defence]
+e4 d5  ed Nf6  
+[ECO	B01 Scandinavian: Pytel-Wade variation]
+e4 d5  ed Qd5  Nc3 Qd6  
+[ECO	B01 Scandinavian, Mieses-Kotr\v c gambit]
+e4 d5  ed Qd5  Nc3 Qa5  b4 
+[ECO	B01 Scandinavian: Anderssen counter-attack, Collijn variation]
+e4 d5  ed Qd5  Nc3 Qa5  d4 e5  Nf3 Bg4  
+[ECO	B01 Scandinavian: Anderssen counter-attack, Goteborg system]
+e4 d5  ed Qd5  Nc3 Qa5  d4 e5  Nf3 
+[ECO	B01 Scandinavian: Anderssen counter-attack orthodox attack]
+e4 d5  ed Qd5  Nc3 Qa5  d4 e5  de Bb4  Bd2 Nc6  Nf3 
+[ECO	B01 Scandinavian: Anderssen counter-attack]
+e4 d5  ed Qd5  Nc3 Qa5  d4 e5  
+[ECO	B01 Scandinavian defence, Gr\"unfeld variation]
+e4 d5  ed Qd5  Nc3 Qa5  d4 Nf6  Nf3 Bf5  Ne5 c6  g4 
+[ECO	B01 Scandinavian defence]
+e4 d5  ed Qd5  Nc3 Qa5  d4 Nf6  Nf3 Bf5  
+[ECO	B01 Scandinavian defence, Lasker variation]
+e4 d5  ed Qd5  Nc3 Qa5  d4 Nf6  Nf3 Bg4  h3 
+[ECO	B01 Scandinavian  defence]
+e4 d5  
+[ECO	B00 KP: Neo-Mongoloid defence]
+e4 Nc6  d4 f6  
+[ECO	B00 KP: Nimzovich defence, Bogolyubov variation]
+e4 Nc6  d4 d5  Nc3 
+[ECO	B00 KP: Nimzovich defence, Marshall gambit]
+e4 Nc6  d4 d5  ed Qd5  Nc3 
+[ECO	B00 KP: Nimzovich defence]
+e4 Nc6  d4 
+[ECO	B00 KP: Colorado counter]
+e4 Nc6  Nf3 f5  
+[ECO	B00 KP: Nimzovich defence]
+e4 Nc6  Nf3 
+[ECO	B00 KP: Nimzovich defence, Wheeler gambit]
+e4 Nc6  b4 Nb4  c3 Nc6  d4 
+[ECO	B00 KP: Nimzovich defence]
+e4 Nc6  
+[ECO	B00 Guatemala defence]
+e4 b6  d4 Ba6  
+[ECO	B00 Owen defence]
+e4 b6  
+[ECO	B00 St. George  defence]
+e4 a6  
+[ECO	B00 Reversed Grob ]
+e4 g5  
+[ECO	B00 Carr's defence]
+e4 h6  
+[ECO	B00 Fried fox defence]
+e4 f6  d4 Kf7  
+[ECO	B00 Barnes defence]
+e4 f6  
+[ECO	B00 Fred]
+e4 f5  
+[ECO	B00 Lemming defence]
+e4 Na6  
+[ECO	B00 Corn stalk defence]
+e4 a5  
+[ECO	B00 Hippopotamus defence]
+e4 Nh6  d4 g6  c4 f6  
+[ECO	B00 King's pawn opening]
+e4 
+[ECO	D69 QGD: Orthodox defence, classical, 13.de]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Bd3 dc  
+Bc4 Nd5  Be7 Qe7  o-o Nc3  Rc3 e5  de Ne5  Ne5 Qe5  
+[ECO	D68 QGD: Orthodox defence, classical, 13.d1c2 ]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Bd3 dc  
+Bc4 Nd5  Be7 Qe7  o-o Nc3  Rc3 e5  Qc2 
+[ECO	D68 QGD: Orthodox defence, classical, 13.d1b1 ]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Bd3 dc  
+Bc4 Nd5  Be7 Qe7  o-o Nc3  Rc3 e5  Qb1 
+[ECO	D68 QGD: Orthodox defence, classical variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Bd3 dc  
+Bc4 Nd5  Be7 Qe7  o-o Nc3  Rc3 e5  
+[ECO	D67 QGD: Orthodox defence, Bd3 line, 11.O-O]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Bd3 dc  
+Bc4 Nd5  Be7 Qe7  o-o 
+[ECO	D67 QGD: Orthodox defence, Bd3 line, Alekhine variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Bd3 dc  
+Bc4 Nd5  Be7 Qe7  Ne4 
+[ECO	D67 QGD: Orthodox defence, Bd3 line]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Bd3 dc  
+Bc4 Nd5  Be7 Qe7  
+[ECO	D67 QGD: Orthodox defence, Bd3 line, Janowski variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Bd3 dc  
+Bc4 Nd5  h4 
+[ECO	D67 QGD: Orthodox defence, Bd3 line, Capablanca freeing manoevre]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Bd3 dc  
+Bc4 Nd5  
+[ECO	D66 QGD: Orthodox defence, Bd3 line, fianchetto variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Bd3 dc  
+Bc4 b5  
+[ECO	D66 QGD: Orthodox defence, Bd3 line]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Bd3 
+[ECO	D65 QGD: Orthodox defence, Rubinstein attack, main line]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Qc2 a6  
+cd 
+[ECO	D64 QGD: Orthodox defence, Rubinstein attack, Gr\"unfeld variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Qc2 a6  
+a3 
+[ECO	D64 QGD: Orthodox defence, Rubinstein attack, Karlsbad variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Qc2 a6  
+[ECO	D64 QGD: Orthodox defence, Rubinstein attack, Wolf variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Qc2 Ne4  
+[ECO	D64 QGD: Orthodox defence, Rubinstein attack ]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  Qc2 
+[ECO	D63 QGD: Orthodox defence]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 c6  
+[ECO	D63 QGD: Orthodox defence, Swiss, Karlsbad variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 a6  cd 
+[ECO	D63 QGD: Orthodox defence, Swiss  variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 a6  
+[ECO	D63 QGD: Orthodox defence, Capablanca variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 b6  cd ed  
+Bb5 
+[ECO	D63 QGD: Orthodox defence, Pillsbury attack]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 b6  cd ed  
+Bd3 
+[ECO	D63 QGD: Orthodox defence, 7.Rc1]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Rc1 
+[ECO	D62 QGD: Orthodox defence, 7.Qc2 c5, 8.cd ]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Qc2 c5  cd 
+[ECO	D61 QGD: Orthodox defence, Rubinstein variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Qc2 
+[ECO	D60 QGD: Orthodox defence, Rauzer variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Qb3 
+[ECO	D60 QGD: Orthodox defence, Botvinnik variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  Bd3 
+[ECO	D60 QGD: Orthodox defence]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 N8d7  
+[ECO	D59 QGD: Tartakower variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 h6  Bh4 b6  cd Nd5  
+Be7 Qe7  Nd5 ed  Rc1 Be6  
+[ECO	D59 QGD: Tartakower  system, 8.cd Nxd5]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 h6  Bh4 b6  cd Nd5  
+[ECO	D58 QGD: Tartakower  system]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 h6  Bh4 b6  
+[ECO	D57 QGD: Lasker defence, Bernstein variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 h6  Bh4 Ne4  Be7 Qe7  
+cd Nc3  bc ed  Qb3 Qd6  
+[ECO	D57 QGD: Lasker defence, main line]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 h6  Bh4 Ne4  Be7 Qe7  
+cd Nc3  bc 
+[ECO	D56 QGD: Lasker defence, Russian variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 h6  Bh4 Ne4  Be7 Qe7  
+Qc2 Nf6  Bd3 dc  Bc4 c5  o-o Nc6  f1d1 Bd7  
+[ECO	D56 QGD: Lasker defence, Teichmann variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 h6  Bh4 Ne4  Be7 Qe7  
+Qc2 
+[ECO	D56 QGD: Lasker defence]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 h6  Bh4 Ne4  
+[ECO	D55 QGD: Neo-orthodox variation, 7.Bh4]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 h6  Bh4 
+[ECO	D55 QGD: Petrosian variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 h6  Bf6 Bf6  Rc1 c6  
+Bd3 Nd7  o-o dc  Bc4 
+[ECO	D55 QGD: Neo-orthodox variation, 7.Bxf6]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 h6  Bf6 
+[ECO	D55 QGD: Neo-orthodox variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 h6  
+[ECO	D55 QGD: Pillsbury attack]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 b6  Bd3 Bb7  cd ed  
+Ne5 
+[ECO	D55 QGD: 6.Nf3]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Nf3 
+[ECO	D54 QGD: Anti-neo-orthodox variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  Rc1 
+[ECO	D53 QGD: 4.Bg5 Be7, 5.e3 O-O]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 o-o  
+[ECO	D53 QGD: Lasker variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  e3 Ne4  
+[ECO	D53 QGD: 4.Bg5 Be7]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 Be7  
+[ECO	D52 QGD: Cambridge Springs defence, Yugoslav variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  e3 c6  Nf3 Qa5  cd Nd5  
+[ECO	D52 QGD: Cambridge Springs defence, 7.cd]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  e3 c6  Nf3 Qa5  cd 
+[ECO	D52 QGD: Cambridge Springs defence, Capablanca variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  e3 c6  Nf3 Qa5  Bf6 
+[ECO	D52 QGD: Cambridge Springs defence, Rubinstein variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  e3 c6  Nf3 Qa5  Nd2 dc  
+[ECO	D52 QGD: Cambridge Springs defence, Argentine variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  e3 c6  Nf3 Qa5  Nd2 Bb4  Qc2 o-o  
+Bh4 
+[ECO	D52 QGD: Cambridge Springs defence, Bogolyubov variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  e3 c6  Nf3 Qa5  Nd2 Bb4  Qc2 
+[ECO	D52 QGD: Cambridge Springs defence]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  e3 c6  Nf3 Qa5  
+[ECO	D?? QGD]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  e3 c6  Nf3 
+[ECO	D51 QGD: Capablanca anti-Cambridge Springs variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  e3 c6  a3 
+[ECO	D51 QGD: 5...c6]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  e3 c6  
+[ECO	D51 QGD: Manhattan variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  e3 Bb4  
+[ECO	D51 QGD]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  e3 
+[ECO	D51 QGD: Alekhine variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  Nf3 c6  e4 
+[ECO	D51 QGD: Rochlin variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  Nf3 c6  Rc1 Qa5  Bd2 
+[ECO	D51 QGD: 4.Bg5 Nbd7]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 N8d7  
+[ECO	D50 QGD: Canal  variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 c5  cd Qb6  
+[ECO	D50 QGD: Semi-Tarrasch]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 c5  cd 
+[ECO	D50 QGD: Semi-Tarrasch, Primitive Pillsbury variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 c5  Nf3 cd  Qd4 
+[ECO	D50 QGD: Semi-Tarrasch, Krause variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 c5  Nf3 cd  Nd4 e5  N4b5 a6  Qa4 
+[ECO	D50 QGD: Been-Koomen variation]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 c5  
+[ECO	D50 QGD: 4.Bg5]
+d4 d5  c4 e6  Nc3 Nf6  Bg5 
+[ECO	D49 QGD semi-Slav: Meran, Rellstab attack]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 b5  Bd3 a6  
+e4 c5  e5 cd  Nb5 Ne5  Ne5 ab  o-o Qd5  Qe2 Ba6  Bg5 
+[ECO	D49 QGD semi-Slav: Meran, Sozin variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 b5  Bd3 a6  
+e4 c5  e5 cd  Nb5 Ne5  Ne5 ab  o-o 
+[ECO	D49 QGD semi-Slav: Meran, Stahlberg variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 b5  Bd3 a6  
+e4 c5  e5 cd  Nb5 Ne5  Ne5 ab  Qf3 
+[ECO	D49 QGD semi-Slav: Meran, Sozin variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 b5  Bd3 a6  
+e4 c5  e5 cd  Nb5 Ne5  
+[ECO	D49 QGD semi-Slav: Meran, Rabinovich variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 b5  Bd3 a6  
+e4 c5  e5 cd  Nb5 Ng4  
+[ECO	D49 QGD semi-Slav: Meran, Blumenfeld variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 b5  Bd3 a6  
+e4 c5  e5 cd  Nb5 
+[ECO	D48 QGD semi-Slav: Meran, old main line]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 b5  Bd3 a6  
+e4 c5  e5 
+[ECO	D48 QGD semi-Slav: Meran, Reynolds' variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 b5  Bd3 a6  
+e4 c5  d5 
+[ECO	D48 QGD semi-Slav: Meran]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 b5  Bd3 a6  
+e4 c5  
+[ECO	D48 QGD semi-Slav: Meran, Pir\'c variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 b5  Bd3 a6  
+e4 b4  
+[ECO	D48 QGD semi-Slav: Meran, 8...a6]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 b5  Bd3 a6  
+[ECO	D47 QGD semi-Slav: Meran, Wade variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 b5  Bd3 Bb7  
+[ECO	D47 QGD semi-Slav: neo-Meran ]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 b5  Bd3 b4  
+[ECO	D47 QGD semi-Slav: Meran variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 b5  
+[ECO	D47 QGD semi-Slav: 7.Bc4]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 dc  Bc4 
+[ECO	D46 QGD semi-Slav: Chigorin defence]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 Bd6  
+[ECO	D46 QGD semi-Slav: Romih variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 Bb4  
+[ECO	D46 QGD semi-Slav: Bogolyubov variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 Be7  
+[ECO	D46 QGD semi-Slav: 6.Bd3]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Bd3 
+[ECO	D45 QGD semi-Slav: Rubinstein  system]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Ne5 
+[ECO	D45 QGD semi-Slav: Stoltz variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  Qc2 
+[ECO	D45 QGD semi-Slav: 5...Nd7]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 N8d7  
+[ECO	D45 QGD semi-Slav: accelerated Meran ]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 a6  
+[ECO	D45 QGD semi-Slav: stonewall defence]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 Ne4  Bd3 f5  
+[ECO	D45 QGD semi-Slav: 5.e3]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  e3 
+[ECO	D44 QGD semi-Slav: anti-Meran, Alatortsev system]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  Bg5 dc  e4 b5  e5 h6  Bh4 g5  
+Ng5 Nd5  
+[ECO	D44 QGD semi-Slav: anti-Meran, Szab\'o variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  Bg5 dc  e4 b5  e5 h6  Bh4 g5  
+Ng5 hg  Bg5 N8d7  Qf3 
+[ECO	D44 QGD semi-Slav: anti-Meran, Lilienthal variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  Bg5 dc  e4 b5  e5 h6  Bh4 g5  
+Ng5 hg  Bg5 N8d7  g3 
+[ECO	D44 QGD semi-Slav: anti-Meran gambit]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  Bg5 dc  e4 b5  e5 h6  Bh4 g5  
+Ng5 
+[ECO	D44 QGD semi-Slav: Ekstrom variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  Bg5 dc  e4 b5  e5 h6  Bh4 g5  
+ef gh  Ne5 
+[ECO	D44 QGD semi-Slav: Botvinnik system ]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  Bg5 dc  e4 
+[ECO	D44 QGD semi-Slav: 5.Bg5 dc]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  Bg5 dc  
+[ECO	D43 QGD semi-Slav: Hastings variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  Bg5 h6  Bf6 Qf6  Qb3 
+[ECO	D43 QGD semi-Slav]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c6  
+[ECO	D42 QGD: Semi-Tarrasch, 7.Bd3]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c5  cd Nd5  e3 Nc6  Bd3 
+[ECO	D41 QGD: Semi-Tarrasch with e3]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c5  cd Nd5  e3 
+[ECO	D41 QGD: Semi-Tarrasch, San Sebastian variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c5  cd Nd5  e4 Nc3  bc cd  cd Bb4  
+Bd2 Qa5  
+[ECO	D41 QGD: Semi-Tarrasch, Kmoch variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c5  cd Nd5  e4 Nc3  bc cd  cd Bb4  
+Bd2 Bd2  Qd2 o-o  Bb5 
+[ECO	D41 QGD: Semi-Tarrasch, 5.cd]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c5  cd 
+[ECO	D40 QGD: Semi-Tarrasch defence, Pillsbury variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c5  Bg5 
+[ECO	D40 QGD: Semi-Tarrasch, Levenfish variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c5  e3 Nc6  Bd3 Bd6  o-o o-o  Qe2 Qe7  
+dc Bc5  e4 
+[ECO	D40 QGD: Semi-Tarrasch, symmetrical variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c5  e3 Nc6  Bd3 Bd6  o-o o-o  
+[ECO	D40 QGD: Semi-Tarrasch defence]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 c5  
+[ECO	D39 QGD: Ragozin, Vienna variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 Bb4  Bg5 dc  
+[ECO	D38 QGD: Ragozin variation]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 Bb4  
+[ECO	D37 QGD: classical variation ]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 Be7  Bf4 
+[ECO	D37 QGD: 4.Nf3]
+d4 d5  c4 e6  Nc3 Nf6  Nf3 
+[ECO	D36 QGD: exchange, positional line, 6.Qc2]
+d4 d5  c4 e6  Nc3 Nf6  cd ed  Bg5 c6  Qc2 
+[ECO	D35 QGD: exchange, positional line, 5...c6]
+d4 d5  c4 e6  Nc3 Nf6  cd ed  Bg5 c6  
+[ECO	D35 QGD: exchange, chameleon variation]
+d4 d5  c4 e6  Nc3 Nf6  cd ed  Bg5 Be7  e3 o-o  Bd3 N8d7  Qc2 Re8  
+N1e2 Nf8  o-o-o 
+[ECO	D35 QGD: exchange, positional line]
+d4 d5  c4 e6  Nc3 Nf6  cd ed  Bg5 
+[ECO	D35 QGD: exchange, S\"amisch variation]
+d4 d5  c4 e6  Nc3 Nf6  cd ed  Nf3 N8d7  Bf4 
+[ECO	D35 QGD: exchange variation]
+d4 d5  c4 e6  Nc3 Nf6  cd 
+[ECO	D35 QGD: Harrwitz attack]
+d4 d5  c4 e6  Nc3 Nf6  Bf4 
+[ECO	D35 QGD: 3...Nf6]
+d4 d5  c4 e6  Nc3 Nf6  
+[ECO	D34 QGD: Tarrasch, Stoltz variation]
+d4 d5  c4 e6  Nc3 c5  cd ed  Nf3 Nc6  g3 Nf6  Bg2 Be7  o-o o-o  
+Bg5 Be6  Rc1 b6  
+[ECO	D34 QGD: Tarrasch, Bogolyubov variation]
+d4 d5  c4 e6  Nc3 c5  cd ed  Nf3 Nc6  g3 Nf6  Bg2 Be7  o-o o-o  
+Bg5 Be6  Rc1 c4  
+[ECO	D34 QGD: Tarrasch, Prague variation, 9.Bg5]
+d4 d5  c4 e6  Nc3 c5  cd ed  Nf3 Nc6  g3 Nf6  Bg2 Be7  o-o o-o  
+Bg5 
+[ECO	D34 QGD: Tarrasch, R\'eti variation]
+d4 d5  c4 e6  Nc3 c5  cd ed  Nf3 Nc6  g3 Nf6  Bg2 Be7  o-o o-o  
+dc Bc5  Na4 
+[ECO	D34 QGD: Tarrasch, Prague variation, Normal position]
+d4 d5  c4 e6  Nc3 c5  cd ed  Nf3 Nc6  g3 Nf6  Bg2 Be7  o-o o-o  
+[ECO	D34 QGD: Tarrasch, Prague variation, 7...Be7]
+d4 d5  c4 e6  Nc3 c5  cd ed  Nf3 Nc6  g3 Nf6  Bg2 Be7  
+[ECO	D33 QGD: Tarrasch, Wagner variation]
+d4 d5  c4 e6  Nc3 c5  cd ed  Nf3 Nc6  g3 Nf6  Bg2 Bg4  
+[ECO	D33 QGD: Tarrasch, Prague variation]
+d4 d5  c4 e6  Nc3 c5  cd ed  Nf3 Nc6  g3 Nf6  
+[ECO	D33 QGD: Tarrasch, Schlechter-Rubinstein system, Rey Ardid variation]
+d4 d5  c4 e6  Nc3 c5  cd ed  Nf3 Nc6  g3 c4  e4 
+[ECO	D33 QGD: Tarrasch, Folkestone  variation]
+d4 d5  c4 e6  Nc3 c5  cd ed  Nf3 Nc6  g3 c4  
+[ECO	D33 QGD: Tarrasch, Schlechter-Rubinstein system]
+d4 d5  c4 e6  Nc3 c5  cd ed  Nf3 Nc6  g3 
+[ECO	D32 QGD: Tarrasch defence]
+d4 d5  c4 e6  Nc3 c5  cd ed  Nf3 
+[ECO	D32 QGD: Tarrasch defence, Marshall gambit]
+d4 d5  c4 e6  Nc3 c5  cd ed  e4 
+[ECO	D32 QGD: Tarrasch defence, Tarrasch gambit]
+d4 d5  c4 e6  Nc3 c5  cd ed  dc d4  Na4 b5  
+[ECO	D32 QGD: Tarrasch defence, 4.cd ed]
+d4 d5  c4 e6  Nc3 c5  cd ed  
+[ECO	D32 QGD: Tarrasch, von Hennig-Schara gambit]
+d4 d5  c4 e6  Nc3 c5  cd cd  
+[ECO	D32 QGD: Tarrasch defence]
+d4 d5  c4 e6  Nc3 c5  
+[ECO	D31 QGD: semi-Slav, Marshall gambit]
+d4 d5  c4 e6  Nc3 c6  e4 
+[ECO	D31 QGD: semi-Slav, Abrahams variation]
+d4 d5  c4 e6  Nc3 c6  Nf3 dc  a4 Bb4  e3 b5  Bd2 a5  
+[ECO	D31 QGD: semi-Slav, Junge variation]
+d4 d5  c4 e6  Nc3 c6  Nf3 dc  a4 Bb4  e3 b5  Bd2 Qb6  
+[ECO	D31 QGD: semi-Slav, Koomen variation]
+d4 d5  c4 e6  Nc3 c6  Nf3 dc  a4 Bb4  e3 b5  Bd2 Qe7  
+[ECO	D31 QGD: semi-Slav, Noteboom variation]
+d4 d5  c4 e6  Nc3 c6  Nf3 dc  
+[ECO	D31 QGD: semi-Slav]
+d4 d5  c4 e6  Nc3 c6  
+[ECO	D31 QGD: Charousek  variation]
+d4 d5  c4 e6  Nc3 Be7  
+[ECO	D31 QGD: Alapin variation]
+d4 d5  c4 e6  Nc3 b6  
+[ECO	D31 QGD: Janowski variation]
+d4 d5  c4 e6  Nc3 a6  
+[ECO	D31 QGD: 3.Nc3]
+d4 d5  c4 e6  Nc3 
+[ECO	D30 QGD: Hastings variation]
+d4 d5  c4 e6  Nf3 Nf6  Bg5 h6  Bf6 Qf6  Nc3 c6  Qb3 
+[ECO	D30 QGD: Capablanca-Duras variation]
+d4 d5  c4 e6  Nf3 Nf6  Bg5 h6  
+[ECO	D30 QGD: Vienna variation]
+d4 d5  c4 e6  Nf3 Nf6  Bg5 Bb4  
+[ECO	D30 QGD: Capablanca variation]
+d4 d5  c4 e6  Nf3 Nf6  Bg5 N8d7  e3 c6  N1d2 
+[ECO	D30 QGD]
+d4 d5  c4 e6  Nf3 Nf6  Bg5 
+[ECO	D30 QGD: Spielmann variation]
+d4 d5  c4 e6  Nf3 Nf6  e3 c6  N1d2 g6  
+[ECO	D30 QGD Slav: Semmering variation]
+d4 d5  c4 e6  Nf3 Nf6  e3 c6  N1d2 N8d7  Bd3 c5  
+[ECO	D30 QGD Slav]
+d4 d5  c4 e6  Nf3 Nf6  e3 c6  N1d2 N8d7  
+[ECO	D30 QGD: Stonewall variation]
+d4 d5  c4 e6  Nf3 Nf6  e3 c6  N1d2 Ne4  Bd3 f5  
+[ECO	D30 QGD Slav]
+d4 d5  c4 e6  Nf3 Nf6  e3 c6  N1d2 
+[ECO	D30 Queen's gambit declined]
+d4 d5  c4 e6  
+[ECO	D29 QGA: classical, Smyslov variation]
+d4 d5  c4 dc  Nf3 Nf6  e3 e6  Bc4 c5  o-o a6  Qe2 b5  Bb3 Bb7  
+Rd1 N8d7  Nc3 Bd6  
+[ECO	D29 QGA: classical, 8...Bb7]
+d4 d5  c4 dc  Nf3 Nf6  e3 e6  Bc4 c5  o-o a6  Qe2 b5  Bb3 Bb7  
+[ECO	D28 QGA: classical, Flohr variation]
+d4 d5  c4 dc  Nf3 Nf6  e3 e6  Bc4 c5  o-o a6  Qe2 b5  Bb3 Nc6  
+Rd1 c4  Bc2 Nb4  Nc3 Nc2  Qc2 Bb7  d5 Qc7  
+[ECO	D28 QGA: classical, 7...b5]
+d4 d5  c4 dc  Nf3 Nf6  e3 e6  Bc4 c5  o-o a6  Qe2 b5  
+[ECO	D28 QGA: classical, 7.Qe2]
+d4 d5  c4 dc  Nf3 Nf6  e3 e6  Bc4 c5  o-o a6  Qe2 
+[ECO	D27 QGA: classical, Geller variation]
+d4 d5  c4 dc  Nf3 Nf6  e3 e6  Bc4 c5  o-o a6  e4 
+[ECO	D27 QGA: classical, Rubinstein variation]
+d4 d5  c4 dc  Nf3 Nf6  e3 e6  Bc4 c5  o-o a6  a4 
+[ECO	D27 QGA: classical, 6...a6]
+d4 d5  c4 dc  Nf3 Nf6  e3 e6  Bc4 c5  o-o a6  
+[ECO	D26 QGA: classical, Steinitz variation]
+d4 d5  c4 dc  Nf3 Nf6  e3 e6  Bc4 c5  o-o cd  
+[ECO	D26 QGA: classical variation, 6.O-O]
+d4 d5  c4 dc  Nf3 Nf6  e3 e6  Bc4 c5  o-o 
+[ECO	D26 QGA: classical, Furman variation]
+d4 d5  c4 dc  Nf3 Nf6  e3 e6  Bc4 c5  Qe2 a6  dc Bc5  o-o Nc6  
+e4 b5  e5 
+[ECO	D26 QGA: classical variation]
+d4 d5  c4 dc  Nf3 Nf6  e3 e6  Bc4 c5  
+[ECO	D26 QGA: 4...e6]
+d4 d5  c4 dc  Nf3 Nf6  e3 e6  
+[ECO	D25 QGA, Flohr variation]
+d4 d5  c4 dc  Nf3 Nf6  e3 Be6  
+[ECO	D25 QGA, Janowsky-Larsen variation]
+d4 d5  c4 dc  Nf3 Nf6  e3 Bg4  
+[ECO	D25 QGA, Smyslov variation]
+d4 d5  c4 dc  Nf3 Nf6  e3 g6  
+[ECO	D25 QGA, 4.e3]
+d4 d5  c4 dc  Nf3 Nf6  e3 
+[ECO	D24 QGA, Bogolyubov variation]
+d4 d5  c4 dc  Nf3 Nf6  Nc3 a6  e4 
+[ECO	D24 QGA, 4.Nc3]
+d4 d5  c4 dc  Nf3 Nf6  Nc3 
+[ECO	D23 QGA: Mannheim variation]
+d4 d5  c4 dc  Nf3 Nf6  Qa4 
+[ECO	D23 Queen's gambit accepted]
+d4 d5  c4 dc  Nf3 Nf6  
+[ECO	D21 QGA: Alekhine defense, Borisenko-Furman variation]
+d4 d5  c4 dc  Nf3 a6  e4 
+[ECO	D22 QGA: Haberditz variation]
+d4 d5  c4 dc  Nf3 a6  e3 b5  
+[ECO	D22 QGA: Alekhine defence, Alatortsev variation]
+d4 d5  c4 dc  Nf3 a6  e3 Bg4  Bc4 e6  d5 
+[ECO	D22 QGA: Alekhine defence]
+d4 d5  c4 dc  Nf3 a6  
+[ECO	D21 QGA: Ericson variation]
+d4 d5  c4 dc  Nf3 b5  
+[ECO	D21 QGA: 3.Nf3]
+d4 d5  c4 dc  Nf3 
+[ECO	D20 QGA: Schwartz defence]
+d4 d5  c4 dc  e4 f5  
+[ECO	D20 QGA: Linares variation]
+d4 d5  c4 dc  e4 c5  d5 Nf6  Nc3 b5  
+[ECO	D20 QGA: 3.e4]
+d4 d5  c4 dc  e4 
+[ECO	D20 Queen's gambit accepted]
+d4 d5  c4 dc  
+[ECO	D19 QGD Slav: Dutch, S\"amisch variation]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  a4 Bf5  e3 e6  Bc4 Bb4  o-o o-o  
+Qe2 Ne4  g4 
+[ECO	D19 QGD Slav: Dutch variation, main line]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  a4 Bf5  e3 e6  Bc4 Bb4  o-o o-o  
+Qe2 
+[ECO	D19 QGD Slav: Dutch variation]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  a4 Bf5  e3 e6  Bc4 Bb4  o-o 
+[ECO	D18 QGD Slav: Dutch, Lasker variation]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  a4 Bf5  e3 Na6  
+[ECO	D18 QGD Slav: Dutch variation]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  a4 Bf5  e3 
+[ECO	D17 QGD Slav: Wiesbaden variation]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  a4 Bf5  Ne5 e6  
+[ECO	D17 QGD Slav: Carlsbad variation]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  a4 Bf5  Ne5 N8d7  Nc4 Qc7  g3 e5  
+[ECO	D17 QGD Slav: Krause attack]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  a4 Bf5  Ne5 
+[ECO	D17 QGD Slav: Czech defence]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  a4 Bf5  
+[ECO	D16 QGD Slav: Steiner variation]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  a4 Bg4  
+[ECO	D16 QGD Slav: Soultanb\'eieff variation]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  a4 e6  
+[ECO	D16 QGD Slav: Smyslov variation]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  a4 Na6  e4 Bg4  
+[ECO	D16 QGD Slav accepted: Alapin variation]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  a4 
+[ECO	D15 QGD Slav: Tolush-Geller gambit]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  e4 b5  e5 
+[ECO	D15 QGD Slav: Slav gambit]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  e4 
+[ECO	D15 QGD Slav: 5.e3 ]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  e3 
+[ECO	D15 QGD Slav accepted]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 dc  
+[ECO	D15 QGD Slav: Schlechter variation]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 g6  
+[ECO	D15 QGD Slav: S\"uchting variation]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 Qb6  
+[ECO	D15 QGD Slav: 4.Nc3]
+d4 d5  c4 c6  Nf3 Nf6  Nc3 
+[ECO	D14 QGD Slav: exchange, Trifunovi\'c variation]
+d4 d5  c4 c6  Nf3 Nf6  cd cd  Nc3 Nc6  Bf4 Bf5  e3 e6  Qb3 Bb4  
+[ECO	D14 QGD Slav: exchange variation, 6.Bf4 Bf5]
+d4 d5  c4 c6  Nf3 Nf6  cd cd  Nc3 Nc6  Bf4 Bf5  
+[ECO	D13 QGD Slav: exchange variation]
+d4 d5  c4 c6  Nf3 Nf6  cd cd  
+[ECO	D12 QGD Slav: Amsterdam variation]
+d4 d5  c4 c6  Nf3 Nf6  e3 Bf5  cd cd  Nc3 e6  Ne5 N6d7  
+[ECO	D12 QGD Slav: exchange variation]
+d4 d5  c4 c6  Nf3 Nf6  e3 Bf5  cd cd  Nc3 
+[ECO	D12 QGD Slav: Landau variation]
+d4 d5  c4 c6  Nf3 Nf6  e3 Bf5  cd cd  Qb3 Qc8  Bd2 e6  Na3 
+[ECO	D12 QGD Slav: 4.e3 Bf5]
+d4 d5  c4 c6  Nf3 Nf6  e3 Bf5  
+[ECO	D11 QGD Slav: 4.e3]
+d4 d5  c4 c6  Nf3 Nf6  e3 
+[ECO	D11 QGD Slav: Breyer variation]
+d4 d5  c4 c6  Nf3 Nf6  N1d2 
+[ECO	D11 QGD Slav: 3.Nf3]
+d4 d5  c4 c6  Nf3 
+[ECO	D10 QGD Slav defence: exchange variation]
+d4 d5  c4 c6  cd 
+[ECO	D10 QGD Slav: Winawer counter-gambit]
+d4 d5  c4 c6  Nc3 e5  
+[ECO	D10 QGD Slav defence, Alekhine variation]
+d4 d5  c4 c6  Nc3 dc  e4 
+[ECO	D10 QGD Slav defence]
+d4 d5  c4 c6  
+[ECO	D09 QGD: Albin counter-gambit, 5.g3]
+d4 d5  c4 e5  de d4  Nf3 Nc6  g3 
+[ECO	D08 QGD: Albin counter-gambit, Balogh variation]
+d4 d5  c4 e5  de d4  Nf3 Nc6  N1d2 Qe7  
+[ECO	D08 QGD: Albin counter-gambit, Janowski variation]
+d4 d5  c4 e5  de d4  Nf3 Nc6  N1d2 f6  
+[ECO	D08 QGD: Albin counter-gambit, Kr\'enosz variation]
+d4 d5  c4 e5  de d4  Nf3 Nc6  N1d2 Bg4  h3 Bf3  Nf3 Bb4  Bd2 Qe7  
+[ECO	D08 QGD: Albin counter-gambit, Alapin variation]
+d4 d5  c4 e5  de d4  Nf3 Nc6  N1d2 
+[ECO	D08 QGD: Albin counter-gambit]
+d4 d5  c4 e5  de d4  Nf3 
+[ECO	D08 QGD: Albin counter-gambit, Lasker trap]
+d4 d5  c4 e5  de d4  e3 Bb4  Bd2 de  
+[ECO	D08 QGD: Albin counter-gambit]
+d4 d5  c4 e5  
+[ECO	D07 QGD: Chigorin defence, Janowski variation]
+d4 d5  c4 Nc6  Nc3 dc  Nf3 
+[ECO	D07 QGD: Chigorin defence]
+d4 d5  c4 Nc6  
+[ECO	D06 QGD: symmetrical  defence]
+d4 d5  c4 c5  
+[ECO	D06 QGD: Marshall defence]
+d4 d5  c4 Nf6  
+[ECO	D06 QGD: Grau  defence]
+d4 d5  c4 Bf5  
+[ECO	D06 Queen's gambit declined]
+d4 d5  c4 
+[ECO	D05 Colle system]
+d4 d5  Nf3 Nf6  e3 e6  Bd3 c5  c3 
+[ECO	D05 Queen's pawn game, Rubinstein  variation]
+d4 d5  Nf3 Nf6  e3 e6  Bd3 c5  b3 
+[ECO	D05 Queen's pawn game]
+d4 d5  Nf3 Nf6  e3 e6  Bd3 
+[ECO	D05 Queen's pawn game, Zukertort variation]
+d4 d5  Nf3 Nf6  e3 e6  N1d2 c5  b3 
+[ECO	D05 Queen's pawn game]
+d4 d5  Nf3 Nf6  e3 e6  
+[ECO	D04 Queen's pawn game]
+d4 d5  Nf3 Nf6  e3 
+[ECO	D03 Torre attack ]
+d4 d5  Nf3 Nf6  Bg5 
+[ECO	D02 Queen's bishop game]
+d4 d5  Nf3 Nf6  Bf4 
+[ECO	D02 Queen's pawn game]
+d4 d5  Nf3 Nf6  
+[ECO	D02 Queen's pawn game, Krause variation]
+d4 d5  Nf3 c5  
+[ECO	D02 Queen's pawn game, Chigorin variation]
+d4 d5  Nf3 Nc6  
+[ECO	D02 Queen's pawn game]
+d4 d5  Nf3 
+[ECO	D01 Richter-Veresov attack, Richter variation]
+d4 d5  Nc3 Nf6  Bg5 Bf5  f3 
+[ECO	D01 Richter-Veresov attack, Veresov variation]
+d4 d5  Nc3 Nf6  Bg5 Bf5  Bf6 
+[ECO	D01 Richter-Veresov attack]
+d4 d5  Nc3 Nf6  Bg5 
+[ECO	D00 Blackmar-Diemer: Lemberg counter-gambit]
+d4 d5  Nc3 Nf6  e4 e5  
+[ECO	D00 Blackmar-Diemer: Euwe defence]
+d4 d5  Nc3 Nf6  e4 de  f3 ef  Nf3 e6  
+[ECO	D00 Blackmar-Diemer gambit]
+d4 d5  Nc3 Nf6  e4 
+[ECO	D00 Queen's pawn: Anti-Veresov]
+d4 d5  Nc3 Bg4  
+[ECO	D00 Queen's pawn: Chigorin variation]
+d4 d5  Nc3 
+[ECO	D00 Queen's pawn: stonewall attack]
+d4 d5  e3 Nf6  Bd3 
+[ECO	D00 Blackmar gambit]
+d4 d5  e4 
+[ECO	D00 Levitsky attack ]
+d4 d5  Bg5 
+[ECO	D00 Queen's pawn, Mason variation, Steinitz counter-gambit]
+d4 d5  Bf4 c5  
+[ECO	D00 Queen's pawn, Mason variation]
+d4 d5  Bf4 
+[ECO	D00 Queen's pawn game]
+d4 d5  
+[ECO	E59 Nimzo-Indian: 4.e3, main line]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Nf3 d5  Bd3 c5  o-o Nc6  a3 Bc3  
+bc dc  Bc4 
+[ECO	E58 Nimzo-Indian: 4.e3, main line with 8...Bxc3]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Nf3 d5  Bd3 c5  o-o Nc6  a3 Bc3  
+bc 
+[ECO	E57 Nimzo-Indian: 4.e3, main line with 8...dc and 9...cd]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Nf3 d5  Bd3 c5  o-o Nc6  a3 dc  
+Bc4 cd  
+[ECO	E56 Nimzo-Indian: 4.e3, main line with 7...Nc6]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Nf3 d5  Bd3 c5  o-o Nc6  
+[ECO	E55 Nimzo-Indian: 4.e3, Gligori\'c system, Bronstein variation]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Nf3 d5  Bd3 c5  o-o dc  Bc4 N8d7  
+[ECO	E54 Nimzo-Indian: 4.e3, Gligori\'c system, Smyslov variation]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Nf3 d5  Bd3 c5  o-o dc  Bc4 Qe7  
+[ECO	E54 Nimzo-Indian: 4.e3, Gligori\'c system with 7...dc]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Nf3 d5  Bd3 c5  o-o dc  Bc4 
+[ECO	E53 Nimzo-Indian: 4.e3, Gligori\'c system with 7...Nbd7]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Nf3 d5  Bd3 c5  o-o N8d7  
+[ECO	E53 Nimzo-Indian: 4.e3, Keres variation]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Nf3 d5  Bd3 c5  o-o b6  
+[ECO	E53 Nimzo-Indian: 4.e3, main line with ...c5]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Nf3 d5  Bd3 c5  
+[ECO	E52 Nimzo-Indian: 4.e3, main line with ...b6]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Nf3 d5  Bd3 b6  
+[ECO	E51 Nimzo-Indian: 4.e3, Ragozin variation]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Nf3 d5  Bd3 Nc6  o-o dc  
+[ECO	E51 Nimzo-Indian: 4.e3 e8g8, 5.Nf3 d7d5]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Nf3 d5  
+[ECO	E50 Nimzo-Indian: 4.e3 e8g8, 5.Nf3, without ...d5]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Nf3 
+[ECO	E49 Nimzo-Indian: 4.e3, Botvinnik system]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Bd3 d5  a3 Bc3  bc 
+[ECO	E48 Nimzo-Indian: 4.e3 O-O, 5.Bd3 d5]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Bd3 d5  
+[ECO	E47 Nimzo-Indian: 4.e3 O-O, 5.Bd3]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Bd3 
+[ECO	E46 Nimzo-Indian: Simagin variation]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Ne2 d5  a3 Bd6  
+[ECO	E46 Nimzo-Indian: Reshevsky variation]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  Ne2 
+[ECO	E46 Nimzo-Indian: 4.e3 O-O]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 o-o  
+[ECO	E45 Nimzo-Indian: 4.e3, Bronstein  variation]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 b6  Ne2 Ba6  
+[ECO	E44 Nimzo-Indian: Fischer variation, 5.Ne2]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 b6  Ne2 
+[ECO	E43 Nimzo-Indian: Fischer variation]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 b6  
+[ECO	E42 Nimzo-Indian: 4.e3 c5, 5.Ne2 ]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 c5  Ne2 
+[ECO	E41 Nimzo-Indian: e3, H\"ubner variation]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 c5  Bd3 Nc6  Nf3 Bc3  bc d6  
+[ECO	E41 Nimzo-Indian: 4.e3 c5]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 c5  
+[ECO	E40 Nimzo-Indian: 4.e3, Taimanov variation]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 Nc6  
+[ECO	E40 Nimzo-Indian: 4.e3]
+d4 Nf6  c4 e6  Nc3 Bb4  e3 
+[ECO	E39 Nimzo-Indian: classical, Pir\'c variation]
+d4 Nf6  c4 e6  Nc3 Bb4  Qc2 c5  dc o-o  
+[ECO	E38 Nimzo-Indian: classical, 4...c5]
+d4 Nf6  c4 e6  Nc3 Bb4  Qc2 c5  
+[ECO	E37 Nimzo-Indian: classical, San Remo variation]
+d4 Nf6  c4 e6  Nc3 Bb4  Qc2 d5  a3 Bc3  Qc3 Ne4  Qc2 Nc6  e3 e5  
+[ECO	E37 Nimzo-Indian: classical, Noa variation, main line, 7.Qc2]
+d4 Nf6  c4 e6  Nc3 Bb4  Qc2 d5  a3 Bc3  Qc3 Ne4  Qc2 
+[ECO	E36 Nimzo-Indian: classical, Noa variation, main line]
+d4 Nf6  c4 e6  Nc3 Bb4  Qc2 d5  a3 Bc3  Qc3 Ne4  
+[ECO	E36 Nimzo-Indian: classical, Botvinnik variation]
+d4 Nf6  c4 e6  Nc3 Bb4  Qc2 d5  a3 Bc3  Qc3 Nc6  
+[ECO	E36 Nimzo-Indian: classical, Noa variation, 5.a3]
+d4 Nf6  c4 e6  Nc3 Bb4  Qc2 d5  a3 
+[ECO	E35 Nimzo-Indian: classical, Noa variation, 5.cd ed]
+d4 Nf6  c4 e6  Nc3 Bb4  Qc2 d5  cd ed  
+[ECO	E34 Nimzo-Indian: classical, Noa variation]
+d4 Nf6  c4 e6  Nc3 Bb4  Qc2 d5  
+[ECO	E33 Nimzo-Indian: classical, Milner-Barry  variation]
+d4 Nf6  c4 e6  Nc3 Bb4  Qc2 Nc6  Nf3 d6  
+[ECO	E33 Nimzo-Indian: classical, 4...Nc6]
+d4 Nf6  c4 e6  Nc3 Bb4  Qc2 Nc6  
+[ECO	E32 Nimzo-Indian: classical, Adorjan gambit]
+d4 Nf6  c4 e6  Nc3 Bb4  Qc2 o-o  a3 Bc3  Qc3 b5  
+[ECO	E32 Nimzo-Indian: classical variation]
+d4 Nf6  c4 e6  Nc3 Bb4  Qc2 
+[ECO	E31 Nimzo-Indian: Leningrad, main line]
+d4 Nf6  c4 e6  Nc3 Bb4  Bg5 h6  Bh4 c5  d5 d6  
+[ECO	E30 Nimzo-Indian: Leningrad, ...b5 gambit]
+d4 Nf6  c4 e6  Nc3 Bb4  Bg5 h6  Bh4 c5  d5 b5  
+[ECO	E30 Nimzo-Indian: Leningrad variation]
+d4 Nf6  c4 e6  Nc3 Bb4  Bg5 
+[ECO	E29 Nimzo-Indian: S\"amisch, Capablanca variation]
+d4 Nf6  c4 e6  Nc3 Bb4  a3 Bc3  bc o-o  e3 c5  Bd3 Nc6  Ne2 b6  
+e4 Ne8  
+[ECO	E29 Nimzo-Indian: S\"amisch, main line]
+d4 Nf6  c4 e6  Nc3 Bb4  a3 Bc3  bc o-o  e3 c5  Bd3 Nc6  
+[ECO	E28 Nimzo-Indian: S\"amisch variation]
+d4 Nf6  c4 e6  Nc3 Bb4  a3 Bc3  bc o-o  e3 
+[ECO	E27 Nimzo-Indian: S\"amisch variation]
+d4 Nf6  c4 e6  Nc3 Bb4  a3 Bc3  bc o-o  
+[ECO	E26 Nimzo-Indian: S\"amisch, O'Kelly variation]
+d4 Nf6  c4 e6  Nc3 Bb4  a3 Bc3  bc c5  e3 b6  
+[ECO	E26 Nimzo-Indian: S\"amisch variation]
+d4 Nf6  c4 e6  Nc3 Bb4  a3 Bc3  bc c5  e3 
+[ECO	E25 Nimzo-Indian: S\"amisch, Romanovsky variation]
+d4 Nf6  c4 e6  Nc3 Bb4  a3 Bc3  bc c5  f3 d5  cd Nd5  dc f5  
+[ECO	E25 Nimzo-Indian: S\"amisch, Keres variation]
+d4 Nf6  c4 e6  Nc3 Bb4  a3 Bc3  bc c5  f3 d5  cd Nd5  dc 
+[ECO	E25 Nimzo-Indian: S\"amisch variation]
+d4 Nf6  c4 e6  Nc3 Bb4  a3 Bc3  bc c5  f3 d5  cd 
+[ECO	E24 Nimzo-Indian: S\"amisch, Botvinnik variation]
+d4 Nf6  c4 e6  Nc3 Bb4  a3 Bc3  bc c5  f3 d5  e3 o-o  cd Nd5  
+[ECO	E24 Nimzo-Indian: S\"amisch variation]
+d4 Nf6  c4 e6  Nc3 Bb4  a3 Bc3  bc 
+[ECO	E23 Nimzo-Indian: Spielmann, St\aa hlberg variation]
+d4 Nf6  c4 e6  Nc3 Bb4  Qb3 c5  dc Nc6  Nf3 Ne4  Bd2 Nc5  Qc2 f5  
+g3 
+[ECO	E23 Nimzo-Indian: Spielmann, San Remo variation]
+d4 Nf6  c4 e6  Nc3 Bb4  Qb3 c5  dc Nc6  Nf3 Ne4  Bd2 Nc5  
+[ECO	E23 Nimzo-Indian: Spielmann, Karlsbad variation]
+d4 Nf6  c4 e6  Nc3 Bb4  Qb3 c5  dc Nc6  Nf3 Ne4  Bd2 Nd2  
+[ECO	E23 Nimzo-Indian: Spielmann, 4...c5, 5.dc Nc6]
+d4 Nf6  c4 e6  Nc3 Bb4  Qb3 c5  dc Nc6  
+[ECO	E22 Nimzo-Indian: Spielmann variation]
+d4 Nf6  c4 e6  Nc3 Bb4  Qb3 
+[ECO	E21 Nimzo-Indian: three knights, Euwe variation]
+d4 Nf6  c4 e6  Nc3 Bb4  Nf3 c5  d5 Ne4  
+[ECO	E21 Nimzo-Indian: three knights, Korchnoi variation]
+d4 Nf6  c4 e6  Nc3 Bb4  Nf3 c5  d5 
+[ECO	E21 Nimzo-Indian: three knights variation]
+d4 Nf6  c4 e6  Nc3 Bb4  Nf3 
+[ECO	E20 Nimzo-Indian: Romanishin-Kasparov  system]
+d4 Nf6  c4 e6  Nc3 Bb4  g3 
+[ECO	E20 Nimzo-Indian: Mikenas attack]
+d4 Nf6  c4 e6  Nc3 Bb4  Qd3 
+[ECO	E20 Nimzo-Indian: Kmoch variation]
+d4 Nf6  c4 e6  Nc3 Bb4  f3 
+[ECO	E20 Nimzo-Indian defence]
+d4 Nf6  c4 e6  Nc3 Bb4  
+[ECO	E19 Queen's Indian: old main line, 9.Qxc3]
+d4 Nf6  c4 e6  Nf3 b6  g3 Bb7  Bg2 Be7  o-o o-o  Nc3 Ne4  Qc2 Nc3  
+Qc3 
+[ECO	E18 Queen's Indian: old main line, 7.Nc3]
+d4 Nf6  c4 e6  Nf3 b6  g3 Bb7  Bg2 Be7  o-o o-o  Nc3 
+[ECO	E17 Queen's Indian: Euwe variation]
+d4 Nf6  c4 e6  Nf3 b6  g3 Bb7  Bg2 Be7  o-o o-o  b3 
+[ECO	E17 Queen's Indian: old main line, 6.O-O]
+d4 Nf6  c4 e6  Nf3 b6  g3 Bb7  Bg2 Be7  o-o 
+[ECO	E17 Queen's Indian: Opo\v censky variation]
+d4 Nf6  c4 e6  Nf3 b6  g3 Bb7  Bg2 Be7  Nc3 Ne4  Bd2 
+[ECO	E17 Queen's Indian: anti-Queen's Indian system]
+d4 Nf6  c4 e6  Nf3 b6  g3 Bb7  Bg2 Be7  Nc3 
+[ECO	E17 Queen's Indian: 5.Bg2 Be7]
+d4 Nf6  c4 e6  Nf3 b6  g3 Bb7  Bg2 Be7  
+[ECO	E16 Queen's Indian: Riumin variation]
+d4 Nf6  c4 e6  Nf3 b6  g3 Bb7  Bg2 Bb4  Bd2 Be7  
+[ECO	E16 Queen's Indian: Yates variation]
+d4 Nf6  c4 e6  Nf3 b6  g3 Bb7  Bg2 Bb4  Bd2 a5  
+[ECO	E16 Queen's Indian: Capablanca variation]
+d4 Nf6  c4 e6  Nf3 b6  g3 Bb7  Bg2 Bb4  
+[ECO	E15 Queen's Indian: B\"urger variation]
+d4 Nf6  c4 e6  Nf3 b6  g3 Bb7  Bg2 c5  d5 ed  Ng5 
+[ECO	E15 Queen's Indian: Rubinstein variation]
+d4 Nf6  c4 e6  Nf3 b6  g3 Bb7  Bg2 c5  d5 ed  Nh4 
+[ECO	E15 Queen's Indian: 4.g3 Bb7]
+d4 Nf6  c4 e6  Nf3 b6  g3 Bb7  
+[ECO	E15 Queen's Indian: Nimzovich variation ]
+d4 Nf6  c4 e6  Nf3 b6  g3 Ba6  
+[ECO	E15 Queen's Indian: 4.g3]
+d4 Nf6  c4 e6  Nf3 b6  g3 
+[ECO	E14 Queen's Indian: Averbakh variation]
+d4 Nf6  c4 e6  Nf3 b6  e3 Bb7  Bd3 c5  o-o Be7  b3 o-o  Bb2 cd  
+Nd4 
+[ECO	E14 Queen's Indian: 4.e3]
+d4 Nf6  c4 e6  Nf3 b6  e3 
+[ECO	E13 Queen's Indian: 4.Nc3, main line]
+d4 Nf6  c4 e6  Nf3 b6  Nc3 Bb7  Bg5 h6  Bh4 Bb4  
+[ECO	E12 Queen's Indian: 4.Nc3, Botvinnik variation]
+d4 Nf6  c4 e6  Nf3 b6  Nc3 Bb7  Bg5 h6  Bh4 g5  Bg3 Nh5  
+[ECO	E12 Queen's Indian: 4.Nc3]
+d4 Nf6  c4 e6  Nf3 b6  Nc3 
+[ECO	E12 Queen's Indian: Petrosian system]
+d4 Nf6  c4 e6  Nf3 b6  a3 
+[ECO	E12 Queen's Indian: Miles variation]
+d4 Nf6  c4 e6  Nf3 b6  Bf4 
+[ECO	E12 Queen's Indian defence]
+d4 Nf6  c4 e6  Nf3 b6  
+[ECO	E11 Bogo-Indian defence, Gr\"unfeld variation]
+d4 Nf6  c4 e6  Nf3 Bb4  N1d2 
+[ECO	E11 Bogo-Indian defence, Nimzovich variation]
+d4 Nf6  c4 e6  Nf3 Bb4  Bd2 Qe7  
+[ECO	E11 Bogo-Indian defence, Monticelli trap]
+d4 Nf6  c4 e6  Nf3 Bb4  Bd2 Bd2  Qd2 b6  g3 Bb7  Bg2 o-o  Nc3 Ne4  
+Qc2 Nc3  Ng5 
+[ECO	E11 Bogo-Indian defence]
+d4 Nf6  c4 e6  Nf3 Bb4  
+[ECO	E10 D\"ory defence]
+d4 Nf6  c4 e6  Nf3 Ne4  
+[ECO	E10 Dzindzikhashvili defence]
+d4 Nf6  c4 e6  Nf3 a6  
+[ECO	E10 Blumenfeld counter-gambit, Spielmann variation]
+d4 Nf6  c4 e6  Nf3 c5  d5 b5  Bg5 ed  cd h6  
+[ECO	E10 Blumenfeld counter-gambit, Dus-Chotimursky variation]
+d4 Nf6  c4 e6  Nf3 c5  d5 b5  Bg5 
+[ECO	E10 Blumenfeld counter-gambit accepted]
+d4 Nf6  c4 e6  Nf3 c5  d5 b5  de fe  cb d5  
+[ECO	E10 Blumenfeld counter-gambit]
+d4 Nf6  c4 e6  Nf3 c5  d5 b5  
+[ECO	E10 Queen's pawn game]
+d4 Nf6  c4 e6  Nf3 
+[ECO	E09 Catalan: closed, Sokolsky variation]
+d4 Nf6  c4 e6  g3 d5  Bg2 Be7  Nf3 o-o  o-o N8d7  Qc2 c6  N1d2 b6  
+b3 a5  Bb2 Ba6  
+[ECO	E09 Catalan: closed, main line]
+d4 Nf6  c4 e6  g3 d5  Bg2 Be7  Nf3 o-o  o-o N8d7  Qc2 c6  N1d2 
+[ECO	E08 Catalan: closed, Spassky gambit]
+d4 Nf6  c4 e6  g3 d5  Bg2 Be7  Nf3 o-o  o-o N8d7  Qc2 c6  b3 b6  
+Rd1 Bb7  Nc3 b5  
+[ECO	E08 Catalan: closed, Qc2 & b3]
+d4 Nf6  c4 e6  g3 d5  Bg2 Be7  Nf3 o-o  o-o N8d7  Qc2 c6  b3 
+[ECO	E08 Catalan: closed, Zagoryansky variation]
+d4 Nf6  c4 e6  g3 d5  Bg2 Be7  Nf3 o-o  o-o N8d7  Qc2 c6  Rd1 b6  
+a4 
+[ECO	E08 Catalan: closed, 7.Qc2]
+d4 Nf6  c4 e6  g3 d5  Bg2 Be7  Nf3 o-o  o-o N8d7  Qc2 
+[ECO	E07 Catalan: closed, Botvinnik variation]
+d4 Nf6  c4 e6  g3 d5  Bg2 Be7  Nf3 o-o  o-o N8d7  Nc3 c6  Qd3 
+[ECO	E07 Catalan: closed, 6...Nbd7]
+d4 Nf6  c4 e6  g3 d5  Bg2 Be7  Nf3 o-o  o-o N8d7  
+[ECO	E06 Catalan: closed, 5.Nf3]
+d4 Nf6  c4 e6  g3 d5  Bg2 Be7  Nf3 
+[ECO	E05 Catalan: open, classical line]
+d4 Nf6  c4 e6  g3 d5  Bg2 dc  Nf3 Be7  
+[ECO	E04 Catalan: open, 5.Nf3]
+d4 Nf6  c4 e6  g3 d5  Bg2 dc  Nf3 
+[ECO	E03 Catalan: open, Alekhine variation]
+d4 Nf6  c4 e6  g3 d5  Bg2 dc  Qa4 N8d7  Qc4 a6  Qc2 
+[ECO	E03 Catalan: open, 5.Qa4 Nbd7, 6.Qxc4]
+d4 Nf6  c4 e6  g3 d5  Bg2 dc  Qa4 N8d7  Qc4 
+[ECO	E02 Catalan: open, 5.Qa4]
+d4 Nf6  c4 e6  g3 d5  Bg2 dc  Qa4 
+[ECO	E01 Catalan: closed]
+d4 Nf6  c4 e6  g3 d5  Bg2 
+[ECO	E00 Catalan opening]
+d4 Nf6  c4 e6  g3 
+[ECO	E00 Neo-Indian  attack]
+d4 Nf6  c4 e6  Bg5 
+[ECO	E00 Queen's pawn game]
+d4 Nf6  c4 e6  
+[ECO	E99 King's Indian: orthodox, Aronin-Taimanov, Benk\"o attack]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  o-o Nc6  d5 Ne7  
+Ne1 Nd7  f3 f5  g4 
+[ECO	E99 King's Indian: orthodox, Aronin-Taimanov, main line]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  o-o Nc6  d5 Ne7  
+Ne1 Nd7  f3 f5  
+[ECO	E98 King's Indian: orthodox, Aronin-Taimanov, 9.Ne1]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  o-o Nc6  d5 Ne7  
+Ne1 
+[ECO	E97 King's Indian: orthodox, Aronin-Taimanov, bayonet attack]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  o-o Nc6  d5 Ne7  
+b4 
+[ECO	E97 King's Indian: orthodox, Aronin-Taimanov variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  o-o Nc6  
+[ECO	E96 King's Indian: orthodox, 7...Nbd7, main line]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  o-o N8d7  Re1 c6  
+Bf1 a5  
+[ECO	E95 King's Indian: orthodox, 7...Nbd7, 8.Re1]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  o-o N8d7  Re1 
+[ECO	E94 King's Indian: orthodox, 7...Nbd7]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  o-o N8d7  
+[ECO	E94 King's Indian: orthodox, Donner variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  o-o c6  
+[ECO	E94 King's Indian: orthodox variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  o-o 
+[ECO	E93 King's Indian: Petrosian system, Keres variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  d5 N8d7  Bg5 h6  
+Bh4 g5  Bg3 Nh5  h4 
+[ECO	E93 King's Indian: Petrosian system, main line]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  d5 N8d7  
+[ECO	E92 King's Indian: Petrosian system, Stein variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  d5 a5  
+[ECO	E92 King's Indian: Petrosian system]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  d5 
+[ECO	E92 King's Indian: Gligori\'c-Taimanov system]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  Be3 
+[ECO	E92 King's Indian: Andersson variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  de 
+[ECO	E92 King's Indian: classical variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 e5  
+[ECO	E91 King's Indian: Kazakh variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 Na6  
+[ECO	E91 King's Indian: 6.Be2]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be2 
+[ECO	E90 King's Indian: Zinnowitz variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Bg5 
+[ECO	E90 King's Indian: Larsen variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 o-o  Be3 
+[ECO	E90 King's Indian: 5.Nf3]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Nf3 
+[ECO	E89 King's Indian: S\"amisch, orthodox main line]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f3 o-o  Be3 e5  d5 c6  N1e2 cd  
+[ECO	E88 King's Indian: S\"amisch, orthodox, 7.d5 c6]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f3 o-o  Be3 e5  d5 c6  
+[ECO	E87 King's Indian: S\"amisch, orthodox, Bronstein variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f3 o-o  Be3 e5  d5 Nh5  Qd2 Qh4  
+g3 Ng3  Qf2 Nf1  Qh4 Ne3  Ke2 Nc4  
+[ECO	E87 King's Indian: S\"amisch, orthodox, 7.d5]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f3 o-o  Be3 e5  d5 
+[ECO	E86 King's Indian: S\"amisch, orthodox, 7.Nge2 c6]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f3 o-o  Be3 e5  N1e2 c6  
+[ECO	E85 King's Indian: S\"amisch, orthodox variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f3 o-o  Be3 e5  
+[ECO	E84 King's Indian: S\"amisch, Panno main line]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f3 o-o  Be3 Nc6  N1e2 a6  Qd2 Rb8  
+[ECO	E83 King's Indian: S\"amisch, Panno formation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f3 o-o  Be3 Nc6  N1e2 a6  
+[ECO	E83 King's Indian: S\"amisch, Ruban variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f3 o-o  Be3 Nc6  N1e2 Rb8  
+[ECO	E83 King's Indian: S\"amisch, 6...Nc6]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f3 o-o  Be3 Nc6  
+[ECO	E82 King's Indian: S\"amisch, double fianchetto variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f3 o-o  Be3 b6  
+[ECO	E81 King's Indian: S\"amisch, Byrne variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f3 o-o  Be3 c6  Bd3 a6  
+[ECO	E81 King's Indian: S\"amisch, 5...O-O]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f3 o-o  
+[ECO	E80 King's Indian: S\"amisch variation]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f3 
+[ECO	E79 King's Indian: Four pawns attack, main line]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f4 o-o  Be2 c5  Nf3 cd  Nd4 Nc6  
+Be3 
+[ECO	E78 King's Indian: Four pawns attack, with Be2 and Nf3]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f4 o-o  Be2 c5  Nf3 
+[ECO	E77 King's Indian: Four pawns attack, Florentine gambit]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f4 o-o  Be2 c5  d5 e6  Nf3 ed  
+e5 
+[ECO	E77 King's Indian: Four pawns attack]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f4 o-o  Be2 c5  d5 e6  Nf3 
+[ECO	E77 King's Indian: Six pawns attack]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f4 o-o  Be2 c5  d5 e6  de fe  
+g4 Nc6  h4 
+[ECO	E77 King's Indian: Four pawns attack, 6.Be2]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f4 o-o  Be2 
+[ECO	E76 King's Indian: Four pawns attack, dynamic line]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f4 o-o  Nf3 c5  d5 
+[ECO	E76 King's Indian: Four pawns attack]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  f4 
+[ECO	E75 King's Indian: Averbakh, main line]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Be2 o-o  Bg5 c5  d5 e6  
+[ECO	E74 King's Indian: Averbakh, 6...c5]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Be2 o-o  Bg5 c5  
+[ECO	E73 King's Indian: Averbakh system]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Be2 o-o  Bg5 
+[ECO	E73 King's Indian: Semi-Averbakh system]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Be2 o-o  Be3 
+[ECO	E73 King's Indian: 5.Be2]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Be2 
+[ECO	E72 King's Indian: Pomar system]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  g3 o-o  Bg2 e5  N1e2 
+[ECO	E72 King's Indian with e4 & g3]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  g3 
+[ECO	E71 King's Indian: Makagonov system ]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  h3 
+[ECO	E70 King's Indian: accelerated Averbakh system]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  Bg5 
+[ECO	E70 King's Indian: Kramer system]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 d6  N1e2 
+[ECO	E70 King's Indian: 4.e4]
+d4 Nf6  c4 g6  Nc3 Bg7  e4 
+[ECO	E69 King's Indian: fianchetto, classical main line]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 o-o  Bg2 N8d7  o-o e5  e4 c6  
+h3 
+[ECO	E68 King's Indian: fianchetto, classical variation, 8.e4]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 o-o  Bg2 N8d7  o-o e5  e4 
+[ECO	E67 King's Indian: fianchetto, classical variation]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 o-o  Bg2 N8d7  o-o e5  
+[ECO	E67 King's Indian: fianchetto with ...Nd7]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 o-o  Bg2 N8d7  
+[ECO	E66 King's Indian: fianchetto, Yugoslav Panno]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 o-o  Bg2 c5  o-o Nc6  d5 
+[ECO	E65 King's Indian: fianchetto, Yugoslav, 7.O-O]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 o-o  Bg2 c5  o-o 
+[ECO	E64 King's Indian: fianchetto, Yugoslav system]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 o-o  Bg2 c5  
+[ECO	E63 King's Indian: fianchetto, Panno variation]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 o-o  Bg2 Nc6  o-o a6  
+[ECO	E62 King's Indian: fianchetto, Simagin variation]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 o-o  Bg2 Nc6  o-o Bg4  
+[ECO	E62 King's Indian: fianchetto, lesser Simagin  variation]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 o-o  Bg2 Nc6  o-o Bf5  
+[ECO	E62 King's Indian: fianchetto, Uhlmann  variation]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 o-o  Bg2 Nc6  o-o e5  
+[ECO	E62 King's Indian: fianchetto with ...Nc6]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 o-o  Bg2 Nc6  
+[ECO	E62 King's Indian: fianchetto, Kavalek  variation]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 o-o  Bg2 c6  o-o Qa5  
+[ECO	E62 King's Indian: fianchetto, Larsen system]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 o-o  Bg2 c6  o-o Bf5  
+[ECO	E62 King's Indian: fianchetto variation]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  g3 
+[ECO	E61 King's Indian: Smyslov system]
+d4 Nf6  c4 g6  Nc3 Bg7  Nf3 d6  Bg5 
+[ECO	E61 King's Indian defence, 3.Nc3]
+d4 Nf6  c4 g6  Nc3 
+[ECO	D99 Gr\"unfeld defence: Smyslov, Yugoslav variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Qb3 dc  Qc4 o-o  e4 Bg4  Be3 N6d7  
+Qb3 c5  
+[ECO	D99 Gr\"unfeld defence: Smyslov, main line]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Qb3 dc  Qc4 o-o  e4 Bg4  Be3 N6d7  
+Qb3 
+[ECO	D98 Gr\"unfeld: Russian, Keres variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Qb3 dc  Qc4 o-o  e4 Bg4  Be3 N6d7  
+Be2 Nb6  Qd3 Nc6  o-o-o 
+[ECO	D98 Gr\"unfeld: Russian, Smyslov variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Qb3 dc  Qc4 o-o  e4 Bg4  
+[ECO	D97 Gr\"unfeld: Russian, Prins variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Qb3 dc  Qc4 o-o  e4 Na6  
+[ECO	D97 Gr\"unfeld: Russian, Byrne  variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Qb3 dc  Qc4 o-o  e4 Nc6  
+[ECO	D97 Gr\"unfeld: Russian, Levenfish variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Qb3 dc  Qc4 o-o  e4 b6  
+[ECO	D97 Gr\"unfeld: Russian, Szabo  variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Qb3 dc  Qc4 o-o  e4 c6  
+[ECO	D97 Gr\"unfeld: Russian, Alekhine  variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Qb3 dc  Qc4 o-o  e4 a6  
+[ECO	D97 Gr\"unfeld: Russian variation with e4]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Qb3 dc  Qc4 o-o  e4 
+[ECO	D96 Gr\"unfeld: Russian variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Qb3 
+[ECO	D95 Gr\"unfeld: Botvinnik variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  e3 o-o  Qb3 e6  
+[ECO	D95 Gr\"unfeld: Pachman variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  e3 o-o  Qb3 dc  Bc4 N8d7  Ng5 
+[ECO	D95 Gr\"unfeld with e3 & Qb3]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  e3 o-o  Qb3 
+[ECO	D94 Gr\"unfeld: Flohr defence]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  e3 o-o  Bd3 c6  o-o Bf5  
+[ECO	D94 Gr\"unfeld: Smyslov defence]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  e3 o-o  Bd3 c6  o-o Bg4  
+[ECO	D94 Gr\"unfeld with e3 & Bd3]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  e3 o-o  Bd3 
+[ECO	D94 Gr\"unfeld: Opo\v censky variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  e3 o-o  Bd2 
+[ECO	D94 Gr\"unfeld: Makogonov variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  e3 o-o  b4 
+[ECO	D94 Gr\"unfeld: 5.e3]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  e3 
+[ECO	D93 Gr\"unfeld with Bf4 & e3]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Bf4 o-o  e3 
+[ECO	D92 Gr\"unfeld: 5.Bf4]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Bf4 
+[ECO	D91 Gr\"unfeld: 5.Bg5]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Bg5 
+[ECO	D90 Gr\"unfeld: Flohr variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  Qa4 
+[ECO	D90 Gr\"unfeld: Three knights variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 Bg7  
+[ECO	D90 Gr\"unfeld: Schlechter variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 c6  
+[ECO	D90 Gr\"unfeld: Three knights variation]
+d4 Nf6  c4 g6  Nc3 d5  Nf3 
+[ECO	D89 Gr\"unfeld: exchange, Sokolsky variation]
+d4 Nf6  c4 g6  Nc3 d5  cd Nd5  e4 Nc3  bc Bg7  Bc4 o-o  Ne2 c5  
+o-o Nc6  Be3 cd  cd Bg4  f3 Na5  Bd3 Be6  d5 
+[ECO	D89 Gr\"unfeld: Spassky variation, main line, 13.Bd3]
+d4 Nf6  c4 g6  Nc3 d5  cd Nd5  e4 Nc3  bc Bg7  Bc4 o-o  Ne2 c5  
+o-o Nc6  Be3 cd  cd Bg4  f3 Na5  Bd3 Be6  
+[ECO	D88 Gr\"unfeld: Spassky variation, main line, 10...cd, 11.cd]
+d4 Nf6  c4 g6  Nc3 d5  cd Nd5  e4 Nc3  bc Bg7  Bc4 o-o  Ne2 c5  
+o-o Nc6  Be3 cd  cd 
+[ECO	D87 Gr\"unfeld: exchange, Seville variation]
+d4 Nf6  c4 g6  Nc3 d5  cd Nd5  e4 Nc3  bc Bg7  Bc4 o-o  Ne2 c5  
+o-o Nc6  Be3 Bg4  f3 Na5  Bf7 
+[ECO	D87 Gr\"unfeld: exchange, Spassky variation]
+d4 Nf6  c4 g6  Nc3 d5  cd Nd5  e4 Nc3  bc Bg7  Bc4 o-o  Ne2 c5  
+[ECO	D86 Gr\"unfeld: exchange, Simagin's improved variation]
+d4 Nf6  c4 g6  Nc3 d5  cd Nd5  e4 Nc3  bc Bg7  Bc4 o-o  Ne2 Nc6  
+[ECO	D86 Gr\"unfeld: exchange, Simagin's lesser variation]
+d4 Nf6  c4 g6  Nc3 d5  cd Nd5  e4 Nc3  bc Bg7  Bc4 o-o  Ne2 b6  
+[ECO	D86 Gr\"unfeld: exchange, Larsen variation]
+d4 Nf6  c4 g6  Nc3 d5  cd Nd5  e4 Nc3  bc Bg7  Bc4 o-o  Ne2 Qd7  
+o-o b6  
+[ECO	D86 Gr\"unfeld: exchange, classical variation]
+d4 Nf6  c4 g6  Nc3 d5  cd Nd5  e4 Nc3  bc Bg7  Bc4 
+[ECO	D85 Gr\"unfeld: modern exchange variation]
+d4 Nf6  c4 g6  Nc3 d5  cd Nd5  e4 Nc3  bc Bg7  Nf3 
+[ECO	D85 Gr\"unfeld: exchange variation]
+d4 Nf6  c4 g6  Nc3 d5  cd Nd5  
+[ECO	D84 Gr\"unfeld: Gr\"unfeld gambit accepted]
+d4 Nf6  c4 g6  Nc3 d5  Bf4 Bg7  e3 o-o  cd Nd5  Nd5 Qd5  Bc7 
+[ECO	D83 Gr\"unfeld: Gr\"unfeld gambit, Botvinnik variation]
+d4 Nf6  c4 g6  Nc3 d5  Bf4 Bg7  e3 o-o  Rc1 c5  dc Be6  
+[ECO	D83 Gr\"unfeld: Gr\"unfeld gambit, Capablanca variation]
+d4 Nf6  c4 g6  Nc3 d5  Bf4 Bg7  e3 o-o  Rc1 
+[ECO	D83 Gr\"unfeld: Gr\"unfeld gambit]
+d4 Nf6  c4 g6  Nc3 d5  Bf4 Bg7  e3 o-o  
+[ECO	D82 Gr\"unfeld: 4.Bf4]
+d4 Nf6  c4 g6  Nc3 d5  Bf4 
+[ECO	D81 Gr\"unfeld: Russian variation]
+d4 Nf6  c4 g6  Nc3 d5  Qb3 
+[ECO	D80 Gr\"unfeld: Lundin variation]
+d4 Nf6  c4 g6  Nc3 d5  Bg5 Ne4  Ne4 de  Qd2 c5  
+[ECO	D80 Gr\"unfeld: Stockholm variation]
+d4 Nf6  c4 g6  Nc3 d5  Bg5 
+[ECO	D80 Gr\"unfeld: Spike gambit]
+d4 Nf6  c4 g6  Nc3 d5  g4 
+[ECO	D80 Gr\"unfeld defence]
+d4 Nf6  c4 g6  Nc3 d5  
+[ECO	D79 Neo-Gr\"unfeld, 6.O-O, main line]
+d4 Nf6  c4 g6  g3 d5  Bg2 Bg7  Nf3 o-o  o-o c6  cd cd  
+[ECO	D78 Neo-Gr\"unfeld, 6.O-O c6]
+d4 Nf6  c4 g6  g3 d5  Bg2 Bg7  Nf3 o-o  o-o c6  
+[ECO	D77 Neo-Gr\"unfeld, 6.O-O]
+d4 Nf6  c4 g6  g3 d5  Bg2 Bg7  Nf3 o-o  o-o 
+[ECO	D76 Neo-Gr\"unfeld, 6.cd Nxd5, 7.O-O Nb6]
+d4 Nf6  c4 g6  g3 d5  Bg2 Bg7  Nf3 o-o  cd Nd5  o-o Nb6  
+[ECO	D75 Neo-Gr\"unfeld, 6.cd Nxd5, 7.O-O c5, 8.Nc3]
+d4 Nf6  c4 g6  g3 d5  Bg2 Bg7  Nf3 o-o  cd Nd5  o-o c5  Nc3 
+[ECO	D75 Neo-Gr\"unfeld, 6.cd Nxd5, 7.O-O c5, 8.dc]
+d4 Nf6  c4 g6  g3 d5  Bg2 Bg7  Nf3 o-o  cd Nd5  o-o c5  dc 
+[ECO	D74 Neo-Gr\"unfeld, 6.cd Nxd5, 7.O-O]
+d4 Nf6  c4 g6  g3 d5  Bg2 Bg7  Nf3 o-o  cd Nd5  o-o 
+[ECO	D73 Neo-Gr\"unfeld, 5.Nf3]
+d4 Nf6  c4 g6  g3 d5  Bg2 Bg7  Nf3 
+[ECO	D72 Neo-Gr\"unfeld, 5.cd, main line]
+d4 Nf6  c4 g6  g3 d5  Bg2 Bg7  cd Nd5  e4 Nb6  Ne2 
+[ECO	D71 Neo-Gr\"unfeld, 5.cd]
+d4 Nf6  c4 g6  g3 d5  Bg2 Bg7  cd Nd5  
+[ECO	D70 Neo-Gr\"unfeld  defence]
+d4 Nf6  c4 g6  g3 d5  
+[ECO	E60 King's Indian: 3.g3, counterthrust variation]
+d4 Nf6  c4 g6  g3 Bg7  Bg2 d5  
+[ECO	E60 King's Indian: 3.g3]
+d4 Nf6  c4 g6  g3 
+[ECO	D70 Neo-Gr\"unfeld defence]
+d4 Nf6  c4 g6  Nf3 d5  
+[ECO	E60 King's Indian, 3.Nf3]
+d4 Nf6  c4 g6  Nf3 
+[ECO	E60 Queen's pawn: Mengarini attack]
+d4 Nf6  c4 g6  Qc2 
+[ECO	E60 King's Indian: Danube gambit]
+d4 Nf6  c4 g6  d5 b5  
+[ECO	E60 King's Indian: Anti-Gr\"unfeld]
+d4 Nf6  c4 g6  d5 
+[ECO	D70 Neo-Gr\"unfeld defence]
+d4 Nf6  c4 g6  f3 d5  
+[ECO	E60 King's Indian defence]
+d4 Nf6  c4 g6  
+[ECO	A79 Benoni: classical, 11.f3]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  Nf3 Bg7  Be2 o-o  
+o-o Re8  Nd2 Na6  f3 
+[ECO	A78 Benoni: classical with ...Re8 and ...Na6]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  Nf3 Bg7  Be2 o-o  
+o-o Re8  Nd2 Na6  
+[ECO	A77 Benoni: classical, 9...Re8, 10.Nd2]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  Nf3 Bg7  Be2 o-o  
+o-o Re8  Nd2 
+[ECO	A76 Benoni: classical, 9...Re8]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  Nf3 Bg7  Be2 o-o  
+o-o Re8  
+[ECO	A75 Benoni: classical with ...a6 and 10...Bg4]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  Nf3 Bg7  Be2 o-o  
+o-o a6  a4 Bg4  
+[ECO	A74 Benoni: classical, 9...a6, 10.a4]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  Nf3 Bg7  Be2 o-o  
+o-o a6  a4 
+[ECO	A73 Benoni: classical, 9.O-O]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  Nf3 Bg7  Be2 o-o  
+o-o 
+[ECO	A72 Benoni: classical without 9.O-O]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  Nf3 Bg7  Be2 o-o  
+[ECO	A70 Benoni: classical without 9.O-O]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  Nf3 Bg7  Be2 
+[ECO	A71 Benoni: classical, 8.Bg5]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  Nf3 Bg7  Bg5 
+[ECO	A70 Benoni: classical with e4 and Nf3]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  Nf3 
+[ECO	A67 Benoni: Taimanov variation]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  f4 Bg7  Bb5 
+[ECO	A66 Benoni: Mikenas variation]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  f4 Bg7  e5 
+[ECO	A69 Benoni: four pawns attack, main line]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  f4 Bg7  Nf3 o-o  
+Be2 Re8  
+[ECO	A68 Benoni: four pawns attack]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  f4 Bg7  Nf3 o-o  
+[ECO	A66 Benoni: pawn storm variation]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 g6  f4 
+[ECO	A65 Benoni: 6.e4]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  e4 
+[ECO	A64 Benoni: fianchetto, 11...Re8]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  Nf3 g6  g3 Bg7  Bg2 o-o  
+o-o N8d7  Nd2 a6  a4 Re8  
+[ECO	A63 Benoni: fianchetto, 9...Nbd7]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  Nf3 g6  g3 Bg7  Bg2 o-o  
+o-o N8d7  
+[ECO	A62 Benoni: fianchetto variation]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  Nf3 g6  g3 Bg7  Bg2 o-o  
+[ECO	A61 Benoni: fianchetto variation]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  Nf3 g6  g3 
+[ECO	A61 Benoni: Nimzovich  variation]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  Nf3 g6  Nd2 
+[ECO	A61 Benoni: Uhlmann variation]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  Nf3 g6  Bg5 
+[ECO	A61 Benoni defence]
+d4 Nf6  c4 c5  d5 e6  Nc3 ed  cd d6  Nf3 g6  
+[ECO	A60 Benoni defence]
+d4 Nf6  c4 c5  d5 e6  
+[ECO	A59 Benk\"o gambit: main line]
+d4 Nf6  c4 c5  d5 b5  cb a6  ba Ba6  Nc3 d6  e4 Bf1  Kf1 g6  
+g3 Bg7  Kg2 o-o  Nf3 
+[ECO	A59 Benk\"o gambit]
+d4 Nf6  c4 c5  d5 b5  cb a6  ba Ba6  Nc3 d6  e4 Bf1  Kf1 g6  
+g3 
+[ECO	A59 Benk\"o gambit: Ne2 variation]
+d4 Nf6  c4 c5  d5 b5  cb a6  ba Ba6  Nc3 d6  e4 Bf1  Kf1 g6  
+N1e2 
+[ECO	A59 Benk\"o gambit: 7.e4]
+d4 Nf6  c4 c5  d5 b5  cb a6  ba Ba6  Nc3 d6  e4 
+[ECO	A58 Benk\"o gambit: fianchetto variation]
+d4 Nf6  c4 c5  d5 b5  cb a6  ba Ba6  Nc3 d6  Nf3 g6  g3 
+[ECO	A58 Benk\"o gambit: Nd2 variation]
+d4 Nf6  c4 c5  d5 b5  cb a6  ba Ba6  Nc3 d6  Nf3 g6  Nd2 
+[ECO	A58 Benk\"o gambit accepted]
+d4 Nf6  c4 c5  d5 b5  cb a6  ba 
+[ECO	A57 Benk\"o gambit: Nescaf\'e Frapp\'e attack]
+d4 Nf6  c4 c5  d5 b5  cb a6  Nc3 ab  e4 b4  Nb5 d6  Bc4 
+[ECO	A57 Benk\"o gambit: Zaitsev system]
+d4 Nf6  c4 c5  d5 b5  cb a6  Nc3 
+[ECO	A57 Benk\"o gambit half accepted]
+d4 Nf6  c4 c5  d5 b5  cb a6  
+[ECO	A57 Benk\"o gambit]
+d4 Nf6  c4 c5  d5 b5  
+[ECO	A56 Czech Benoni: King's Indian system]
+d4 Nf6  c4 c5  d5 e5  Nc3 d6  e4 g6  
+[ECO	A56 Czech Benoni defence]
+d4 Nf6  c4 c5  d5 e5  
+[ECO	A56 Vulture defence]
+d4 Nf6  c4 c5  d5 Ne4  
+[ECO	A56 Benoni defence, Hromodka system]
+d4 Nf6  c4 c5  d5 d6  
+[ECO	A56 Benoni defence]
+d4 Nf6  c4 c5  
+[ECO	A55 Old Indian: main line]
+d4 Nf6  c4 d6  Nc3 e5  Nf3 N8d7  e4 
+[ECO	A54 Old Indian: Ukrainian variation, 4.Nf3]
+d4 Nf6  c4 d6  Nc3 e5  Nf3 
+[ECO	A54 Old Indian: Dus-Khotimirsky variation]
+d4 Nf6  c4 d6  Nc3 e5  e3 N8d7  Bd3 
+[ECO	A54 Old Indian: Ukrainian variation]
+d4 Nf6  c4 d6  Nc3 e5  
+[ECO	A53 Old Indian: Janowski variation]
+d4 Nf6  c4 d6  Nc3 Bf5  
+[ECO	A53 Old Indian defence]
+d4 Nf6  c4 d6  
+[ECO	A52 Budapest: Alekhine variation, Balogh gambit]
+d4 Nf6  c4 e5  de Ng4  e4 d6  
+[ECO	A52 Budapest: Alekhine, Abonyi variation]
+d4 Nf6  c4 e5  de Ng4  e4 Ne5  f4 N5c6  
+[ECO	A52 Budapest: Alekhine variation]
+d4 Nf6  c4 e5  de Ng4  e4 
+[ECO	A52 Budapest: Rubinstein variation]
+d4 Nf6  c4 e5  de Ng4  Bf4 
+[ECO	A52 Budapest: Adler variation]
+d4 Nf6  c4 e5  de Ng4  Nf3 
+[ECO	A52 Budapest defence]
+d4 Nf6  c4 e5  de Ng4  
+[ECO	A51 Budapest: Fajarowicz, Steiner variation]
+d4 Nf6  c4 e5  de Ne4  Qc2 
+[ECO	A51 Budapest: Fajarowicz variation]
+d4 Nf6  c4 e5  de Ne4  
+[ECO	A51 Budapest defence declined]
+d4 Nf6  c4 e5  
+[ECO	A50 Queen's Indian accelerated]
+d4 Nf6  c4 b6  
+[ECO	A?? Kevitz-Trajkovich defence]
+d4 Nf6  c4 Nc6  
+[ECO	A?? Queen's pawn game]
+d4 Nf6  c4 
+[ECO	A49 King's Indian: fianchetto without c4]
+d4 Nf6  Nf3 g6  g3 
+[ECO	A48 King's Indian: London system]
+d4 Nf6  Nf3 g6  Bf4 
+[ECO	A48 King's Indian: Torre attack]
+d4 Nf6  Nf3 g6  Bg5 
+[ECO	A48 King's Indian: East Indian defence]
+d4 Nf6  Nf3 g6  
+[ECO	A47 Queen's Indian: Marienbad system, Berg variation]
+d4 Nf6  Nf3 b6  g3 Bb7  Bg2 c5  c4 cd  Qd4 
+[ECO	A47 Queen's Indian: Marienbad system]
+d4 Nf6  Nf3 b6  g3 Bb7  Bg2 c5  
+[ECO	A47 Queen's Indian defence]
+d4 Nf6  Nf3 b6  
+[ECO	A46 D\"ory defence]
+d4 Nf6  Nf3 Ne4  
+[ECO	A46 Queen's pawn: Yusupov-Rubinstein system]
+d4 Nf6  Nf3 e6  e3 
+[ECO	A46 Queen's pawn: Torre attack, Wagner gambit]
+d4 Nf6  Nf3 e6  Bg5 c5  e4 
+[ECO	A46 Queen's pawn: Torre attack]
+d4 Nf6  Nf3 e6  Bg5 
+[ECO	A46 Queen's pawn game]
+d4 Nf6  Nf3 
+[ECO	A45 Trompovsky attack ]
+d4 Nf6  Bg5 
+[ECO	A45 Gedult attack]
+d4 Nf6  f3 d5  g4 
+[ECO	A45 Blackmar-Diemer gambit]
+d4 Nf6  f3 d5  e4 
+[ECO	A45 Paleface attack]
+d4 Nf6  f3 
+[ECO	A45 Canard opening]
+d4 Nf6  f4 
+[ECO	A45 Queen's pawn: Bronstein gambit]
+d4 Nf6  g4 
+[ECO	A45 Queen's pawn game]
+d4 Nf6  
+[ECO	A99 Dutch: Ilyin-Genevsky variation with b3]
+d4 f5  c4 Nf6  g3 e6  Bg2 Be7  Nf3 o-o  o-o d6  Nc3 Qe8  b3 
+[ECO	A98 Dutch: Ilyin-Genevsky variation with Qc2]
+d4 f5  c4 Nf6  g3 e6  Bg2 Be7  Nf3 o-o  o-o d6  Nc3 Qe8  Qc2 
+[ECO	A97 Dutch: Ilyin-Genevsky, Winter variation]
+d4 f5  c4 Nf6  g3 e6  Bg2 Be7  Nf3 o-o  o-o d6  Nc3 Qe8  Re1 
+[ECO	A97 Dutch: Ilyin-Genevsky variation]
+d4 f5  c4 Nf6  g3 e6  Bg2 Be7  Nf3 o-o  o-o d6  Nc3 Qe8  
+[ECO	A96 Dutch: classical variation]
+d4 f5  c4 Nf6  g3 e6  Bg2 Be7  Nf3 o-o  o-o d6  
+[ECO	A95 Dutch: stonewall: Chekhover variation]
+d4 f5  c4 Nf6  g3 e6  Bg2 Be7  Nf3 o-o  o-o d5  Nc3 c6  Qc2 Qe8  
+Bg5 
+[ECO	A95 Dutch: stonewall with Nc3]
+d4 f5  c4 Nf6  g3 e6  Bg2 Be7  Nf3 o-o  o-o d5  Nc3 c6  
+[ECO	A92 Dutch: stonewall with Nc3]
+d4 f5  c4 Nf6  g3 e6  Bg2 Be7  Nf3 o-o  o-o d5  Nc3 
+[ECO	A94 Dutch: stonewall with Ba3]
+d4 f5  c4 Nf6  g3 e6  Bg2 Be7  Nf3 o-o  o-o d5  b3 c6  Ba3 
+[ECO	A93 Dutch: stonewall, Botwinnik variation]
+d4 f5  c4 Nf6  g3 e6  Bg2 Be7  Nf3 o-o  o-o d5  b3 
+[ECO	A92 Dutch: stonewall variation]
+d4 f5  c4 Nf6  g3 e6  Bg2 Be7  Nf3 o-o  o-o d5  
+[ECO	A92 Dutch defence, Alekhine variation]
+d4 f5  c4 Nf6  g3 e6  Bg2 Be7  Nf3 o-o  o-o Ne4  
+[ECO	A92 Dutch defence]
+d4 f5  c4 Nf6  g3 e6  Bg2 Be7  Nf3 o-o  
+[ECO	A91 Dutch defence]
+d4 f5  c4 Nf6  g3 e6  Bg2 Be7  
+[ECO	A90 Dutch-Indian, Alekhine variation]
+d4 f5  c4 Nf6  g3 e6  Bg2 Bb4  Bd2 Be7  
+[ECO	A90 Dutch defence: Dutch-Indian  variation]
+d4 f5  c4 Nf6  g3 e6  Bg2 Bb4  
+[ECO	A90 Dutch defence]
+d4 f5  c4 Nf6  g3 e6  Bg2 
+[ECO	A89 Dutch: Leningrad, main variation with Nc6]
+d4 f5  c4 Nf6  g3 g6  Bg2 Bg7  Nf3 o-o  o-o d6  Nc3 Nc6  
+[ECO	A88 Dutch: Leningrad, main variation with c6]
+d4 f5  c4 Nf6  g3 g6  Bg2 Bg7  Nf3 o-o  o-o d6  Nc3 c6  
+[ECO	A87 Dutch: Leningrad, main variation]
+d4 f5  c4 Nf6  g3 g6  Bg2 Bg7  Nf3 
+[ECO	A86 Dutch: Leningrad variation]
+d4 f5  c4 Nf6  g3 g6  
+[ECO	A86 Dutch: Hort-Antoshin system]
+d4 f5  c4 Nf6  g3 d6  Bg2 c6  Nc3 Qc7  
+[ECO	A86 Dutch with c4 & g3]
+d4 f5  c4 Nf6  g3 
+[ECO	A85 Dutch with c4 & Nc3]
+d4 f5  c4 Nf6  Nc3 
+[ECO	A84 Dutch defence]
+d4 f5  c4 Nf6  
+[ECO	A84 Dutch: Staunton gambit deferred]
+d4 f5  c4 e6  e4 
+[ECO	A84 Dutch defence, Rubinstein variation]
+d4 f5  c4 e6  Nc3 
+[ECO	A84 Dutch defence]
+d4 f5  c4 e6  
+[ECO	A84 Dutch defence: Bladel variation]
+d4 f5  c4 g6  Nc3 Nh6  
+[ECO	A84 Dutch defence]
+d4 f5  c4 
+[ECO	A83 Dutch: Staunton gambit, Nimzovich variation]
+d4 f5  e4 fe  Nc3 Nf6  Bg5 b6  
+[ECO	A83 Dutch: Staunton gambit, Chigorin variation]
+d4 f5  e4 fe  Nc3 Nf6  Bg5 c6  
+[ECO	A83 Dutch: Staunton gambit, Lasker variation]
+d4 f5  e4 fe  Nc3 Nf6  Bg5 g6  f3 
+[ECO	A83 Dutch: Staunton gambit, Alekhine variation]
+d4 f5  e4 fe  Nc3 Nf6  Bg5 g6  h4 
+[ECO	A83 Dutch: Staunton gambit, Staunton's line]
+d4 f5  e4 fe  Nc3 Nf6  Bg5 
+[ECO	A82 Dutch: Staunton gambit, Tartakower variation]
+d4 f5  e4 fe  Nc3 Nf6  g4 
+[ECO	A82 Dutch: Staunton gambit]
+d4 f5  e4 fe  
+[ECO	A82 Dutch: Balogh defence]
+d4 f5  e4 d6  
+[ECO	A82 Dutch: Staunton gambit]
+d4 f5  e4 
+[ECO	A81 Dutch: Leningrad, Karlsbad variation]
+d4 f5  g3 g6  Bg2 Bg7  Nh3 
+[ECO	A81 Dutch: Leningrad, Basman system]
+d4 f5  g3 g6  Bg2 Bg7  Nf3 c6  o-o Nh6  
+[ECO	A81 Dutch defence]
+d4 f5  g3 Nf6  Bg2 g6  
+[ECO	A81 Dutch defence, Blackburne variation]
+d4 f5  g3 Nf6  Bg2 e6  Nh3 
+[ECO	A81 Dutch defence]
+d4 f5  g3 
+[ECO	A80 Dutch, 2.Bg5 variation]
+d4 f5  Bg5 
+[ECO	A80 Dutch, Krejcik gambit]
+d4 f5  g4 
+[ECO	A80 Dutch, Korchnoi attack]
+d4 f5  h3 
+[ECO	A80 Dutch, Von Pretzel gambit]
+d4 f5  Qd3 e6  g4 
+[ECO	A80 Dutch, Manhattan  variation]
+d4 f5  Qd3 
+[ECO	A80 Dutch, Spielmann gambit]
+d4 f5  Nc3 Nf6  g4 
+[ECO	A80 Dutch]
+d4 f5  
+[ECO	A44 Semi-Benoni ]
+d4 c5  d5 e5  e4 d6  
+[ECO	A44 Old Benoni defence]
+d4 c5  d5 e5  
+[ECO	A43 Old Benoni: Schmid's system]
+d4 c5  d5 d6  Nc3 g6  
+[ECO	A43 Old Benoni defence]
+d4 c5  d5 d6  
+[ECO	A43 Hawk  defence]
+d4 c5  d5 Nf6  Nf3 c4  
+[ECO	A43 Old Benoni defence]
+d4 c5  d5 Nf6  Nf3 
+[ECO	A43 Woozle defence]
+d4 c5  d5 Nf6  Nc3 Qa5  
+[ECO	A43 Old Benoni defence]
+d4 c5  d5 Nf6  
+[ECO	A43 Old Benoni: Mujannah formation]
+d4 c5  d5 f5  
+[ECO	A43 Old Benoni: Franco-Benoni defence]
+d4 c5  d5 e6  e4 
+[ECO	A43 Old Benoni defence]
+d4 c5  
+[ECO	A42 Modern defence: Averbakh system, Kotov variation]
+d4 d6  c4 g6  Nc3 Bg7  e4 Nc6  
+[ECO	A42 Modern defence: Averbakh system, Randspringer variation]
+d4 d6  c4 g6  Nc3 Bg7  e4 f5  
+[ECO	A42 Pterodactyl defence]
+d4 d6  c4 g6  Nc3 Bg7  e4 c5  Nf3 Qa5  
+[ECO	A42 Modern defence: Averbakh system]
+d4 d6  c4 g6  Nc3 Bg7  e4 
+[ECO	A41 Modern defence]
+d4 d6  c4 g6  Nc3 Bg7  
+[ECO	A41 Old Indian defence]
+d4 d6  c4 
+[ECO	A41 Old Indian: Tartakower  variation]
+d4 d6  Nf3 Bg4  
+[ECO	A41 Queen's Pawn]
+d4 d6  
+[ECO	A40 Beefeater defence]
+d4 g6  c4 Bg7  Nc3 c5  d5 Bc3  bc f5  
+[ECO	A40 Modern defence]
+d4 g6  
+[ECO	A40 Queen's pawn: Franco-Indian  defence]
+d4 e6  c4 Bb4  
+[ECO	A40 Queen's pawn: Keres defence]
+d4 e6  c4 b6  
+[ECO	A40 Queen's pawn]
+d4 e6  
+[ECO	A40 Polish defence]
+d4 b5  
+[ECO	A40 Queen's pawn: English defence]
+d4 b6  
+[ECO	A40 Queen's pawn: Englund gambit]
+d4 e5  de Nc6  Nf3 Qe7  Qd5 f6  ef Nf6  
+[ECO	A40 Queen's pawn: Charlick  gambit]
+d4 e5  
+[ECO	A40 Queen's pawn: Lundin  defence]
+d4 Nc6  
+[ECO	A40 Queen's pawn]
+d4 
+[ECO	A39 English: symmetrical, main line with d4]
+c4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  Nf3 Nf6  o-o o-o  d4 
+[ECO	A38 English: symmetrical, main line with d3]
+c4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  Nf3 Nf6  o-o o-o  d3 
+[ECO	A38 English: symmetrical, main line with b3]
+c4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  Nf3 Nf6  o-o o-o  b3 
+[ECO	A38 English: symmetrical variation]
+c4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  Nf3 Nf6  
+[ECO	A37 English: symmetrical, Botvinnik system reversed]
+c4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  Nf3 e5  
+[ECO	A37 English: symmetrical variation]
+c4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  Nf3 
+[ECO	A36 English: symmetrical, Botvinnik system]
+c4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  e4 
+[ECO	A36 English: symmetrical, Botvinnik system reversed]
+c4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  e3 e5  
+[ECO	A36 English: ultra-symmetrical variation]
+c4 c5  Nc3 Nc6  g3 g6  Bg2 Bg7  
+[ECO	A36 English: symmetrical variation]
+c4 c5  Nc3 Nc6  g3 
+[ECO	A35 English: symmetrical, four knights system]
+c4 c5  Nc3 Nc6  Nf3 Nf6  
+[ECO	A35 English: symmetrical variation]
+c4 c5  Nc3 Nc6  
+[ECO	A34 English: symmetrical, Rubinstein system]
+c4 c5  Nc3 Nf6  g3 d5  cd Nd5  Bg2 Nc7  
+[ECO	A34 English: symmetrical variation]
+c4 c5  Nc3 Nf6  g3 
+[ECO	A34 English: symmetrical, three knights system]
+c4 c5  Nc3 Nf6  Nf3 d5  cd Nd5  
+[ECO	A34 English: symmetrical variation]
+c4 c5  Nc3 
+[ECO	A33 English: symmetrical, Geller variation]
+c4 c5  Nf3 Nf6  d4 cd  Nd4 e6  Nc3 Nc6  g3 Qb6  
+[ECO	A33 English: symmetrical variation]
+c4 c5  Nf3 Nf6  d4 cd  Nd4 e6  Nc3 Nc6  
+[ECO	A32 English: symmetrical variation]
+c4 c5  Nf3 Nf6  d4 cd  Nd4 e6  
+[ECO	A31 English: symmetrical, Benoni formation]
+c4 c5  Nf3 Nf6  d4 
+[ECO	A30 English: symmetrical, hedgehog, flexible formation]
+c4 c5  Nf3 Nf6  g3 b6  Bg2 Bb7  o-o e6  Nc3 Be7  d4 cd  Qd4 d6  
+Rd1 a6  b3 N8d7  
+[ECO	A30 English: symmetrical, hedgehog system]
+c4 c5  Nf3 Nf6  g3 b6  Bg2 Bb7  o-o e6  Nc3 Be7  
+[ECO	A30 English: symmetrical variation]
+c4 c5  
+[ECO	A29 English: four knights, kingside fianchetto]
+c4 e5  Nc3 Nc6  Nf3 Nf6  g3 
+[ECO	A28 English: four knights, Romanishin variation]
+c4 e5  Nc3 Nc6  Nf3 Nf6  e3 Bb4  Qc2 Bc3  
+[ECO	A28 English: four knights, Stean variation]
+c4 e5  Nc3 Nc6  Nf3 Nf6  e3 Bb4  Qc2 o-o  Nd5 Re8  Qf5 
+[ECO	A28 English: four knights, 4.e3]
+c4 e5  Nc3 Nc6  Nf3 Nf6  e3 
+[ECO	A28 English: four knights, Capablanca variation]
+c4 e5  Nc3 Nc6  Nf3 Nf6  d3 
+[ECO	A28 English: four knights, Marini variation]
+c4 e5  Nc3 Nc6  Nf3 Nf6  a3 
+[ECO	A28 English: four knights, Nimzovich variation]
+c4 e5  Nc3 Nc6  Nf3 Nf6  e4 
+[ECO	A28 English: Bradley Beach variation]
+c4 e5  Nc3 Nc6  Nf3 Nf6  d4 e4  
+[ECO	A28 English: Nenarokov variation]
+c4 e5  Nc3 Nc6  Nf3 Nf6  d4 ed  Nd4 Bb4  Bg5 h6  Bh4 Bc3  bc Ne5  
+[ECO	A28 English: four knights system]
+c4 e5  Nc3 Nc6  Nf3 Nf6  
+[ECO	A27 English: three knights system]
+c4 e5  Nc3 Nc6  Nf3 
+[ECO	A26 English: Botvinnik system]
+c4 e5  Nc3 Nc6  g3 g6  Bg2 Bg7  d3 d6  e4 
+[ECO	A26 English: closed system]
+c4 e5  Nc3 Nc6  g3 g6  Bg2 Bg7  d3 d6  
+[ECO	A25 English: closed system ]
+c4 e5  Nc3 Nc6  g3 g6  Bg2 Bg7  d3 
+[ECO	A25 English: closed, 5.Rb1 Taimanov variation]
+c4 e5  Nc3 Nc6  g3 g6  Bg2 Bg7  Rb1 Nh6  
+[ECO	A25 English: closed, 5.Rb1]
+c4 e5  Nc3 Nc6  g3 g6  Bg2 Bg7  Rb1 
+[ECO	A25 English: closed, Hort variation]
+c4 e5  Nc3 Nc6  g3 g6  Bg2 Bg7  e3 d6  N1e2 Be6  
+[ECO	A25 English: closed, Taimanov variation]
+c4 e5  Nc3 Nc6  g3 g6  Bg2 Bg7  e3 d6  N1e2 Nh6  
+[ECO	A25 English: closed system]
+c4 e5  Nc3 Nc6  g3 g6  Bg2 Bg7  
+[ECO	A25 English: Sicilian reversed]
+c4 e5  Nc3 Nc6  
+[ECO	A24 English: Bremen system with ...g6]
+c4 e5  Nc3 Nf6  g3 g6  
+[ECO	A23 English: Bremen system, Keres variation]
+c4 e5  Nc3 Nf6  g3 c6  
+[ECO	A22 English: Bremen, Smyslov system]
+c4 e5  Nc3 Nf6  g3 Bb4  
+[ECO	A22 English: Bremen, reverse dragon]
+c4 e5  Nc3 Nf6  g3 d5  
+[ECO	A22 English: Carls' Bremen system]
+c4 e5  Nc3 Nf6  g3 
+[ECO	A22 English: Bellon gambit]
+c4 e5  Nc3 Nf6  Nf3 e4  Ng5 b5  
+[ECO	A22 English opening]
+c4 e5  Nc3 Nf6  
+[ECO	A21 English, Kramnik-Shirov counterattack]
+c4 e5  Nc3 Bb4  
+[ECO	A21 English, Smyslov defence]
+c4 e5  Nc3 d6  Nf3 Bg4  
+[ECO	A21 English opening]
+c4 e5  Nc3 d6  Nf3 
+[ECO	A21 English, Keres variation]
+c4 e5  Nc3 d6  g3 c6  
+[ECO	A21 English, Tr\"oger defence]
+c4 e5  Nc3 d6  g3 Be6  Bg2 Nc6  
+[ECO	A21 English opening]
+c4 e5  Nc3 
+[ECO	A20 English, Nimzovich, Flohr variation]
+c4 e5  Nf3 e4  
+[ECO	A20 English, Nimzovich variation]
+c4 e5  Nf3 
+[ECO	A20 English opening]
+c4 e5  
+[ECO	A19 English: Mikenas-Carls, Sicilian variation]
+c4 Nf6  Nc3 e6  e4 c5  
+[ECO	A18 English: Mikenas-Carls, Kevitz variation]
+c4 Nf6  Nc3 e6  e4 Nc6  
+[ECO	A18 English: Mikenas-Carls, Flohr variation]
+c4 Nf6  Nc3 e6  e4 d5  e5 
+[ECO	A18 English: Mikenas-Carls variation]
+c4 Nf6  Nc3 e6  e4 
+[ECO	A17 English: Nimzo-English opening]
+c4 Nf6  Nc3 e6  Nf3 Bb4  
+[ECO	A17 English: Queens Indian, Romanishin variation]
+c4 Nf6  Nc3 e6  Nf3 b6  e4 Bb7  Bd3 
+[ECO	A17 English: Queens Indian formation]
+c4 Nf6  Nc3 e6  Nf3 b6  
+[ECO	A17 English opening]
+c4 Nf6  Nc3 e6  
+[ECO	A16 English: Anglo-Gr\"unfeld defense, Korchnoi variation]
+c4 Nf6  Nc3 d5  cd Nd5  Nf3 g6  g3 Bg7  Bg2 e5  
+[ECO	A16 English: Anglo-Gr\"unfeld defense]
+c4 Nf6  Nc3 d5  cd Nd5  Nf3 
+[ECO	A16 English: Anglo-Gr\"unfeld, Czech defense]
+c4 Nf6  Nc3 d5  cd Nd5  g3 g6  Bg2 Nb6  
+[ECO	A16 English: Anglo-Gr\"unfeld, Smyslov defense]
+c4 Nf6  Nc3 d5  cd Nd5  g3 g6  Bg2 Nc3  
+[ECO	A16 English: Anglo-Gr\"unfeld defense]
+c4 Nf6  Nc3 d5  
+[ECO	A16 English opening]
+c4 Nf6  Nc3 
+[ECO	A15 English opening]
+c4 Nf6  Nf3 
+[ECO	A15 English orang-utan]
+c4 Nf6  b4 
+[ECO	A15 English, 1...Nf6 ]
+c4 Nf6  
+[ECO	A14 English: Symmetrical, Keres defence]
+c4 e6  Nf3 d5  g3 Nf6  Bg2 Be7  o-o c5  cd Nd5  Nc3 Nc6  
+[ECO	A14 English: Neo-Catalan declined]
+c4 e6  Nf3 d5  g3 Nf6  Bg2 Be7  o-o 
+[ECO	A13 English: Neo-Catalan accepted]
+c4 e6  Nf3 d5  g3 Nf6  Bg2 dc  
+[ECO	A13 English: Neo-Catalan]
+c4 e6  Nf3 d5  g3 Nf6  
+[ECO	A13 English: Kurajica defence]
+c4 e6  Nf3 d5  g3 c6  
+[ECO	A13 English opening: Agincourt variation]
+c4 e6  Nf3 d5  g3 
+[ECO	A13 English: Wimpey system]
+c4 e6  Nf3 d5  b3 Nf6  Bb2 c5  e3 
+[ECO	A13 English opening: Agincourt variation]
+c4 e6  Nf3 d5  
+[ECO	A13 English: Romanishin gambit]
+c4 e6  Nf3 Nf6  g3 a6  Bg2 b5  
+[ECO	A13 English opening]
+c4 e6  
+[ECO	A12 English: Caro-Kann defensive system, Bogolyubov variation]
+c4 c6  Nf3 d5  b3 Bg4  
+[ECO	A12 English: Capablanca's variation]
+c4 c6  Nf3 d5  b3 Nf6  Bb2 Bg4  
+[ECO	A12 English: New York  defensive system]
+c4 c6  Nf3 d5  b3 Nf6  Bb2 Bf5  
+[ECO	A12 English: Bled variation]
+c4 c6  Nf3 d5  b3 Nf6  Bb2 g6  
+[ECO	A12 English: Caro-Kann defensive system]
+c4 c6  Nf3 d5  b3 Nf6  Bb2 
+[ECO	A12 English: London defensive system]
+c4 c6  Nf3 d5  b3 Nf6  g3 Bf5  
+[ECO	A12 English: Torre defensive system]
+c4 c6  Nf3 d5  b3 Nf6  g3 Bg4  
+[ECO	A12 English: Caro-Kann defensive system]
+c4 c6  Nf3 d5  b3 
+[ECO	A11 English: Caro-Kann defensive system]
+c4 c6  
+[ECO	A10 English: Anglo-Dutch defense]
+c4 f5  
+[ECO	A10 English: Jaenisch gambit]
+c4 b5  
+[ECO	A10 English: Adorjan defence]
+c4 g6  e4 e5  
+[ECO	A10 English opening]
+c4 g6  
+[ECO	A10 English opening]
+c4 
+[ECO	A09 R\'eti accepted: Keres variation]
+Nf3 d5  c4 dc  e3 Be6  
+[ECO	A09 R\'eti accepted]
+Nf3 d5  c4 dc  
+[ECO	A09 R\'eti: advance variation]
+Nf3 d5  c4 d4  
+[ECO	A09 R\'eti opening]
+Nf3 d5  c4 
+[ECO	A08 R\'eti: King's Indian attack, French variation]
+Nf3 d5  g3 c5  Bg2 Nc6  o-o e6  d3 Nf6  N1d2 Be7  e4 o-o  Re1 
+[ECO	A08 R\'eti: King's Indian attack]
+Nf3 d5  g3 c5  Bg2 
+[ECO	A07 R\'eti: King's Indian attack ]
+Nf3 d5  g3 c5  
+[ECO	A07 R\'eti: King's Indian attack, Pachman system]
+Nf3 d5  g3 g6  Bg2 Bg7  o-o e5  d3 Ne7  
+[ECO	A07 R\'eti: King's Indian attack]
+Nf3 d5  g3 g6  
+[ECO	A07 R\'eti: King's Indian attack, Keres variation]
+Nf3 d5  g3 Bg4  Bg2 Nd7  
+[ECO	A07 R\'eti: King's Indian attack, Yugoslav variation]
+Nf3 d5  g3 Nf6  Bg2 c6  o-o Bg4  
+[ECO	A07 R\'eti: King's Indian attack ]
+Nf3 d5  g3 
+[ECO	A06 R\'eti: Nimzovich-Larsen attack]
+Nf3 d5  b3 
+[ECO	A06 Tennison  gambit]
+Nf3 d5  e4 
+[ECO	A06 Santasiere's folly]
+Nf3 d5  b4 
+[ECO	A06 R\'eti: old Indian attack]
+Nf3 d5  d3 
+[ECO	A06 R\'eti opening]
+Nf3 d5  
+[ECO	A05 R\'eti: King's Indian attack, R\'eti-Smyslov variation]
+Nf3 Nf6  g3 g6  b4 
+[ECO	A05 R\'eti: King's Indian attack]
+Nf3 Nf6  g3 g6  
+[ECO	A05 R\'eti: King's Indian attack, Spassky's variation]
+Nf3 Nf6  g3 b5  
+[ECO	A05 R\'eti opening]
+Nf3 Nf6  
+[ECO	A04 R\'eti: Pirc-Lisitsin gambit]
+Nf3 f5  e4 
+[ECO	A04 R\'eti: Lisitsin gambit deferred]
+Nf3 f5  d3 Nf6  e4 
+[ECO	A04 R\'eti v Dutch]
+Nf3 f5  
+[ECO	A04 R\'eti: Wade defence]
+Nf3 d6  e4 Bg4  
+[ECO	A04 R\'eti opening]
+Nf3 d6  
+[ECO	A04 R\'eti: Herrstr\"om gambit]
+Nf3 g5  
+[ECO	A04 R\'eti opening]
+Nf3 
+[ECO	A03 Mujannah opening]
+f4 d5  c4 
+[ECO	A03 Bird's opening: Williams gambit]
+f4 d5  e4 
+[ECO	A03 Bird's opening: Lasker variation]
+f4 d5  Nf3 Nf6  e3 c5  
+[ECO	A03 Bird's opening]
+f4 d5  
+[ECO	A02 Bird: From gambit, Lipke variation]
+f4 e5  fe d6  ed Bd6  Nf3 Nh6  d4 
+[ECO	A02 Bird: From gambit, Lasker variation]
+f4 e5  fe d6  ed Bd6  Nf3 g5  
+[ECO	A02 Bird: From gambit]
+f4 e5  
+[ECO	A02 Bird: Hobbs gambit]
+f4 g5  
+[ECO	A02 Bird's opening, Swiss gambit]
+f4 f5  e4 fe  Nc3 Nf6  g4 
+[ECO	A02 Bird's opening]
+f4 
+[ECO	A01 Nimzovich-Larsen attack: modern variation]
+b3 e5  
+[ECO	A01 Nimzovich-Larsen attack: Indian variation]
+b3 Nf6  
+[ECO	A01 Nimzovich-Larsen attack: classical variation]
+b3 d5  
+[ECO	A01 Nimzovich-Larsen attack: English variation]
+b3 c5  
+[ECO	A01 Nimzovich-Larsen attack: Dutch variation]
+b3 f5  
+[ECO	A01 Nimzovich-Larsen attack: Polish variation]
+b3 b5  
+[ECO	A01 Nimzovich-Larsen attack: symmetrical variation]
+b3 b6  
+[ECO	A01 Nimzovich-Larsen attack]
+b3 
+[ECO	A00 Polish: T\"ubingen variation]
+b4 Nh6  
+[ECO	A00 Polish: Outflank variation]
+b4 c6  
+[ECO	A00 Polish  opening]
+b4 
+[ECO	A00 Lasker simul special]
+g3 h5  
+[ECO	A00 Benko's opening: reversed Alekhine]
+g3 e5  Nf3 
+[ECO	A00 Benko's opening]
+g3 
+[ECO	A00 Grob: Romford counter-gambit]
+g4 d5  Bg2 Bg4  c4 d4  
+[ECO	A00 Grob: Fritz gambit]
+g4 d5  Bg2 Bg4  c4 
+[ECO	A00 Grob: spike attack]
+g4 d5  Bg2 c6  g5 
+[ECO	A00 Grob's attack]
+g4 
+[ECO	A00 Global opening]
+h3 e5  a3 
+[ECO	A00 Clemenz  opening]
+h3 
+[ECO	A00 Amar gambit]
+Nh3 d5  g3 e5  f4 Bh3  Bh3 ef  
+[ECO	A00 Amar  opening]
+Nh3 
+[ECO	A00 Battambang opening]
+Nc3 e5  a3 
+[ECO	A00 Dunst  opening]
+Nc3 e5  
+[ECO	A00 Novosibirsk opening]
+Nc3 c5  d4 cd  Qd4 Nc6  Qh4 
+[ECO	A00 Dunst  opening]
+Nc3 
+[ECO	A00 Anderssen's opening]
+a3 
+[ECO	A00 Crab opening]
+a4 e5  h4 
+[ECO	A00 Ware  opening]
+a4 
+[ECO	A00 Saragossa opening]
+c3 
+[ECO	A00 Valencia opening]
+d3 e5  Nd2 
+[ECO	A00 Mieses opening]
+d3 e5  
+[ECO	A00 Venezolana opening]
+d3 c5  Nc3 Nc6  g3 
+[ECO	A00 Mieses opening]
+d3 
+[ECO	A00 Amsterdam attack]
+e3 e5  c4 d6  Nc3 Nc6  b3 Nf6  
+[ECO	A00 Van't Kruijs opening]
+e3 
+[ECO	A00 Hammerschlag ]
+f3 e5  Kf2 
+[ECO	A00 Gedult's opening]
+f3 
+[ECO	A00 Anti-Borg  opening]
+h4 
+[ECO	A00 Durkin's attack]
+Na3 

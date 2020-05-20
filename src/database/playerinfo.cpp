@@ -92,7 +92,7 @@ void PlayerInfo::update()
 {
     QHash<QString, EcoFrequencyInfo> openings[2];
     QHash<QString, int> openingsX[2];
-    const Index* index = m_database->index();
+    const IndexX* index = m_database->index();
 
     // Determine matching tag values
     ValueIndex player = index->getValueIndex(m_name);

@@ -14,8 +14,8 @@ greaterThan(QT_MAJOR_VERSION, 4) {
    CONFIG += sound
    # Comment out speech for Linux if libspeechdis not available
    CONFIG += speech
-   # Comment out c++11 for all non-C++11 compilers, Qt5 is required in addition
-   CONFIG += c++11
+   # Scid requires c++17
+   CONFIG += c++17
    # Add lc0 to package
    CONFIG += lc0
 }
@@ -55,6 +55,44 @@ macx {
   QMAKE_CXXFLAGS_DEBUG *= -m64 -O0
 }
 
+HEADERS += \
+    dep/scid/code/src/board_def.h \
+    dep/scid/code/src/bytebuf.h \
+    dep/scid/code/src/codec.h \
+    dep/scid/code/src/codec_native.h \
+    dep/scid/code/src/codec_scid4.h \
+    dep/scid/code/src/common.h \
+    dep/scid/code/src/containers.h \
+    dep/scid/code/src/date.h \
+    dep/scid/code/src/error.h \
+    dep/scid/code/src/fastgame.h \
+    dep/scid/code/src/filebuf.h \
+    dep/scid/code/src/hfilter.h \
+    dep/scid/code/src/index.h \
+    dep/scid/code/src/indexentry.h \
+    dep/scid/code/src/game.h \
+    dep/scid/code/src/matsig.h \
+    dep/scid/code/src/movetree.h \
+    dep/scid/code/src/misc.h \
+    dep/scid/code/src/namebase.h \
+    dep/scid/code/src/position.h \
+    dep/scid/code/src/sortcache.h \
+    dep/scid/code/src/stored.h \
+    dep/scid/code/src/textbuf.h \
+    dep/scid/code/src/tree.h
+
+SOURCES += \
+    dep/scid/code/src/codec_scid4.cpp \
+    dep/scid/code/src/game.cpp \
+    dep/scid/code/src/matsig.cpp \
+    dep/scid/code/src/misc.cpp \
+    dep/scid/code/src/position.cpp \
+    dep/scid/code/src/sortcache.cpp \
+    dep/scid/code/src/stored.cpp \
+    dep/scid/code/src/textbuf.cpp
+
+INCLUDEPATH += dep/scid/code/src
+
 FORMS += \
     src/dialogs/readaheaddlg.ui \
     src/dialogs/savedialog.ui \
@@ -85,14 +123,15 @@ FORMS += \
 
 HEADERS += src/database/board.h \
     src/database/annotation.h \
+    src/database/enginex.h \
+    src/database/gamex.h \
 	src/database/move.h \
-	src/database/game.h \
 	src/database/partialdate.h \
 	src/database/playerdatabase.h \
 	src/database/playerdata.h \
 	src/database/databaseconversion.h \
-	src/database/engine.h \
-	src/database/wbengine.h \
+    src/database/sciddatabase.h \
+        src/database/wbengine.h \
 	src/database/uciengine.h \
 	src/database/search.h \
 	src/database/database.h \
@@ -118,20 +157,20 @@ HEADERS += src/database/board.h \
 	src/database/enginedata.h \
 	src/database/analysis.h \
 	src/database/editaction.h \
-    src/dialogs/readaheaddlg.h \
-	src/guess/attacks.h \
-	src/guess/common.h \
-	src/guess/guessengine.h \
-	src/guess/error.h \
+    src/guess/guess_attacks.h \
+    src/guess/guess_common.h \
+    src/guess/guess_compileeco.h \
+    src/guess/guess_error.h \
 	src/guess/guess.h \
-	src/guess/hash.h \
-	src/guess/misc.h \
-	src/guess/movelist.h \
-	src/guess/position.h \
-	src/guess/recog.h \
-	src/guess/sqlist.h \
-	src/guess/sqmove.h \
-	src/guess/sqset.h \
+    src/guess/guess_guessengine.h \
+    src/guess/guess_hash.h \
+    src/guess/guess_misc.h \
+    src/guess/guess_movelist.h \
+    src/guess/guess_position.h \
+    src/guess/guess_recog.h \
+    src/guess/guess_sqlist.h \
+    src/guess/guess_sqmove.h \
+    src/guess/guess_sqset.h \
 	src/gui/mainwindow.h \
 	src/gui/boardview.h \
 	src/gui/boardtheme.h \
@@ -182,7 +221,6 @@ HEADERS += src/database/board.h \
     src/database/ecoinfo.h \
     src/gui/textbrowserex.h \
     src/gui/loadquery.h \
-    src/guess/compileeco.h \
     src/database/pdbtest.h \
     src/gui/kbaction.h \
     src/gui/translatingslider.h \
@@ -210,6 +248,7 @@ HEADERS += src/database/board.h \
     src/dialogs/dlgsavebook.h \
     src/dialogs/promotiondialog.h \
     src/dialogs/recipientaddressdialog.h \
+    src/dialogs/readaheaddlg.h \
     src/dialogs/renametagdialog.h \
     src/dialogs/savedialog.h \
     src/dialogs/tagdialog.h \
@@ -258,12 +297,13 @@ HEADERS += src/database/board.h \
 
 SOURCES += src/database/board.cpp \
     src/database/annotation.cpp \
-	src/database/game.cpp \
 	src/database/databaseconversion.cpp \
+    src/database/enginex.cpp \
+    src/database/gamex.cpp \
 	src/database/partialdate.cpp \
 	src/database/playerdatabase.cpp \
 	src/database/playerdata.cpp \
-	src/database/engine.cpp \
+        src/database/sciddatabase.cpp \
 	src/database/wbengine.cpp \
 	src/database/uciengine.cpp \
 	src/database/search.cpp \
@@ -289,13 +329,13 @@ SOURCES += src/database/board.cpp \
 	src/database/enginedata.cpp \
 	src/database/analysis.cpp \
 	src/database/editaction.cpp \
-    src/dialogs/readaheaddlg.cpp \
-	src/guess/guessengine.cpp \
+    src/guess/guess_compileeco.cpp \
 	src/guess/guess.cpp \
-	src/guess/misc.cpp \
-	src/guess/movelist.cpp \
-	src/guess/position.cpp \
-	src/guess/recog.cpp \
+    src/guess/guess_guessengine.cpp \
+    src/guess/guess_misc.cpp \
+    src/guess/guess_movelist.cpp \
+    src/guess/guess_position.cpp \
+    src/guess/guess_recog.cpp \
 	src/gui/mainwindow.cpp \
 	src/gui/mainwindowactions.cpp \
 	src/gui/mainwindowabout.cpp \
@@ -340,7 +380,6 @@ SOURCES += src/database/board.cpp \
     src/gui/ecolistwidget.cpp \
     src/database/ecoinfo.cpp \
     src/gui/loadquery.cpp \
-    src/guess/compileeco.cpp \
     src/database/pdbtest.cpp \
     src/gui/kbaction.cpp \
     src/gui/translatingslider.cpp \
@@ -368,6 +407,7 @@ SOURCES += src/database/board.cpp \
     src/dialogs/dlgsavebook.cpp \
     src/dialogs/promotiondialog.cpp \
     src/dialogs/recipientaddressdialog.cpp \
+    src/dialogs/readaheaddlg.cpp \
     src/dialogs/renametagdialog.cpp \
     src/dialogs/savedialog.cpp \
     src/dialogs/tagdialog.cpp \

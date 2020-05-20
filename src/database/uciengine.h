@@ -15,12 +15,12 @@
 
 class QTextStream;
 
-#include "engine.h"
+#include "enginex.h"
 
 /** @ingroup Feature
 * The UCIEngine class provides an interface to Winboard/XBoard engines.
 */
-class UCIEngine : public Engine
+class UCIEngine : public EngineX
 {
 public:
     /** Constucts an engine with a given path/command, and log stream */
@@ -32,10 +32,10 @@ public:
               bool sendHistory=false);
 
     /** Set a starting position for a game */
-    void setStartPos(const Board& startPos);
+    void setStartPos(const BoardX& startPos);
 
     /** Analyses the the given position */
-    bool startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame, QString line);
+    bool startAnalysis(const BoardX& board, int nv, const EngineParameter &mt, bool bNewGame, QString line);
 
     /** Stops any analysis */
     void stopAnalysis();
@@ -69,8 +69,8 @@ private:
     /** Send go command according to currently set timespec */
     void go();
 
-    Board m_board;
-    Board m_startPos;
+    BoardX m_board;
+    BoardX m_startPos;
     QString m_line;
     QString m_name;
 

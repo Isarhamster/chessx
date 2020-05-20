@@ -22,7 +22,7 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-FilterModel::FilterModel(Filter* filter, QObject* parent)
+FilterModel::FilterModel(FilterX* filter, QObject* parent)
     : QAbstractItemModel(parent), m_filter(filter), m_modelUpdateStarted(0)
 {
     setupColumns();
@@ -239,12 +239,12 @@ QModelIndex FilterModel::index(int row, int column, const QModelIndex& parent) c
     return createIndex(row, column, (void*) nullptr);
 }
 
-Filter* FilterModel::filter()
+FilterX* FilterModel::filter()
 {
     return m_filter;
 }
 
-void FilterModel::setFilter(Filter* filter)
+void FilterModel::setFilter(FilterX* filter)
 {
     m_filter = filter;
 }
@@ -265,17 +265,17 @@ void FilterModel::setAll(int value)
 
 void FilterModel::executeSearch(Search* search, FilterOperator searchOperator, int preSelect)
 {
-    Filter* f;
+    FilterX* f;
     if (searchOperator==FilterOperator::NullOperator)
     {
         m_filter->cancel();
-        f = new Filter(*m_filter);
+        f = new FilterX(*m_filter);
         f->setAll(preSelect); // ??
     }
     else
     {
         m_filter->wait();
-        f = new Filter(*m_filter);
+        f = new FilterX(*m_filter);
     }
 
     connect(f, SIGNAL(searchFinished()), SLOT(endSearch()), Qt::QueuedConnection);
@@ -288,7 +288,7 @@ void FilterModel::executeSearch(Search* search, FilterOperator searchOperator, i
 void FilterModel::endSearch()
 {
     startUpdate();
-    Filter* f = qobject_cast<Filter*>(sender());
+    FilterX* f = qobject_cast<FilterX*>(sender());
     if (f && f!= m_filter)
     {
         *m_filter = *f;

@@ -14,41 +14,43 @@
 #include "filtersearch.h"
 #include <QtDebug>
 
+using namespace chessx;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-Filter::Filter(Database* database) : QThread()
+FilterX::FilterX(Database* database) : QThread()
 {
     m_database = database;
     m_count = m_database->count();
-    m_vector = new QVector<Filter::value_type>(m_count, 1);
+    m_vector = new QVector<FilterX::value_type>(m_count, 1);
     m_gamesSearched = 0;
     m_searchTime = 0;
     currentSearchOperator = NullOperator;
     m_break = false;
 }
 
-Filter::~Filter()
+FilterX::~FilterX()
 {
     cancel();
     delete currentSearch;
     delete m_vector;
 }
 
-Filter::Filter(Filter const& rhs) : QThread()
+FilterX::FilterX(FilterX const& rhs) : QThread()
 {
     m_vector = nullptr;
     *this = rhs;
 }
 
-Filter& Filter::operator= (Filter const& rhs)
+FilterX& FilterX::operator= (FilterX const& rhs)
 {
     m_database = rhs.m_database;
     m_count = rhs.m_count;
 	delete m_vector;
-    m_vector = new QVector<Filter::value_type>(*rhs.m_vector);
+    m_vector = new QVector<FilterX::value_type>(*rhs.m_vector);
     m_gamesSearched = 0;
     m_searchTime = 0;
     currentSearch = nullptr;
@@ -58,22 +60,22 @@ Filter& Filter::operator= (Filter const& rhs)
     return *this;
 }
 
-const Database* Filter::database() const
+const Database* FilterX::database() const
 {
     return m_database;
 }
 
-void Filter::lock(Filter* locked)
+void FilterX::lock(FilterX* locked)
 {
    m_lock = locked;
 }
 
-Database* Filter::database()
+Database* FilterX::database()
 {
     return m_database;
 }
 
-void Filter::set(GameId game, Filter::value_type value)
+void FilterX::set(GameId game, FilterX::value_type value)
 {
     if((game >= size()) || (gamePosition(game) == value))
     {
@@ -91,14 +93,14 @@ void Filter::set(GameId game, Filter::value_type value)
     (*m_vector)[game] = value;
 }
 
-void Filter::setAll(Filter::value_type value)
+void FilterX::setAll(FilterX::value_type value)
 {
     cancel();
     m_vector->fill(value);
     m_count = value ? size() : 0;
 }
 
-bool Filter::contains(GameId game) const
+bool FilterX::contains(GameId game) const
 {
     if(static_cast<int>(game) < m_vector->count())
     {
@@ -107,17 +109,17 @@ bool Filter::contains(GameId game) const
     return false;
 }
 
-Filter::value_type Filter::gamePosition(GameId game) const
+FilterX::value_type FilterX::gamePosition(GameId game) const
 {
     return m_vector->at(static_cast<int>(game));
 }
 
-unsigned int Filter::size() const
+unsigned int FilterX::size() const
 {
     return static_cast<unsigned int>(m_vector->size());
 }
 
-void Filter::resize(unsigned int newsize, bool includeNew)
+void FilterX::resize(unsigned int newsize, bool includeNew)
 {
     for(GameId i = static_cast<GameId>(newsize); i < size(); ++i)   // Decrease count by number of removed games
     {
@@ -139,7 +141,7 @@ void Filter::resize(unsigned int newsize, bool includeNew)
     }
 }
 
-void Filter::invert()
+void FilterX::invert()
 {
     cancel();
     m_count = size() - m_count;
@@ -156,7 +158,7 @@ void Filter::invert()
     }
 }
 
-void Filter::runSingleSearch(Search* s, FilterOperator op)
+void FilterX::runSingleSearch(Search* s, FilterOperator op)
 {
     connect(s, SIGNAL(prepareUpdate(int)), this, SIGNAL(searchProgress(int)));
     s->Prepare(m_break);
@@ -216,7 +218,7 @@ void Filter::runSingleSearch(Search* s, FilterOperator op)
     }
 }
 
-void Filter::run()
+void FilterX::run()
 {
     Search* s = currentSearch;
     FilterOperator op = currentSearchOperator;
@@ -235,7 +237,7 @@ void Filter::run()
 }
 
 
-void Filter::cancel()
+void FilterX::cancel()
 {
     if (isRunning())
     {
@@ -249,7 +251,7 @@ void Filter::cancel()
     }
 }
 
-void Filter::executeSearch(Search* search, FilterOperator searchOperator)
+void FilterX::executeSearch(Search* search, FilterOperator searchOperator)
 {
     if (searchOperator == FilterOperator::NullOperator)
     {

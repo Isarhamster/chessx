@@ -21,20 +21,20 @@ UCIEngine::UCIEngine(const QString& name,
                      bool bTestMode,
                      const QString& directory,
                      bool log,
-                     bool sendHistory) : Engine(name, command, bTestMode, directory, log, sendHistory)
+                     bool sendHistory) : EngineX(name, command, bTestMode, directory, log, sendHistory)
 {
     m_quitAfterAnalysis = false;
     m_chess960 = false;
 }
 
-void UCIEngine::setStartPos(const Board& startPos)
+void UCIEngine::setStartPos(const BoardX& startPos)
 {
     m_startPos = startPos;
 }
 
-bool UCIEngine::startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame, QString line)
+bool UCIEngine::startAnalysis(const BoardX& board, int nv, const EngineParameter &mt, bool bNewGame, QString line)
 {
-    Engine::setMoveTime(mt);
+    EngineX::setMoveTime(mt);
     m_mpv = nv;
     if(!isActive())
     {
@@ -92,7 +92,7 @@ void UCIEngine::setMpv(int mpv)
 {
     if (m_mpv != mpv)
     {
-        Engine::setMpv(mpv);
+        EngineX::setMpv(mpv);
         if(isAnalyzing())
         {
             send("stop");
@@ -109,7 +109,7 @@ void UCIEngine::setMoveTime(const EngineParameter &mt)
 {
     if ((m_moveTime.ms_totalTime != mt.ms_totalTime) || (m_moveTime.analysisMode != mt.analysisMode))
     {
-        Engine::setMoveTime(mt);
+        EngineX::setMoveTime(mt);
         if(isAnalyzing())
         {
             send("stop");
@@ -288,7 +288,7 @@ void UCIEngine::parseBestMove(const QString& message)
     {
         Analysis analysis;
         Move move = m_board.parseMove(bestMove);
-        MoveList moves;
+        Move::List moves;
         if (move.isLegal())
         {
             moves.append(move);
@@ -410,8 +410,8 @@ void UCIEngine::parseAnalysis(const QString& message)
 
         if(name == "pv")
         {
-            Board board = m_board;
-            MoveList moves;
+            BoardX board = m_board;
+            Move::List moves;
             QString moveText;
             section++;
             while((moveText = info.section(' ', section, section, QString::SectionSkipEmpty)) != "")

@@ -1,0 +1,41 @@
+
+#include "windows.h"
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+SCID                    ICON                    "scid.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 4,7,1,0
+ PRODUCTVERSION 4,7,1,0
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "04090000"
+        BEGIN
+            VALUE "CompanyName", "http://sourceforge.net/projects/scid/"
+            VALUE "FileDescription", "Chess Database"
+            VALUE "FileVersion", "4.7.1.0"
+            VALUE "LegalCopyright", "Copyright (C) 1999-2019"
+            VALUE "OriginalFilename", "scid.exe"
+            VALUE "ProductName", "Scid"
+            VALUE "ProductVersion", "4.7.1.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 0
+    END
+END
+/////////////////////////////////////////////////////////////////////////////
+

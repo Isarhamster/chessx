@@ -20,8 +20,8 @@
 
 #include "ui_savedialog.h"
 
+class GameX;
 class Database;
-class Game;
 class QLineEdit;
 
 /** @ingroup GUI
@@ -34,7 +34,7 @@ public:
 
     SaveDialog(QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
     virtual ~SaveDialog();
-    virtual int save(Database* database, Game& game);
+    virtual int save(Database* database, GameX& game);
 
 protected slots:
     void discardChanges();

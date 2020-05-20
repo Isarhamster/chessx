@@ -38,9 +38,9 @@ public:
     quint64 positionCount() const;
 
     /** Loads only moves into a game from the given position */
-    virtual void loadGameMoves(GameId index, Game& game);
-    virtual int findPosition(GameId index, const Board& position);
-    quint64 getHashFromBoard(Board b) const;
+    virtual void loadGameMoves(GameId index, GameX& game);
+    virtual int findPosition(GameId index, const BoardX& position);
+    quint64 getHashFromBoard(BoardX b) const;
 
     /** Open a book data File */
     bool openFile(const QString& filename, bool readOnly=false);
@@ -49,7 +49,7 @@ public:
     /** Find Information to a given key */
     bool findMove(quint64 key, MoveData &move);
     /** Get a map of MoveData from a given board position */
-    unsigned int getMoveMapForBoard(const Board &board, QMap<Move, MoveData>& moves);
+    unsigned int getMoveMapForBoard(const BoardX &board, QMap<Move, MoveData>& moves);
     /** Start a search for a new key */
     void reset();
     /** Compile a ctg book (to be done) */
@@ -81,7 +81,7 @@ protected: // Methods which are CTG only
 
 protected: // Methods which interface with ChessX
     /** Generate a Move from a pair of squares */
-    Move squares_to_move(const Board& position, Square from, Square to) const;
+    Move squares_to_move(const BoardX& position, chessx::Square from, chessx::Square to) const;
     /**
      * Convert a ctg-format move to native format. The ctg move format seems
      * really bizarre; maybe there's some simpler formulation. The ctg move
@@ -89,10 +89,10 @@ protected: // Methods which interface with ChessX
      * from A1 to H8 by ranks), and the delta x and delta y of the move.
      * We just look these values up in big tables.
      */
-    Move byte_to_move(const Board& pos, uint8_t byte) const;
+    Move byte_to_move(const BoardX& pos, uint8_t byte) const;
 
     /** Compute the ctg-huffman encoding of the given position */
-    void position_to_ctg_signature(const Board& pos, ctg_signature_t* sig) const;
+    void position_to_ctg_signature(const BoardX& pos, ctg_signature_t* sig) const;
 
     /**
      * Assign a weight to the given move, which indicates its relative
@@ -101,10 +101,10 @@ protected: // Methods which interface with ChessX
      * resulting position, which determines the actual weight of the
      * move, corrected by some annotations.
      */
-    uint64_t move_weight(const Board& pos, Move move, MoveData& md) const;
+    uint64_t move_weight(const BoardX& pos, Move move, MoveData& md) const;
 
     /** Get the ctg entry associated with the given position. */
-    bool ctg_get_entry(const Board& pos, ctg_entry_t* entry) const;
+    bool ctg_get_entry(const BoardX& pos, ctg_entry_t* entry) const;
 
 private:
     QString m_filename;

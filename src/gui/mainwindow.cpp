@@ -18,6 +18,7 @@
 #include "copydialog.h"
 #include "databaseinfo.h"
 #include "databaselist.h"
+#include "databaselistmodel.h"
 #include "dockwidgetex.h"
 #include "downloadmanager.h"
 #include "ecolistwidget.h"
@@ -27,7 +28,7 @@
 #include "ficsclient.h"
 #include "ficsconsole.h"
 #include "ficsdatabase.h"
-#include "game.h"
+#include "gamex.h"
 #include "gamelist.h"
 #include "GameMimeData.h"
 #include "gamewindow.h"
@@ -103,6 +104,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_lastMessageWasHint(false)
 {
     setObjectName("MainWindow");
+    m_registry = new DatabaseRegistry();
 
     // Style::setStyle(this);
     m_messageTimer = new QTimer(this);
@@ -121,11 +123,11 @@ MainWindow::MainWindow() : QMainWindow(),
 
     /* Create clipboard database */
     DatabaseInfo* pClipDB = new DatabaseInfo(&m_undoGroup, new ClipboardDatabase);
-    connect(pClipDB,SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
+    connect(pClipDB,SIGNAL(signalRestoreState(GameX)), SLOT(slotDbRestoreState(GameX)));
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged(bool)));
     connect(pClipDB,SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
-    m_databases.append(pClipDB);
+    m_registry->m_databases.append(pClipDB);
     m_currentDatabase = pClipDB;
 
     /* Game List */
@@ -217,9 +219,9 @@ MainWindow::MainWindow() : QMainWindow(),
     m_gameView->toolBar = m_gameToolBar;
     connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
     connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
-    connect(m_gameView, SIGNAL(queryActiveGame(const Game**)), this, SLOT(slotGetActiveGame(const Game**)));
+    connect(m_gameView, SIGNAL(queryActiveGame(const GameX**)), this, SLOT(slotGetActiveGame(const GameX**)));
     connect(m_gameView, SIGNAL(signalMergeGame(GameId,QString)), this, SLOT(slotMergeActiveGame(GameId,QString)));
-    connect(this, SIGNAL(signalGameLoaded(const Board&)), gameTextDock, SLOT(raise()));
+    connect(this, SIGNAL(signalGameLoaded(const BoardX&)), gameTextDock, SLOT(raise()));
     connect(this, SIGNAL(displayTime(const QString&, Color, const QString&)), m_gameView, SLOT(slotDisplayTime(const QString&, Color, const QString&)));
     gameTextDock->setWidget(m_gameWindow);
     connect(this, SIGNAL(reconfigure()), m_gameView, SLOT(slotReconfigure()));
@@ -240,7 +242,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameList, SIGNAL(requestMergeAllGames()), SLOT(slotMergeAllGames()));
     connect(m_gameList, SIGNAL(requestMergeFilter()), SLOT(slotMergeFilter()));
     connect(m_gameList, SIGNAL(requestDeleteGame(QList<GameId>)), SLOT(slotDatabaseDeleteGame(QList<GameId>)));
-    connect(m_gameList, SIGNAL(requestGameData(Game&)), SLOT(slotGetGameData(Game&)));
+    connect(m_gameList, SIGNAL(requestGameData(GameX&)), SLOT(slotGetGameData(GameX&)));
     connect(m_gameList, SIGNAL(searchProgress(int)), SLOT(slotBoardSearchUpdate(int)));
     connect(m_gameList, SIGNAL(searchFinished()), SLOT(slotBoardSearchFinished()));
 
@@ -300,7 +302,7 @@ MainWindow::MainWindow() : QMainWindow(),
     // Database List
     DockWidgetEx* dbListDock = new DockWidgetEx(tr("Databases"), this);
     dbListDock->setObjectName("Databases");
-    m_databaseList = new DatabaseList(this);
+    m_databaseList = new DatabaseList(m_registry, this);
     m_databaseList->setMinimumSize(150, 100);
     dbListDock->setWidget(m_databaseList);
     // addDockWidget(Qt::RightDockWidgetArea, dbListDock);
@@ -533,14 +535,14 @@ void MainWindow::setupAnalysisWidget(DockWidgetEx* analysisDock, AnalysisWidget*
             SLOT(slotGameAddVariation(Analysis, QString)));
     connect(analysis, SIGNAL(addVariation(QString)),
             SLOT(slotGameAddVariation(QString)));
-    connect(this, SIGNAL(boardChange(const Board&, const QString&)), analysis, SLOT(setPosition(const Board&,QString)));
+    connect(this, SIGNAL(boardChange(const BoardX&, const QString&)), analysis, SLOT(setPosition(const BoardX&,QString)));
     connect(this, SIGNAL(reconfigure()), analysis, SLOT(slotReconfigure()));
     // Make sure engine is disabled if dock is hidden
     connect(analysisDock, SIGNAL(visibilityChanged(bool)),
             analysis, SLOT(slotVisibilityChanged(bool)));
     m_menuView->addAction(analysisDock->toggleViewAction());
     analysisDock->hide();
-    connect(this, SIGNAL(signalGameLoaded(const Board&)), analysis, SLOT(slotUciNewGame(const Board&)));
+    connect(this, SIGNAL(signalGameLoaded(const BoardX&)), analysis, SLOT(slotUciNewGame(const BoardX&)));
     connect(this, SIGNAL(signalGameModeChanged(bool)), analysis, SLOT(setDisabled(bool)));
     connect(this, SIGNAL(signalUpdateDatabaseList(QStringList)), analysis, SLOT(slotUpdateBooks(QStringList)));
     connect(analysis, SIGNAL(signalSourceChanged(QString)), this, SLOT(slotUpdateOpeningBook(QString)));
@@ -554,13 +556,13 @@ MainWindow::~MainWindow()
     m_openingTreeWidget->cancel();
     m_ficsConsole->Terminate();
 
-    foreach(DatabaseInfo * database, m_databases)
+    foreach(DatabaseInfo* dbi, m_registry->databases())
     {
         // Avoid any GUI action if a database is closed
-        disconnect(database,SIGNAL(signalGameModified(bool)), this, SLOT(slotGameChanged(bool)));
-        database->close();
+        disconnect(dbi,SIGNAL(signalGameModified(bool)), this, SLOT(slotGameChanged(bool)));
+        dbi->close();
     }
-    qDeleteAll(m_databases.begin(), m_databases.end());
+    delete m_registry;
     delete m_output;
     delete m_progressBar;
     delete m_gameList;
@@ -766,10 +768,9 @@ QString MainWindow::databaseName(int index) const
     }
     else
     {
-        pDbInfo = m_databases[index];
+        pDbInfo = m_registry->databases()[index];
     }
-    QString name = pDbInfo->database() ? pDbInfo->database()->name() : "";
-    return name;
+    return pDbInfo->dbName();
 }
 
 Database* MainWindow::getDatabaseByPath(QString path)
@@ -786,22 +787,15 @@ Database* MainWindow::getDatabaseByPath(QString path)
 
 DatabaseInfo* MainWindow::getDatabaseInfoByPath(QString path)
 {
-    for(int i = 0; i < m_databases.count(); ++i)
-    {
-        if(m_databases[i]->displayName() == path)
-        {
-            return m_databases[i];
-        }
-    }
-    return nullptr;
+    return m_registry->findDisplayName(path);
 }
 
-Game& MainWindow::game()
+GameX& MainWindow::game()
 {
     return databaseInfo()->currentGame();
 }
 
-const Game& MainWindow::game() const
+const GameX& MainWindow::game() const
 {
     return databaseInfo()->currentGame();
 }
@@ -882,16 +876,17 @@ void MainWindow::updateMenuDatabases()
     if (menu)
     {
         menu->clear();
-        int n=1;
-        for(int i = 0; i < m_databases.count(); i++)
+        int n = 1;
+        
+        for (auto dbi: m_registry->databases())
         {
-            if(m_databases[i]->isValid() && !m_databases[i]->IsBook())
+            if (dbi->isValid() && !dbi->IsBook())
             {
                 QAction* action = new QAction(menu);
                 action->setVisible(true);
-                action->setData(QVariant::fromValue(m_databases[i]));
-                action->setText(QString("&%1: %2").arg(n++).arg(databaseName(i)));
-                if (m_databases[i] == m_currentDatabase)
+                action->setData(QVariant::fromValue(dbi));
+                action->setText(QString("&%1: %2").arg(n++).arg(dbi->dbName()));
+                if (dbi == m_currentDatabase)
                 {
                     action->setCheckable(true);
                     action->setChecked(true);
@@ -1008,11 +1003,13 @@ void MainWindow::openFICS()
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
 {
     QFileInfo fi = QFileInfo(fname);
+    QString ext = fi.suffix().toLower();
     if(fname.isEmpty() ||
-            fi.suffix().toLower() == "pgn" ||
-            fi.suffix().toLower() == "ctg" ||
-            fi.suffix().toLower() == "bin" ||
-            fi.suffix().toLower() == "abk")
+            ext == "pgn" ||
+            ext == "si4" ||
+            ext == "ctg" ||
+            ext == "bin" ||
+            ext == "abk")
     {
         openDatabaseFile(fname, utf8);
     }
@@ -1074,18 +1071,18 @@ bool MainWindow::ActivateFICSDatabase()
 bool MainWindow::ActivateDatabase(QString fname)
 {
     /* Check if the database is open */
-    for(int i = 0; i < m_databases.count(); i++)
+    for (auto dbi: m_registry->databases())
     {
-        if(m_databases[i]->database()->filename() == fname)
+        if (dbi->database()->filename() == fname)
         {
-            if(m_databases[i]->isValid())
+            if (dbi->isValid())
             {
-                if (!m_databases[i]->IsBook())
+                if (!dbi->IsBook())
                 {
                     autoGroup->untrigger();
-                    if (m_databases[i] != m_currentDatabase)
+                    if (dbi != m_currentDatabase)
                     {
-                        m_currentDatabase = m_databases[i];
+                        m_currentDatabase = dbi;
                         m_databaseList->setFileCurrent(fname);
                         slotDatabaseChanged();
                     }
@@ -1133,7 +1130,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     startOperation(tr("Opening %1...").arg(basefile));
     connect(db->database(), SIGNAL(progress(int)), SLOT(slotOperationProgress(int)), Qt::QueuedConnection);
     connect(db, SIGNAL(LoadFinished(DatabaseInfo*)), this, SLOT(slotDataBaseLoaded(DatabaseInfo*)), Qt::QueuedConnection);
-    connect(db, SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
+    connect(db, SIGNAL(signalRestoreState(GameX)), SLOT(slotDbRestoreState(GameX)));
     connect(db, SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged(bool)));
     connect(db, SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(db, SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
@@ -1143,7 +1140,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     }
     else
     {
-        m_databases.append(db);
+        m_registry->m_databases.append(db);
     }
 }
 
@@ -1171,7 +1168,7 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
     if(!db->IsLoaded())
     {
         cancelOperation(tr("Cannot open file"));
-        m_databases.removeOne(db);
+        m_registry->m_databases.removeOne(db);
         delete db;
         return;
     }
@@ -1185,14 +1182,14 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
 
     if (!db->IsBook())
     {
-        for(int i = 0; i < m_databases.count(); i++)
+        for (auto dbi: m_registry->databases())
         {
-            if(m_databases[i]->database()->filename() == fname)
+            if (dbi->database()->filename() == fname)
             {
-                if (!m_databases[i]->IsBook())
+                if (!dbi->IsBook())
                 {
                     autoGroup->untrigger();
-                    m_currentDatabase = m_databases[i];
+                    m_currentDatabase = dbi;
                     CreateBoardView();
                 }
                 break;
@@ -1276,7 +1273,7 @@ bool MainWindow::gameEditComment(Output::CommentType type)
 
     if((type == Output::Precomment) || (moves <= 0))
     {
-        annotation = game().annotation(CURRENT_MOVE, Game::BeforeMove);
+        annotation = game().annotation(CURRENT_MOVE, GameX::BeforeMove);
     }
     else
     {
@@ -1293,8 +1290,8 @@ bool MainWindow::gameEditComment(Output::CommentType type)
     {
         if(moves > 0)
         {
-            QString spec = game().specAnnotations(CURRENT_MOVE, Game::BeforeMove);
-            game().setAnnotation(dlg.text()+spec, CURRENT_MOVE, Game::BeforeMove);
+            QString spec = game().specAnnotations(CURRENT_MOVE, GameX::BeforeMove);
+            game().setAnnotation(dlg.text()+spec, CURRENT_MOVE, GameX::BeforeMove);
         }
         else
         {
@@ -1837,18 +1834,18 @@ bool MainWindow::confirmQuit()
     if (!m_scratchPad->saveDocument())
         return false;
 
-    for(int i = 1; i < m_databases.size(); i++)
+    for (auto dbi: m_registry->databases())
     {
-        if (!QuerySaveGame(m_databases[i]))
+        if (!QuerySaveGame(dbi))
         {
             return false;
         }
     }
-    for(int i = 1; i < m_databases.size(); i++)
+    for (auto dbi: m_registry->databases())
     {
-        if(m_databases[i]->isValid() && m_databases[i]->database()->isModified())
+        if (dbi->isValid() && dbi->database()->isModified())
         {
-            modified += m_databases[i]->database()->name() + '\n';
+            modified += dbi->database()->name() + '\n';
         }
     }
     if(!modified.isEmpty())
@@ -1862,10 +1859,13 @@ bool MainWindow::confirmQuit()
         if(response == MessageDialog::Yes)
         {
             Output output(Output::Pgn);
-            for(int i = 1; i < m_databases.size(); i++)
-                if(m_databases[i]->database()->isModified())
-                    output.output(m_databases[i]->database()->filename(),
-                                  *(m_databases[i]->database()));
+            for (auto dbi: m_registry->databases())
+            {
+                if (dbi->database()->isModified())
+                {
+                    output.output(dbi->database()->filename(), *(dbi->database()));
+                }
+            }
         }
     }
 
@@ -1873,7 +1873,7 @@ bool MainWindow::confirmQuit()
     cancelPolyglotWriters();
     m_openingTreeWidget->cancel(); // Make sure we are not grabbing into something that is closed now
 
-    for(int i = m_databases.size() - 1; i; --i)
+    for (int i = m_registry->databases().size() - 1; i; --i)
     {
         slotFileCloseIndex(i, true);
     }
@@ -1887,7 +1887,7 @@ void MainWindow::SwitchToClipboard()
 {
     if (!m_currentDatabase || !m_currentDatabase->isClipboard())
     {
-        m_currentDatabase = m_databases[0]; // Switch to clipboard is always safe
+        m_currentDatabase = m_registry->databases()[0]; // Switch to clipboard is always safe
         activateBoardViewForDbIndex(databaseInfo());
         m_databaseList->setFileCurrent("Clipboard");
         slotDatabaseChanged();
@@ -1956,7 +1956,7 @@ bool MainWindow::QuerySaveGame(DatabaseInfo *dbInfo)
         }
         else if(n == SaveDialog::Discard)
         {
-            dbInfo->setModified(false, Game(), ""); // Do not notify more than once
+            dbInfo->setModified(false, GameX(), ""); // Do not notify more than once
         }
 
         if (shouldNotify)

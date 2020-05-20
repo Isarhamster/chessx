@@ -5,7 +5,7 @@
 #ifndef MOVEDATA_H
 #define MOVEDATA_H
 
-#include "game.h"
+#include "gamex.h"
 #include "move.h"
 
 class MoveData
@@ -13,7 +13,7 @@ class MoveData
 public:
     enum MoveType {StandardMove, GameEnd};
     MoveData();
-    void addGame(Game& g, Color c, MoveType movetype = StandardMove);
+    void addGame(GameX& g, Color c, MoveType movetype = StandardMove);
     double percentage() const;
     int averageRating() const;
     int averageYear() const;

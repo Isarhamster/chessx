@@ -14,8 +14,9 @@
 #include "ctgdatabase.h"
 #include "databaseinfo.h"
 #include "ficsdatabase.h"
+#include "sciddatabase.h"
 #include "filter.h"
-#include "game.h"
+#include "gamex.h"
 #include "gameundocommand.h"
 #include "memorydatabase.h"
 #include "pgndatabase.h"
@@ -32,13 +33,13 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, Database *db)
 {
     m_database = db;
     m_filename = db->name();
-    m_filter = new Filter(m_database);
+    m_filter = new FilterX(m_database);
     m_bLoaded = true;
     m_utf8 = false;
     m_undoStack = new QUndoStack((QObject*)undoGroup);
     newGame();
     connect(m_undoStack, SIGNAL(cleanChanged(bool)), SLOT(dbCleanChanged(bool)));
-    connect(&m_game, SIGNAL(signalGameModified(bool,Game,QString)),SLOT(setModified(bool,Game,QString)));
+    connect(&m_game, SIGNAL(signalGameModified(bool,GameX,QString)),SLOT(setModified(bool,GameX,QString)));
     connect(&m_game, SIGNAL(signalMoveChanged()), SIGNAL(signalMoveChanged()));
 }
 
@@ -49,12 +50,16 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filte
     m_utf8 = false;
     m_undoStack = new QUndoStack((QObject*)undoGroup);
     connect(m_undoStack, SIGNAL(cleanChanged(bool)), SLOT(dbCleanChanged(bool)));
-    connect(&m_game, SIGNAL(signalGameModified(bool,Game,QString)),SLOT(setModified(bool,Game,QString)));
+    connect(&m_game, SIGNAL(signalGameModified(bool,GameX,QString)),SLOT(setModified(bool,GameX,QString)));
     connect(&m_game, SIGNAL(signalMoveChanged()), SIGNAL(signalMoveChanged()));
     QFile file(fname);
     if (IsFicsDB())
     {
         m_database = new FicsDatabase;
+    }
+    else if (isScidDb())
+    {
+        m_database = new ScidDatabase();
     }
     else if (IsPolyglotBook())
     {
@@ -92,7 +97,7 @@ void DatabaseInfo::doLoadFile(QString filename)
     }
     m_database->parseFile();
     delete m_filter;
-    m_filter = new Filter(m_database);
+    m_filter = new FilterX(m_database);
     m_bLoaded = true;
     emit LoadFinished(this);
 }
@@ -142,7 +147,7 @@ DatabaseInfo::~DatabaseInfo()
 {
 }
 
-Filter *DatabaseInfo::filter()
+FilterX *DatabaseInfo::filter()
 {
     return m_filter;
 }
@@ -175,7 +180,7 @@ bool DatabaseInfo::loadGame(GameId index)
     }
     m_game.moveToId(n);
     m_undoStack->clear();
-    setModified(false, Game(), "");
+    setModified(false, GameX(), "");
 
     return true;
 }
@@ -200,7 +205,7 @@ bool DatabaseInfo::gameNeedsSaving() const
     return (isValid() && modified() && !m_database->isReadOnly() && !m_database->deleted(m_index));
 }
 
-void DatabaseInfo::setModified(bool modified, const Game& g, QString action)
+void DatabaseInfo::setModified(bool modified, const GameX& g, QString action)
 {
     if (modified)
     {
@@ -225,7 +230,7 @@ const QList<double>& DatabaseInfo::material() const
     return m_material;
 }
 
-void DatabaseInfo::restoreState(const Game& game)
+void DatabaseInfo::restoreState(const GameX& game)
 {
     emit signalRestoreState(game);
 }
@@ -236,7 +241,7 @@ void DatabaseInfo::newGame()
     m_game.clearTags();
     m_game.clear();
     m_index = InvalidGameId;
-    setModified(false, Game(), "");
+    setModified(false, GameX(), "");
 }
 
 bool DatabaseInfo::saveGame()
@@ -286,7 +291,7 @@ bool DatabaseInfo::saveGame()
                 // In case a deleted game is saved, assume that the use wants to keep content, so undelete it
                 m_database->index()->setDeleted(m_index, false);
             }
-            setModified(false, Game(), "");
+            setModified(false, GameX(), "");
             m_undoStack->setClean();
             return true;
         }
@@ -307,14 +312,14 @@ bool DatabaseInfo::saveGame()
         }
         database()->index()->setTag(TagNameLength, QString::number((m_game.plyCount() + 1) / 2), m_index);
 
-        setModified(false, Game(), "");
+        setModified(false, GameX(), "");
         m_undoStack->setClean();
         return true;
     }
     return false;
 }
 
-void DatabaseInfo::replaceGame(const Game &game)
+void DatabaseInfo::replaceGame(const GameX &game)
 {
     m_game = game;
     updateMaterial();
@@ -324,6 +329,11 @@ void DatabaseInfo::replaceGame(const Game &game)
 QString DatabaseInfo::dbPath() const
 {
     return database()->filename();
+}
+
+QString DatabaseInfo::dbName() const
+{
+    return database() ? database()->name() : "";
 }
 
 void DatabaseInfo::clearLastGames()
@@ -355,6 +365,12 @@ bool DatabaseInfo::isNative() const
 bool DatabaseInfo::isClipboard() const
 {
     return database() && database()->IsClipboard();
+}
+
+bool DatabaseInfo::isScidDb() const
+{
+    QFileInfo fi(m_filename);
+    return (fi.suffix().toLower() == "si4");
 }
 
 bool DatabaseInfo::IsFicsDB() const
