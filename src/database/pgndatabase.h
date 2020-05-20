@@ -56,6 +56,7 @@ public:
     /** Get the number of games from a database */
     virtual quint64 count() const;
 
+    virtual bool parseFile();
 protected:
     //parsing methods
     /** Reads moves from the file and adds them to the game. Performs position searches if any are active */
@@ -79,7 +80,6 @@ protected:
     /** Parse a single tag of format 'tag "value"' into the index */
     void parseTagIntoIndex(const QString &tag, QString value);
 
-    virtual bool parseFile();
     bool parseFileIntern();
     virtual void parseGame();
 

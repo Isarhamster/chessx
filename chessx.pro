@@ -17,7 +17,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
    # Comment out c++11 for all non-C++11 compilers, Qt5 is required in addition
    CONFIG += c++11
    # Add lc0 to package
-   CONFIG += lc0
+   # CONFIG += lc0
 }
 
 speech {

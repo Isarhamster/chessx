@@ -12,7 +12,6 @@
 #include <QMap>
 
 #include "board.h"
-#include "boardview.h"
 #include "output.h"
 #include "settings.h"
 #include "tags.h"
@@ -31,9 +30,10 @@ const char* DEFAULT_PGN_TEMPLATE = "pgn-default.template";
 
 QMap<Output::OutputType, QString> Output::m_outputMap;
 
-Output::Output(OutputType output, const QString& pathToTemplateFile)
+Output::Output(OutputType output, BoardRenderingFunc renderer, const QString& pathToTemplateFile)
+    : m_renderer(renderer)
+    , m_outputType(output)
 {
-    m_outputType = output;
     switch(m_outputType)
     {
     case Html:
@@ -310,12 +310,10 @@ QString Output::writeDiagram(int n) const
     QString imageString;
     if((m_outputType == NotationWidget) && (AppSettings->getValue("/GameText/ShowDiagrams").toBool()))
     {
-        QImage image;
-
         Game g = m_game;
         g.forward(1);
 
-        BoardView::renderImageForBoard(g.board(), image, QSize(n,n));
+        QImage image = m_renderer(g.board(), QSize(n, n));
 
         QByteArray byteArray;
         QBuffer buffer(&byteArray);

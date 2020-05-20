@@ -1861,7 +1861,7 @@ bool MainWindow::confirmQuit()
         }
         if(response == MessageDialog::Yes)
         {
-            Output output(Output::Pgn);
+            Output output(Output::Pgn, &BoardView::renderImageForBoard);
             for(int i = 1; i < m_databases.size(); i++)
                 if(m_databases[i]->database()->isModified())
                     output.output(m_databases[i]->database()->filename(),

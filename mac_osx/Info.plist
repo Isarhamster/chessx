@@ -26,9 +26,9 @@
 	<key>CFBundleGetInfoString</key>
         <string>ChessX for Mac OS 10.14</string>
 	<key>CFBundleSignature</key>
-	<string>@TYPEINFO@</string>
+	<string>????</string>
 	<key>CFBundleExecutable</key>
-	<string>@EXECUTABLE@</string>
+	<string>chessx</string>
 	<key>CFBundleIdentifier</key>
         <string>net.sourceforge.chessx</string>
 	<key>CFBundleVersion</key>

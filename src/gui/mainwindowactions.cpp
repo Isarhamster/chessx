@@ -155,7 +155,7 @@ void MainWindow::saveDatabase(DatabaseInfo* dbInfo)
         Database* db = dbInfo->database();
         QMutexLocker m(db->mutex());
         startOperation(tr("Saving %1...").arg(db->name()));
-        Output output(Output::Pgn);
+        Output output(Output::Pgn, &BoardView::renderImageForBoard);
         connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
         output.output(db->filename(), *db);
         finishOperation(tr("%1 saved").arg(db->name()));
@@ -273,7 +273,7 @@ void MainWindow::slotFileExportGame()
     QString filename = exportFileName(format);
     if(!filename.isEmpty())
     {
-        Output output(static_cast<Output::OutputType>(format));
+        Output output(static_cast<Output::OutputType>(format), &BoardView::renderImageForBoard);
         output.output(filename, game());
     }
 }
@@ -284,7 +284,7 @@ void MainWindow::slotFileExportFilter()
     QString filename = exportFileName(format);
     if(!filename.isEmpty())
     {
-        Output output(static_cast<Output::OutputType>(format));
+        Output output(static_cast<Output::OutputType>(format), &BoardView::renderImageForBoard);
         output.output(filename, *(databaseInfo()->filter()));
     }
 }
@@ -295,7 +295,7 @@ void MainWindow::slotFileExportAll()
     QString filename = exportFileName(format);
     if(!filename.isEmpty())
     {
-        Output output(static_cast<Output::OutputType>(format));
+        Output output(static_cast<Output::OutputType>(format), &BoardView::renderImageForBoard);
         output.output(filename, *database());
     }
 }
@@ -341,7 +341,7 @@ void MainWindow::slotReconfigure()
     m_recentFiles.restore();
     emit reconfigure(); 	// Re-emit for children
     delete m_output;
-    m_output = new Output(Output::NotationWidget);
+    m_output = new Output(Output::NotationWidget, &BoardView::renderImageForBoard);
     UpdateGameText();
 }
 
@@ -399,7 +399,7 @@ void MainWindow::slotEditCopyHumanFEN()
 
 void MainWindow::slotEditCopyPGN()
 {
-    Output output(Output::Pgn);
+    Output output(Output::Pgn, &BoardView::renderImageForBoard);
     QString pgn = output.output(&game());
     QApplication::clipboard()->setText(pgn);
 }
@@ -423,7 +423,7 @@ void MainWindow::slotSendMail()
         else
         {
             Game curgame = game();
-            Output output(Output::Pgn);
+            Output output(Output::Pgn, &BoardView::renderImageForBoard);
             QString pgn = output.output(&curgame);
 
             const QString white = curgame.tag(TagNameWhite);
@@ -2894,7 +2894,7 @@ void MainWindow::copyGames(QString destination, QList<GameId> indexes, QString s
     }
 
     // The target database is closed
-    Output writer(Output::Pgn);
+    Output writer(Output::Pgn, &BoardView::renderImageForBoard);
     Game g;
     bool success = true;
     foreach (GameId index, indexes)
@@ -2973,7 +2973,7 @@ void MainWindow::copyDatabase(QString target, QString src)
             if(fDest.isWritable())
             {
                 done = true;
-                Output output(Output::Pgn);
+                Output output(Output::Pgn, &BoardView::renderImageForBoard);
                 output.append(target, *pSrcDB);
 
                 QString msg = tr("Append games from %1 to %2.").arg(pSrcDB->name()).arg(fiDest.fileName());

@@ -1,0 +1,4 @@
+#pragma once
+
+#define RESOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/data/"
+
