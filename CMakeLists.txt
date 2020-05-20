@@ -102,7 +102,6 @@ target_link_libraries(chessx PRIVATE
   quazip
   bitboard
   board
-  database
   eco
   gui
 )

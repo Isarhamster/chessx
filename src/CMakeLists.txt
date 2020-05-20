@@ -32,25 +32,25 @@ endif()
 add_library(board STATIC
   database/board.cpp
   database/board.h
-  guess/attacks.h
-  guess/common.h
-  guess/error.h
+  guess/guess_attacks.h
+  guess/guess_common.h
+  guess/guess_error.h
   guess/guess.cpp
   guess/guess.h
-  guess/guessengine.cpp
-  guess/guessengine.h
-  guess/hash.h
-  guess/misc.cpp
-  guess/misc.h
-  guess/movelist.cpp
-  guess/movelist.h
-  guess/position.cpp
-  guess/position.h
-  guess/recog.cpp
-  guess/recog.h
-  guess/sqlist.h
-  guess/sqmove.h
-  guess/sqset.h
+  guess/guess_guessengine.cpp
+  guess/guess_guessengine.h
+  guess/guess_hash.h
+  guess/guess_misc.cpp
+  guess/guess_misc.h
+  guess/guess_movelist.cpp
+  guess/guess_movelist.h
+  guess/guess_position.cpp
+  guess/guess_position.h
+  guess/guess_recog.cpp
+  guess/guess_recog.h
+  guess/guess_sqlist.h
+  guess/guess_sqmove.h
+  guess/guess_sqset.h
 )
 
 target_include_directories(board
@@ -68,8 +68,8 @@ target_link_libraries(board
 add_library(eco STATIC
   database/ecopositions.cpp
   database/ecopositions.h
-  guess/compileeco.cpp
-  guess/compileeco.h
+  guess/guess_compileeco.cpp
+  guess/guess_compileeco.h
 )
 
 target_link_libraries(eco
@@ -114,8 +114,8 @@ add_library(database STATIC
   database/editaction.h
   database/elosearch.cpp
   database/elosearch.h
-  database/engine.cpp
-  database/engine.h
+  database/enginex.cpp
+  database/enginex.h
   database/enginedata.cpp
   database/enginedata.h
   database/enginelist.cpp
@@ -136,8 +136,8 @@ add_library(database STATIC
   database/filteroperator.h
   database/filtersearch.cpp
   database/filtersearch.h
-  database/game.cpp
-  database/game.h
+  database/gamex.cpp
+  database/gamex.h
   database/gameid.h
   database/gameundocommand.h
   database/historylist.cpp
@@ -184,6 +184,8 @@ add_library(database STATIC
   database/refcount.h
   database/result.cpp
   database/result.h
+  database/sciddatabase.h
+  database/sciddatabase.cpp
   database/search.cpp
   database/search.h
   database/settings.cpp
@@ -219,6 +221,7 @@ target_include_directories(database
 target_link_libraries(database
   PRIVATE
     qt_config
+    scid
     Qt5::Widgets
   PUBLIC
     board
