@@ -116,7 +116,9 @@ void MainWindow::slotFileOpen()
 {
     QStringList filters;
     filters << tr("PGN databases (*.pgn)")
+#ifdef USE_SCID
            << tr("Scid databases (*.si4)")
+#endif
            << tr("Polyglot books (*.bin)")
            << tr("Arena books (*.abk)")
            << tr("Chessbase books (*.ctg)");

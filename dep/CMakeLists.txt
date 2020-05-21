@@ -1,2 +1,5 @@
 add_subdirectory(doctest)
-add_subdirectory(scid)
+
+if (ENABLE_SCID_SUPPORT)
+  add_subdirectory(scid)
+endif()
