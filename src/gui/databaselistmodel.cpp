@@ -145,8 +145,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             }
             case DBLV_SIZE:
             {
-                QFileInfo f(db.m_path);
-                return formatFileSize(f.size());
+                return formatFileSize(DatabaseInfo::GetDatabaseSize(db.m_path));
             }
             case DBLV_DATE:
             {
@@ -220,8 +219,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             }
             case DBLV_SIZE:
             {
-                QFileInfo f(db.m_path);
-                return formatFileSize(f.size());
+                return formatFileSize(DatabaseInfo::GetDatabaseSize(db.m_path));
             }
             default:
                 break;
@@ -268,9 +266,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             }
             case DBLV_SIZE:
             {
-                QFileInfo f(db.m_path);
-                qint64 size = f.size();
-                return size;
+                return DatabaseInfo::GetDatabaseSize(db.m_path);
             }
             default:
                 break;

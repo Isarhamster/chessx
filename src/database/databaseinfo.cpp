@@ -428,3 +428,25 @@ bool DatabaseInfo::IsBook() const
     // Add here if more book formats come in
     return IsPolyglotBook(s) || IsChessbaseBook(s);
 }
+
+qint64 DatabaseInfo::GetDatabaseSize(QString filename)
+{
+    QFileInfo fi(filename);
+    QList<QFileInfo> files;
+    files << fi;
+    if (fi.suffix().toLower() == "si4")
+    {
+        // chop filename extension
+        QString base(filename);
+        base.chop(4);
+        // account for name & game files
+        files << QFileInfo(base + ".sn4")
+              << QFileInfo(base + ".sg4");
+    }
+    qint64 size = 0;
+    foreach(QFileInfo f, files)
+    {
+        size += f.size();
+    }
+    return size;
+}

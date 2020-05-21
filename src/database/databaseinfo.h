@@ -128,6 +128,8 @@ public:
     const CircularBuffer<GameId>& lastGames() const { return m_lastGames; }
     void clearLastGames();
 
+    static qint64 GetDatabaseSize(QString filename);
+
 protected:
     void doLoadFile(QString filename);
 
