@@ -15,6 +15,21 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
+static QString formatFileSize(qint64 size)
+{
+    static QStringList suffixes;
+    if (suffixes.empty())
+    {
+        suffixes << "" << "k" << "M" << "G" << "T" << "P";
+    }
+    auto s = suffixes.cbegin();
+    for (; s + 1 != suffixes.cend() && size >= 1024; ++s)
+    {
+        size /= 1024;
+    }
+    return QString("%1%2").arg(size).arg(*s);
+}
+
 DatabaseRegistry::~DatabaseRegistry()
 {
     qDeleteAll(m_databases.begin(), m_databases.end());
@@ -129,17 +144,8 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             }
             case DBLV_SIZE:
             {
-                QStringList sizes;
-                sizes << "" << "k" << "M" << "G" << "T" << "P";
                 QFileInfo f(m_databases.at(index.row()).m_path);
-                int i = 0;
-                qint64 size = f.size();
-                while((size >= 1024) && (i < sizes.count()))
-                {
-                    size /= 1024;
-                    i++;
-                }
-                return QString("%1%2").arg(size).arg(sizes[i]);
+                return formatFileSize(f.size());
             }
             case DBLV_DATE:
             {
@@ -214,17 +220,8 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             }
             case DBLV_SIZE:
             {
-                QStringList sizes;
-                sizes << "" << "k" << "M" << "G" << "T" << "P";
                 QFileInfo f(m_databases.at(index.row()).m_path);
-                int i = 0;
-                qint64 size = f.size();
-                while((size >= 1024) && (i < sizes.count()))
-                {
-                    size /= 1024;
-                    i++;
-                }
-                return QString("%1%2").arg(size).arg(sizes[i]);
+                return formatFileSize(f.size());
             }
             default:
                 break;
