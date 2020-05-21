@@ -9,12 +9,26 @@
 #include <QPixmap>
 
 #include "databaseinfo.h"
-#include "database.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
 #endif // _MSC_VER
+
+static QString formatFileSize(qint64 size)
+{
+    static QStringList suffixes;
+    if (suffixes.empty())
+    {
+        suffixes << "" << "k" << "M" << "G" << "T" << "P";
+    }
+    auto s = suffixes.cbegin();
+    for (; s + 1 != suffixes.cend() && size >= 1024; ++s)
+    {
+        size /= 1024;
+    }
+    return QString("%1%2").arg(size).arg(*s);
+}
 
 DatabaseRegistry::~DatabaseRegistry()
 {
@@ -36,21 +50,6 @@ DatabaseInfo* DatabaseRegistry::findDisplayName(QString path) const
 void DatabaseRegistry::remove(DatabaseInfo* dbi)
 {
     m_databases.removeAt(m_databases.indexOf(dbi));
-}
-
-static QString formatFileSize(qint64 size)
-{
-    static QStringList suffixes;
-    if (suffixes.empty())
-    {
-        suffixes << "" << "k" << "M" << "G" << "T" << "P";
-    }
-    auto s = suffixes.cbegin();
-    for (; s + 1 != suffixes.cend() && size >= 1024; ++s)
-    {
-        size /= 1024;
-    }
-    return QString("%1%2").arg(size).arg(*s);
 }
 
 DatabaseListModel::DatabaseListModel(DatabaseRegistry* registry, QObject* parent)
@@ -95,187 +94,185 @@ bool DatabaseListModel::hasChildren(const QModelIndex &parent) const
 
 QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
 {
-    if(index.isValid() && (index.row() < m_databases.size()))
+    if (!index.isValid() || index.row() >= m_databases.size())
     {
-        if(role == Qt::DecorationRole)
+        return QVariant();
+    }
+
+    const auto& db = m_databases.at(index.row());
+    if(role == Qt::DecorationRole)
+    {
+        switch(index.column())
         {
-            switch(index.column())
+        case DBLV_FAVORITE:
+        {
+            int stars = db.m_stars;
+            switch (stars)
             {
-            case DBLV_FAVORITE:
-            {
-                int stars = m_databases.at(index.row()).m_stars;
-                switch (stars)
-                {
-                case 0: return QPixmap(":/images/folder_grey.png");
-                case 1: return QPixmap(":/images/folder_favorite1.png");
-                case 2: return QPixmap(":/images/folder_favorite2.png");
-                case 3: return QPixmap(":/images/folder_favorite3.png");
-                case 4: return QPixmap(":/images/startup.png");
-                case 5: return QPixmap(":/images/active.png");
-                }
-            }
-            case DBLV_OPEN:
-            {
-                bool bIsOpen = m_databases.at(index.row()).m_state == EDBL_OPEN;
-                bool bIsCurrent = m_databases.at(index.row()).m_isCurrent;
-                if(bIsOpen)
-                {
-                    return QPixmap(bIsCurrent ? ":/images/folder_new.png" : ":/images/fileopen.png");
-                }
-                else
-                {
-                    return QPixmap(":/images/folder_closed.png");
-                }
-            }
-            default:
-                return QVariant();
+            case 0: return QPixmap(":/images/folder_grey.png");
+            case 1: return QPixmap(":/images/folder_favorite1.png");
+            case 2: return QPixmap(":/images/folder_favorite2.png");
+            case 3: return QPixmap(":/images/folder_favorite3.png");
+            case 4: return QPixmap(":/images/startup.png");
+            case 5: return QPixmap(":/images/active.png");
             }
         }
-        else if(role == Qt::DisplayRole)
+        case DBLV_OPEN:
         {
-            switch(index.column())
+            bool bIsOpen = db.m_state == EDBL_OPEN;
+            bool bIsCurrent = db.m_isCurrent;
+            if(bIsOpen)
             {
-            case DBLV_FAVORITE:
-                return QVariant();
-            case DBLV_NAME:
-            {
-                QString s = m_databases.at(index.row()).m_name;
-                if (s.endsWith(".pgn")) s.remove(".pgn");
-                return s;
+                return QPixmap(bIsCurrent ? ":/images/folder_new.png" : ":/images/fileopen.png");
             }
-            case DBLV_SIZE:
+            else
             {
-                auto dbi = m_registry->findDisplayName(m_databases.at(index.row()).m_path);
-                return formatFileSize(dbi? dbi->database()->diskSize(): 0);
-            }
-            case DBLV_DATE:
-            {
-                QFileInfo f(m_databases.at(index.row()).m_path);
-                return f.lastModified().date().toString(Qt::ISODate);
-            }
-            case DBLV_DATE_READ:
-            {
-                QFileInfo f(m_databases.at(index.row()).m_path);
-                return f.lastRead().date().toString(Qt::ISODate);
-            }
-            case DBLV_OPEN:
-                return QVariant();
-            case DBLV_PATH:
-                return m_databases.at(index.row()).m_path;
-            case DBLV_UTF8:
-                return m_databases.at(index.row()).classType();
-            default:
-                break;
+                return QPixmap(":/images/folder_closed.png");
             }
         }
-        else if(role == Qt::FontRole)
+        default:
+            return QVariant();
+        }
+    }
+    else if(role == Qt::DisplayRole)
+    {
+        switch(index.column())
         {
-            if(m_databases.at(index.row()).m_isCurrent)
+        case DBLV_FAVORITE:
+            return QVariant();
+        case DBLV_NAME:
+        {
+            QString s = db.m_name;
+            if (s.endsWith(".pgn")) s.remove(".pgn");
+            return s;
+        }
+        case DBLV_SIZE:
+        {
+            return formatFileSize(DatabaseInfo::GetDatabaseSize(db.m_path));
+        }
+        case DBLV_DATE:
+        {
+            QFileInfo f(db.m_path);
+            return f.lastModified().date().toString(Qt::ISODate);
+        }
+        case DBLV_DATE_READ:
+        {
+            QFileInfo f(db.m_path);
+            return f.lastRead().date().toString(Qt::ISODate);
+        }
+        case DBLV_OPEN:
+            return QVariant();
+        case DBLV_PATH:
+            return db.m_path;
+        case DBLV_UTF8:
+            return db.classType();
+        default:
+            break;
+        }
+    }
+    else if(role == Qt::FontRole)
+    {
+        if(db.m_isCurrent)
+        {
+            if((index.column() == DBLV_NAME) || (index.column() == DBLV_PATH))
             {
-                if((index.column() == DBLV_NAME) || (index.column() == DBLV_PATH))
-                {
-                    QFont boldFont;
-                    boldFont.setBold(true);
-                    return boldFont;
-                }
+                QFont boldFont;
+                boldFont.setBold(true);
+                return boldFont;
             }
         }
-        else if(role == Qt::ToolTipRole)
+    }
+    else if(role == Qt::ToolTipRole)
+    {
+        switch(index.column())
         {
-            switch(index.column())
-            {
-            case DBLV_FAVORITE:
-            {
-                bool bIsFavorite = m_databases.at(index.row()).isFavorite();
-                return QString(bIsFavorite ? tr("Favorite") : "");
-            }
-            case DBLV_PATH:
-            {
-                QString s = m_databases.at(index.row()).m_name;
-                return s;
-            }
-            case DBLV_OPEN:
-            {
-                bool bIsOpen = m_databases.at(index.row()).m_state == EDBL_OPEN;
-                return QString(bIsOpen ? tr("Open") : tr("Closed"));
-            }
-            case DBLV_UTF8:
-            {
-                return m_databases.at(index.row()).classType();
-            }
-            case DBLV_NAME:
-            {
-                QString s = m_databases.at(index.row()).m_name;
-                s[0] = s[0].toUpper();
-                return s;
-            }
-            case DBLV_DATE:
-            {
-                QFileInfo f(m_databases.at(index.row()).m_path);
-                return f.lastModified();
-            }
-            case DBLV_DATE_READ:
-            {
-                QFileInfo f(m_databases.at(index.row()).m_path);
-                return f.lastRead();
-            }
-            case DBLV_SIZE:
-            {
-                auto dbi = m_registry->findDisplayName(m_databases.at(index.row()).m_path);
-                return formatFileSize(dbi? dbi->database()->diskSize(): 0);
-            }
-            default:
-                break;
-            }
+        case DBLV_FAVORITE:
+        {
+            return QString(db.isFavorite() ? tr("Favorite") : "");
         }
-        else if(role == Qt::UserRole)
+        case DBLV_PATH:
         {
-            switch(index.column())
-            {
-            case DBLV_FAVORITE:
-            {
-                int stars = m_databases.at(index.row()).m_stars;
-                return QString::number(stars);
-            }
-            case DBLV_PATH:
-            {
-                QString s = m_databases.at(index.row()).m_name;
-                return s;
-            }
-            case DBLV_OPEN:
-            {
-                bool bIsOpen = m_databases.at(index.row()).m_state == EDBL_OPEN;
-                return QString(bIsOpen ? "Open" : "Closed");
-            }
-            case DBLV_UTF8:
-            {
-                return m_databases.at(index.row()).classType();
-            }
-            case DBLV_NAME:
-            {
-                QString s = m_databases.at(index.row()).m_name;
-                s[0] = s[0].toUpper();
-                return s;
-            }
-            case DBLV_DATE:
-            {
-                QFileInfo f(m_databases.at(index.row()).m_path);
-                return f.lastModified();
-            }
-            case DBLV_DATE_READ:
-            {
-                QFileInfo f(m_databases.at(index.row()).m_path);
-                return f.lastRead();
-            }
-            case DBLV_SIZE:
-            {
-                QFileInfo f(m_databases.at(index.row()).m_path);
-                qint64 size = f.size();
-                return size;
-            }
-            default:
-                break;
-            }
+            QString s = db.m_name;
+            return s;
+        }
+        case DBLV_OPEN:
+        {
+            bool bIsOpen = db.m_state == EDBL_OPEN;
+            return QString(bIsOpen ? tr("Open") : tr("Closed"));
+        }
+        case DBLV_UTF8:
+        {
+            return db.classType();
+        }
+        case DBLV_NAME:
+        {
+            QString s = db.m_name;
+            s[0] = s[0].toUpper();
+            return s;
+        }
+        case DBLV_DATE:
+        {
+            QFileInfo f(db.m_path);
+            return f.lastModified();
+        }
+        case DBLV_DATE_READ:
+        {
+            QFileInfo f(db.m_path);
+            return f.lastRead();
+        }
+        case DBLV_SIZE:
+        {
+            return formatFileSize(DatabaseInfo::GetDatabaseSize(db.m_path));
+        }
+        default:
+            break;
+        }
+    }
+    else if(role == Qt::UserRole)
+    {
+        switch(index.column())
+        {
+        case DBLV_FAVORITE:
+        {
+            int stars = db.m_stars;
+            return QString::number(stars);
+        }
+        case DBLV_PATH:
+        {
+            QString s = db.m_name;
+            return s;
+        }
+        case DBLV_OPEN:
+        {
+            bool bIsOpen = db.m_state == EDBL_OPEN;
+            return QString(bIsOpen ? "Open" : "Closed");
+        }
+        case DBLV_UTF8:
+        {
+            return db.classType();
+        }
+        case DBLV_NAME:
+        {
+            QString s = db.m_name;
+            s[0] = s[0].toUpper();
+            return s;
+        }
+        case DBLV_DATE:
+        {
+            QFileInfo f(db.m_path);
+            return f.lastModified();
+        }
+        case DBLV_DATE_READ:
+        {
+            QFileInfo f(db.m_path);
+            return f.lastRead();
+        }
+        case DBLV_SIZE:
+        {
+            return DatabaseInfo::GetDatabaseSize(db.m_path);
+        }
+        default:
+            break;
         }
     }
 
