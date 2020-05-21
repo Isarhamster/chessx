@@ -10,7 +10,7 @@
 
 TEST_CASE("testing Index class")
 {
-    Index index;
+    IndexX index;
 
     index.setTag("Event", "Ch World (match)", 0);
     index.setTag("Site", "Buenos Aires ARG", 0);

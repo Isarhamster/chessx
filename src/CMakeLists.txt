@@ -32,25 +32,25 @@ endif()
 add_library(board STATIC
   database/board.cpp
   database/board.h
-  guess/attacks.h
-  guess/common.h
-  guess/error.h
+  guess/guess_attacks.h
+  guess/guess_common.h
+  guess/guess_error.h
   guess/guess.cpp
   guess/guess.h
-  guess/guessengine.cpp
-  guess/guessengine.h
-  guess/hash.h
-  guess/misc.cpp
-  guess/misc.h
-  guess/movelist.cpp
-  guess/movelist.h
-  guess/position.cpp
-  guess/position.h
-  guess/recog.cpp
-  guess/recog.h
-  guess/sqlist.h
-  guess/sqmove.h
-  guess/sqset.h
+  guess/guess_guessengine.cpp
+  guess/guess_guessengine.h
+  guess/guess_hash.h
+  guess/guess_misc.cpp
+  guess/guess_misc.h
+  guess/guess_movelist.cpp
+  guess/guess_movelist.h
+  guess/guess_position.cpp
+  guess/guess_position.h
+  guess/guess_recog.cpp
+  guess/guess_recog.h
+  guess/guess_sqlist.h
+  guess/guess_sqmove.h
+  guess/guess_sqset.h
 )
 
 target_include_directories(board
@@ -68,8 +68,8 @@ target_link_libraries(board
 add_library(eco STATIC
   database/ecopositions.cpp
   database/ecopositions.h
-  guess/compileeco.cpp
-  guess/compileeco.h
+  guess/guess_compileeco.cpp
+  guess/guess_compileeco.h
 )
 
 target_link_libraries(eco
@@ -80,12 +80,49 @@ target_link_libraries(eco
     Qt5::Core
 )
 
+add_library(database-core STATIC
+  database/annotation.cpp
+  database/annotation.h
+  database/database.cpp
+  database/database.h
+  database/filter.cpp
+  database/filter.h
+  database/filteroperator.h
+  database/filtersearch.cpp
+  database/filtersearch.h
+  database/gameid.h
+  database/gamex.cpp
+  database/gamex.h
+  database/index.cpp
+  database/index.h
+  database/indexitem.cpp
+  database/indexitem.h
+  database/movedata.cpp
+  database/movedata.h
+  database/nag.cpp
+  database/nag.h
+  database/refcount.cpp
+  database/refcount.h
+  database/result.cpp
+  database/result.h
+  database/search.cpp
+  database/search.h
+  database/tags.cpp
+  database/tags.h
+)
+
+target_link_libraries(database-core
+  PRIVATE
+    qt_config
+    eco
+  PUBLIC
+    board
+)
+
 add_library(database STATIC
   database/abk.h
   database/analysis.cpp
   database/analysis.h
-  database/annotation.cpp
-  database/annotation.h
   database/arenabook.cpp
   database/arenabook.h
   database/circularbuffer.h
@@ -96,8 +133,6 @@ add_library(database STATIC
   database/ctgbookwriter.h
   database/ctgdatabase.cpp
   database/ctgdatabase.h
-  database/database.cpp
-  database/database.h
   database/databaseconversion.cpp
   database/databaseconversion.h
   database/databaseinfo.cpp
@@ -114,8 +149,8 @@ add_library(database STATIC
   database/editaction.h
   database/elosearch.cpp
   database/elosearch.h
-  database/engine.cpp
-  database/engine.h
+  database/enginex.cpp
+  database/enginex.h
   database/enginedata.cpp
   database/enginedata.h
   database/enginelist.cpp
@@ -129,29 +164,13 @@ add_library(database STATIC
   database/ficsclient.h
   database/ficsdatabase.cpp
   database/ficsdatabase.h
-  database/filter.cpp
-  database/filter.h
   database/filtermodel.cpp
   database/filtermodel.h
-  database/filteroperator.h
-  database/filtersearch.cpp
-  database/filtersearch.h
-  database/game.cpp
-  database/game.h
-  database/gameid.h
   database/gameundocommand.h
   database/historylist.cpp
   database/historylist.h
-  database/index.cpp
-  database/index.h
-  database/indexitem.cpp
-  database/indexitem.h
   database/memorydatabase.cpp
   database/memorydatabase.h
-  database/movedata.cpp
-  database/movedata.h
-  database/nag.cpp
-  database/nag.h
   database/numbersearch.cpp
   database/numbersearch.h
   database/openingtree.cpp
@@ -180,12 +199,6 @@ add_library(database STATIC
   database/polyglotwriter.h
   database/positionsearch.cpp
   database/positionsearch.h
-  database/refcount.cpp
-  database/refcount.h
-  database/result.cpp
-  database/result.h
-  database/search.cpp
-  database/search.h
   database/settings.cpp
   database/settings.h
   database/spellchecker.cpp
@@ -194,8 +207,6 @@ add_library(database STATIC
   database/streamdatabase.h
   database/tablebase.cpp
   database/tablebase.h
-  database/tags.cpp
-  database/tags.h
   database/tagsearch.cpp
   database/tagsearch.h
   database/telnetclient.cpp
@@ -221,11 +232,32 @@ target_link_libraries(database
     qt_config
     Qt5::Widgets
   PUBLIC
-    board
+    database-core
     Qt5::Core
     Qt5::Gui
     Qt5::Network
 )
+
+if (ENABLE_SCID_SUPPORT)
+  add_library(database-scid STATIC
+    database/scid/sciddatabase.h
+    database/scid/sciddatabase.cpp
+  )
+
+  target_include_directories(database-scid PUBLIC database/scid)
+
+  target_link_libraries(database-scid
+    PRIVATE
+      qt_config
+      scid
+    PUBLIC
+      database-core
+  )
+
+  target_link_libraries(database PRIVATE database-scid)
+  target_compile_definitions(database PUBLIC USE_SCID)
+endif()
+
 
 add_library(gui STATIC
   dialogs/aboutdlg.cpp

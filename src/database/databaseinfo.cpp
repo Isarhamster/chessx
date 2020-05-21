@@ -14,7 +14,6 @@
 #include "ctgdatabase.h"
 #include "databaseinfo.h"
 #include "ficsdatabase.h"
-#include "sciddatabase.h"
 #include "filter.h"
 #include "gamex.h"
 #include "gameundocommand.h"
@@ -23,6 +22,10 @@
 #include "polyglotdatabase.h"
 #include "settings.h"
 #include "tags.h"
+
+#ifdef USE_SCID
+#include "sciddatabase.h"
+#endif
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -57,10 +60,12 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filte
     {
         m_database = new FicsDatabase;
     }
+#ifdef USE_SCID
     else if (isScidDb())
     {
         m_database = new ScidDatabase();
     }
+#endif
     else if (IsPolyglotBook())
     {
         m_database = new PolyglotDatabase;

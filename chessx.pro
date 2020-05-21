@@ -19,6 +19,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
    # Add lc0 to package
    # CONFIG += lc0
    DEFINES += USE_C11
+   # CONFIG += scid
 }
 
 speech {
@@ -52,7 +53,9 @@ macx {
   QMAKE_CXXFLAGS_DEBUG *= -m64 -O0
 }
 
-HEADERS += \
+scid {
+  # Scid sources
+  HEADERS += \
     dep/scid/code/src/board_def.h \
     dep/scid/code/src/bytebuf.h \
     dep/scid/code/src/codec.h \
@@ -78,7 +81,7 @@ HEADERS += \
     dep/scid/code/src/textbuf.h \
     dep/scid/code/src/tree.h
 
-SOURCES += \
+  SOURCES += \
     dep/scid/code/src/codec_scid4.cpp \
     dep/scid/code/src/game.cpp \
     dep/scid/code/src/matsig.cpp \
@@ -88,7 +91,14 @@ SOURCES += \
     dep/scid/code/src/stored.cpp \
     dep/scid/code/src/textbuf.cpp
 
-INCLUDEPATH += dep/scid/code/src
+  INCLUDEPATH += dep/scid/code/src
+
+  # database implementation
+  HEADERS += src/database/scid/sciddatabase.h
+  SOURCES += src/database/scid/sciddatabase.cpp
+  INCLUDEPATH += src/database/scid
+  DEFINES += USE_SCID
+}
 
 FORMS += \
     src/dialogs/readaheaddlg.ui \
@@ -127,7 +137,6 @@ HEADERS += src/database/board.h \
 	src/database/playerdatabase.h \
 	src/database/playerdata.h \
 	src/database/databaseconversion.h \
-    src/database/sciddatabase.h \
         src/database/wbengine.h \
 	src/database/uciengine.h \
 	src/database/search.h \
@@ -300,7 +309,6 @@ SOURCES += src/database/board.cpp \
 	src/database/partialdate.cpp \
 	src/database/playerdatabase.cpp \
 	src/database/playerdata.cpp \
-        src/database/sciddatabase.cpp \
 	src/database/wbengine.cpp \
 	src/database/uciengine.cpp \
 	src/database/search.cpp \

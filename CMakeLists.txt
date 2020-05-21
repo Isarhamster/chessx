@@ -4,6 +4,14 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13)
 
 project(chessx LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+option(ENABLE_SOUNDS "Enable sounds (requires Qt5::Multimedia)" ON)
+option(ENABLE_TTS "Enable text-to-speech (requires Qt5::TextToSpeech)" ON)
+option(ENABLE_SCID_SUPPORT "Enable support for Scid database format (*.si4)" ON)
+
 add_subdirectory(dep)
 
 # common definitions to use with Qt
@@ -13,9 +21,6 @@ target_compile_definitions(qt_config INTERFACE
   QT_NO_CAST_TO_ASCII
   QT_USE_QSTRINGBUILDER
 )
-
-option(ENABLE_SOUNDS "Enable sounds (requires Qt5::Multimedia)" ON)
-option(ENABLE_TTS "Enable text-to-speech (requires Qt5::TextToSpeech)" ON)
 
 set(REQUIRED_QT_COMPONENTS
   Core Xml DBus Network OpenGL Svg PrintSupport Gui Widgets
@@ -102,7 +107,6 @@ target_link_libraries(chessx PRIVATE
   quazip
   bitboard
   board
-  database
   eco
   gui
 )
