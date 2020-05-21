@@ -123,9 +123,7 @@ jobs:
       run: cd '${{ runner.workspace }}/b/ninja' && ctest -V
 
   build-min:
-    # it's tempting to use an older "ubuntu-16.04" for speedup
-    # but it comes with GCC 5.4.0 which does not support c++17
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-16.04
     env:
       QT_VERSION: '5.7'
   
@@ -152,6 +150,7 @@ jobs:
         cmake -S . -B _build
         -DENABLE_SOUNDS=OFF
         -DENABLE_TTS=OFF
+        -DENABLE_SCID_SUPPORT=OFF
     - name: make
       run: cmake --build _build
     - name: make test
