@@ -120,6 +120,7 @@ jobs:
         vcpkgTriplet: ${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_TRIPLET_OUT }}
         buildDirectory: '${{ runner.workspace }}/b/ninja/'
     - name: make test
+      if: ${{ runner.os != 'Windows' }}
       run: cd '${{ runner.workspace }}/b/ninja' && ctest -V
 
   build-min:
