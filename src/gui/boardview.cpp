@@ -1490,7 +1490,7 @@ void BoardView::renderImage(QImage &image, double scaling) const
     boardView.setPalette(Pal);
     QRect sourceRect = boardView.totalRect();
     QPixmap pixmap(sourceRect.size());
-    pixmap.fill();
+    pixmap.fill(Qt::transparent);
 
     boardView.render(&pixmap, QPoint(), sourceRect, QWidget::DrawChildren);
     image = pixmap.toImage();

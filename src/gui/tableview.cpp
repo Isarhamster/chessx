@@ -279,7 +279,7 @@ QImage TableView::renderToImage() const
     pTableView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     QPixmap pixmap(width, height);
-    pixmap.fill();
+    pixmap.fill(Qt::transparent);
 
     pTableView->render(&pixmap);
     QImage image = pixmap.toImage();
