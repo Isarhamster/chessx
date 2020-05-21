@@ -22,8 +22,6 @@ public:
     bool parseFile() override;
     /** File-based database name */
     QString filename() const override;
-    /** Database size on disk */
-    qint64 diskSize() const override;
     /** Loads a game at @p index, returns true if successful */
     bool loadGame(GameId gameId, GameX& game) override;
     /** Loads only moves into a game from the given position */
@@ -35,7 +33,6 @@ public:
 
 private:
     QString m_filename;
-    QStringList m_files;
     std::unique_ptr<ScidStorage> m_storage;
 };
 

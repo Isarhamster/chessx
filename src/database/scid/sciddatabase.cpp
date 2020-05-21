@@ -269,10 +269,6 @@ bool ScidDatabase::open(const QString& filename, bool /*utf8*/)
     }
 
     m_filename = filename;
-    m_files.clear();
-    auto dbname = m_filename.chopped(4);
-    m_files << dbname + ".si4" << dbname + ".sn4" << dbname + ".sg4";
-
     m_storage = std::move(storage);
     return true;
 }
@@ -285,18 +281,7 @@ bool ScidDatabase::parseFile()
 
 QString ScidDatabase::filename() const
 {
-    return m_files[0];
-}
-
-qint64 ScidDatabase::diskSize() const
-{
-    qint64 size = 0;
-    for (const auto& fname: m_files)
-    {
-        QFileInfo fi(fname);
-        size += fi.size();
-    }
-    return size;
+    return m_filename;
 }
 
 bool ScidDatabase::loadGame(GameId index, GameX& game)
