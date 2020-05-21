@@ -49,8 +49,20 @@ MoveData::MoveData()
 
 double MoveData::percentage() const
 {
-    unsigned c = result[ResultUnknown] + 2 * result[WhiteWin] + result[Draw];
+    unsigned int c = result[ResultUnknown] + 2 * result[WhiteWin] + result[Draw];
     return count ? c * 500 / count / 10.0 : 0;
+}
+
+double MoveData::percentageWhite() const
+{
+    unsigned int count = result[WhiteWin] + result[Draw] + result[BlackWin];
+    return count ? 100.0 * (double)result[WhiteWin] / (double)count : 0;
+}
+
+double MoveData::percentageBlack() const
+{
+    unsigned int count = result[WhiteWin] + result[Draw] + result[BlackWin];
+    return count ? 100.0 * (double)result[BlackWin] / (double)count : 0;
 }
 
 bool MoveData::hasPercent() const
