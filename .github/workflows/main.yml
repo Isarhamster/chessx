@@ -56,6 +56,8 @@ jobs:
             arch: x86
           - os: ubuntu-latest
             arch: x86
+          - os: windows-latest
+            arch: x86
         include:
           - os: macos-latest
             triplet: x64-osx
@@ -65,11 +67,11 @@ jobs:
             triplet: x64-windows
             qt_arch: win64_msvc2017_64
             vcpkg_packages: 'zlib'
-          - os: windows-latest
-            arch: x86
-            triplet: x86-windows
-            qt_arch: win32_msvc2017
-            vcpkg_packages: 'zlib'
+#          - os: windows-latest
+#            arch: x86
+#            triplet: x86-windows
+#            qt_arch: win32_msvc2017
+#            vcpkg_packages: 'zlib'
 
     env:
       VCPKG_COMMIT_ID: 'c7ab9d3110813979a873b2dbac630a9ab79850dc' # tag 2020.04
