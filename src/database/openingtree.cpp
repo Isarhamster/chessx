@@ -141,22 +141,31 @@ QVariant OpeningTree::headerData(int section, Qt::Orientation orientation, int r
     }
 }
 
-QPixmap OpeningTree::paintPercentage(int percentage) const
+QPixmap OpeningTree::paintPercentage(int percentageWhite, int percentageBlack) const
 {
     QRect fullRect(QPoint(0,0),QSize(41, AppSettings->getValue("/General/ListFontSize").toInt()));
     QImage rowImg = QImage(fullRect.size(),QImage::Format_RGB16);
-    rowImg.fill(Qt::white);
+    rowImg.fill(Qt::lightGray);
     fullRect = fullRect.adjusted(0,0,-1,-1);
+
     QPainter p;
     p.begin(&rowImg);
-    p.setPen(QPen(QColor(Qt::black)));
+    p.setPen(QPen(QColor(Qt::gray)));
     p.drawRect(fullRect);
-    int percentWidth = (percentage * fullRect.width()) / 100;
-    int remainder = fullRect.width() - percentWidth;
-    QRect blackRect(QPoint(percentWidth, 0), QSize(remainder, fullRect.height()));
-    p.setBrush(QBrush(QColor(Qt::gray), Qt::SolidPattern));
+
+    int percentWidthWhite = (percentageWhite * fullRect.width()) / 100;
+    int percentWidthBlack = (percentageBlack * fullRect.width()) / 100;
+
+    QRect blackRect(QPoint(fullRect.width()-percentWidthBlack, 0), QSize(percentWidthBlack, fullRect.height()));
+    QRect whiteRect(QPoint(0, 0), QSize(percentWidthWhite, fullRect.height()));
+
+    p.setBrush(QBrush(QColor(Qt::white), Qt::SolidPattern));
+    p.drawRect(whiteRect);
+
+    p.setBrush(QBrush(QColor(Qt::darkGray), Qt::SolidPattern));
     p.drawRect(blackRect);
     p.end();
+
     return QPixmap().fromImage(rowImg);
 }
 
@@ -218,7 +227,8 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
         {
             if ((index.column() == 2) && m_moves[index.row()].hasPercent())
             {
-                return paintPercentage(static_cast<int>(m_moves[index.row()].percentage()));
+                return paintPercentage(static_cast<int>(m_moves[index.row()].percentageWhite()),
+                        static_cast<int>(m_moves[index.row()].percentageBlack()));
             }
             break;
         }

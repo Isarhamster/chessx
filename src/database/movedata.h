@@ -15,6 +15,8 @@ public:
     MoveData();
     void addGame(GameX& g, Color c, MoveType movetype = StandardMove);
     double percentage() const;
+    double percentageWhite() const;
+    double percentageBlack() const;
     int averageRating() const;
     int averageYear() const;
     QString san;

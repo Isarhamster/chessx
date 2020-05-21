@@ -67,7 +67,7 @@ signals:
     void openingTreeUpdated();
     void openingTreeUpdateStarted();
 protected:
-    QPixmap paintPercentage(int percentage) const;
+    QPixmap paintPercentage(int percentageWhite, int percentageBlack) const;
 private:
     bool m_bRequestPending;
     QList<MoveData> m_moves;
