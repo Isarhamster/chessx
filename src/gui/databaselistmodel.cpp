@@ -94,6 +94,7 @@ bool DatabaseListModel::hasChildren(const QModelIndex &parent) const
 
 QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
 {
+    const auto& db = m_databases.at(index.row());
     if(index.isValid() && (index.row() < m_databases.size()))
     {
         if(role == Qt::DecorationRole)
@@ -102,7 +103,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             {
             case DBLV_FAVORITE:
             {
-                int stars = m_databases.at(index.row()).m_stars;
+                int stars = db.m_stars;
                 switch (stars)
                 {
                 case 0: return QPixmap(":/images/folder_grey.png");
@@ -115,8 +116,8 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             }
             case DBLV_OPEN:
             {
-                bool bIsOpen = m_databases.at(index.row()).m_state == EDBL_OPEN;
-                bool bIsCurrent = m_databases.at(index.row()).m_isCurrent;
+                bool bIsOpen = db.m_state == EDBL_OPEN;
+                bool bIsCurrent = db.m_isCurrent;
                 if(bIsOpen)
                 {
                     return QPixmap(bIsCurrent ? ":/images/folder_new.png" : ":/images/fileopen.png");
@@ -138,38 +139,38 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                 return QVariant();
             case DBLV_NAME:
             {
-                QString s = m_databases.at(index.row()).m_name;
+                QString s = db.m_name;
                 if (s.endsWith(".pgn")) s.remove(".pgn");
                 return s;
             }
             case DBLV_SIZE:
             {
-                QFileInfo f(m_databases.at(index.row()).m_path);
+                QFileInfo f(db.m_path);
                 return formatFileSize(f.size());
             }
             case DBLV_DATE:
             {
-                QFileInfo f(m_databases.at(index.row()).m_path);
+                QFileInfo f(db.m_path);
                 return f.lastModified().date().toString(Qt::ISODate);
             }
             case DBLV_DATE_READ:
             {
-                QFileInfo f(m_databases.at(index.row()).m_path);
+                QFileInfo f(db.m_path);
                 return f.lastRead().date().toString(Qt::ISODate);
             }
             case DBLV_OPEN:
                 return QVariant();
             case DBLV_PATH:
-                return m_databases.at(index.row()).m_path;
+                return db.m_path;
             case DBLV_UTF8:
-                return m_databases.at(index.row()).classType();
+                return db.classType();
             default:
                 break;
             }
         }
         else if(role == Qt::FontRole)
         {
-            if(m_databases.at(index.row()).m_isCurrent)
+            if(db.m_isCurrent)
             {
                 if((index.column() == DBLV_NAME) || (index.column() == DBLV_PATH))
                 {
@@ -185,42 +186,41 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             {
             case DBLV_FAVORITE:
             {
-                bool bIsFavorite = m_databases.at(index.row()).isFavorite();
-                return QString(bIsFavorite ? tr("Favorite") : "");
+                return QString(db.isFavorite() ? tr("Favorite") : "");
             }
             case DBLV_PATH:
             {
-                QString s = m_databases.at(index.row()).m_name;
+                QString s = db.m_name;
                 return s;
             }
             case DBLV_OPEN:
             {
-                bool bIsOpen = m_databases.at(index.row()).m_state == EDBL_OPEN;
+                bool bIsOpen = db.m_state == EDBL_OPEN;
                 return QString(bIsOpen ? tr("Open") : tr("Closed"));
             }
             case DBLV_UTF8:
             {
-                return m_databases.at(index.row()).classType();
+                return db.classType();
             }
             case DBLV_NAME:
             {
-                QString s = m_databases.at(index.row()).m_name;
+                QString s = db.m_name;
                 s[0] = s[0].toUpper();
                 return s;
             }
             case DBLV_DATE:
             {
-                QFileInfo f(m_databases.at(index.row()).m_path);
+                QFileInfo f(db.m_path);
                 return f.lastModified();
             }
             case DBLV_DATE_READ:
             {
-                QFileInfo f(m_databases.at(index.row()).m_path);
+                QFileInfo f(db.m_path);
                 return f.lastRead();
             }
             case DBLV_SIZE:
             {
-                QFileInfo f(m_databases.at(index.row()).m_path);
+                QFileInfo f(db.m_path);
                 return formatFileSize(f.size());
             }
             default:
@@ -233,42 +233,42 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             {
             case DBLV_FAVORITE:
             {
-                int stars = m_databases.at(index.row()).m_stars;
+                int stars = db.m_stars;
                 return QString::number(stars);
             }
             case DBLV_PATH:
             {
-                QString s = m_databases.at(index.row()).m_name;
+                QString s = db.m_name;
                 return s;
             }
             case DBLV_OPEN:
             {
-                bool bIsOpen = m_databases.at(index.row()).m_state == EDBL_OPEN;
+                bool bIsOpen = db.m_state == EDBL_OPEN;
                 return QString(bIsOpen ? "Open" : "Closed");
             }
             case DBLV_UTF8:
             {
-                return m_databases.at(index.row()).classType();
+                return db.classType();
             }
             case DBLV_NAME:
             {
-                QString s = m_databases.at(index.row()).m_name;
+                QString s = db.m_name;
                 s[0] = s[0].toUpper();
                 return s;
             }
             case DBLV_DATE:
             {
-                QFileInfo f(m_databases.at(index.row()).m_path);
+                QFileInfo f(db.m_path);
                 return f.lastModified();
             }
             case DBLV_DATE_READ:
             {
-                QFileInfo f(m_databases.at(index.row()).m_path);
+                QFileInfo f(db.m_path);
                 return f.lastRead();
             }
             case DBLV_SIZE:
             {
-                QFileInfo f(m_databases.at(index.row()).m_path);
+                QFileInfo f(db.m_path);
                 qint64 size = f.size();
                 return size;
             }
