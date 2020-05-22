@@ -532,6 +532,7 @@ void PreferencesDialog::restoreSettings()
     ui.verticalTabs->setChecked(AppSettings->getValue("/MainWindow/VerticalTabs").toBool());
     ui.darkTheme->setChecked(AppSettings->getValue("/MainWindow/DarkTheme").toBool());
     ui.iconsVisible->setChecked(AppSettings->getValue("/MainWindow/ShowMenuIcons").toBool());
+    ui.cbAutoRaise->setChecked(AppSettings->getValue("/MainWindow/AutoRaise").toBool());
     // Read Game List settings
     AppSettings->beginGroup("GameText");
 
@@ -649,6 +650,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("/MainWindow/VerticalTabs", ui.verticalTabs->isChecked());
     AppSettings->setValue("/MainWindow/DarkTheme", ui.darkTheme->isChecked());
     AppSettings->setValue("/MainWindow/ShowMenuIcons", ui.iconsVisible->isChecked());
+    AppSettings->setValue("/MainWindow/AutoRaise", ui.cbAutoRaise->isChecked());
 
     AppSettings->beginGroup("GameText");
 
