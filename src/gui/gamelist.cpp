@@ -264,7 +264,10 @@ void GameList::setFilter(FilterX* filter)
         sortByColumn(0, Qt::AscendingOrder); // Hack to ensure fast opening after loading DB
         m_model->endUpdate();
     }
-	emit raiseRequest();
+    if (AppSettings->value("/MainWindow/AutoRaise").toBool())
+    {
+        emit raiseRequest();
+    }
 }
 
 void GameList::keyPressEvent(QKeyEvent* event)
@@ -414,7 +417,10 @@ void GameList::simpleSearch(int tagid)
             m_model->executeSearch(ts, FilterOperator(dlg.mode()));
         }
     }
-    emit raiseRequest();
+    if (AppSettings->value("/MainWindow/AutoRaise").toBool())
+    {
+        emit raiseRequest();
+    }
 }
 
 void GameList::slotFilterListByPlayer(QString s)
@@ -440,7 +446,10 @@ void GameList::slotFilterListByPlayer(QString s)
         Search* ts = new TagSearch(m_model->filter()->database(),  fragment, url.path());
         m_model->executeSearch(ts, op);
     }
-    emit raiseRequest();
+    if (AppSettings->value("/MainWindow/AutoRaise").toBool())
+    {
+        emit raiseRequest();
+    }
 }
 
 void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString player, QString result)
@@ -477,7 +486,10 @@ void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString playe
         }
     }
     m_model->executeSearch(ts);
-    emit raiseRequest();
+    if (AppSettings->value("/MainWindow/AutoRaise").toBool())
+    {
+        emit raiseRequest();
+    }
 }
 
 void GameList::slotFilterListByEvent(QString s)
@@ -491,7 +503,10 @@ void GameList::slotFilterListByEvent(QString s)
 
     Search* ts = new TagSearch(m_model->filter()->database(), TagNameEvent, s);
     m_model->executeSearch(ts, op);
-    emit raiseRequest();
+    if (AppSettings->value("/MainWindow/AutoRaise").toBool())
+    {
+        emit raiseRequest();
+    }
 }
 
 void GameList::slotFilterListByEventPlayer(QString player, QString event)
@@ -503,7 +518,10 @@ void GameList::slotFilterListByEventPlayer(QString player, QString event)
     ts->AddSearch(ts2, FilterOperator::Or);
     ts2->AddSearch(ts3, FilterOperator::And);
     m_model->executeSearch(ts);
-    emit raiseRequest();
+    if (AppSettings->value("/MainWindow/AutoRaise").toBool())
+    {
+        emit raiseRequest();
+    }
 }
 
 void GameList::slotFilterListByEco(QString s)
@@ -520,7 +538,10 @@ void GameList::slotFilterListByEco(QString s)
 
 void GameList::endSearch()
 {
-    emit raiseRequest();
+    if (AppSettings->value("/MainWindow/AutoRaise").toBool())
+    {
+        emit raiseRequest();
+    }
 }
 
 void GameList::selectGame(GameId index)

@@ -419,6 +419,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/MainWindow/StayOnTop", false);
     map.insert("/MainWindow/FilterFollowsGame", false);
     map.insert("/MainWindow/ShowMenuIcons", true);
+    map.insert("/MainWindow/AutoRaise", false);
 
     map.insert("/Mail/LastRecipient", "");
     map.insert("/History/MaxEntries", 4);
