@@ -4138,31 +4138,23 @@ void MainWindow::delaySpeechTimeout()
     if (m_readAhead<=n)
     {
         GameX g = game();
-        g.forward(m_readAhead);
-        Move m = g.move();
-        if ((m_readAhead == 1) || (m==m_readNextMove)) // Make sure that the position is still the same
+        if (g.forward(m_readAhead))
         {
-            QString s = MoveToSpeech(m);
-            speech->say(s);
-            if (g.forward())
+            Move m = g.move();
+            if ((m_readAhead == 1) || (m==m_readNextMove)) // Make sure that the position is still the same
             {
-                m_readAhead++;
-                m_readNextMove = g.move();
-            }
-            else
-            {
-                m_readAhead = 0; // End of line
+                QString s = MoveToSpeech(m);
+                speech->say(s);
+                if (g.forward())
+                {
+                    m_readAhead++;
+                    m_readNextMove = g.move();
+                    return;
+                }
             }
         }
-        else
-        {
-            m_readAhead = 0; // User changed move
-        }
     }
-    else
-    {
-        m_readAhead = 0;
-    }
+    m_readAhead = 0; // Catch all other cases which make it impossible / non sensical to proceed
 }
 
 #endif

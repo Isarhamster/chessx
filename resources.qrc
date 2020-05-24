@@ -184,5 +184,6 @@
         <file alias="images/filter-list.png">data/images/filter-list.png</file>
         <file alias="images/filter-plus.png">data/images/filter-plus.png</file>
         <file alias="images/rename.png">data/images/rename.png</file>
+        <file alias="images/readAhead.png">data/images/readAhead.png</file>
     </qresource>
 </RCC>
