@@ -587,7 +587,7 @@ void PreferencesDialog::restoreSettings()
     ui.cbScreenReader->setChecked(false);
     ui.cbScreenReader->setEnabled(false);
     ui.plyReadAhead->setEnabled(false);
-    ui.delayReadAhread->setEnabled(false);
+    ui.delayReadAhead->setEnabled(false);
 #endif
 
     AppSettings->endGroup();
