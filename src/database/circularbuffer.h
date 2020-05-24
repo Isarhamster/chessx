@@ -4,33 +4,30 @@
 #include <QQueue>
 
 template <class T>
-class CircularBuffer : public QQueue<T>
+class CircularBuffer : private QQueue<T>
 {
 public:
-    explicit inline CircularBuffer(unsigned int size = 10) : maxSize(size) {}
-    inline ~CircularBuffer() {}
+    explicit CircularBuffer(unsigned int size = 10) : maxSize(size) {}
+    ~CircularBuffer() {}
     // Interface
-    inline void resize(unsigned int size) { maxSize = size; deleteExcess(); }
-    // Technical
-    inline void swap(CircularBuffer<T> &other) { QQueue<T>::swap(other); } // prevent CircularBuffer<->QQueue swaps
+    void resize(unsigned int size) { maxSize = size; deleteExcess(); }
     // Overrride
-    inline void enqueue(const T &t) { QQueue<T>::enqueue(t); deleteExcess(); }
-    inline void append(const T &t)         { QQueue<T>::append(t); deleteExcess(); }
-    inline void append(const QList<T> &t)  { QQueue<T>::append(t); deleteExcess(); }
-    inline void prepend(const T &t)        { QQueue<T>::prepend(t); deleteExcess(); }
-    inline void insert(int i, const T &t)  { QQueue<T>::insert(i,t); deleteExcess(); }
-    inline void push_back(const T &t)      { append(t); }
-    inline void push_front(const T &t)     { prepend(t); }
-protected:
-    inline void deleteExcess() { while (QQueue<T>::count() > (int) maxSize) QQueue<T>::pop_front();
-                                 if (QQueue<T>::count())
-                                 {
-                                    T t = QQueue<T>::last();
-                                    int i = QQueue<T>::indexOf(t);
-                                    int j = QQueue<T>::lastIndexOf(t);
-                                    if (i!=j) QQueue<T>::takeAt(i);
-                                 }
-                               }
+    void append(const T &t)         { int i = QQueue<T>::indexOf(t);
+                                      if (i>=0) { QQueue<T>::takeAt(i); QQueue<T>::append(t); }
+                                      else { QQueue<T>::append(t); deleteExcess(); }}
+
+    void enqueue(const T &t)        { append(t); }
+    void push_back(const T &t)      { append(t); }
+
+public:
+    using QQueue<T>::clear;
+    using typename QQueue<T>::const_iterator;
+    using QQueue<T>::begin;
+    using QQueue<T>::end;
+
+private:
+    inline void deleteExcess() { while (QQueue<T>::count() > (int) maxSize) QQueue<T>::pop_front(); }
+
 private:
     unsigned int maxSize;
 };

@@ -486,6 +486,8 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
 
     map.insert("/Sound/Move", 1);
     map.insert("/Sound/ScreenReader", true);
+    map.insert("/Sound/PlyReadAhead", 6);
+    map.insert("/Sound/DelayReadAhead", 1000);
 
     map.insert("/Tools/Path1", "");
     map.insert("/Tools/CommandLine1", "");

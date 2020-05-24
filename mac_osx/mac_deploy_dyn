@@ -21,8 +21,8 @@ mkdir ${BUILDDIR}/dmg
 mv  ${BUILDDIR}/chessx-installer.mpkg ${BUILDDIR}/dmg/
 rm -f chessx-${VERSION}.dmg
 hdiutil create chessx-${VERSION}.dmg -volname chessx -fs HFS+ -srcfolder ${BUILDDIR}/dmg
-codesign --deep -s "Apple Development: jens.nissen@gmx.net" --options runtime --timestamp chessx-${VERSION}.dmg
-codesign -vvv --deep --strict chessx-${VERSION}.dmg
+#codesign --deep -s "Apple Development: jens.nissen@gmx.net" --options runtime --timestamp chessx-${VERSION}.dmg
+#codesign -vvv --deep --strict chessx-${VERSION}.dmg
 mv chessx.app chessx.modified.app
 mv chessx.app-original chessx.app
 mv -v ${RELEASEDIR}/chessx-${VERSION}.dmg ${DIR}/../Packages/

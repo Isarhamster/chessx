@@ -19,7 +19,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
    # Add lc0 to package
    # CONFIG += lc0
    DEFINES += USE_C11
-   # CONFIG += scid
+   CONFIG += scid
 }
 
 speech {

@@ -101,7 +101,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_gameMode(false),
     m_scratchPad(nullptr),
     m_bEvalRequested(false),
-    m_lastMessageWasHint(false)
+    m_lastMessageWasHint(false),
+    m_readAhead(0)
 {
     setObjectName("MainWindow");
     m_registry = new DatabaseRegistry();
@@ -517,8 +518,10 @@ MainWindow::MainWindow() : QMainWindow(),
     ecothread->start();
     StartCheckUpdate();
 #ifdef USE_SPEECH
+    qRegisterMetaType<QTextToSpeech::State>("State");
     speech = new QTextToSpeech(this);
     speech->setLocale(QLocale(AppSettings->getValue("/General/language").toString()));
+    connect(speech, SIGNAL(stateChanged(QTextToSpeech::State)), SLOT(speechStateChanged(QTextToSpeech::State)), Qt::QueuedConnection);
 #endif
 
     if (isMinimized())
@@ -1367,7 +1370,7 @@ void MainWindow::setupActions()
     QMenu* file = menuBar()->addMenu(tr("&File"));
     QToolBar* fileToolBar = addToolBar(tr("File"));
     fileToolBar->setObjectName("FileToolBar");
-    file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), QKeySequence(), fileToolBar, ":/images/new.png"));
+    file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), Qt::CTRL + Qt::SHIFT + Qt::Key_N, fileToolBar, ":/images/new.png"));
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
     file->addAction(createAction(tr("Open FICS"), SLOT(openFICS()), QKeySequence(), fileToolBar, ":/images/fics.png"));
@@ -1624,6 +1627,10 @@ void MainWindow::setupActions()
     gameMenu->addAction(m_match);
     gameMenu->addSeparator();
     connect(m_match, SIGNAL(changed()), SLOT(slotToggleGameMode()));
+
+#ifdef USE_SPEECH
+    gameMenu->addAction(createAction(tr("Read moves ahead"), SLOT(slotReadAhead()), Qt::CTRL + Qt::Key_Period, gameToolBar, ":/images/readAhead.png"));
+#endif
 
     m_training = createAction(tr("Training"), SLOT(slotToggleTraining()), Qt::CTRL + Qt::Key_R, gameToolBar, ":/images/training.png");
     m_training->setCheckable(true);

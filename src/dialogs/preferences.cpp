@@ -579,11 +579,15 @@ void PreferencesDialog::restoreSettings()
 #if defined(USE_SOUND) || defined(USE_SPEECH)
     ui.cbSoundOn->setCurrentIndex(AppSettings->getValue("Move").toInt());
     ui.cbScreenReader->setChecked(AppSettings->getValue("ScreenReader").toBool());
+    ui.plyReadAhead->setValue(AppSettings->getValue("PlyReadAhead").toInt());
+    ui.delayReadAhead->setValue(AppSettings->getValue("DelayReadAhead").toInt());
 #else
     ui.cbSoundOn->setCurrentIndex(0);
     ui.cbSoundOn->setEnabled(false);
     ui.cbScreenReader->setChecked(false);
     ui.cbScreenReader->setEnabled(false);
+    ui.plyReadAhead->setEnabled(false);
+    ui.delayReadAhead->setEnabled(false);
 #endif
 
     AppSettings->endGroup();
@@ -693,6 +697,8 @@ void PreferencesDialog::saveSettings()
     AppSettings->beginGroup("Sound");
     AppSettings->setValue("Move", ui.cbSoundOn->currentIndex());
     AppSettings->setValue("ScreenReader", ui.cbScreenReader->isChecked());
+    AppSettings->setValue("PlyReadAhead", ui.plyReadAhead->value());
+    AppSettings->setValue("DelayReadAhead", ui.delayReadAhead->value());
     AppSettings->endGroup();
 
     QDir().mkpath(ui.defaultDataBasePath->text());

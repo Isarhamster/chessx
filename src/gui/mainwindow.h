@@ -17,6 +17,9 @@
 #include <QtGui>
 #include <QAction>
 #include <QMainWindow>
+#ifdef USE_SPEECH
+#include <QTextToSpeech>
+#endif
 #include <QUndoGroup>
 
 using namespace chessx;
@@ -56,9 +59,6 @@ class QTimer;
 class QToolBar;
 class SaveDialog;
 class TableView;
-#ifdef USE_SPEECH
-class QTextToSpeech;
-#endif
 class ToolMainWindow;
 class TranslatingSlider;
 class PolyglotWriter;
@@ -485,6 +485,11 @@ protected slots:
     void slotShowUnderprotectedWhite();
     void slotShowUnderprotectedBlack();
     void cancelPolyglotWriters();
+    void slotReadAhead();
+#ifdef USE_SPEECH
+    void speechStateChanged(QTextToSpeech::State state);
+    void delaySpeechTimeout();
+#endif
 protected:
     void moveChanged();
     bool pasteFen(QString& errorText, QString fen, bool newGame=false);
@@ -740,6 +745,8 @@ private:
 #ifdef USE_SPEECH
     QPointer<QTextToSpeech> speech;
 #endif
+    int m_readAhead;
+    Move m_readNextMove;
 };
 
 #endif

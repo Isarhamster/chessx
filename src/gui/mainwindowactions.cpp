@@ -3272,7 +3272,7 @@ void MainWindow::updateLastGameList()
         {
             QString white = index->tagValue(TagNameWhite,n);
             QString black = index->tagValue(TagNameBlack,n);
-            QAction* action = m_recentGames->addAction(QString::number(n)+" : "+white+"-"+black, this, SLOT(slotLoadRecentGame()));
+            QAction* action = m_recentGames->addAction(QString::number(n+1)+" : "+white+"-"+black, this, SLOT(slotLoadRecentGame()));
             action->setData(n);
         }
     }
@@ -4107,3 +4107,54 @@ void MainWindow::slotShowUnderprotectedBlack()
     QAction* bt = qobject_cast<QAction*>(sender());
     m_boardView->setShowUnderProtection(bt->isChecked() ? Black:NoColor);
 }
+
+void MainWindow::slotReadAhead()
+{
+#ifdef USE_SPEECH
+    if (!m_readAhead) m_readAhead = 1;
+    speechStateChanged(QTextToSpeech::Ready);
+#endif
+}
+
+#ifdef USE_SPEECH
+void MainWindow::speechStateChanged(QTextToSpeech::State  state)
+{
+    if (state == QTextToSpeech::Ready)
+    {
+        if (m_readAhead > 1)
+        {
+            QTimer::singleShot(AppSettings->getValue("/Sound/DelayReadAhead").toInt(), this, SLOT(delaySpeechTimeout()));
+        }
+        else if (m_readAhead == 1)
+        {
+            delaySpeechTimeout();
+        }
+    }
+}
+
+void MainWindow::delaySpeechTimeout()
+{
+    int n = AppSettings->getValue("/Sound/PlyReadAhead").toInt();
+    if (m_readAhead<=n)
+    {
+        GameX g = game();
+        if (g.forward(m_readAhead))
+        {
+            Move m = g.move();
+            if ((m_readAhead == 1) || (m==m_readNextMove)) // Make sure that the position is still the same
+            {
+                QString s = MoveToSpeech(m);
+                speech->say(s);
+                if (g.forward())
+                {
+                    m_readAhead++;
+                    m_readNextMove = g.move();
+                    return;
+                }
+            }
+        }
+    }
+    m_readAhead = 0; // Catch all other cases which make it impossible / non sensical to proceed
+}
+
+#endif

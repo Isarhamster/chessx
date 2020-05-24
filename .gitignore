@@ -1,10 +1,13 @@
 *.DS_Store
 *.stash
 *.o
-*/debug/*
+debug/*
 */generated/*
 chessx.app
 *.user
 Makefile
 *.qm
 *.pb
+*.dmg
+release/*
+dmg/*
