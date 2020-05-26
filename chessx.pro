@@ -101,7 +101,6 @@ scid {
 }
 
 FORMS += \
-    src/dialogs/readaheaddlg.ui \
     src/dialogs/savedialog.ui \
     src/dialogs/copydialog.ui \
     src/dialogs/renametagdialog.ui \
@@ -254,7 +253,6 @@ HEADERS += src/database/board.h \
     src/dialogs/dlgsavebook.h \
     src/dialogs/promotiondialog.h \
     src/dialogs/recipientaddressdialog.h \
-    src/dialogs/readaheaddlg.h \
     src/dialogs/renametagdialog.h \
     src/dialogs/savedialog.h \
     src/dialogs/tagdialog.h \
@@ -412,7 +410,6 @@ SOURCES += src/database/board.cpp \
     src/dialogs/dlgsavebook.cpp \
     src/dialogs/promotiondialog.cpp \
     src/dialogs/recipientaddressdialog.cpp \
-    src/dialogs/readaheaddlg.cpp \
     src/dialogs/renametagdialog.cpp \
     src/dialogs/savedialog.cpp \
     src/dialogs/tagdialog.cpp \
