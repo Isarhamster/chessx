@@ -76,6 +76,41 @@ bool Settings::layout(QWidget* w)
             wx = values[5];
         }
         w->resize(values[2], values[3]);
+        if (w->objectName() == "MainWindow")
+        {
+            int wy = values[3];
+            // Check that x/y are inside the available geometry
+            QList<QScreen*> screen_list = qApp->screens();
+            bool found = false;
+            foreach(const QScreen* screen, screen_list)
+            {
+                QRect rect = screen->geometry();
+                if (rect.contains(QPoint(x,y)))
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+            {
+                const QScreen* screen = qApp->primaryScreen();
+                QRect rect = screen->geometry();
+                if (rect.x()+rect.width() < x)
+                {
+                    if (wx > rect.width())
+                        x = rect.x();
+                    else
+                        x = rect.x() + (rect.width()-wx)/2;
+                }
+                if (rect.y()+rect.height() < y)
+                {
+                    if (wy > rect.height())
+                        y = rect.y();
+                    else
+                        y = rect.y() + (rect.height()-wy)/2;
+                }
+            }
+        }
         w->move(x, y);
 
         if (wx & 0x80000000)      w->setWindowState(Qt::WindowMaximized);
