@@ -290,9 +290,6 @@ add_library(gui STATIC
   dialogs/quicksearch.cpp
   dialogs/quicksearch.h
   dialogs/quicksearch.ui
-  dialogs/readaheaddlg.cpp
-  dialogs/readaheaddlg.h
-  dialogs/readaheaddlg.ui
   dialogs/recipientaddressdialog.cpp
   dialogs/recipientaddressdialog.h
   dialogs/recipientaddressdialog.ui
