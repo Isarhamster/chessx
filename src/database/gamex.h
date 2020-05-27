@@ -28,6 +28,13 @@ typedef short MoveId;
 class SaveRestoreMove;
 class SaveRestoreMoveCompact;
 
+class MoveTree
+{
+public:
+    MoveTree() = default;
+    
+};
+
 /** @ingroup Core
 
    The GameX class represents a chess game. This is a complete rewrite, with simpler
@@ -407,6 +414,7 @@ signals:
     void signalMoveChanged();
 
 private:
+    MoveTree m_moves;
 
 #pragma pack(push,2)
     struct MoveNode
