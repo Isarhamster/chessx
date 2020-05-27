@@ -163,6 +163,9 @@ public :
 
     void unmountBoard() { m_moves.unmountBoard(); }
 
+    const MoveTree& model() const { return m_moves; }
+    MoveTree& model() { return m_moves; }
+
     // **** Querying game information ****
     /** compare game moves and annotations */
     int isEqual(const GameX& game) const;
