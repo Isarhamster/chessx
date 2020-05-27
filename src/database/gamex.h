@@ -26,7 +26,6 @@
 typedef short MoveId;
 
 class SaveRestoreMove;
-class SaveRestoreMoveCompact;
 
 class MoveTree
 {
@@ -487,7 +486,6 @@ private:
     void removeTimeCommentsFromMap(AnnotationMap& map);
 
     friend class SaveRestoreMove;
-    friend class SaveRestoreMoveCompact;
 };
 
 class SaveRestoreMove
@@ -501,24 +499,6 @@ public:
     ~SaveRestoreMove()
     {
         m_saveGame->dbMoveToId(m_saveMoveValue);
-    }
-private:
-    GameX* m_saveGame;
-    MoveId m_saveMoveValue;
-};
-
-class SaveRestoreMoveCompact
-{
-public:
-    explicit SaveRestoreMoveCompact(GameX& game)
-    {
-        m_saveGame = &game;
-        m_saveMoveValue = game.currentMove();
-    }
-    ~SaveRestoreMoveCompact()
-    {
-        m_saveGame->dbMoveToId(m_saveMoveValue);
-        m_saveGame->compact();
     }
 private:
     GameX* m_saveGame;
