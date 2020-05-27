@@ -23,6 +23,60 @@ using namespace chessx;
 #endif // _MSC_VER
 
 
+MoveTree::MoveTree()
+    : m_currentBoard(nullptr)
+    , mountRefCount(0)
+{
+    mountBoard();
+}
+
+MoveTree::MoveTree(const MoveTree& rhs)
+    : m_currentBoard(nullptr)
+    , mountRefCount(0)
+{
+    mountBoard();
+}
+
+MoveTree& MoveTree::operator=(const MoveTree& rhs)
+{
+    if (m_currentBoard && rhs.m_currentBoard)
+    {
+        *m_currentBoard = *rhs.m_currentBoard;
+    }
+    return *this;
+}
+
+MoveTree::~MoveTree()
+{
+    if (mountRefCount)
+    {
+        delete m_currentBoard;
+        m_currentBoard = nullptr;
+    }
+}
+
+void MoveTree::mountBoard()
+{
+    ++mountRefCount;
+    if (mountRefCount == 1)
+    {
+        m_currentBoard = new BoardX;
+    }
+}
+
+void MoveTree::unmountBoard()
+{
+    if (mountRefCount > 0)
+    {
+        --mountRefCount;
+        if (mountRefCount == 0)
+        {
+            delete m_currentBoard;
+            m_currentBoard = nullptr;
+        }
+    }
+}
+
 static const char strSquareNames[64][3] =
 {
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -37,24 +91,22 @@ static const char strSquareNames[64][3] =
 
 const QStringList GameX::s_specList = QStringList() << s_emt << s_clk << s_egt << s_csl << s_cal;
 
-GameX::GameX() : QObject()
+GameX::GameX()
+    : QObject()
+    , m_moves()
 {
-    mountRefCount = 0;
     m_currentNode = 0;
     m_startPly = 0;
-    m_currentBoard = nullptr;
-    mountBoard();
     clearTags();
     clear();
 }
 
-GameX::GameX(const GameX& game) : QObject()
+GameX::GameX(const GameX& game)
+    : QObject()
+    , m_moves(game.m_moves)
 {
-    mountRefCount = 0;
     m_currentNode = 0;
     m_startPly = 0;
-    m_currentBoard = nullptr;
-    mountBoard();
     *this = game;
 }
 
@@ -76,11 +128,8 @@ GameX& GameX::operator=(const GameX& game)
         m_moveNodes = game.m_moveNodes;
         //m_moveNodes.detach();
         m_currentNode = game.m_currentNode;
-        if (m_currentBoard && game.m_currentBoard)
-        {
-            *m_currentBoard = *game.m_currentBoard;
-        }
-        else if (m_currentBoard)
+        m_moves = game.m_moves;
+        if (m_moves.currentBoard() && !game.m_moves.currentBoard())
         {
             moveToStart();
         }
@@ -90,33 +139,6 @@ GameX& GameX::operator=(const GameX& game)
 
 GameX::~GameX()
 {
-    if (mountRefCount)
-    {
-        delete m_currentBoard;
-        m_currentBoard = nullptr;
-    }
-}
-
-void GameX::mountBoard()
-{
-    ++mountRefCount;
-    if (mountRefCount == 1)
-    {
-        m_currentBoard = new BoardX;
-    }
-}
-
-void GameX::unmountBoard()
-{
-    if (mountRefCount > 0)
-    {
-        --mountRefCount;
-        if (mountRefCount == 0)
-        {
-            delete m_currentBoard;
-            m_currentBoard = nullptr;
-        }
-    }
 }
 
 void GameX::copyFromGame(const GameX& g)
@@ -143,7 +165,7 @@ MoveId GameX::dbAddMove(const Move& move, const QString& annotation, NagSet nags
     {
         dbSetAnnotation(annotation, m_currentNode);
     }
-    m_currentBoard->doMove(move);
+    m_moves.currentBoard()->doMove(move);
     return m_currentNode;
 }
 
@@ -158,7 +180,7 @@ MoveId GameX::addMove(const Move& move, const QString& annotation, NagSet nags)
 
 MoveId GameX::dbAddSanMove(const QString& sanMove, const QString& annotation, NagSet nags)
 {
-    Move move = m_currentBoard->parseMove(sanMove);
+    Move move = m_moves.currentBoard()->parseMove(sanMove);
     if(move.isLegal() || move.isNullMove())
     {
         return dbAddMove(move, annotation, nags);
@@ -170,7 +192,7 @@ MoveId GameX::dbAddSanMove(const QString& sanMove, const QString& annotation, Na
 
 MoveId GameX::addMove(const QString& sanMove, const QString& annotation, NagSet nags)
 {
-    Move move = m_currentBoard->parseMove(sanMove);
+    Move move = m_moves.currentBoard()->parseMove(sanMove);
     if(move.isLegal() || move.isNullMove())
     {
         return addMove(move, annotation, nags);
@@ -597,7 +619,7 @@ bool GameX::replaceMove(const Move& move, const QString& annotation, NagSet nags
 
 bool GameX::replaceMove(const QString& sanMove)
 {
-    return replaceMove(m_currentBoard->parseMove(sanMove), QString(), NagSet(), true);
+    return replaceMove(m_moves.currentBoard()->parseMove(sanMove), QString(), NagSet(), true);
 }
 
 bool GameX::insertMove(Move m)
@@ -847,7 +869,7 @@ void GameX::dbTruncateVariation(Position position)
         m_moveNodes[0] = firstNode;
         m_moveNodes[m_currentNode].previousNode = 0;
         backward();
-        m_startingBoard = *m_currentBoard;
+        m_startingBoard = *m_moves.currentBoard();
         if(m_startingBoard != BoardX::standardStartBoard)
         {
             m_tags[TagNameFEN] = m_startingBoard.toFen();
@@ -866,7 +888,7 @@ void GameX::truncateVariation(Position position)
 
 const BoardX& GameX::board() const
 {
-    return *m_currentBoard;
+    return *m_moves.currentBoard();
 }
 
 BoardX GameX::startingBoard() const
@@ -876,12 +898,12 @@ BoardX GameX::startingBoard() const
 
 QString GameX::toFen() const
 {
-    return m_currentBoard->toFen();
+    return m_moves.currentBoard()->toFen();
 }
 
 QString GameX::toHumanFen() const
 {
-    return m_currentBoard->toHumanFen();
+    return m_moves.currentBoard()->toHumanFen();
 }
 
 void GameX::setGameComment(const QString& gameComment)
@@ -1749,10 +1771,10 @@ bool GameX::variationHasSiblings(MoveId variation) const
 void GameX::dbIndicateAnnotationsOnBoard(MoveId moveId)
 {
     QString annotation = squareAnnotation(moveId);
-    m_currentBoard->setSquareAnnotation(annotation);
+    m_moves.currentBoard()->setSquareAnnotation(annotation);
 
     annotation = arrowAnnotation(moveId);
-    m_currentBoard->setArrowAnnotation(annotation);
+    m_moves.currentBoard()->setArrowAnnotation(annotation);
 }
 
 void GameX::indicateAnnotationsOnBoard(MoveId moveId)
@@ -1764,7 +1786,7 @@ void GameX::indicateAnnotationsOnBoard(MoveId moveId)
 void GameX::moveToStart()
 {
     m_currentNode = 0;
-    *m_currentBoard = m_startingBoard;
+    *m_moves.currentBoard() = m_startingBoard;
 
     indicateAnnotationsOnBoard(m_currentNode);
 }
@@ -1802,11 +1824,11 @@ bool GameX::dbMoveToId(MoveId moveId, QString* algebraicMoveList)
 
         //reset the board, then make the moves on the stack to create the correct position
         m_currentNode = moveId;
-        *m_currentBoard = m_startingBoard;
+        *m_moves.currentBoard() = m_startingBoard;
         while(!moveStack.isEmpty())
         {
             Move m = moveStack.pop();
-            m_currentBoard->doMove(m);
+            m_moves.currentBoard()->doMove(m);
             if (algebraicMoveList)
             {
                 if (m.isNullMove())
@@ -1885,7 +1907,7 @@ int GameX::dbForward(int count)
         m_currentNode = m_moveNodes[m_currentNode].nextNode;
         ++moved;
 
-        m_currentBoard->doMove(m_moveNodes[m_currentNode].move);
+        m_moves.currentBoard()->doMove(m_moveNodes[m_currentNode].move);
     }
     return moved;
 }
@@ -1905,7 +1927,7 @@ int GameX::dbBackward(int count)
     int moved = 0;
     while((m_moveNodes[m_currentNode].previousNode >= 0) && (moved < count))
     {
-        m_currentBoard->undoMove(m_moveNodes[m_currentNode].move);
+        m_moves.currentBoard()->undoMove(m_moveNodes[m_currentNode].move);
         m_currentNode = m_moveNodes[m_currentNode].previousNode;
         ++moved;
     }
@@ -1925,7 +1947,7 @@ int GameX::backward(int count)
 void GameX::enterVariation(const MoveId& moveId)
 {
     Q_ASSERT(variations().contains(moveId));
-    m_currentBoard->doMove(m_moveNodes[moveId].move);
+    m_moves.currentBoard()->doMove(m_moveNodes[moveId].move);
     m_currentNode = moveId;
 
     indicateAnnotationsOnBoard(m_currentNode);
@@ -1964,10 +1986,10 @@ void GameX::clear()
     m_startPly = 0;
 
     m_startingBoard.setStandardPosition();
-    if (m_currentBoard)
+    if (m_moves.currentBoard())
     {
         m_currentNode = 0;
-        *m_currentBoard = m_startingBoard;
+        *m_moves.currentBoard() = m_startingBoard;
     }
     else
     {
@@ -2025,9 +2047,9 @@ void GameX::dbSetStartingBoard(const QString& fen, bool chess960)
         m_tags[TagNameFEN] = fen;
         m_tags[TagNameSetUp] = "1";
     }
-    if (m_currentBoard)
+    if (m_moves.currentBoard())
     {
-        *m_currentBoard = m_startingBoard;
+        *m_moves.currentBoard() = m_startingBoard;
     }
     m_startPly = (m_startingBoard.moveNumber() - 1) * 2 + (m_startingBoard.toMove() == Black);
 }
@@ -2100,17 +2122,17 @@ QString GameX::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, M
 
     // Move number
     QString san;
-    if(m_currentBoard->toMove() == Black && flags & BlackNumbers)
+    if(m_moves.currentBoard()->toMove() == Black && flags & BlackNumbers)
     {
         san += QString::number(moveNumber(node)) + "... ";
     }
-    else if(m_currentBoard->toMove() == White && flags & WhiteNumbers)
+    else if(m_moves.currentBoard()->toMove() == White && flags & WhiteNumbers)
     {
         san += QString::number(moveNumber(node)) + ". ";
     }
 
     // Move and SAN
-    san += m_currentBoard->moveToSan(move.move, flags & TranslatePiece);
+    san += m_moves.currentBoard()->moveToSan(move.move, flags & TranslatePiece);
     if(flags & Nags)
     {
         san += nags(node).toString(NagSet::Simple);

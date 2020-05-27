@@ -65,8 +65,26 @@ public:
     };
     #pragma pack(pop)
 
-    MoveTree() = default;
-    
+    MoveTree();
+    MoveTree(const MoveTree& rhs);
+    MoveTree& operator=(const MoveTree& rhs);
+    // TODO: maybe implement moving constructor/assignment later
+    MoveTree(MoveTree&& rhs) = delete;
+    MoveTree& operator=(MoveTree&& rhs) = delete;
+    ~MoveTree();
+
+    /** @return current position */
+    const BoardX* currentBoard() const { return m_currentBoard; }
+    BoardX* currentBoard() { return m_currentBoard; }
+
+    void mountBoard();
+    void unmountBoard();
+
+private:
+    /** Keeps the current position of the game */
+    BoardX* m_currentBoard;
+    /** Reference Counter for m_currentBoard */
+    int mountRefCount;
 };
 
 /** @ingroup Core
@@ -133,8 +151,7 @@ public :
     GameX& operator=(const GameX& game);
     virtual ~GameX();
 
-    void mountBoard();
-    void unmountBoard();
+    void unmountBoard() { m_moves.unmountBoard(); }
 
     // **** Querying game information ****
     /** compare game moves and annotations */
@@ -452,8 +469,6 @@ private:
 
     using MoveNode = MoveTree::Node;
 
-    /** Reference Counter for this object */
-    int mountRefCount;
     /** List of nodes */
     QList <MoveNode> m_moveNodes;
     /** Keeps the current node in the game */
@@ -462,8 +477,6 @@ private:
     short m_startPly;
     /** Keeps the start position of the game */
     BoardX m_startingBoard;
-    /** Keeps the current position of the game */
-    BoardX* m_currentBoard;
 
     typedef QMap<MoveId, QString> AnnotationMap;
 
