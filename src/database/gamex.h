@@ -88,7 +88,7 @@ private:
 
 public:
     /** List of nodes */
-    QList<Node> m_moveNodes;
+    QList<Node> m_nodes;
     /** Keeps the current node in the game */
     MoveId m_currentNode;
     /** Keeps the start ply of the game, 0 for standard starting position */
