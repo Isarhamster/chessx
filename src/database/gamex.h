@@ -85,6 +85,16 @@ private:
     BoardX* m_currentBoard;
     /** Reference Counter for m_currentBoard */
     int mountRefCount;
+
+public:
+    /** List of nodes */
+    QList<Node> m_moveNodes;
+    /** Keeps the current node in the game */
+    MoveId m_currentNode;
+    /** Keeps the start ply of the game, 0 for standard starting position */
+    short m_startPly;
+    /** Keeps the start position of the game */
+    BoardX m_startingBoard;
 };
 
 /** @ingroup Core
@@ -468,15 +478,6 @@ private:
     MoveTree m_moves;
 
     using MoveNode = MoveTree::Node;
-
-    /** List of nodes */
-    QList <MoveNode> m_moveNodes;
-    /** Keeps the current node in the game */
-    MoveId m_currentNode;
-    /** Keeps the start ply of the game, 0 for standard starting position */
-    short m_startPly;
-    /** Keeps the start position of the game */
-    BoardX m_startingBoard;
 
     typedef QMap<MoveId, QString> AnnotationMap;
 
