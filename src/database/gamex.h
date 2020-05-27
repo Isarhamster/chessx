@@ -31,6 +31,41 @@ class SaveRestoreMoveCompact;
 class MoveTree
 {
 public:
+    #pragma pack(push, 2)
+    struct Node
+    {
+        MoveId previousNode;
+        MoveId nextNode;
+        MoveId parentNode;
+        short m_ply;
+        Move move;
+        NagSet nags;
+        QList<MoveId> variations;
+        void remove()
+        {
+            parentNode = previousNode = nextNode = NO_MOVE;
+            variations.clear();
+            m_ply |= 0x8000;
+        }
+        Node()
+        {
+            parentNode = nextNode = previousNode = NO_MOVE;
+            variations.clear();
+            m_ply = 0;
+        }
+        void SetPly(short ply) { Q_ASSERT(m_ply<0x7FFF); m_ply = ply; }
+        short Ply() const { return m_ply & 0x7FFF; }
+        bool Removed() const { return (m_ply & 0x8000); }
+        inline bool operator==(const struct Node& c) const
+        {
+            return (move == c.move &&
+                    variations == c.variations &&
+                    nags == c.nags &&
+                    m_ply == c.m_ply);
+        }
+    };
+    #pragma pack(pop)
+
     MoveTree() = default;
     
 };
@@ -416,40 +451,7 @@ signals:
 private:
     MoveTree m_moves;
 
-#pragma pack(push,2)
-    struct MoveNode
-    {
-        MoveId previousNode;
-        MoveId nextNode;
-        MoveId parentNode;
-        short m_ply;
-        Move move;
-        NagSet nags;
-        QList<MoveId> variations;
-        void remove()
-        {
-            parentNode = previousNode = nextNode = NO_MOVE;
-            variations.clear();
-            m_ply |= 0x8000;
-        }
-        MoveNode()
-        {
-            parentNode = nextNode = previousNode = NO_MOVE;
-            variations.clear();
-            m_ply = 0;
-        }
-        void SetPly(short ply) { Q_ASSERT(m_ply<0x7FFF); m_ply = ply; }
-        short Ply() const { return m_ply & 0x7FFF; }
-        bool Removed() const { return (m_ply & 0x8000); }
-        inline bool operator==(const struct MoveNode& c) const
-        {
-            return (move == c.move &&
-                    variations == c.variations &&
-                    nags == c.nags &&
-                    m_ply == c.m_ply);
-        }
-    };
-#pragma pack(pop)
+    using MoveNode = MoveTree::Node;
 
     /** Reference Counter for this object */
     int mountRefCount;
