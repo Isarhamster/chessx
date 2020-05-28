@@ -411,6 +411,24 @@ bool MoveTree::moveToEnd()
     return moveToLineEnd();
 }
 
+MoveId MoveTree::addMove(const Move& move, NagSet nags)
+{
+    Node node;
+    MoveId previousNode = m_currentNode;
+
+    node.nextNode = NO_MOVE;
+    node.previousNode = m_currentNode;
+    node.parentNode = m_nodes[m_currentNode].parentNode;
+    node.move = move;
+    node.nags = nags;
+    node.SetPly(plyNumber() + 1);
+    m_nodes.append(node);
+    m_currentNode = m_nodes.size() - 1;
+    m_nodes[previousNode].nextNode = m_currentNode;
+    m_currentBoard->doMove(move);
+    return m_currentNode;
+}
+
 static const char strSquareNames[64][3] =
 {
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -475,24 +493,12 @@ void GameX::copyFromGame(const GameX& g)
 
 MoveId GameX::dbAddMove(const Move& move, const QString& annotation, NagSet nags)
 {
-    MoveNode node;
-    MoveId previousNode = m_moves.m_currentNode;
-
-    node.nextNode = NO_MOVE;
-    node.previousNode = m_moves.m_currentNode;
-    node.parentNode = m_moves.m_nodes[m_moves.m_currentNode].parentNode;
-    node.move = move;
-    node.nags = nags;
-    node.SetPly(ply() + 1);
-    m_moves.m_nodes.append(node);
-    m_moves.m_currentNode = m_moves.m_nodes.size() - 1;
-    m_moves.m_nodes[previousNode].nextNode = m_moves.m_currentNode;
+    auto node = m_moves.addMove(move, nags);
     if(!annotation.isEmpty())
     {
-        dbSetAnnotation(annotation, m_moves.m_currentNode);
+        dbSetAnnotation(annotation, node);
     }
-    m_moves.currentBoard()->doMove(move);
-    return m_moves.m_currentNode;
+    return node;
 }
 
 MoveId GameX::addMove(const Move& move, const QString& annotation, NagSet nags)

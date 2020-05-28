@@ -147,6 +147,9 @@ public:
     /** Moves to the end of the game */
     bool moveToEnd();
 
+    /** Adds a move at the current position, returns the move id of the added move */
+    MoveId addMove(const Move& move, NagSet nags = NagSet());
+
 private:
     /** Keeps the current position of the game */
     BoardX* m_currentBoard;
