@@ -37,7 +37,6 @@ public:
         MoveId parentNode;
         short m_ply;
         Move move;
-        NagSet nags;
         QList<MoveId> variations;
         void remove()
         {
@@ -58,7 +57,6 @@ public:
         {
             return (move == c.move &&
                     variations == c.variations &&
-                    nags == c.nags &&
                     m_ply == c.m_ply);
         }
     };
@@ -96,8 +94,6 @@ public:
     /** @return the move at node @p moveId. */
     Move move(MoveId moveId = CURRENT_MOVE) const;
     Move& moveAt(MoveId moveId) { return m_nodes[moveId].move; }
-    /** @returns nags for node at @p moveId */
-    NagSet& nagsAt(MoveId moveId) { return m_nodes[moveId].nags; }
     /** @return current move id. */
     MoveId currMove() const { return m_currentNode; }
     /** @return moveId of the previous move */
@@ -136,8 +132,6 @@ public:
     int moveNumber(MoveId moveId = CURRENT_MOVE) const;
     /** @return number of move nodes in the main line */
     int countMoves() const;
-    /** @return number of move nodes in the main line that have NAGs */
-    int countNagMoves() const;
 
     /** Get the first move of a variation */
     MoveId variationStartMove(MoveId variation = CURRENT_MOVE) const;
@@ -167,11 +161,11 @@ public:
     /** Adds a move at the current position.
         @returns the move id of the added move
      */
-    MoveId addMove(const Move& move, NagSet nags = NagSet());
+    MoveId addMove(const Move& move);
     /** Adds a move at the current position as a variation.
         @returns the move id of the added move
      */
-    MoveId addVariation(const Move& move, NagSet nags = NagSet());
+    MoveId addVariation(const Move& move);
 
     /** Mark move subtree for removal */
     void remove(MoveId moveId, QList<MoveId>* removed = nullptr);
@@ -569,6 +563,8 @@ private:
     AnnotationMap m_variationStartAnnotations;
     /** Annotations for move nodes */
     AnnotationMap m_annotations;
+    /** NAGs for move nodes */
+    QMap<MoveId, NagSet> m_nags;
 
     /** Map keeping pgn tags of the game */
     TagMap m_tags;

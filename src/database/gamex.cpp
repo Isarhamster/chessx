@@ -290,21 +290,6 @@ int MoveTree::countMoves() const
     return count;
 }
 
-int MoveTree::countNagMoves() const
-{
-    int count = 0;
-    MoveId node = 1;
-    while((node = makeNodeIndex(node)) != NO_MOVE)
-    {
-        if (!m_nodes[node].nags.empty())
-        {
-            count += 1;
-        }
-        node = m_nodes[node].nextNode;
-    }
-    return count;
-}
-
 MoveId MoveTree::variationStartMove(MoveId variation) const
 {
     variation = makeNodeIndex(variation);
@@ -462,7 +447,7 @@ void MoveTree::moveIntoVariation(MoveId moveId)
     m_currentNode = moveId;
 }
 
-MoveId MoveTree::addMove(const Move& move, NagSet nags)
+MoveId MoveTree::addMove(const Move& move)
 {
     Node node;
     MoveId previousNode = m_currentNode;
@@ -471,7 +456,6 @@ MoveId MoveTree::addMove(const Move& move, NagSet nags)
     node.previousNode = m_currentNode;
     node.parentNode = m_nodes[m_currentNode].parentNode;
     node.move = move;
-    node.nags = nags;
     node.SetPly(plyNumber() + 1);
     m_nodes.append(node);
     m_currentNode = m_nodes.size() - 1;
@@ -480,11 +464,11 @@ MoveId MoveTree::addMove(const Move& move, NagSet nags)
     return m_currentNode;
 }
 
-MoveId MoveTree::addVariation(const Move& move, NagSet nags)
+MoveId MoveTree::addVariation(const Move& move)
 {
     auto previousNode = m_currentNode;
     auto saveNextNode = m_nodes[m_currentNode].nextNode;
-    auto node = addMove(move, nags);
+    auto node = addMove(move);
     m_nodes[m_currentNode].parentNode = previousNode;
     m_nodes[previousNode].variations.append(node);
     m_nodes[previousNode].nextNode = saveNextNode;
@@ -686,6 +670,7 @@ GameX& GameX::operator=(const GameX& game)
         m_variationStartAnnotations = game.m_variationStartAnnotations;
         //m_variationStartAnnotations.detach();
         m_annotations = game.m_annotations;
+        m_nags = game.m_nags;
         //m_annotations.detach();
         //m_moveNodes.detach();
         m_moves = game.m_moves;
@@ -709,10 +694,14 @@ void GameX::copyFromGame(const GameX& g)
 
 MoveId GameX::dbAddMove(const Move& move, const QString& annotation, NagSet nags)
 {
-    auto node = m_moves.addMove(move, nags);
+    auto node = m_moves.addMove(move);
     if(!annotation.isEmpty())
     {
         dbSetAnnotation(annotation, node);
+    }
+    if (!nags.empty())
+    {
+        m_nags[node] = nags;
     }
     return node;
 }
@@ -1145,7 +1134,14 @@ bool GameX::replaceMove(const Move& move, const QString& annotation, NagSet nags
 
     //replace node data with new move
     m_moves.moveAt(node) = move;
-    m_moves.nagsAt(node) = nags;
+    if (!nags.empty())
+    {
+        m_nags[node] = nags;
+    }
+    else
+    {
+        m_nags.remove(node);
+    }
     dbSetAnnotation(annotation, node);
 
     //remove any following nodes after replaced move by disconnecting them from the tree
@@ -1225,10 +1221,14 @@ MoveId GameX::addVariation(const QString& sanMove, const QString& annotation, Na
 
 MoveId GameX::dbAddVariation(const Move& move, const QString& annotation, NagSet nags)
 {
-    auto node = m_moves.addVariation(move, nags);
+    auto node = m_moves.addVariation(move);
     if(!annotation.isEmpty())
     {
         dbSetAnnotation(annotation, node);
+    }
+    if (!nags.empty())
+    {
+        m_nags[node] = nags;
     }
     return node;
 }
@@ -1425,10 +1425,7 @@ void GameX::removeCommentsDb()
 {
     m_variationStartAnnotations.clear();
     m_annotations.clear();
-    for(int i = 0; i < m_moves.m_nodes.size(); ++i)
-    {
-        m_moves.m_nodes[i].nags.clear();
-    }
+    m_nags.clear();
     compact();
 }
 
@@ -1834,7 +1831,7 @@ bool GameX::dbAddNag(Nag nag, MoveId moveId)
     MoveId node = m_moves.makeNodeIndex(moveId);
     if ((node != NO_MOVE) && (nag != NullNag))
     {
-        m_moves.m_nodes[node].nags.addNag(nag);
+        m_nags[node].addNag(nag);
         return true;
     }
     return false;
@@ -1859,7 +1856,14 @@ bool GameX::setNags(NagSet nags, MoveId moveId)
     if(node != NO_MOVE)
     {
         GameX state = *this;
-        m_moves.m_nodes[node].nags = nags;
+        if (!nags.empty())
+        {
+            m_nags[moveId] = nags;
+        }
+        else
+        {
+            m_nags.remove(moveId);
+        }
         emit signalGameModified(true, state, tr("Set nags"));
         return true;
     }
@@ -1873,19 +1877,26 @@ bool GameX::clearNags(MoveId moveId)
 
 NagSet GameX::nags(MoveId moveId) const
 {
+    static NagSet empty;
     MoveId node = m_moves.makeNodeIndex(moveId);
-    if(node != NO_MOVE)
-    {
-        return m_moves.m_nodes[node].nags;
-    }
-    return NagSet();
+    return m_nags.value(node, empty);
 }
 
 void GameX::moveCount(int* moves, int* comments, int* nags) const
 {
     *moves = m_moves.countMoves();
     *comments = m_annotations.size() + m_variationStartAnnotations.size();
-    if (nags) *nags = m_moves.countNagMoves();
+    if (nags)
+    {
+        *nags = 0;
+        for (auto value: m_nags)
+        {
+            if (!value.empty())
+            {
+                *nags += 1;
+            }
+        }
+    }
 }
 
 bool GameX::isEmpty() const
@@ -2098,6 +2109,7 @@ void GameX::removeNode(MoveId moveId)
     {
         m_annotations.remove(node);
         m_variationStartAnnotations.remove(node);
+        m_nags.remove(node);
     }
 }
 
@@ -2106,6 +2118,7 @@ void GameX::clear()
     m_moves.clear();
     m_variationStartAnnotations.clear();
     m_annotations.clear();
+    m_nags.clear();
 }
 
 void GameX::clearTags()
@@ -2264,7 +2277,7 @@ void GameX::dumpMoveNode(MoveId moveId) const
         qDebug() << "   Next node   : " << m_moves.m_nodes.at(moveId).nextNode;
         qDebug() << "   Prev node   : " << m_moves.m_nodes.at(moveId).previousNode;
         qDebug() << "   Parent node : " << m_moves.m_nodes.at(moveId).parentNode;
-        qDebug() << "   Nags        : " << m_moves.m_nodes.at(moveId).nags.toString(NagSet::Simple);
+        qDebug() << "   Nags        : " << m_nags.value(moveId, NagSet()).toString(NagSet::Simple);
         qDebug() << "   Deleted     : " << m_moves.m_nodes.at(moveId).Removed();
         qDebug() << "   # Variations: " << m_moves.m_nodes.at(moveId).variations.size();
         qDebug() << "   Variations  : " << m_moves.m_nodes.at(moveId).variations;
@@ -2333,6 +2346,7 @@ void GameX::compact()
     auto renames = m_moves.compact();
     applyRenames(m_annotations, renames);
     applyRenames(m_variationStartAnnotations, renames);
+    applyRenames(m_nags, renames);
 }
 
 QString GameX::ecoClassify() const
@@ -2384,6 +2398,7 @@ void GameX::scoreMaterial(QList<double>& scores) const
 int GameX::isEqual(const GameX& game) const
 {
     return ((m_moves.m_nodes == game.m_moves.m_nodes) &&
+            (m_nags == game.m_nags) &&
             (m_annotations == game.m_annotations) &&
             (m_variationStartAnnotations == game.m_variationStartAnnotations));
 }
