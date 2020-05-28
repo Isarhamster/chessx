@@ -79,6 +79,8 @@ public:
     void mountBoard();
     void unmountBoard();
 
+    void clear();
+
     /** Checks if a \p moveId is valid
      *  @returns
      *  - on failure: \p NO_MOVE

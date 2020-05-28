@@ -103,6 +103,24 @@ void MoveTree::unmountBoard()
     }
 }
 
+void MoveTree::clear()
+{
+    m_nodes.clear();
+    m_startPly = 0;
+
+    m_startingBoard.setStandardPosition();
+    if (m_currentBoard)
+    {
+        m_currentNode = ROOT_NODE;
+        *m_currentBoard = m_startingBoard;
+    }
+    else
+    {
+        m_currentNode = NO_MOVE;
+    }
+    m_nodes.append(Node());
+}
+
 MoveId MoveTree::makeNodeIndex(MoveId moveId) const
 {
     if (moveId == CURRENT_MOVE)
@@ -2066,24 +2084,9 @@ void GameX::removeNode(MoveId moveId)
 
 void GameX::clear()
 {
-    m_moves.m_nodes.clear();
+    m_moves.clear();
     m_variationStartAnnotations.clear();
     m_annotations.clear();
-
-    m_moves.m_startPly = 0;
-
-    m_moves.m_startingBoard.setStandardPosition();
-    if (m_moves.currentBoard())
-    {
-        m_moves.m_currentNode = 0;
-        *m_moves.currentBoard() = m_moves.m_startingBoard;
-    }
-    else
-    {
-        m_moves.m_currentNode = NO_MOVE;
-    }
-
-    m_moves.m_nodes.append(MoveNode());
 }
 
 void GameX::clearTags()
