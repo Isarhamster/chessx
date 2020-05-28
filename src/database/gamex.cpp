@@ -1132,21 +1132,6 @@ int GameX::resultAsInt() const
     }
 }
 
-int GameX::numberOfSiblings(MoveId moveId) const
-{
-    MoveId node = m_moves.makeNodeIndex(moveId);
-    if(node == NO_MOVE)
-    {
-        return 0;
-    }
-    MoveId parentNode = m_moves.m_nodes[node].parentNode;
-    if(parentNode == NO_MOVE)
-    {
-        return 0;
-    }
-    return m_moves.m_nodes[parentNode].variations.size();
-}
-
 bool GameX::setAnnotation(QString annotation, MoveId moveId, Position position)
 {
     GameX state = *this;

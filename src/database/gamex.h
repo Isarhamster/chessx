@@ -296,8 +296,6 @@ public :
     int ply(MoveId moveId = CURRENT_MOVE) const { return m_moves.plyNumber(moveId); }
     int moveNumber(MoveId moveId = CURRENT_MOVE) const { return m_moves.moveNumber(moveId); }
 
-    /** @return number of siblings of current node */
-    int numberOfSiblings(MoveId moveId = CURRENT_MOVE) const;
     /** Counts the number of moves, comments and nags, in mainline, to the end of the game */
     void moveCount(int* moves, int* comments, int* nags=nullptr) const;
     /** Determine if game contains something reasonable */
