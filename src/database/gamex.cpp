@@ -564,6 +564,28 @@ void MoveTree::truncateUpto(MoveId moveId, QList<MoveId>* removed)
     moveToId(save);
 }
 
+void MoveTree::promoteVariation(MoveId variation)
+{
+    auto save = m_currentNode;
+
+    // Find first move of the variation
+    while(!atLineStart(variation))
+    {
+        variation = m_nodes[variation].previousNode;
+    }
+    MoveId parent = m_nodes[variation].parentNode;
+
+    // Link old main line to parent
+    reparentVariation(m_nodes[parent].nextNode, parent);
+    // Link new main line to parent's parent
+    reparentVariation(variation, m_nodes[parent].parentNode);
+
+    // Swap main line and the variation
+    int index = m_nodes[parent].variations.indexOf(variation);
+    qSwap(m_nodes[parent].nextNode, m_nodes[parent].variations[index]);
+    moveToId(save);
+}
+
 void MoveTree::reparentVariation(MoveId variation, MoveId parent)
 {
     if (variation == NO_MOVE)
@@ -1276,27 +1298,6 @@ MoveId GameX::dbAddSanVariation(const QString& sanMove, const QString& annotatio
     return NO_MOVE;
 }
 
-void GameX::dbPromoteVariation(MoveId variation)
-{
-    SaveRestoreMove saveNode(*this);
-
-    // Find first move of the variation
-    while(!atLineStart(variation))
-    {
-        variation = m_moves.m_nodes[variation].previousNode;
-    }
-    MoveId parent = m_moves.m_nodes[variation].parentNode;
-
-    // Link old main line to parent
-    m_moves.reparentVariation(m_moves.m_nodes[parent].nextNode, parent);
-    // Link new main line to parent's parent
-    m_moves.reparentVariation(variation, m_moves.m_nodes[parent].parentNode);
-
-    // Swap main line and the variation
-    int index = m_moves.m_nodes[parent].variations.indexOf(variation);
-    qSwap(m_moves.m_nodes[parent].nextNode, m_moves.m_nodes[parent].variations[index]);
-}
-
 bool GameX::promoteVariation(MoveId variation)
 {
     if(isMainline(variation))
@@ -1304,7 +1305,7 @@ bool GameX::promoteVariation(MoveId variation)
         return false;
     }
     GameX state = *this;
-    dbPromoteVariation(variation);
+    m_moves.promoteVariation(variation);
     emit signalGameModified(true, state, tr("Promote variation"));
     return true;
 }

@@ -179,6 +179,8 @@ public:
     void truncateFrom(MoveId moveId, QList<MoveId>* removed = nullptr);
     /** Mark nodes preceding \p moveId  for removal */
     void truncateUpto(MoveId moveId, QList<MoveId>* removed = nullptr);
+    /** Promotes the given variation to the main line */
+    void promoteVariation(MoveId variation);
     /** Remove nodes marked for removal */
     QMap<MoveId, MoveId> compact();
 
@@ -545,8 +547,6 @@ protected:
     /** Find the point in the this game where @p otherGame fits in the next time.
         @retval Node from where the merging shall start in other game */
     MoveId findMergePoint(const GameX &otherGame);
-    /** Promotes the given variation to the main line */
-    void dbPromoteVariation(MoveId variation);
     /** Find the next illegal position in all variations and mainline moves after the current position, and cut the game from there */
     void truncateVariationAfterNextIllegalPosition();
     /** Removes the node at @p moveId */
