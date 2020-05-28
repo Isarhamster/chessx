@@ -151,6 +151,15 @@ bool MoveTree::atGameEnd(MoveId moveId) const
     return (atLineEnd(moveId) && isMainline(moveId));
 }
 
+int MoveTree::plyNumber(MoveId moveId) const
+{
+    MoveId node = makeNodeIndex(moveId);
+    if(node != NO_MOVE)
+    {
+        return m_nodes[node].Ply();
+    }
+    return 0;
+}
 
 static const char strSquareNames[64][3] =
 {
@@ -1508,16 +1517,6 @@ bool GameX::isEmpty() const
     moveCount(&moves, &comments);
     bool gameIsEmpty = ((moves+comments) == 0);
     return gameIsEmpty;
-}
-
-int GameX::ply(MoveId moveId) const
-{
-    MoveId node = m_moves.makeNodeIndex(moveId);
-    if(node != NO_MOVE)
-    {
-        return m_moves.m_nodes[node].Ply();
-    }
-    return 0;
 }
 
 int GameX::moveNumber(MoveId moveId) const
