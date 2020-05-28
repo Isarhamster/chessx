@@ -1720,11 +1720,6 @@ void GameX::enumerateVariations(MoveId moveId, char a)
     }
 }
 
-MoveId GameX::currentMove() const
-{
-    return m_moves.m_currentNode;
-}
-
 MoveId GameX::lastMove() const
 {
     MoveId moveId = 0;
