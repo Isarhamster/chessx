@@ -113,6 +113,11 @@ int MoveTree::variationCount(MoveId moveId) const
     return 0;
 }
 
+const QList<MoveId>& MoveTree::variations() const
+{
+    return m_nodes[m_currentNode].variations;
+}
+
 bool MoveTree::isMainline(MoveId moveId) const
 {
     if(moveId == 0)
@@ -1724,11 +1729,6 @@ MoveId GameX::lastMove() const
         moveId = m_moves.m_nodes[moveId].nextNode;
     }
     return moveId;
-}
-
-const QList<MoveId>& GameX::variations() const
-{
-    return m_moves.m_nodes[m_moves.m_currentNode].variations;
 }
 
 bool GameX::variationHasSiblings(MoveId variation) const

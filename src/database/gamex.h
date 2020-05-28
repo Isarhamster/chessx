@@ -94,6 +94,8 @@ public:
     MoveId parentMove() const { return m_nodes[m_currentNode].parentNode; }
     /** @return number of variations at the current position */
     int variationCount(MoveId moveId = CURRENT_MOVE) const;
+    /** @return list of variation at the current move */
+    const QList<MoveId>& variations() const;
 
     /** @return whether the current position is in the mainline */
     bool isMainline(MoveId moveId = CURRENT_MOVE) const;
@@ -282,7 +284,8 @@ public :
     MoveId nextMove() const { return m_moves.nextMove(); }
     MoveId parentMove() const { return m_moves.parentMove(); }
     int variationCount(MoveId moveId = CURRENT_MOVE) const { return m_moves.variationCount(moveId); }
-    
+    const QList<MoveId>& variations() const { return m_moves.variations(); }
+
     bool isMainline(MoveId moveId = CURRENT_MOVE) const { return m_moves.isMainline(moveId); }
     bool atLineStart(MoveId moveId = CURRENT_MOVE) const { return m_moves.atLineStart(moveId); }
     bool atLineEnd(MoveId moveId = CURRENT_MOVE) const { return m_moves.atLineEnd(moveId); }
@@ -307,8 +310,6 @@ public :
     MoveId mainLineMove() const;
     /** Get the first move of a variation */
     MoveId variationStartMove(MoveId variation = CURRENT_MOVE) const;
-    /** @return list of variation at the current move */
-    const QList<MoveId>& variations() const;
 
     // ***** Moving through game *****
     /** Moves to the beginning of the game */
