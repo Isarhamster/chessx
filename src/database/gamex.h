@@ -117,6 +117,9 @@ public:
     /** @return current move. Equals to (ply-1)/2+1 for standard games, but may be different */
     int moveNumber(MoveId moveId = CURRENT_MOVE) const;
 
+    /** Get the first move of a variation */
+    MoveId variationStartMove(MoveId variation = CURRENT_MOVE) const;
+
 private:
     /** Keeps the current position of the game */
     BoardX* m_currentBoard;
@@ -296,6 +299,8 @@ public :
     int ply(MoveId moveId = CURRENT_MOVE) const { return m_moves.plyNumber(moveId); }
     int moveNumber(MoveId moveId = CURRENT_MOVE) const { return m_moves.moveNumber(moveId); }
 
+    MoveId variationStartMove(MoveId variation = CURRENT_MOVE) const { return m_moves.variationStartMove(variation); }
+
     /** Counts the number of moves, comments and nags, in mainline, to the end of the game */
     void moveCount(int* moves, int* comments, int* nags=nullptr) const;
     /** Determine if game contains something reasonable */
@@ -306,8 +311,6 @@ public :
     bool variationHasSiblings(MoveId variation = CURRENT_MOVE) const;
     /** @return moveId of the top main line */
     MoveId mainLineMove() const;
-    /** Get the first move of a variation */
-    MoveId variationStartMove(MoveId variation = CURRENT_MOVE) const;
 
     // ***** Moving through game *****
     /** Moves to the beginning of the game */

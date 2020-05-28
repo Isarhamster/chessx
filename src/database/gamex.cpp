@@ -205,6 +205,25 @@ int MoveTree::moveNumber(MoveId moveId) const
     return -1;
 }
 
+MoveId MoveTree::variationStartMove(MoveId variation) const
+{
+    variation = makeNodeIndex(variation);
+    if(variation == NO_MOVE)
+    {
+        return NO_MOVE;
+    }
+    if(isMainline(variation))
+    {
+        return NO_MOVE;
+    }
+    while(!atLineStart(variation))
+    {
+        variation = m_nodes[variation].previousNode;
+    }
+    return variation;
+}
+
+
 static const char strSquareNames[64][3] =
 {
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -1681,24 +1700,6 @@ MoveId GameX::mainLineMove() const
         }
     }
     return node;
-}
-
-MoveId GameX::variationStartMove(MoveId variation) const
-{
-    variation = m_moves.makeNodeIndex(variation);
-    if(variation == NO_MOVE)
-    {
-        return NO_MOVE;
-    }
-    if(isMainline(variation))
-    {
-        return NO_MOVE;
-    }
-    while(!atLineStart(variation))
-    {
-        variation = m_moves.m_nodes[variation].previousNode;
-    }
-    return variation;
 }
 
 MoveId GameX::currentMove() const
