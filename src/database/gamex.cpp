@@ -1111,8 +1111,8 @@ bool GameX::replaceMove(const Move& move, const QString& annotation, NagSet nags
     }
 
     //replace node data with new move
-    m_moves.m_nodes[node].move = move;
-    m_moves.m_nodes[node].nags = nags;
+    m_moves.moveAt(node) = move;
+    m_moves.nagsAt(node) = nags;
     dbSetAnnotation(annotation, node);
 
     //remove any following nodes after replaced move by disconnecting them from the tree

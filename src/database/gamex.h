@@ -95,6 +95,9 @@ public:
 
     /** @return the move at node @p moveId. */
     Move move(MoveId moveId = CURRENT_MOVE) const;
+    Move& moveAt(MoveId moveId) { return m_nodes[moveId].move; }
+    /** @returns nags for node at @p moveId */
+    NagSet& nagsAt(MoveId moveId) { return m_nodes[moveId].nags; }
     /** @return current move id. */
     MoveId currMove() const { return m_currentNode; }
     /** @return moveId of the previous move */
