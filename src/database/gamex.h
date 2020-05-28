@@ -86,6 +86,9 @@ public:
      */
     MoveId makeNodeIndex(MoveId moveId = CURRENT_MOVE) const;
 
+    /** @return whether the current position is in the mainline */
+    bool isMainline(MoveId moveId = CURRENT_MOVE) const;
+
 private:
     /** Keeps the current position of the game */
     BoardX* m_currentBoard;
@@ -251,8 +254,7 @@ public :
     // **** tree information methods *****
     /** @return number of siblings of current node */
     int numberOfSiblings(MoveId moveId = CURRENT_MOVE) const;
-    /** @return whether the current position is in the mainline */
-    bool isMainline(MoveId moveId = CURRENT_MOVE) const;
+    bool isMainline(MoveId moveId = CURRENT_MOVE) const { return m_moves.isMainline(moveId); }
     /** @return whether the game is currently at the start position */
     bool atLineStart(MoveId moveId = CURRENT_MOVE) const;
     bool atGameStart(MoveId moveId = CURRENT_MOVE) const;

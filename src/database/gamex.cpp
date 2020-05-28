@@ -103,6 +103,23 @@ MoveId MoveTree::makeNodeIndex(MoveId moveId) const
     return moveId;
 }
 
+bool MoveTree::isMainline(MoveId moveId) const
+{
+    if(moveId == 0)
+    {
+        return true;
+    }
+    MoveId node = makeNodeIndex(moveId);
+    if(node == NO_MOVE)
+    {
+        return false;
+    }
+    else
+    {
+        return m_nodes[node].parentNode == NO_MOVE;
+    }
+}
+
 static const char strSquareNames[64][3] =
 {
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -988,23 +1005,6 @@ void GameX::removeTimeComments()
     GameX state = *this;
     removeTimeCommentsDb();
     emit signalGameModified(true, state, tr("Remove time comments"));
-}
-
-bool GameX::isMainline(MoveId moveId) const
-{
-    if(moveId == 0)
-    {
-        return true;
-    }
-    MoveId node = m_moves.makeNodeIndex(moveId);
-    if(node == NO_MOVE)
-    {
-        return false;
-    }
-    else
-    {
-        return m_moves.m_nodes[node].parentNode == NO_MOVE;
-    }
 }
 
 Result GameX::result() const
