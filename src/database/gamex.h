@@ -134,6 +134,9 @@ public:
     /** @return true if the referenced variation has siblings */
     bool variationHasSiblings(MoveId variation = CURRENT_MOVE) const;
 
+    /** Moves to the position corresponding to the given move id */
+    bool moveToId(MoveId moveId, QString* algebraicMoveList=nullptr);
+
 private:
     /** Keeps the current position of the game */
     BoardX* m_currentBoard;
@@ -322,6 +325,8 @@ public :
     bool isEmpty() const;
 
     // ***** Moving through game *****
+    bool dbMoveToId(MoveId moveId, QString* algebraicMoveList=nullptr) { return m_moves.moveToId(moveId, algebraicMoveList); }
+
     /** Moves to the beginning of the game */
     void moveToStart();
     /** Moves to the end of the game */
@@ -331,8 +336,6 @@ public :
     bool dbMoveToLineEnd();
     /** Moves by given ply, returns actual ply reached */
     int moveByPly(int diff);
-    /** Moves to the position corresponding to the given move id */
-    bool dbMoveToId(MoveId moveId, QString* algebraicMoveList=nullptr);
     void moveToId(MoveId moveId);
     /** Move forward the given number of moves, returns actual number of moves made */
     int forward(int count = 1);

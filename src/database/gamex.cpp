@@ -317,6 +317,52 @@ bool MoveTree::variationHasSiblings(MoveId variation) const
     return (variationCount(parent) > 1);
 }
 
+bool MoveTree::moveToId(MoveId moveId, QString* algebraicMoveList)
+{
+    moveId = makeNodeIndex(moveId);
+    if(moveId == NO_MOVE)
+    {
+        return false;
+    }
+
+    if (m_currentNode != moveId)
+    {
+        //jump to node, travelling back to start adding the moves to the stack
+        MoveId node = moveId;
+        QStack<Move> moveStack;
+        while(node)
+        {
+            moveStack.push(m_nodes[node].move);
+            node = m_nodes[node].previousNode;
+        }
+
+        //reset the board, then make the moves on the stack to create the correct position
+        m_currentNode = moveId;
+        *m_currentBoard = m_startingBoard;
+        while(!moveStack.isEmpty())
+        {
+            Move m = moveStack.pop();
+            m_currentBoard->doMove(m);
+            if (algebraicMoveList)
+            {
+                if (m.isNullMove())
+                {
+                    // Avoid trouble with a null move - UCI does not specify this and Stockfish makes nonsense
+                    algebraicMoveList->clear();
+                    algebraicMoveList = nullptr;
+                }
+                else
+                {
+                    algebraicMoveList->push_back(m.toAlgebraic());
+                    algebraicMoveList->push_back(" ");
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
 static const char strSquareNames[64][3] =
 {
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -1778,52 +1824,6 @@ int GameX::moveByPly(int diff)
     {
         return backward(-diff);
     }
-}
-
-bool GameX::dbMoveToId(MoveId moveId, QString* algebraicMoveList)
-{
-    moveId = m_moves.makeNodeIndex(moveId);
-    if(moveId == NO_MOVE)
-    {
-        return false;
-    }
-
-    if (m_moves.m_currentNode != moveId)
-    {
-        //jump to node, travelling back to start adding the moves to the stack
-        MoveId node = moveId;
-        QStack<Move> moveStack;
-        while(node)
-        {
-            moveStack.push(m_moves.m_nodes[node].move);
-            node = m_moves.m_nodes[node].previousNode;
-        }
-
-        //reset the board, then make the moves on the stack to create the correct position
-        m_moves.m_currentNode = moveId;
-        *m_moves.currentBoard() = m_moves.m_startingBoard;
-        while(!moveStack.isEmpty())
-        {
-            Move m = moveStack.pop();
-            m_moves.currentBoard()->doMove(m);
-            if (algebraicMoveList)
-            {
-                if (m.isNullMove())
-                {
-                    // Avoid trouble with a null move - UCI does not specify this and Stockfish makes nonsense
-                    algebraicMoveList->clear();
-                    algebraicMoveList = nullptr;
-                }
-                else
-                {
-                    algebraicMoveList->push_back(m.toAlgebraic());
-                    algebraicMoveList->push_back(" ");
-                }
-            }
-        }
-    }
-
-    return true;
 }
 
 void GameX::moveToId(MoveId moveId)
