@@ -106,6 +106,8 @@ public:
     /** @return whether the game is currently at the end of main variation */
     bool atGameEnd(MoveId moveId = CURRENT_MOVE) const;
 
+    /** @return number of ply for the whole game (mainline only) */
+    int plyCount() const;
     /** @return number of half moves made since the beginning of the game */
     int plyNumber(MoveId moveId = CURRENT_MOVE) const;
     /** @return current move. Equals to (ply-1)/2+1 for standard games, but may be different */
@@ -284,6 +286,7 @@ public :
     bool atGameStart(MoveId moveId = CURRENT_MOVE) const { return m_moves.atGameStart(moveId); }
     bool atGameEnd(MoveId moveId = CURRENT_MOVE) const { return m_moves.atGameEnd(moveId); }
 
+    int plyCount() const { return m_moves.plyCount(); }
     int ply(MoveId moveId = CURRENT_MOVE) const { return m_moves.plyNumber(moveId); }
     int moveNumber(MoveId moveId = CURRENT_MOVE) const { return m_moves.moveNumber(moveId); }
 
@@ -293,8 +296,6 @@ public :
     void moveCount(int* moves, int* comments, int* nags=nullptr) const;
     /** Determine if game contains something reasonable */
     bool isEmpty() const;
-    /** @return number of ply for the whole game (mainline only) */
-    int plyCount() const;
     /** @return number of current variation */
     MoveId variationNumber(MoveId moveId = CURRENT_MOVE) const;
     /** @return number of variations at the current position */

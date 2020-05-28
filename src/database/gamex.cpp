@@ -151,6 +151,21 @@ bool MoveTree::atGameEnd(MoveId moveId) const
     return (atLineEnd(moveId) && isMainline(moveId));
 }
 
+int MoveTree::plyCount() const
+{
+    int count = 0;
+    MoveId node = ROOT_NODE;
+
+    while(node != NO_MOVE)
+    {
+        ++count;
+        node = m_nodes[node].nextNode;
+    }
+    // Counted one too much, because we have to start at zero
+    // (an empty game has no node 1)
+    return count - 1;
+}
+
 int MoveTree::plyNumber(MoveId moveId) const
 {
     MoveId node = makeNodeIndex(moveId);
@@ -1531,21 +1546,6 @@ bool GameX::isEmpty() const
     moveCount(&moves, &comments);
     bool gameIsEmpty = ((moves+comments) == 0);
     return gameIsEmpty;
-}
-
-int GameX::plyCount() const
-{
-    int count = 0;
-    MoveId node = 0;
-
-    while(node != NO_MOVE)
-    {
-        ++count;
-        node = m_moves.m_nodes[node].nextNode;
-    }
-    // Counted one too much, because we have to start at zero
-    // (an empty game has no node 1)
-    return count - 1;
 }
 
 bool GameX::canMoveVariationUp(MoveId moveId) const
