@@ -153,6 +153,11 @@ public:
     bool moveToStart();
     /** Moves to the end of the game */
     bool moveToEnd();
+    /** Enters the variation that corresponds to \p moveId.
+        \p moveId must correspond to a subvariation of the current position.
+        Compared to \p moveToId() this function runs in constant time.
+    */
+    void moveIntoVariation(MoveId moveId);
 
     /** Adds a move at the current position, returns the move id of the added move */
     MoveId addMove(const Move& move, NagSet nags = NagSet());
@@ -178,9 +183,9 @@ private:
 public:
     /** List of nodes */
     QList<Node> m_nodes;
+private:
     /** Keeps the current node in the game */
     MoveId m_currentNode;
-private:
     /** Keeps the start ply of the game, 0 for standard starting position */
     short m_startPly;
     /** Keeps the start position of the game */
