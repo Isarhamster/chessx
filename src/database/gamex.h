@@ -136,6 +136,10 @@ public:
 
     /** Moves to the position corresponding to the given move id */
     bool moveToId(MoveId moveId, QString* algebraicMoveList=nullptr);
+    /** Move forward the given number of moves, returns actual number of moves made */
+    int forward(int count = 1);
+    /** Move back the given number of moves, returns actual number of moves undone */
+    int backward(int count = 1);
 
 private:
     /** Keeps the current position of the game */
@@ -326,6 +330,8 @@ public :
 
     // ***** Moving through game *****
     bool dbMoveToId(MoveId moveId, QString* algebraicMoveList=nullptr) { return m_moves.moveToId(moveId, algebraicMoveList); }
+    int forward(int count = 1);
+    int backward(int count = 1);
 
     /** Moves to the beginning of the game */
     void moveToStart();
@@ -337,12 +343,6 @@ public :
     /** Moves by given ply, returns actual ply reached */
     int moveByPly(int diff);
     void moveToId(MoveId moveId);
-    /** Move forward the given number of moves, returns actual number of moves made */
-    int forward(int count = 1);
-    int dbForward(int count = 1);
-    /** Move back the given number of moves, returns actual number of moves undone */
-    int backward(int count = 1);
-    int dbBackward(int count = 1);
     /** Moves forward if the next move matches (from,to,promotionPiece) */
     bool findNextMove(chessx::Square from, chessx::Square to, PieceType promotionPiece = None);
     bool findNextMove(Move m);

@@ -363,6 +363,31 @@ bool MoveTree::moveToId(MoveId moveId, QString* algebraicMoveList)
     return true;
 }
 
+int MoveTree::forward(int count)
+{
+    int moved = 0;
+    while ((m_nodes[m_currentNode].nextNode != NO_MOVE) && (moved < count))
+    {
+        m_currentNode = m_nodes[m_currentNode].nextNode;
+        ++moved;
+
+        m_currentBoard->doMove(m_nodes[m_currentNode].move);
+    }
+    return moved;
+}
+
+int MoveTree::backward(int count)
+{
+    int moved = 0;
+    while((m_nodes[m_currentNode].previousNode >= 0) && (moved < count))
+    {
+        m_currentBoard->undoMove(m_nodes[m_currentNode].move);
+        m_currentNode = m_nodes[m_currentNode].previousNode;
+        ++moved;
+    }
+    return moved;
+}
+
 static const char strSquareNames[64][3] =
 {
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -1866,47 +1891,22 @@ void GameX::moveToLineEnd()
     }
 }
 
-int GameX::dbForward(int count)
-{
-    int moved = 0;
-    while ((m_moves.m_nodes[m_moves.m_currentNode].nextNode != NO_MOVE) && (moved < count))
-    {
-        m_moves.m_currentNode = m_moves.m_nodes[m_moves.m_currentNode].nextNode;
-        ++moved;
-
-        m_moves.currentBoard()->doMove(m_moves.m_nodes[m_moves.m_currentNode].move);
-    }
-    return moved;
-}
-
 int GameX::forward(int count)
 {
-    int moved = dbForward(count);
+    int moved = m_moves.forward(count);
     if (moved)
     {
-        indicateAnnotationsOnBoard(m_moves.m_currentNode);
-    }
-    return moved;
-}
-
-int GameX::dbBackward(int count)
-{
-    int moved = 0;
-    while((m_moves.m_nodes[m_moves.m_currentNode].previousNode >= 0) && (moved < count))
-    {
-        m_moves.currentBoard()->undoMove(m_moves.m_nodes[m_moves.m_currentNode].move);
-        m_moves.m_currentNode = m_moves.m_nodes[m_moves.m_currentNode].previousNode;
-        ++moved;
+        indicateAnnotationsOnBoard(m_moves.currMove());
     }
     return moved;
 }
 
 int GameX::backward(int count)
 {
-    int moved = dbBackward(count);
+    int moved = m_moves.backward(count);
     if(moved)
     {
-        indicateAnnotationsOnBoard(m_moves.m_currentNode);
+        indicateAnnotationsOnBoard(m_moves.currMove());
     }
     return moved;
 }
@@ -2288,7 +2288,7 @@ QString GameX::ecoClassify() const
     g.dbMoveToEnd();
 
     //search backwards for the first eco position
-    while(g.dbBackward())
+    while(g.m_moves.backward())
     {
         QString eco;
         if (EcoPositions::isEcoPosition(g.board(),eco))

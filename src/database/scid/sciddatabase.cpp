@@ -62,7 +62,7 @@ static void ConvertLine(Game& src, GameX& dst, bool movesOnly = false)
         if (varsCnt > 0)
         {
             src.MoveBackup();
-            dst.dbBackward();
+            dst.model().backward();
 
             auto move = dst.currentMove();
             for (uint v = 0; v < varsCnt; ++v)
@@ -81,13 +81,13 @@ static void ConvertLine(Game& src, GameX& dst, bool movesOnly = false)
                 src.MoveForward();
                 ConvertLine(src, dst, movesOnly);
                 src.MoveExitVariation();
-                dst.dbBackward();
+                dst.model().backward();
             }
-            dst.dbForward();
+            dst.model().forward();
             src.MoveForward();
         }
     }
-    dst.dbBackward(plyCnt);
+    dst.model().backward(plyCnt);
 }
 
 static void ConvertGame(Game& src, GameX& dst, bool movesOnly = false)
