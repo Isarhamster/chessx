@@ -505,7 +505,7 @@ MoveId GameX::addMove(const Move& move, const QString& annotation, NagSet nags)
 {
     GameX state = *this;
     dbAddMove(move,annotation,nags);
-    dbIndicateAnnotationsOnBoard(m_moves.m_currentNode);
+    dbIndicateAnnotationsOnBoard();
     emit signalGameModified(true,state,tr("Add move"));
     return m_moves.m_currentNode;
 }
@@ -963,7 +963,7 @@ MoveId GameX::addLine(const Move::List& moveList, const QString& annotation)
 {
     GameX state = *this;
     MoveId retVal = dbAddLine(moveList, annotation);
-    dbIndicateAnnotationsOnBoard(m_moves.m_currentNode);
+    dbIndicateAnnotationsOnBoard();
     if (retVal != NO_MOVE)
     {
         emit signalGameModified(true, state, tr("Add line"));
@@ -975,7 +975,7 @@ MoveId GameX::addVariation(const Move& move, const QString& annotation, NagSet n
 {
     GameX state = *this;
     MoveId retVal = dbAddVariation(move, annotation, nags);
-    dbIndicateAnnotationsOnBoard(m_moves.m_currentNode);
+    dbIndicateAnnotationsOnBoard();
     if (retVal != NO_MOVE)
     {
         emit signalGameModified(true, state, tr("Add variation"));
@@ -987,7 +987,7 @@ MoveId GameX::addVariation(const Move::List& moveList, const QString& annotation
 {
     GameX state = *this;
     MoveId retVal = dbAddVariation(moveList, annotation);
-    dbIndicateAnnotationsOnBoard(m_moves.m_currentNode);
+    dbIndicateAnnotationsOnBoard();
     if (retVal != NO_MOVE)
     {
         emit signalGameModified(true, state, tr("Add variation"));
@@ -999,7 +999,7 @@ MoveId GameX::addVariation(const QString& sanMove, const QString& annotation, Na
 {
     GameX state = *this;
     MoveId retVal = dbAddSanVariation(m_moves.m_currentNode, sanMove, annotation, nags);
-    dbIndicateAnnotationsOnBoard(m_moves.m_currentNode);
+    dbIndicateAnnotationsOnBoard();
     if (retVal != NO_MOVE)
     {
         emit signalGameModified(true, state, tr("Add variation"));
@@ -1349,7 +1349,7 @@ bool GameX::setAnnotation(QString annotation, MoveId moveId, Position position)
     GameX state = *this;
     if (dbSetAnnotation(annotation, moveId, position))
     {
-        dbIndicateAnnotationsOnBoard(currentMove());
+        dbIndicateAnnotationsOnBoard();
         emit signalGameModified(true, state, tr("Set annotation"));
         return true;
     }
@@ -1363,7 +1363,7 @@ bool GameX::editAnnotation(QString annotation, MoveId moveId, Position position)
     annotation.append(spec);
     if (dbSetAnnotation(annotation, moveId, position))
     {
-        dbIndicateAnnotationsOnBoard(currentMove());
+        dbIndicateAnnotationsOnBoard();
         emit signalGameModified(true, state, "Edit annotation");
         return true;
     }
@@ -1845,8 +1845,10 @@ MoveId GameX::lastMove() const
     return moveId;
 }
 
-void GameX::dbIndicateAnnotationsOnBoard(MoveId moveId)
+void GameX::dbIndicateAnnotationsOnBoard()
 {
+    auto moveId = m_moves.currMove();
+
     QString annotation = squareAnnotation(moveId);
     m_moves.currentBoard()->setSquareAnnotation(annotation);
 
@@ -1856,7 +1858,7 @@ void GameX::dbIndicateAnnotationsOnBoard(MoveId moveId)
 
 void GameX::indicateAnnotationsOnBoard(MoveId moveId)
 {
-    dbIndicateAnnotationsOnBoard(moveId);
+    dbIndicateAnnotationsOnBoard();
     emit signalMoveChanged();
 }
 

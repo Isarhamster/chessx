@@ -518,7 +518,7 @@ protected:
     /** Find the next illegal position in all variations and mainline moves after the current position, and cut the game from there */
     void truncateVariationAfterNextIllegalPosition();
 
-    void dbIndicateAnnotationsOnBoard(MoveId moveId);
+    void dbIndicateAnnotationsOnBoard();
     bool positionRepetition(const BoardX &board);
 signals:
     void signalGameModified(bool,GameX,QString);
