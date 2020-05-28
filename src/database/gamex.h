@@ -164,8 +164,14 @@ public:
     */
     void moveIntoVariation(MoveId moveId);
 
-    /** Adds a move at the current position, returns the move id of the added move */
+    /** Adds a move at the current position.
+        @returns the move id of the added move
+     */
     MoveId addMove(const Move& move, NagSet nags = NagSet());
+    /** Adds a move at the current position as a variation.
+        @returns the move id of the added move
+     */
+    MoveId addVariation(const Move& move, NagSet nags = NagSet());
 
     /** Mark move subtree for removal */
     void remove(MoveId moveId, QList<MoveId>* removed = nullptr);

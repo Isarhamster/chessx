@@ -480,6 +480,17 @@ MoveId MoveTree::addMove(const Move& move, NagSet nags)
     return m_currentNode;
 }
 
+MoveId MoveTree::addVariation(const Move& move, NagSet nags)
+{
+    auto previousNode = m_currentNode;
+    auto saveNextNode = m_nodes[m_currentNode].nextNode;
+    auto node = addMove(move, nags);
+    m_nodes[m_currentNode].parentNode = previousNode;
+    m_nodes[previousNode].variations.append(node);
+    m_nodes[previousNode].nextNode = saveNextNode;
+    return node;
+}
+
 void MoveTree::remove(MoveId moveId, QList<MoveId>* removed)
 {
     auto node = makeNodeIndex(moveId);
@@ -1192,13 +1203,11 @@ MoveId GameX::addVariation(const QString& sanMove, const QString& annotation, Na
 
 MoveId GameX::dbAddVariation(const Move& move, const QString& annotation, NagSet nags)
 {
-    MoveId previousNode = m_moves.currMove();
-    MoveId saveNextNode = m_moves.m_nodes[m_moves.currMove()].nextNode;
-    MoveId node = dbAddMove(move, annotation, nags);
-    m_moves.m_nodes[m_moves.currMove()].parentNode = previousNode;
-    m_moves.m_nodes[previousNode].variations.append(node);
-    m_moves.m_nodes[previousNode].nextNode = saveNextNode;
-
+    auto node = m_moves.addVariation(move, nags);
+    if(!annotation.isEmpty())
+    {
+        dbSetAnnotation(annotation, node);
+    }
     return node;
 }
 
