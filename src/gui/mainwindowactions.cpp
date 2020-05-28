@@ -2449,7 +2449,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                             if(!game().currentNodeHasMove(m.from(), m.to()))
                             {
                                 SaveRestoreMove saveCurrent(game());
-                                game().dbAddSanVariation(game().currentMove(), m.toAlgebraic(), text);
+                                game().dbAddSanVariation(m.toAlgebraic(), text);
                                 UpdateGameText();
                             }
                         }

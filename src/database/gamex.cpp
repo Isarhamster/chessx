@@ -848,7 +848,7 @@ bool GameX::mergeAsVariation(GameX& otherGame)
     NagSet nags;
 
     QString san = otherGame.moveToSan(MoveOnly, PreviousMove, CURRENT_MOVE, &ann, &nags);
-    if(NO_MOVE != dbAddSanVariation(m_moves.currMove(), san, ann, nags))
+    if(NO_MOVE != dbAddSanVariation(san, ann, nags))
     {
         while(!otherGame.atLineEnd())
         {
@@ -1192,7 +1192,7 @@ MoveId GameX::addVariation(const Move::List& moveList, const QString& annotation
 MoveId GameX::addVariation(const QString& sanMove, const QString& annotation, NagSet nags)
 {
     GameX state = *this;
-    MoveId retVal = dbAddSanVariation(m_moves.currMove(), sanMove, annotation, nags);
+    MoveId retVal = dbAddSanVariation(sanMove, annotation, nags);
     dbIndicateAnnotationsOnBoard();
     if (retVal != NO_MOVE)
     {
@@ -1266,10 +1266,11 @@ MoveId GameX::dbAddVariation(const Move::List& moveList, const QString& annotati
     return varStart;
 }
 
-MoveId GameX::dbAddSanVariation(MoveId node, const QString& sanMove, const QString& annotation, NagSet nags)
+MoveId GameX::dbAddSanVariation(const QString& sanMove, const QString& annotation, NagSet nags)
 {
-    MoveId saveNextNode = m_moves.m_nodes[m_moves.currMove()].nextNode;
-    MoveId newNode = dbAddSanMove(sanMove, annotation, nags);
+    auto node = m_moves.currMove();
+    auto saveNextNode = m_moves.nextMove();
+    auto newNode = dbAddSanMove(sanMove, annotation, nags);
     if(newNode != NO_MOVE)
     {
         m_moves.m_nodes[newNode].parentNode = node;

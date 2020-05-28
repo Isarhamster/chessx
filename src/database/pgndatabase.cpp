@@ -703,7 +703,7 @@ inline void PgnDatabase::parseDefaultToken(GameX* game, QString token)
             if(m_newVariation)
             {
                 game->backward();
-                m_variation = game->dbAddSanVariation(game->currentMove(), token, QString(), nag);
+                m_variation = game->dbAddSanVariation(token, QString(), nag);
                 if(!m_precomment.isEmpty())
                 {
                     game->dbSetAnnotation(m_precomment, m_variation, GameX::BeforeMove);

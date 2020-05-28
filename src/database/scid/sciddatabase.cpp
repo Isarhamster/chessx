@@ -70,11 +70,11 @@ static void ConvertLine(Game& src, GameX& dst, bool movesOnly = false)
                 src.MoveIntoVariation(v);
                 if (movesOnly)
                 {
-                    dst.dbAddSanVariation(move, src.GetNextSAN());
+                    dst.dbAddSanVariation(src.GetNextSAN());
                 }
                 else
                 {
-                    dst.dbAddSanVariation(move, src.GetNextSAN(), "", ConvertNags(src.GetNextNags()));
+                    dst.dbAddSanVariation(src.GetNextSAN(), "", ConvertNags(src.GetNextNags()));
                     dst.dbSetAnnotation(src.GetPreviousMoveComment(), GameX::Position::BeforeMove);
                     dst.dbSetAnnotation(src.GetMoveComment());
                 }

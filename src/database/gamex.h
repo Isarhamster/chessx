@@ -436,7 +436,7 @@ public :
     MoveId dbAddVariation(const Move::List& moveList, const QString& annotation = QString());
     /** Adds a move at the current position as a variation,
      * returns the move id of the added move */
-    MoveId dbAddSanVariation(MoveId node, const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
+    MoveId dbAddSanVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Merge current node of @p otherGame into this game */
     bool mergeNode(GameX &otherGame);
     /** Merge @p otherGame starting from otherGames current position into this game as a new mainline */
