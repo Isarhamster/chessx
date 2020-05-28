@@ -2755,7 +2755,7 @@ void MainWindow::AutoMoveAtEndOfGame()
             {
                 game().model().moveToLineEnd();
             }
-            game().indicateAnnotationsOnBoard(game().currentMove());
+            game().indicateAnnotationsOnBoard();
         }
     }
 }

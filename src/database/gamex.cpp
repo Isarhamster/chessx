@@ -1857,7 +1857,7 @@ void GameX::indicateAnnotationsOnBoard(MoveId moveId)
 void GameX::moveToStart()
 {
     m_moves.moveToStart();
-    indicateAnnotationsOnBoard(m_moves.m_currentNode);
+    indicateAnnotationsOnBoard();
 }
 
 int GameX::moveByPly(int diff)
@@ -1876,7 +1876,7 @@ void GameX::moveToId(MoveId moveId)
 {
     if (dbMoveToId(moveId))
     {
-        indicateAnnotationsOnBoard(moveId);
+        indicateAnnotationsOnBoard();
     }
 }
 
@@ -1884,7 +1884,7 @@ void GameX::moveToEnd()
 {
     if (!m_moves.moveToEnd())
     {
-        indicateAnnotationsOnBoard(m_moves.m_currentNode);
+        indicateAnnotationsOnBoard();
     }
 }
 
@@ -1893,7 +1893,7 @@ void GameX::moveToLineEnd()
     // TODO: review this, looks wrong
     if (!m_moves.moveToEnd())
     {
-        indicateAnnotationsOnBoard(m_moves.m_currentNode);
+        indicateAnnotationsOnBoard();
     }
 }
 
@@ -1902,7 +1902,7 @@ int GameX::forward(int count)
     int moved = m_moves.forward(count);
     if (moved)
     {
-        indicateAnnotationsOnBoard(m_moves.currMove());
+        indicateAnnotationsOnBoard();
     }
     return moved;
 }
@@ -1912,7 +1912,7 @@ int GameX::backward(int count)
     int moved = m_moves.backward(count);
     if(moved)
     {
-        indicateAnnotationsOnBoard(m_moves.currMove());
+        indicateAnnotationsOnBoard();
     }
     return moved;
 }
@@ -1923,7 +1923,7 @@ void GameX::enterVariation(const MoveId& moveId)
     m_moves.currentBoard()->doMove(m_moves.m_nodes[moveId].move);
     m_moves.m_currentNode = moveId;
 
-    indicateAnnotationsOnBoard(m_moves.m_currentNode);
+    indicateAnnotationsOnBoard();
 }
 
 void GameX::removeNode(MoveId moveId)

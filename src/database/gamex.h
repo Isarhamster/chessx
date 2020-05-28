@@ -254,6 +254,7 @@ public :
     QString textAnnotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
     /** Show annotations on the board for the Nose @p moveId. */
     void indicateAnnotationsOnBoard(MoveId moveId);
+    void indicateAnnotationsOnBoard() { indicateAnnotationsOnBoard(m_moves.currMove()); }
     /** @return squareAnnotation at move at node @p moveId. */
     QString squareAnnotation(MoveId moveId = CURRENT_MOVE) const;
     /** @return arrowAnnotation at move at node @p moveId. */
