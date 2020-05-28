@@ -472,7 +472,6 @@ public :
 
     void dbSetChess960(bool b);
     bool isChess960() const;
-    void setChess960(bool);
 
     // Searching
     /** Search game to see if given position exists and returns the move id, otherwise NO_MOVE */

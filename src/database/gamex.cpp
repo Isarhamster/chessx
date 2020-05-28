@@ -2174,13 +2174,6 @@ void GameX::dbSetChess960(bool b)
     }
 }
 
-void GameX::setChess960(bool b)
-{
-    GameX state = *this;
-    dbSetChess960(b);
-    emit signalGameModified(true, state, tr("Set variant"));
-}
-
 QString GameX::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, MoveId moveId,
                          QString* annots, NagSet* nagSet)
 {
