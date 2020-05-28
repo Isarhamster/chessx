@@ -101,6 +101,8 @@ public:
 
     /** @return number of half moves made since the beginning of the game */
     int plyNumber(MoveId moveId = CURRENT_MOVE) const;
+    /** @return current move. Equals to (ply-1)/2+1 for standard games, but may be different */
+    int moveNumber(MoveId moveId = CURRENT_MOVE) const;
 
 private:
     /** Keeps the current position of the game */
@@ -272,6 +274,7 @@ public :
     bool atGameEnd(MoveId moveId = CURRENT_MOVE) const { return m_moves.atGameEnd(moveId); }
 
     int ply(MoveId moveId = CURRENT_MOVE) const { return m_moves.plyNumber(moveId); }
+    int moveNumber(MoveId moveId = CURRENT_MOVE) const { return m_moves.moveNumber(moveId); }
 
     /** @return number of siblings of current node */
     int numberOfSiblings(MoveId moveId = CURRENT_MOVE) const;
@@ -279,9 +282,6 @@ public :
     void moveCount(int* moves, int* comments, int* nags=nullptr) const;
     /** Determine if game contains something reasonable */
     bool isEmpty() const;
-    /** @return current move. Equals to (ply-1)/2+1 for standard games, but may be different
-    */
-    int moveNumber(MoveId moveId = CURRENT_MOVE) const;
     /** @return number of ply for the whole game (mainline only) */
     int plyCount() const;
     /** @return number of current variation */

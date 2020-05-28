@@ -161,6 +161,20 @@ int MoveTree::plyNumber(MoveId moveId) const
     return 0;
 }
 
+int MoveTree::moveNumber(MoveId moveId) const
+{
+    MoveId node = makeNodeIndex(moveId);
+    if(node != NO_MOVE)
+    {
+        if(int plyNum = plyNumber(node))
+        {
+            return (m_startPly + plyNum - 1) / 2 + 1;
+        }
+        return 0;
+    }
+    return -1;
+}
+
 static const char strSquareNames[64][3] =
 {
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -1517,20 +1531,6 @@ bool GameX::isEmpty() const
     moveCount(&moves, &comments);
     bool gameIsEmpty = ((moves+comments) == 0);
     return gameIsEmpty;
-}
-
-int GameX::moveNumber(MoveId moveId) const
-{
-    MoveId node = m_moves.makeNodeIndex(moveId);
-    if(node != NO_MOVE)
-    {
-        if(int plyNum = ply(node))
-        {
-            return (m_moves.m_startPly + plyNum - 1) / 2 + 1;
-        }
-        return 0;
-    }
-    return -1;
 }
 
 int GameX::plyCount() const
