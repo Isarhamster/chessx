@@ -107,6 +107,8 @@ public:
     int variationCount(MoveId moveId = CURRENT_MOVE) const;
     /** @return list of variation at the current move */
     const QList<MoveId>& variations() const;
+    /** @returns amount of allocated nodes */
+    int capacity() const { return m_nodes.size(); }
 
     /** @return whether the current position is in the mainline */
     bool isMainline(MoveId moveId = CURRENT_MOVE) const;

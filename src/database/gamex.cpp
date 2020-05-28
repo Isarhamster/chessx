@@ -891,7 +891,7 @@ MoveId GameX::findMergePoint(const GameX& otherGame)
 
     if(otherMergeNode == NO_MOVE)
     {
-        if(otherGame.m_moves.m_nodes.size() > 0)
+        if(otherGame.m_moves.capacity() > 0)
         {
             otherMergeNode = 0;
         }
