@@ -1268,16 +1268,12 @@ MoveId GameX::dbAddVariation(const Move::List& moveList, const QString& annotati
 
 MoveId GameX::dbAddSanVariation(const QString& sanMove, const QString& annotation, NagSet nags)
 {
-    auto node = m_moves.currMove();
-    auto saveNextNode = m_moves.nextMove();
-    auto newNode = dbAddSanMove(sanMove, annotation, nags);
-    if(newNode != NO_MOVE)
+    Move move = m_moves.currentBoard()->parseMove(sanMove);
+    if(move.isLegal() || move.isNullMove())
     {
-        m_moves.m_nodes[newNode].parentNode = node;
-        m_moves.m_nodes[node].variations.append(newNode);
-        m_moves.m_nodes[node].nextNode = saveNextNode;
+        return dbAddVariation(move, annotation, nags);
     }
-    return newNode;
+    return NO_MOVE;
 }
 
 void GameX::dbPromoteVariation(MoveId variation)
