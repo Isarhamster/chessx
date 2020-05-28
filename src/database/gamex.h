@@ -154,6 +154,8 @@ public:
     void remove(MoveId moveId, QList<MoveId>* removed = nullptr);
     /** Mark nodes after \p moveId (variations and continuation) for removal, excluding the node itself */
     void truncateFrom(MoveId moveId, QList<MoveId>* removed = nullptr);
+    /** Mark nodes preceding \p moveId  for removal */
+    void truncateUpto(MoveId moveId, QList<MoveId>* removed = nullptr);
     /** Remove nodes marked for removal */
     QMap<MoveId, MoveId> compact();
 

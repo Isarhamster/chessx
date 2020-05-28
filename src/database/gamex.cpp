@@ -481,6 +481,41 @@ void MoveTree::truncateFrom(MoveId moveId, QList<MoveId>* removed)
     }
 }
 
+void MoveTree::truncateUpto(MoveId moveId, QList<MoveId>* removed)
+{
+    // TODO: figure why truncated modes are not marked (mistake?)
+    auto node = makeNodeIndex(moveId);
+    if (node <= ROOT_NODE)
+        return;
+
+    if(atLineStart())
+    {
+        backward();
+        forward();
+    }
+
+    auto save = m_currentNode;
+    Node firstNode;
+    firstNode.nextNode = m_currentNode;
+    firstNode.SetPly(m_nodes[m_currentNode].Ply() - 1);
+    // Keep variation if truncating main line
+    if(m_nodes[m_nodes[m_currentNode].previousNode].nextNode == m_currentNode)
+    {
+        firstNode.variations = m_nodes[m_nodes[m_currentNode].previousNode].variations;
+        foreach(MoveId var, firstNode.variations)
+        {
+            reparentVariation(var, 0);
+            m_nodes[var].previousNode = 0;
+        }
+    }
+    m_nodes[0] = firstNode;
+    m_nodes[m_currentNode].previousNode = 0;
+    backward();
+    m_startingBoard = *m_currentBoard;
+    // TODO: looks like restoring is redundant
+    moveToId(save);
+}
+
 void MoveTree::reparentVariation(MoveId variation, MoveId parent)
 {
     if (variation == NO_MOVE)
@@ -1279,41 +1314,13 @@ void GameX::truncateVariationAfterNextIllegalPosition()
 
 void GameX::dbTruncateVariation(Position position)
 {
-    QList<MoveId> removed;
     if(position == AfterMove)
     {
-        m_moves.truncateFrom(CURRENT_MOVE, &removed);
-        for (auto node: removed)
-        {
-            m_annotations.remove(node);
-            m_variationStartAnnotations.remove(node);
-        }
+        m_moves.truncateFrom(CURRENT_MOVE);
     }
-    else if(position == BeforeMove && m_moves.m_currentNode != 0)
+    else if(position == BeforeMove && m_moves.currMove() != ROOT_NODE)
     {
-        if(atLineStart())
-        {
-            backward();
-            forward();
-        }
-        SaveRestoreMove saveNode(*this);
-        MoveNode firstNode;
-        firstNode.nextNode = m_moves.m_currentNode;
-        firstNode.SetPly(m_moves.m_nodes[m_moves.m_currentNode].Ply() - 1);
-        // Keep variation if truncating main line
-        if(m_moves.m_nodes[m_moves.m_nodes[m_moves.m_currentNode].previousNode].nextNode == m_moves.m_currentNode)
-        {
-            firstNode.variations = m_moves.m_nodes[m_moves.m_nodes[m_moves.m_currentNode].previousNode].variations;
-            foreach(MoveId var, firstNode.variations)
-            {
-                m_moves.reparentVariation(var, 0);
-                m_moves.m_nodes[var].previousNode = 0;
-            }
-        }
-        m_moves.m_nodes[0] = firstNode;
-        m_moves.m_nodes[m_moves.m_currentNode].previousNode = 0;
-        backward();
-        m_moves.m_startingBoard = *m_moves.currentBoard();
+        m_moves.truncateUpto(CURRENT_MOVE);
         if(m_moves.m_startingBoard != BoardX::standardStartBoard)
         {
             m_tags[TagNameFEN] = m_moves.m_startingBoard.toFen();
