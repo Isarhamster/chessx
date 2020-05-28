@@ -156,7 +156,10 @@ public:
     void truncateFrom(MoveId moveId, QList<MoveId>* removed = nullptr);
     /** Remove nodes marked for removal */
     QMap<MoveId, MoveId> compact();
-    
+
+    /** Change parent of each move of a variation. */
+    void reparentVariation(MoveId variation, MoveId parent);
+
 private:
     /** Keeps the current position of the game */
     BoardX* m_currentBoard;
@@ -549,8 +552,6 @@ private:
     /** Remove all removed nodes */
     void compact();
 
-    /** Change parent of each move of a variation. */
-    void reparentVariation(MoveId variation, MoveId parent);
     void removeTimeCommentsFromMap(AnnotationMap& map);
 
     friend class SaveRestoreMove;

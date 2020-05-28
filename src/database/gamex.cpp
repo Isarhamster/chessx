@@ -481,6 +481,16 @@ void MoveTree::truncateFrom(MoveId moveId, QList<MoveId>* removed)
     }
 }
 
+void MoveTree::reparentVariation(MoveId variation, MoveId parent)
+{
+    if (variation == NO_MOVE)
+        return;
+    for(auto node = variation; node != NO_MOVE; node = m_nodes[node].nextNode)
+    {
+        m_nodes[node].parentNode = parent;
+    }
+}
+
 QMap<MoveId, MoveId> MoveTree::compact()
 {
     QMap<MoveId,MoveId> renames;
@@ -1200,9 +1210,9 @@ void GameX::dbPromoteVariation(MoveId variation)
     MoveId parent = m_moves.m_nodes[variation].parentNode;
 
     // Link old main line to parent
-    reparentVariation(m_moves.m_nodes[parent].nextNode, parent);
+    m_moves.reparentVariation(m_moves.m_nodes[parent].nextNode, parent);
     // Link new main line to parent's parent
-    reparentVariation(variation, m_moves.m_nodes[parent].parentNode);
+    m_moves.reparentVariation(variation, m_moves.m_nodes[parent].parentNode);
 
     // Swap main line and the variation
     int index = m_moves.m_nodes[parent].variations.indexOf(variation);
@@ -1296,7 +1306,7 @@ void GameX::dbTruncateVariation(Position position)
             firstNode.variations = m_moves.m_nodes[m_moves.m_nodes[m_moves.m_currentNode].previousNode].variations;
             foreach(MoveId var, firstNode.variations)
             {
-                reparentVariation(var, 0);
+                m_moves.reparentVariation(var, 0);
                 m_moves.m_nodes[var].previousNode = 0;
             }
         }
@@ -2352,17 +2362,6 @@ void GameX::scoreMaterial(QList<double>& scores) const
     {
         int score = g.board().ScoreMaterial();
         scores.append(score);
-    }
-}
-
-void GameX::reparentVariation(MoveId variation, MoveId parent)
-{
-    if(variation != NO_MOVE)
-    {
-        for(MoveId node = variation; node != NO_MOVE; node = m_moves.m_nodes[node].nextNode)
-        {
-            m_moves.m_nodes[node].parentNode = parent;
-        }
     }
 }
 
