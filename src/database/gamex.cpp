@@ -135,6 +135,25 @@ bool MoveTree::isMainline(MoveId moveId) const
     }
 }
 
+MoveId MoveTree::mainLineMove() const
+{
+    MoveId node = makeNodeIndex(m_currentNode);
+    if(node != NO_MOVE)
+    {
+        bool dive = false;
+        while(m_nodes[node].parentNode != NO_MOVE)
+        {
+            dive = true;
+            node = m_nodes[node].parentNode;
+        }
+        if(dive)
+        {
+            node = m_nodes[node].nextNode;
+        }
+    }
+    return node;
+}
+
 bool MoveTree::atLineStart(MoveId moveId) const
 {
     MoveId node = makeNodeIndex(moveId);
@@ -1699,25 +1718,6 @@ void GameX::enumerateVariations(MoveId moveId, char a)
             emit signalGameModified(true, state, tr("Enumerate variations"));
         }
     }
-}
-
-MoveId GameX::mainLineMove() const
-{
-    MoveId node = m_moves.makeNodeIndex(m_moves.m_currentNode);
-    if(node != NO_MOVE)
-    {
-        bool dive = false;
-        while(m_moves.m_nodes[node].parentNode != NO_MOVE)
-        {
-            dive = true;
-            node = m_moves.m_nodes[node].parentNode;
-        }
-        if(dive)
-        {
-            node = m_moves.m_nodes[node].nextNode;
-        }
-    }
-    return node;
 }
 
 MoveId GameX::currentMove() const

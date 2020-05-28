@@ -99,6 +99,8 @@ public:
 
     /** @return whether the current position is in the mainline */
     bool isMainline(MoveId moveId = CURRENT_MOVE) const;
+    /** @return moveId of the top main line */
+    MoveId mainLineMove() const;
 
     /** @return whether the game is at the start of the current variation */
     bool atLineStart(MoveId moveId = CURRENT_MOVE) const;
@@ -311,8 +313,6 @@ public :
     void moveCount(int* moves, int* comments, int* nags=nullptr) const;
     /** Determine if game contains something reasonable */
     bool isEmpty() const;
-    /** @return moveId of the top main line */
-    MoveId mainLineMove() const;
 
     // ***** Moving through game *****
     /** Moves to the beginning of the game */
