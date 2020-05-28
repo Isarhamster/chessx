@@ -388,6 +388,29 @@ int MoveTree::backward(int count)
     return moved;
 }
 
+bool MoveTree::moveToLineEnd()
+{
+    return forward(999) != 0;
+}
+
+bool MoveTree::moveToStart()
+{
+    m_currentNode = 0;
+    *m_currentBoard = m_startingBoard;
+    return true;
+}
+
+bool MoveTree::moveToEnd()
+{
+    // Move out of variations to mainline
+    while(m_nodes[m_currentNode].parentNode != NO_MOVE)
+    {
+        moveToId(m_nodes[m_currentNode].parentNode);
+    }
+    // Now move forward to the end of the game
+    return moveToLineEnd();
+}
+
 static const char strSquareNames[64][3] =
 {
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -1833,9 +1856,7 @@ void GameX::indicateAnnotationsOnBoard(MoveId moveId)
 
 void GameX::moveToStart()
 {
-    m_moves.m_currentNode = 0;
-    *m_moves.currentBoard() = m_moves.m_startingBoard;
-
+    m_moves.moveToStart();
     indicateAnnotationsOnBoard(m_moves.m_currentNode);
 }
 
@@ -1859,25 +1880,9 @@ void GameX::moveToId(MoveId moveId)
     }
 }
 
-bool GameX::dbMoveToLineEnd()
-{
-    return (!forward(999));
-}
-
-bool GameX::dbMoveToEnd()
-{
-    // Move out of variations to mainline
-    while(m_moves.m_nodes[m_moves.m_currentNode].parentNode != NO_MOVE)
-    {
-        dbMoveToId(m_moves.m_nodes[m_moves.m_currentNode].parentNode);
-    }
-    // Now move forward to the end of the game
-    return dbMoveToLineEnd();
-}
-
 void GameX::moveToEnd()
 {
-    if (!dbMoveToEnd())
+    if (!m_moves.moveToEnd())
     {
         indicateAnnotationsOnBoard(m_moves.m_currentNode);
     }
@@ -1885,7 +1890,8 @@ void GameX::moveToEnd()
 
 void GameX::moveToLineEnd()
 {
-    if (!dbMoveToEnd())
+    // TODO: review this, looks wrong
+    if (!m_moves.moveToEnd())
     {
         indicateAnnotationsOnBoard(m_moves.m_currentNode);
     }
@@ -2285,7 +2291,7 @@ QString GameX::ecoClassify() const
             return QString();
         }
     }
-    g.dbMoveToEnd();
+    g.m_moves.moveToEnd();
 
     //search backwards for the first eco position
     while(g.m_moves.backward())

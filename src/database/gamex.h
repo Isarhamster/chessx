@@ -140,6 +140,12 @@ public:
     int forward(int count = 1);
     /** Move back the given number of moves, returns actual number of moves undone */
     int backward(int count = 1);
+    /** Move to the end of current variation */
+    bool moveToLineEnd();
+    /** Moves to the beginning of the game */
+    bool moveToStart();
+    /** Moves to the end of the game */
+    bool moveToEnd();
 
 private:
     /** Keeps the current position of the game */
@@ -332,14 +338,10 @@ public :
     bool dbMoveToId(MoveId moveId, QString* algebraicMoveList=nullptr) { return m_moves.moveToId(moveId, algebraicMoveList); }
     int forward(int count = 1);
     int backward(int count = 1);
-
-    /** Moves to the beginning of the game */
     void moveToStart();
-    /** Moves to the end of the game */
     void moveToEnd();
-    bool dbMoveToEnd();
     void moveToLineEnd();
-    bool dbMoveToLineEnd();
+
     /** Moves by given ply, returns actual ply reached */
     int moveByPly(int diff);
     void moveToId(MoveId moveId);
