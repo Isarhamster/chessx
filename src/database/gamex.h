@@ -121,6 +121,8 @@ public:
     MoveId variationStartMove(MoveId variation = CURRENT_MOVE) const;
     /** @return number of current variation */
     MoveId variationNumber(MoveId moveId = CURRENT_MOVE) const;
+    /** @return true if the referenced variation has siblings */
+    bool variationHasSiblings(MoveId variation = CURRENT_MOVE) const;
 
 private:
     /** Keeps the current position of the game */
@@ -303,13 +305,12 @@ public :
 
     MoveId variationStartMove(MoveId variation = CURRENT_MOVE) const { return m_moves.variationStartMove(variation); }
     MoveId variationNumber(MoveId moveId = CURRENT_MOVE) const { return m_moves.variationNumber(moveId); }
+    bool variationHasSiblings(MoveId variation = CURRENT_MOVE) const { return m_moves.variationHasSiblings(variation); }
 
     /** Counts the number of moves, comments and nags, in mainline, to the end of the game */
     void moveCount(int* moves, int* comments, int* nags=nullptr) const;
     /** Determine if game contains something reasonable */
     bool isEmpty() const;
-    /** @return true if the referenced variation has siblings */
-    bool variationHasSiblings(MoveId variation = CURRENT_MOVE) const;
     /** @return moveId of the top main line */
     MoveId mainLineMove() const;
 

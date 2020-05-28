@@ -242,6 +242,25 @@ MoveId MoveTree::variationNumber(MoveId moveId) const
     return node;
 }
 
+bool MoveTree::variationHasSiblings(MoveId variation) const
+{
+    variation = makeNodeIndex(variation);
+    if(variation == NO_MOVE)
+    {
+        return false;
+    }
+    if(isMainline(variation))
+    {
+        return false;
+    }
+    while(!atLineStart(variation))
+    {
+        variation = m_nodes[variation].previousNode;
+    }
+    MoveId parent = m_nodes[variation].parentNode;
+    return (variationCount(parent) > 1);
+}
+
 static const char strSquareNames[64][3] =
 {
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -1714,25 +1733,6 @@ MoveId GameX::lastMove() const
         moveId = m_moves.m_nodes[moveId].nextNode;
     }
     return moveId;
-}
-
-bool GameX::variationHasSiblings(MoveId variation) const
-{
-    variation = m_moves.makeNodeIndex(variation);
-    if(variation == NO_MOVE)
-    {
-        return false;
-    }
-    if(isMainline(variation))
-    {
-        return false;
-    }
-    while(!atLineStart(variation))
-    {
-        variation = m_moves.m_nodes[variation].previousNode;
-    }
-    MoveId parent = m_moves.m_nodes[variation].parentNode;
-    return (variationCount(parent) > 1);
 }
 
 void GameX::dbIndicateAnnotationsOnBoard(MoveId moveId)
