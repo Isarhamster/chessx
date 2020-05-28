@@ -89,6 +89,16 @@ public:
     /** @return whether the current position is in the mainline */
     bool isMainline(MoveId moveId = CURRENT_MOVE) const;
 
+    /** @return whether the game is at the start of the current variation */
+    bool atLineStart(MoveId moveId = CURRENT_MOVE) const;
+    /** @return whether the game is at the end of the current variation */
+    bool atLineEnd(MoveId moveId = CURRENT_MOVE) const;
+
+    /** @return whether the game is currently at the start position */
+    bool atGameStart(MoveId moveId = CURRENT_MOVE) const;
+    /** @return whether the game is currently at the end of main variation */
+    bool atGameEnd(MoveId moveId = CURRENT_MOVE) const;
+
 private:
     /** Keeps the current position of the game */
     BoardX* m_currentBoard;
@@ -252,15 +262,14 @@ public :
     bool clearNags(MoveId moveId = CURRENT_MOVE);
 
     // **** tree information methods *****
+    bool isMainline(MoveId moveId = CURRENT_MOVE) const { return m_moves.isMainline(moveId); }
+    bool atLineStart(MoveId moveId = CURRENT_MOVE) const { return m_moves.atLineStart(moveId); }
+    bool atLineEnd(MoveId moveId = CURRENT_MOVE) const { return m_moves.atLineEnd(moveId); }
+    bool atGameStart(MoveId moveId = CURRENT_MOVE) const { return m_moves.atGameStart(moveId); }
+    bool atGameEnd(MoveId moveId = CURRENT_MOVE) const { return m_moves.atGameEnd(moveId); }
+
     /** @return number of siblings of current node */
     int numberOfSiblings(MoveId moveId = CURRENT_MOVE) const;
-    bool isMainline(MoveId moveId = CURRENT_MOVE) const { return m_moves.isMainline(moveId); }
-    /** @return whether the game is currently at the start position */
-    bool atLineStart(MoveId moveId = CURRENT_MOVE) const;
-    bool atGameStart(MoveId moveId = CURRENT_MOVE) const;
-    /** @return whether the game is at the end of the current variation */
-    bool atLineEnd(MoveId moveId = CURRENT_MOVE) const;
-    bool atGameEnd(MoveId moveId = CURRENT_MOVE) const;
     /** Counts the number of moves, comments and nags, in mainline, to the end of the game */
     void moveCount(int* moves, int* comments, int* nags=nullptr) const;
     /** Determine if game contains something reasonable */

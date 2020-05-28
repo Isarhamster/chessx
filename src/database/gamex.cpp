@@ -120,6 +120,38 @@ bool MoveTree::isMainline(MoveId moveId) const
     }
 }
 
+bool MoveTree::atLineStart(MoveId moveId) const
+{
+    MoveId node = makeNodeIndex(moveId);
+    if(node == NO_MOVE)
+    {
+        return false;
+    }
+    return (m_nodes[node].previousNode == m_nodes[node].parentNode)
+        || m_nodes[node].previousNode == 0;
+}
+
+bool MoveTree::atLineEnd(MoveId moveId) const
+{
+    MoveId node = makeNodeIndex(moveId);
+    if (node == NO_MOVE)
+    {
+        return false;
+    }
+    return m_nodes[node].nextNode == NO_MOVE;
+}
+
+bool MoveTree::atGameStart(MoveId moveId) const
+{
+    return (makeNodeIndex(moveId) == ROOT_NODE);
+}
+
+bool MoveTree::atGameEnd(MoveId moveId) const
+{
+    return (atLineEnd(moveId) && isMainline(moveId));
+}
+
+
 static const char strSquareNames[64][3] =
 {
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -1060,41 +1092,6 @@ int GameX::numberOfSiblings(MoveId moveId) const
         return 0;
     }
     return m_moves.m_nodes[parentNode].variations.size();
-}
-
-bool GameX::atLineStart(MoveId moveId) const
-{
-    MoveId node = m_moves.makeNodeIndex(moveId);
-    if(node == NO_MOVE)
-    {
-        return false;
-    }
-    return (m_moves.m_nodes[node].previousNode == m_moves.m_nodes[node].parentNode)
-        || m_moves.m_nodes[node].previousNode == 0;
-}
-
-bool GameX::atGameStart(MoveId moveId) const
-{
-    return (m_moves.makeNodeIndex(moveId) == 0);
-}
-
-bool GameX::atGameEnd(MoveId moveId) const
-{
-    return (atLineEnd(moveId) && isMainline(moveId));
-}
-
-bool GameX::atLineEnd(MoveId moveId) const
-{
-    MoveId node = m_moves.makeNodeIndex(moveId);
-    if(node != NO_MOVE)
-    {
-        if(m_moves.m_nodes[node].nextNode == NO_MOVE)
-        {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 bool GameX::setAnnotation(QString annotation, MoveId moveId, Position position)
