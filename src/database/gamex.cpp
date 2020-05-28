@@ -443,7 +443,32 @@ MoveId MoveTree::addMove(const Move& move, NagSet nags)
     return m_currentNode;
 }
 
-/** Remove nodes marked for removal */
+void MoveTree::remove(MoveId moveId, QList<MoveId>* removed)
+{
+    MoveId node = makeNodeIndex(moveId);
+    if (node <= ROOT_NODE)
+        return;
+
+    if (removed)
+    {
+        removed->append(node);
+    }
+    for (auto v: m_nodes[node].variations)
+    {
+        remove(v, removed);
+    }
+    remove(m_nodes[node].nextNode, removed);
+
+    MoveId prevNode = m_nodes[node].previousNode;
+    MoveId prntNode = m_nodes[node].parentNode;
+    if ((prevNode >= ROOT_NODE) && (prntNode != prevNode))
+    {
+        // Do not delete main variation above sub variation
+        m_nodes[prevNode].nextNode = NO_MOVE;
+    }
+    m_nodes[node].remove();
+}
+
 QMap<MoveId, MoveId> MoveTree::compact()
 {
     QMap<MoveId,MoveId> renames;
@@ -2000,25 +2025,12 @@ void GameX::enterVariation(const MoveId& moveId)
 
 void GameX::removeNode(MoveId moveId)
 {
-    MoveId node = m_moves.makeNodeIndex(moveId);
-    if(node > ROOT_NODE)
+    QList<MoveId> removed;
+    m_moves.remove(moveId, &removed);
+    for (auto node: removed)
     {
-        m_variationStartAnnotations.remove(node);
         m_annotations.remove(node);
-
-        for(int i = 0; i < m_moves.m_nodes[node].variations.size(); ++i)
-        {
-            removeNode(m_moves.m_nodes[node].variations[i]);
-        }
-        removeNode(m_moves.m_nodes[node].nextNode);
-        MoveId prevNode = m_moves.m_nodes[node].previousNode;
-        MoveId parentNode = m_moves.m_nodes[node].parentNode;
-        if ((prevNode >= ROOT_NODE) && (parentNode != prevNode))
-        {
-            // Do not delete main variation above sub variation
-            m_moves.m_nodes[prevNode].nextNode = NO_MOVE;
-        }
-        m_moves.m_nodes[node].remove();
+        m_variationStartAnnotations.remove(node);
     }
 }
 

@@ -150,6 +150,8 @@ public:
     /** Adds a move at the current position, returns the move id of the added move */
     MoveId addMove(const Move& move, NagSet nags = NagSet());
 
+    /** Mark move subtree for removal */
+    void remove(MoveId moveId, QList<MoveId>* removed = nullptr);
     /** Remove nodes marked for removal */
     QMap<MoveId, MoveId> compact();
     
@@ -504,9 +506,6 @@ public :
     int resultAsInt() const;
     void setStartingBoard(const BoardX &startingBoard, QString text, bool chess960 = false);
 
-    /** Removes the node at @p moveId */
-    void removeNode(MoveId moveId = CURRENT_MOVE);
-
     MoveId lastMove() const;
 
     bool positionRepetition3(const BoardX &board) const;
@@ -520,6 +519,8 @@ protected:
     void dbPromoteVariation(MoveId variation);
     /** Find the next illegal position in all variations and mainline moves after the current position, and cut the game from there */
     void truncateVariationAfterNextIllegalPosition();
+    /** Removes the node at @p moveId */
+    void removeNode(MoveId moveId = CURRENT_MOVE);
 
     void dbIndicateAnnotationsOnBoard();
     bool positionRepetition(const BoardX &board);
