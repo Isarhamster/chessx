@@ -86,6 +86,13 @@ public:
      */
     MoveId makeNodeIndex(MoveId moveId = CURRENT_MOVE) const;
 
+    /** @return moveId of the previous move */
+    MoveId prevMove() const { return m_nodes[m_currentNode].previousNode; }
+    /** @return moveId of the next move */
+    MoveId nextMove() const { return m_nodes[m_currentNode].nextNode; }
+    /** @return moveId of the parent node */
+    MoveId parentMove() const { return m_nodes[m_currentNode].parentNode; }
+
     /** @return whether the current position is in the mainline */
     bool isMainline(MoveId moveId = CURRENT_MOVE) const;
 
@@ -267,6 +274,10 @@ public :
     bool clearNags(MoveId moveId = CURRENT_MOVE);
 
     // **** tree information methods *****
+    MoveId previousMove() const { return m_moves.prevMove(); }
+    MoveId nextMove() const { return m_moves.nextMove(); }
+    MoveId parentMove() const { return m_moves.parentMove(); }
+
     bool isMainline(MoveId moveId = CURRENT_MOVE) const { return m_moves.isMainline(moveId); }
     bool atLineStart(MoveId moveId = CURRENT_MOVE) const { return m_moves.atLineStart(moveId); }
     bool atLineEnd(MoveId moveId = CURRENT_MOVE) const { return m_moves.atLineEnd(moveId); }
@@ -294,12 +305,6 @@ public :
     MoveId mainLineMove() const;
     /** Get the first move of a variation */
     MoveId variationStartMove(MoveId variation = CURRENT_MOVE) const;
-    /** @return moveId of the previous move */
-    MoveId previousMove() const;
-    /** @return moveId of the next move */
-    MoveId nextMove() const;
-    /** @return moveId of the parent node */
-    MoveId parentMove() const;
     /** @return list of variation at the current move */
     const QList<MoveId>& variations() const;
 

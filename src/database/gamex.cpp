@@ -1701,21 +1701,6 @@ MoveId GameX::variationStartMove(MoveId variation) const
     return variation;
 }
 
-MoveId GameX::previousMove() const
-{
-    return m_moves.m_nodes[m_moves.m_currentNode].previousNode;
-}
-
-MoveId GameX::nextMove() const
-{
-    return m_moves.m_nodes[m_moves.m_currentNode].nextNode;
-}
-
-MoveId GameX::parentMove() const
-{
-    return m_moves.m_nodes[m_moves.m_currentNode].parentNode;
-}
-
 MoveId GameX::currentMove() const
 {
     return m_moves.m_currentNode;
