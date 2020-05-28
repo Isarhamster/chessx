@@ -223,6 +223,24 @@ MoveId MoveTree::variationStartMove(MoveId variation) const
     return variation;
 }
 
+MoveId MoveTree::variationNumber(MoveId moveId) const
+{
+    if(isMainline())
+    {
+        return 0;
+    }
+    MoveId node = makeNodeIndex(moveId);
+    if(node != NO_MOVE)
+    {
+        MoveId parentNode = m_nodes[node].parentNode;
+
+        while(m_nodes[node].previousNode != parentNode)
+        {
+            node = m_nodes[node].previousNode;
+        }
+    }
+    return node;
+}
 
 static const char strSquareNames[64][3] =
 {
@@ -1662,25 +1680,6 @@ void GameX::enumerateVariations(MoveId moveId, char a)
             emit signalGameModified(true, state, tr("Enumerate variations"));
         }
     }
-}
-
-MoveId GameX::variationNumber(MoveId moveId) const
-{
-    if(isMainline())
-    {
-        return 0;
-    }
-    MoveId node = m_moves.makeNodeIndex(moveId);
-    if(node != NO_MOVE)
-    {
-        MoveId parentNode = m_moves.m_nodes[node].parentNode;
-
-        while(m_moves.m_nodes[node].previousNode != parentNode)
-        {
-            node = m_moves.m_nodes[node].previousNode;
-        }
-    }
-    return node;
 }
 
 MoveId GameX::mainLineMove() const
