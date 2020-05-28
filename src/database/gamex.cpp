@@ -234,6 +234,33 @@ int MoveTree::moveNumber(MoveId moveId) const
     return -1;
 }
 
+int MoveTree::countMoves() const
+{
+    int count = 0;
+    MoveId node = 1;
+    while((node = makeNodeIndex(node)) != NO_MOVE)
+    {
+        count += 1;
+        node = m_nodes[node].nextNode;
+    }
+    return count;
+}
+
+int MoveTree::countNagMoves() const
+{
+    int count = 0;
+    MoveId node = 1;
+    while((node = makeNodeIndex(node)) != NO_MOVE)
+    {
+        if (!m_nodes[node].nags.empty())
+        {
+            count += 1;
+        }
+        node = m_nodes[node].nextNode;
+    }
+    return count;
+}
+
 MoveId MoveTree::variationStartMove(MoveId variation) const
 {
     variation = makeNodeIndex(variation);
@@ -1597,31 +1624,9 @@ NagSet GameX::nags(MoveId moveId) const
 
 void GameX::moveCount(int* moves, int* comments, int* nags) const
 {
-    *moves = *comments = 0;
-    if (nags) *nags = 0;
-
-    MoveId node = 1;
-    while((node = m_moves.makeNodeIndex(node)) != NO_MOVE)
-    {
-        *moves += 1;
-        if (nags)
-        {
-            if(m_moves.m_nodes[node].nags.count() != 0)
-            {
-                *nags += 1;
-            }
-        }
-        node = m_moves.m_nodes[node].nextNode;
-    }
-    // Count comments
-    for(int i = 0; i < m_annotations.size(); ++i)
-    {
-        *comments += 1;
-    }
-    for(int i = 0; i < m_variationStartAnnotations.size(); ++i)
-    {
-        *comments += 1;
-    }
+    *moves = m_moves.countMoves();
+    *comments = m_annotations.size() + m_variationStartAnnotations.size();
+    if (nags) *nags = m_moves.countNagMoves();
 }
 
 bool GameX::isEmpty() const

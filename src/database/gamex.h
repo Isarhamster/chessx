@@ -122,6 +122,10 @@ public:
     int plyNumber(MoveId moveId = CURRENT_MOVE) const;
     /** @return current move. Equals to (ply-1)/2+1 for standard games, but may be different */
     int moveNumber(MoveId moveId = CURRENT_MOVE) const;
+    /** @return number of move nodes in the main line */
+    int countMoves() const;
+    /** @return number of move nodes in the main line that have NAGs */
+    int countNagMoves() const;
 
     /** Get the first move of a variation */
     MoveId variationStartMove(MoveId variation = CURRENT_MOVE) const;
