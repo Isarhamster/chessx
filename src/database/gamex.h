@@ -86,6 +86,8 @@ public:
      */
     MoveId makeNodeIndex(MoveId moveId = CURRENT_MOVE) const;
 
+    /** @return the move at node @p moveId. */
+    Move move(MoveId moveId = CURRENT_MOVE) const;
     /** @return current move id. */
     MoveId currMove() const { return m_currentNode; }
     /** @return moveId of the previous move */
@@ -229,8 +231,6 @@ public :
     BoardX startingBoard() const;
     /** @return game result */
     Result result() const;
-    /** @return the move at node @p moveId. */
-    Move move(MoveId moveId = CURRENT_MOVE) const;
     /** @return comment at move at node @p moveId including visual hints for diagrams. */
     QString annotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
     /** @return comment at move at node @p moveId. */
@@ -289,6 +289,8 @@ public :
     bool clearNags(MoveId moveId = CURRENT_MOVE);
 
     // **** tree information methods *****
+    Move move(MoveId moveId = CURRENT_MOVE) const { return m_moves.move(moveId); }
+
     MoveId currentMove() const { return m_moves.currMove(); }
     MoveId previousMove() const { return m_moves.prevMove(); }
     MoveId nextMove() const { return m_moves.nextMove(); }

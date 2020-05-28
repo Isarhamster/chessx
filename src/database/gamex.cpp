@@ -103,6 +103,16 @@ MoveId MoveTree::makeNodeIndex(MoveId moveId) const
     return moveId;
 }
 
+Move MoveTree::move(MoveId moveId) const
+{
+    MoveId node = makeNodeIndex(moveId);
+    if(node != NO_MOVE)
+    {
+        return m_nodes[node].move;
+    }
+    return Move();
+}
+
 int MoveTree::variationCount(MoveId moveId) const
 {
     MoveId node = makeNodeIndex(moveId);
@@ -1817,16 +1827,6 @@ void GameX::moveToId(MoveId moveId)
     {
         indicateAnnotationsOnBoard(moveId);
     }
-}
-
-Move GameX::move(MoveId moveId) const
-{
-    MoveId node = m_moves.makeNodeIndex(moveId);
-    if(node != NO_MOVE)
-    {
-        return m_moves.m_nodes[node].move;
-    }
-    return Move();
 }
 
 bool GameX::dbMoveToLineEnd()
