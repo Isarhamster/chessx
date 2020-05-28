@@ -445,7 +445,7 @@ MoveId MoveTree::addMove(const Move& move, NagSet nags)
 
 void MoveTree::remove(MoveId moveId, QList<MoveId>* removed)
 {
-    MoveId node = makeNodeIndex(moveId);
+    auto node = makeNodeIndex(moveId);
     if (node <= ROOT_NODE)
         return;
 
@@ -467,6 +467,18 @@ void MoveTree::remove(MoveId moveId, QList<MoveId>* removed)
         m_nodes[prevNode].nextNode = NO_MOVE;
     }
     m_nodes[node].remove();
+}
+
+void MoveTree::truncateFrom(MoveId moveId, QList<MoveId>* removed)
+{
+    auto node = makeNodeIndex(moveId);
+    if (node == NO_MOVE)
+        return;
+    remove(m_nodes[node].nextNode, removed);
+    for (auto v: m_nodes[node].variations)
+    {
+        remove(v, removed);
+    }
 }
 
 QMap<MoveId, MoveId> MoveTree::compact()
@@ -1257,14 +1269,15 @@ void GameX::truncateVariationAfterNextIllegalPosition()
 
 void GameX::dbTruncateVariation(Position position)
 {
+    QList<MoveId> removed;
     if(position == AfterMove)
     {
-        MoveId node = m_moves.m_nodes[m_moves.m_currentNode].nextNode;
-        foreach(MoveId var, m_moves.m_nodes[m_moves.m_currentNode].variations)
+        m_moves.truncateFrom(CURRENT_MOVE, &removed);
+        for (auto node: removed)
         {
-            removeNode(var);
+            m_annotations.remove(node);
+            m_variationStartAnnotations.remove(node);
         }
-        removeNode(node);
     }
     else if(position == BeforeMove && m_moves.m_currentNode != 0)
     {

@@ -152,6 +152,8 @@ public:
 
     /** Mark move subtree for removal */
     void remove(MoveId moveId, QList<MoveId>* removed = nullptr);
+    /** Mark nodes after \p moveId (variations and continuation) for removal, excluding the node itself */
+    void truncateFrom(MoveId moveId, QList<MoveId>* removed = nullptr);
     /** Remove nodes marked for removal */
     QMap<MoveId, MoveId> compact();
     
