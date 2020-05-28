@@ -72,6 +72,9 @@ public:
     MoveTree& operator=(MoveTree&& rhs) = delete;
     ~MoveTree();
 
+    /** @returns initial position */
+    const BoardX& initialBoard() const { return m_startingBoard; }
+
     /** @return current position */
     const BoardX* currentBoard() const { return m_currentBoard; }
     BoardX* currentBoard() { return m_currentBoard; }
@@ -80,6 +83,8 @@ public:
     void unmountBoard();
 
     void clear();
+    /** Set the game start position from FEN. */
+    void setInitialBoard(const QString& fen, bool chess960 = false);
 
     /** Checks if a \p moveId is valid
      *  @returns
@@ -175,6 +180,7 @@ public:
     QList<Node> m_nodes;
     /** Keeps the current node in the game */
     MoveId m_currentNode;
+private:
     /** Keeps the start ply of the game, 0 for standard starting position */
     short m_startPly;
     /** Keeps the start position of the game */
@@ -262,7 +268,7 @@ public :
     /** @return current position in human readable FEN */
     QString toHumanFen() const;
     /** @return start position of game */
-    BoardX startingBoard() const;
+    BoardX startingBoard() const { return m_moves.initialBoard(); }
     /** @return game result */
     Result result() const;
     /** @return comment at move at node @p moveId including visual hints for diagrams. */

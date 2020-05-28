@@ -121,6 +121,18 @@ void MoveTree::clear()
     m_nodes.append(Node());
 }
 
+void MoveTree::setInitialBoard(const QString& fen, bool chess960)
+{
+    m_startingBoard.setChess960(chess960);
+    m_startingBoard.fromFen(fen);
+    if (m_currentBoard)
+    {
+        *m_currentBoard = m_startingBoard;
+    }
+    m_startPly = (m_startingBoard.moveNumber() - 1) * 2 + (m_startingBoard.toMove() == Black);
+}
+
+
 MoveId MoveTree::makeNodeIndex(MoveId moveId) const
 {
     if (moveId == CURRENT_MOVE)
@@ -1339,9 +1351,10 @@ void GameX::dbTruncateVariation(Position position)
     else if(position == BeforeMove && m_moves.currMove() != ROOT_NODE)
     {
         m_moves.truncateUpto(CURRENT_MOVE);
-        if(m_moves.m_startingBoard != BoardX::standardStartBoard)
+        const auto& board = m_moves.initialBoard();
+        if (board != BoardX::standardStartBoard)
         {
-            m_tags[TagNameFEN] = m_moves.m_startingBoard.toFen();
+            m_tags[TagNameFEN] = board.toFen();
             m_tags[TagNameSetUp] = "1";
         }
     }
@@ -1358,11 +1371,6 @@ void GameX::truncateVariation(Position position)
 const BoardX& GameX::board() const
 {
     return *m_moves.currentBoard();
-}
-
-BoardX GameX::startingBoard() const
-{
-    return m_moves.m_startingBoard;
 }
 
 QString GameX::toFen() const
@@ -2130,18 +2138,12 @@ void GameX::dbSetStartingBoard(const QString& fen, bool chess960)
 {
     clear();
     dbSetChess960(chess960);
-    m_moves.m_startingBoard.setChess960(chess960);
-    m_moves.m_startingBoard.fromFen(fen);
-    if(m_moves.m_startingBoard != BoardX::standardStartBoard)
+    m_moves.setInitialBoard(fen, chess960);
+    if (m_moves.initialBoard() != BoardX::standardStartBoard)
     {
         m_tags[TagNameFEN] = fen;
         m_tags[TagNameSetUp] = "1";
     }
-    if (m_moves.currentBoard())
-    {
-        *m_moves.currentBoard() = m_moves.m_startingBoard;
-    }
-    m_moves.m_startPly = (m_moves.m_startingBoard.moveNumber() - 1) * 2 + (m_moves.m_startingBoard.toMove() == Black);
 }
 
 void GameX::dbSetResult(Result result)
@@ -2295,7 +2297,7 @@ void GameX::dumpAllMoveNodes() const
 MoveId GameX::findPosition(const BoardX& position) const
 {
     MoveId current = 0;
-    BoardX currentBoard(m_moves.m_startingBoard);
+    BoardX currentBoard(m_moves.initialBoard());
 
     for(;;)
     {
