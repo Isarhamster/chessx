@@ -79,6 +79,13 @@ public:
     void mountBoard();
     void unmountBoard();
 
+    /** Checks if a \p moveId is valid
+     *  @returns
+     *  - on failure: \p NO_MOVE
+     *  - on success: index suitable for subscripting \p m_nodes
+     */
+    MoveId makeNodeIndex(MoveId moveId = CURRENT_MOVE) const;
+
 private:
     /** Keeps the current position of the game */
     BoardX* m_currentBoard;
@@ -495,8 +502,6 @@ private:
     /** Remove all removed nodes */
     void compact();
 
-    /** Checks if a moveId is valid, returns the moveId if it is, 0 if not */
-    MoveId nodeValid(MoveId moveId = CURRENT_MOVE) const;
     /** Change parent of each move of a variation. */
     void reparentVariation(MoveId variation, MoveId parent);
     void removeTimeCommentsFromMap(AnnotationMap& map);
