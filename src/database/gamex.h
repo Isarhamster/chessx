@@ -92,6 +92,8 @@ public:
     MoveId nextMove() const { return m_nodes[m_currentNode].nextNode; }
     /** @return moveId of the parent node */
     MoveId parentMove() const { return m_nodes[m_currentNode].parentNode; }
+    /** @return number of variations at the current position */
+    int variationCount(MoveId moveId = CURRENT_MOVE) const;
 
     /** @return whether the current position is in the mainline */
     bool isMainline(MoveId moveId = CURRENT_MOVE) const;
@@ -279,7 +281,8 @@ public :
     MoveId previousMove() const { return m_moves.prevMove(); }
     MoveId nextMove() const { return m_moves.nextMove(); }
     MoveId parentMove() const { return m_moves.parentMove(); }
-
+    int variationCount(MoveId moveId = CURRENT_MOVE) const { return m_moves.variationCount(moveId); }
+    
     bool isMainline(MoveId moveId = CURRENT_MOVE) const { return m_moves.isMainline(moveId); }
     bool atLineStart(MoveId moveId = CURRENT_MOVE) const { return m_moves.atLineStart(moveId); }
     bool atLineEnd(MoveId moveId = CURRENT_MOVE) const { return m_moves.atLineEnd(moveId); }
@@ -298,8 +301,6 @@ public :
     bool isEmpty() const;
     /** @return number of current variation */
     MoveId variationNumber(MoveId moveId = CURRENT_MOVE) const;
-    /** @return number of variations at the current position */
-    int variationCount(MoveId moveId = CURRENT_MOVE) const;
     /** @return true if the referenced variation has siblings */
     bool variationHasSiblings(MoveId variation = CURRENT_MOVE) const;
     /** @return moveId of the top main line */
