@@ -22,6 +22,20 @@ using namespace chessx;
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
+template <typename T>
+void applyRenames(QMap<MoveId, T>& map, const QMap<MoveId, MoveId>& renames)
+{
+    QMap<MoveId, T> tmp;
+    for (auto src: map.keys())
+    {
+        auto dst = renames.value(src, NO_MOVE);
+        if (dst != NO_MOVE)
+        {
+            tmp[dst] = map[src];
+        }
+    }
+    qSwap(map, tmp);
+}
 
 MoveTree::MoveTree()
     : m_currentBoard(nullptr)
@@ -427,6 +441,56 @@ MoveId MoveTree::addMove(const Move& move, NagSet nags)
     m_nodes[previousNode].nextNode = m_currentNode;
     m_currentBoard->doMove(move);
     return m_currentNode;
+}
+
+/** Remove nodes marked for removal */
+QMap<MoveId, MoveId> MoveTree::compact()
+{
+    QMap<MoveId,MoveId> renames;
+    // map NO_MOVE for simplicity
+    renames[NO_MOVE] = NO_MOVE;
+
+    // arena ends
+    auto ib = m_nodes.cbegin(), ie = m_nodes.cend();
+    // read iterator
+    auto ir = ib;
+    // write iterator
+    auto iw = m_nodes.begin();
+    // keep track of indexes corresponding to `ir` and `iw`
+    MoveId src = 0, dst = 0;
+    for (; ir != ie; ++ir, ++src)
+    {
+        auto& node = *ir;
+        // skip removed nodes
+        if (node.Removed())
+            continue;
+
+        // move data
+        *iw = *ir;
+        // note rename
+        renames[src] = dst;
+        // update write iterator
+        ++iw;
+        ++dst;
+    }
+    // shrink m_nodes
+    m_nodes.erase(iw, m_nodes.end());
+
+    // update links
+    for (auto& node: m_nodes)
+    {
+        node.nextNode = renames[node.nextNode];
+        node.previousNode = renames[node.previousNode];
+        node.parentNode = renames[node.parentNode];
+        for (auto& v: node.variations)
+        {
+            v = renames[v];
+        }
+        node.variations.removeAt(NO_MOVE);
+        node.variations.removeAt(ROOT_NODE);
+    }
+    m_currentNode = renames[m_currentNode];
+    return renames;
 }
 
 static const char strSquareNames[64][3] =
@@ -2215,77 +2279,9 @@ MoveId GameX::findPosition(const BoardX& position) const
 
 void GameX::compact()
 {
-    int oldSize = m_moves.m_nodes.size();
-    QList<MoveNode> moveNodes;
-    QMap<MoveId,MoveId> oldIdNewIdMapping;
-    QList<MoveId> removedNodes;
-
-    for(MoveId i = 0; i < oldSize; ++i)
-    {
-        if(!m_moves.m_nodes[i].Removed())
-        {
-            oldIdNewIdMapping[i] = moveNodes.size();
-            moveNodes.append(m_moves.m_nodes[i]);
-        }
-        else
-        {
-            removedNodes.push_back(i);
-        }
-    }
-
-    foreach(MoveId m, removedNodes)
-    {
-        m_variationStartAnnotations.remove(m);
-        m_annotations.remove(m);
-    }
-
-    AnnotationMap variationStartAnnotations;
-    AnnotationMap annotations;
-
-    foreach(MoveId key, oldIdNewIdMapping.keys())
-    {
-        MoveId n = oldIdNewIdMapping.value(key);
-#define GAME_UPDATE_ANNOT(t,x) \
-        if (x.contains(key)) \
-        {\
-            QString s = x.value(key);\
-            t[n] = s;\
-        }
-
-        GAME_UPDATE_ANNOT(variationStartAnnotations, m_variationStartAnnotations)
-        GAME_UPDATE_ANNOT(annotations, m_annotations)
-    }
-
-    // update nodes links to other nodes in shrinked list (prev, next, variations)
-    for(MoveId i = 0, newSize = moveNodes.size(); i < newSize; ++i)
-    {
-        MoveNode& node = moveNodes[i];
-#define GAME_UPDATE_MOVEID(aMoveId) if (aMoveId != NO_MOVE) aMoveId = oldIdNewIdMapping[aMoveId]
-        GAME_UPDATE_MOVEID(node.nextNode);
-        GAME_UPDATE_MOVEID(node.previousNode);
-        GAME_UPDATE_MOVEID(node.parentNode);
-        QList<MoveId>& vars = node.variations;
-        for(int j = 0; j < vars.size(); ++j)
-        {
-            GAME_UPDATE_MOVEID(vars[j]);
-        }
-        vars.removeAll(NO_MOVE);
-        vars.removeAll(0);
-#undef GAME_UPDATE_MOVEID
-    }
-
-    m_variationStartAnnotations.clear();
-    m_annotations.clear();
-
-    m_variationStartAnnotations = variationStartAnnotations;
-    m_annotations               = annotations;
-
-    //m_variationStartAnnotations.detach();
-    //m_annotations.detach();
-
-    m_moves.m_nodes.clear();
-    m_moves.m_nodes = moveNodes;
-    m_moves.m_currentNode = oldIdNewIdMapping[m_moves.m_currentNode];
+    auto renames = m_moves.compact();
+    applyRenames(m_annotations, renames);
+    applyRenames(m_variationStartAnnotations, renames);
 }
 
 QString GameX::ecoClassify() const

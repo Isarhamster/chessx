@@ -150,6 +150,9 @@ public:
     /** Adds a move at the current position, returns the move id of the added move */
     MoveId addMove(const Move& move, NagSet nags = NagSet());
 
+    /** Remove nodes marked for removal */
+    QMap<MoveId, MoveId> compact();
+    
 private:
     /** Keeps the current position of the game */
     BoardX* m_currentBoard;
