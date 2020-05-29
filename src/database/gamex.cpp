@@ -37,7 +37,7 @@ void applyRenames(QMap<MoveId, T>& map, const QMap<MoveId, MoveId>& renames)
     qSwap(map, tmp);
 }
 
-MoveTree::MoveTree()
+GameCursor::GameCursor()
     : m_currentBoard(new BoardX)
     , m_nodes()
     , m_currentNode(0)
@@ -48,7 +48,7 @@ MoveTree::MoveTree()
     initCursor();
 }
 
-MoveTree::MoveTree(const MoveTree& rhs)
+GameCursor::GameCursor(const GameCursor& rhs)
     : m_currentBoard(new BoardX)
     , m_nodes(rhs.m_nodes)
     , m_currentNode(rhs.m_currentNode)
@@ -58,7 +58,7 @@ MoveTree::MoveTree(const MoveTree& rhs)
     initCursor();
 }
 
-MoveTree& MoveTree::operator=(const MoveTree& rhs)
+GameCursor& GameCursor::operator=(const GameCursor& rhs)
 {
     m_nodes = rhs.m_nodes;
     m_currentNode = rhs.m_currentNode;
@@ -71,12 +71,12 @@ MoveTree& MoveTree::operator=(const MoveTree& rhs)
     return *this;
 }
 
-MoveTree::~MoveTree()
+GameCursor::~GameCursor()
 {
     unmountBoard();
 }
 
-void MoveTree::initCursor()
+void GameCursor::initCursor()
 {
     m_nodes.append(Node());
     if (m_currentBoard)
@@ -90,7 +90,7 @@ void MoveTree::initCursor()
     }
 }
 
-void MoveTree::unmountBoard()
+void GameCursor::unmountBoard()
 {
     if (m_currentBoard)
     {
@@ -99,7 +99,7 @@ void MoveTree::unmountBoard()
     }
 }
 
-void MoveTree::clear()
+void GameCursor::clear()
 {
     m_nodes.clear();
     m_startingBoard.setStandardPosition();
@@ -107,7 +107,7 @@ void MoveTree::clear()
     initCursor();
 }
 
-void MoveTree::clear(const QString& fen, bool chess960)
+void GameCursor::clear(const QString& fen, bool chess960)
 {
     m_nodes.clear();
     m_startingBoard.setChess960(chess960);
@@ -116,7 +116,7 @@ void MoveTree::clear(const QString& fen, bool chess960)
     initCursor();
 }
 
-MoveId MoveTree::makeNodeIndex(MoveId moveId) const
+MoveId GameCursor::makeNodeIndex(MoveId moveId) const
 {
     if (moveId == CURRENT_MOVE)
     {
@@ -130,7 +130,7 @@ MoveId MoveTree::makeNodeIndex(MoveId moveId) const
     return moveId;
 }
 
-Move MoveTree::move(MoveId moveId) const
+Move GameCursor::move(MoveId moveId) const
 {
     MoveId node = makeNodeIndex(moveId);
     if(node != NO_MOVE)
@@ -140,7 +140,7 @@ Move MoveTree::move(MoveId moveId) const
     return Move();
 }
 
-int MoveTree::variationCount(MoveId moveId) const
+int GameCursor::variationCount(MoveId moveId) const
 {
     MoveId node = makeNodeIndex(moveId);
     if(node != NO_MOVE)
@@ -150,12 +150,12 @@ int MoveTree::variationCount(MoveId moveId) const
     return 0;
 }
 
-const QList<MoveId>& MoveTree::variations() const
+const QList<MoveId>& GameCursor::variations() const
 {
     return m_nodes[m_currentNode].variations;
 }
 
-bool MoveTree::isMainline(MoveId moveId) const
+bool GameCursor::isMainline(MoveId moveId) const
 {
     if(moveId == 0)
     {
@@ -172,7 +172,7 @@ bool MoveTree::isMainline(MoveId moveId) const
     }
 }
 
-MoveId MoveTree::mainLineMove() const
+MoveId GameCursor::mainLineMove() const
 {
     MoveId node = makeNodeIndex(m_currentNode);
     if(node != NO_MOVE)
@@ -191,7 +191,7 @@ MoveId MoveTree::mainLineMove() const
     return node;
 }
 
-bool MoveTree::atLineStart(MoveId moveId) const
+bool GameCursor::atLineStart(MoveId moveId) const
 {
     MoveId node = makeNodeIndex(moveId);
     if(node == NO_MOVE)
@@ -202,7 +202,7 @@ bool MoveTree::atLineStart(MoveId moveId) const
         || m_nodes[node].previousNode == 0;
 }
 
-bool MoveTree::atLineEnd(MoveId moveId) const
+bool GameCursor::atLineEnd(MoveId moveId) const
 {
     MoveId node = makeNodeIndex(moveId);
     if (node == NO_MOVE)
@@ -212,17 +212,17 @@ bool MoveTree::atLineEnd(MoveId moveId) const
     return m_nodes[node].nextNode == NO_MOVE;
 }
 
-bool MoveTree::atGameStart(MoveId moveId) const
+bool GameCursor::atGameStart(MoveId moveId) const
 {
     return (makeNodeIndex(moveId) == ROOT_NODE);
 }
 
-bool MoveTree::atGameEnd(MoveId moveId) const
+bool GameCursor::atGameEnd(MoveId moveId) const
 {
     return (atLineEnd(moveId) && isMainline(moveId));
 }
 
-int MoveTree::plyCount() const
+int GameCursor::plyCount() const
 {
     int count = 0;
     MoveId node = ROOT_NODE;
@@ -237,7 +237,7 @@ int MoveTree::plyCount() const
     return count - 1;
 }
 
-int MoveTree::plyNumber(MoveId moveId) const
+int GameCursor::plyNumber(MoveId moveId) const
 {
     MoveId node = makeNodeIndex(moveId);
     if(node != NO_MOVE)
@@ -247,7 +247,7 @@ int MoveTree::plyNumber(MoveId moveId) const
     return 0;
 }
 
-int MoveTree::moveNumber(MoveId moveId) const
+int GameCursor::moveNumber(MoveId moveId) const
 {
     MoveId node = makeNodeIndex(moveId);
     if(node != NO_MOVE)
@@ -261,7 +261,7 @@ int MoveTree::moveNumber(MoveId moveId) const
     return -1;
 }
 
-int MoveTree::countMoves() const
+int GameCursor::countMoves() const
 {
     int count = 0;
     MoveId node = 1;
@@ -273,7 +273,7 @@ int MoveTree::countMoves() const
     return count;
 }
 
-MoveId MoveTree::variationStartMove(MoveId variation) const
+MoveId GameCursor::variationStartMove(MoveId variation) const
 {
     variation = makeNodeIndex(variation);
     if(variation == NO_MOVE)
@@ -291,7 +291,7 @@ MoveId MoveTree::variationStartMove(MoveId variation) const
     return variation;
 }
 
-MoveId MoveTree::variationNumber(MoveId moveId) const
+MoveId GameCursor::variationNumber(MoveId moveId) const
 {
     if(isMainline())
     {
@@ -310,7 +310,7 @@ MoveId MoveTree::variationNumber(MoveId moveId) const
     return node;
 }
 
-bool MoveTree::variationHasSiblings(MoveId variation) const
+bool GameCursor::variationHasSiblings(MoveId variation) const
 {
     variation = makeNodeIndex(variation);
     if(variation == NO_MOVE)
@@ -329,7 +329,7 @@ bool MoveTree::variationHasSiblings(MoveId variation) const
     return (variationCount(parent) > 1);
 }
 
-bool MoveTree::moveToId(MoveId moveId, QString* algebraicMoveList)
+bool GameCursor::moveToId(MoveId moveId, QString* algebraicMoveList)
 {
     moveId = makeNodeIndex(moveId);
     if(moveId == NO_MOVE)
@@ -375,7 +375,7 @@ bool MoveTree::moveToId(MoveId moveId, QString* algebraicMoveList)
     return true;
 }
 
-int MoveTree::forward(int count)
+int GameCursor::forward(int count)
 {
     int moved = 0;
     while ((m_nodes[m_currentNode].nextNode != NO_MOVE) && (moved < count))
@@ -388,7 +388,7 @@ int MoveTree::forward(int count)
     return moved;
 }
 
-int MoveTree::backward(int count)
+int GameCursor::backward(int count)
 {
     int moved = 0;
     while((m_nodes[m_currentNode].previousNode >= 0) && (moved < count))
@@ -400,19 +400,19 @@ int MoveTree::backward(int count)
     return moved;
 }
 
-bool MoveTree::moveToLineEnd()
+bool GameCursor::moveToLineEnd()
 {
     return forward(999) != 0;
 }
 
-bool MoveTree::moveToStart()
+bool GameCursor::moveToStart()
 {
     m_currentNode = 0;
     *m_currentBoard = m_startingBoard;
     return true;
 }
 
-bool MoveTree::moveToEnd()
+bool GameCursor::moveToEnd()
 {
     // Move out of variations to mainline
     while(m_nodes[m_currentNode].parentNode != NO_MOVE)
@@ -423,14 +423,14 @@ bool MoveTree::moveToEnd()
     return moveToLineEnd();
 }
 
-void MoveTree::moveIntoVariation(MoveId moveId)
+void GameCursor::moveIntoVariation(MoveId moveId)
 {
     Q_ASSERT(variations().contains(moveId));
     m_currentBoard->doMove(m_nodes[moveId].move);
     m_currentNode = moveId;
 }
 
-MoveId MoveTree::addMove(const Move& move)
+MoveId GameCursor::addMove(const Move& move)
 {
     Node node;
     MoveId previousNode = m_currentNode;
@@ -447,7 +447,7 @@ MoveId MoveTree::addMove(const Move& move)
     return m_currentNode;
 }
 
-MoveId MoveTree::addVariation(const Move& move)
+MoveId GameCursor::addVariation(const Move& move)
 {
     auto previousNode = m_currentNode;
     auto saveNextNode = m_nodes[m_currentNode].nextNode;
@@ -458,7 +458,7 @@ MoveId MoveTree::addVariation(const Move& move)
     return node;
 }
 
-void MoveTree::remove(MoveId moveId, QList<MoveId>* removed)
+void GameCursor::remove(MoveId moveId, QList<MoveId>* removed)
 {
     auto node = makeNodeIndex(moveId);
     if (node <= ROOT_NODE)
@@ -484,7 +484,7 @@ void MoveTree::remove(MoveId moveId, QList<MoveId>* removed)
     m_nodes[node].remove();
 }
 
-void MoveTree::truncateFrom(MoveId moveId, QList<MoveId>* removed)
+void GameCursor::truncateFrom(MoveId moveId, QList<MoveId>* removed)
 {
     auto node = makeNodeIndex(moveId);
     if (node == NO_MOVE)
@@ -496,7 +496,7 @@ void MoveTree::truncateFrom(MoveId moveId, QList<MoveId>* removed)
     }
 }
 
-void MoveTree::truncateUpto(MoveId moveId, QList<MoveId>* removed)
+void GameCursor::truncateUpto(MoveId moveId, QList<MoveId>* removed)
 {
     // TODO: figure why truncated modes are not marked (mistake?)
     auto node = makeNodeIndex(moveId);
@@ -531,7 +531,7 @@ void MoveTree::truncateUpto(MoveId moveId, QList<MoveId>* removed)
     moveToId(save);
 }
 
-void MoveTree::promoteVariation(MoveId variation)
+void GameCursor::promoteVariation(MoveId variation)
 {
     auto save = m_currentNode;
 
@@ -553,7 +553,7 @@ void MoveTree::promoteVariation(MoveId variation)
     moveToId(save);
 }
 
-bool MoveTree::canMoveVariationUp(MoveId moveId) const
+bool GameCursor::canMoveVariationUp(MoveId moveId) const
 {
     if (isMainline())
         return false;
@@ -566,7 +566,7 @@ bool MoveTree::canMoveVariationUp(MoveId moveId) const
     return i > 0;
 }
 
-bool MoveTree::canMoveVariationDown(MoveId moveId) const
+bool GameCursor::canMoveVariationDown(MoveId moveId) const
 {
     if (isMainline())
         return false;
@@ -579,7 +579,7 @@ bool MoveTree::canMoveVariationDown(MoveId moveId) const
     return 0 <= i && i + 1 < vars.size();
 }
 
-bool MoveTree::moveVariationUp(MoveId moveId)
+bool GameCursor::moveVariationUp(MoveId moveId)
 {
     if (isMainline())
         return false;
@@ -597,7 +597,7 @@ bool MoveTree::moveVariationUp(MoveId moveId)
     return possible;
 }
 
-bool MoveTree::moveVariationDown(MoveId moveId)
+bool GameCursor::moveVariationDown(MoveId moveId)
 {
     if (isMainline())
         return false;
@@ -615,7 +615,7 @@ bool MoveTree::moveVariationDown(MoveId moveId)
     return possible;
 }
 
-bool MoveTree::removeVariation(MoveId variation)
+bool GameCursor::removeVariation(MoveId variation)
 {
     // don't remove whole game
     if(variation == ROOT_NODE)
@@ -631,7 +631,7 @@ bool MoveTree::removeVariation(MoveId variation)
     return true;
 }
 
-void MoveTree::removeVariations()
+void GameCursor::removeVariations()
 {
     for(int i = 0; i < m_nodes.size(); ++i)
     {
@@ -642,7 +642,7 @@ void MoveTree::removeVariations()
     }
 }
 
-void MoveTree::reparentVariation(MoveId variation, MoveId parent)
+void GameCursor::reparentVariation(MoveId variation, MoveId parent)
 {
     if (variation == NO_MOVE)
         return;
@@ -652,7 +652,7 @@ void MoveTree::reparentVariation(MoveId variation, MoveId parent)
     }
 }
 
-QMap<MoveId, MoveId> MoveTree::compact()
+QMap<MoveId, MoveId> GameCursor::compact()
 {
     QMap<MoveId,MoveId> renames;
     // map NO_MOVE for simplicity
@@ -701,7 +701,7 @@ QMap<MoveId, MoveId> MoveTree::compact()
     return renames;
 }
 
-MoveId MoveTree::findPosition(const BoardX& position) const
+MoveId GameCursor::findPosition(const BoardX& position) const
 {
     MoveId current = 0;
     BoardX currentBoard(m_startingBoard);
@@ -724,7 +724,7 @@ MoveId MoveTree::findPosition(const BoardX& position) const
     return NO_MOVE;
 }
 
-void MoveTree::dumpMoveNode(MoveId moveId) const
+void GameCursor::dumpMoveNode(MoveId moveId) const
 {
     if(moveId == CURRENT_MOVE)
     {

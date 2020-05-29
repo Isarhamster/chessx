@@ -26,7 +26,7 @@ typedef short MoveId;
 
 class SaveRestoreMove;
 
-class MoveTree
+class GameCursor
 {
 public:
     #pragma pack(push, 2)
@@ -62,13 +62,13 @@ public:
     };
     #pragma pack(pop)
 
-    MoveTree();
-    MoveTree(const MoveTree& rhs);
-    MoveTree& operator=(const MoveTree& rhs);
+    GameCursor();
+    GameCursor(const GameCursor& rhs);
+    GameCursor& operator=(const GameCursor& rhs);
     // TODO: maybe implement moving constructor/assignment later
-    MoveTree(MoveTree&& rhs) = delete;
-    MoveTree& operator=(MoveTree&& rhs) = delete;
-    ~MoveTree();
+    GameCursor(GameCursor&& rhs) = delete;
+    GameCursor& operator=(GameCursor&& rhs) = delete;
+    ~GameCursor();
 
     /** @returns initial position */
     const BoardX& initialBoard() const { return m_startingBoard; }
@@ -203,7 +203,7 @@ public:
     void dumpMoveNode(MoveId moveId = CURRENT_MOVE) const;
 
     /** compare game moves and annotations */
-    int isEqual(const MoveTree& rhs) const { return m_nodes == rhs.m_nodes; }
+    int isEqual(const GameCursor& rhs) const { return m_nodes == rhs.m_nodes; }
 
 private:
     /** Keeps the current position of the game */
@@ -286,8 +286,8 @@ public :
 
     void unmountBoard() { m_moves.unmountBoard(); }
 
-    const MoveTree& model() const { return m_moves; }
-    MoveTree& model() { return m_moves; }
+    const GameCursor& model() const { return m_moves; }
+    GameCursor& model() { return m_moves; }
 
     // **** Querying game information ****
     /** compare game moves and annotations */
@@ -566,9 +566,9 @@ signals:
     void signalMoveChanged();
 
 private:
-    MoveTree m_moves;
+    GameCursor m_moves;
 
-    using MoveNode = MoveTree::Node;
+    using MoveNode = GameCursor::Node;
 
     typedef QMap<MoveId, QString> AnnotationMap;
 
