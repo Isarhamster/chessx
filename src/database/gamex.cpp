@@ -2124,8 +2124,7 @@ void GameX::moveToEnd()
 
 void GameX::moveToLineEnd()
 {
-    // TODO: review this, looks wrong
-    if (!m_moves.moveToEnd())
+    if (!m_moves.moveToLineEnd())
     {
         indicateAnnotationsOnBoard();
     }
