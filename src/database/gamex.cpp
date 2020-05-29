@@ -718,6 +718,29 @@ QMap<MoveId, MoveId> MoveTree::compact()
     return renames;
 }
 
+MoveId MoveTree::findPosition(const BoardX& position) const
+{
+    MoveId current = 0;
+    BoardX currentBoard(m_startingBoard);
+
+    for(;;)
+    {
+        if(currentBoard == position && currentBoard.positionIsSame(position))
+        {
+            return current;
+        }
+
+        current = m_nodes[current].nextNode;
+        if(current == NO_MOVE || !position.canBeReachedFrom(currentBoard))
+        {
+            return NO_MOVE;
+        }
+
+        currentBoard.doMove(m_nodes[current].move);
+    }
+    return NO_MOVE;
+}
+
 static const char strSquareNames[64][3] =
 {
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -976,7 +999,7 @@ MoveId GameX::findMergePoint(const GameX& otherGame)
     bool found = false;
     do
     {
-        if(NO_MOVE == (otherMergeNode = otherGame.findPosition(board())))
+        if(NO_MOVE == (otherMergeNode = otherGame.model().findPosition(board())))
         {
             if(trailNode != NO_MOVE)
             {
@@ -2339,29 +2362,6 @@ void GameX::dumpAllMoveNodes() const
     moveCount(&moves, &comments, &nags);
     qDebug() << "Moves: " << moves << " Comments: " << comments << " Nags: " << nags << endl;
     qDebug() << "----------------------------------" << endl;
-}
-
-MoveId GameX::findPosition(const BoardX& position) const
-{
-    MoveId current = 0;
-    BoardX currentBoard(m_moves.initialBoard());
-
-    for(;;)
-    {
-        if(currentBoard == position && currentBoard.positionIsSame(position))
-        {
-            return current;
-        }
-
-        current = m_moves.m_nodes[current].nextNode;
-        if(current == NO_MOVE || !position.canBeReachedFrom(currentBoard))
-        {
-            return NO_MOVE;
-        }
-
-        currentBoard.doMove(m_moves.m_nodes[current].move);
-    }
-    return NO_MOVE;
 }
 
 void GameX::compact()

@@ -54,7 +54,7 @@ void OpeningTreeThread::run()
             {
                 GameX g;
                 m_filter->database()->loadGameMoves(i, g);
-                int id = g.findPosition(m_board);
+                int id = g.model().findPosition(m_board);
                 if((id != NO_MOVE) && (m_bEnd ? g.atGameEnd(id) : true))
                 {
                     if(m_updateFilter)

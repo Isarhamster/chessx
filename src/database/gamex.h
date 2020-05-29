@@ -193,6 +193,9 @@ public:
     /** Change parent of each move of a variation. */
     void reparentVariation(MoveId variation, MoveId parent);
 
+    /** Search game to see if given position exists and returns the move id, otherwise NO_MOVE */
+    MoveId findPosition(const BoardX& position) const;
+
 private:
     /** Keeps the current position of the game */
     BoardX* m_currentBoard;
@@ -504,8 +507,6 @@ public :
     bool isChess960() const;
 
     // Searching
-    /** Search game to see if given position exists and returns the move id, otherwise NO_MOVE */
-    MoveId findPosition(const BoardX& position) const;
     /** @return true if the move @p from @p to is already main move or variation */
     bool currentNodeHasMove(chessx::Square from, chessx::Square to) const;
     /** @return true if the move @p from @p to is already in a variation */

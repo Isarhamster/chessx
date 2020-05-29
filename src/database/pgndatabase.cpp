@@ -406,7 +406,7 @@ int PgnDatabase::findPosition(GameId index, const BoardX &position)
 {
     GameX g;
     loadGameMoves(index, g);
-    return g.findPosition(position);
+    return g.model().findPosition(position);
 }
 
 bool PgnDatabase::loadGame(GameId gameId, GameX& game)
