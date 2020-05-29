@@ -741,6 +741,29 @@ MoveId MoveTree::findPosition(const BoardX& position) const
     return NO_MOVE;
 }
 
+void MoveTree::dumpMoveNode(MoveId moveId) const
+{
+    if(moveId == CURRENT_MOVE)
+    {
+        moveId = m_currentNode;
+    }
+    if(moveId != NO_MOVE)
+    {
+        qDebug() << "Move Id : " << moveId;
+        qDebug() << "   Next node   : " << m_nodes.at(moveId).nextNode;
+        qDebug() << "   Prev node   : " << m_nodes.at(moveId).previousNode;
+        qDebug() << "   Parent node : " << m_nodes.at(moveId).parentNode;
+        qDebug() << "   Deleted     : " << m_nodes.at(moveId).Removed();
+        qDebug() << "   # Variations: " << m_nodes.at(moveId).variations.size();
+        qDebug() << "   Variations  : " << m_nodes.at(moveId).variations;
+        qDebug() << "   Move        : " << m_nodes.at(moveId).move.toAlgebraic()
+                 << " (" << m_nodes.at(moveId).move.rawMove()
+                 << ", " << m_nodes.at(moveId).move.rawUndo()
+                 << ")";
+    }
+}
+
+
 static const char strSquareNames[64][3] =
 {
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -2311,29 +2334,6 @@ QString GameX::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, M
     return san;
 }
 
-void GameX::dumpMoveNode(MoveId moveId) const
-{
-    if(moveId == CURRENT_MOVE)
-    {
-        moveId = m_moves.currMove();
-    }
-    if(moveId != NO_MOVE)
-    {
-        qDebug() << "Move Id : " << moveId;
-        qDebug() << "   Next node   : " << m_moves.m_nodes.at(moveId).nextNode;
-        qDebug() << "   Prev node   : " << m_moves.m_nodes.at(moveId).previousNode;
-        qDebug() << "   Parent node : " << m_moves.m_nodes.at(moveId).parentNode;
-        qDebug() << "   Nags        : " << m_nags.value(moveId, NagSet()).toString(NagSet::Simple);
-        qDebug() << "   Deleted     : " << m_moves.m_nodes.at(moveId).Removed();
-        qDebug() << "   # Variations: " << m_moves.m_nodes.at(moveId).variations.size();
-        qDebug() << "   Variations  : " << m_moves.m_nodes.at(moveId).variations;
-        qDebug() << "   Move        : " << m_moves.m_nodes.at(moveId).move.toAlgebraic()
-                 << " (" << m_moves.m_nodes.at(moveId).move.rawMove()
-                 << ", " << m_moves.m_nodes.at(moveId).move.rawUndo()
-                 << ")";
-    }
-}
-
 void GameX::dumpAnnotations(MoveId moveId) const
 {
     if(moveId == CURRENT_MOVE)
@@ -2345,6 +2345,7 @@ void GameX::dumpAnnotations(MoveId moveId) const
         qDebug() << "   Annotations";
         qDebug() << "     Text        : " << m_annotations.value(moveId);
         qDebug() << "     Start       : " << m_variationStartAnnotations.value(moveId);
+        qDebug() << "     Nags        : " << m_nags.value(moveId, NagSet()).toString(NagSet::Simple);
     }
 }
 
@@ -2353,9 +2354,9 @@ void GameX::dumpAllMoveNodes() const
 {
     qDebug() << endl;
     qDebug() << "Current Node: " << m_moves.currMove();
-    for(int i = 0; i < m_moves.m_nodes.size(); ++i)
+    for(int i = 0, sz = m_moves.capacity(); i < sz; ++i)
     {
-        dumpMoveNode(i);
+        m_moves.dumpMoveNode(i);
         dumpAnnotations(i);
     }
     int moves, comments, nags;

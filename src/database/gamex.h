@@ -196,6 +196,9 @@ public:
     /** Search game to see if given position exists and returns the move id, otherwise NO_MOVE */
     MoveId findPosition(const BoardX& position) const;
 
+    /** Dump a move node using qDebug() */
+    void dumpMoveNode(MoveId moveId = CURRENT_MOVE) const;
+
 private:
     /** Keeps the current position of the game */
     BoardX* m_currentBoard;
@@ -523,8 +526,6 @@ public :
     bool isEcoPosition() const;
 
     /* Debug */
-    /** Dump a move node using qDebug() */
-    void dumpMoveNode(MoveId moveId = CURRENT_MOVE) const;
     /** Dump annotatios for move @p moveId using qDebug() */
     void dumpAnnotations(MoveId moveId) const;
     /** Repeatedly call dumpMoveNode for all nodes */
