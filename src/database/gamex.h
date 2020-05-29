@@ -216,6 +216,8 @@ private:
     short m_startPly;
     /** Keeps the start position of the game */
     BoardX m_startingBoard;
+
+    void initCursor();
 };
 
 /** @ingroup Core

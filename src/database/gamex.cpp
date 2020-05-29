@@ -73,6 +73,20 @@ MoveTree::~MoveTree()
     unmountBoard();
 }
 
+void MoveTree::initCursor()
+{
+    m_nodes.append(Node());
+    if (m_currentBoard)
+    {
+        m_currentNode = ROOT_NODE;
+        *m_currentBoard = m_startingBoard;
+    }
+    else
+    {
+        m_currentNode = NO_MOVE;
+    }
+}
+
 void MoveTree::unmountBoard()
 {
     if (m_currentBoard)
@@ -88,16 +102,7 @@ void MoveTree::clear()
     m_startPly = 0;
 
     m_startingBoard.setStandardPosition();
-    if (m_currentBoard)
-    {
-        m_currentNode = ROOT_NODE;
-        *m_currentBoard = m_startingBoard;
-    }
-    else
-    {
-        m_currentNode = NO_MOVE;
-    }
-    m_nodes.append(Node());
+    initCursor();
 }
 
 void MoveTree::setInitialBoard(const QString& fen, bool chess960)
