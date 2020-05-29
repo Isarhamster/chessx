@@ -787,20 +787,13 @@ GameX::GameX(const GameX& game)
 
 GameX& GameX::operator=(const GameX& game)
 {
-    if(this != &game)
+    if (this != &game)
     {
-        clearTags();
-        clear();
-        //assign non pointer variables
-        m_tags = game.m_tags;
-        //m_tags.detach();
+        m_moves = game.m_moves;
         m_variationStartAnnotations = game.m_variationStartAnnotations;
-        //m_variationStartAnnotations.detach();
         m_annotations = game.m_annotations;
         m_nags = game.m_nags;
-        //m_annotations.detach();
-        //m_moveNodes.detach();
-        m_moves = game.m_moves;
+        m_tags = game.m_tags;
         if (m_moves.currentBoard() && !game.m_moves.currentBoard())
         {
             moveToStart();
