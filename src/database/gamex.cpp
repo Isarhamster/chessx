@@ -498,6 +498,7 @@ void GameCursor::truncateFrom(MoveId moveId, QList<MoveId>* removed)
 
 void GameCursor::truncateUpto(MoveId moveId, QList<MoveId>* removed)
 {
+    Q_UNUSED(removed);
     // TODO: figure why truncated modes are not marked (mistake?)
     auto node = makeNodeIndex(moveId);
     if (node <= ROOT_NODE)
