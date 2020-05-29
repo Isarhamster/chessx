@@ -761,16 +761,27 @@ const QStringList GameX::s_specList = QStringList() << s_emt << s_clk << s_egt <
 GameX::GameX()
     : QObject()
     , m_moves()
+    , m_variationStartAnnotations()
+    , m_annotations()
+    , m_nags()
+    , m_tags()
 {
-    clearTags();
-    clear();
+    m_moves.clear();
 }
 
 GameX::GameX(const GameX& game)
     : QObject()
-    , m_moves(game.m_moves)
+    , m_moves()
+    , m_variationStartAnnotations(game.m_variationStartAnnotations)
+    , m_annotations(game.m_annotations)
+    , m_nags(game.m_nags)
+    , m_tags(game.m_tags)
 {
-    *this = game;
+    m_moves = game.m_moves;
+    if (m_moves.currentBoard() && !game.m_moves.currentBoard())
+    {
+        moveToStart();
+    }
 }
 
 GameX& GameX::operator=(const GameX& game)
