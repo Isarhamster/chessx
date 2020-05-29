@@ -348,8 +348,8 @@ public :
     /** Append an arrow to the existing lists of arrows, if there is none, create one */
     bool appendArrowAnnotation(chessx::Square dest, chessx::Square src, QChar colorCode);
 
-    /** Sets the arrowAnnotation associated with move at node @p moveId */
-    bool setArrowAnnotation(QString arrowAnnotation, MoveId moveId = CURRENT_MOVE);
+    /** Sets the arrowAnnotation associated with current move */
+    bool setArrowAnnotation(QString arrowAnnotation);
 
     /** Get a string with all special annotations including square brackets etc. */
     QString specAnnotations(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;

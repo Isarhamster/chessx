@@ -1818,25 +1818,19 @@ QString GameX::squareAnnotation(MoveId moveId) const
     return s;
 }
 
-bool GameX::setArrowAnnotation(QString arrowAnnotation, MoveId moveId)
+bool GameX::setArrowAnnotation(QString arrowAnnotation)
 {
     arrowAnnotation = arrowAnnotation.trimmed();
 
-    MoveId node = m_moves.makeNodeIndex(moveId);
-    if(node == NO_MOVE)
-    {
-        return false;
-    }
-
-    QString s = annotation(moveId);
+    QString s = annotation();
     s.remove(QRegExp(s_cal));
 
     if(!arrowAnnotation.isEmpty())
     {
         s.append(QString("[%cal %1]").arg(arrowAnnotation));
     }
-    dbSetAnnotation(s, moveId);
-    indicateAnnotationsOnBoard(moveId);
+    dbSetAnnotation(s);
+    indicateAnnotationsOnBoard();
     return true;
 }
 
