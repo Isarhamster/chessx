@@ -175,6 +175,14 @@ public:
     void truncateUpto(MoveId moveId, QList<MoveId>* removed = nullptr);
     /** Promotes the given variation to the main line */
     void promoteVariation(MoveId variation);
+    /** Decide if moveVariationUp() can be executed */
+    bool canMoveVariationUp(MoveId moveId) const;
+    /** Decide if moveVariationDown() can be executed */
+    bool canMoveVariationDown(MoveId moveId) const;
+    /** Move the variation @p moveId of the curent node up in the list of variations */
+    bool moveVariationUp(MoveId moveId);
+    /** Move the variation @p moveId of the curent node down in the list of variations */
+    bool moveVariationDown(MoveId moveId);
     /** Remove nodes marked for removal */
     QMap<MoveId, MoveId> compact();
 
@@ -516,10 +524,6 @@ public :
     void dumpAnnotations(MoveId moveId) const;
     /** Repeatedly call dumpMoveNode for all nodes */
     void dumpAllMoveNodes() const;
-    /** Decide if moveVariationUp() can be executed */
-    bool canMoveVariationUp(MoveId moveId) const;
-    /** Decide if moveVariationDown() can be executed */
-    bool canMoveVariationDown(MoveId moveId) const;
     /** Start all variations with an initial character comment */
     void enumerateVariations(MoveId moveId, char a);
     /** Move the variation @p moveId of the curent node up in the list of variations */

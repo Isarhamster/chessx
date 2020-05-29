@@ -570,6 +570,68 @@ void MoveTree::promoteVariation(MoveId variation)
     moveToId(save);
 }
 
+bool MoveTree::canMoveVariationUp(MoveId moveId) const
+{
+    if (isMainline())
+        return false;
+
+    auto variation = variationNumber(moveId);
+    auto parentNode = m_nodes[moveId].parentNode;
+
+    auto& vars = m_nodes[parentNode].variations;
+    int i = vars.indexOf(variation);
+    return i > 0;
+}
+
+bool MoveTree::canMoveVariationDown(MoveId moveId) const
+{
+    if (isMainline())
+        return false;
+
+    auto variation = variationNumber(moveId);
+    auto parentNode = m_nodes[moveId].parentNode;
+
+    auto& vars = m_nodes[parentNode].variations;
+    int i = vars.indexOf(variation);
+    return 0 <= i && i + 1 < vars.size();
+}
+
+bool MoveTree::moveVariationUp(MoveId moveId)
+{
+    if (isMainline())
+        return false;
+
+    auto variation = variationNumber(moveId);
+    auto parentNode = m_nodes[moveId].parentNode;
+
+    auto& vars = m_nodes[parentNode].variations;
+    int i = vars.indexOf(variation);
+    auto possible = i > 0;
+    if (possible)
+    {
+        vars.swap(i, i - 1);
+    }
+    return possible;
+}
+
+bool MoveTree::moveVariationDown(MoveId moveId)
+{
+    if (isMainline())
+        return false;
+
+    auto variation = variationNumber(moveId);
+    auto parentNode = m_nodes[moveId].parentNode;
+
+    auto& vars = m_nodes[parentNode].variations;
+    int i = vars.indexOf(variation);
+    auto possible = 0 <= i && i + 1 < vars.size();
+    if (possible)
+    {
+        vars.swap(i, i + 1);
+    }
+    return possible;
+}
+
 void MoveTree::reparentVariation(MoveId variation, MoveId parent)
 {
     if (variation == NO_MOVE)
@@ -1908,72 +1970,20 @@ bool GameX::isEmpty() const
     return gameIsEmpty;
 }
 
-bool GameX::canMoveVariationUp(MoveId moveId) const
-{
-    if(isMainline())
-    {
-        return false;
-    }
-
-    MoveId variation = variationNumber(moveId);
-    MoveId parentNode = m_moves.m_nodes[moveId].parentNode;
-
-    const QList <MoveId>& v = m_moves.m_nodes[parentNode].variations;
-    int i = v.indexOf(variation);
-    return (i > 0);
-}
-
 void GameX::moveVariationUp(MoveId moveId)
 {
-    if(isMainline())
+    GameX state = *this;
+    if (m_moves.moveVariationUp(moveId))
     {
-        return;
-    }
-
-    MoveId variation = variationNumber(moveId);
-    MoveId parentNode = m_moves.m_nodes[moveId].parentNode;
-
-    QList <MoveId>& v = m_moves.m_nodes[parentNode].variations;
-    int i = v.indexOf(variation);
-    if(i > 0)
-    {
-        GameX state = *this;
-        v.swap(i, i - 1);
         emit signalGameModified(true, state, tr("Move variation"));
     }
 }
 
-bool GameX::canMoveVariationDown(MoveId moveId) const
-{
-    if(isMainline())
-    {
-        return false;
-    }
-
-    MoveId variation = variationNumber(moveId);
-    MoveId parentNode = m_moves.m_nodes[moveId].parentNode;
-
-    const QList <MoveId>& v = m_moves.m_nodes[parentNode].variations;
-    int i = v.indexOf(variation);
-    return (i >= 0 && (i + 1) < v.count());
-}
-
 void GameX::moveVariationDown(MoveId moveId)
 {
-    if(isMainline())
+    GameX state = *this;
+    if (m_moves.moveVariationDown(moveId))
     {
-        return;
-    }
-
-    MoveId variation = variationNumber(moveId);
-    MoveId parentNode = m_moves.m_nodes[moveId].parentNode;
-
-    QList <MoveId>& v = m_moves.m_nodes[parentNode].variations;
-    int i = v.indexOf(variation);
-    if(i >= 0 && (i + 1) < v.count())
-    {
-        GameX state = *this;
-        v.swap(i, i + 1);
         emit signalGameModified(true, state, tr("Move variation"));
     }
 }
