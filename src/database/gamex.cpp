@@ -2071,7 +2071,7 @@ void GameX::dbIndicateAnnotationsOnBoard()
     m_moves.currentBoard()->setArrowAnnotation(annotation);
 }
 
-void GameX::indicateAnnotationsOnBoard(MoveId moveId)
+void GameX::indicateAnnotationsOnBoard()
 {
     dbIndicateAnnotationsOnBoard();
     emit signalMoveChanged();

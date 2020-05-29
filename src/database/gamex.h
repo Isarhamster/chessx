@@ -308,9 +308,8 @@ public :
     QString annotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
     /** @return comment at move at node @p moveId. */
     QString textAnnotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
-    /** Show annotations on the board for the Nose @p moveId. */
-    void indicateAnnotationsOnBoard(MoveId moveId);
-    void indicateAnnotationsOnBoard() { indicateAnnotationsOnBoard(m_moves.currMove()); }
+    /** Show annotations on the board */
+    void indicateAnnotationsOnBoard();
     /** @return squareAnnotation at move at node @p moveId. */
     QString squareAnnotation(MoveId moveId = CURRENT_MOVE) const;
     /** @return arrowAnnotation at move at node @p moveId. */
