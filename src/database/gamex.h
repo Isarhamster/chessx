@@ -79,9 +79,9 @@ public:
 
     void unmountBoard();
 
+    /** Re-initialize all fields  */
     void clear();
-    /** Set the game start position from FEN. */
-    void setInitialBoard(const QString& fen, bool chess960 = false);
+    void clear(const QString& fen, bool chess960 = false);
 
     /** Checks if a \p moveId is valid
      *  @returns

@@ -99,23 +99,19 @@ void MoveTree::unmountBoard()
 void MoveTree::clear()
 {
     m_nodes.clear();
-    m_startPly = 0;
-
     m_startingBoard.setStandardPosition();
+    m_startPly = 0;
     initCursor();
 }
 
-void MoveTree::setInitialBoard(const QString& fen, bool chess960)
+void MoveTree::clear(const QString& fen, bool chess960)
 {
+    m_nodes.clear();
     m_startingBoard.setChess960(chess960);
     m_startingBoard.fromFen(fen);
-    if (m_currentBoard)
-    {
-        *m_currentBoard = m_startingBoard;
-    }
     m_startPly = (m_startingBoard.moveNumber() - 1) * 2 + (m_startingBoard.toMove() == Black);
+    initCursor();
 }
-
 
 MoveId MoveTree::makeNodeIndex(MoveId moveId) const
 {
@@ -2215,9 +2211,11 @@ void GameX::setStartingBoard(const BoardX& startingBoard, QString text, bool che
 
 void GameX::dbSetStartingBoard(const QString& fen, bool chess960)
 {
-    clear();
+    m_moves.clear(fen, chess960);
+    m_variationStartAnnotations.clear();
+    m_annotations.clear();
+    m_nags.clear();
     dbSetChess960(chess960);
-    m_moves.setInitialBoard(fen, chess960);
     if (m_moves.initialBoard() != BoardX::standardStartBoard)
     {
         m_tags[TagNameFEN] = fen;
