@@ -77,7 +77,6 @@ public:
     const BoardX* currentBoard() const { return m_currentBoard; }
     BoardX* currentBoard() { return m_currentBoard; }
 
-    void mountBoard();
     void unmountBoard();
 
     void clear();
@@ -209,8 +208,6 @@ public:
 private:
     /** Keeps the current position of the game */
     BoardX* m_currentBoard;
-    /** Reference Counter for m_currentBoard */
-    int mountRefCount;
     /** List of nodes */
     QList<Node> m_nodes;
     /** Keeps the current node in the game */

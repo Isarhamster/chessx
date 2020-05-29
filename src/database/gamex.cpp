@@ -38,25 +38,21 @@ void applyRenames(QMap<MoveId, T>& map, const QMap<MoveId, MoveId>& renames)
 }
 
 MoveTree::MoveTree()
-    : m_currentBoard(nullptr)
-    , mountRefCount(0)
+    : m_currentBoard(new BoardX)
     , m_nodes()
     , m_currentNode(0)
     , m_startPly(0)
     , m_startingBoard()
 {
-    mountBoard();
 }
 
 MoveTree::MoveTree(const MoveTree& rhs)
-    : m_currentBoard(nullptr)
-    , mountRefCount(0)
+    : m_currentBoard(new BoardX)
     , m_nodes(rhs.m_nodes)
     , m_currentNode(rhs.m_currentNode)
     , m_startPly(rhs.m_startPly)
     , m_startingBoard(rhs.m_startingBoard)
 {
-    mountBoard();
 }
 
 MoveTree& MoveTree::operator=(const MoveTree& rhs)
@@ -74,32 +70,15 @@ MoveTree& MoveTree::operator=(const MoveTree& rhs)
 
 MoveTree::~MoveTree()
 {
-    if (mountRefCount)
-    {
-        delete m_currentBoard;
-        m_currentBoard = nullptr;
-    }
-}
-
-void MoveTree::mountBoard()
-{
-    ++mountRefCount;
-    if (mountRefCount == 1)
-    {
-        m_currentBoard = new BoardX;
-    }
+    unmountBoard();
 }
 
 void MoveTree::unmountBoard()
 {
-    if (mountRefCount > 0)
+    if (m_currentBoard)
     {
-        --mountRefCount;
-        if (mountRefCount == 0)
-        {
-            delete m_currentBoard;
-            m_currentBoard = nullptr;
-        }
+        delete m_currentBoard;
+        m_currentBoard = nullptr;
     }
 }
 
