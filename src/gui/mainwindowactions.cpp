@@ -2753,7 +2753,7 @@ void MainWindow::AutoMoveAtEndOfGame()
             game().dbMoveToId(nextVariation);
             if (AppSettings->getValue("/Board/BackwardAnalysis").toBool())
             {
-                game().model().moveToLineEnd();
+                game().cursor().moveToLineEnd();
             }
             game().indicateAnnotationsOnBoard();
         }

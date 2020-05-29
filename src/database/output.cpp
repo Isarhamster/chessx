@@ -816,7 +816,7 @@ QString Output::outputGame(const GameX* g, bool upToCurrentMove)
     QString text;
     m_game = *g;
     int id = m_game.currentMove();
-    int mainId = upToCurrentMove ? m_game.model().mainLineMove() : NO_MOVE;
+    int mainId = upToCurrentMove ? m_game.cursor().mainLineMove() : NO_MOVE;
     m_currentVariationLevel = 0;
 
     m_game.moveToStart();

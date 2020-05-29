@@ -286,8 +286,8 @@ public :
 
     void unmountBoard() { m_moves.unmountBoard(); }
 
-    const GameCursor& model() const { return m_moves; }
-    GameCursor& model() { return m_moves; }
+    const GameCursor& cursor() const { return m_moves; }
+    GameCursor& cursor() { return m_moves; }
 
     // **** Querying game information ****
     /** compare game moves and annotations */

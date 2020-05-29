@@ -62,7 +62,7 @@ static void ConvertLine(Game& src, GameX& dst, bool movesOnly = false)
         if (varsCnt > 0)
         {
             src.MoveBackup();
-            dst.model().backward();
+            dst.cursor().backward();
 
             auto move = dst.currentMove();
             for (uint v = 0; v < varsCnt; ++v)
@@ -81,13 +81,13 @@ static void ConvertLine(Game& src, GameX& dst, bool movesOnly = false)
                 src.MoveForward();
                 ConvertLine(src, dst, movesOnly);
                 src.MoveExitVariation();
-                dst.model().backward();
+                dst.cursor().backward();
             }
-            dst.model().forward();
+            dst.cursor().forward();
             src.MoveForward();
         }
     }
-    dst.model().backward(plyCnt);
+    dst.cursor().backward(plyCnt);
 }
 
 static void ConvertGame(Game& src, GameX& dst, bool movesOnly = false)
@@ -303,7 +303,7 @@ int ScidDatabase::findPosition(GameId index, const BoardX& position)
 {
     GameX g;
     loadGameMoves(index, g);
-    return g.model().findPosition(position);
+    return g.cursor().findPosition(position);
 }
 
 quint64 ScidDatabase::count() const

@@ -1007,7 +1007,7 @@ MoveId GameX::findMergePoint(const GameX& otherGame)
     bool found = false;
     do
     {
-        if(NO_MOVE == (otherMergeNode = otherGame.model().findPosition(board())))
+        if(NO_MOVE == (otherMergeNode = otherGame.cursor().findPosition(board())))
         {
             if(trailNode != NO_MOVE)
             {
