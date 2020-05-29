@@ -1190,7 +1190,7 @@ bool GameX::currentNodeHasVariation(Square from, Square to) const
 
 const QList<MoveId>& GameX::currentVariations() const
 {
-    return m_moves.m_nodes[m_moves.currMove()].variations;
+    return m_moves.variations();
 }
 
 bool GameX::currentNodeHasMove(Square from, Square  to) const
@@ -1199,19 +1199,19 @@ bool GameX::currentNodeHasMove(Square from, Square  to) const
     {
         return true;
     }
-    MoveId node = m_moves.m_nodes[m_moves.currMove()].nextNode;
+    MoveId node = m_moves.nextMove();
     if(node == NO_MOVE)
     {
         return false;
     }
-    Move m = m_moves.m_nodes[node].move;
+    Move m = m_moves.move(node);
     return (m.from() == from && m.to() == to);
 }
 
 bool GameX::hasNextMove() const
 {
-    MoveId node = m_moves.m_nodes[m_moves.currMove()].nextNode;
-    return (node != NO_MOVE);
+    auto next = m_moves.nextMove();
+    return (next != NO_MOVE);
 }
 
 bool GameX::findNextMove(Move m)
@@ -1224,10 +1224,10 @@ bool GameX::findNextMove(Move m)
 bool GameX::findNextMove(Square from, Square to, PieceType promotionPiece)
 {
     MoveId node;
-    node = m_moves.m_nodes[m_moves.currMove()].nextNode;
+    node = m_moves.nextMove();
     if(node != NO_MOVE)
     {
-        Move m = m_moves.m_nodes[node].move ;
+        Move m = m_moves.move(node);
         if(m.from() == from && m.to() == to &&
                 ((promotionPiece == None) || ((m.isPromotion() && (pieceType(m.promotedPiece()) == promotionPiece)))))
         {
@@ -1236,7 +1236,7 @@ bool GameX::findNextMove(Square from, Square to, PieceType promotionPiece)
         }
         else
         {
-            QList<MoveId> vs = m_moves.m_nodes[m_moves.currMove()].variations;
+            QList<MoveId> vs = m_moves.variations();
             QList<MoveId>::iterator i;
             for(i = vs.begin(); i != vs.end(); ++i)
             {
@@ -1259,7 +1259,7 @@ bool GameX::replaceMove(const Move& move, const QString& annotation, NagSet nags
     MoveId node;
     GameX state = *this;
 
-    node = m_moves.m_nodes[m_moves.currMove()].nextNode;
+    node = m_moves.nextMove();
     if(node == NO_MOVE)
     {
         dbAddMove(move, annotation, nags);
@@ -1471,7 +1471,7 @@ void GameX::truncateVariationAfterNextIllegalPosition()
     GameX g = *this;
     if(NO_MOVE == g.dbAddSanMove(san, QString(), NagSet()))
     {
-        MoveId node = m_moves.m_nodes[m_moves.currMove()].nextNode;
+        MoveId node = m_moves.nextMove();
         removeNode(node);
     }
     else
@@ -1890,7 +1890,7 @@ QString GameX::timeAnnotation(MoveId moveId, Position position) const
         MoveId node = m_moves.makeNodeIndex(moveId);
         if (node>ROOT_NODE)
         {
-            moveId = m_moves.m_nodes.at(node).previousNode;
+            moveId = m_moves.prevMove(moveId);
         }
         else return "";
     }
@@ -1944,7 +1944,7 @@ QString GameX::textAnnotation(MoveId moveId, Position position) const
 bool GameX::canHaveStartAnnotation(MoveId moveId) const
 {
     MoveId node = m_moves.makeNodeIndex(moveId);
-    return atLineStart(moveId) || atGameStart(m_moves.m_nodes[node].previousNode);
+    return atLineStart(moveId) || atGameStart(m_moves.prevMove(node));
 }
 
 bool GameX::dbAddNag(Nag nag, MoveId moveId)
@@ -2058,8 +2058,8 @@ void GameX::enumerateVariations(MoveId moveId, char a)
     if(node != NO_MOVE)
     {
         GameX state = *this;
-        MoveId parentNode = m_moves.m_nodes[node].parentNode;
-        QList <MoveId>& v = m_moves.m_nodes[parentNode].variations;
+        MoveId parentNode = m_moves.parentMove(node);
+        const auto& v = m_moves.variations(parentNode);
         if (!v.empty())
         {
             for(int i = 0; i < v.size(); ++i)
@@ -2076,10 +2076,12 @@ void GameX::enumerateVariations(MoveId moveId, char a)
 
 MoveId GameX::lastMove() const
 {
-    MoveId moveId = 0;
-    while((m_moves.m_nodes[moveId].nextNode != NO_MOVE))
+    MoveId moveId = ROOT_NODE;
+    MoveId nextId = m_moves.nextMove(moveId);
+    while (nextId != NO_MOVE)
     {
-        moveId = m_moves.m_nodes[moveId].nextNode;
+        moveId = nextId;
+        nextId = m_moves.nextMove(moveId);
     }
     return moveId;
 }
@@ -2275,23 +2277,22 @@ QString GameX::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, M
     MoveId node = m_moves.makeNodeIndex(moveId);
     if(node != NO_MOVE && nextPrevious == NextMove)
     {
-        node = m_moves.m_nodes[node].nextNode;
+        node = m_moves.nextMove(node);
     }
     if(node == NO_MOVE)
     {
         return QString();
     }
 
-    MoveNode move;
-    move = m_moves.m_nodes[node];
-    if(!(move.move.isLegal() || move.move.isNullMove()))
+    const auto& move = m_moves.moveAt(node);
+    if(!(move.isLegal() || move.isNullMove()))
     {
         return QString();
     }
 
     // Save current node
     MoveId saveNode = NO_MOVE;
-    MoveId boardNode = m_moves.m_nodes[node].previousNode;
+    MoveId boardNode = m_moves.prevMove(node);
     if(boardNode != m_moves.currMove())
     {
         saveNode = m_moves.currMove();
@@ -2310,7 +2311,7 @@ QString GameX::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, M
     }
 
     // Move and SAN
-    san += m_moves.currentBoard()->moveToSan(move.move, flags & TranslatePiece);
+    san += m_moves.currentBoard()->moveToSan(move, flags & TranslatePiece);
     if(flags & Nags)
     {
         san += nags(node).toString(NagSet::Simple);
@@ -2421,7 +2422,7 @@ void GameX::scoreMaterial(QList<double>& scores) const
 
 int GameX::isEqual(const GameX& game) const
 {
-    return ((m_moves.m_nodes == game.m_moves.m_nodes) &&
+    return ((m_moves.isEqual(game.m_moves)) &&
             (m_nags == game.m_nags) &&
             (m_annotations == game.m_annotations) &&
             (m_variationStartAnnotations == game.m_variationStartAnnotations));
@@ -2429,7 +2430,7 @@ int GameX::isEqual(const GameX& game) const
 
 int GameX::isBetterOrEqual(const GameX& game) const
 {
-    return ((m_moves.m_nodes.count() >= game.m_moves.m_nodes.count()) &&
+    return ((m_moves.capacity() >= game.m_moves.capacity()) &&
             (m_annotations.count() >= game.m_annotations.count()) &&
             (m_variationStartAnnotations.count() >= game.m_variationStartAnnotations.count()));
 }

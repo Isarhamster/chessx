@@ -98,14 +98,18 @@ public:
     MoveId currMove() const { return m_currentNode; }
     /** @return moveId of the previous move */
     MoveId prevMove() const { return m_nodes[m_currentNode].previousNode; }
+    MoveId prevMove(MoveId moveId) const { return m_nodes[moveId].previousNode; }
     /** @return moveId of the next move */
     MoveId nextMove() const { return m_nodes[m_currentNode].nextNode; }
+    MoveId nextMove(MoveId moveId) const { return m_nodes[moveId].nextNode; }
     /** @return moveId of the parent node */
     MoveId parentMove() const { return m_nodes[m_currentNode].parentNode; }
+    MoveId parentMove(MoveId moveId) const { return m_nodes[moveId].parentNode; }
     /** @return number of variations at the current position */
     int variationCount(MoveId moveId = CURRENT_MOVE) const;
     /** @return list of variation at the current move */
     const QList<MoveId>& variations() const;
+    const QList<MoveId>& variations(MoveId moveId) const { return m_nodes[moveId].variations; }
     /** @returns amount of allocated nodes */
     int capacity() const { return m_nodes.size(); }
 
@@ -199,16 +203,16 @@ public:
     /** Dump a move node using qDebug() */
     void dumpMoveNode(MoveId moveId = CURRENT_MOVE) const;
 
+    /** compare game moves and annotations */
+    int isEqual(const MoveTree& rhs) const { return m_nodes == rhs.m_nodes; }
+
 private:
     /** Keeps the current position of the game */
     BoardX* m_currentBoard;
     /** Reference Counter for m_currentBoard */
     int mountRefCount;
-
-public:
     /** List of nodes */
     QList<Node> m_nodes;
-private:
     /** Keeps the current node in the game */
     MoveId m_currentNode;
     /** Keeps the start ply of the game, 0 for standard starting position */
