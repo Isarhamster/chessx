@@ -632,6 +632,33 @@ bool MoveTree::moveVariationDown(MoveId moveId)
     return possible;
 }
 
+bool MoveTree::removeVariation(MoveId variation)
+{
+    // don't remove whole game
+    if(variation == ROOT_NODE)
+    {
+        return false;
+    }
+    MoveId parentNode = m_nodes[variation].parentNode;
+    remove(variation);
+    moveToId(parentNode);
+
+    QList<MoveId> &vars = m_nodes[m_currentNode].variations;
+    vars.removeAt(vars.indexOf(variation));
+    return true;
+}
+
+void MoveTree::removeVariations()
+{
+    for(int i = 0; i < m_nodes.size(); ++i)
+    {
+        while (!m_nodes[i].variations.empty())
+        {
+            removeVariation(m_nodes[i].variations.at(0));
+        }
+    }
+}
+
 void MoveTree::reparentVariation(MoveId variation, MoveId parent)
 {
     if (variation == NO_MOVE)
@@ -1374,22 +1401,14 @@ bool GameX::promoteVariation(MoveId variation)
 
 bool GameX::removeVariation(MoveId variation)
 {
-    // don't remove whole game
-    if(variation == ROOT_NODE)
-    {
-        return false;
-    }
     GameX state = *this;
-    MoveId parentNode = m_moves.m_nodes[variation].parentNode;
-    removeNode(variation);
-    dbMoveToId(parentNode);
-
-    QList<MoveId> &vars = m_moves.m_nodes[m_moves.currMove()].variations;
-    vars.removeAt(vars.indexOf(variation));
-
-    compact();
-    emit signalGameModified(true, state, tr("Remove variation"));
-    return true;
+    bool success = m_moves.removeVariation(variation);
+    if (success)
+    {
+        compact();
+        emit signalGameModified(true, state, tr("Remove variation"));
+    }
+    return success;
 }
 
 void GameX::truncateVariationAfterNextIllegalPosition()
@@ -1466,13 +1485,7 @@ void GameX::setGameComment(const QString& gameComment)
 
 void GameX::removeVariationsDb()
 {
-    for(int i = 0; i < m_moves.m_nodes.size(); ++i)
-    {
-        while (!m_moves.m_nodes[i].variations.empty())
-        {
-            removeVariation(m_moves.m_nodes[i].variations.at(0));
-        }
-    }
+    m_moves.removeVariations();
     compact();
 }
 

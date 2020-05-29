@@ -183,6 +183,10 @@ public:
     bool moveVariationUp(MoveId moveId);
     /** Move the variation @p moveId of the curent node down in the list of variations */
     bool moveVariationDown(MoveId moveId);
+    /** Removes the given variation, returns true if successful */
+    bool removeVariation(MoveId variation);
+    /** Remove all variations */
+    void removeVariations();
     /** Remove nodes marked for removal */
     QMap<MoveId, MoveId> compact();
 
