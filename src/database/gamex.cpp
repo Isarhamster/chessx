@@ -44,6 +44,8 @@ MoveTree::MoveTree()
     , m_startPly(0)
     , m_startingBoard()
 {
+    m_startingBoard.setStandardPosition();
+    initCursor();
 }
 
 MoveTree::MoveTree(const MoveTree& rhs)
@@ -53,6 +55,7 @@ MoveTree::MoveTree(const MoveTree& rhs)
     , m_startPly(rhs.m_startPly)
     , m_startingBoard(rhs.m_startingBoard)
 {
+    initCursor();
 }
 
 MoveTree& MoveTree::operator=(const MoveTree& rhs)
@@ -766,18 +769,16 @@ GameX::GameX()
     , m_nags()
     , m_tags()
 {
-    m_moves.clear();
 }
 
 GameX::GameX(const GameX& game)
     : QObject()
-    , m_moves()
+    , m_moves(game.m_moves)
     , m_variationStartAnnotations(game.m_variationStartAnnotations)
     , m_annotations(game.m_annotations)
     , m_nags(game.m_nags)
     , m_tags(game.m_tags)
 {
-    m_moves = game.m_moves;
     if (m_moves.currentBoard() && !game.m_moves.currentBoard())
     {
         moveToStart();
