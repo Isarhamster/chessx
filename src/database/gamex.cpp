@@ -1694,25 +1694,19 @@ bool GameX::dbSetAnnotation(QString annotation, MoveId moveId, Position position
     return true;
 }
 
-bool GameX::setSquareAnnotation(QString squareAnnotation, MoveId moveId)
+bool GameX::setSquareAnnotation(QString squareAnnotation)
 {
     squareAnnotation = squareAnnotation.trimmed();
 
-    MoveId node = m_moves.makeNodeIndex(moveId);
-    if(node == NO_MOVE)
-    {
-        return false;
-    }
-
-    QString s = annotation(moveId);
+    QString s = annotation();
     s.remove(QRegExp(s_csl));
 
     if(!squareAnnotation.isEmpty())
     {
         s.append(QString("[%csl %1]").arg(squareAnnotation));
     }
-    dbSetAnnotation(s, moveId);
-    indicateAnnotationsOnBoard(moveId);
+    dbSetAnnotation(s);
+    indicateAnnotationsOnBoard();
     return true;
 }
 

@@ -340,7 +340,7 @@ public :
     /** Edits the comment associated with move at node @p moveId */
     bool editAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Sets the squareAnnotation associated with move at node @p moveId */
-    bool setSquareAnnotation(QString squareAnnotation, MoveId moveId = CURRENT_MOVE);
+    bool setSquareAnnotation(QString squareAnnotation);
 
     /** Append a square to the existing lists of square annotations, if there is none, create one */
     bool appendSquareAnnotation(chessx::Square s, QChar colorCode);
