@@ -19,12 +19,11 @@ Unit tests for the Game class.
 */
 
 #include <QtDebug>
-#include "game.h"
 #include "gametest.h"
 
 void GameTest::initTestCase()
 {
-    m_game = new Game;
+    m_game = new GameX;
     m_game->clear();
 }
 void GameTest::init() {}
@@ -38,7 +37,6 @@ void GameTest::testEmptyGame()
     QCOMPARE(m_game->forward(), 0);
     QCOMPARE(m_game->backward(), 0);
     QCOMPARE(m_game->moveByPly(2), 0);
-    QCOMPARE(m_game->moveToPly(2), 0);
     QCOMPARE(m_game->plyCount(), 0);
     int moves, comments, nags;
     m_game->moveCount(&moves, &comments, &nags);
@@ -144,17 +142,17 @@ void GameTest::testAnnotation()
     QString a26 = "After26";
     QString b26 = "Before26";
     QString b10 = "Before10";
-    QCOMPARE(m_game->setAnnotation(a5, 5, Game::AfterMove), true);
-    QCOMPARE(m_game->setAnnotation(a10, 10, Game::AfterMove), true);
-    QCOMPARE(m_game->setAnnotation(b10, 10, Game::BeforeMove), true);
-    QCOMPARE(m_game->setAnnotation(a26, 26, Game::AfterMove), true);
-    QCOMPARE(m_game->setAnnotation(b26, 26, Game::BeforeMove), true);
-    QCOMPARE(m_game->annotation(5, Game::AfterMove), a5);
-    QCOMPARE(m_game->annotation(6, Game::BeforeMove), a5);
-    QCOMPARE(m_game->annotation(10, Game::AfterMove), a10);
-    QCOMPARE(m_game->annotation(10, Game::BeforeMove), b10);
-    QCOMPARE(m_game->annotation(26, Game::AfterMove), a26);
-    QCOMPARE(m_game->annotation(26, Game::BeforeMove), b26);
+    QCOMPARE(m_game->setAnnotation(a5, 5, GameX::AfterMove), true);
+    QCOMPARE(m_game->setAnnotation(a10, 10, GameX::AfterMove), true);
+    QCOMPARE(m_game->setAnnotation(b10, 10, GameX::BeforeMove), true);
+    QCOMPARE(m_game->setAnnotation(a26, 26, GameX::AfterMove), true);
+    QCOMPARE(m_game->setAnnotation(b26, 26, GameX::BeforeMove), true);
+    QCOMPARE(m_game->annotation(5, GameX::AfterMove), a5);
+    QCOMPARE(m_game->annotation(6, GameX::BeforeMove), a5);
+    QCOMPARE(m_game->annotation(10, GameX::AfterMove), a10);
+    QCOMPARE(m_game->annotation(10, GameX::BeforeMove), b10);
+    QCOMPARE(m_game->annotation(26, GameX::AfterMove), a26);
+    QCOMPARE(m_game->annotation(26, GameX::BeforeMove), b26);
 
 }
 void GameTest::testLineLimits_data()
@@ -323,8 +321,8 @@ void GameTest::testTags()
     m_game->setTag(tagName, tagValue);
     QCOMPARE(m_game->tag(tagName), tagValue);
 
-    QMap<QString, QString> tags = m_game->tags();
-    QMap<QString, QString>::const_iterator i = tags.constBegin();
+    QHash<QString, QString> tags = m_game->tags();
+    QHash<QString, QString>::const_iterator i = tags.constBegin();
     while(i != tags.constEnd())
     {
         if(i.key() == tagName)
@@ -361,7 +359,7 @@ void GameTest::testTags_data()
     QTest::newRow("4") << "Result" << "1-0" << (int)WhiteWin;
     QTest::newRow("5") << "Result" << "0-1" << (int)BlackWin;
     QTest::newRow("6") << "Result" << "1/2-1/2" << (int)Draw;
-    QTest::newRow("7") << "Result" << "*" << (int)Unknown;
+    QTest::newRow("7") << "Result" << "*" << (int)ResultUnknown;
     QTest::newRow("8") << "Result" << "1-0" << (int)WhiteWin;
 }
 void GameTest::testCounters()

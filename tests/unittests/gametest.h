@@ -22,7 +22,7 @@ Unit tests for the Game class.
 #define GAMETEST_H
 
 #include <QtTest/QtTest>
-#include "game.h"
+#include "gamex.h"
 
 
 class GameTest : public QObject
@@ -59,7 +59,7 @@ private slots:
     //  void testExecuteSearch();
     //  void testSave();
 private:
-    Game *m_game;
+    GameX *m_game;
 
 };
 

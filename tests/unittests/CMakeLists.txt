@@ -47,4 +47,5 @@ function(qttest_fixture name)
 endfunction()
 
 qttest_fixture(Board)
+qttest_fixture(Game)
 
