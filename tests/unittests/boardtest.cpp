@@ -217,7 +217,6 @@ void BoardTest::testIsValidFEN()
     // [1c50830] Parse mal-formed FEN with - - - - at end
     // QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 0"));
     // QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 -1"));
-
 }
 
 void BoardTest::testCreateHash()
@@ -242,7 +241,7 @@ void BoardTest::testCreateHash()
 
     // Play the move on board, and make sure it applies properly
     board.doMove(m);
-    QVERIFY(board.toFen() == "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1");
+    QVERIFY(board.toFen() == "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1");
 
     // Do same move on board 2
     board2.doMove(board2.parseMove("e4"));
@@ -263,7 +262,7 @@ void BoardTest::testCreateHash()
     QVERIFY(board != board2);
 
     // Getting back a FEN
-    QVERIFY(board2.toFen() == "rnbqkbnr/p1ppp1pp/8/1p2Pp2/8/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3");
+    QVERIFY(board2.toFen() == "rnbqkbnr/p1ppp1pp/8/1p2Pp2/8/8/PPPP1PPP/RNBQKBNR w KQkq b6 0 3");
 
     // Setting a FEN
     board.clear();
