@@ -23,7 +23,9 @@ Unit tests for the Board class.
 #include <QStack>
 #include <QString>
 
-Board board;
+BoardX board;
+
+using namespace chessx;
 
 class TestGame
 {
@@ -218,7 +220,7 @@ void BoardTest::testIsValidFEN()
 
 void BoardTest::testCreateHash()
 {
-    Board board2;
+    BoardX board2;
 
     board.clear();
     board2.clear();

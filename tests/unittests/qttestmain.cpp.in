@@ -1,0 +1,3 @@
+#include <QtTest>
+#include "${base_name}.h"
+QTEST_MAIN(${test_name})
