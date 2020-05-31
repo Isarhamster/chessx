@@ -208,13 +208,15 @@ void BoardTest::testIsValidFEN()
 
     // ******* Test full move count *******
     // full move count must be larger than 0
-    QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 0"));
     QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
     QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 2"));
     // full move count must be a number
     QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 a"));
     // full move count must be larger than 0
-    QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 -1"));
+    // Non-positive move counter are silently corrected since
+    // [1c50830] Parse mal-formed FEN with - - - - at end
+    // QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 0"));
+    // QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 -1"));
 
 }
 
