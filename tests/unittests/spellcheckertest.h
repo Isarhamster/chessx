@@ -19,14 +19,14 @@
 */
 
 
-#ifndef __SPELLCHECKERTESTS_H
-#define __SPELLCHECKERTESTS_H
+#ifndef __SPELLCHECKERTEST_H
+#define __SPELLCHECKERTEST_H
 
 #include<spellchecker.h>
 #include <QtTest/QtTest>
 
 
-class SpellCheckerTests : public QObject
+class SpellCheckerTest : public QObject
 {
 
     Q_OBJECT

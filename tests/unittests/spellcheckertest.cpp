@@ -18,14 +18,14 @@
    Test the speellchecker class.
 */
 
-#include<spellcheckertests.h>
+#include "spellcheckertest.h"
 
-void SpellCheckerTests::testNoRule()
+void SpellCheckerTest::testNoRule()
 {
     QCOMPARE(speller.count(), 0);
 }
 
-void SpellCheckerTests::testImportSpellingFile()
+void SpellCheckerTest::testImportSpellingFile()
 {
     const QString spelling_file = "./data/spelling.ssp";
 
@@ -33,25 +33,25 @@ void SpellCheckerTests::testImportSpellingFile()
     speller.save("./data/spell.txt");
 }
 
-void SpellCheckerTests::testLoadSpellings()
+void SpellCheckerTest::testLoadSpellings()
 {
     QVERIFY(speller.load("./data/spell.txt"));
 }
 
-void SpellCheckerTests::testSaveSpellings()
+void SpellCheckerTest::testSaveSpellings()
 {
     speller.load("./data/spell.txt");
     bool saveIsOk = speller.save("./data/spell_1.txt");
     QVERIFY(saveIsOk);
 }
 
-void SpellCheckerTests::testRemoveRules()
+void SpellCheckerTest::testRemoveRules()
 {
     speller.clear();
     QCOMPARE(speller.count(), 0);
 }
 
-void SpellCheckerTests::testCorrectPlayer()
+void SpellCheckerTest::testCorrectPlayer()
 {
     Spellchecker::SpellingType spellingType = Spellchecker::Player;
     const QString typo = "Kortchnoi, Viktor L";
@@ -61,7 +61,7 @@ void SpellCheckerTests::testCorrectPlayer()
     QCOMPARE(speller.correct(typo , spellingType), correct);
 }
 
-void SpellCheckerTests::testCorrectSite()
+void SpellCheckerTest::testCorrectSite()
 {
     Spellchecker::SpellingType spellingType = Spellchecker::Site;
     const QString typo = "Wien AUT";
@@ -71,7 +71,7 @@ void SpellCheckerTests::testCorrectSite()
     QCOMPARE(speller.correct(typo , spellingType), correct);
 }
 
-void SpellCheckerTests::testCorrectEvent()
+void SpellCheckerTest::testCorrectEvent()
 {
     Spellchecker::SpellingType spellingType = Spellchecker::Event;
     const QString typo = "(open)";
@@ -80,7 +80,7 @@ void SpellCheckerTests::testCorrectEvent()
     QCOMPARE(speller.correct(correct , spellingType), correct);
 }
 
-void SpellCheckerTests::testCorrectRound()
+void SpellCheckerTest::testCorrectRound()
 {
     Spellchecker::SpellingType spellingType = Spellchecker::Round;
     const QString typo = "( 02 )";
@@ -89,7 +89,7 @@ void SpellCheckerTests::testCorrectRound()
     QCOMPARE(speller.correct(correct , spellingType), correct);
 }
 
-void SpellCheckerTests::testFindSpellingsLiteral()
+void SpellCheckerTest::testFindSpellingsLiteral()
 {
     Spellchecker::SpellingType spellingType = Spellchecker::Player;
     Spellchecker::RuleType ruleType = Spellchecker::Literal;
@@ -104,7 +104,7 @@ void SpellCheckerTests::testFindSpellingsLiteral()
 }
 
 
-void SpellCheckerTests::testAddRuleSpelling()
+void SpellCheckerTest::testAddRuleSpelling()
 {
     newSpell.addRule("Karpow, Anatoly", "Karpov, Anatoly", Spellchecker::Literal, Spellchecker::Player);
     newSpell.addRule("Moskau", "Moscow RUS", Spellchecker::Literal, Spellchecker::Site);
@@ -116,7 +116,7 @@ void SpellCheckerTests::testAddRuleSpelling()
     QCOMPARE(newSpell.count(), 4);
 }
 
-void SpellCheckerTests::testRemoveRule()
+void SpellCheckerTest::testRemoveRule()
 {
     newSpell.load("./data/newspell.txt");
     QVERIFY(newSpell.removeRule("02", Spellchecker::Literal, Spellchecker::Round));
@@ -126,14 +126,14 @@ void SpellCheckerTests::testRemoveRule()
     QCOMPARE(newSpell.count(), 2);
 }
 
-void SpellCheckerTests::testRemoveRuleFail()
+void SpellCheckerTest::testRemoveRuleFail()
 {
     newSpell.load("./data/newspell.txt");
     bool removeIsOk = newSpell.removeRule("02", Spellchecker::Literal, Spellchecker::Round);
     QVERIFY(removeIsOk);
 }
 
-void SpellCheckerTests::testFindSpellingsLiteralInNewSpell()
+void SpellCheckerTest::testFindSpellingsLiteralInNewSpell()
 {
     Spellchecker::SpellingType spellingType = Spellchecker::Player;
     Spellchecker::RuleType ruleType = Spellchecker::Literal;
@@ -151,22 +151,22 @@ void SpellCheckerTests::testFindSpellingsLiteralInNewSpell()
     QCOMPARE(incorrect.count(), 1);
 }
 
-void SpellCheckerTests::initTestCase()
+void SpellCheckerTest::initTestCase()
 {
     //not used
 }
 
-void SpellCheckerTests::init()
+void SpellCheckerTest::init()
 {
     //not used
 }
 
-void SpellCheckerTests::cleanup()
+void SpellCheckerTest::cleanup()
 {
     //not used
 }
 
-void SpellCheckerTests::cleanupTestCase()
+void SpellCheckerTest::cleanupTestCase()
 {
     //not used
 }
