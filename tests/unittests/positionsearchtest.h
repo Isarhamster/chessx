@@ -18,8 +18,8 @@
 Unit tests for the PositionSearch class
 */
 
-#ifndef POSITIONSEARCH_H
-#define POSITIONSEARCH_H
+#ifndef POSITIONSEARCHTEST_H
+#define POSITIONSEARCHTEST_H
 
 #include <QtTest/QtTest>
 

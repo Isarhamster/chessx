@@ -22,13 +22,16 @@ Unit tests for the PgnDatabase class.
 
 #include "pgndatabasetest.h"
 #include "pgndatabase.h"
-#include "game.h"
+#include "gamex.h"
 #include "filter.h"
 #include "search.h"
+#include "settings.h"
 
+void PgnDatabaseTest::initTestCase()
+{
+    AppSettings = new Settings;
+}
 
-
-void PgnDatabaseTest::initTestCase() {}
 void PgnDatabaseTest::init() {}
 void PgnDatabaseTest::cleanup() {}
 
@@ -41,16 +44,16 @@ void PgnDatabaseTest::cleanupTestCase()
 
 void PgnDatabaseTest::testCreateDatabase()
 {
-    PgnDatabase* db = new PgnDatabase();
-    db->create(QString("./data/new1.pgn"));
+    PgnDatabase* db = new PgnDatabase(false);
+    db->open(QString("./data/new1.pgn"), false);
     QCOMPARE(db->count(), 0);
     delete db;
 }
 
 void PgnDatabaseTest::testName()
 {
-    PgnDatabase* db = new PgnDatabase();
-    db->open(QString("./data/game1.pgn"));
+    PgnDatabase* db = new PgnDatabase(false);
+    db->open(QString("./data/game1.pgn"), false);
     const QString name = QString("./data/game1.pgn");
     QCOMPARE(db->filename(), name);
     delete db;
@@ -59,9 +62,9 @@ void PgnDatabaseTest::testName()
 
 void PgnDatabaseTest::testLoad()
 {
-    PgnDatabase* db = new PgnDatabase();
-    db->open(QString("./data/game1.pgn"));
-    Game game;
+    PgnDatabase* db = new PgnDatabase(false);
+    db->open(QString("./data/game1.pgn"), false);
+    GameX game;
     QCOMPARE(2 , db->count());
     QCOMPARE(db->loadGame(1, game), true);
     QCOMPARE(db->loadGame(0, game), true);
@@ -72,12 +75,12 @@ void PgnDatabaseTest::testLoad()
 
 void PgnDatabaseTest::testCopyGameIntoNewDB()
 {
-    PgnDatabase* db = new PgnDatabase();
-    db->open(QString("./data/game1.pgn"));
-    Game game;
+    PgnDatabase* db = new PgnDatabase(false);
+    db->open(QString("./data/game1.pgn"), false);
+    GameX game;
     bool success = db->loadGame(1, game);
-    PgnDatabase* dbNew = new PgnDatabase();
-    dbNew->create(QString("./data/new.pgn"));
+    PgnDatabase* dbNew = new PgnDatabase(false);
+    dbNew->open(QString("./data/new.pgn"), false);
     dbNew->appendGame(game);
     success = db->loadGame(0, game);
     dbNew->appendGame(game);
@@ -89,8 +92,8 @@ void PgnDatabaseTest::testCopyGameIntoNewDB()
 
 void PgnDatabaseTest::testRemoveGame()
 {
-    PgnDatabase* dbNew = new PgnDatabase();
-    dbNew->open(QString("./data/new.pgn"));
+    PgnDatabase* dbNew = new PgnDatabase(false);
+    dbNew->open(QString("./data/new.pgn"), false);
     dbNew->remove(1);
     // FIXME -- Test below is failing
 //	QCOMPARE(dbNew->count(), 1);

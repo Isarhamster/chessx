@@ -47,5 +47,10 @@ function(qttest_fixture name)
 endfunction()
 
 qttest_fixture(Board)
+qttest_fixture(DatabaseConversion)
 qttest_fixture(Game)
+qttest_fixture(PgnDatabase)
+qttest_fixture(PlayerDatabase)
+qttest_fixture(PositionSearch)
+qttest_fixture(SpellChecker)
 
