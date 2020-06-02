@@ -33,6 +33,7 @@
 #include <QPainter>
 #include <QPushButton>
 #include <QSpinBox>
+#include <QStyleFactory>
 #include <QTextStream>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -531,6 +532,16 @@ void PreferencesDialog::restoreSettings()
     ui.spinBoxListFontSize->setValue(AppSettings->getValue("/General/ListFontSize").toInt());
     ui.verticalTabs->setChecked(AppSettings->getValue("/MainWindow/VerticalTabs").toBool());
     ui.darkTheme->setChecked(AppSettings->getValue("/MainWindow/DarkTheme").toBool());
+
+    QStringList motifs = QStyleFactory::keys();
+    foreach(QString s, motifs)
+    {
+        ui.theme->addItem(s);
+    }
+    ui.theme->addItem("Orange");
+    int n = ui.theme->findText(AppSettings->getValue("/MainWindow/Theme").toString());
+    if (n>=0) ui.theme->setCurrentIndex(n);
+
     ui.iconsVisible->setChecked(AppSettings->getValue("/MainWindow/ShowMenuIcons").toBool());
     ui.cbAutoRaise->setChecked(AppSettings->getValue("/MainWindow/AutoRaise").toBool());
     // Read Game List settings
@@ -653,6 +664,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("/General/ListFontSize", ui.spinBoxListFontSize->value());
     AppSettings->setValue("/MainWindow/VerticalTabs", ui.verticalTabs->isChecked());
     AppSettings->setValue("/MainWindow/DarkTheme", ui.darkTheme->isChecked());
+    AppSettings->setValue("/MainWindow/Theme", ui.theme->currentText());
     AppSettings->setValue("/MainWindow/ShowMenuIcons", ui.iconsVisible->isChecked());
     AppSettings->setValue("/MainWindow/AutoRaise", ui.cbAutoRaise->isChecked());
 

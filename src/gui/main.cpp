@@ -16,10 +16,10 @@
 
 #include <QApplication>
 #include <QLocale>
-#include <QStyleFactory>
 #include <QTranslator>
 #include "mainwindow.h"
 #include "settings.h"
+#include "style.h"
 #include "logstream.h"
 
 // Necessary includes and defines for memory leak detection:
@@ -140,43 +140,12 @@ prevHook = _CrtSetReportHook(customReportHook);
         AppSettings = new Settings;
     }
 
-    if (AppSettings->getValue("/MainWindow/DarkTheme").toBool())
-    {
-        // set style
-        app.setStyle(QStyleFactory::create("Fusion"));
-        // modify palette to dark
-        QPalette darkPalette;
-        darkPalette.setColor(QPalette::Window,QColor(53,53,53));
-        darkPalette.setColor(QPalette::WindowText,Qt::white);
-        darkPalette.setColor(QPalette::Disabled,QPalette::WindowText,QColor(127,127,127));
-        darkPalette.setColor(QPalette::Base,QColor(42,42,42));
-        darkPalette.setColor(QPalette::AlternateBase,QColor(66,66,66));
-        darkPalette.setColor(QPalette::ToolTipBase,QColor(20,20,20));
-        darkPalette.setColor(QPalette::ToolTipText,Qt::yellow);
-        darkPalette.setColor(QPalette::Text,Qt::white);
-        darkPalette.setColor(QPalette::Disabled,QPalette::Text,QColor(127,127,127));
-        darkPalette.setColor(QPalette::Disabled, QPalette::Light, QColor(0, 0, 0, 0));
-        darkPalette.setColor(QPalette::Dark,QColor(35,35,35));
-        darkPalette.setColor(QPalette::Shadow,QColor(20,20,20));
-        darkPalette.setColor(QPalette::Button,QColor(53,53,53));
-        darkPalette.setColor(QPalette::ButtonText,Qt::white);
-        darkPalette.setColor(QPalette::Disabled,QPalette::ButtonText,QColor(127,127,127));
-        darkPalette.setColor(QPalette::BrightText,Qt::red);
-        darkPalette.setColor(QPalette::Link,QColor(42,130,218));
-        darkPalette.setColor(QPalette::Highlight,QColor(42,130,218));
-        darkPalette.setColor(QPalette::Disabled,QPalette::Highlight,QColor(80,80,80));
-        darkPalette.setColor(QPalette::HighlightedText,Qt::white);
-        darkPalette.setColor(QPalette::Disabled,QPalette::HighlightedText,QColor(127,127,127));
-
-        app.setPalette(darkPalette);
-    }
-    else
-    {
-        app.setStyle("plastique");
-        QPalette lightPalette = qApp->palette();
-        lightPalette.setColor(QPalette::BrightText,Qt::red);
-        app.setPalette(lightPalette);
-    }
+    // style our application with custom dark style
+    Style* chessxStyle = new Style;
+    app.setStyle(chessxStyle);
+    QPalette palette = app.palette();
+    chessxStyle->modifyPalette(palette);
+    app.setPalette(palette);
 
 #ifdef Q_OS_MAC
     signal(SIGPIPE, SIG_IGN);
