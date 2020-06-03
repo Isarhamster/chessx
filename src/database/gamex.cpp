@@ -55,7 +55,10 @@ GameCursor::GameCursor(const GameCursor& rhs)
     , m_startPly(rhs.m_startPly)
     , m_startingBoard(rhs.m_startingBoard)
 {
-    initCursor();
+    if (rhs.m_currentBoard)
+    {
+        *m_currentBoard = *rhs.m_currentBoard;
+    }
 }
 
 GameCursor& GameCursor::operator=(const GameCursor& rhs)
