@@ -22,30 +22,15 @@
 #ifndef PLAYERDATABASETEST_H
 #define PLAYERDATABASETEST_H
 
-#include <QtTest/QtTest>
-#include "playerdatabase.h"
+#include <QtTest>
 
 class PlayerDatabaseTest: public QObject
 {
     Q_OBJECT
 
-    PlayerDatabase pdb, newDb;
-    QString db_name;
-
 private slots:
-    void initTestCase();
-    void init();
-    void cleanup();
-    void cleanupTestCase();
-
-    void testCreateDatabase();
-    void testOpenDatabase();
-    void testRemoveDatabase();
-    void testPlayerCount();
-    void testPlayerExists();
-    void testNonExistingPlayer();
-    void testCurrentPlayer();
-    void testDatabaseClose();
+    void testBasics();
+    void testCreate();
 };
 
 #endif
