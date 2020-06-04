@@ -22,9 +22,7 @@
 #ifndef __SPELLCHECKERTEST_H
 #define __SPELLCHECKERTEST_H
 
-#include<spellchecker.h>
-#include <QtTest/QtTest>
-
+#include <QtTest>
 
 class SpellCheckerTest : public QObject
 {
@@ -32,34 +30,9 @@ class SpellCheckerTest : public QObject
     Q_OBJECT
 
 private slots:
-
-    void initTestCase();
-    void init();
-    void cleanup();
-    void cleanupTestCase();
-
-    void testNoRule();
-    void testImportSpellingFile();
-    void testSaveSpellings();
-    void testRemoveRules();
-    void testLoadSpellings();
-    void testCorrectPlayer();
-    void testCorrectSite();
-    void testCorrectEvent();
-    void testCorrectRound();
-    void testFindSpellingsLiteral();
-    void testAddRuleSpelling();
-    void testRemoveRule();
-    void testRemoveRuleFail();
-    void testFindSpellingsLiteralInNewSpell();
-
-private:
-
-    /** used to import the scid spellchecker file */
-    Spellchecker speller;
-
-    /** used for a blank spellchecker file */
-    Spellchecker newSpell;
+    void testBasics();
+    void testBasics_data();
+    void testImport();
 };
 
 
