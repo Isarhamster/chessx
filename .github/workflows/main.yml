@@ -84,14 +84,14 @@ jobs:
       id: cache-qt
       uses: actions/cache@v1.2.0
       with:
-        path: ${{ runner.workspace }}
-        key: ${{ runner.os }}-Qt${{ matrix.qt }}-${{ matrix.arch }}
+        path: ${{ runner.workspace }}/Qt${{ matrix.qt }}-${{ matrix.arch }}
+        key: Qt-${{ runner.os }}-${{ matrix.qt }}-${{ matrix.arch }}
     - name: Install Qt ${{ matrix.qt }}
       uses: jurplel/install-qt-action@v2.6.2
       with:
         version: ${{ matrix.qt }}
         arch: ${{ matrix.qt_arch }}
-        dir: ${{ runner.workspace }}
+        dir: ${{ runner.workspace }}/Qt${{ matrix.qt }}-${{ matrix.arch }}
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
     - name: Checkout sources
       uses: actions/checkout@v2.1.0
