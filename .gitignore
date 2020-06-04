@@ -11,3 +11,5 @@ Makefile
 *.dmg
 release/*
 dmg/*
+*/obj_dbg/*
+*/obj_rel/*
