@@ -124,7 +124,7 @@ int MemoryDatabase::findPosition(GameId index, const BoardX &position)
 {
     GameX g;
     loadGameMoves(index, g);
-    return g.findPosition(position);
+    return g.cursor().findPosition(position);
 }
 
 

@@ -2449,7 +2449,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                             if(!game().currentNodeHasMove(m.from(), m.to()))
                             {
                                 SaveRestoreMove saveCurrent(game());
-                                game().dbAddSanVariation(game().currentMove(), m.toAlgebraic(), text);
+                                game().dbAddSanVariation(m.toAlgebraic(), text);
                                 UpdateGameText();
                             }
                         }
@@ -2753,9 +2753,9 @@ void MainWindow::AutoMoveAtEndOfGame()
             game().dbMoveToId(nextVariation);
             if (AppSettings->getValue("/Board/BackwardAnalysis").toBool())
             {
-                game().dbMoveToLineEnd();
+                game().cursor().moveToLineEnd();
             }
-            game().indicateAnnotationsOnBoard(game().currentMove());
+            game().indicateAnnotationsOnBoard();
         }
     }
 }

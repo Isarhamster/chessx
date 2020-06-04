@@ -21,12 +21,204 @@
 #define ROOT_NODE 0
 #define NO_MOVE -1
 #define CURRENT_MOVE -2
-#define CURRENT_VARIATION -3
 
 typedef short MoveId;
 
 class SaveRestoreMove;
-class SaveRestoreMoveCompact;
+
+class GameCursor
+{
+public:
+    #pragma pack(push, 2)
+    struct Node
+    {
+        MoveId previousNode;
+        MoveId nextNode;
+        MoveId parentNode;
+        short m_ply;
+        Move move;
+        QList<MoveId> variations;
+        void remove()
+        {
+            parentNode = previousNode = nextNode = NO_MOVE;
+            variations.clear();
+            m_ply |= 0x8000;
+        }
+        Node()
+        {
+            parentNode = nextNode = previousNode = NO_MOVE;
+            variations.clear();
+            m_ply = 0;
+        }
+        void SetPly(short ply) { Q_ASSERT(m_ply<0x7FFF); m_ply = ply; }
+        short Ply() const { return m_ply & 0x7FFF; }
+        bool Removed() const { return (m_ply & 0x8000); }
+        inline bool operator==(const struct Node& c) const
+        {
+            return (move == c.move &&
+                    variations == c.variations &&
+                    m_ply == c.m_ply);
+        }
+    };
+    #pragma pack(pop)
+
+    GameCursor();
+    GameCursor(const GameCursor& rhs);
+    GameCursor& operator=(const GameCursor& rhs);
+    // TODO: maybe implement moving constructor/assignment later
+    GameCursor(GameCursor&& rhs) = delete;
+    GameCursor& operator=(GameCursor&& rhs) = delete;
+    ~GameCursor();
+
+    /** @returns initial position */
+    const BoardX& initialBoard() const { return m_startingBoard; }
+
+    /** @return current position */
+    const BoardX* currentBoard() const { return m_currentBoard; }
+    BoardX* currentBoard() { return m_currentBoard; }
+
+    void unmountBoard();
+
+    /** Re-initialize all fields  */
+    void clear();
+    void clear(const QString& fen, bool chess960 = false);
+
+    /** Checks if a \p moveId is valid
+     *  @returns
+     *  - on failure: \p NO_MOVE
+     *  - on success: index suitable for subscripting \p m_nodes
+     */
+    MoveId makeNodeIndex(MoveId moveId = CURRENT_MOVE) const;
+
+    /** @return the move at node @p moveId. */
+    Move move(MoveId moveId = CURRENT_MOVE) const;
+    Move& moveAt(MoveId moveId) { return m_nodes[moveId].move; }
+    /** @return current move id. */
+    MoveId currMove() const { return m_currentNode; }
+    /** @return moveId of the previous move */
+    MoveId prevMove() const { return m_nodes[m_currentNode].previousNode; }
+    MoveId prevMove(MoveId moveId) const { return m_nodes[moveId].previousNode; }
+    /** @return moveId of the next move */
+    MoveId nextMove() const { return m_nodes[m_currentNode].nextNode; }
+    MoveId nextMove(MoveId moveId) const { return m_nodes[moveId].nextNode; }
+    /** @return moveId of the parent node */
+    MoveId parentMove() const { return m_nodes[m_currentNode].parentNode; }
+    MoveId parentMove(MoveId moveId) const { return m_nodes[moveId].parentNode; }
+    /** @return number of variations at the current position */
+    int variationCount(MoveId moveId = CURRENT_MOVE) const;
+    /** @return list of variation at the current move */
+    const QList<MoveId>& variations() const;
+    const QList<MoveId>& variations(MoveId moveId) const { return m_nodes[moveId].variations; }
+    /** @returns amount of allocated nodes */
+    int capacity() const { return m_nodes.size(); }
+
+    /** @return whether the current position is in the mainline */
+    bool isMainline(MoveId moveId = CURRENT_MOVE) const;
+    /** @return moveId of the top main line */
+    MoveId mainLineMove() const;
+
+    /** @return whether the game is at the start of the current variation */
+    bool atLineStart(MoveId moveId = CURRENT_MOVE) const;
+    /** @return whether the game is at the end of the current variation */
+    bool atLineEnd(MoveId moveId = CURRENT_MOVE) const;
+
+    /** @return whether the game is currently at the start position */
+    bool atGameStart(MoveId moveId = CURRENT_MOVE) const;
+    /** @return whether the game is currently at the end of main variation */
+    bool atGameEnd(MoveId moveId = CURRENT_MOVE) const;
+
+    /** @return number of ply for the whole game (mainline only) */
+    int plyCount() const;
+    /** @return number of half moves made since the beginning of the game */
+    int plyNumber(MoveId moveId = CURRENT_MOVE) const;
+    /** @return current move. Equals to (ply-1)/2+1 for standard games, but may be different */
+    int moveNumber(MoveId moveId = CURRENT_MOVE) const;
+    /** @return number of move nodes in the main line */
+    int countMoves() const;
+
+    /** Get the first move of a variation */
+    MoveId variationStartMove(MoveId variation = CURRENT_MOVE) const;
+    /** @return number of current variation */
+    MoveId variationNumber(MoveId moveId = CURRENT_MOVE) const;
+    /** @return true if the referenced variation has siblings */
+    bool variationHasSiblings(MoveId variation = CURRENT_MOVE) const;
+
+    /** Moves to the position corresponding to the given move id */
+    bool moveToId(MoveId moveId, QString* algebraicMoveList=nullptr);
+    /** Move forward the given number of moves, returns actual number of moves made */
+    int forward(int count = 1);
+    /** Move back the given number of moves, returns actual number of moves undone */
+    int backward(int count = 1);
+    /** Move to the end of current variation */
+    bool moveToLineEnd();
+    /** Moves to the beginning of the game */
+    bool moveToStart();
+    /** Moves to the end of the game */
+    bool moveToEnd();
+    /** Enters the variation that corresponds to \p moveId.
+        \p moveId must correspond to a subvariation of the current position.
+        Compared to \p moveToId() this function runs in constant time.
+    */
+    void moveIntoVariation(MoveId moveId);
+
+    /** Adds a move at the current position.
+        @returns the move id of the added move
+     */
+    MoveId addMove(const Move& move);
+    /** Adds a move at the current position as a variation.
+        @returns the move id of the added move
+     */
+    MoveId addVariation(const Move& move);
+
+    /** Mark move subtree for removal */
+    void remove(MoveId moveId, QList<MoveId>* removed = nullptr);
+    /** Mark nodes after \p moveId (variations and continuation) for removal, excluding the node itself */
+    void truncateFrom(MoveId moveId, QList<MoveId>* removed = nullptr);
+    /** Mark nodes preceding \p moveId  for removal */
+    void truncateUpto(MoveId moveId, QList<MoveId>* removed = nullptr);
+    /** Promotes the given variation to the main line */
+    void promoteVariation(MoveId variation);
+    /** Decide if moveVariationUp() can be executed */
+    bool canMoveVariationUp(MoveId moveId) const;
+    /** Decide if moveVariationDown() can be executed */
+    bool canMoveVariationDown(MoveId moveId) const;
+    /** Move the variation @p moveId of the curent node up in the list of variations */
+    bool moveVariationUp(MoveId moveId);
+    /** Move the variation @p moveId of the curent node down in the list of variations */
+    bool moveVariationDown(MoveId moveId);
+    /** Removes the given variation, returns true if successful */
+    bool removeVariation(MoveId variation);
+    /** Remove all variations */
+    void removeVariations();
+    /** Remove nodes marked for removal */
+    QMap<MoveId, MoveId> compact();
+
+    /** Change parent of each move of a variation. */
+    void reparentVariation(MoveId variation, MoveId parent);
+
+    /** Search game to see if given position exists and returns the move id, otherwise NO_MOVE */
+    MoveId findPosition(const BoardX& position) const;
+
+    /** Dump a move node using qDebug() */
+    void dumpMoveNode(MoveId moveId = CURRENT_MOVE) const;
+
+    /** compare game moves and annotations */
+    int isEqual(const GameCursor& rhs) const { return m_nodes == rhs.m_nodes; }
+
+private:
+    /** Keeps the current position of the game */
+    BoardX* m_currentBoard;
+    /** List of nodes */
+    QList<Node> m_nodes;
+    /** Keeps the current node in the game */
+    MoveId m_currentNode;
+    /** Keeps the start ply of the game, 0 for standard starting position */
+    short m_startPly;
+    /** Keeps the start position of the game */
+    BoardX m_startingBoard;
+
+    void initCursor();
+};
 
 /** @ingroup Core
 
@@ -92,8 +284,10 @@ public :
     GameX& operator=(const GameX& game);
     virtual ~GameX();
 
-    void mountBoard();
-    void unmountBoard();
+    void unmountBoard() { m_moves.unmountBoard(); }
+
+    const GameCursor& cursor() const { return m_moves; }
+    GameCursor& cursor() { return m_moves; }
 
     // **** Querying game information ****
     /** compare game moves and annotations */
@@ -107,19 +301,15 @@ public :
     /** @return current position in human readable FEN */
     QString toHumanFen() const;
     /** @return start position of game */
-    BoardX startingBoard() const;
+    BoardX startingBoard() const { return m_moves.initialBoard(); }
     /** @return game result */
     Result result() const;
-    /** @return the move at node @p moveId. */
-    Move move(MoveId moveId = CURRENT_MOVE) const;
-    /** @return current move id. */
-    MoveId currentMove() const;
     /** @return comment at move at node @p moveId including visual hints for diagrams. */
     QString annotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
     /** @return comment at move at node @p moveId. */
     QString textAnnotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
-    /** Show annotations on the board for the Nose @p moveId. */
-    void indicateAnnotationsOnBoard(MoveId moveId);
+    /** Show annotations on the board */
+    void indicateAnnotationsOnBoard();
     /** @return squareAnnotation at move at node @p moveId. */
     QString squareAnnotation(MoveId moveId = CURRENT_MOVE) const;
     /** @return arrowAnnotation at move at node @p moveId. */
@@ -149,7 +339,7 @@ public :
     /** Edits the comment associated with move at node @p moveId */
     bool editAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Sets the squareAnnotation associated with move at node @p moveId */
-    bool setSquareAnnotation(QString squareAnnotation, MoveId moveId = CURRENT_MOVE);
+    bool setSquareAnnotation(QString squareAnnotation);
 
     /** Append a square to the existing lists of square annotations, if there is none, create one */
     bool appendSquareAnnotation(chessx::Square s, QChar colorCode);
@@ -157,8 +347,8 @@ public :
     /** Append an arrow to the existing lists of arrows, if there is none, create one */
     bool appendArrowAnnotation(chessx::Square dest, chessx::Square src, QChar colorCode);
 
-    /** Sets the arrowAnnotation associated with move at node @p moveId */
-    bool setArrowAnnotation(QString arrowAnnotation, MoveId moveId = CURRENT_MOVE);
+    /** Sets the arrowAnnotation associated with current move */
+    bool setArrowAnnotation(QString arrowAnnotation);
 
     /** Get a string with all special annotations including square brackets etc. */
     QString specAnnotations(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
@@ -172,65 +362,45 @@ public :
     bool clearNags(MoveId moveId = CURRENT_MOVE);
 
     // **** tree information methods *****
-    /** @return number of siblings of current node */
-    int numberOfSiblings(MoveId moveId = CURRENT_MOVE) const;
-    /** @return whether the current position is in the mainline */
-    bool isMainline(MoveId moveId = CURRENT_MOVE) const;
-    /** @return whether the game is currently at the start position */
-    bool atLineStart(MoveId moveId = CURRENT_MOVE) const;
-    bool atGameStart(MoveId moveId = CURRENT_MOVE) const;
-    /** @return whether the game is at the end of the current variation */
-    bool atLineEnd(MoveId moveId = CURRENT_MOVE) const;
-    bool atGameEnd(MoveId moveId = CURRENT_MOVE) const;
+    Move move(MoveId moveId = CURRENT_MOVE) const { return m_moves.move(moveId); }
+
+    MoveId currentMove() const { return m_moves.currMove(); }
+    MoveId previousMove() const { return m_moves.prevMove(); }
+    MoveId nextMove() const { return m_moves.nextMove(); }
+    MoveId parentMove() const { return m_moves.parentMove(); }
+    int variationCount(MoveId moveId = CURRENT_MOVE) const { return m_moves.variationCount(moveId); }
+    const QList<MoveId>& variations() const { return m_moves.variations(); }
+
+    bool isMainline(MoveId moveId = CURRENT_MOVE) const { return m_moves.isMainline(moveId); }
+    bool atLineStart(MoveId moveId = CURRENT_MOVE) const { return m_moves.atLineStart(moveId); }
+    bool atLineEnd(MoveId moveId = CURRENT_MOVE) const { return m_moves.atLineEnd(moveId); }
+    bool atGameStart(MoveId moveId = CURRENT_MOVE) const { return m_moves.atGameStart(moveId); }
+    bool atGameEnd(MoveId moveId = CURRENT_MOVE) const { return m_moves.atGameEnd(moveId); }
+
+    int plyCount() const { return m_moves.plyCount(); }
+    int ply(MoveId moveId = CURRENT_MOVE) const { return m_moves.plyNumber(moveId); }
+    int moveNumber(MoveId moveId = CURRENT_MOVE) const { return m_moves.moveNumber(moveId); }
+
+    MoveId variationStartMove(MoveId variation = CURRENT_MOVE) const { return m_moves.variationStartMove(variation); }
+    MoveId variationNumber(MoveId moveId = CURRENT_MOVE) const { return m_moves.variationNumber(moveId); }
+    bool variationHasSiblings(MoveId variation = CURRENT_MOVE) const { return m_moves.variationHasSiblings(variation); }
+
     /** Counts the number of moves, comments and nags, in mainline, to the end of the game */
     void moveCount(int* moves, int* comments, int* nags=nullptr) const;
     /** Determine if game contains something reasonable */
     bool isEmpty() const;
-    /** @return number of half moves made since the beginning of the game */
-    int ply(MoveId moveId = CURRENT_MOVE) const;
-    /** @return current move. Equals to (ply-1)/2+1 for standard games, but may be different
-    */
-    int moveNumber(MoveId moveId = CURRENT_MOVE) const;
-    /** @return number of ply for the whole game (mainline only) */
-    int plyCount() const;
-    /** @return number of current variation */
-    MoveId variationNumber(MoveId moveId = CURRENT_MOVE) const;
-    /** @return number of variations at the current position */
-    int variationCount(MoveId moveId = CURRENT_MOVE) const;
-    /** @return true if the referenced variation has siblings */
-    bool variationHasSiblings(MoveId variation = CURRENT_MOVE) const;
-    /** @return moveId of the top main line */
-    MoveId mainLineMove() const;
-    /** Get the first move of a variation */
-    MoveId variationStartMove(MoveId variation = CURRENT_MOVE) const;
-    /** @return moveId of the previous move */
-    MoveId previousMove() const;
-    /** @return moveId of the next move */
-    MoveId nextMove() const;
-    /** @return moveId of the parent node */
-    MoveId parentMove() const;
-    /** @return list of variation at the current move */
-    const QList<MoveId>& variations() const;
 
     // ***** Moving through game *****
-    /** Moves to the beginning of the game */
+    bool dbMoveToId(MoveId moveId, QString* algebraicMoveList=nullptr) { return m_moves.moveToId(moveId, algebraicMoveList); }
+    int forward(int count = 1);
+    int backward(int count = 1);
     void moveToStart();
-    /** Moves to the end of the game */
     void moveToEnd();
-    bool dbMoveToEnd();
     void moveToLineEnd();
-    bool dbMoveToLineEnd();
+
     /** Moves by given ply, returns actual ply reached */
     int moveByPly(int diff);
-    /** Moves to the position corresponding to the given move id */
-    bool dbMoveToId(MoveId moveId, QString* algebraicMoveList=nullptr);
     void moveToId(MoveId moveId);
-    /** Move forward the given number of moves, returns actual number of moves made */
-    int forward(int count = 1);
-    int dbForward(int count = 1);
-    /** Move back the given number of moves, returns actual number of moves undone */
-    int backward(int count = 1);
-    int dbBackward(int count = 1);
     /** Moves forward if the next move matches (from,to,promotionPiece) */
     bool findNextMove(chessx::Square from, chessx::Square to, PieceType promotionPiece = None);
     bool findNextMove(Move m);
@@ -282,7 +452,7 @@ public :
     MoveId dbAddVariation(const Move::List& moveList, const QString& annotation = QString());
     /** Adds a move at the current position as a variation,
      * returns the move id of the added move */
-    MoveId dbAddSanVariation(MoveId node, const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
+    MoveId dbAddSanVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Merge current node of @p otherGame into this game */
     bool mergeNode(GameX &otherGame);
     /** Merge @p otherGame starting from otherGames current position into this game as a new mainline */
@@ -340,11 +510,8 @@ public :
 
     void dbSetChess960(bool b);
     bool isChess960() const;
-    void setChess960(bool);
 
     // Searching
-    /** Search game to see if given position exists and returns the move id, otherwise NO_MOVE */
-    MoveId findPosition(const BoardX& position) const;
     /** @return true if the move @p from @p to is already main move or variation */
     bool currentNodeHasMove(chessx::Square from, chessx::Square to) const;
     /** @return true if the move @p from @p to is already in a variation */
@@ -361,16 +528,10 @@ public :
     bool isEcoPosition() const;
 
     /* Debug */
-    /** Dump a move node using qDebug() */
-    void dumpMoveNode(MoveId moveId = CURRENT_MOVE) const;
     /** Dump annotatios for move @p moveId using qDebug() */
     void dumpAnnotations(MoveId moveId) const;
     /** Repeatedly call dumpMoveNode for all nodes */
     void dumpAllMoveNodes() const;
-    /** Decide if moveVariationUp() can be executed */
-    bool canMoveVariationUp(MoveId moveId) const;
-    /** Decide if moveVariationDown() can be executed */
-    bool canMoveVariationDown(MoveId moveId) const;
     /** Start all variations with an initial character comment */
     void enumerateVariations(MoveId moveId, char a);
     /** Move the variation @p moveId of the curent node up in the list of variations */
@@ -383,9 +544,6 @@ public :
     int resultAsInt() const;
     void setStartingBoard(const BoardX &startingBoard, QString text, bool chess960 = false);
 
-    /** Removes the node at @p moveId */
-    void removeNode(MoveId moveId = CURRENT_MOVE);
-
     MoveId lastMove() const;
 
     bool positionRepetition3(const BoardX &board) const;
@@ -395,66 +553,21 @@ protected:
     /** Find the point in the this game where @p otherGame fits in the next time.
         @retval Node from where the merging shall start in other game */
     MoveId findMergePoint(const GameX &otherGame);
-    /** Promotes the given variation to the main line */
-    void dbPromoteVariation(MoveId variation);
     /** Find the next illegal position in all variations and mainline moves after the current position, and cut the game from there */
     void truncateVariationAfterNextIllegalPosition();
+    /** Removes the node at @p moveId */
+    void removeNode(MoveId moveId = CURRENT_MOVE);
 
-    void dbIndicateAnnotationsOnBoard(MoveId moveId);
+    void dbIndicateAnnotationsOnBoard();
     bool positionRepetition(const BoardX &board);
 signals:
     void signalGameModified(bool,GameX,QString);
     void signalMoveChanged();
 
 private:
+    GameCursor m_moves;
 
-#pragma pack(push,2)
-    struct MoveNode
-    {
-        MoveId previousNode;
-        MoveId nextNode;
-        MoveId parentNode;
-        short m_ply;
-        Move move;
-        NagSet nags;
-        QList<MoveId> variations;
-        void remove()
-        {
-            parentNode = previousNode = nextNode = NO_MOVE;
-            variations.clear();
-            m_ply |= 0x8000;
-        }
-        MoveNode()
-        {
-            parentNode = nextNode = previousNode = NO_MOVE;
-            variations.clear();
-            m_ply = 0;
-        }
-        void SetPly(short ply) { Q_ASSERT(m_ply<0x7FFF); m_ply = ply; }
-        short Ply() const { return m_ply & 0x7FFF; }
-        bool Removed() const { return (m_ply & 0x8000); }
-        inline bool operator==(const struct MoveNode& c) const
-        {
-            return (move == c.move &&
-                    variations == c.variations &&
-                    nags == c.nags &&
-                    m_ply == c.m_ply);
-        }
-    };
-#pragma pack(pop)
-
-    /** Reference Counter for this object */
-    int mountRefCount;
-    /** List of nodes */
-    QList <MoveNode> m_moveNodes;
-    /** Keeps the current node in the game */
-    MoveId m_currentNode;
-    /** Keeps the start ply of the game, 0 for standard starting position */
-    short m_startPly;
-    /** Keeps the start position of the game */
-    BoardX m_startingBoard;
-    /** Keeps the current position of the game */
-    BoardX* m_currentBoard;
+    using MoveNode = GameCursor::Node;
 
     typedef QMap<MoveId, QString> AnnotationMap;
 
@@ -462,6 +575,8 @@ private:
     AnnotationMap m_variationStartAnnotations;
     /** Annotations for move nodes */
     AnnotationMap m_annotations;
+    /** NAGs for move nodes */
+    QMap<MoveId, NagSet> m_nags;
 
     /** Map keeping pgn tags of the game */
     TagMap m_tags;
@@ -470,14 +585,9 @@ private:
     /** Remove all removed nodes */
     void compact();
 
-    /** Checks if a moveId is valid, returns the moveId if it is, 0 if not */
-    MoveId nodeValid(MoveId moveId = CURRENT_MOVE) const;
-    /** Change parent of each move of a variation. */
-    void reparentVariation(MoveId variation, MoveId parent);
     void removeTimeCommentsFromMap(AnnotationMap& map);
 
     friend class SaveRestoreMove;
-    friend class SaveRestoreMoveCompact;
 };
 
 class SaveRestoreMove
@@ -491,24 +601,6 @@ public:
     ~SaveRestoreMove()
     {
         m_saveGame->dbMoveToId(m_saveMoveValue);
-    }
-private:
-    GameX* m_saveGame;
-    MoveId m_saveMoveValue;
-};
-
-class SaveRestoreMoveCompact
-{
-public:
-    explicit SaveRestoreMoveCompact(GameX& game)
-    {
-        m_saveGame = &game;
-        m_saveMoveValue = game.currentMove();
-    }
-    ~SaveRestoreMoveCompact()
-    {
-        m_saveGame->dbMoveToId(m_saveMoveValue);
-        m_saveGame->compact();
     }
 private:
     GameX* m_saveGame;

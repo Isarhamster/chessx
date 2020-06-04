@@ -62,7 +62,7 @@ static void ConvertLine(Game& src, GameX& dst, bool movesOnly = false)
         if (varsCnt > 0)
         {
             src.MoveBackup();
-            dst.dbBackward();
+            dst.cursor().backward();
 
             auto move = dst.currentMove();
             for (uint v = 0; v < varsCnt; ++v)
@@ -70,24 +70,24 @@ static void ConvertLine(Game& src, GameX& dst, bool movesOnly = false)
                 src.MoveIntoVariation(v);
                 if (movesOnly)
                 {
-                    dst.dbAddSanVariation(move, src.GetNextSAN());
+                    dst.dbAddSanVariation(src.GetNextSAN());
                 }
                 else
                 {
-                    dst.dbAddSanVariation(move, src.GetNextSAN(), "", ConvertNags(src.GetNextNags()));
+                    dst.dbAddSanVariation(src.GetNextSAN(), "", ConvertNags(src.GetNextNags()));
                     dst.dbSetAnnotation(src.GetPreviousMoveComment(), GameX::Position::BeforeMove);
                     dst.dbSetAnnotation(src.GetMoveComment());
                 }
                 src.MoveForward();
                 ConvertLine(src, dst, movesOnly);
                 src.MoveExitVariation();
-                dst.dbBackward();
+                dst.cursor().backward();
             }
-            dst.dbForward();
+            dst.cursor().forward();
             src.MoveForward();
         }
     }
-    dst.dbBackward(plyCnt);
+    dst.cursor().backward(plyCnt);
 }
 
 static void ConvertGame(Game& src, GameX& dst, bool movesOnly = false)
@@ -303,7 +303,7 @@ int ScidDatabase::findPosition(GameId index, const BoardX& position)
 {
     GameX g;
     loadGameMoves(index, g);
-    return g.findPosition(position);
+    return g.cursor().findPosition(position);
 }
 
 quint64 ScidDatabase::count() const
