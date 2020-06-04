@@ -244,8 +244,8 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
         m_enumerateVariations2->setVisible(isVariation);
         m_promoteVariation->setVisible(isVariation);
         m_removeVariation->setVisible(isVariation);
-        m_VariationUp->setVisible(isVariation && game->canMoveVariationUp(m_currentMove));
-        m_VariationDown->setVisible(isVariation && game->canMoveVariationDown(m_currentMove));
+        m_VariationUp->setVisible(isVariation && game->cursor().canMoveVariationUp(m_currentMove));
+        m_VariationDown->setVisible(isVariation && game->cursor().canMoveVariationDown(m_currentMove));
         m_removeNext->setVisible(!atLineEnd);
         m_removePrevious->setVisible(!atGameStart);
         m_removeNags->setVisible(hasNags);

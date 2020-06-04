@@ -406,7 +406,7 @@ int PgnDatabase::findPosition(GameId index, const BoardX &position)
 {
     GameX g;
     loadGameMoves(index, g);
-    return g.findPosition(position);
+    return g.cursor().findPosition(position);
 }
 
 bool PgnDatabase::loadGame(GameId gameId, GameX& game)
@@ -703,7 +703,7 @@ inline void PgnDatabase::parseDefaultToken(GameX* game, QString token)
             if(m_newVariation)
             {
                 game->backward();
-                m_variation = game->dbAddSanVariation(game->currentMove(), token, QString(), nag);
+                m_variation = game->dbAddSanVariation(token, QString(), nag);
                 if(!m_precomment.isEmpty())
                 {
                     game->dbSetAnnotation(m_precomment, m_variation, GameX::BeforeMove);
