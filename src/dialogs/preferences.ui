@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>585</width>
-    <height>695</height>
+    <height>726</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -368,6 +368,9 @@
               <property name="text">
                <string>Wheel sensitivity</string>
               </property>
+              <property name="buddy">
+               <cstring>minWheelCount</cstring>
+              </property>
              </widget>
             </item>
             <item>
@@ -699,6 +702,9 @@
              <widget class="QLabel" name="label_17">
               <property name="text">
                <string>Blunder Check Limit (centi-pawn)</string>
+              </property>
+              <property name="buddy">
+               <cstring>editBlunderCheck</cstring>
               </property>
              </widget>
             </item>
@@ -1262,11 +1268,18 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="darkTheme">
-            <property name="text">
-             <string>Dark Theme</string>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_23">
+            <item>
+             <widget class="QCheckBox" name="darkTheme">
+              <property name="text">
+               <string>Dark Theme</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="theme"/>
+            </item>
+           </layout>
           </item>
           <item>
            <widget class="QLabel" name="label_22">
@@ -1284,6 +1297,9 @@
              <widget class="QLabel" name="labelListFontSize">
               <property name="text">
                <string>Font Size</string>
+              </property>
+              <property name="buddy">
+               <cstring>spinBoxListFontSize</cstring>
               </property>
              </widget>
             </item>
@@ -1385,12 +1401,18 @@
             <property name="text">
              <string>Login</string>
             </property>
+            <property name="buddy">
+             <cstring>userName</cstring>
+            </property>
            </widget>
           </item>
           <item row="4" column="0">
            <widget class="QLabel" name="label_9">
             <property name="text">
              <string>Password</string>
+            </property>
+            <property name="buddy">
+             <cstring>passWord</cstring>
             </property>
            </widget>
           </item>

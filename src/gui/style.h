@@ -5,19 +5,27 @@
 #ifndef STYLE_H
 #define STYLE_H
 
-#include <QObject>
+#include <QProxyStyle>
 
-class Style : public QObject
-{
-    Q_OBJECT
-public:
-    explicit Style(QObject *parent = nullptr);
+class QApplication;
 
-    static void setStyle(QWidget* w);
-signals:
+class Style : public QProxyStyle {
+  Q_OBJECT
 
-public slots:
+ public:
+  Style();
+  explicit Style(QStyle *style);
 
+  QStyle *baseStyle();
+
+  void polish(QPalette &palette) override;
+  void polish(QApplication *app) override;
+
+  void loadStyle(QApplication *app);
+  void modifyPalette(QPalette& palette);
+
+ private:
+  QStyle *styleBase();
 };
 
 #endif // STYLE_H
