@@ -1850,7 +1850,7 @@ bool MainWindow::confirmQuit()
     }
     for (auto dbi: m_registry->databases())
     {
-        if (dbi->isValid() && dbi->database()->isModified())
+        if (dbi->isValid() && dbi->database()->isModified() && !dbi->isClipboard())
         {
             modified += dbi->database()->name() + '\n';
         }
