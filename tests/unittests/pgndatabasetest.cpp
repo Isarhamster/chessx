@@ -46,7 +46,7 @@ void PgnDatabaseTest::testCreateDatabase()
 
     PgnDatabase* db = new PgnDatabase(false);
 //    QVERIFY(db->open(tmpDir.path() + "pgndatabase_new1.pgn", false));
-    QCOMPARE(db->count(), 0);
+    QVERIFY(db->count() == 0);
     delete db;
 }
 
@@ -62,7 +62,7 @@ void PgnDatabaseTest::testLoad()
     QVERIFY(db->parseFile());
 
     GameX game;
-    QCOMPARE(2, db->count());
+    QVERIFY(db->count() == 2);
     QCOMPARE(db->loadGame(1, game), true);
     QCOMPARE(db->loadGame(0, game), true);
     QCOMPARE(db->loadGame(2, game), false);

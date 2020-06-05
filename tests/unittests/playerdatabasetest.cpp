@@ -29,12 +29,12 @@ void PlayerDatabaseTest::testBasics()
     
     QVERIFY(pdb.open(path));
 
-    QCOMPARE(pdb.count(), 63);
+    QVERIFY(pdb.count() == 63);
     QVERIFY(pdb.exists("Thal, Olaf"));
     QVERIFY(!pdb.exists("TRUSDFEADFA, WSDFASDF"));
 
     pdb.setCurrent("Thal, Olaf");
-    QCOMPARE(pdb.current(), "Thal, Olaf");
+    QVERIFY(pdb.current() == "Thal, Olaf");
 
     pdb.close();
     // after closing - opening should be possible - no better idea for another test

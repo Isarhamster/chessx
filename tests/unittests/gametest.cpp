@@ -80,9 +80,9 @@ void GameTest::testAddMove()
 {
     QFETCH(QString, move);
     QFETCH(int, node);
-    QCOMPARE(m_game->addMove(move), node);
-
+    QCOMPARE(m_game->addMove(move), static_cast<MoveId>(node));
 }
+
 void GameTest::testAddVariation_data()
 {
     QTest::addColumn<QString> ("move");
@@ -124,11 +124,11 @@ void GameTest::testAddVariation()
     if(startnode)
     {
         m_game->moveToId(startnode);
-        QCOMPARE(m_game->addVariation(move), node);
+        QCOMPARE(m_game->addVariation(move), static_cast<MoveId>(node));
     }
     else
     {
-        QCOMPARE(m_game->addMove(move), node);
+        QCOMPARE(m_game->addMove(move), static_cast<MoveId>(node));
     }
 }
 void GameTest::testDumpNodes()
@@ -308,9 +308,9 @@ void GameTest::testNavigation()
         {
             m_game->forward();
         }
-        QCOMPARE(m_game->currentMove(), node);
-        QCOMPARE(m_game->nextMove(), nnode);
-        QCOMPARE(m_game->previousMove(), pnode);
+        QCOMPARE(m_game->currentMove(), static_cast<MoveId>(node));
+        QCOMPARE(m_game->nextMove(), static_cast<MoveId>(nnode));
+        QCOMPARE(m_game->previousMove(), static_cast<MoveId>(pnode));
     }
 }
 void GameTest::testTags()
@@ -380,7 +380,7 @@ void GameTest::testCounters()
     QCOMPARE(m_game->moveNumber(), 4);
     QCOMPARE(m_game->plyCount(), 25);
     m_game->moveToId(29);
-    QCOMPARE(m_game->variationNumber(), 26);
+    QCOMPARE(m_game->variationNumber(), static_cast<MoveId>(26));
     QCOMPARE(m_game->variationCount(), 0);
 }
 void GameTest::testVariationManipulation()
