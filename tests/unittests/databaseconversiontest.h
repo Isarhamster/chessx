@@ -21,27 +21,14 @@ Unit tests for the DatabaseConversion class.
 #ifndef DATABASECONVERSIONTEST_H
 #define DATABASECONVERSIONTEST_H
 
-#include <QtTest/QtTest>
-#include <QString>
+#include <QtTest>
 
 class DatabaseConversionTest : public QObject
 {
-
     Q_OBJECT
 
 private slots:
-    void initTestCase();
-    void init();
-    void cleanup();
-    void cleanupTestCase();
-
     void testConvertDatabase();
-
-private:
-
-    QString db_name;
-    QString source;
-    QString picture_dir;
 };
 
 #endif
