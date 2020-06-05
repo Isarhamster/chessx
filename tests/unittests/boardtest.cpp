@@ -92,11 +92,12 @@ void BoardTest::testValidate()
 void BoardTest::testValidate_data()
 {
     const char* desc = "";
+    char buff[512];
     QTest::addColumn<int>("expected");
     QTest::addColumn<QString>("fen");
 
 #define SECTION(text) desc = text
-#define ROW(expected, fen) QTest::addRow("%s [%d]", desc, __LINE__) << static_cast<int>(expected) << fen
+#define ROW(expected, fen) qsnprintf(buff, sizeof(buff), "%s [%d]", desc, __LINE__); QTest::newRow(buff) << static_cast<int>(expected) << fen
 
     SECTION("Life is good");
     ROW(Valid, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
@@ -155,10 +156,12 @@ void BoardTest::testIsValidFEN()
 void BoardTest::testIsValidFEN_data()
 {
     const char* desc;
+    char buff[512];
+
     QTest::addColumn<bool>("expected");
     QTest::addColumn<QString>("fen");
 #define SECTION(text) desc = text
-#define ROW(expected, fen) QTest::addRow("%s [%d]", desc, __LINE__) << expected << fen
+#define ROW(expected, fen) qsnprintf(buff, sizeof(buff), "%s [%d]", desc, __LINE__); QTest::newRow(buff) << expected << fen
     
     SECTION("Starting position");
     ROW(true, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1");
