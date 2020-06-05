@@ -1,13 +1,11 @@
 
 #include "positionsearchtest.h"
+
+#include "resourcepath.h"
+
 #include "pgndatabase.h"
 #include "settings.h"
 #include "positionsearch.h"
-
-void PositionSearchTest::initTestCase() {}
-void PositionSearchTest::init() {}
-void PositionSearchTest::cleanup() {}
-void PositionSearchTest::cleanupTestCase() {}
 
 void PositionSearchTest::testSearch()
 {
@@ -15,7 +13,8 @@ void PositionSearchTest::testSearch()
     // TODO: remove
     AppSettings = new Settings;
     PgnDatabase db { false };
-    db.open(QFINDTESTDATA("data/t1.pgn"), false);
+    QVERIFY(db.open(RESOURCE_PATH "t1.pgn", false));
+    QVERIFY(db.parseFile());
 
     BoardX board;
     board.setStandardPosition();
@@ -32,12 +31,13 @@ void PositionSearchTest::testSearch()
         board.doMove(game.move());
         posSearch.setPosition(board);
 
-        QCOMPARE(posSearch.matches(0), i + 1);
+        auto found = posSearch.matches(0);
+        QCOMPARE(found, i + 1);
     }
 
     board.setStandardPosition();
     board.doMove(board.parseMove("e2-e4"));
     posSearch.setPosition(board);
-    Q_ASSERT(!posSearch.matches(0));
+    QCOMPARE(posSearch.matches(0), 0);
 }
 
