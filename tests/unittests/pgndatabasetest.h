@@ -21,12 +21,10 @@ Unit tests for the PgnDatabase class.
 #ifndef PGNDATABASETEST_H
 #define PGNDATABASETEST_H
 
-#include <QtTest/QtTest>
-
+#include <QtTest>
 
 class PgnDatabaseTest : public QObject
 {
-
     Q_OBJECT
 
 private slots:
@@ -36,13 +34,10 @@ private slots:
     void cleanupTestCase();
 
     void testCreateDatabase();
-    void testName();
     void testLoad();
     void testCopyGameIntoNewDB();
-    void testRemoveGame();
     //  void testExecuteSearch();
     //  void testSave();
-
 };
 
 #endif
