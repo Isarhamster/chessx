@@ -45,7 +45,7 @@ void PgnDatabaseTest::testCreateDatabase()
     QTemporaryDir tmpDir;
 
     PgnDatabase* db = new PgnDatabase(false);
-//    QVERIFY(db->open(tmpDir.filePath("pgndatabase_new1.pgn"), false));
+//    QVERIFY(db->open(tmpDir.path() + "pgndatabase_new1.pgn", false));
     QCOMPARE(db->count(), 0);
     delete db;
 }
@@ -77,7 +77,7 @@ void PgnDatabaseTest::testCopyGameIntoNewDB()
 
     QTemporaryDir tmpDir;
     auto dst = new MemoryDatabase();
-//    dst->open(tmpDir.filePath("pgndatabase/new.pgn"), false);
+//    dst->open(tmpDir.path() + "/pgndatabase/new.pgn", false);
 
     GameX game;
     QVERIFY(src->loadGame(1, game));

@@ -45,9 +45,9 @@ void PlayerDatabaseTest::testBasics()
 
 void PlayerDatabaseTest::testCreate()
 {
-    QTemporaryDir tmpDir(QDir::tempPath() + "/chessx_test_pdb");
+    QTemporaryDir tmpDir;
     PlayerDatabase pdb;
-    auto path = tmpDir.filePath("tmp");
+    auto path = tmpDir.path() + "/playerdatabase_create";
     QVERIFY(pdb.create(path));
     pdb.close();
     QVERIFY(pdb.removeDatabase(path));

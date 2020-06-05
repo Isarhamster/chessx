@@ -31,5 +31,5 @@ void DatabaseConversionTest::testConvertDatabase()
     QTemporaryDir tmpDir(QDir::tempPath() + "/chessx_test_pdb");
 
     DatabaseConversion converter;
-    QVERIFY(converter.playerDatabaseFromScidRatings(RESOURCE_PATH "small/ratings.ssp", tmpDir.filePath("converted"), tmpDir.filePath("photos")));
+    QVERIFY(converter.playerDatabaseFromScidRatings(RESOURCE_PATH "small/ratings.ssp", tmpDir.path() + "/converted", tmpDir.path() + "photos"));
 }
