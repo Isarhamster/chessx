@@ -236,26 +236,24 @@ QString EcoInfo::listOfPlayers() const
 {
     QString playersList;
 
-    playersList.append(QString("<a name='ListWhite'></a><table><tr><th><a href=\"#ListBlack\">&#8681;</a>%1</th><th>%2</th></tr>").arg(tr("White Player")).arg(tr("Score")));
+    playersList.append(QString("<a name='ListWhite'></a><table><tr><th><a href=\"#ListBlack\">&#8681;</a>%1</th><th>%2</th></tr>").arg(tr("White Player"), tr("Score")));
 
     for(PlayerInfoList::const_iterator it = m_playersWhite.constBegin(); it != m_playersWhite.constEnd(); ++it)
     {
         playersList += QString("<tr><td><a href=\"player-white:%1\">%2</a></td><td>%3/%4</td></tr>")
-                       .arg((*it).first)
-                       .arg((*it).first)
+                       .arg((*it).first, (*it).first)
                        .arg((*it).second)
                        .arg(m_gamesWhite[(*it).first]);
     }
 
     playersList = playersList.append("</table>");
 
-    playersList.append(QString("<a name='ListBlack'></a><table><tr><th><a href=\"#ListWhite\">&#8679;</a>%1</th><th>%2</th></tr>").arg(tr("Black Player")).arg(tr("Score")));
+    playersList.append(QString("<a name='ListBlack'></a><table><tr><th><a href=\"#ListWhite\">&#8679;</a>%1</th><th>%2</th></tr>").arg(tr("Black Player"), tr("Score")));
 
     for(PlayerInfoList::const_iterator it = m_playersBlack.begin(); it != m_playersBlack.end(); ++it)
     {
         playersList += QString("<tr><td><a href=\"player-black:%1\">%2</a></td><td>%3/%4</td></tr>")
-                       .arg((*it).first)
-                       .arg((*it).first)
+                       .arg((*it).first, (*it).first)
                        .arg((*it).second)
                        .arg(m_gamesBlack[(*it).first]);
     }

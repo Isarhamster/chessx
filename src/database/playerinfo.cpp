@@ -192,9 +192,7 @@ QString PlayerInfo::formattedScore() const
     QString ref1 = QString("<a href='result-white:%1#").arg(m_name);
     QString ref2 = QString("<a href='result-black:%1#").arg(m_name);
     return QCoreApplication::translate("PlayerInfo", "Total: %1<br>White: %2<br>Black: %3<br>")
-           .arg(formattedScore(total, count))
-           .arg(formattedScore(m_result[White], m_count[White], ref1, true))
-           .arg(formattedScore(m_result[Black], m_count[Black], ref2, false));
+           .arg(formattedScore(total, count), formattedScore(m_result[White], m_count[White], ref1, true), formattedScore(m_result[Black], m_count[Black], ref2, false));
 }
 
 QString PlayerInfo::formattedScore(const int result[4], int count) const
@@ -231,15 +229,15 @@ QString PlayerInfo::formattedScore(const int result[4], int count, QString ref, 
     QChar scoresign[4] = {'*', '+', '=', '-'};
     QString format = "%1%2'>%3%4</a>";
     QStringList modes;
-    score += format.arg(ref).arg(mode ? "1-0":"0-1").arg(scoresign[WhiteWin]).arg(result[WhiteWin]);
+    score += format.arg(ref, (mode ? "1-0":"0-1")).arg(scoresign[WhiteWin]).arg(result[WhiteWin]);
     score += " &nbsp;";
-    score += format.arg(ref).arg("1/2-1/2").arg(scoresign[Draw]).arg(result[Draw]);
+    score += format.arg(ref, "1/2-1/2").arg(scoresign[Draw]).arg(result[Draw]);
     score += " &nbsp;";
-    score += format.arg(ref).arg(!mode ? "1-0":"0-1").arg(scoresign[BlackWin]).arg(result[BlackWin]);
+    score += format.arg(ref, (!mode ? "1-0":"0-1")).arg(scoresign[BlackWin]).arg(result[BlackWin]);
     if(result[ResultUnknown])
     {
         score += " &nbsp;";
-        score += format.arg(ref).arg("\\*").arg(scoresign[ResultUnknown]).arg(result[ResultUnknown]);
+        score += format.arg(ref, "\\*").arg(scoresign[ResultUnknown]).arg(result[ResultUnknown]);
     }
     if(count - result[ResultUnknown])
         score += QString(" &nbsp;(%1%)").
@@ -307,8 +305,8 @@ QString PlayerInfo::formattedRange() const
 QString PlayerInfo::listOfOpenings() const
 {
     QStringList openingsList;
-    openingsList.append(QString("<a name='ListWhite'></a><p><a href='#ListBlack'>&#8681;</a>&nbsp;<a href='player:%1#%2'>%3:</a></p>").arg(m_name).arg(TagNameWhite).arg(tr("White Openings")));
-    openingsList.append(QString("<a name='ListBlack'></a><p><a href='#ListWhite'>&#8679;</a>&nbsp;<a href='player:%1#%2'>%3:</a></p>").arg(m_name).arg(TagNameBlack).arg(tr("Black Openings")));
+    openingsList.append(QString("<a name='ListWhite'></a><p><a href='#ListBlack'>&#8681;</a>&nbsp;<a href='player:%1#%2'>%3:</a></p>").arg(m_name, TagNameWhite, tr("White Openings")));
+    openingsList.append(QString("<a name='ListBlack'></a><p><a href='#ListWhite'>&#8679;</a>&nbsp;<a href='player:%1#%2'>%3:</a></p>").arg(m_name, TagNameBlack, tr("Black Openings")));
     openingsList.append("");
 
     for(int i = 0; i < 2; ++i)
@@ -321,9 +319,7 @@ QString PlayerInfo::listOfOpenings() const
             if (((*it).second)==1) break; // leave out things played only once
             if (((*it).second)*25<m_count[i]) break; // leave out things played rarely
             l.append(QString("<a href='eco-%1:%2'>%3</a> (%4)")
-                     .arg(i == 0 ? "white" : "black")
-                     .arg(codes)
-                     .arg(opening)
+                     .arg((i == 0 ? "white" : "black"), codes, opening)
                      .arg((*it).second));
         }
         openingsList[i] += l.join(", ");
@@ -345,9 +341,7 @@ QString PlayerInfo::listOfOpenings() const
             }
 
             openingsList[i] += QString("<li><a href='eco-%1:%2'>%3</a>: %4%5")
-                               .arg(i == 0 ? "white" : "black")
-                               .arg((*it).first)
-                               .arg((*it).first)
+                               .arg((i == 0 ? "white" : "black"), (*it).first, (*it).first)
                                .arg(count)
                                .arg(score);
         }

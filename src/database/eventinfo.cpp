@@ -234,8 +234,7 @@ QString EventInfo::listOfPlayers() const
     for(PlayerInfoList::const_iterator it = m_players.begin(); it != m_players.end(); ++it)
     {
         playersList += QString("<tr><td><a href='player:%1'>%2</a></td><td>%3/%4</td></tr>")
-                       .arg((*it).first)
-                       .arg((*it).first)
+                       .arg((*it).first, (*it).first)
                        .arg((*it).second)
                        .arg(m_games[(*it).first]);
     }

@@ -440,7 +440,7 @@ void MainWindow::slotSendMail()
             const QString black = curgame.tag(TagNameBlack);
 
             QString mailTo("mailto:%1?subject=Game %2-%3&body=%4");
-            QUrl url(mailTo.arg(recipient).arg(white).arg(black).arg(pgn), QUrl::TolerantMode);
+            QUrl url(mailTo.arg(recipient, white, black, pgn), QUrl::TolerantMode);
             QDesktopServices::openUrl(url);
         }
     }
@@ -2775,8 +2775,7 @@ void MainWindow::slotFilterChanged(bool selectGame)
     quint64 filteredCount = databaseInfo()->filter() ? databaseInfo()->filter()->count() : 0;
     quint64 databaseCount = database()->count();
     QString f = filteredCount == databaseCount ? tr("all") : QString::number(filteredCount);
-    m_statusFilter->setText(QString(" %1: %2/%3 ").arg(databaseName())
-                            .arg(f).arg(database()->count()));
+    m_statusFilter->setText(QString(" %1: %2/%3 ").arg(databaseName(), f).arg(database()->count()));
     m_statusFilter->repaint(); // Workaround Bug in Qt 5.11 and 5.12
 }
 
@@ -2893,7 +2892,7 @@ void MainWindow::copyGames(QString destination, QList<GameId> indexes, QString s
         {
             copyGame(pDestDBInfo, pSrcDBInfo, index);
         }
-        QString msg = tr("Appended %1 games from %2 to %3.").arg(indexes.count()).arg(source).arg(destination);
+        QString msg = tr("Appended %1 games from %2 to %3.").arg(indexes.count()).arg(source, destination);
         slotStatusMessage(msg);
         if (pDestDBInfo==m_currentDatabase)
         {
@@ -2944,7 +2943,7 @@ void MainWindow::copyDatabase(QString target, QString src)
                     pDestDB->appendGame(g);
                 }
             }
-            QString msg = tr("Append games from %1 to %2.").arg(pSrcDB->name()).arg(pDestDB->name());
+            QString msg = tr("Append games from %1 to %2.").arg(pSrcDB->name(), pDestDB->name());
             slotStatusMessage(msg);
 
             pDestDBInfo->filter()->resize(pDestDB->count(), true);
@@ -2961,7 +2960,7 @@ void MainWindow::copyDatabase(QString target, QString src)
                     fDest.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
             {
                 done = true;
-                QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName()).arg(fiDest.fileName());
+                QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName(), fiDest.fileName());
                 slotStatusMessage(msg);
                 fDest.write("\r\n");
                 while(!fSrc.atEnd())
@@ -2985,7 +2984,7 @@ void MainWindow::copyDatabase(QString target, QString src)
                 Output output(Output::Pgn, &BoardView::renderImageForBoard);
                 output.append(target, *pSrcDB);
 
-                QString msg = tr("Append games from %1 to %2.").arg(pSrcDB->name()).arg(fiDest.fileName());
+                QString msg = tr("Append games from %1 to %2.").arg(pSrcDB->name(), fiDest.fileName());
                 slotStatusMessage(msg);
                 m_databaseList->update(target);
             }
@@ -3001,7 +3000,7 @@ void MainWindow::copyDatabase(QString target, QString src)
                 {
                     pDestDB->appendGame(g);
                 }
-                QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName()).arg(pDestDB->name());
+                QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName(), pDestDB->name());
                 slotStatusMessage(msg);
                 done = true;
                 if (pDestDBInfo)
@@ -3016,7 +3015,7 @@ void MainWindow::copyDatabase(QString target, QString src)
             ArenaBook abk;
             if (abk.open(src, false) && abk.parseFile())
             {
-                QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName()).arg(pDestDB->name());
+                QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName(), pDestDB->name());
                 slotStatusMessage(msg);
 
                 for (quint64 i=0; i<abk.count(); ++i)
@@ -3206,7 +3205,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
         break;
     }
     targetDb->filter()->resize(targetDb->database()->count(), true);
-    QString msg = tr("Append %1 games from %2 to %3.").arg(n).arg(database()->name()).arg(targetDb->database()->name());
+    QString msg = tr("Append %1 games from %2 to %3.").arg(n).arg(database()->name(), targetDb->database()->name());
     slotStatusMessage(msg);
 }
 
@@ -3729,7 +3728,7 @@ void MainWindow::UpdateGameTitle()
     {
         eco = actualEco.left(3);
     }
-    eco = QString("<a href='eco:%1'>%2</a>").arg(eco).arg(eco);
+    eco = QString("<a href='eco:%1'>%2</a>").arg(eco, eco);
 
     QString opName = actualEco.section(" ",1);
     if (!opName.isEmpty())
@@ -3748,11 +3747,11 @@ void MainWindow::UpdateGameTitle()
         blackElo = QString();
     }
     QString players = QString("<b><a href=\"tag:white\">%1</a></b> %2 - <b><a href=\"tag:black\">%3</a></b> %4")
-                      .arg(white).arg(whiteElo).arg(black).arg(blackElo);
+                      .arg(white, whiteElo, black, blackElo);
     QString result = QString("<b>%1</b> &nbsp;").arg(game().tag(TagNameResult));
 
     QString eventInfo = game().eventInfo();
-    QString event = QString("<a href='event:%1'>%2</a>").arg(game().tag(TagNameEvent)).arg(eventInfo);
+    QString event = QString("<a href='event:%1'>%2</a>").arg(game().tag(TagNameEvent), eventInfo);
     QString title;
     if(!white.isEmpty() || !black.isEmpty())
     {

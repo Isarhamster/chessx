@@ -17,7 +17,7 @@
 
 static QString pathify(QString s)
 {
-    return QString("<a href='%1'>%2</a>").arg(s).arg(s);
+    return QString("<a href='%1'>%2</a>").arg(s, s);
 }
 
 AboutDlg::AboutDlg(QWidget *parent) :

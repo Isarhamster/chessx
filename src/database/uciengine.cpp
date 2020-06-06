@@ -246,7 +246,7 @@ void UCIEngine::processMessage(const QString& message)
                             case OPT_TYPE_COMBO:
                                 if(dataSpec->m_defVal != value.toString() && !value.toString().isEmpty())
                                 {
-                                    send(QString("setoption name %1 value %2").arg(key).arg(value.toString()));
+                                    send(QString("setoption name %1 value %2").arg(key, value.toString()));
                                 }
                                 break;
                             }

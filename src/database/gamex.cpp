@@ -1064,7 +1064,7 @@ void GameX::dbMergeWithGame(const GameX& g)
     {
         if (white.isEmpty()) white = "?";
         if (black.isEmpty()) black = "?";
-        shortDescription = QString("%1-%2 %3").arg(white).arg(black).arg(event);
+        shortDescription = QString("%1-%2 %3").arg(white, black, event);
         otherGame.dbSetAnnotation(shortDescription);
     }
 
@@ -1777,7 +1777,7 @@ bool GameX::appendArrowAnnotation(Square dest, Square src, QChar colorCode)
     {
         if(colorCode != QChar(0))
         {
-            newAnnot = QString("%1%2%3").arg(colorCode).arg(sqSrc).arg(sqDest);
+            newAnnot = QString("%1%2%3").arg(colorCode).arg(sqSrc, sqDest);
         }
     }
     else
@@ -1788,7 +1788,7 @@ bool GameX::appendArrowAnnotation(Square dest, Square src, QChar colorCode)
 
         if(colorCode != QChar(0))
         {
-            newAnnot = QString("%1,%2%3%4").arg(annot).arg(colorCode).arg(sqSrc).arg(sqDest);
+            newAnnot = QString("%1,%2%3%4").arg(annot).arg(colorCode).arg(sqSrc, sqDest);
         }
         else
         {

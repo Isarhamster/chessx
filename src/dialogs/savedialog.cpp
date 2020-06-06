@@ -89,7 +89,7 @@ int SaveDialog::save(Database* database, GameX& game)
             name2 = "?";
         }
 
-        gameTitle = QString("Save game '%1 vs. %2' to ").arg(name1).arg(name2);
+        gameTitle = QString("Save game '%1 vs. %2' to ").arg(name1, name2);
     }
     gameTitle.append(baseName);
 

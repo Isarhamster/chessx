@@ -438,8 +438,7 @@ void FicsConsole::SlotSendSeek()
         QString seek = QString("seek %1 %2 %3%4 %5-%6 ")
                 .arg(t)
                 .arg(inc)
-                .arg(ui->cbRated->currentIndex() ? "unrated" : "rated")
-                .arg(color)
+                .arg(ui->cbRated->currentIndex() ? "unrated" : "rated", color)
                 .arg(from)
                 .arg(to);
         QListWidgetItem* item = new QListWidgetItem(seek);
@@ -805,7 +804,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                             spec.append(" ");
                         }
                         QString seek = QString("%1 (%2) sought %3 %4 %5(\"play %6\" to respond)").
-                                     arg(l[2]).arg(l[1]).arg(l[3]).arg(l[4]).arg(spec).arg(l[0]);
+                                     arg(l[2], l[1], l[3], l[4], spec, l[0]);
                         ui->listSeeks->addItem(seek);
                         ui->listSeeks->scrollToBottom();
                     }

@@ -1150,7 +1150,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
 void MainWindow::loadError(QUrl url)
 {
     QFileInfo fi = QFileInfo(url.toString());
-    slotStatusMessage(tr("Database %1 cannot be accessed at the moment (%2).").arg(fi.fileName()).arg(url.errorString()));
+    slotStatusMessage(tr("Database %1 cannot be accessed at the moment (%2).").arg(fi.fileName(), url.errorString()));
 }
 
 void MainWindow::loadReady(QUrl url, QString fileName)

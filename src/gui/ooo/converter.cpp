@@ -622,7 +622,7 @@ bool Converter::convertFrame(const QDomElement &element)
         {
             const QString href = child.attribute("href");
             const QString xname = element.attribute("name");
-            QString alttitle = QString("Name:%1 - Ref:%2").arg(xname).arg(href);
+            QString alttitle = QString("Name:%1 - Ref:%2").arg(xname, href);
             if (suchild.tagName() == QLatin1String("title"))
             {
                 alttitle.append(QString(" - Title:%1").arg(suchild.text()));
