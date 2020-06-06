@@ -28,10 +28,13 @@ class BoardTest : public QObject
     Q_OBJECT
 
 private slots:
-    void testIsValidFEN();
     void testCreateHash();
+    void testIsValidFEN();
+    void testIsValidFEN_data();
     void testValidate();
+    void testValidate_data();
     void testReversableHash();
+    void testReversableHash_data();
 };
 
 #endif

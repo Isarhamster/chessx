@@ -37,6 +37,7 @@ endif()
 find_package(Qt5 REQUIRED
   LinguistTools
   "${REQUIRED_QT_COMPONENTS}"
+  Test
 ) 
 
 # TODO: enable warnings

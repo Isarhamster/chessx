@@ -1,10 +1,10 @@
 /***************************************************************************
-                          common  -  description
+                          spellcheckertests.h  -  description
                              -------------------
-    begin                : 26/02/2007
-    copyright            : (C) 2006 Marius Roets
-                           <saidinwielder@sourceforge.net>
- ***************************************************************************/
+    begin                : 15/09/2005
+    copyright            : (C) 2005, 2006 Heinz R. Hopfgartner
+                           <heinz.hopfgartner@gmx.at>
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -15,30 +15,25 @@
  *                                                                         *
  ***************************************************************************/
 /**
-Unit tests for the IndexItem class
+   Test the speellchecker class.
 */
 
-#ifndef TAGLISTTEST_H
-#define TAGLISTTEST_H
 
-#include <QtTest/QtTest>
+#ifndef __SPELLCHECKERTEST_H
+#define __SPELLCHECKERTEST_H
 
+#include <QtTest>
 
-class TagListTest : public QObject
+class SpellCheckerTest : public QObject
 {
 
     Q_OBJECT
 
 private slots:
-    void initTestCase();
-    void init();
-    void cleanup();
-    void cleanupTestCase();
-
-    void testTagNameMap();
-    void testTagList();
-
+    void testBasics();
+    void testBasics_data();
+    void testImport();
 };
 
-#endif
 
+#endif

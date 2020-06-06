@@ -18,8 +18,8 @@
 Unit tests for the PositionSearch class
 */
 
-#ifndef POSITIONSEARCH_H
-#define POSITIONSEARCH_H
+#ifndef POSITIONSEARCHTEST_H
+#define POSITIONSEARCHTEST_H
 
 #include <QtTest/QtTest>
 
@@ -28,11 +28,6 @@ class PositionSearchTest : public QObject
     Q_OBJECT
 
 private slots:
-    void initTestCase();
-    void init();
-    void cleanup();
-    void cleanupTestCase();
-
     void testSearch();
 };
 

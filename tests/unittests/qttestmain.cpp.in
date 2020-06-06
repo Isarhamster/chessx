@@ -1,0 +1,13 @@
+#include <QtTest>
+
+${includes}
+
+#define FIXTURE(T) do { T t; retc += QTest::qExec(&t, argc, argv); } while(0)
+
+int main(int argc, char** argv)
+{
+    int retc = 0;
+
+${fixtures}
+    return retc;
+}

@@ -18,86 +18,85 @@
 Unit tests for the PgnDatabase class.
 */
 
-#include <qdir.h>
-
 #include "pgndatabasetest.h"
+#include <QTemporaryDir>
+
+#include "resourcepath.h"
+
 #include "pgndatabase.h"
-#include "game.h"
+#include "memorydatabase.h"
+#include "gamex.h"
 #include "filter.h"
 #include "search.h"
+#include "settings.h"
 
+void PgnDatabaseTest::initTestCase()
+{
+    AppSettings = new Settings;
+}
 
-
-void PgnDatabaseTest::initTestCase() {}
 void PgnDatabaseTest::init() {}
 void PgnDatabaseTest::cleanup() {}
 
-void PgnDatabaseTest::cleanupTestCase()
-{
-    QDir toRemove;
-    toRemove.remove("./data/new.pgn");
-    toRemove.remove("./data/new1.pgn");
-}
+void PgnDatabaseTest::cleanupTestCase() {}
 
 void PgnDatabaseTest::testCreateDatabase()
 {
-    PgnDatabase* db = new PgnDatabase();
-    db->create(QString("./data/new1.pgn"));
-    QCOMPARE(db->count(), 0);
-    delete db;
-}
+    QTemporaryDir tmpDir;
 
-void PgnDatabaseTest::testName()
-{
-    PgnDatabase* db = new PgnDatabase();
-    db->open(QString("./data/game1.pgn"));
-    const QString name = QString("./data/game1.pgn");
-    QCOMPARE(db->filename(), name);
+    PgnDatabase* db = new PgnDatabase(false);
+//    QVERIFY(db->open(tmpDir.path() + "pgndatabase_new1.pgn", false));
+    QVERIFY(db->count() == 0);
     delete db;
-
 }
 
 void PgnDatabaseTest::testLoad()
 {
-    PgnDatabase* db = new PgnDatabase();
-    db->open(QString("./data/game1.pgn"));
-    Game game;
-    QCOMPARE(2 , db->count());
+    const QString path(RESOURCE_PATH "game1.pgn");
+
+    PgnDatabase* db = new PgnDatabase(false);
+    QVERIFY(db->open(path, false));
+
+    QCOMPARE(db->filename(), path);
+
+    QVERIFY(db->parseFile());
+
+    GameX game;
+    QVERIFY(db->count() == 2);
     QCOMPARE(db->loadGame(1, game), true);
     QCOMPARE(db->loadGame(0, game), true);
     QCOMPARE(db->loadGame(2, game), false);
     delete db;
-
 }
 
 void PgnDatabaseTest::testCopyGameIntoNewDB()
 {
-    PgnDatabase* db = new PgnDatabase();
-    db->open(QString("./data/game1.pgn"));
-    Game game;
-    bool success = db->loadGame(1, game);
-    PgnDatabase* dbNew = new PgnDatabase();
-    dbNew->create(QString("./data/new.pgn"));
-    dbNew->appendGame(game);
-    success = db->loadGame(0, game);
-    dbNew->appendGame(game);
-    // FIXME -- Test below is failing
-//	QCOMPARE(dbNew->count(), 2);
-    delete dbNew;
-    delete db;
-}
+    auto src = new PgnDatabase(false);
+    QVERIFY(src->open(RESOURCE_PATH "game1.pgn", false));
+    QVERIFY(src->parseFile());
 
-void PgnDatabaseTest::testRemoveGame()
-{
-    PgnDatabase* dbNew = new PgnDatabase();
-    dbNew->open(QString("./data/new.pgn"));
-    dbNew->remove(1);
+    QTemporaryDir tmpDir;
+    auto dst = new MemoryDatabase();
+//    dst->open(tmpDir.path() + "/pgndatabase/new.pgn", false);
+
+    GameX game;
+    QVERIFY(src->loadGame(1, game));
+    dst->appendGame(game);
+    QVERIFY(src->loadGame(0, game));
+    dst->appendGame(game);
+
     // FIXME -- Test below is failing
-//	QCOMPARE(dbNew->count(), 1);
-    dbNew->remove(0);
+//    QCOMPARE(dst->count(), 2);
+
+    dst->remove(1);
     // FIXME -- Test below is failing
-//	QCOMPARE(dbNew->count(), 0);
-    delete dbNew;
+//    QCOMPARE(dst->count(), 1);
+    dst->remove(0);
+    // FIXME -- Test below is failing
+//    QCOMPARE(dst->count(), 0);
+
+    delete dst;
+    delete src;
 }
 
 // void PgnDatabaseTest::testExecuteSearch() {

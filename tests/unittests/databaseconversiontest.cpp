@@ -20,23 +20,16 @@ Unit tests for the DatabaseConversion class.
 
 #include "databaseconversiontest.h"
 
-#include "playerdatabase.h"
+#include <QTemporaryDir>
+
+#include "resourcepath.h"
+
 #include "databaseconversion.h"
-
-void DatabaseConversionTest::init() {};
-void DatabaseConversionTest::cleanup() {};
-
-void DatabaseConversionTest::initTestCase()
-{
-    db_name = "./data/small/players_converted";
-    source = "./data/small/ratings.ssp";
-    picture_dir = "./data/small/playerphotos";
-}
-
-void DatabaseConversionTest::cleanupTestCase() {}
 
 void DatabaseConversionTest::testConvertDatabase()
 {
+    QTemporaryDir tmpDir(QDir::tempPath() + "/chessx_test_pdb");
+
     DatabaseConversion converter;
-    QVERIFY(converter.playerDatabaseFromScidRatings(source, db_name, picture_dir));
+    QVERIFY(converter.playerDatabaseFromScidRatings(RESOURCE_PATH "small/ratings.ssp", tmpDir.path() + "/converted", tmpDir.path() + "photos"));
 }

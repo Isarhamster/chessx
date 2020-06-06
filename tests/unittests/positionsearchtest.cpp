@@ -1,27 +1,28 @@
 
 #include "positionsearchtest.h"
-#include "game.h"
-#include "pgndatabase.h"
-#include "search.h"
-#include "board.h"
 
-void PositionSearchTest::initTestCase() {}
-void PositionSearchTest::init() {}
-void PositionSearchTest::cleanup() {}
-void PositionSearchTest::cleanupTestCase() {}
+#include "resourcepath.h"
+
+#include "pgndatabase.h"
+#include "settings.h"
+#include "positionsearch.h"
 
 void PositionSearchTest::testSearch()
 {
-    PgnDatabase db;
-    db.open("data/t1.pgn");
+    // required by PgnDatabase::open() to check if indexing is enabled
+    // TODO: remove
+    AppSettings = new Settings;
+    PgnDatabase db { false };
+    QVERIFY(db.open(RESOURCE_PATH "t1.pgn", false));
+    QVERIFY(db.parseFile());
 
-    Board board;
+    BoardX board;
     board.setStandardPosition();
-    Game game;
+    GameX game;
     db.loadGame(0, game);
     game.moveToStart();
 
-    PositionSearch posSearch(&db,  board);
+    PositionSearch posSearch(&db, board);
     QCOMPARE(posSearch.matches(0), 1);
 
     for(int i = 1; i <= 4; ++i)
@@ -30,12 +31,13 @@ void PositionSearchTest::testSearch()
         board.doMove(game.move());
         posSearch.setPosition(board);
 
-        QCOMPARE(posSearch.matches(0), i + 1);
+        auto found = posSearch.matches(0);
+        QCOMPARE(found, i + 1);
     }
 
     board.setStandardPosition();
     board.doMove(board.parseMove("e2-e4"));
     posSearch.setPosition(board);
-    Q_ASSERT(!posSearch.matches(0));
+    QCOMPARE(posSearch.matches(0), 0);
 }
 
