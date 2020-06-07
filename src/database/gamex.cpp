@@ -1718,7 +1718,6 @@ bool GameX::appendSquareAnnotation(Square s, QChar colorCode)
     GameX state = *this;
     QString newAnnot;
     QString annot = squareAnnotation();
-    QString oldAnnot = annot;
     QString sq = strSquareNames[s];
     if(annot.isEmpty())
     {

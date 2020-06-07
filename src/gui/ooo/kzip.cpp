@@ -214,7 +214,6 @@ QByteArray KZipStream::fileByte(const QString &fileName) {
     device()->seek(device()->pos() + skip);
     int compression_method = readUShort(lh.compression_method);
     QByteArray compressed = device()->read(compressed_size);
-    const QString zfile = QString::fromLocal8Bit(metaheader.file_name);
 
     if (compression_method == 0) {
         // no compression

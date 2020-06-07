@@ -190,7 +190,7 @@ void EventListWidget::slotLinkClicked(const QUrl& url)
     }
     else if (url.scheme() == "event")
     {
-        QString event = ui->tagList->currentIndex().data().toString();
+        // QString event = ui->tagList->currentIndex().data().toString();
         emit filterRequest(url.path());
     }
 }

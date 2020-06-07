@@ -207,7 +207,6 @@ QString PartialDate::range(const PartialDate& d) const
     {
         return asShortString() + "-" + d.asShortString();
     }
-    QString result = numberToString(year());
     if(month() != d.month())
         return QString("%1.%2-%3").arg(year()).arg(asShortString(Month | Day), d.asShortString(Month | Day));
     else if(day() != d.day())

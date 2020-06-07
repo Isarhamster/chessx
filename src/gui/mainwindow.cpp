@@ -1029,7 +1029,7 @@ void MainWindow::openDatabaseArchive(QString fname, bool utf8)
             if(zip.open(QuaZip::mdUnzip))
             {
                 // first, we need some information about archive itself
-                QString comment = zip.getComment();
+                // QString comment = zip.getComment();
                 // and now we are going to access files inside it
                 QuaZipFile file(&zip);
                 for(bool more = zip.goToFirstFile(); more; more = zip.goToNextFile())

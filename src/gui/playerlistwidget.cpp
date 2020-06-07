@@ -77,7 +77,6 @@ void PlayerListWidget::selectionChangedSlot()
 
 void PlayerListWidget::findPlayers(const QString& s)
 {
-    QModelIndexList selection = ui->tagList->selectionModel()->selectedRows();
     QStringList newList = s.isEmpty() ? m_list : m_list.filter(s, Qt::CaseInsensitive);
 
     m_filterModel->setStringList(newList);

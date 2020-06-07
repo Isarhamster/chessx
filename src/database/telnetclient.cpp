@@ -201,7 +201,6 @@ bool TelnetClient::StartTimeseal(const QString &host, int port, QString name, QS
         QStringList options;
         options << host;
         options << QString::number(port);
-        QString command = options.join(" ");
 
         m_extToolProcess->start(fi.absoluteFilePath(), options, QIODevice::ReadWrite | QIODevice::Unbuffered);
         if (m_extToolProcess->waitForStarted(3000))
