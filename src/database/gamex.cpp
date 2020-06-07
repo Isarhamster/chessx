@@ -1987,7 +1987,7 @@ void GameX::moveCount(int* moves, int* comments, int* nags) const
     if (nags)
     {
         *nags = 0;
-        for (auto value: m_nags)
+        for (const auto& value: m_nags)
         {
             if (!value.empty())
             {
