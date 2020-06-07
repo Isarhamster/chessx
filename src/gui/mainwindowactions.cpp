@@ -2842,7 +2842,8 @@ void MainWindow::slotDatabaseChange()
             slotDatabaseChanged();
             if(database()->isReadOnly())
             {
-                for (auto dbi: m_registry->databases())
+                const auto dbs = m_registry->databases();
+                for (auto dbi: dbs)
                 {
                     if (dbi == m_currentDatabase)
                         continue;
@@ -3130,7 +3131,8 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
     QStringList db;
     int cc = 1;
     QList<DatabaseInfo*> targets;
-    for (auto dbi: m_registry->databases())
+    const auto dbs = m_registry->databases();
+    for (auto dbi: dbs)
     {
         if (dbi == m_currentDatabase)
             continue;
@@ -3899,7 +3901,8 @@ void MainWindow::setEngineMoveTime()
 void MainWindow::slotUpdateOpeningTreeWidget()
 {
     QStringList files;
-    for (auto dbi: m_registry->databases())
+    const auto dbs = m_registry->databases();
+    for (auto dbi: dbs)
     {
         files << dbi->displayName();
     }
@@ -3908,7 +3911,8 @@ void MainWindow::slotUpdateOpeningTreeWidget()
 
 void MainWindow::slotMakeBook(QString pathIn)
 {
-    for (auto dbi: m_registry->databases())
+    const auto dbs = m_registry->databases();
+    for (auto dbi: dbs)
     {
         if (dbi->database()->filename() == pathIn)
         {

@@ -881,7 +881,8 @@ void MainWindow::updateMenuDatabases()
         menu->clear();
         int n = 1;
         
-        for (auto dbi: m_registry->databases())
+        const auto dbs = m_registry->databases();
+        for (auto dbi: dbs)
         {
             if (dbi->isValid() && !dbi->IsBook())
             {
@@ -1074,7 +1075,8 @@ bool MainWindow::ActivateFICSDatabase()
 bool MainWindow::ActivateDatabase(QString fname)
 {
     /* Check if the database is open */
-    for (auto dbi: m_registry->databases())
+    const auto dbs = m_registry->databases();
+    for (auto dbi: dbs)
     {
         if (dbi->database()->filename() == fname)
         {
@@ -1185,7 +1187,8 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
 
     if (!db->IsBook())
     {
-        for (auto dbi: m_registry->databases())
+        const auto dbs = m_registry->databases();
+        for (auto dbi: dbs)
         {
             if (dbi->database()->filename() == fname)
             {
@@ -1841,14 +1844,15 @@ bool MainWindow::confirmQuit()
     if (!m_scratchPad->saveDocument())
         return false;
 
-    for (auto dbi: m_registry->databases())
+    const auto dbs = m_registry->databases();
+    for (auto dbi: dbs)
     {
         if (!QuerySaveGame(dbi))
         {
             return false;
         }
     }
-    for (auto dbi: m_registry->databases())
+    for (auto dbi: dbs)
     {
         if (dbi->isValid() && dbi->database()->isModified() && !dbi->isClipboard())
         {
@@ -1866,7 +1870,7 @@ bool MainWindow::confirmQuit()
         if(response == MessageDialog::Yes)
         {
             Output output(Output::Pgn, &BoardView::renderImageForBoard);
-            for (auto dbi: m_registry->databases())
+            for (auto dbi: dbs)
             {
                 if (dbi->database()->isModified())
                 {
@@ -1880,7 +1884,7 @@ bool MainWindow::confirmQuit()
     cancelPolyglotWriters();
     m_openingTreeWidget->cancel(); // Make sure we are not grabbing into something that is closed now
 
-    for (int i = m_registry->databases().size() - 1; i; --i)
+    for (int i = dbs.size() - 1; i; --i)
     {
         slotFileCloseIndex(i, true);
     }

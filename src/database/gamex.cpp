@@ -471,7 +471,7 @@ void GameCursor::remove(MoveId moveId, QList<MoveId>* removed)
     {
         removed->append(node);
     }
-    for (auto v: m_nodes[node].variations)
+    for (auto v: qAsConst(m_nodes[node].variations))
     {
         remove(v, removed);
     }
@@ -493,7 +493,7 @@ void GameCursor::truncateFrom(MoveId moveId, QList<MoveId>* removed)
     if (node == NO_MOVE)
         return;
     remove(m_nodes[node].nextNode, removed);
-    for (auto v: m_nodes[node].variations)
+    for (auto v: qAsConst(m_nodes[node].variations))
     {
         remove(v, removed);
     }
@@ -2152,7 +2152,7 @@ void GameX::removeNode(MoveId moveId)
 {
     QList<MoveId> removed;
     m_moves.remove(moveId, &removed);
-    for (auto node: removed)
+    for (auto node: qAsConst(removed))
     {
         m_annotations.remove(node);
         m_variationStartAnnotations.remove(node);
