@@ -771,7 +771,7 @@ QString MainWindow::databaseName(int index) const
     }
     else
     {
-        pDbInfo = m_registry->databases()[index];
+        pDbInfo = m_registry->databases().at(index);
     }
     return pDbInfo->dbName();
 }
@@ -1266,7 +1266,7 @@ QString MainWindow::exportFileName(int& format)
     {
         format = Output::Pgn;
     }
-    return fd.selectedFiles().first();
+    return fd.selectedFiles().constFirst();
 }
 
 bool MainWindow::gameEditComment(Output::CommentType type)
@@ -1898,7 +1898,7 @@ void MainWindow::SwitchToClipboard()
 {
     if (!m_currentDatabase || !m_currentDatabase->isClipboard())
     {
-        m_currentDatabase = m_registry->databases()[0]; // Switch to clipboard is always safe
+        m_currentDatabase = m_registry->databases().at(0); // Switch to clipboard is always safe
         activateBoardViewForDbIndex(databaseInfo());
         m_databaseList->setFileCurrent("Clipboard");
         slotDatabaseChanged();

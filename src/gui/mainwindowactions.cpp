@@ -252,7 +252,7 @@ void MainWindow::slotFileClose()
 
 void MainWindow::slotFileCloseIndex(int n, bool dontAsk)
 {
-    DatabaseInfo* aboutToClose = m_registry->databases()[n];
+    DatabaseInfo* aboutToClose = m_registry->databases().at(n);
     if(m_currentDatabase == aboutToClose)
     {
         closeDatabaseInfo(aboutToClose, dontAsk);
@@ -1895,7 +1895,7 @@ QString MainWindow::scoreText(const Analysis& analysis)
 
 bool MainWindow::gameAddAnalysis(const Analysis& analysis, QString annotation)
 {
-    Move m = analysis.variation().first();
+    Move m = analysis.variation().constFirst();
     if(!game().currentNodeHasMove(m.from(), m.to()))
     {
         if (!annotation.isEmpty()) annotation += " ";
@@ -2480,7 +2480,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         }
                         else
                         {
-                            Move m = a.variation().first();
+                            Move m = a.variation().constFirst();
                             game().dbPrependAnnotation(AppSettings->getValue("/Board/AddAnnotation").toString(), lastNode);
                             addAutoNag(m.color(), score, lastScore, threashold, lastNode);
                             if (AppSettings->getValue("/Board/AnnotateScore").toBool())
@@ -2524,7 +2524,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 }
                 else if(!handleGameEnd(analysis, m_autoRespond) && !analysis.variation().isEmpty() && analysis.bestMove())
                 {
-                    Move m = analysis.variation().first();
+                    Move m = analysis.variation().constFirst();
                     if (m.isLegal())
                     {
                         m_machineHasToMove = false;
@@ -2553,7 +2553,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 if(!handleGameEnd(analysis, m_autoGame) && !analysis.variation().isEmpty() && analysis.bestMove())
                 {
                     Move m = analysis.getTb();
-                    if (m.isNullMove()) m = analysis.variation().first();
+                    if (m.isNullMove()) m = analysis.variation().constFirst();
 
                     if (m.isLegal())
                     {
@@ -2621,7 +2621,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             }
             else if(!analysis.variation().isEmpty() && analysis.bestMove())
             {
-                Move m = analysis.variation().first();
+                Move m = analysis.variation().constFirst();
                 if (m.isLegal())
                 {
                     EngineParameter par = m_matchParameter;
@@ -3218,7 +3218,7 @@ void MainWindow::slotDatabaseClearClipboard()
         autoGroup->untrigger();
     }
 
-    auto clipDb = m_registry->databases()[0];
+    auto clipDb = m_registry->databases().at(0);
     clipDb->database()->clear();
     clipDb->clearLastGames();
     if (m_currentDatabase->isClipboard())
