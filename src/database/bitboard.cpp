@@ -3117,7 +3117,7 @@ QString BitBoard::toHumanFen() const
     QString w, b;
     for(Piece p = WhiteKing; p <= WhitePawn; ++p)
     {
-        if(charLists.keys().contains(p))
+        if(charLists.contains(p))
         {
             if(!w.isEmpty())
             {
@@ -3129,7 +3129,7 @@ QString BitBoard::toHumanFen() const
     }
     for(Piece p = BlackKing; p != Empty; ++p)
     {
-        if(charLists.keys().contains(p))
+        if(charLists.contains(p))
         {
             if(!b.isEmpty())
             {

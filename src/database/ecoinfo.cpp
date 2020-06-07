@@ -146,15 +146,15 @@ void EcoInfo::update()
         m_count++;
     }
 
-    foreach(QString s, playersWhite.keys())
+    for (auto it = playersWhite.cbegin(); it != playersWhite.cend(); ++it)
     {
-        m_playersWhite.append(PlayerInfoListItem(s, playersWhite.value(s)));
+        m_playersWhite.append(PlayerInfoListItem(it.key(), it.value()));
     }
     std::sort(m_playersWhite.begin(), m_playersWhite.end(), sortPlayersLt);
 
-    foreach(QString s, playersBlack.keys())
+    for (auto it = playersBlack.cbegin(); it != playersBlack.cend(); ++it)
     {
-        m_playersBlack.append(PlayerInfoListItem(s, playersBlack.value(s)));
+        m_playersBlack.append(PlayerInfoListItem(it.key(), it.value()));
     }
     std::sort(m_playersBlack.begin(), m_playersBlack.end(), sortPlayersLt);
 }

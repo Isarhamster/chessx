@@ -36,8 +36,9 @@ void DuplicateSearch::PrepareFilter(volatile bool &breakFlag)
         bool found = false;
         if (m_hashToGames.contains(hashval))
         {
-            foreach(GameId j, m_hashToGames.values(hashval))
+            for (auto iter = m_hashToGames.find(hashval); iter != m_hashToGames.end() && iter.key() == hashval; ++iter)
             {
+                GameId j = iter.value();
                 if (index->isIndexItemEqual(i,j))
                 {
                     GameX gI, gJ;
@@ -76,8 +77,9 @@ void DuplicateSearch::Prepare(volatile bool &breakFlag)
             if (m_hashToGames.contains(hashval))
             {
                 bool found = false;
-                foreach(GameId j, m_hashToGames.values(hashval))
+                for (auto iter = m_hashToGames.find(hashval); iter != m_hashToGames.end() && iter.key() == hashval; ++iter)
                 {
+                    GameId j = iter.value();
                     if (index->isIndexItemEqual(i,j))
                     {
                         if ((m_mode == DS_Both) || (m_mode == DS_Both_All))

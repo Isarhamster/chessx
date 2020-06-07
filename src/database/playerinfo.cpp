@@ -145,9 +145,9 @@ void PlayerInfo::update()
 
     for(int i = 0; i < 2; ++i)
     {
-        foreach(QString s, openings[i].keys())
+        for(auto it = openings[i].cbegin(); it != openings[i].cend(); ++it)
         {
-            m_eco[i].append(EcoFrequencyItem(s, openings[i].value(s)));
+            m_eco[i].append(EcoFrequencyItem(it.key(), it.value()));
         }
         std::sort(m_eco[i].begin(), m_eco[i].end(), sortEcoFrequencyLt);
     }
@@ -155,15 +155,15 @@ void PlayerInfo::update()
     for(int i = 0; i < 2; ++i)
     {
         OpeningCountMap openingMap;
-        foreach(QString eco, openingsX[i].keys())
+        for (auto it = openingsX[i].cbegin(); it != openingsX[i].cend(); ++it)
         {
+            const auto& eco = it.key();
             QString opening = EcoPositions::findEcoName(eco);
-            openingMap[opening] = openingMap.value(opening) + openingsX[i][eco];
-            QStringList& l = m_MapOpeningToECOCodes[i][opening];
-            l.append(eco);
+            openingMap[opening] += it.value();
+            m_MapOpeningToECOCodes[i][opening].append(eco);
         }
 
-        QSet<int> valset = openingMap.values().toSet();
+        QSet<int> valset(openingMap.cbegin(), openingMap.cend());
         QList<int> vals = valset.toList();
         std::sort( vals.begin(), vals.end(), sortIntGt );
 

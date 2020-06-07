@@ -48,9 +48,11 @@ void GameWindow::setupToolBox()
 {
     QMap<Nag, QAction*> tbActions;
     QList<Nag> items;
-    foreach (QAction* action, ui->chessBrowser->m_actions.keys())
+    const auto& actions = ui->chessBrowser->m_actions;
+    for (auto it = actions.cbegin(); it != actions.cend(); ++it)
     {
-        EditAction& e = ui->chessBrowser->m_actions[action];
+        auto action = it.key();
+        const auto& e = it.value();
         if (e.type() == EditAction::AddNag)
         {
             Nag nag = static_cast<Nag>(e.data().toInt());
