@@ -83,11 +83,6 @@ int PlayerInfo::toResult(const QString& res) const
     }
 }
 
-static bool sortIntGt(const int& a1, const int& a2)
-{
-    return a1>a2;
-}
-
 void PlayerInfo::update()
 {
     QHash<QString, EcoFrequencyInfo> openings[2];
@@ -154,28 +149,24 @@ void PlayerInfo::update()
 
     for(int i = 0; i < 2; ++i)
     {
-        OpeningCountMap openingMap;
+        auto& counts = m_opening[i];
         for (auto it = openingsX[i].cbegin(); it != openingsX[i].cend(); ++it)
         {
             const auto& eco = it.key();
+            counts.append(OpeningCountItem(eco, it.value()));
+
             QString opening = EcoPositions::findEcoName(eco);
-            openingMap[opening] += it.value();
             m_MapOpeningToECOCodes[i][opening].append(eco);
         }
-
-        QSet<int> valset(openingMap.cbegin(), openingMap.cend());
-        QList<int> vals = valset.toList();
-        std::sort( vals.begin(), vals.end(), sortIntGt );
-
-        foreach( int val, vals )
-        {
-            QList<QString> keys = openingMap.keys( val );
-            std::sort(keys.begin(), keys.end());
-            foreach(QString key, keys)
-            {
-                m_opening[i].append(OpeningCountItem(key,val));
-            }
-        }
+        // comparison function for sorting m_opening[c]
+        auto cmp = [](const OpeningCountItem& lhs, const OpeningCountItem& rhs) {
+            // first sort by descending frequency
+            if (lhs.second != rhs.second)
+                return lhs.second > rhs.second;
+            // then sort by ECO name alphabetically
+            return lhs.first < rhs.first;
+        };
+        std::sort(counts.begin(), counts.end(), cmp);
     }
 
     qSwap(m_result[Black][WhiteWin], m_result[Black][BlackWin]);
