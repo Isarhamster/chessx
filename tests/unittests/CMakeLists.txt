@@ -8,6 +8,7 @@ add_executable(doctestrunner
   ${CMAKE_CURRENT_BINARY_DIR}/resourcepath.h
 
   test_index.cpp
+  test_integralmetrics.cpp
   test_resultscounter.cpp
 )
 

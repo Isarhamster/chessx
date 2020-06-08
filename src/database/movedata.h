@@ -6,7 +6,9 @@
 #define MOVEDATA_H
 
 #include <array>
+#include <cstdint>
 #include <numeric>
+
 #include "gamex.h"
 #include "move.h"
 
@@ -57,6 +59,56 @@ inline ResultsCounter operator+(const ResultsCounter& lhs, const ResultsCounter&
     sum += rhs;
     return sum;
 }
+
+template <int MinValue, int MaxValue>
+class IntegralMetrics
+{
+public:
+    IntegralMetrics() = default;
+    IntegralMetrics(std::initializer_list<int> vs)
+        : IntegralMetrics()
+    {
+        for (auto v: vs)
+            update(v);
+    }
+
+    void update(int v)
+    {
+        if (Min <= v && v <= Max)
+        {
+            m_count += 1;
+            m_sum += v;
+        }
+    }
+
+    /** Total number of collected valid samples */
+    size_t count() const { return m_count; }
+
+    /** Average over valid samples */
+    int average() const
+    {
+        return m_count? static_cast<int>(m_sum / static_cast<decltype(m_sum)>(m_count)): 0;
+    }
+
+    IntegralMetrics& operator+=(const IntegralMetrics& rhs)
+    {
+        m_count += rhs.m_count;
+        m_sum += rhs.m_sum;
+        return *this;
+    }
+
+    bool operator==(const IntegralMetrics& rhs) const { return m_count == rhs.m_count && m_sum == rhs.m_sum; }
+    bool operator!=(const IntegralMetrics& rhs) const { return !(*this == rhs); }
+
+    explicit operator bool() const { return m_count != 0; }
+
+private:
+    size_t m_count = 0;
+    std::int64_t m_sum = 0;
+
+    static constexpr int Min = MinValue;
+    static constexpr int Max = MaxValue;
+};
 
 class MoveData
 {
