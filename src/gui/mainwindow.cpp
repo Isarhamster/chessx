@@ -771,7 +771,7 @@ QString MainWindow::databaseName(int index) const
     }
     else
     {
-        pDbInfo = m_registry->databases()[index];
+        pDbInfo = m_registry->databases().at(index);
     }
     return pDbInfo->dbName();
 }
@@ -881,7 +881,8 @@ void MainWindow::updateMenuDatabases()
         menu->clear();
         int n = 1;
         
-        for (auto dbi: m_registry->databases())
+        const auto dbs = m_registry->databases();
+        for (auto dbi: dbs)
         {
             if (dbi->isValid() && !dbi->IsBook())
             {
@@ -1028,7 +1029,7 @@ void MainWindow::openDatabaseArchive(QString fname, bool utf8)
             if(zip.open(QuaZip::mdUnzip))
             {
                 // first, we need some information about archive itself
-                QString comment = zip.getComment();
+                // QString comment = zip.getComment();
                 // and now we are going to access files inside it
                 QuaZipFile file(&zip);
                 for(bool more = zip.goToFirstFile(); more; more = zip.goToNextFile())
@@ -1074,7 +1075,8 @@ bool MainWindow::ActivateFICSDatabase()
 bool MainWindow::ActivateDatabase(QString fname)
 {
     /* Check if the database is open */
-    for (auto dbi: m_registry->databases())
+    const auto dbs = m_registry->databases();
+    for (auto dbi: dbs)
     {
         if (dbi->database()->filename() == fname)
         {
@@ -1150,7 +1152,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
 void MainWindow::loadError(QUrl url)
 {
     QFileInfo fi = QFileInfo(url.toString());
-    slotStatusMessage(tr("Database %1 cannot be accessed at the moment (%2).").arg(fi.fileName()).arg(url.errorString()));
+    slotStatusMessage(tr("Database %1 cannot be accessed at the moment (%2).").arg(fi.fileName(), url.errorString()));
 }
 
 void MainWindow::loadReady(QUrl url, QString fileName)
@@ -1185,7 +1187,8 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
 
     if (!db->IsBook())
     {
-        for (auto dbi: m_registry->databases())
+        const auto dbs = m_registry->databases();
+        for (auto dbi: dbs)
         {
             if (dbi->database()->filename() == fname)
             {
@@ -1263,7 +1266,7 @@ QString MainWindow::exportFileName(int& format)
     {
         format = Output::Pgn;
     }
-    return fd.selectedFiles().first();
+    return fd.selectedFiles().constFirst();
 }
 
 bool MainWindow::gameEditComment(Output::CommentType type)
@@ -1841,14 +1844,15 @@ bool MainWindow::confirmQuit()
     if (!m_scratchPad->saveDocument())
         return false;
 
-    for (auto dbi: m_registry->databases())
+    const auto dbs = m_registry->databases();
+    for (auto dbi: dbs)
     {
         if (!QuerySaveGame(dbi))
         {
             return false;
         }
     }
-    for (auto dbi: m_registry->databases())
+    for (auto dbi: dbs)
     {
         if (dbi->isValid() && dbi->database()->isModified() && !dbi->isClipboard())
         {
@@ -1866,7 +1870,7 @@ bool MainWindow::confirmQuit()
         if(response == MessageDialog::Yes)
         {
             Output output(Output::Pgn, &BoardView::renderImageForBoard);
-            for (auto dbi: m_registry->databases())
+            for (auto dbi: dbs)
             {
                 if (dbi->database()->isModified())
                 {
@@ -1880,7 +1884,7 @@ bool MainWindow::confirmQuit()
     cancelPolyglotWriters();
     m_openingTreeWidget->cancel(); // Make sure we are not grabbing into something that is closed now
 
-    for (int i = m_registry->databases().size() - 1; i; --i)
+    for (int i = dbs.size() - 1; i; --i)
     {
         slotFileCloseIndex(i, true);
     }
@@ -1894,7 +1898,7 @@ void MainWindow::SwitchToClipboard()
 {
     if (!m_currentDatabase || !m_currentDatabase->isClipboard())
     {
-        m_currentDatabase = m_registry->databases()[0]; // Switch to clipboard is always safe
+        m_currentDatabase = m_registry->databases().at(0); // Switch to clipboard is always safe
         activateBoardViewForDbIndex(databaseInfo());
         m_databaseList->setFileCurrent("Clipboard");
         slotDatabaseChanged();

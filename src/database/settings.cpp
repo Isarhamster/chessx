@@ -580,7 +580,7 @@ QString Settings::getThemePath(QString effect, QString pieces) const
         }
     }
 
-    QString result = QDir(":/themes").entryList(QStringList("*.png")).first();
+    QString result = QDir(":/themes").entryList(QStringList("*.png")).constFirst();
     result.prepend(":/themes/");
     return result;
 }
@@ -632,7 +632,7 @@ QString Settings::getBoardPath(QString theme) const
         }
     }
 
-    QString result = QDir(":/themes/boards").entryList(QStringList("*.png")).first();
+    QString result = QDir(":/themes/boards").entryList(QStringList("*.png")).constFirst();
     result.prepend(":/themes/boards/");
     return result;
 }

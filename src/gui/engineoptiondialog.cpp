@@ -28,9 +28,9 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent,
 
     QString t = windowTitle();
     QString t1 = QString("%1 %2 (%3)").
-                 arg(t).
-                 arg(engineList[index].name).
-                 arg(QString(engineList[index].protocol == EngineData::UCI ? "UCI" : "WinBoard"));
+                 arg(t,
+                     engineList[index].name,
+                     QString(engineList[index].protocol == EngineData::UCI ? "UCI" : "WinBoard"));
 
     setWindowTitle(t1);
     restoreLayout();

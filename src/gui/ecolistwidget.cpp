@@ -103,14 +103,15 @@ void ECOListWidget::ecoSelected(const QString& eco)
 
         QString head = QString("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><title>%1</title><meta name='qrichtext' content='1'><meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\"></head>").arg(eco);
         QString text = QString("%1<body><h1><a href='eco:%2'>%3</a></h1><p>%4</p><p>%5</p><p>%6%7</p>%8</body></html>")
-                       .arg(head)
-                       .arg(m_eco.name())
-                       .arg(m_eco.name())
-                       .arg(opName)
-                       .arg(m_eco.formattedGameCount())
-                       .arg(m_eco.formattedRating())
-                       .arg(m_eco.formattedScore())
-                       .arg(m_eco.listOfPlayers());
+                       .arg(head,
+                            m_eco.name(),
+                            m_eco.name(),
+                            opName,
+                            m_eco.formattedGameCount(),
+                            m_eco.formattedRating(),
+                            m_eco.formattedScore(),
+                            m_eco.listOfPlayers()
+                            );
         ui->detailText->setHtml(text);
     }
     else

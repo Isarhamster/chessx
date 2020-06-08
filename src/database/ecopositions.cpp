@@ -39,7 +39,7 @@ bool EcoPositions::loadEcoFile(const QString& ecoFile)
 
 QString EcoPositions::findEcoNameDetailed(QString eco)
 {
-    foreach(QString actualEco, m_ecoPositions->values())
+    for (const auto& actualEco: qAsConst(*m_ecoPositions))
     {
         if (actualEco.startsWith(eco))
         {
@@ -52,7 +52,7 @@ QString EcoPositions::findEcoNameDetailed(QString eco)
 
 QString EcoPositions::findEcoName(QString eco)
 {
-    foreach(QString actualEco, m_ecoPositions->values())
+    for (const auto& actualEco: qAsConst(*m_ecoPositions))
     {
         if (actualEco.startsWith(eco))
         {

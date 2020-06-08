@@ -241,13 +241,13 @@ void IndexX::calculateReverseMaps(volatile bool* breakFlag)
 {
     if(m_tagNameIndex.isEmpty())
     {
-        foreach(TagIndex tagIndex, m_tagNames.keys())
+        for (auto it = m_tagNames.cbegin(); it != m_tagNames.cend(); ++it)
         {
             if(breakFlag && *breakFlag)
             {
                 return;
             }
-            m_tagNameIndex.insert(m_tagNames.value(tagIndex), tagIndex);
+            m_tagNameIndex.insert(it.value(), it.key());
         }
     }
 }

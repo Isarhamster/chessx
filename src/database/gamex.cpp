@@ -471,7 +471,7 @@ void GameCursor::remove(MoveId moveId, QList<MoveId>* removed)
     {
         removed->append(node);
     }
-    for (auto v: m_nodes[node].variations)
+    for (auto v: qAsConst(m_nodes[node].variations))
     {
         remove(v, removed);
     }
@@ -493,7 +493,7 @@ void GameCursor::truncateFrom(MoveId moveId, QList<MoveId>* removed)
     if (node == NO_MOVE)
         return;
     remove(m_nodes[node].nextNode, removed);
-    for (auto v: m_nodes[node].variations)
+    for (auto v: qAsConst(m_nodes[node].variations))
     {
         remove(v, removed);
     }
@@ -1064,7 +1064,7 @@ void GameX::dbMergeWithGame(const GameX& g)
     {
         if (white.isEmpty()) white = "?";
         if (black.isEmpty()) black = "?";
-        shortDescription = QString("%1-%2 %3").arg(white).arg(black).arg(event);
+        shortDescription = QString("%1-%2 %3").arg(white, black, event);
         otherGame.dbSetAnnotation(shortDescription);
     }
 
@@ -1718,7 +1718,6 @@ bool GameX::appendSquareAnnotation(Square s, QChar colorCode)
     GameX state = *this;
     QString newAnnot;
     QString annot = squareAnnotation();
-    QString oldAnnot = annot;
     QString sq = strSquareNames[s];
     if(annot.isEmpty())
     {
@@ -1777,7 +1776,7 @@ bool GameX::appendArrowAnnotation(Square dest, Square src, QChar colorCode)
     {
         if(colorCode != QChar(0))
         {
-            newAnnot = QString("%1%2%3").arg(colorCode).arg(sqSrc).arg(sqDest);
+            newAnnot = QString("%1%2%3").arg(colorCode).arg(sqSrc, sqDest);
         }
     }
     else
@@ -1788,7 +1787,7 @@ bool GameX::appendArrowAnnotation(Square dest, Square src, QChar colorCode)
 
         if(colorCode != QChar(0))
         {
-            newAnnot = QString("%1,%2%3%4").arg(annot).arg(colorCode).arg(sqSrc).arg(sqDest);
+            newAnnot = QString("%1,%2%3%4").arg(annot).arg(colorCode).arg(sqSrc, sqDest);
         }
         else
         {
@@ -1987,7 +1986,7 @@ void GameX::moveCount(int* moves, int* comments, int* nags) const
     if (nags)
     {
         *nags = 0;
-        for (auto value: m_nags)
+        for (const auto& value: m_nags)
         {
             if (!value.empty())
             {
@@ -2152,7 +2151,7 @@ void GameX::removeNode(MoveId moveId)
 {
     QList<MoveId> removed;
     m_moves.remove(moveId, &removed);
-    for (auto node: removed)
+    for (auto node: qAsConst(removed))
     {
         m_annotations.remove(node);
         m_variationStartAnnotations.remove(node);

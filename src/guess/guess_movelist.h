@@ -74,8 +74,7 @@ public:
     QString toString() const
     {
         return QString("%1-%2(%3)")
-                .arg(sqToString(from))
-                .arg(sqToString(to))
+                .arg(sqToString(from), sqToString(to))
                 .arg(score);
     }
 };

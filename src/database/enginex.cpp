@@ -72,7 +72,7 @@ EngineX* EngineX::newEngine(EngineList& engineList, int index, bool bTestMode)
     {
         command = QString("\"%1\"").arg(command);
     }
-    QString exe = QString("%1 %2").arg(command).arg(options);
+    QString exe = QString("%1 %2").arg(command, options);
 
     if(protocol == EngineData::WinBoard)
     {
@@ -105,7 +105,7 @@ EngineX* EngineX::newEngine(int index, bool bTestMode)
     {
         command = QString("\"%1\"").arg(command);
     }
-    QString exe = QString("%1 %2").arg(command).arg(options);
+    QString exe = QString("%1 %2").arg(command, options);
 
     if(protocol == "WinBoard")
     {

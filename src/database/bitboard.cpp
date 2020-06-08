@@ -1396,7 +1396,7 @@ void BitBoard::fromChess960pos(int i)
 
     QString fen(f);
     QString qfen = QString("%1/pppppppp/8/8/8/8/PPPPPPPP/%2 w KQkq - 0 1")
-            .arg(fen).arg(fen.toUpper());
+            .arg(fen, fen.toUpper());
 
     fromGoodFen(qfen, true);
 }
@@ -3117,7 +3117,7 @@ QString BitBoard::toHumanFen() const
     QString w, b;
     for(Piece p = WhiteKing; p <= WhitePawn; ++p)
     {
-        if(charLists.keys().contains(p))
+        if(charLists.contains(p))
         {
             if(!w.isEmpty())
             {
@@ -3129,7 +3129,7 @@ QString BitBoard::toHumanFen() const
     }
     for(Piece p = BlackKing; p != Empty; ++p)
     {
-        if(charLists.keys().contains(p))
+        if(charLists.contains(p))
         {
             if(!b.isEmpty())
             {
@@ -3140,7 +3140,7 @@ QString BitBoard::toHumanFen() const
         }
     }
 
-    QString fen = fenFormat.arg(w).arg(b).arg(toMove);
+    QString fen = fenFormat.arg(w, b, toMove);
     fen.append(QString(" (%1+%2).").arg(m_pieceCount[White]).arg(m_pieceCount[Black]));
     return fen;
 }
@@ -3355,7 +3355,7 @@ BitBoard getStandardPosition()
 QString BitBoard::moveToFullSan(const Move &move, bool translate) const
 {
     QString dots = whiteToMove() ? "." : "...";
-    return QString("%1%2%3").arg(m_moveNumber).arg(dots).arg(moveToSan(move,translate));
+    return QString("%1%2%3").arg(m_moveNumber).arg(dots, moveToSan(move,translate));
 }
 
 //a charboard is a 64 length board that looks something like this:

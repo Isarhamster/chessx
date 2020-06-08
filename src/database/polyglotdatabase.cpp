@@ -676,9 +676,9 @@ void PolyglotDatabase::halve_stats(quint64 key)
 
 void PolyglotDatabase::spool_map()
 {
-    foreach(book_key k, m_bookDictionary.keys())
+    for (auto it = m_bookDictionary.cbegin(); it != m_bookDictionary.cend(); ++it)
     {
-        book_entry b(k, m_bookDictionary.value(k));
+        book_entry b(it.key(), it.value());
         m_book.append(b);
     }
     m_bookDictionary.clear();

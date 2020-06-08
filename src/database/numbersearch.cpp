@@ -32,8 +32,8 @@ void NumberSearch::setRange(const QString& range)
     int sep = range.indexOf('-');
     if(sep != -1)
     {
-        m_start = range.left(sep).toInt() - 1;
-        m_end = range.mid(sep + 1).toInt() - 1;
+        m_start = range.leftRef(sep).toInt() - 1;
+        m_end = range.midRef(sep + 1).toInt() - 1;
     }
     else
     {

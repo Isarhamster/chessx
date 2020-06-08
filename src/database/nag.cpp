@@ -641,7 +641,7 @@ QString NagSet::nagToMenuString(Nag nag)
     }
     if(g_nagStringList[nag].length() <= 2)
     {
-        return QString("%1 (%2)").arg(g_nagStringList[nag]).arg(g_nagStringListLong[nag]);
+        return QString("%1 (%2)").arg(g_nagStringList[nag], g_nagStringListLong[nag]);
     }
     else
     {

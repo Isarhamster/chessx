@@ -66,8 +66,7 @@ void FicsClient::OnSessionStarted(QString guestName)
     send("iset block 1");
     QString connection = InternalTelnet() ? "Telnet" : "Timeseal";
     emit receivedMessage(BLKCMD_INTERNAL_SESSION_STARTED,tr("Connected to FICS as %1 using %2")
-                         .arg(guestName)
-                         .arg(connection));
+                         .arg(guestName, connection));
     emit connected();
 }
 

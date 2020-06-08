@@ -516,30 +516,30 @@ double StyleParser::convertUnit( const QString &data )
 
   double points = 0;
   if ( data.endsWith( "pt" ) ) {
-    points = data.left( data.length() - 2 ).toDouble();
+    points = data.leftRef( data.length() - 2 ).toDouble();
   } else if ( data.endsWith( "cm" ) ) {
-    double value = data.left( data.length() - 2 ).toDouble();
+    double value = data.leftRef( data.length() - 2 ).toDouble();
     points = CM_TO_POINT( value );
   } else if ( data.endsWith( "mm" ) ) {
-    double value = data.left( data.length() - 2 ).toDouble();
+    double value = data.leftRef( data.length() - 2 ).toDouble();
     points = MM_TO_POINT( value );
   } else if ( data.endsWith( "dm" ) ) {
-    double value = data.left( data.length() - 2 ).toDouble();
+    double value = data.leftRef( data.length() - 2 ).toDouble();
     points = DM_TO_POINT( value );
   } else if ( data.endsWith( "in" ) ) {
-    double value = data.left( data.length() - 2 ).toDouble();
+    double value = data.leftRef( data.length() - 2 ).toDouble();
     points = INCH_TO_POINT( value );
   } else if ( data.endsWith( "inch" ) ) {
-    double value = data.left( data.length() - 4 ).toDouble();
+    double value = data.leftRef( data.length() - 4 ).toDouble();
     points = INCH_TO_POINT( value );
   } else if ( data.endsWith( "pi" ) ) {
-    double value = data.left( data.length() - 4 ).toDouble();
+    double value = data.leftRef( data.length() - 4 ).toDouble();
     points = PI_TO_POINT( value );
   } else if ( data.endsWith( "dd" ) ) {
-    double value = data.left( data.length() - 4 ).toDouble();
+    double value = data.leftRef( data.length() - 4 ).toDouble();
     points = DD_TO_POINT( value );
   } else if ( data.endsWith( "cc" ) ) {
-    double value = data.left( data.length() - 4 ).toDouble();
+    double value = data.leftRef( data.length() - 4 ).toDouble();
     points = CC_TO_POINT( value );
   } else {
     if ( !data.isEmpty() ) {

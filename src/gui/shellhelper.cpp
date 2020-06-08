@@ -34,7 +34,7 @@ void ShellHelper::sendFileWithMail(QString path, QString recipient)
         "end tell\n"
         "activate\n"
     "end tell\n";
-    QString mail = osaTemplate.arg(recipient).arg(fi.fileName()).arg(path);
+    QString mail = osaTemplate.arg(recipient, fi.fileName(), path);
     QString osascript = "/usr/bin/osascript";
     QStringList processArguments;
     processArguments << QLatin1String("-e") << mail;

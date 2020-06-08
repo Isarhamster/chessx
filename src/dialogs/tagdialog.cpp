@@ -97,16 +97,17 @@ bool TagDialog::editTags(IndexX* index, GameX& game, GameId id)
 {
     const TagMap& tags = game.tags();
     int row = 0;
-    foreach(QString key, tags.keys())
+    for (auto it = tags.cbegin(); it != tags.cend(); ++it)
     {
+        const auto& name = it.key();
+        const auto& text = it.value();
         if (row >= ui->tagTable->rowCount())
         {
             ui->tagTable->insertRow(row);
         }
-        QString text = game.tag(key);
-        QTableWidgetItem* firstCol = new QTableWidgetItem(key);
+        QTableWidgetItem* firstCol = new QTableWidgetItem(name);
         firstCol->setFlags(firstCol->flags() & ~Qt::ItemIsEditable);
-        if (!isStandardTag(key))
+        if (!isStandardTag(name))
         {
             firstCol->setCheckState(Qt::Checked);
         }

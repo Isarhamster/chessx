@@ -554,7 +554,7 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                 {
                     move1.setPromoted(pieceType(move.promotedPiece()));
                 }
-                m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1,true)).arg(result);
+                m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1,true), result);
                 m_tablebaseMove = m_board.moveToFullSan(move1);
                 m_tb = move1;
                 m_lastDepthAdded = 0;
@@ -592,7 +592,7 @@ void AnalysisWidget::updateAnalysis()
     }
     if(!m_tablebaseEvaluation.isEmpty())
     {
-        text.append(QString("<a href=\"0\" title=\"%1\">[+]</a> <b>%2:</b> ").arg(tr("Click to add move to game")).arg(tr("Tablebase")) + m_tablebaseEvaluation);
+        text.append(QString("<a href=\"0\" title=\"%1\">[+]</a> <b>%2:</b> ").arg(tr("Click to add move to game"), tr("Tablebase")) + m_tablebaseEvaluation);
     }
     if (m_lastDepthAdded == 17)
     {

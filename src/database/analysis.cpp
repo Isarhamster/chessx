@@ -221,13 +221,13 @@ QString Analysis::toString(const BoardX& board) const
     {
         QString color = whiteToMove ? cw : cb;
         QString text = tr("Resigns");
-        out = QString("<font color=\"#%1\"><b>%2</b></font> ").arg(color).arg(text);
+        out = QString("<font color=\"#%1\"><b>%2</b></font> ").arg(color, text);
     }
     else if (isAlreadyMate())
     {
         QString color = whiteToMove ? cw : cb;
         QString text = tr("Mate");
-        out = QString("<font color=\"#%1\"><b>%2</b></font> ").arg(color).arg(text);
+        out = QString("<font color=\"#%1\"><b>%2</b></font> ").arg(color, text);
     }
     else if(isMate())
     {
@@ -235,7 +235,7 @@ QString Analysis::toString(const BoardX& board) const
 
         QString color = ((whiteToMove && (score>0)) || (!whiteToMove && (score<0))) ? cw : cb;
         QString text = QString(tr("Mate in %1").arg(abs(score)));
-        out = QString("<font color=\"#%1\"><b>%2</b></font> ").arg(color).arg(text);
+        out = QString("<font color=\"#%1\"><b>%2</b></font> ").arg(color, text);
     }
     else if (!bestMove())
     {

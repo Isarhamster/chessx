@@ -81,17 +81,13 @@ bool IndexItem::isEqual(const IndexItem &rhs) const
 
 void IndexItem::replaceValue(QList<TagIndex> tags, ValueIndex valueIndex, ValueIndex newValueIndex)
 {
-    if (m_mapTagIndexToValueIndex.values().contains(valueIndex))
+    for (auto ti: tags)
     {
-        foreach(TagIndex ti, m_mapTagIndexToValueIndex.keys())
+        if (!m_mapTagIndexToValueIndex.contains(ti))
+            continue;
+        if (m_mapTagIndexToValueIndex[ti] == valueIndex)
         {
-            if (tags.contains(ti))
-            {
-                if (m_mapTagIndexToValueIndex[ti]==valueIndex)
-                {
-                    set(ti, newValueIndex);
-                }
-            }
+            m_mapTagIndexToValueIndex[ti] = newValueIndex;
         }
     }
 }

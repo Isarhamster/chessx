@@ -116,8 +116,7 @@ QString PartialDate::asString() const
     }
     QString s = QString("%1.%2.%3")
             .arg(m_year, 4)
-            .arg(numberToString(m_month))
-            .arg(numberToString(m_day));
+            .arg(numberToString(m_month), numberToString(m_day));
     return s;
 }
 
@@ -208,13 +207,11 @@ QString PartialDate::range(const PartialDate& d) const
     {
         return asShortString() + "-" + d.asShortString();
     }
-    QString result = numberToString(year());
     if(month() != d.month())
-        return QString("%1.%2-%3").arg(year()).arg(asShortString(Month | Day))
-               .arg(d.asShortString(Month | Day));
+        return QString("%1.%2-%3").arg(year()).arg(asShortString(Month | Day), d.asShortString(Month | Day));
     else if(day() != d.day())
         return QString("%1.%2.%3-%4").arg(year()).arg(month())
-               .arg(asShortString(Day)).arg(d.asShortString(Day));
+               .arg(asShortString(Day), d.asShortString(Day));
     else
     {
         return asShortString();
