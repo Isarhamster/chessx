@@ -5,8 +5,58 @@
 #ifndef MOVEDATA_H
 #define MOVEDATA_H
 
+#include <array>
+#include <numeric>
 #include "gamex.h"
 #include "move.h"
+
+/**
+ * Count number of games per result
+ */
+class ResultsCounter
+{
+public:
+    ResultsCounter() = default;
+    ResultsCounter(std::initializer_list<Result> rs)
+        : ResultsCounter()
+    {
+        for (auto r: rs)
+            update(r);
+    }
+
+    /** Update corresponding counter */
+    void update(Result r) { m_counts[r] += 1; }
+    /** Get total number of games */
+    size_t count() const { return std::accumulate(m_counts.cbegin(), m_counts.cend(), 0); }
+    /** Get number of games having result @p r */
+    size_t count(Result r) const { return m_counts[r]; }
+
+    double scorePercentage() const;
+    double whiteWinPercentage() const;
+    double blackWinPercentage() const;
+
+    ResultsCounter& operator+=(const ResultsCounter& rhs)
+    {
+        for (size_t i = 0; i < m_counts.size(); ++i)
+            m_counts[i] += rhs.m_counts[i];
+        return *this;
+    }
+
+    bool operator==(const ResultsCounter& rhs) const { return m_counts == rhs.m_counts; }
+    bool operator!=(const ResultsCounter& rhs) const { return !(*this == rhs); }
+
+    explicit operator bool() const { return count() != 0; }
+
+private:
+    std::array<size_t, 4> m_counts = {0, 0, 0, 0};
+};
+
+inline ResultsCounter operator+(const ResultsCounter& lhs, const ResultsCounter& rhs)
+{
+    ResultsCounter sum(lhs);
+    sum += rhs;
+    return sum;
+}
 
 class MoveData
 {
