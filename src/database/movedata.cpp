@@ -35,86 +35,32 @@ double ResultsCounter::blackWinPercentage() const
 
 void MoveData::addGame(GameX& g, Color c, MoveType movetype)
 {
-    if(!count)
+    if(!results)
     {
         san = (movetype == StandardMove) ? g.moveToSan(GameX::MoveOnly, GameX::PreviousMove)
                : qApp->translate("MoveData", "[end]");
         localsan = (movetype == StandardMove) ? g.moveToSan(GameX::TranslatePiece, GameX::PreviousMove)
                : qApp->translate("MoveData", "[end]");
     }
-    ++count;
-    result[g.result()]++;
-    unsigned int elo = (c == White) ? g.tag("WhiteElo").toUInt() : g.tag("BlackElo").toUInt();
-    if(elo >= 1000)
-    {
-        rating += elo;
-        ++rated;
-    }
-    unsigned int y = g.tag("Date").section(".", 0, 0).toUInt();
-    if(y > 1000)
-    {
-        year += y;
-        ++dated;
-    }
-}
-
-MoveData::MoveData()
-{
-    count = 0;
-    for(int  r = ResultUnknown; r <= BlackWin; ++r)
-    {
-        result[r] = 0;
-    }
-    year = rating = 0;
-    dated = rated = 0;
-}
-
-double MoveData::percentage() const
-{
-    unsigned int c = result[ResultUnknown] + 2 * result[WhiteWin] + result[Draw];
-    return count ? c * 500 / count / 10.0 : 0;
-}
-
-double MoveData::percentageWhite() const
-{
-    unsigned int count = result[WhiteWin] + result[Draw] + result[BlackWin];
-    return count ? 100.0 * (double)result[WhiteWin] / (double)count : 0;
-}
-
-double MoveData::percentageBlack() const
-{
-    unsigned int count = result[WhiteWin] + result[Draw] + result[BlackWin];
-    return count ? 100.0 * (double)result[BlackWin] / (double)count : 0;
-}
-
-bool MoveData::hasPercent() const
-{
-    int n = 0;
-    for (int i=0; i<4; ++i)
-    {
-        n += result[i];
-    }
-    return (n>0);
-}
-
-int MoveData::averageRating() const
-{
-    return rated ? (rating / (unsigned long long) rated) : 0;
-}
-
-int MoveData::averageYear() const
-{
-    return dated ? year / dated : 0;
+    results.update(g.result());
+    auto elo = (c == White) ? g.tag("WhiteElo").toInt() : g.tag("BlackElo").toInt();
+    rating.update(elo);
+    auto y = g.tag("Date").section(".", 0, 0).toInt();
+    year.update(y);
 }
 
 bool operator<(const MoveData& m1, const MoveData& m2)
 {
-    return m1.count < m2.count || (m1.count == m2.count && m1.san < m2.san);
+    auto c1 = m1.results.count();
+    auto c2 = m2.results.count();
+    return c1 < c2 || (c1 == c2 && m1.san < m2.san);
 }
 
 bool operator>(const MoveData& m1, const MoveData& m2)
 {
-    return m1.count > m2.count || (m1.count == m2.count && m1.san > m2.san);
+    auto c1 = m1.results.count();
+    auto c2 = m2.results.count();
+    return c1 > c2 || (c1 == c2 && m1.san > m2.san);
 }
 
 bool compareMove(const MoveData& m1, const MoveData& m2)
@@ -124,18 +70,21 @@ bool compareMove(const MoveData& m1, const MoveData& m2)
 
 bool compareScore(const MoveData& m1, const MoveData& m2)
 {
-    return m1.percentage() < m2.percentage() ||
-           (m1.percentage() == m2.percentage() && m1.san < m2.san);
+    auto s1 = m1.results.scorePercentage();
+    auto s2 = m2.results.scorePercentage();
+    return s1 < s2 || (s1 == s2 && m1.san < m2.san);
 }
 
 bool compareRating(const MoveData& m1, const MoveData& m2)
 {
-    return m1.averageRating() < m2.averageRating() ||
-           (m1.averageRating() == m2.averageRating() && m1.san < m2.san);
+    auto r1 = m1.rating.average();
+    auto r2 = m2.rating.average();
+    return r1 < r2 || (r1 == r2 && m1.san < m2.san);
 }
 
 bool compareYear(const MoveData& m1, const MoveData& m2)
 {
-    return m1.averageYear() < m2.averageYear() ||
-           (m1.averageYear() == m2.averageYear() && m1.san < m2.san);
+    auto y1 = m1.year.average();
+    auto y2 = m2.year.average();
+    return y1 < y2 || (y1 == y2 && m1.san < m2.san);
 }

@@ -8,6 +8,7 @@
 #include <array>
 #include <cstdint>
 #include <numeric>
+#include <limits>
 
 #include "gamex.h"
 #include "move.h"
@@ -110,33 +111,21 @@ private:
     static constexpr int Max = MaxValue;
 };
 
-class MoveData
+struct MoveData
 {
-public:
     enum MoveType {StandardMove, GameEnd};
-    MoveData();
+
+    using RatingMetrics = IntegralMetrics<1000, std::numeric_limits<int>::max()>;
+    using YearMetrics = IntegralMetrics<1001, std::numeric_limits<int>::max()>;
+
     void addGame(GameX& g, Color c, MoveType movetype = StandardMove);
-    double percentage() const;
-    double percentageWhite() const;
-    double percentageBlack() const;
-    int averageRating() const;
-    int averageYear() const;
+
     QString san;
     QString localsan;
-    unsigned int count;
-    unsigned int result[4];
-    unsigned long long rating;
-    unsigned int rated;
-    long year;
-    unsigned int dated;
+    ResultsCounter results;
+    RatingMetrics rating;
+    YearMetrics year;
     Move move;
-    friend bool operator<(const MoveData& m1, const MoveData& m2);
-    friend bool operator>(const MoveData& m1, const MoveData& m2);
-    friend bool compareMove(const MoveData& m1, const MoveData& m2);
-    friend bool compareScore(const MoveData& m1, const MoveData& m2);
-    friend bool compareRating(const MoveData& m1, const MoveData& m2);
-    friend bool compareYear(const MoveData& m1, const MoveData& m2);
-    bool hasPercent() const;
 };
 
 bool operator<(const MoveData& m1, const MoveData& m2);

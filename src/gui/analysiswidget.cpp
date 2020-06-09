@@ -403,7 +403,7 @@ void AnalysisWidget::sendBookMoveTimeout()
             int randomPos = rand() % games;
             for (int i=0; i<moveList.count();++i)
             {
-                randomPos -= moveList.at(i).count;
+                randomPos -= moveList.at(i).results.count();
                 if (randomPos<0)
                 {
                     index = i;
