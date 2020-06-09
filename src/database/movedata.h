@@ -27,7 +27,7 @@ public:
     }
 
     /** Update corresponding counter */
-    void update(Result r) { m_counts[r] += 1; }
+    void update(Result r, size_t count = 1) { m_counts[r] += count; }
     /** Get total number of games */
     size_t count() const { return std::accumulate(m_counts.cbegin(), m_counts.cend(), 0); }
     /** Get number of games having result @p r */
@@ -72,12 +72,12 @@ public:
             update(v);
     }
 
-    void update(int v)
+    void update(int v, size_t count = 1)
     {
         if (Min <= v && v <= Max)
         {
-            m_count += 1;
-            m_sum += v;
+            m_count += count;
+            m_sum += static_cast<decltype(m_sum)>(count) * v;
         }
     }
 

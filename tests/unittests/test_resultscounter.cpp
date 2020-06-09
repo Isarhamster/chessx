@@ -196,5 +196,21 @@ TEST_CASE("testing ResultsCounter")
             CHECK_EQ(c.blackWinPercentage(), 25.0);
         }
     }
+
+    SUBCASE("update()")
+    {
+        // check `count` parameter
+        ResultsCounter c;
+        c.update(ResultUnknown, 10);
+        c.update(WhiteWin, 20);
+        c.update(Draw, 30);
+        c.update(BlackWin, 40);
+
+        CHECK_EQ(c.count(ResultUnknown), 10);
+        CHECK_EQ(c.count(WhiteWin), 20);
+        CHECK_EQ(c.count(Draw), 30);
+        CHECK_EQ(c.count(BlackWin), 40);
+        CHECK_EQ(c.count(), 100);
+    }
 }
 

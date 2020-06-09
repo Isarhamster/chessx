@@ -29,6 +29,15 @@ TEST_CASE("testing IntegralMetrics")
         CHECK_EQ(m.count(), 3);
         CHECK_EQ(m.average(), 20);
     }
+    SUBCASE("update()")
+    {
+        Metrics m;
+        m.update(10, 1000);
+        m.update(0, 1000);
+
+        CHECK_EQ(m.count(), 2000);
+        CHECK_EQ(m.average(), 5);
+    }
 }
 
 TEST_CASE("testing IntegralMetrics bounds checking")
