@@ -12,6 +12,7 @@
 #include <QFileInfo>
 #include <QtDebug>
 #include "database.h"
+#include "tags.h"
 
 using namespace chessx;
 
@@ -112,8 +113,9 @@ void Database::findPosition(const BoardX& position, PositionSearchOptions option
         // search for position
         GameX g;
         loadGameMoves(gameId, g);
-        auto moveId = g.cursor().findPosition(position);
-        if ((options & PositionSearch_GameEnd) && !g.atGameEnd(moveId))
+        const auto& cursor = g.cursor();
+        auto moveId = cursor.findPosition(position);
+        if ((options & PositionSearch_GameEnd) && !cursor.atGameEnd(moveId))
         {
             moveId = NO_MOVE;
         }
@@ -124,14 +126,11 @@ void Database::findPosition(const BoardX& position, PositionSearchOptions option
         // update stats
         if (moveId != NO_MOVE)
         {
-            g.dbMoveToId(moveId);
-
             // determine played move
             Move move;
-            if (!g.atGameEnd())
+            if (!cursor.atGameEnd(moveId))
             {
-                g.forward();
-                move = g.move();
+                move = cursor.move(cursor.nextMove(moveId));
             }
 
             // update metrics
@@ -140,8 +139,8 @@ void Database::findPosition(const BoardX& position, PositionSearchOptions option
             {
                 if (move.isLegal())
                 {
-                    md.san = g.moveToSan(GameX::MoveOnly, GameX::PreviousMove);
-                    md.localsan = g.moveToSan(GameX::TranslatePiece, GameX::PreviousMove);
+                    md.san = position.moveToSan(move);
+                    md.localsan = position.moveToSan(move, true);
                 }
                 else
                 {
@@ -151,13 +150,27 @@ void Database::findPosition(const BoardX& position, PositionSearchOptions option
                 md.move = move;
             }
 
-            loadGameHeaders(gameId, g);
-
-            md.results.update(g.result());
-            auto elo = (position.toMove() == White) ? g.tag("WhiteElo").toInt() : g.tag("BlackElo").toInt();
-            md.rating.update(elo);
-            auto y = g.tag("Date").section(".", 0, 0).toInt();
-            md.year.update(y);
+            auto result = m_index.tagValue(TagNameResult, gameId);
+            if(result == "1-0")
+            {
+                md.results.update(WhiteWin);
+            }
+            else if(result == "1/2-1/2")
+            {
+                md.results.update(Draw);
+            }
+            else if(result == "0-1")
+            {
+                md.results.update(BlackWin);
+            }
+            else
+            {
+                md.results.update(ResultUnknown);
+            }
+            auto elo = m_index.tagValue((position.toMove() == White)? TagNameWhiteElo: TagNameBlackElo, gameId);
+            md.rating.update(elo.toInt());
+            auto date = m_index.tagValue(TagNameDate, gameId);
+            md.year.update(date.section(".", 0, 0).toInt());
         }
     }
 }
