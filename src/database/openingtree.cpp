@@ -211,7 +211,7 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
             }
             case 2:
                 if (data.results)
-                    return QString("%1%").arg(data.results.scorePercentage());
+                    return QString("%1%").arg(data.results.scorePercentage(), 0, 'f', 1);
                 break;
             case 3:
                 return data.rating.count() >= MinAveRating ?
