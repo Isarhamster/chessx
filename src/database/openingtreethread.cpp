@@ -44,51 +44,73 @@ void OpeningTreeThread::run()
         games = pgdb->getMoveMapForBoard(m_board, moves);
         ProgressUpdate(moves, games, 100, 100);
     }
-    else
+    else if (m_filter)
     {
-        int n = m_filter ? m_filter->size() : 0;
-        int progressCounter = 10+n/100;
-        for(int i = 0; i < n; ++i)
+        const auto batchSize = 100;
+
+        // setup buffers for batch processing
+        QList<GameId> rqBuffer;
+        QList<MoveId> rsBuffer;
+        rqBuffer.reserve(batchSize);
+        rsBuffer.reserve(batchSize);
+
+        // determine options
+        Database::PositionSearchOptions opts = Database::PositionSearch_Default;
+        if (m_bEnd)
+            opts = Database::PositionSearch_GameEnd;
+
+        // scan games
+        int total = m_filter->size();
+        int processed = 0;
+        while (processed < total)
         {
-            if (m_sourceIsDatabase || m_filter->contains(i))
+            // prepare requests
+            rqBuffer.clear();
+            rsBuffer.clear();
+            if (m_sourceIsDatabase)
             {
-                GameX g;
-                m_filter->database()->loadGameMoves(i, g);
-                int id = g.cursor().findPosition(m_board);
-                if((id != NO_MOVE) && (m_bEnd ? g.atGameEnd(id) : true))
+                auto size = std::min(total - processed, batchSize);
+                for (auto i = 0; i < size; ++i)
                 {
-                    if(m_updateFilter)
-                    {
-                        emit requestGameFilterUpdate(i, id+1);
-                    }
-                    m_filter->database()->loadGameHeaders(i, g);
-                    g.dbMoveToId(id);
-                    if(g.atGameEnd())
-                    {
-                        moves[Move()].addGame(g, m_board.toMove(), MoveData::GameEnd);
-                    }
-                    else
-                    {
-                        g.forward();
-                        moves[g.move()].addGame(g, m_board.toMove());
-                    }
-                    ++games;
+                    auto gameId = processed + i;
+                    rqBuffer.append(gameId);
                 }
-                else
+                processed += size;
+            }
+            else
+            {
+                for (; processed < total && rqBuffer.size() < batchSize; ++processed)
                 {
-                    if(m_updateFilter)
-                    {
-                        emit requestGameFilterUpdate(i, 0);
-                    }
+                    auto gameId = processed;
+                    if (m_filter->contains(gameId))
+                        rqBuffer.append(gameId);
                 }
             }
 
-            if ((i==n) || (i%progressCounter) == 0)
+            // perform search
+            m_filter->database()->findPosition(m_board, opts, rqBuffer, rsBuffer, moves);
+
+            // update progress
+            for (auto rs: rsBuffer)
             {
-                ProgressUpdate(moves, games, i, n);
+                if (rs != NO_MOVE)
+                    games += 1;
+            }
+            ProgressUpdate(moves, games, processed, total);
+
+            // update filter if necessary
+            if (m_updateFilter)
+            {
+                for (auto i = 0; i < rqBuffer.size(); ++i)
+                {
+                    auto rq = rqBuffer.at(i);
+                    auto rs = rsBuffer.at(i);
+                    emit requestGameFilterUpdate(rq, rs + 1);
+                }
             }
 
-            if(m_break)
+            // interrupt if requested
+            if (m_break)
             {
                 break;
             }

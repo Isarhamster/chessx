@@ -22,6 +22,7 @@
 #include <QString>
 #include <QTextStream>
 
+
 /** @defgroup Database Database - classes to manipulate chess game files*/
 
 /** @ingroup Database
@@ -35,6 +36,17 @@ class Database : public QObject
     Q_OBJECT
     SUPPORTS_REFCOUNTING
 public:
+
+    /** Flags to customize position search */
+    enum PositionSearchOptions: unsigned
+    {
+        /** Default search */
+        PositionSearch_Default = 0,
+
+        /** Match only if position occurs at the game end */
+        PositionSearch_GameEnd = 1,
+    };
+
     /** Standard constructor. */
     Database();
     volatile bool m_break;
@@ -77,6 +89,8 @@ public:
     virtual void loadGameMoves(GameId index, GameX& game) = 0;
     /** Loads game moves and try to find a position */
     virtual int findPosition(GameId index, const BoardX& position) = 0;
+    /** Perform batched position search */
+    virtual void findPosition(const BoardX& position, PositionSearchOptions options, const QList<GameId>& games, QList<MoveId>& output, QMap<Move, MoveData>& stats);
     /** Saves a game at the given position, returns true if successful */
     virtual bool replace(GameId, GameX&);
     /** Adds a game to the database */

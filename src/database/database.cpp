@@ -105,6 +105,40 @@ QString Database::tagValue(GameId gameId, TagIndex tag) const
     return m_index.tagValue_byIndex(tag, gameId);
 }
 
+void Database::findPosition(const BoardX& position, PositionSearchOptions options, const QList<GameId>& games, QList<MoveId>& output, QMap<Move, MoveData>& stats)
+{
+    for (auto gameId: games)
+    {
+        // search for position
+        GameX g;
+        loadGameMoves(gameId, g);
+        auto moveId = g.cursor().findPosition(position);
+        if ((options & PositionSearch_GameEnd) && !g.atGameEnd(moveId))
+        {
+            moveId = NO_MOVE;
+        }
+
+        // report result
+        output.append(moveId);
+
+        // update stats
+        if (moveId != NO_MOVE)
+        {
+            loadGameHeaders(gameId, g);
+            g.dbMoveToId(moveId);
+            if (g.atGameEnd())
+            {
+                stats[Move()].addGame(g, position.toMove(), MoveData::GameEnd);
+            }
+            else
+            {
+                g.forward();
+                stats[g.move()].addGame(g, position.toMove());
+            }
+        }
+    }
+}
+
 bool Database::replace(GameId, GameX &)
 {
     return false;
