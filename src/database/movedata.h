@@ -10,7 +10,7 @@
 #include <numeric>
 #include <limits>
 
-#include "gamex.h"
+#include "result.h"
 #include "move.h"
 
 /**
@@ -113,12 +113,8 @@ private:
 
 struct MoveData
 {
-    enum MoveType {StandardMove, GameEnd};
-
     using RatingMetrics = IntegralMetrics<1000, std::numeric_limits<int>::max()>;
     using YearMetrics = IntegralMetrics<1001, std::numeric_limits<int>::max()>;
-
-    void addGame(GameX& g, Color c, MoveType movetype = StandardMove);
 
     QString san;
     QString localsan;

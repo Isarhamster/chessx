@@ -33,22 +33,6 @@ double ResultsCounter::blackWinPercentage() const
     return total? (static_cast<double>(count) / static_cast<double>(total) * 100.0): 0.0;
 }
 
-void MoveData::addGame(GameX& g, Color c, MoveType movetype)
-{
-    if(!results)
-    {
-        san = (movetype == StandardMove) ? g.moveToSan(GameX::MoveOnly, GameX::PreviousMove)
-               : qApp->translate("MoveData", "[end]");
-        localsan = (movetype == StandardMove) ? g.moveToSan(GameX::TranslatePiece, GameX::PreviousMove)
-               : qApp->translate("MoveData", "[end]");
-    }
-    results.update(g.result());
-    auto elo = (c == White) ? g.tag("WhiteElo").toInt() : g.tag("BlackElo").toInt();
-    rating.update(elo);
-    auto y = g.tag("Date").section(".", 0, 0).toInt();
-    year.update(y);
-}
-
 bool operator<(const MoveData& m1, const MoveData& m2)
 {
     auto c1 = m1.results.count();

@@ -124,17 +124,40 @@ void Database::findPosition(const BoardX& position, PositionSearchOptions option
         // update stats
         if (moveId != NO_MOVE)
         {
-            loadGameHeaders(gameId, g);
             g.dbMoveToId(moveId);
-            if (g.atGameEnd())
-            {
-                stats[Move()].addGame(g, position.toMove(), MoveData::GameEnd);
-            }
-            else
+
+            // determine played move
+            Move move;
+            if (!g.atGameEnd())
             {
                 g.forward();
-                stats[g.move()].addGame(g, position.toMove());
+                move = g.move();
             }
+
+            // update metrics
+            auto& md = stats[move];
+            if (!md.results)
+            {
+                if (move.isLegal())
+                {
+                    md.san = g.moveToSan(GameX::MoveOnly, GameX::PreviousMove);
+                    md.localsan = g.moveToSan(GameX::TranslatePiece, GameX::PreviousMove);
+                }
+                else
+                {
+                    // game is finished
+                    md.localsan = md.san = qApp->translate("MoveData", "[end]");
+                }
+                md.move = move;
+            }
+
+            loadGameHeaders(gameId, g);
+
+            md.results.update(g.result());
+            auto elo = (position.toMove() == White) ? g.tag("WhiteElo").toInt() : g.tag("BlackElo").toInt();
+            md.rating.update(elo);
+            auto y = g.tag("Date").section(".", 0, 0).toInt();
+            md.year.update(y);
         }
     }
 }
