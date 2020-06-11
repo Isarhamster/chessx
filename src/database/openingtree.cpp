@@ -23,6 +23,32 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
+static bool compareMove(const MoveData& m1, const MoveData& m2)
+{
+    return m1.san < m2.san;
+}
+
+static bool compareScore(const MoveData& m1, const MoveData& m2)
+{
+    auto s1 = m1.results.scorePercentage();
+    auto s2 = m2.results.scorePercentage();
+    return s1 < s2 || (s1 == s2 && m1.san < m2.san);
+}
+
+static bool compareRating(const MoveData& m1, const MoveData& m2)
+{
+    auto r1 = m1.rating.average();
+    auto r2 = m2.rating.average();
+    return r1 < r2 || (r1 == r2 && m1.san < m2.san);
+}
+
+static bool compareYear(const MoveData& m1, const MoveData& m2)
+{
+    auto y1 = m1.year.average();
+    auto y2 = m2.year.average();
+    return y1 < y2 || (y1 == y2 && m1.san < m2.san);
+}
+
 const unsigned MinAveYear = 1;
 const unsigned MinAveRating = 5;
 

@@ -125,10 +125,5 @@ struct MoveData
 };
 
 bool operator<(const MoveData& m1, const MoveData& m2);
-bool operator>(const MoveData& m1, const MoveData& m2);
-bool compareMove(const MoveData& m1, const MoveData& m2);
-bool compareScore(const MoveData& m1, const MoveData& m2);
-bool compareRating(const MoveData& m1, const MoveData& m2);
-bool compareYear(const MoveData& m1, const MoveData& m2);
 
 #endif // MOVEDATA_H
