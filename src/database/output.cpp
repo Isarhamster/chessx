@@ -159,127 +159,48 @@ void Output::readTemplateFile(const QString& path)
                 break;
             case ReadingMarkupTags:
             {
-                QString name = line.mid(0, line.indexOf('='));
-                QStringList tags = (line.mid(line.indexOf('=') + 1)).split(',');
-                if(name == "MarkupHeaderBlock")
+                // map tag names to types
+                static QHash<QString, MarkupType> s_tagNames;
+                if (s_tagNames.empty())
                 {
-                    setMarkupTag(MarkupHeaderBlock, tags[0], tags[1]);
+                    s_tagNames["MarkupHeaderBlock"] = MarkupHeaderBlock;
+                    s_tagNames["MarkupNotationBlock"] = MarkupNotationBlock;
+                    s_tagNames["MarkupResult"] = MarkupResult;
+                    s_tagNames["MarkupDiagram"] = MarkupDiagram;
+                    s_tagNames["MarkupMainLineMove"] = MarkupMainLineMove;
+                    s_tagNames["MarkupVariationMove"] = MarkupVariationMove;
+                    s_tagNames["MarkupMainLine"] = MarkupMainLine;
+                    s_tagNames["MarkupVariationInline"] = MarkupVariationInline;
+                    s_tagNames["MarkupVariationResume"] = MarkupVariationResume;
+                    s_tagNames["MarkupVariationIndent"] = MarkupVariationIndent;
+                    s_tagNames["MarkupVariationIndent1"] = MarkupVariationIndent1;
+                    s_tagNames["MarkupNag"] = MarkupNag;
+                    s_tagNames["MarkupAnnotationInline"] = MarkupAnnotationInline;
+                    s_tagNames["MarkupAnnotationIndent"] = MarkupAnnotationIndent;
+                    s_tagNames["MarkupPreAnnotationInline"] = MarkupPreAnnotationInline;
+                    s_tagNames["MarkupPreAnnotationIndent"] = MarkupPreAnnotationIndent;
+                    s_tagNames["MarkupHeaderLine"] = MarkupHeaderLine;
+                    s_tagNames["MarkupHeaderTagName"] = MarkupHeaderTagName;
+                    s_tagNames["MarkupHeaderTagValue"] = MarkupHeaderTagValue;
+                    s_tagNames["MarkupWhiteTag"] = MarkupWhiteTag;
+                    s_tagNames["MarkupBlackTag"] = MarkupBlackTag;
+                    s_tagNames["MarkupEventTag"] = MarkupEventTag;
+                    s_tagNames["MarkupDateTag"] = MarkupDateTag;
+                    s_tagNames["MarkupSiteTag"] = MarkupSiteTag;
+                    s_tagNames["MarkupResultTag"] = MarkupResultTag;
+                    s_tagNames["MarkupRoundTag"] = MarkupRoundTag;
+                    s_tagNames["MarkupColumnStyleMove"] = MarkupColumnStyleMove;
+                    s_tagNames["MarkupColumnStyleRow"] = MarkupColumnStyleRow;
+                    s_tagNames["MarkupColumnStyleMainline"] = MarkupColumnStyleMainline;
+                    s_tagNames["MarkupMate"] = MarkupMate;
                 }
-                else if(name == "MarkupNotationBlock")
+
+                const auto name = line.mid(0, line.indexOf('='));
+                if (s_tagNames.contains(name))
                 {
-                    setMarkupTag(MarkupNotationBlock, tags[0], tags[1]);
-                }
-                else if(name == "MarkupResult")
-                {
-                    setMarkupTag(MarkupResult, tags[0], tags[1]);
-                }
-                else if(name == "MarkupDiagram")
-                {
-                    setMarkupTag(MarkupDiagram, tags[0], tags[1]);
-                }
-                else if(name == "MarkupMainLineMove")
-                {
-                    setMarkupTag(MarkupMainLineMove, tags[0], tags[1]);
-                }
-                else if(name == "MarkupVariationMove")
-                {
-                    setMarkupTag(MarkupVariationMove, tags[0], tags[1]);
-                }
-                else if(name == "MarkupMainLine")
-                {
-                    setMarkupTag(MarkupMainLine, tags[0], tags[1]);
-                }
-                else if(name == "MarkupVariationInline")
-                {
-                    setMarkupTag(MarkupVariationInline, tags[0], tags[1]);
-                }
-                else if(name == "MarkupVariationResume")
-                {
-                    setMarkupTag(MarkupVariationResume, tags[0], tags[1]);
-                }
-                else if(name == "MarkupVariationIndent")
-                {
-                    setMarkupTag(MarkupVariationIndent, tags[0], tags[1]);
-                }
-                else if(name == "MarkupVariationIndent1")
-                {
-                    setMarkupTag(MarkupVariationIndent1, tags[0], tags[1]);
-                }
-                else if(name == "MarkupNag")
-                {
-                    setMarkupTag(MarkupNag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupAnnotationInline")
-                {
-                    setMarkupTag(MarkupAnnotationInline, tags[0], tags[1]);
-                }
-                else if(name == "MarkupAnnotationIndent")
-                {
-                    setMarkupTag(MarkupAnnotationIndent, tags[0], tags[1]);
-                }
-                else if(name == "MarkupPreAnnotationInline")
-                {
-                    setMarkupTag(MarkupPreAnnotationInline, tags[0], tags[1]);
-                }
-                else if(name == "MarkupPreAnnotationIndent")
-                {
-                    setMarkupTag(MarkupPreAnnotationIndent, tags[0], tags[1]);
-                }
-                else if(name == "MarkupHeaderLine")
-                {
-                    setMarkupTag(MarkupHeaderLine, tags[0], tags[1]);
-                }
-                else if(name == "MarkupHeaderTagName")
-                {
-                    setMarkupTag(MarkupHeaderTagName, tags[0], tags[1]);
-                }
-                else if(name == "MarkupHeaderTagValue")
-                {
-                    setMarkupTag(MarkupHeaderTagValue, tags[0], tags[1]);
-                }
-                else if(name == "MarkupWhiteTag")
-                {
-                    setMarkupTag(MarkupWhiteTag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupBlackTag")
-                {
-                    setMarkupTag(MarkupBlackTag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupEventTag")
-                {
-                    setMarkupTag(MarkupEventTag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupDateTag")
-                {
-                    setMarkupTag(MarkupDateTag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupSiteTag")
-                {
-                    setMarkupTag(MarkupSiteTag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupResultTag")
-                {
-                    setMarkupTag(MarkupResultTag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupRoundTag")
-                {
-                    setMarkupTag(MarkupRoundTag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupColumnStyleMove")
-                {
-                    setMarkupTag(MarkupColumnStyleMove, tags[0], tags[1]);
-                }
-                else if(name == "MarkupColumnStyleRow")
-                {
-                    setMarkupTag(MarkupColumnStyleRow, tags[0], tags[1]);
-                }
-                else if(name == "MarkupColumnStyleMainline")
-                {
-                    setMarkupTag(MarkupColumnStyleMainline, tags[0], tags[1]);
-                }
-                else if(name == "MarkupMate")
-                {
-                    setMarkupTag(MarkupMate, tags[0], tags[1]);
+                    auto type = s_tagNames.value(name);
+                    auto tags = (line.mid(line.indexOf('=') + 1)).split(',');
+                    setMarkupTag(type, tags[0], tags[1]);
                 }
                 else
                 {
