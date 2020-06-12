@@ -563,11 +563,19 @@ QString Output::writeVariation()
 {
     QString text;
     m_currentVariationLevel++;
-    bool indent = (m_currentVariationLevel < m_options.getOptionAsInt("VariationIndentLevel"));
-    bool willStartIndent = (m_currentVariationLevel+1 == m_options.getOptionAsInt("VariationIndentLevel"));
+    auto variationIndentLevel = m_options.getOptionAsInt("VariationIndentLevel");
+    bool indent = (m_currentVariationLevel < variationIndentLevel);
+    bool indentLastLevel = (m_currentVariationLevel + 1 == variationIndentLevel);
 
-    if (indent) text += m_startTagMap[MarkupVariationResume];
-    text += m_startTagMap[indent ? (willStartIndent ? MarkupVariationIndent : MarkupVariationIndent1) : MarkupVariationInline];
+    if (indent)
+    {
+        text += m_startTagMap[MarkupVariationResume];
+        text += m_startTagMap[indentLastLevel ? MarkupVariationIndent : MarkupVariationIndent1];
+    }
+    else
+    {
+        text += m_startTagMap[MarkupVariationInline];
+    }
     m_dirtyBlack = true;
 
     text += writeMove(PreviousMove);
@@ -585,7 +593,7 @@ QString Output::writeVariation()
         text += writeMove();
         if(m_game.variationCount())
         {
-            if (indent && !willStartIndent) text += m_endTagMap[MarkupVariationResume];
+            if (indent && !indentLastLevel) text += m_endTagMap[MarkupVariationResume];
             QList<MoveId> variations = m_game.variations();
             if(!variations.empty())
             {
@@ -605,8 +613,15 @@ QString Output::writeVariation()
         m_game.forward();
     }
 
-    text += m_endTagMap[indent ? (willStartIndent ? MarkupVariationIndent : MarkupVariationIndent1) : MarkupVariationInline];
-    if (indent) text += m_endTagMap[MarkupVariationResume];
+    if (indent)
+    {
+        text += m_endTagMap[indentLastLevel ? MarkupVariationIndent : MarkupVariationIndent1];
+        text += m_endTagMap[MarkupVariationResume];
+    }
+    else
+    {
+        text += m_endTagMap[MarkupVariationInline];
+    }
 
     m_currentVariationLevel--;
     return text;
