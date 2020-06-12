@@ -593,7 +593,11 @@ QString Output::writeVariation()
         text += writeMove();
         if(m_game.variationCount())
         {
-            if (indent && !indentLastLevel) text += m_endTagMap[MarkupVariationResume];
+            if (indent && !indentLastLevel)
+            {
+                text += m_endTagMap[MarkupVariationResume];
+                mustAddStart = true;
+            }
             QList<MoveId> variations = m_game.variations();
             if(!variations.empty())
             {
@@ -605,7 +609,6 @@ QString Output::writeVariation()
                         text += writeVariation();
                     }
                 }
-                mustAddStart = true;
             }
             m_dirtyBlack = true;
             m_game.dbMoveToId(m_game.parentMove());
