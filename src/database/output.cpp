@@ -523,11 +523,6 @@ QString Output::writeVariation()
 
     while(!m_game.atLineEnd())
     {
-        if (mustAddStart)
-        {
-            mustAddStart = false;
-            if (indent) text += m_startTagMap[resumeTag];
-        }
         // *** Writes move in the current variation
         text += writeMove();
         if(m_game.variationCount())
@@ -553,6 +548,12 @@ QString Output::writeVariation()
             m_game.dbMoveToId(m_game.parentMove());
         }
         m_game.forward();
+
+        if (mustAddStart)
+        {
+            mustAddStart = false;
+            if (indent) text += m_startTagMap[resumeTag];
+        }
     }
 
     if (indent)
