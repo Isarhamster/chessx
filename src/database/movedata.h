@@ -51,7 +51,7 @@ public:
     explicit operator bool() const { return count() != 0; }
 
 private:
-    std::array<size_t, 4> m_counts = {0, 0, 0, 0};
+    std::array<size_t, 4> m_counts = {{0, 0, 0, 0}};
 };
 
 inline ResultsCounter operator+(const ResultsCounter& lhs, const ResultsCounter& rhs)
