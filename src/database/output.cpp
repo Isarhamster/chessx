@@ -172,6 +172,15 @@ void Output::readTemplateFile(const QString& path)
                     s_tagNames["MarkupMainLine"] = MarkupMainLine;
                     s_tagNames["MarkupVariationInline"] = MarkupVariationInline;
                     s_tagNames["MarkupVariationResume"] = MarkupVariationResume;
+                    s_tagNames["MarkupVariationResume1"] = MarkupVariationResume1;
+                    s_tagNames["MarkupVariationResume2"] = MarkupVariationResume2;
+                    s_tagNames["MarkupVariationResume3"] = MarkupVariationResume3;
+                    s_tagNames["MarkupVariationResume4"] = MarkupVariationResume4;
+                    s_tagNames["MarkupVariationResume5"] = MarkupVariationResume5;
+                    s_tagNames["MarkupVariationResume6"] = MarkupVariationResume6;
+                    s_tagNames["MarkupVariationResume7"] = MarkupVariationResume7;
+                    s_tagNames["MarkupVariationResume8"] = MarkupVariationResume8;
+                    s_tagNames["MarkupVariationResume9"] = MarkupVariationResume9;
                     s_tagNames["MarkupVariationIndent"] = MarkupVariationIndent;
                     s_tagNames["MarkupVariationIndent1"] = MarkupVariationIndent1;
                     s_tagNames["MarkupNag"] = MarkupNag;
@@ -484,13 +493,22 @@ QString Output::writeVariation()
 {
     QString text;
     m_currentVariationLevel++;
-    auto variationIndentLevel = m_options.getOptionAsInt("VariationIndentLevel");
+    // allow up to 9 indentation levels
+    auto variationIndentLevel = qMin(m_options.getOptionAsInt("VariationIndentLevel"), 10);
     bool indent = (m_currentVariationLevel < variationIndentLevel);
     bool indentLastLevel = (m_currentVariationLevel + 1 == variationIndentLevel);
 
+    // try using `MarkupVariationResume<level>` tag ...
+    auto resumeTag = static_cast<MarkupType>(MarkupVariationResume + m_currentVariationLevel);
+    // ... but fallback to `MarkupVariationResume` if template does not define indent-specific tags
+    if (!m_startTagMap.contains(resumeTag) && !m_endTagMap.contains(resumeTag))
+    {
+        resumeTag = MarkupVariationResume;
+    }
+
     if (indent)
     {
-        text += m_startTagMap[MarkupVariationResume];
+        text += m_startTagMap[resumeTag];
         text += m_startTagMap[indentLastLevel ? MarkupVariationIndent : MarkupVariationIndent1];
     }
     else
@@ -508,7 +526,7 @@ QString Output::writeVariation()
         if (mustAddStart)
         {
             mustAddStart = false;
-            if (indent) text += m_startTagMap[MarkupVariationResume];
+            if (indent) text += m_startTagMap[resumeTag];
         }
         // *** Writes move in the current variation
         text += writeMove();
@@ -516,7 +534,7 @@ QString Output::writeVariation()
         {
             if (indent && !indentLastLevel)
             {
-                text += m_endTagMap[MarkupVariationResume];
+                text += m_endTagMap[resumeTag];
                 mustAddStart = true;
             }
             QList<MoveId> variations = m_game.variations();
@@ -540,7 +558,7 @@ QString Output::writeVariation()
     if (indent)
     {
         text += m_endTagMap[indentLastLevel ? MarkupVariationIndent : MarkupVariationIndent1];
-        text += m_endTagMap[MarkupVariationResume];
+        text += m_endTagMap[resumeTag];
     }
     else
     {
