@@ -159,127 +159,57 @@ void Output::readTemplateFile(const QString& path)
                 break;
             case ReadingMarkupTags:
             {
-                QString name = line.mid(0, line.indexOf('='));
-                QStringList tags = (line.mid(line.indexOf('=') + 1)).split(',');
-                if(name == "MarkupHeaderBlock")
+                // map tag names to types
+                static QHash<QString, MarkupType> s_tagNames;
+                if (s_tagNames.empty())
                 {
-                    setMarkupTag(MarkupHeaderBlock, tags[0], tags[1]);
+                    s_tagNames["MarkupHeaderBlock"] = MarkupHeaderBlock;
+                    s_tagNames["MarkupNotationBlock"] = MarkupNotationBlock;
+                    s_tagNames["MarkupResult"] = MarkupResult;
+                    s_tagNames["MarkupDiagram"] = MarkupDiagram;
+                    s_tagNames["MarkupMainLineMove"] = MarkupMainLineMove;
+                    s_tagNames["MarkupVariationMove"] = MarkupVariationMove;
+                    s_tagNames["MarkupMainLine"] = MarkupMainLine;
+                    s_tagNames["MarkupVariationInline"] = MarkupVariationInline;
+                    s_tagNames["MarkupVariationResume"] = MarkupVariationResume;
+                    s_tagNames["MarkupVariationResume1"] = MarkupVariationResume1;
+                    s_tagNames["MarkupVariationResume2"] = MarkupVariationResume2;
+                    s_tagNames["MarkupVariationResume3"] = MarkupVariationResume3;
+                    s_tagNames["MarkupVariationResume4"] = MarkupVariationResume4;
+                    s_tagNames["MarkupVariationResume5"] = MarkupVariationResume5;
+                    s_tagNames["MarkupVariationResume6"] = MarkupVariationResume6;
+                    s_tagNames["MarkupVariationResume7"] = MarkupVariationResume7;
+                    s_tagNames["MarkupVariationResume8"] = MarkupVariationResume8;
+                    s_tagNames["MarkupVariationResume9"] = MarkupVariationResume9;
+                    s_tagNames["MarkupVariationIndent"] = MarkupVariationIndent;
+                    s_tagNames["MarkupVariationIndent1"] = MarkupVariationIndent1;
+                    s_tagNames["MarkupNag"] = MarkupNag;
+                    s_tagNames["MarkupAnnotationInline"] = MarkupAnnotationInline;
+                    s_tagNames["MarkupAnnotationIndent"] = MarkupAnnotationIndent;
+                    s_tagNames["MarkupPreAnnotationInline"] = MarkupPreAnnotationInline;
+                    s_tagNames["MarkupPreAnnotationIndent"] = MarkupPreAnnotationIndent;
+                    s_tagNames["MarkupHeaderLine"] = MarkupHeaderLine;
+                    s_tagNames["MarkupHeaderTagName"] = MarkupHeaderTagName;
+                    s_tagNames["MarkupHeaderTagValue"] = MarkupHeaderTagValue;
+                    s_tagNames["MarkupWhiteTag"] = MarkupWhiteTag;
+                    s_tagNames["MarkupBlackTag"] = MarkupBlackTag;
+                    s_tagNames["MarkupEventTag"] = MarkupEventTag;
+                    s_tagNames["MarkupDateTag"] = MarkupDateTag;
+                    s_tagNames["MarkupSiteTag"] = MarkupSiteTag;
+                    s_tagNames["MarkupResultTag"] = MarkupResultTag;
+                    s_tagNames["MarkupRoundTag"] = MarkupRoundTag;
+                    s_tagNames["MarkupColumnStyleMove"] = MarkupColumnStyleMove;
+                    s_tagNames["MarkupColumnStyleRow"] = MarkupColumnStyleRow;
+                    s_tagNames["MarkupColumnStyleMainline"] = MarkupColumnStyleMainline;
+                    s_tagNames["MarkupMate"] = MarkupMate;
                 }
-                else if(name == "MarkupNotationBlock")
+
+                const auto name = line.mid(0, line.indexOf('='));
+                if (s_tagNames.contains(name))
                 {
-                    setMarkupTag(MarkupNotationBlock, tags[0], tags[1]);
-                }
-                else if(name == "MarkupResult")
-                {
-                    setMarkupTag(MarkupResult, tags[0], tags[1]);
-                }
-                else if(name == "MarkupDiagram")
-                {
-                    setMarkupTag(MarkupDiagram, tags[0], tags[1]);
-                }
-                else if(name == "MarkupMainLineMove")
-                {
-                    setMarkupTag(MarkupMainLineMove, tags[0], tags[1]);
-                }
-                else if(name == "MarkupVariationMove")
-                {
-                    setMarkupTag(MarkupVariationMove, tags[0], tags[1]);
-                }
-                else if(name == "MarkupMainLine")
-                {
-                    setMarkupTag(MarkupMainLine, tags[0], tags[1]);
-                }
-                else if(name == "MarkupVariationInline")
-                {
-                    setMarkupTag(MarkupVariationInline, tags[0], tags[1]);
-                }
-                else if(name == "MarkupVariationResume")
-                {
-                    setMarkupTag(MarkupVariationResume, tags[0], tags[1]);
-                }
-                else if(name == "MarkupVariationIndent")
-                {
-                    setMarkupTag(MarkupVariationIndent, tags[0], tags[1]);
-                }
-                else if(name == "MarkupVariationIndent1")
-                {
-                    setMarkupTag(MarkupVariationIndent1, tags[0], tags[1]);
-                }
-                else if(name == "MarkupNag")
-                {
-                    setMarkupTag(MarkupNag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupAnnotationInline")
-                {
-                    setMarkupTag(MarkupAnnotationInline, tags[0], tags[1]);
-                }
-                else if(name == "MarkupAnnotationIndent")
-                {
-                    setMarkupTag(MarkupAnnotationIndent, tags[0], tags[1]);
-                }
-                else if(name == "MarkupPreAnnotationInline")
-                {
-                    setMarkupTag(MarkupPreAnnotationInline, tags[0], tags[1]);
-                }
-                else if(name == "MarkupPreAnnotationIndent")
-                {
-                    setMarkupTag(MarkupPreAnnotationIndent, tags[0], tags[1]);
-                }
-                else if(name == "MarkupHeaderLine")
-                {
-                    setMarkupTag(MarkupHeaderLine, tags[0], tags[1]);
-                }
-                else if(name == "MarkupHeaderTagName")
-                {
-                    setMarkupTag(MarkupHeaderTagName, tags[0], tags[1]);
-                }
-                else if(name == "MarkupHeaderTagValue")
-                {
-                    setMarkupTag(MarkupHeaderTagValue, tags[0], tags[1]);
-                }
-                else if(name == "MarkupWhiteTag")
-                {
-                    setMarkupTag(MarkupWhiteTag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupBlackTag")
-                {
-                    setMarkupTag(MarkupBlackTag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupEventTag")
-                {
-                    setMarkupTag(MarkupEventTag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupDateTag")
-                {
-                    setMarkupTag(MarkupDateTag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupSiteTag")
-                {
-                    setMarkupTag(MarkupSiteTag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupResultTag")
-                {
-                    setMarkupTag(MarkupResultTag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupRoundTag")
-                {
-                    setMarkupTag(MarkupRoundTag, tags[0], tags[1]);
-                }
-                else if(name == "MarkupColumnStyleMove")
-                {
-                    setMarkupTag(MarkupColumnStyleMove, tags[0], tags[1]);
-                }
-                else if(name == "MarkupColumnStyleRow")
-                {
-                    setMarkupTag(MarkupColumnStyleRow, tags[0], tags[1]);
-                }
-                else if(name == "MarkupColumnStyleMainline")
-                {
-                    setMarkupTag(MarkupColumnStyleMainline, tags[0], tags[1]);
-                }
-                else if(name == "MarkupMate")
-                {
-                    setMarkupTag(MarkupMate, tags[0], tags[1]);
+                    auto type = s_tagNames.value(name);
+                    auto tags = (line.mid(line.indexOf('=') + 1)).split(',');
+                    setMarkupTag(type, tags[0], tags[1]);
                 }
                 else
                 {
@@ -563,11 +493,28 @@ QString Output::writeVariation()
 {
     QString text;
     m_currentVariationLevel++;
-    bool indent = (m_currentVariationLevel < m_options.getOptionAsInt("VariationIndentLevel"));
-    bool willStartIndent = (m_currentVariationLevel+1 == m_options.getOptionAsInt("VariationIndentLevel"));
+    // allow up to 9 indentation levels
+    auto variationIndentLevel = qMin(m_options.getOptionAsInt("VariationIndentLevel"), 10);
+    bool indent = (m_currentVariationLevel < variationIndentLevel);
+    bool indentLastLevel = (m_currentVariationLevel + 1 == variationIndentLevel);
 
-    if (indent) text += m_startTagMap[MarkupVariationResume];
-    text += m_startTagMap[indent ? (willStartIndent ? MarkupVariationIndent : MarkupVariationIndent1) : MarkupVariationInline];
+    // try using `MarkupVariationResume<level>` tag ...
+    auto resumeTag = static_cast<MarkupType>(MarkupVariationResume + m_currentVariationLevel);
+    // ... but fallback to `MarkupVariationResume` if template does not define indent-specific tags
+    if (!m_startTagMap.contains(resumeTag) && !m_endTagMap.contains(resumeTag))
+    {
+        resumeTag = MarkupVariationResume;
+    }
+
+    if (indent)
+    {
+        text += m_startTagMap[resumeTag];
+        text += m_startTagMap[indentLastLevel ? MarkupVariationIndent : MarkupVariationIndent1];
+    }
+    else
+    {
+        text += m_startTagMap[MarkupVariationInline];
+    }
     m_dirtyBlack = true;
 
     text += writeMove(PreviousMove);
@@ -576,16 +523,15 @@ QString Output::writeVariation()
 
     while(!m_game.atLineEnd())
     {
-        if (mustAddStart)
-        {
-            mustAddStart = false;
-            if (indent) text += m_startTagMap[MarkupVariationResume];
-        }
         // *** Writes move in the current variation
         text += writeMove();
         if(m_game.variationCount())
         {
-            if (indent && !willStartIndent) text += m_endTagMap[MarkupVariationResume];
+            if (indent && !indentLastLevel)
+            {
+                text += m_endTagMap[resumeTag];
+                mustAddStart = true;
+            }
             QList<MoveId> variations = m_game.variations();
             if(!variations.empty())
             {
@@ -597,16 +543,28 @@ QString Output::writeVariation()
                         text += writeVariation();
                     }
                 }
-                mustAddStart = true;
             }
             m_dirtyBlack = true;
             m_game.dbMoveToId(m_game.parentMove());
         }
         m_game.forward();
+
+        if (mustAddStart)
+        {
+            mustAddStart = false;
+            if (indent) text += m_startTagMap[resumeTag];
+        }
     }
 
-    text += m_endTagMap[indent ? (willStartIndent ? MarkupVariationIndent : MarkupVariationIndent1) : MarkupVariationInline];
-    if (indent) text += m_endTagMap[MarkupVariationResume];
+    if (indent)
+    {
+        text += m_endTagMap[indentLastLevel ? MarkupVariationIndent : MarkupVariationIndent1];
+        text += m_endTagMap[resumeTag];
+    }
+    else
+    {
+        text += m_endTagMap[MarkupVariationInline];
+    }
 
     m_currentVariationLevel--;
     return text;

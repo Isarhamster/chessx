@@ -20,7 +20,15 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=utf-8">
 <style type="text/css">
   p             {margin-top: 0; margin-bottom: 0}\n
-  p.var         {margin-left: 20px}\n
+  p.var1        {margin-left: 20px}\n
+  p.var2        {margin-left: 40px}\n
+  p.var3        {margin-left: 60px}\n
+  p.var4        {margin-left: 80px}\n
+  p.var5        {margin-left: 100px}\n
+  p.var6        {margin-left: 120px}\n
+  p.var7        {margin-left: 140px}\n
+  p.var8        {margin-left: 160px}\n
+  p.var9        {margin-left: 180px}\n
   p.comment     {margin-left: 20px}\n
   p.precomment  {margin-left: 0}\n
   a             {text-decoration: none}\n
@@ -63,9 +71,17 @@ MarkupMainLineMove=<a class="main" href="move:%1">,</a>
 MarkupVariationMove=<a class="var" href="move:%1">,</a>
 MarkupMainLine=,
 MarkupVariationInline=<span class="var">(,)</span>
-MarkupVariationIndent1=,\n
+MarkupVariationIndent1=( ,)\n
 MarkupVariationIndent=(,)\n
-MarkupVariationResume=<p class="var">,</p>\n
+MarkupVariationResume1=<p class="var1">,</p>\n
+MarkupVariationResume2=<p class="var2">,</p>\n
+MarkupVariationResume3=<p class="var3">,</p>\n
+MarkupVariationResume4=<p class="var4">,</p>\n
+MarkupVariationResume5=<p class="var5">,</p>\n
+MarkupVariationResume6=<p class="var6">,</p>\n
+MarkupVariationResume7=<p class="var7">,</p>\n
+MarkupVariationResume8=<p class="var8">,</p>\n
+MarkupVariationResume9=<p class="var9">,</p>\n
 MarkupNag=<a class="nag">,</a>
 MarkupColumnStyleMove=<td class="mainline">,</td>\n
 MarkupColumnStyleRow=<tr class="mainline">,</tr>\n
