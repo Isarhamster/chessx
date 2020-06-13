@@ -23,6 +23,32 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
+static bool compareMove(const MoveData& m1, const MoveData& m2)
+{
+    return m1.san < m2.san;
+}
+
+static bool compareScore(const MoveData& m1, const MoveData& m2)
+{
+    auto s1 = m1.results.scorePercentage();
+    auto s2 = m2.results.scorePercentage();
+    return s1 < s2 || (s1 == s2 && m1.san < m2.san);
+}
+
+static bool compareRating(const MoveData& m1, const MoveData& m2)
+{
+    auto r1 = m1.rating.average();
+    auto r2 = m2.rating.average();
+    return r1 < r2 || (r1 == r2 && m1.san < m2.san);
+}
+
+static bool compareYear(const MoveData& m1, const MoveData& m2)
+{
+    auto y1 = m1.year.average();
+    auto y2 = m2.year.average();
+    return y1 < y2 || (y1 == y2 && m1.san < m2.san);
+}
+
 const unsigned MinAveYear = 1;
 const unsigned MinAveRating = 5;
 
@@ -181,6 +207,7 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
         return QVariant();
     }
 
+    const auto& data = m_moves[index.row()];
     switch (role)
     {
         case Qt::DisplayRole:
@@ -188,14 +215,15 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
             switch(index.column())
             {
             case 0:
-                return QString("%1: %2").arg(index.row() + 1).arg(m_moves[index.row()].localsan);
+                return QString("%1: %2").arg(index.row() + 1).arg(data.localsan);
             case 1:
             {
                 if(m_games == 0)
                 {
                     return "";
                 }
-                unsigned int percentage = m_moves[index.row()].count * 1000U / m_games / 10U;
+                auto gamesCount = data.results.count();
+                unsigned int percentage = gamesCount * 1000U / m_games / 10U;
                 QString approx;
                 if(percentage == 0)
                 {
@@ -203,20 +231,20 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
                     approx = "<";
                 }
                 return QString("%1: %2%3%")
-                       .arg(m_moves[index.row()].count)
+                       .arg(gamesCount)
                        .arg(approx)
                        .arg(percentage);
             }
             case 2:
-                if (m_moves[index.row()].hasPercent())
-                    return QString("%1%").arg(m_moves[index.row()].percentage());
+                if (data.results)
+                    return QString("%1%").arg(data.results.scorePercentage(), 0, 'f', 1);
                 break;
             case 3:
-                return m_moves[index.row()].rated >= MinAveRating ?
-                       m_moves[index.row()].averageRating() : QVariant();
+                return data.rating.count() >= MinAveRating ?
+                       data.rating.average() : QVariant();
             case 4:
-                return m_moves[index.row()].dated >= MinAveYear ?
-                       m_moves[index.row()].averageYear() : QVariant();
+                return data.year.count() >= MinAveYear ?
+                       data.year.average() : QVariant();
 
             default:
                 return QVariant();
@@ -225,10 +253,10 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
         }
         case Qt::DecorationRole:
         {
-            if ((index.column() == 2) && m_moves[index.row()].hasPercent())
+            if ((index.column() == 2) && data.results)
             {
-                return paintPercentage(static_cast<int>(m_moves[index.row()].percentageWhite()),
-                        static_cast<int>(m_moves[index.row()].percentageBlack()));
+                return paintPercentage(static_cast<int>(data.results.whiteWinPercentage()),
+                        static_cast<int>(data.results.blackWinPercentage()));
             }
             break;
         }

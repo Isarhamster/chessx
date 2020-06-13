@@ -12,6 +12,7 @@
 #include <QFileInfo>
 #include <QtDebug>
 #include "database.h"
+#include "tags.h"
 
 using namespace chessx;
 
@@ -103,6 +104,75 @@ QString Database::tagValue(GameId gameId, const QString &tag) const
 QString Database::tagValue(GameId gameId, TagIndex tag) const
 {
     return m_index.tagValue_byIndex(tag, gameId);
+}
+
+void Database::findPosition(const BoardX& position, PositionSearchOptions options, const QList<GameId>& games, QList<MoveId>& output, QMap<Move, MoveData>& stats)
+{
+    for (auto gameId: games)
+    {
+        // search for position
+        GameX g;
+        loadGameMoves(gameId, g);
+        const auto& cursor = g.cursor();
+        auto moveId = cursor.findPosition(position);
+        if ((options & PositionSearch_GameEnd) && !cursor.atGameEnd(moveId))
+        {
+            moveId = NO_MOVE;
+        }
+
+        // report result
+        output.append(moveId);
+
+        // update stats
+        if (moveId != NO_MOVE)
+        {
+            // determine played move
+            Move move;
+            if (!cursor.atGameEnd(moveId))
+            {
+                move = cursor.move(cursor.nextMove(moveId));
+            }
+
+            // update metrics
+            auto& md = stats[move];
+            if (!md.results)
+            {
+                if (move.isLegal())
+                {
+                    md.san = position.moveToSan(move);
+                    md.localsan = position.moveToSan(move, true);
+                }
+                else
+                {
+                    // game is finished
+                    md.localsan = md.san = qApp->translate("MoveData", "[end]");
+                }
+                md.move = move;
+            }
+
+            auto result = m_index.tagValue(TagNameResult, gameId);
+            if(result == "1-0")
+            {
+                md.results.update(WhiteWin);
+            }
+            else if(result == "1/2-1/2")
+            {
+                md.results.update(Draw);
+            }
+            else if(result == "0-1")
+            {
+                md.results.update(BlackWin);
+            }
+            else
+            {
+                md.results.update(ResultUnknown);
+            }
+            auto elo = m_index.tagValue((position.toMove() == White)? TagNameWhiteElo: TagNameBlackElo, gameId);
+            md.rating.update(elo.toInt());
+            auto date = m_index.tagValue(TagNameDate, gameId);
+            md.year.update(date.section(".", 0, 0).toInt());
+        }
+    }
 }
 
 bool Database::replace(GameId, GameX &)

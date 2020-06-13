@@ -583,21 +583,24 @@ uint64_t CtgDatabase::move_weight(const BoardX& pos,
     bool success = ctg_get_entry(b, &entry);
     if (!success) return 0;
 
-    md.result[ResultUnknown] = 0;
-    md.result[WhiteWin] = reversed ? entry.losses : entry.wins;
-    md.result[Draw] = entry.draws;
-    md.result[BlackWin] = reversed ? entry.wins : entry.losses;
-
-    uint64_t games = entry.wins + entry.draws + entry.losses;
-    md.count = games;
-
-    md.rating = entry.avg_rating_score;
-    md.rated = entry.avg_rating_games;
+    if (reversed)
+    {
+        md.results.update(WhiteWin, entry.losses);
+        md.results.update(Draw, entry.draws);
+        md.results.update(BlackWin, entry.wins);
+    }
+    else
+    {
+        md.results.update(WhiteWin, entry.wins);
+        md.results.update(Draw, entry.draws);
+        md.results.update(BlackWin, entry.losses);
+    }
+    md.rating.update(entry.avg_rating_score, entry.avg_rating_games);
     md.move = move;
     md.san = pos.moveToSan(move);
     md.localsan = pos.moveToSan(move, true);
 
-    return games;
+    return md.results.count();
 }
 
 // ---------------------------------------------------------
