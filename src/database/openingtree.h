@@ -10,6 +10,7 @@
 #ifndef OPENINGTREE_H_INCLUDED
 #define OPENINGTREE_H_INCLUDED
 
+#include "board.h"
 #include "movedata.h"
 
 #include <QAbstractTableModel>
