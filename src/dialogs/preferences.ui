@@ -23,7 +23,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -1057,7 +1057,7 @@
             <number>0</number>
            </property>
            <property name="maximum">
-            <number>150</number>
+            <number>3000</number>
            </property>
            <property name="value">
             <number>10</number>
