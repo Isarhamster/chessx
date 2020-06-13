@@ -276,7 +276,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_eventList->setMinimumSize(150, 100);
     eventListDock->setWidget(m_eventList);
     m_menuView->addAction(eventListDock->toggleViewAction());
-    eventListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
+    eventListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_P);
     connect(m_eventList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByEvent(QString)));
     connect(m_eventList, SIGNAL(renameRequest(QString)), SLOT(slotRenameEvent(QString)));
     connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString, QString)), m_gameList, SLOT(slotFilterListByEventPlayer(QString, QString)));
