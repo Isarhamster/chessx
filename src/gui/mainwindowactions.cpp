@@ -1721,7 +1721,7 @@ void MainWindow::slotGameModify(const EditAction& action)
     }
 }
 
-void MainWindow::slotMergeActiveGame(QList<GameId> gameIndexList)
+void MainWindow::slotMergeActiveGameList(QList<GameId> gameIndexList)
 {
     if (gameIndexList.size())
     {
@@ -1803,7 +1803,7 @@ void MainWindow::slotGameChanged(bool /*bModified*/)
     moveChanged();
 }
 
-void MainWindow::slotGameViewLink(const QUrl& url)
+void MainWindow::slotGameViewLinkUrl(const QUrl& url)
 {
     if (gameMode())
     {
@@ -1870,7 +1870,7 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 
 void MainWindow::slotGameViewLink(const QString& url)
 {
-    slotGameViewLink(QUrl(url));
+    slotGameViewLinkUrl(QUrl(url));
 }
 
 void MainWindow::slotGameViewSource()

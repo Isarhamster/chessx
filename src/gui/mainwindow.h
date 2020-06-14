@@ -217,7 +217,7 @@ public slots:
     /** Get a pointer or Null to the active game. */
     void slotGetActiveGame(const GameX** game);
     /** Merge the game with index @p gameIndex into the active game. */
-    void slotMergeActiveGame(QList<GameId> gameIndexList);
+    void slotMergeActiveGameList(QList<GameId> gameIndexList);
     void slotMergeActiveGame(GameId gameIndex, QString source);
     /** Merge all games from the database into the active game. */
     void slotMergeAllGames();
@@ -226,7 +226,7 @@ public slots:
     /** Update GameView content after game was change. Triggers also @ref slotMoveChanged. */
     void slotGameChanged(bool bModified);
     /** Handle link click in Game View panel */
-    void slotGameViewLink(const QUrl& link);
+    void slotGameViewLinkUrl(const QUrl& link);
     /** Handle link click in Game View panel */
     void slotGameViewLink(const QString& link);
     /** Get GameView source. */

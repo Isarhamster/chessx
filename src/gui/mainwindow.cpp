@@ -201,10 +201,10 @@ MainWindow::MainWindow() : QMainWindow(),
     m_menuView->addAction(m_gameToolBar->toggleViewAction());
     m_gameToolBar->setVisible(AppSettings->getValue("/MainWindow/GameToolBar").toBool());
     m_gameView = m_gameWindow->browser();
-    connect(m_gameView, &GameNotationWidget::anchorClicked, this, static_cast<void (MainWindow::*)(const QUrl&)>(&MainWindow::slotGameViewLink));
+    connect(m_gameView, &GameNotationWidget::anchorClicked, this, &MainWindow::slotGameViewLinkUrl);
     connect(m_gameView, &GameNotationWidget::actionRequested, this, &MainWindow::slotGameModify);
     connect(m_gameView, &GameNotationWidget::queryActiveGame, this, &MainWindow::slotGetActiveGame);
-    connect(m_gameView, &GameNotationWidget::signalMergeGame, this, static_cast<void (MainWindow::*)(GameId, QString)>(&MainWindow::slotMergeActiveGame));
+    connect(m_gameView, &GameNotationWidget::signalMergeGame, this, &MainWindow::slotMergeActiveGame);
     connect(this, SIGNAL(signalGameLoaded(const BoardX&)), gameTextDock, SLOT(raise()));
     gameTextDock->setWidget(m_gameWindow);
     connect(this, &MainWindow::reconfigure, m_gameView, &GameNotationWidget::slotReconfigure);
@@ -221,7 +221,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameList, SIGNAL(gameSelected(GameId)), SLOT(slotFilterLoad(GameId)));
     connect(m_gameList, SIGNAL(requestCopyGame(QList<GameId>)), SLOT(slotDatabaseCopy(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestFindDuplicates(QList<GameId>)), SLOT(slotDatabaseFindDuplicates(QList<GameId>)));
-    connect(m_gameList, SIGNAL(requestMergeGame(QList<GameId>)), SLOT(slotMergeActiveGame(QList<GameId>)));
+    connect(m_gameList, SIGNAL(requestMergeGame(QList<GameId>)), SLOT(slotMergeActiveGameList(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestMergeAllGames()), SLOT(slotMergeAllGames()));
     connect(m_gameList, SIGNAL(requestMergeFilter()), SLOT(slotMergeFilter()));
     connect(m_gameList, SIGNAL(requestDeleteGame(QList<GameId>)), SLOT(slotDatabaseDeleteGame(QList<GameId>)));
