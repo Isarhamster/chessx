@@ -193,11 +193,10 @@ MainWindow::MainWindow() : QMainWindow(),
 
     m_gameWindow = new GameWindow(gameTextDock);
     connect(this, SIGNAL(reconfigure()), m_gameWindow, SLOT(slotReconfigure()));
-    auto gameToolbar = new GameToolBar(tr("Game Time"), m_gameWindow);
-    m_gameToolBar = gameToolbar;
+    m_gameToolBar = new GameToolBar(tr("Game Time"), m_gameWindow);
     m_gameToolBar->setMovable(false);
     m_gameWindow->addToolBar(Qt::BottomToolBarArea, m_gameToolBar);
-    connect(gameToolbar->m_chart, &ChartWidget::halfMoveRequested, this, &MainWindow::slotGameMoveToPly);
+    connect(m_gameToolBar, &GameToolBar::requestPly, this, &MainWindow::slotGameMoveToPly);
 
     m_menuView->addAction(m_gameToolBar->toggleViewAction());
     m_gameToolBar->setVisible(AppSettings->getValue("/MainWindow/GameToolBar").toBool());

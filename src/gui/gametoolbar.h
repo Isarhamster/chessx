@@ -15,6 +15,9 @@ class GameToolBar : public QToolBar
 public:
     GameToolBar(const QString& title, QWidget* parent = nullptr);
 
+signals:
+    void requestPly(int);
+
 public slots:
     void slotDisplayCurrentPly(int ply);
     void slotDisplayMaterial(const QList<double>& material);
@@ -24,7 +27,6 @@ public slots:
 private:
     QLCDNumber* m_clock1;
     QLCDNumber* m_clock2;
-public:
     ChartWidget* m_chart;
 };
 

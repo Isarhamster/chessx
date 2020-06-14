@@ -28,6 +28,8 @@ GameToolBar::GameToolBar(const QString& title, QWidget* parent)
     m_clock2->setObjectName("Clock1");
     m_clock2->display("1:00:00");
     addWidget(m_clock2);
+
+    connect(m_chart, &ChartWidget::halfMoveRequested, this, &GameToolBar::requestPly);
 }
 
 void GameToolBar::slotDisplayCurrentPly(int ply)
