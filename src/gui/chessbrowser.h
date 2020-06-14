@@ -50,9 +50,6 @@ public slots:
     void slotAction(QAction* action);
     /** Show menu */
     void slotContextMenu(const QPoint& pos);
-    /** Show the time in the String for the player with @p color */
-    void slotDisplayTime(const QString& text, Color color, const QString &otherText);
-
 signals:
     void actionRequested(const EditAction& action);
     void queryActiveGame(const GameX** game);

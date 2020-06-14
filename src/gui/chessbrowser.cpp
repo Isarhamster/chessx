@@ -307,25 +307,6 @@ QAction* ChessBrowser::createNagAction(const Nag& nag)
     return action;
 }
 
-void ChessBrowser::slotDisplayTime(const QString& text, Color color, const QString& otherText)
-{
-    if(toolBar)
-    {
-        QString objectName = QString("Clock") + QString::number(color);
-        QLCDNumber* clock = toolBar->findChild<QLCDNumber*>(objectName);
-        if(clock)
-        {
-            clock->display(text);
-        }
-        objectName = QString("Clock") + QString::number(1 - (int)color);
-        clock = toolBar->findChild<QLCDNumber*>(objectName);
-        if(clock)
-        {
-            clock->display(otherText);
-        }
-    }
-}
-
 void ChessBrowser::dragEnterEvent(QDragEnterEvent *event)
 {
     const QMimeData *mimeData = event->mimeData();

@@ -3,6 +3,8 @@
 
 #include <QToolBar>
 
+#include "piece.h"
+
 class QLCDNumber;
 class ChartWidget;
 
@@ -16,6 +18,8 @@ public:
 public slots:
     void slotDisplayCurrentPly(int ply);
     void slotDisplayMaterial(const QList<double>& material);
+    void slotDisplayTime(const QString& timeWhite, const QString& timeBlack);
+    void slotDisplayTime(Color color, const QString& time);
 
 private:
     QLCDNumber* m_clock1;

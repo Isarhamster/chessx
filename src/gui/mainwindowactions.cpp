@@ -1269,7 +1269,18 @@ void MainWindow::moveChanged()
     m_currentFrom = InvalidSquare;
     m_currentTo = InvalidSquare;
 
-    emit displayTime(g.timeAnnotation(m, GameX::BeforeMove), g.board().toMove(), g.timeAnnotation(m, GameX::AfterMove));
+    auto timeThis = g.timeAnnotation(m, GameX::BeforeMove);
+    auto timeThat = g.timeAnnotation(m, GameX::AfterMove);
+    if (g.board().toMove() == White)
+    {
+        m_gameToolBar->slotDisplayTime(White, timeThis);
+        m_gameToolBar->slotDisplayTime(Black, timeThat);
+    }
+    else
+    {
+        m_gameToolBar->slotDisplayTime(Black, timeThis);
+        m_gameToolBar->slotDisplayTime(White, timeThat);
+    }
 
     // Highlight current move
     m_gameView->showMove(m);

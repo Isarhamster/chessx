@@ -40,3 +40,23 @@ void GameToolBar::slotDisplayMaterial(const QList<double>& material)
     m_chart->setValues(material);
 }
 
+void GameToolBar::slotDisplayTime(const QString& timeWhite, const QString &timeBlack)
+{
+    m_clock1->display(timeWhite);
+    m_clock2->display(timeBlack);
+}
+
+void GameToolBar::slotDisplayTime(Color color, const QString& text)
+{
+    switch (color)
+    {
+    case White:
+        m_clock1->display(text);
+        break;
+    case Black:
+        m_clock2->display(text);
+        break;
+    default:
+        break;
+    }
+}

@@ -541,8 +541,6 @@ signals:
     void databaseChanged(DatabaseInfo* databaseInfo);
     /** Emitted upon finishing a file download */
     void LoadFinished(DatabaseInfo*);
-    /** Emitted upon a update for the elapsed / clock time */
-    void displayTime(const QString&, Color, const QString&);
 
     void signalMoveHasVariation(bool);
     void signalVariationHasSibling(bool);
