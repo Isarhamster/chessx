@@ -193,26 +193,11 @@ MainWindow::MainWindow() : QMainWindow(),
 
     m_gameWindow = new GameWindow(gameTextDock);
     connect(this, SIGNAL(reconfigure()), m_gameWindow, SLOT(slotReconfigure()));
-    m_gameToolBar = new GameToolBar(tr("Game Time"), m_gameWindow);
+    auto gameToolbar = new GameToolBar(tr("Game Time"), m_gameWindow);
+    m_gameToolBar = gameToolbar;
     m_gameToolBar->setMovable(false);
     m_gameWindow->addToolBar(Qt::BottomToolBarArea, m_gameToolBar);
-    for(int i = 0; i < 2; ++i)
-    {
-        QLCDNumber* annotatedTime = new QLCDNumber(m_gameToolBar);
-        annotatedTime->setObjectName(QString("Clock") + QString::number(i));
-        m_gameToolBar->addWidget(annotatedTime);
-        annotatedTime->setDigitCount(7);
-        annotatedTime->setSegmentStyle(QLCDNumber::Flat);
-        annotatedTime->display("1:00:00");
-        if(i == 0)
-        {
-            ChartWidget* chartWidget = new ChartWidget(m_gameToolBar);
-            chartWidget->setObjectName("ChartWidget");
-            chartWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-            connect(chartWidget, SIGNAL(halfMoveRequested(int)), this, SLOT(slotGameMoveToPly(int)));
-            m_gameToolBar->addWidget(chartWidget);
-        }
-    }
+    connect(gameToolbar->m_chart, &ChartWidget::halfMoveRequested, this, &MainWindow::slotGameMoveToPly);
 
     m_menuView->addAction(m_gameToolBar->toggleViewAction());
     m_gameToolBar->setVisible(AppSettings->getValue("/MainWindow/GameToolBar").toBool());

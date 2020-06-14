@@ -3,12 +3,21 @@
 
 #include <QToolBar>
 
+class QLCDNumber;
+class ChartWidget;
+
 class GameToolBar : public QToolBar
 {
     Q_OBJECT
 
 public:
     GameToolBar(const QString& title, QWidget* parent = nullptr);
+
+private:
+    QLCDNumber* m_clock1;
+    QLCDNumber* m_clock2;
+public:
+    ChartWidget* m_chart;
 };
 
 #endif
