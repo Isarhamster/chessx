@@ -13,6 +13,9 @@ class GameToolBar : public QToolBar
 public:
     GameToolBar(const QString& title, QWidget* parent = nullptr);
 
+public slots:
+    void slotDisplayCurrentPly(int ply);
+
 private:
     QLCDNumber* m_clock1;
     QLCDNumber* m_clock2;

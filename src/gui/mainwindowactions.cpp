@@ -35,6 +35,7 @@
 #include "gamex.h"
 #include "gameid.h"
 #include "gamelist.h"
+#include "gametoolbar.h"
 #include "gamewindow.h"
 #include "GameMimeData.h"
 #include "historylabel.h"
@@ -1274,7 +1275,7 @@ void MainWindow::moveChanged()
     m_gameView->showMove(m);
     if (g.isMainline())
     {
-        m_gameView->slotDisplayPly(g.ply());
+        m_gameToolBar->slotDisplayCurrentPly(g.ply());
     }
 
     displayVariations();

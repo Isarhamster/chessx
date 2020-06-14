@@ -29,3 +29,8 @@ GameToolBar::GameToolBar(const QString& title, QWidget* parent)
     m_clock2->display("1:00:00");
     addWidget(m_clock2);
 }
+
+void GameToolBar::slotDisplayCurrentPly(int ply)
+{
+    m_chart->setPly(ply);
+}

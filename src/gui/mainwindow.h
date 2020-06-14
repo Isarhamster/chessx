@@ -43,6 +43,7 @@ class ExclusiveActionGroup;
 class FicsClient;
 class FicsConsole;
 class GameList;
+class GameToolBar;
 class GameWindow;
 class HistoryLabel;
 class OpeningTreeWidget;
@@ -672,7 +673,7 @@ private:
     QLabel* m_sliderText;
     QPointer<QComboBox> m_comboEngine;
     GameWindow* m_gameWindow;
-    QToolBar* m_gameToolBar;
+    GameToolBar* m_gameToolBar;
     QTabWidget* m_tabWidget;
     /* Status */
     QLabel* m_statusFilter;

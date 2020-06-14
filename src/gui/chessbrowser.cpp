@@ -339,19 +339,6 @@ void ChessBrowser::slotDisplayMaterial(const QList<double>& material)
     }
 }
 
-void ChessBrowser::slotDisplayPly(int ply)
-{
-    if(toolBar)
-    {
-        QString objectName = QString("ChartWidget");
-        ChartWidget* chartWidget = toolBar->findChild<ChartWidget*>(objectName);
-        if (chartWidget)
-        {
-            chartWidget->setPly(ply);
-        }
-    }
-}
-
 void ChessBrowser::dragEnterEvent(QDragEnterEvent *event)
 {
     const QMimeData *mimeData = event->mimeData();

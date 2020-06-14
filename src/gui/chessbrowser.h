@@ -54,7 +54,6 @@ public slots:
     void slotDisplayTime(const QString& text, Color color, const QString &otherText);
     /** Show the material */
     void slotDisplayMaterial(const QList<double>& material);
-    void slotDisplayPly(int ply);
 
 signals:
     void actionRequested(const EditAction& action);
