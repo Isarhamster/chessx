@@ -14,15 +14,13 @@
 #include "GameMimeData.h"
 
 #include <QMenu>
-#include <QLCDNumber>
-#include <QToolBar>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p), toolBar(nullptr), m_gameMenu(nullptr), m_currentMove(CURRENT_MOVE)
+ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p), m_gameMenu(nullptr), m_currentMove(CURRENT_MOVE)
 {
     setObjectName("ChessBrowser");
     setContextMenuPolicy(Qt::CustomContextMenu);

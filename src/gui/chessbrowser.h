@@ -23,7 +23,6 @@
 #include "editaction.h"
 
 class DatabaseInfo;
-class QToolBar;
 
 /** @ingroup GUI
 	The ChessBrowser class is a slightly modified QTextBrowser
@@ -34,7 +33,6 @@ class ChessBrowser : public QTextBrowser
 public:
     /** Constructs new instance with parent @p parent. */
     ChessBrowser(QWidget* p);
-    QToolBar* toolBar;
     QMap<QAction*, EditAction> m_actions;
 
     QStringList getAnchors(QList<MoveId> list);
