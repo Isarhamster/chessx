@@ -15,6 +15,7 @@ public:
 
 public slots:
     void slotDisplayCurrentPly(int ply);
+    void slotDisplayMaterial(const QList<double>& material);
 
 private:
     QLCDNumber* m_clock1;

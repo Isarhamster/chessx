@@ -34,3 +34,9 @@ void GameToolBar::slotDisplayCurrentPly(int ply)
 {
     m_chart->setPly(ply);
 }
+
+void GameToolBar::slotDisplayMaterial(const QList<double>& material)
+{
+    m_chart->setValues(material);
+}
+

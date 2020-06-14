@@ -326,19 +326,6 @@ void ChessBrowser::slotDisplayTime(const QString& text, Color color, const QStri
     }
 }
 
-void ChessBrowser::slotDisplayMaterial(const QList<double>& material)
-{
-    if(toolBar)
-    {
-        QString objectName = QString("ChartWidget");
-        ChartWidget* chartWidget = toolBar->findChild<ChartWidget*>(objectName);
-        if (chartWidget)
-        {
-            chartWidget->setValues(material);
-        }
-    }
-}
-
 void ChessBrowser::dragEnterEvent(QDragEnterEvent *event)
 {
     const QMimeData *mimeData = event->mimeData();

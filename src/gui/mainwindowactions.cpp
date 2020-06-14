@@ -366,9 +366,9 @@ void MainWindow::UpdateGameText()
 
 void MainWindow::UpdateMaterial()
 {
-    if(m_gameView && databaseInfo())
+    if(databaseInfo())
     {
-        m_gameView->slotDisplayMaterial(databaseInfo()->material());
+        m_gameToolBar->slotDisplayMaterial(databaseInfo()->material());
     }
 }
 
