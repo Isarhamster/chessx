@@ -355,6 +355,8 @@ add_library(gui STATIC
   gui/gamelist.h
   gui/gamelistsortmodel.cpp
   gui/gamelistsortmodel.h
+  gui/gamenotationwidget.cpp
+  gui/gamenotationwidget.h
   gui/gamewindow.cpp
   gui/gamewindow.h
   gui/gamewindow.ui

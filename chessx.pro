@@ -182,6 +182,7 @@ HEADERS += src/database/board.h \
 	src/gui/boardsetup.h \
 	src/gui/colorlist.h \
 	src/gui/gamelist.h \
+  src/gui/gamenotationwidget.h \
 	src/gui/chessbrowser.h \
 	src/gui/ecothread.h \
 	src/gui/analysiswidget.h \
@@ -347,6 +348,7 @@ SOURCES += src/database/board.cpp \
 	src/gui/boardtheme.cpp \
 	src/gui/boardsetup.cpp \
 	src/gui/gamelist.cpp \
+  src/gui/gamenotationwidget.cpp \
 	src/gui/chessbrowser.cpp \
 	src/gui/analysiswidget.cpp \
 	src/gui/main.cpp \

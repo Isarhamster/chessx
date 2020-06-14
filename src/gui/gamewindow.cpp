@@ -7,6 +7,7 @@
 #include "editaction.h"
 #include "nag.h"
 #include "settings.h"
+#include "chessbrowser.h"
 
 #include <algorithm>
 #include <QAction>
@@ -48,7 +49,7 @@ void GameWindow::setupToolBox()
 {
     QMap<Nag, QAction*> tbActions;
     QList<Nag> items;
-    const auto& actions = ui->chessBrowser->m_actions;
+    const auto& actions = ui->chessBrowser->m_browser->m_actions;
     for (auto it = actions.cbegin(); it != actions.cend(); ++it)
     {
         auto action = it.key();
@@ -102,7 +103,7 @@ void GameWindow::setupSpacers()
 
 ChessBrowser *GameWindow::browser()
 {
-    return ui->chessBrowser;
+    return ui->chessBrowser->m_browser;
 }
 
 void GameWindow::addActionAtPage(int page, QAction* action)
