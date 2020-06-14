@@ -42,6 +42,34 @@ jobs:
     - name: make test
       run: cd _build && ctest -VV
 
+  build-qmake:
+    strategy:
+      matrix:
+        os: [macos-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      QT_VERSION: '5.14.2'
+  
+    steps:
+    - name: Look for cached Qt ${{ env.QT_VERSION }}
+      id: cache-qt
+      uses: actions/cache@v1.2.0
+      with:
+        path: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
+        key: ${{ runner.os }}-Qt${{ env.QT_VERSION }}
+    - name: Install Qt ${{ env.QT_VERSION }}
+      uses: jurplel/install-qt-action@v2.6.2
+      with:
+        version: ${{ env.QT_VERSION }}
+        dir: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+    - name: Checkout sources
+      uses: actions/checkout@v2.1.0
+    - name: configure
+      run: qmake
+    - name: make
+      run: make
+
   build:
     # name: build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
