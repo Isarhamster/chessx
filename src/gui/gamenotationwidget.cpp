@@ -14,6 +14,7 @@ GameNotationWidget::GameNotationWidget(QWidget* parent)
     // setup layout
     auto layout = new QHBoxLayout();
     layout->addWidget(m_browser);
+    layout->setMargin(0);
     setLayout(layout);
 
     configureFont();
