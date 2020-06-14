@@ -9,7 +9,7 @@
 #include "nag.h"
 #include "toolmainwindow.h"
 
-class ChessBrowser;
+class GameNotationWidget;
 
 namespace Ui {
 class GameWindow;
@@ -23,7 +23,7 @@ public:
     explicit GameWindow(QWidget *parent = nullptr);
     ~GameWindow();
 
-    ChessBrowser* browser();
+    GameNotationWidget* browser();
 
 public slots:
     void saveConfig();

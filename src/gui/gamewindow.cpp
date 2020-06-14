@@ -7,7 +7,6 @@
 #include "editaction.h"
 #include "nag.h"
 #include "settings.h"
-#include "chessbrowser.h"
 
 #include <algorithm>
 #include <QAction>
@@ -47,26 +46,13 @@ void GameWindow::slotReconfigure()
 
 void GameWindow::setupToolBox()
 {
-    QMap<Nag, QAction*> tbActions;
-    QList<Nag> items;
-    const auto& actions = ui->chessBrowser->m_browser->m_actions;
+    auto actions = ui->chessBrowser->nagActions();
+
     for (auto it = actions.cbegin(); it != actions.cend(); ++it)
     {
-        auto action = it.key();
-        const auto& e = it.value();
-        if (e.type() == EditAction::AddNag)
-        {
-            Nag nag = static_cast<Nag>(e.data().toInt());
-            tbActions[nag] = action;
-            items.push_back(nag);
-        }
-    }
-
-    std::sort(items.begin(), items.end());
-
-    foreach(Nag nag, items)
-    {
-        setupNagInToolBox(nag, tbActions[nag]);
+        auto nag = it.key();
+        auto action = it.value();
+        setupNagInToolBox(nag, action);
     }
 
     setupSpacers();
@@ -101,9 +87,9 @@ void GameWindow::setupSpacers()
     }
 }
 
-ChessBrowser *GameWindow::browser()
+GameNotationWidget *GameWindow::browser()
 {
-    return ui->chessBrowser->m_browser;
+    return ui->chessBrowser;
 }
 
 void GameWindow::addActionAtPage(int page, QAction* action)

@@ -26,8 +26,6 @@ ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p), m_gameMenu(nullptr), m
     setContextMenuPolicy(Qt::CustomContextMenu);
     setupMenu();
 
-    configureFont();
-
     setAcceptDrops(true);
 }
 
@@ -115,17 +113,6 @@ QStringList ChessBrowser::getAnchors(const QStringList& hrefs)
         }
     }
     return result;
-}
-
-void ChessBrowser::saveConfig()
-{
-    AppSettings->setLayout(this);
-}
-
-void ChessBrowser::slotReconfigure()
-{
-    AppSettings->layout(this);
-    configureFont();
 }
 
 void ChessBrowser::setupMenu()
@@ -266,20 +253,6 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
         m_browserMenu->exec(mapToGlobal(pos));
     }
 }
-
-void ChessBrowser::configureFont()
-{
-    QFont f = qApp->font();
-    qreal r = AppSettings->getValue("/GameText/FontSize").toInt();
-    f.setPointSize(r);
-    QString fontFamily = AppSettings->getValue("/GameText/FontBrowserText").toString();
-    if (!fontFamily.isEmpty())
-    {
-        f.setFamily(fontFamily);
-    }
-    setFont(f);
-}
-
 
 void ChessBrowser::slotAction(QAction* action)
 {

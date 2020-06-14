@@ -37,10 +37,6 @@ public:
 
     QStringList getAnchors(QList<MoveId> list);
 public slots:
-    /** Store current configuration. */
-    void saveConfig();
-    /** Restore current configuration. */
-    void slotReconfigure();
     /** Scroll to show given mode. */
     void showMove(int id);
 
@@ -59,8 +55,6 @@ protected:
     void setupMenu();
     QAction* createAction(const QString& name, EditAction::Type type);
     QAction* createNagAction(const Nag& nag);
-
-    void configureFont();
 
 protected: // Drag+Drop
     void dragEnterEvent(QDragEnterEvent *event);

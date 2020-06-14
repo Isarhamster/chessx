@@ -28,7 +28,6 @@ class Analysis;
 class AnalysisWidget;
 class BoardView;
 class BoardViewEx;
-class ChessBrowser;
 class Database;
 class DatabaseInfo;
 class DatabaseList;
@@ -43,6 +42,7 @@ class ExclusiveActionGroup;
 class FicsClient;
 class FicsConsole;
 class GameList;
+class GameNotationWidget;
 class GameToolBar;
 class GameWindow;
 class HistoryLabel;
@@ -664,7 +664,7 @@ private:
     /* Main gui parts */
     QPointer<BoardView> m_boardView;
     QPointer<QSplitter> m_boardSplitter;
-    ChessBrowser* m_gameView;
+    GameNotationWidget* m_gameView;
     OpeningTreeWidget* m_openingTreeWidget;
     QPointer<QProgressBar> m_progressBar;
     QPointer<TranslatingSlider> m_sliderSpeed;

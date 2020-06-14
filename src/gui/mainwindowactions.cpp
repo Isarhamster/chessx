@@ -16,7 +16,6 @@
 #include "boardview.h"
 #include "boardviewex.h"
 #include "copydialog.h"
-#include "chessbrowser.h"
 #include "clipboarddatabase.h"
 #include "guess_compileeco.h"
 #include "databaseinfo.h"
@@ -35,6 +34,7 @@
 #include "gamex.h"
 #include "gameid.h"
 #include "gamelist.h"
+#include "gamenotationwidget.h"
 #include "gametoolbar.h"
 #include "gamewindow.h"
 #include "GameMimeData.h"
@@ -1705,10 +1705,10 @@ void MainWindow::slotGameModify(const EditAction& action)
         }
         break;
     case EditAction::CopyHtml:
-        QApplication::clipboard()->setText(m_gameView->toHtml());
+        QApplication::clipboard()->setText(m_gameView->getHtml());
         break;
     case EditAction::CopyText:
-        QApplication::clipboard()->setText(m_gameView->toPlainText());
+        QApplication::clipboard()->setText(m_gameView->getText());
         break;
     case EditAction::Uncomment:
         slotGameUncomment();

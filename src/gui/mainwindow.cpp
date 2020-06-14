@@ -12,7 +12,6 @@
 #include "boardview.h"
 #include "boardviewex.h"
 #include "chartwidget.h"
-#include "chessbrowser.h"
 #include "clipboarddatabase.h"
 #include "commentdialog.h"
 #include "copydialog.h"
@@ -33,6 +32,7 @@
 #include "GameMimeData.h"
 #include "gamewindow.h"
 #include "gametoolbar.h"
+#include "gamenotationwidget.h"
 #include "helpbrowser.h"
 #include "helpbrowsershell.h"
 #include "historylabel.h"
@@ -201,13 +201,13 @@ MainWindow::MainWindow() : QMainWindow(),
     m_menuView->addAction(m_gameToolBar->toggleViewAction());
     m_gameToolBar->setVisible(AppSettings->getValue("/MainWindow/GameToolBar").toBool());
     m_gameView = m_gameWindow->browser();
-    connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
-    connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
-    connect(m_gameView, SIGNAL(queryActiveGame(const GameX**)), this, SLOT(slotGetActiveGame(const GameX**)));
-    connect(m_gameView, SIGNAL(signalMergeGame(GameId,QString)), this, SLOT(slotMergeActiveGame(GameId,QString)));
+    connect(m_gameView, &GameNotationWidget::anchorClicked, this, static_cast<void (MainWindow::*)(const QUrl&)>(&MainWindow::slotGameViewLink));
+    connect(m_gameView, &GameNotationWidget::actionRequested, this, &MainWindow::slotGameModify);
+    connect(m_gameView, &GameNotationWidget::queryActiveGame, this, &MainWindow::slotGetActiveGame);
+    connect(m_gameView, &GameNotationWidget::signalMergeGame, this, static_cast<void (MainWindow::*)(GameId, QString)>(&MainWindow::slotMergeActiveGame));
     connect(this, SIGNAL(signalGameLoaded(const BoardX&)), gameTextDock, SLOT(raise()));
     gameTextDock->setWidget(m_gameWindow);
-    connect(this, SIGNAL(reconfigure()), m_gameView, SLOT(slotReconfigure()));
+    connect(this, &MainWindow::reconfigure, m_gameView, &GameNotationWidget::slotReconfigure);
     addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
     m_gameTitle = new QLabel;
     connect(m_gameTitle, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
