@@ -32,6 +32,7 @@
 #include "gamelist.h"
 #include "GameMimeData.h"
 #include "gamewindow.h"
+#include "gametoolbar.h"
 #include "helpbrowser.h"
 #include "helpbrowsershell.h"
 #include "historylabel.h"
@@ -192,8 +193,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     m_gameWindow = new GameWindow(gameTextDock);
     connect(this, SIGNAL(reconfigure()), m_gameWindow, SLOT(slotReconfigure()));
-    m_gameToolBar = new QToolBar(tr("Game Time"), m_gameWindow);
-    m_gameToolBar->setObjectName("GameToolBar");
+    m_gameToolBar = new GameToolBar(tr("Game Time"), m_gameWindow);
     m_gameToolBar->setMovable(false);
     m_gameWindow->addToolBar(Qt::BottomToolBarArea, m_gameToolBar);
     for(int i = 0; i < 2; ++i)

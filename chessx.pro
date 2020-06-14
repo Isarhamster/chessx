@@ -255,6 +255,7 @@ HEADERS += src/database/board.h \
   src/gui/gamelist.h \
   src/gui/gamelistsortmodel.h \
   src/gui/gamenotationwidget.h \
+  src/gui/gametoolbar.h \
   src/gui/gamewindow.h \
   src/gui/helpbrowser.h \
   src/gui/helpbrowsershell.h \
@@ -409,6 +410,7 @@ SOURCES += \
   src/gui/gamelist.cpp \
   src/gui/gamelistsortmodel.cpp \
   src/gui/gamenotationwidget.cpp \
+  src/gui/gametoolbar.cpp \
   src/gui/gamewindow.cpp \
   src/gui/helpbrowser.cpp \
   src/gui/helpbrowsershell.cpp \
