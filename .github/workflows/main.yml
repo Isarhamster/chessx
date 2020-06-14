@@ -7,41 +7,6 @@ on:
     branches: [ master ]
 
 jobs:
-  build-linux:
-    strategy:
-      matrix:
-        os: ['ubuntu-latest']
-    runs-on: ${{ matrix.os }}
-    env:
-      QT_VERSION: '5.14.2'
-  
-    steps:
-    - name: Install pulseaudio
-      if: ${{ runner.os == 'Linux' }}
-      run: brew install pulseaudio
-    - name: Look for cached Qt ${{ env.QT_VERSION }}
-      id: cache-qt
-      uses: actions/cache@v1.2.0
-      with:
-        path: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
-        key: ${{ runner.os }}-Qt${{ env.QT_VERSION }}
-    - name: Install Qt ${{ env.QT_VERSION }}
-      uses: jurplel/install-qt-action@v2.6.2
-      with:
-        version: ${{ env.QT_VERSION }}
-        dir: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
-        cached: ${{ steps.cache-qt.outputs.cache-hit }}
-    - name: Checkout sources
-      uses: actions/checkout@v2.1.0
-    - name: configure
-      run: >-
-        cmake -S . -B _build
-        -DCMAKE_PREFIX_PATH="$(brew --prefix)/opt/pulseaudio/lib/cmake/PulseAudio"
-    - name: make
-      run: cmake --build _build
-    - name: make test
-      run: cd _build && ctest -VV
-
   build-qmake:
     strategy:
       matrix:
@@ -76,7 +41,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-latest, macos-latest, ubuntu-latest]
         arch: [x64, x86]
         qt: ['5.14.2']
         exclude:
@@ -89,6 +54,10 @@ jobs:
         include:
           - os: macos-latest
             triplet: x64-osx
+            vcpkg_packages: 'zlib'
+          - os: ubuntu-latest
+            arch: x64
+            triplet: x64-linux
             vcpkg_packages: 'zlib'
           - os: windows-latest
             arch: x64
