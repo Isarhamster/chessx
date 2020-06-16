@@ -4,10 +4,13 @@
 
 #include "chessbrowser.h"
 #include "settings.h"
+#include "output.h"
+#include "boardview.h"
 
 GameNotationWidget::GameNotationWidget(QWidget* parent)
     : QWidget(parent)
     , m_browser(nullptr)
+    , m_output(nullptr)
 {
     m_browser = new ChessBrowser(nullptr);
 
@@ -25,6 +28,11 @@ GameNotationWidget::GameNotationWidget(QWidget* parent)
     connect(m_browser, &ChessBrowser::signalMergeGame, this, &GameNotationWidget::signalMergeGame);
 }
 
+GameNotationWidget::~GameNotationWidget()
+{
+    delete m_output;
+}
+
 QString GameNotationWidget::getHtml() const
 {
     return m_browser->toHtml();
@@ -35,8 +43,14 @@ QString GameNotationWidget::getText() const
     return m_browser->toPlainText();
 }
 
-void GameNotationWidget::setText(const QString& text)
+QString GameNotationWidget::generateText(const GameX &game, bool trainingMode)
 {
+    return m_output->output(&game, trainingMode);
+}
+
+void GameNotationWidget::reload(const GameX& game, bool trainingMode)
+{
+    auto text = m_output->output(&game, trainingMode);
     m_browser->setText(text);
 }
 
@@ -66,6 +80,9 @@ void GameNotationWidget::slotReconfigure()
 {
     AppSettings->layout(this);
     configureFont();
+
+    delete m_output;
+    m_output = new Output(Output::NotationWidget, &BoardView::renderImageForBoard);
 }
 
 void GameNotationWidget::showMove(int id)

@@ -93,7 +93,6 @@ MainWindow::MainWindow() : QMainWindow(),
     m_pDragTabBar(nullptr),
     m_gameWindow(nullptr),
     m_gameToolBar(0),
-    m_output(nullptr),
     m_operationFlag(0),
     m_currentFrom(InvalidSquare),
     m_currentTo(InvalidSquare),
@@ -548,7 +547,6 @@ MainWindow::~MainWindow()
         dbi->close();
     }
     delete m_registry;
-    delete m_output;
     delete m_progressBar;
     delete m_gameList;
 

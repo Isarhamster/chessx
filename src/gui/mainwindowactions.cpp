@@ -351,17 +351,12 @@ void MainWindow::slotReconfigure()
 #endif
     m_recentFiles.restore();
     emit reconfigure(); 	// Re-emit for children
-    delete m_output;
-    m_output = new Output(Output::NotationWidget, &BoardView::renderImageForBoard);
     UpdateGameText();
 }
 
 void MainWindow::UpdateGameText()
 {
-    if(m_gameView)
-    {
-        m_gameView->setText(m_output->output(&game(), (m_training->isChecked() || m_training2->isChecked())));
-    }
+    m_gameView->reload(game(), m_training->isChecked() || m_training2->isChecked());
 }
 
 void MainWindow::UpdateMaterial()
@@ -1875,7 +1870,7 @@ void MainWindow::slotGameViewLink(const QString& url)
 
 void MainWindow::slotGameViewSource()
 {
-    QString text = m_output->output(&game(), (m_training->isChecked() || m_training2->isChecked()));
+    auto text = m_gameView->generateText(game(), (m_training->isChecked() || m_training2->isChecked()));
     QApplication::clipboard()->setText(text);
 }
 

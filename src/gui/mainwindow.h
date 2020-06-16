@@ -686,7 +686,6 @@ private:
     DatabaseRegistry *m_registry;
     HistoryList m_recentFiles;
     QStringList m_favoriteFiles;
-    Output* m_output;
     
     QPointer<DatabaseInfo> m_currentDatabase;
     QString m_eco;

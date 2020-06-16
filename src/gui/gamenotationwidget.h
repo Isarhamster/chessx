@@ -9,6 +9,7 @@
 #include "gamex.h"
 
 class ChessBrowser;
+class Output;
 
 
 class GameNotationWidget : public QWidget
@@ -17,11 +18,13 @@ class GameNotationWidget : public QWidget
 
 public:
     GameNotationWidget(QWidget* parent = nullptr);
+    ~GameNotationWidget();
 
     QString getHtml() const;
     QString getText() const;
 
-    void setText(const QString& text);
+    QString generateText(const GameX& game, bool trainingMode);
+    void reload(const GameX& game, bool trainingMode);
 
     QMap<Nag, QAction*> nagActions() const;
 
@@ -43,6 +46,7 @@ private:
     void configureFont();
 
     ChessBrowser *m_browser;
+    Output* m_output;
 };
 
 #endif
