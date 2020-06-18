@@ -1786,6 +1786,7 @@ void MainWindow::setupActions()
     m_menuView->addAction(textEditDock->toggleViewAction());
     textEditDock->hide();
     connect(m_scratchPad, SIGNAL(requestBoardImage(QImage&,double)), this, SLOT(slotCreateBoardImage(QImage&,double)));
+    connect(m_scratchPad, SIGNAL(linkActivated(QString)), this, SLOT(openDatabase(QString)));
     connect(this, SIGNAL(reconfigure()), m_scratchPad, SLOT(slotReconfigure()));
 
     /* Help menu */

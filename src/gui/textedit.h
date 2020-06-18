@@ -43,6 +43,7 @@
 #include <QPointer>
 #include <QUrl>
 #include <QImage>
+#include <QMouseEvent>
 #include <QTextEdit>
 
 QT_BEGIN_NAMESPACE
@@ -76,6 +77,33 @@ private:
     void dropTextFile(const QUrl &url);
     void dropImage(const QUrl &url, const QImage &image);
     int m_imageCounter;
+
+private:
+    QString clickedAnchor;
+
+    void mousePressEvent(QMouseEvent *e)
+    {
+        clickedAnchor = (e->button() & Qt::LeftButton) ? anchorAt(e->pos()) :
+                                                         QString();
+        QTextEdit::mousePressEvent(e);
+    }
+
+    void mouseReleaseEvent(QMouseEvent *e)
+    {
+        if (e->button() & Qt::LeftButton &&
+                !clickedAnchor.isEmpty() &&
+                ((e->modifiers() & Qt::KeyboardModifierMask) == Qt::ControlModifier) &&
+                anchorAt(e->pos()) == clickedAnchor)
+        {
+            emit linkActivated(clickedAnchor);
+        }
+
+        QTextEdit::mouseReleaseEvent(e);
+    }
+
+signals:
+    void linkActivated(QString);
+
 };
 
 class TextEdit : public ToolMainWindow
@@ -101,6 +129,7 @@ private:
 
 signals:
     void requestBoardImage(QImage& image, double scaling);
+    void linkActivated(QString);
 
 private slots:
     void fileNew();
@@ -130,6 +159,7 @@ private slots:
     void pickBoard();
 
     void setupDocumentActions();
+
 private:
     void mergeFormatOnWordOrSelection(const QTextCharFormat &format);
     void fontChanged(const QFont &f);
