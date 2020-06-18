@@ -16,6 +16,8 @@
 #include "guess_guessengine.h"
 #include "guess_recog.h"
 
+// #define GUESS_DEBUG Activating this might leave to crash as we are not in the main thread
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -1732,7 +1734,9 @@ int Engine::Think(MoveList * mlist)
         int margin = mlist->Get(0)->score - mlist->Get(1)->score;
         if(margin > (2 * PawnValue))
         {
-            // Output ("Easy move: margin = %d\n", margin);
+#ifdef GUESS_DEBUG
+            qDebug()<< "Easy move: margin = " << margin;
+#endif
             EasyMove = true;
         }
     }
@@ -1884,17 +1888,20 @@ int Engine::SearchRoot(int depth, int alpha, int beta, MoveList * mlist)
 #else
         int score = -Search(depth - 1, -beta, -alpha, true);
 #endif
+#ifdef GUESS_DEBUG
+            qDebug()<< "Search root: move = " << sm->toString() << " score = " << score;
+#endif
         UndoMove(sm);
 
         // Set the move ordering score of this move to be the number of
         // nodes spent on it, so interesting moves of this iteration are
         // searched first at the next iteration depth:
-        sm->score = NodeCount - oldNodeCount;
+        // sm->score = NodeCount - oldNodeCount;
 
         // If this is the first move searched at this depth or
         // a new best move, update the best score and promote
         // the move to be first in the list:
-        if(movenum == 0  ||  score > bestScore)
+        if(movenum == 0  || score > bestScore)
         {
             bestScore = score;
             alpha = score;
@@ -1952,12 +1959,6 @@ int Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
 
     colorT toMove = Pos.GetToMove();
     NodeCount++;
-
-    // Stop now if we ran out of time:
-    if(OutOfTime())
-    {
-        return alpha;
-    }
 
     // Check for a recognized endgame score:
     if(Pos.TotalMaterial() <= Recognizer::MaxPieces())
@@ -2311,12 +2312,6 @@ int Engine::Quiesce(int alpha, int beta)
         return alpha;
     }
     SetPVLength();
-
-    // Stop now if we are out of time:
-    if(OutOfTime())
-    {
-        return alpha;
-    }
 
     // Check for a recognized endgame score:
     if(Pos.TotalMaterial() <= Recognizer::MaxPieces())
