@@ -90,6 +90,7 @@ TextEdit::TextEdit(QWidget *parent, QMenu *menu)
             this, SLOT(currentCharFormatChanged(QTextCharFormat)));
     connect(textEdit, SIGNAL(cursorPositionChanged()),
             this, SLOT(cursorPositionChanged()));
+    connect(textEdit, SIGNAL(linkActivated(QString)), this, SIGNAL(linkActivated(QString)));
 
     setCentralWidget(textEdit);
     textEdit->setFocus();
@@ -855,6 +856,19 @@ void PasteTextEdit::insertImage(const QImage& image)
 void PasteTextEdit::insertFromMimeData(const QMimeData *source)
 {
     if (!source) return;
+
+    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(source);
+
+    if(dbMimeData && dbMimeData->hasUrls())
+    {
+        foreach (QUrl url, dbMimeData->urls())
+        {
+            QString link = QString("<a href='%1'>%2</a>").arg(url.toString(), url.fileName());
+            QTextEdit::insertHtml(link);
+            textCursor().insertText("\n");
+        }
+    }
+
     if (source->hasImage())
     {
         insertImage(qvariant_cast<QImage>(source->imageData()));
@@ -944,4 +958,3 @@ void PasteTextEdit::resizeImage(QPair<double, double> factor)
         }
     }
 }
-

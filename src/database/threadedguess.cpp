@@ -14,9 +14,12 @@ using namespace chessx;
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-ThreadedGuess::ThreadedGuess()
+ThreadedGuess::ThreadedGuess(bool threat)
 {
     m_dontGuess = false;
+    m_bSwap = threat;
+    thinkTime = 1000;
+    clear();
 
     qRegisterMetaType<Guess::Result>("Guess::Result");
     qRegisterMetaType<BoardX>("BoardX");
@@ -38,6 +41,8 @@ void ThreadedGuess::cancel()
 
 bool ThreadedGuess::guessMove(BoardX b)
 {
+    clear();
+
     if (isRunning()) return false;
     if (!Guess::guessAllowed()) return false;
 
@@ -50,19 +55,59 @@ bool ThreadedGuess::guessMove(BoardX b)
 void ThreadedGuess::run()
 {
     BoardX b = m_board;
-    b.swapToMove();
-    b.clearEnPassantSquare();
+    if (m_bSwap)
+    {
+        b.swapToMove();
+        b.clearEnPassantSquare();
+    }
     Guess::MoveList moveList;
     Guess::Result sm = Guess::guessMove(qPrintable(b.toFen()),
                                         b.chess960(), b.castlingRooks(),
                                         Guess::NULL_SQUARE,
-                                        moveList, 1500);
+                                        moveList, thinkTime);
     if (!m_dontGuess)
     {
         if (Guess::guessAllowed())
         {
+            setFrom(Square(sm.from));
+            setTo(Square(sm.to));
             emit guessFoundForBoard(sm, m_board);
         }
     }
+}
+
+void ThreadedGuess::setThinkTime(unsigned int value)
+{
+    thinkTime = value;
+}
+
+chessx::Square ThreadedGuess::getFrom() const
+{
+    return from;
+}
+
+void ThreadedGuess::setFrom(const chessx::Square &value)
+{
+    from = value;
+}
+
+void ThreadedGuess::clear()
+{
+    from = to = InvalidSquare;
+}
+
+chessx::Square ThreadedGuess::getTo() const
+{
+    return to;
+}
+
+void ThreadedGuess::setTo(const chessx::Square &value)
+{
+    to = value;
+}
+
+void ThreadedGuess::setSwap(bool bSwap)
+{
+    m_bSwap = bSwap;
 }
 

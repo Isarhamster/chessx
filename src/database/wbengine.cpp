@@ -67,7 +67,12 @@ bool WBEngine::startAnalysis(const BoardX& board, int nv, const EngineParameter 
     EngineX::setMoveTime(mt);
     m_mpv = nv;
 
-    if(isActive() && m_board == board)
+    if(!isActive())
+    {
+        return false;
+    }
+
+    if(m_board == board)
     {
         return true;
     }
@@ -107,6 +112,17 @@ void WBEngine::protocolEnd()
     m_board.clear();
 }
 
+void WBEngine::Error(const QString& message)
+{
+    QString err_cmd = message.section(':', 1, 1, QString::SectionSkipEmpty).trimmed();
+    if (err_cmd=="protover")
+    {
+        v1TurnOffPondering();
+        m_analyze = true;
+        setActive(true);
+    }
+}
+
 void WBEngine::processMessage(const QString& message)
 {
     QString trim(message);
@@ -128,7 +144,11 @@ void WBEngine::processMessage(const QString& message)
     QString command = trim.section(" ", 0, 0);
 
     //identify and process the command
-    if(command == "feature")
+    if (command == "Error")
+    {
+        Error(trim);
+    }
+    else if(command == "feature")
     {
         feature(trim);
     }

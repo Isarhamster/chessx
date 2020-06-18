@@ -20,7 +20,7 @@ typedef struct Result
 
 int scorePosFromFen(const char* fen);
 int attackersOnSquare(const char *fen, int target);
-Result guessMove(const char* fen, bool chess960, quint64 castlingRooks, squareT square, MoveList& mlist, int thinkTime = 25);
+Result guessMove(const char* fen, bool chess960, quint64 castlingRooks, squareT square, MoveList& mlist, int thinkTime = 50);
 Result evalPos(const char* fen, bool chess960, quint64 castlingRooks, int thinkTime = 125);
 int pickBest(const char* fen, bool chess960, quint64 castlingRooks, squareT from1, squareT to1, squareT from2, squareT to2, int ms);
 void setGuessAllowed(bool allow);

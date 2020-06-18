@@ -188,8 +188,6 @@ private:
     void updateGuess(Square s);
     /** Remove the guessed move highlight from the board. */
     void removeGuess();
-    /** Remove the threat highlighting */
-    void removeThreat();
     /** Catch mouse events */
     bool eventFilter(QObject *obj, QEvent *ev);
 
@@ -231,8 +229,6 @@ private:
     Square m_hoverSquare;
     Square m_hiFrom;
     Square m_hiTo;
-    Square m_threatFrom;
-    Square m_threatTo;
     Square m_currentFrom;
     Square m_currentTo;
     Square m_storedFrom;
@@ -255,6 +251,7 @@ private:
     int m_showMoveIndicatorMode;
     QPointer<QObject> m_DbIndex;
     ThreadedGuess m_threatGuess;
+    ThreadedGuess m_bestGuess;
     Color m_showAttacks;
     Color m_showUnderProtection;
     QMouseEvent* lastMoveEvent;

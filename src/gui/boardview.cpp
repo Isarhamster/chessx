@@ -38,7 +38,6 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_guessMove(false), m_showThreat(false), m_showTargets(false), m_brushMode(false), m_selectedSquare(InvalidSquare),
     m_hoverSquare(InvalidSquare),
     m_hiFrom(InvalidSquare), m_hiTo(InvalidSquare),
-    m_threatFrom(InvalidSquare), m_threatTo(InvalidSquare),
     m_currentFrom(InvalidSquare), m_currentTo(InvalidSquare),
     m_storedFrom(InvalidSquare), m_storedTo(InvalidSquare),
     m_dragStartSquare(InvalidSquare),
@@ -58,7 +57,13 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     installEventFilter(this);
     setFocusPolicy( Qt::StrongFocus );
 
+    m_bestGuess.setSwap(false);
+    m_bestGuess.setThinkTime(2000);
+    m_threatGuess.setThinkTime(500);
+
     connect(&m_threatGuess, SIGNAL(guessFoundForBoard(Guess::Result, BoardX)),
+            this, SLOT(showThreat(Guess::Result,BoardX)), Qt::QueuedConnection);
+    connect(&m_bestGuess, SIGNAL(guessFoundForBoard(Guess::Result, BoardX)),
             this, SLOT(showThreat(Guess::Result,BoardX)), Qt::QueuedConnection);
 }
 
@@ -66,6 +71,7 @@ BoardView::~BoardView()
 {
     removeEventFilter(this);
     m_threatGuess.cancel();
+    m_bestGuess.cancel();
     delete lastMoveEvent;
 }
 
@@ -322,14 +328,31 @@ void BoardView::drawHiliting(QPaintEvent* event)
         }
     }
 
-    if (m_threatFrom != InvalidSquare && m_threatTo != InvalidSquare)
+    Square threatFrom = m_threatGuess.getFrom();
+    Square threatTo = m_threatGuess.getTo();
+    if (threatFrom != InvalidSquare && threatTo != InvalidSquare)
     {
-        QRect rect1 = squareRect(m_threatFrom);
-        QRect rect2 = squareRect(m_threatTo);
+        QRect rect1 = squareRect(threatFrom);
+        QRect rect2 = squareRect(threatTo);
         QRect u = rect1.united(rect2);
         if(event->region().intersects(u))
         {
-            drawArrow(m_threatFrom, m_threatTo, m_theme.color(BoardTheme::Threat));
+            drawArrow(threatFrom, threatTo, m_theme.color(BoardTheme::Threat));
+        }
+    }
+
+    Square guessFrom = m_bestGuess.getFrom();
+    Square guessTo = m_bestGuess.getTo();
+    if (threatFrom != InvalidSquare && threatTo != InvalidSquare)
+    {
+        QRect rect1 = squareRect(guessFrom);
+        QRect rect2 = squareRect(guessTo);
+        QRect u = rect1.united(rect2);
+        if(event->region().intersects(u))
+        {
+            QColor c(m_theme.color(BoardTheme::Threat));
+            c = c.darker();
+            drawArrow(guessFrom, guessTo, c);
         }
     }
 }
@@ -580,12 +603,14 @@ void BoardView::updateGuess(Square s)
 
 void BoardView::updateThreat()
 {
-    removeThreat();
+    m_threatGuess.clear();
+    m_bestGuess.clear();
     if(m_showThreat && !(m_flags & SuppressGuessMove) && Guess::guessAllowed())
     {
         if (board() != BoardX::standardStartBoard)
         {
             m_threatGuess.guessMove(board());
+            // m_bestGuess.guessMove(board()); Reactivate this only after a better move prediction
         }
     }
 }
@@ -596,22 +621,17 @@ void BoardView::showThreat(Guess::Result sm, BoardX b)
     {
         if(!sm.error)
         {
-            m_threatFrom = Square(sm.from);
-            m_threatTo = Square(sm.to);
             update();
         }
     }
     else
     {
-        removeThreat();
-        m_threatGuess.guessMove(board());
+        ThreadedGuess* guessEngine = qobject_cast<ThreadedGuess*>(sender());
+        if (guessEngine)
+        {
+            guessEngine->guessMove(board());
+        }
     }
-}
-
-void BoardView::removeThreat()
-{
-    m_threatFrom = InvalidSquare;
-    m_threatTo = InvalidSquare;
 }
 
 void BoardView::removeGuess()
@@ -630,6 +650,7 @@ void BoardView::removeGuess()
         update(squareRect(s));
     }
     m_targets.clear();
+    m_bestGuess.clear();
 }
 
 void BoardView::nextGuess(Square s)

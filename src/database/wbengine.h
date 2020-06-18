@@ -57,6 +57,9 @@ protected slots:
     void featureTimeout();
 
 private:
+    /** Process Error message */
+    void Error(const QString& msg);
+
     /** Processes the feature command */
     void feature(const QString& command);
 
