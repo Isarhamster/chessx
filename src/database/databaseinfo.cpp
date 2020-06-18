@@ -78,7 +78,7 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filte
     {
         m_database = new CtgDatabase;
     }
-    else if(file.size() < 1024 * 1024 * AppSettings->getValue("/General/EditLimit").toInt())
+    else if(file.size()/(1024 * 1024) < AppSettings->getValue("/General/EditLimit").toInt())
     {
         m_database = new MemoryDatabase;
     }
