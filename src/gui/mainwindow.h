@@ -28,7 +28,6 @@ class Analysis;
 class AnalysisWidget;
 class BoardView;
 class BoardViewEx;
-class ChessBrowser;
 class Database;
 class DatabaseInfo;
 class DatabaseList;
@@ -43,6 +42,8 @@ class ExclusiveActionGroup;
 class FicsClient;
 class FicsConsole;
 class GameList;
+class GameNotationWidget;
+class GameToolBar;
 class GameWindow;
 class HistoryLabel;
 class OpeningTreeWidget;
@@ -216,7 +217,7 @@ public slots:
     /** Get a pointer or Null to the active game. */
     void slotGetActiveGame(const GameX** game);
     /** Merge the game with index @p gameIndex into the active game. */
-    void slotMergeActiveGame(QList<GameId> gameIndexList);
+    void slotMergeActiveGameList(QList<GameId> gameIndexList);
     void slotMergeActiveGame(GameId gameIndex, QString source);
     /** Merge all games from the database into the active game. */
     void slotMergeAllGames();
@@ -225,7 +226,7 @@ public slots:
     /** Update GameView content after game was change. Triggers also @ref slotMoveChanged. */
     void slotGameChanged(bool bModified);
     /** Handle link click in Game View panel */
-    void slotGameViewLink(const QUrl& link);
+    void slotGameViewLinkUrl(const QUrl& link);
     /** Handle link click in Game View panel */
     void slotGameViewLink(const QString& link);
     /** Get GameView source. */
@@ -540,8 +541,6 @@ signals:
     void databaseChanged(DatabaseInfo* databaseInfo);
     /** Emitted upon finishing a file download */
     void LoadFinished(DatabaseInfo*);
-    /** Emitted upon a update for the elapsed / clock time */
-    void displayTime(const QString&, Color, const QString&);
 
     void signalMoveHasVariation(bool);
     void signalVariationHasSibling(bool);
@@ -665,14 +664,14 @@ private:
     /* Main gui parts */
     QPointer<BoardView> m_boardView;
     QPointer<QSplitter> m_boardSplitter;
-    ChessBrowser* m_gameView;
+    GameNotationWidget* m_gameView;
     OpeningTreeWidget* m_openingTreeWidget;
     QPointer<QProgressBar> m_progressBar;
     QPointer<TranslatingSlider> m_sliderSpeed;
     QLabel* m_sliderText;
     QPointer<QComboBox> m_comboEngine;
     GameWindow* m_gameWindow;
-    QToolBar* m_gameToolBar;
+    GameToolBar* m_gameToolBar;
     QTabWidget* m_tabWidget;
     /* Status */
     QLabel* m_statusFilter;
@@ -687,7 +686,6 @@ private:
     DatabaseRegistry *m_registry;
     HistoryList m_recentFiles;
     QStringList m_favoriteFiles;
-    Output* m_output;
     
     QPointer<DatabaseInfo> m_currentDatabase;
     QString m_eco;

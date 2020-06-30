@@ -12,7 +12,6 @@
 #include "boardview.h"
 #include "boardviewex.h"
 #include "chartwidget.h"
-#include "chessbrowser.h"
 #include "clipboarddatabase.h"
 #include "commentdialog.h"
 #include "copydialog.h"
@@ -32,6 +31,8 @@
 #include "gamelist.h"
 #include "GameMimeData.h"
 #include "gamewindow.h"
+#include "gametoolbar.h"
+#include "gamenotationwidget.h"
 #include "helpbrowser.h"
 #include "helpbrowsershell.h"
 #include "historylabel.h"
@@ -92,7 +93,6 @@ MainWindow::MainWindow() : QMainWindow(),
     m_pDragTabBar(nullptr),
     m_gameWindow(nullptr),
     m_gameToolBar(0),
-    m_output(nullptr),
     m_operationFlag(0),
     m_currentFrom(InvalidSquare),
     m_currentTo(InvalidSquare),
@@ -192,40 +192,21 @@ MainWindow::MainWindow() : QMainWindow(),
 
     m_gameWindow = new GameWindow(gameTextDock);
     connect(this, SIGNAL(reconfigure()), m_gameWindow, SLOT(slotReconfigure()));
-    m_gameToolBar = new QToolBar(tr("Game Time"), m_gameWindow);
-    m_gameToolBar->setObjectName("GameToolBar");
+    m_gameToolBar = new GameToolBar(tr("Game Time"), m_gameWindow);
     m_gameToolBar->setMovable(false);
     m_gameWindow->addToolBar(Qt::BottomToolBarArea, m_gameToolBar);
-    for(int i = 0; i < 2; ++i)
-    {
-        QLCDNumber* annotatedTime = new QLCDNumber(m_gameToolBar);
-        annotatedTime->setObjectName(QString("Clock") + QString::number(i));
-        m_gameToolBar->addWidget(annotatedTime);
-        annotatedTime->setDigitCount(7);
-        annotatedTime->setSegmentStyle(QLCDNumber::Flat);
-        annotatedTime->display("1:00:00");
-        if(i == 0)
-        {
-            ChartWidget* chartWidget = new ChartWidget(m_gameToolBar);
-            chartWidget->setObjectName("ChartWidget");
-            chartWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-            connect(chartWidget, SIGNAL(halfMoveRequested(int)), this, SLOT(slotGameMoveToPly(int)));
-            m_gameToolBar->addWidget(chartWidget);
-        }
-    }
+    connect(m_gameToolBar, &GameToolBar::requestPly, this, &MainWindow::slotGameMoveToPly);
 
     m_menuView->addAction(m_gameToolBar->toggleViewAction());
     m_gameToolBar->setVisible(AppSettings->getValue("/MainWindow/GameToolBar").toBool());
     m_gameView = m_gameWindow->browser();
-    m_gameView->toolBar = m_gameToolBar;
-    connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
-    connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
-    connect(m_gameView, SIGNAL(queryActiveGame(const GameX**)), this, SLOT(slotGetActiveGame(const GameX**)));
-    connect(m_gameView, SIGNAL(signalMergeGame(GameId,QString)), this, SLOT(slotMergeActiveGame(GameId,QString)));
+    connect(m_gameView, &GameNotationWidget::anchorClicked, this, &MainWindow::slotGameViewLinkUrl);
+    connect(m_gameView, &GameNotationWidget::actionRequested, this, &MainWindow::slotGameModify);
+    connect(m_gameView, &GameNotationWidget::queryActiveGame, this, &MainWindow::slotGetActiveGame);
+    connect(m_gameView, &GameNotationWidget::signalMergeGame, this, &MainWindow::slotMergeActiveGame);
     connect(this, SIGNAL(signalGameLoaded(const BoardX&)), gameTextDock, SLOT(raise()));
-    connect(this, SIGNAL(displayTime(const QString&, Color, const QString&)), m_gameView, SLOT(slotDisplayTime(const QString&, Color, const QString&)));
     gameTextDock->setWidget(m_gameWindow);
-    connect(this, SIGNAL(reconfigure()), m_gameView, SLOT(slotReconfigure()));
+    connect(this, &MainWindow::reconfigure, m_gameView, &GameNotationWidget::slotReconfigure);
     addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
     m_gameTitle = new QLabel;
     connect(m_gameTitle, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
@@ -239,7 +220,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameList, SIGNAL(gameSelected(GameId)), SLOT(slotFilterLoad(GameId)));
     connect(m_gameList, SIGNAL(requestCopyGame(QList<GameId>)), SLOT(slotDatabaseCopy(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestFindDuplicates(QList<GameId>)), SLOT(slotDatabaseFindDuplicates(QList<GameId>)));
-    connect(m_gameList, SIGNAL(requestMergeGame(QList<GameId>)), SLOT(slotMergeActiveGame(QList<GameId>)));
+    connect(m_gameList, SIGNAL(requestMergeGame(QList<GameId>)), SLOT(slotMergeActiveGameList(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestMergeAllGames()), SLOT(slotMergeAllGames()));
     connect(m_gameList, SIGNAL(requestMergeFilter()), SLOT(slotMergeFilter()));
     connect(m_gameList, SIGNAL(requestDeleteGame(QList<GameId>)), SLOT(slotDatabaseDeleteGame(QList<GameId>)));
@@ -566,7 +547,6 @@ MainWindow::~MainWindow()
         dbi->close();
     }
     delete m_registry;
-    delete m_output;
     delete m_progressBar;
     delete m_gameList;
 

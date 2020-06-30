@@ -16,7 +16,6 @@
 #include "boardview.h"
 #include "boardviewex.h"
 #include "copydialog.h"
-#include "chessbrowser.h"
 #include "clipboarddatabase.h"
 #include "guess_compileeco.h"
 #include "databaseinfo.h"
@@ -35,6 +34,8 @@
 #include "gamex.h"
 #include "gameid.h"
 #include "gamelist.h"
+#include "gamenotationwidget.h"
+#include "gametoolbar.h"
 #include "gamewindow.h"
 #include "GameMimeData.h"
 #include "historylabel.h"
@@ -350,24 +351,19 @@ void MainWindow::slotReconfigure()
 #endif
     m_recentFiles.restore();
     emit reconfigure(); 	// Re-emit for children
-    delete m_output;
-    m_output = new Output(Output::NotationWidget, &BoardView::renderImageForBoard);
     UpdateGameText();
 }
 
 void MainWindow::UpdateGameText()
 {
-    if(m_gameView)
-    {
-        m_gameView->setText(m_output->output(&game(), (m_training->isChecked() || m_training2->isChecked())));
-    }
+    m_gameView->reload(game(), m_training->isChecked() || m_training2->isChecked());
 }
 
 void MainWindow::UpdateMaterial()
 {
-    if(m_gameView && databaseInfo())
+    if(databaseInfo())
     {
-        m_gameView->slotDisplayMaterial(databaseInfo()->material());
+        m_gameToolBar->slotDisplayMaterial(databaseInfo()->material());
     }
 }
 
@@ -1268,13 +1264,24 @@ void MainWindow::moveChanged()
     m_currentFrom = InvalidSquare;
     m_currentTo = InvalidSquare;
 
-    emit displayTime(g.timeAnnotation(m, GameX::BeforeMove), g.board().toMove(), g.timeAnnotation(m, GameX::AfterMove));
+    auto timeThis = g.timeAnnotation(m, GameX::BeforeMove);
+    auto timeThat = g.timeAnnotation(m, GameX::AfterMove);
+    if (g.board().toMove() == White)
+    {
+        m_gameToolBar->slotDisplayTime(White, timeThis);
+        m_gameToolBar->slotDisplayTime(Black, timeThat);
+    }
+    else
+    {
+        m_gameToolBar->slotDisplayTime(Black, timeThis);
+        m_gameToolBar->slotDisplayTime(White, timeThat);
+    }
 
     // Highlight current move
     m_gameView->showMove(m);
     if (g.isMainline())
     {
-        m_gameView->slotDisplayPly(g.ply());
+        m_gameToolBar->slotDisplayCurrentPly(g.ply());
     }
 
     displayVariations();
@@ -1693,10 +1700,10 @@ void MainWindow::slotGameModify(const EditAction& action)
         }
         break;
     case EditAction::CopyHtml:
-        QApplication::clipboard()->setText(m_gameView->toHtml());
+        QApplication::clipboard()->setText(m_gameView->getHtml());
         break;
     case EditAction::CopyText:
-        QApplication::clipboard()->setText(m_gameView->toPlainText());
+        QApplication::clipboard()->setText(m_gameView->getText());
         break;
     case EditAction::Uncomment:
         slotGameUncomment();
@@ -1709,7 +1716,7 @@ void MainWindow::slotGameModify(const EditAction& action)
     }
 }
 
-void MainWindow::slotMergeActiveGame(QList<GameId> gameIndexList)
+void MainWindow::slotMergeActiveGameList(QList<GameId> gameIndexList)
 {
     if (gameIndexList.size())
     {
@@ -1791,7 +1798,7 @@ void MainWindow::slotGameChanged(bool /*bModified*/)
     moveChanged();
 }
 
-void MainWindow::slotGameViewLink(const QUrl& url)
+void MainWindow::slotGameViewLinkUrl(const QUrl& url)
 {
     if (gameMode())
     {
@@ -1858,12 +1865,12 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 
 void MainWindow::slotGameViewLink(const QString& url)
 {
-    slotGameViewLink(QUrl(url));
+    slotGameViewLinkUrl(QUrl(url));
 }
 
 void MainWindow::slotGameViewSource()
 {
-    QString text = m_output->output(&game(), (m_training->isChecked() || m_training2->isChecked()));
+    auto text = m_gameView->generateText(game(), (m_training->isChecked() || m_training2->isChecked()));
     QApplication::clipboard()->setText(text);
 }
 

@@ -14,21 +14,17 @@
 #include "GameMimeData.h"
 
 #include <QMenu>
-#include <QLCDNumber>
-#include <QToolBar>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p), toolBar(nullptr), m_gameMenu(nullptr), m_currentMove(CURRENT_MOVE)
+ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p), m_gameMenu(nullptr), m_currentMove(CURRENT_MOVE)
 {
     setObjectName("ChessBrowser");
     setContextMenuPolicy(Qt::CustomContextMenu);
     setupMenu();
-
-    configureFont();
 
     setAcceptDrops(true);
 }
@@ -117,17 +113,6 @@ QStringList ChessBrowser::getAnchors(const QStringList& hrefs)
         }
     }
     return result;
-}
-
-void ChessBrowser::saveConfig()
-{
-    AppSettings->setLayout(this);
-}
-
-void ChessBrowser::slotReconfigure()
-{
-    AppSettings->layout(this);
-    configureFont();
 }
 
 void ChessBrowser::setupMenu()
@@ -269,20 +254,6 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
     }
 }
 
-void ChessBrowser::configureFont()
-{
-    QFont f = qApp->font();
-    qreal r = AppSettings->getValue("/GameText/FontSize").toInt();
-    f.setPointSize(r);
-    QString fontFamily = AppSettings->getValue("/GameText/FontBrowserText").toString();
-    if (!fontFamily.isEmpty())
-    {
-        f.setFamily(fontFamily);
-    }
-    setFont(f);
-}
-
-
 void ChessBrowser::slotAction(QAction* action)
 {
     if(m_actions.contains(action))
@@ -305,51 +276,6 @@ QAction* ChessBrowser::createNagAction(const Nag& nag)
     QAction* action = new QAction(NagSet::nagToMenuString(nag), this);
     m_actions[action] = EditAction(EditAction::AddNag, (int)nag);
     return action;
-}
-
-void ChessBrowser::slotDisplayTime(const QString& text, Color color, const QString& otherText)
-{
-    if(toolBar)
-    {
-        QString objectName = QString("Clock") + QString::number(color);
-        QLCDNumber* clock = toolBar->findChild<QLCDNumber*>(objectName);
-        if(clock)
-        {
-            clock->display(text);
-        }
-        objectName = QString("Clock") + QString::number(1 - (int)color);
-        clock = toolBar->findChild<QLCDNumber*>(objectName);
-        if(clock)
-        {
-            clock->display(otherText);
-        }
-    }
-}
-
-void ChessBrowser::slotDisplayMaterial(const QList<double>& material)
-{
-    if(toolBar)
-    {
-        QString objectName = QString("ChartWidget");
-        ChartWidget* chartWidget = toolBar->findChild<ChartWidget*>(objectName);
-        if (chartWidget)
-        {
-            chartWidget->setValues(material);
-        }
-    }
-}
-
-void ChessBrowser::slotDisplayPly(int ply)
-{
-    if(toolBar)
-    {
-        QString objectName = QString("ChartWidget");
-        ChartWidget* chartWidget = toolBar->findChild<ChartWidget*>(objectName);
-        if (chartWidget)
-        {
-            chartWidget->setPly(ply);
-        }
-    }
 }
 
 void ChessBrowser::dragEnterEvent(QDragEnterEvent *event)

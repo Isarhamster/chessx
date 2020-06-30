@@ -23,7 +23,6 @@
 #include "editaction.h"
 
 class DatabaseInfo;
-class QToolBar;
 
 /** @ingroup GUI
 	The ChessBrowser class is a slightly modified QTextBrowser
@@ -34,15 +33,10 @@ class ChessBrowser : public QTextBrowser
 public:
     /** Constructs new instance with parent @p parent. */
     ChessBrowser(QWidget* p);
-    QToolBar* toolBar;
     QMap<QAction*, EditAction> m_actions;
 
     QStringList getAnchors(QList<MoveId> list);
 public slots:
-    /** Store current configuration. */
-    void saveConfig();
-    /** Restore current configuration. */
-    void slotReconfigure();
     /** Scroll to show given mode. */
     void showMove(int id);
 
@@ -50,12 +44,6 @@ public slots:
     void slotAction(QAction* action);
     /** Show menu */
     void slotContextMenu(const QPoint& pos);
-    /** Show the time in the String for the player with @p color */
-    void slotDisplayTime(const QString& text, Color color, const QString &otherText);
-    /** Show the material */
-    void slotDisplayMaterial(const QList<double>& material);
-    void slotDisplayPly(int ply);
-
 signals:
     void actionRequested(const EditAction& action);
     void queryActiveGame(const GameX** game);
@@ -67,8 +55,6 @@ protected:
     void setupMenu();
     QAction* createAction(const QString& name, EditAction::Type type);
     QAction* createNagAction(const Nag& nag);
-
-    void configureFont();
 
 protected: // Drag+Drop
     void dragEnterEvent(QDragEnterEvent *event);
