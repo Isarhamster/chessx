@@ -128,6 +128,7 @@ FORMS += \
 
 
 HEADERS += src/database/board.h \
+  src/annotationtimeedit.h \
   src/database/abk.h \
   src/database/analysis.h \
   src/database/annotation.h \
@@ -231,6 +232,7 @@ HEADERS += src/database/board.h \
   src/guess/guess_sqset.h \
   src/gui/GameMimeData.h \
   src/gui/analysiswidget.h \
+  src/gui/annotationtimeedit.h \
   src/gui/boardsetup.h \
   src/gui/boardsetuptoolbutton.h \
   src/gui/boardtheme.h \
@@ -387,6 +389,7 @@ SOURCES += \
   src/guess/guess_position.cpp \
   src/guess/guess_recog.cpp \
   src/gui/analysiswidget.cpp \
+  src/gui/annotationtimeedit.cpp \
   src/gui/boardsetup.cpp \
   src/gui/boardsetuptoolbutton.cpp \
   src/gui/boardtheme.cpp \

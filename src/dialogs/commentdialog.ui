@@ -82,7 +82,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QTimeEdit" name="timeEdit">
+         <widget class="AnnotationTimeEdit" name="timeEdit">
           <property name="cursor">
            <cursorShape>ArrowCursor</cursorShape>
           </property>
@@ -145,6 +145,11 @@
    <class>PlainTextEdit</class>
    <extends>QPlainTextEdit</extends>
    <header>plaintextedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>AnnotationTimeEdit</class>
+   <extends>QTimeEdit</extends>
+   <header location="global">annotationtimeedit.h</header>
   </customwidget>
  </customwidgets>
  <resources>

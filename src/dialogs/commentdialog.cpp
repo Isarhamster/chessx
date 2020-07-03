@@ -57,7 +57,10 @@ void CommentDialog::setText(QString text)
         QString w = tan.cap(1);
         QString t = tan.cap(2);
         text = text.remove(tan);
-        ui.timeEdit->setTime(QTime::fromString(t.trimmed(), "H:mm:ss"));
+        QString format = (t.contains(".")) ? "H:mm:ss.z" : "H:mm:ss";
+        ui.timeEdit->setDisplayFormat(format);
+        ui.timeEdit->setTime(QTime::fromString(t.trimmed(), format));
+
         if (w=="egt")
         {
             ui.egtTime->setChecked(true);
