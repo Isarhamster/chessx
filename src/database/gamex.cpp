@@ -1541,7 +1541,7 @@ void GameX::removeCommentsDb()
 
 void GameX::removeTimeCommentsFromMap(AnnotationMap& map)
 {
-    QRegExp tan("\\[%(egt|emt|clk)\\s*(\\d?\\d:\\d?\\d:\\d\\d)\\]");
+    QRegExp tan(s_tan);
     AnnotationMap::iterator i;
     for (i = map.begin(); i != map.end(); ++i)
     {

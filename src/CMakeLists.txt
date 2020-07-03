@@ -306,6 +306,8 @@ add_library(gui STATIC
   gui/analysiswidget.cpp
   gui/analysiswidget.h
   gui/analysiswidget.ui
+  gui/annotationtimeedit.cpp
+  gui/annotationtimeedit.h
   gui/boardsetup.cpp
   gui/boardsetup.h
   gui/boardsetup.ui
