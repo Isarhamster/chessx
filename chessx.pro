@@ -128,7 +128,6 @@ FORMS += \
 
 
 HEADERS += src/database/board.h \
-  src/annotationtimeedit.h \
   src/database/abk.h \
   src/database/analysis.h \
   src/database/annotation.h \
