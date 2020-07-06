@@ -67,8 +67,6 @@ GameList::GameList(FilterX* filter, QWidget* parent) : TableView(parent)
     horizontalHeader()->setSectionsClickable(true);
 #endif
 
-    slotReconfigure();
-
     horizontalHeader()->setSortIndicatorShown(true);
     setSortingEnabled(true);
 

@@ -70,6 +70,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
         connect(button, SIGNAL(signalDragStarted(QWidget*, QMouseEvent*)), this, SLOT(startDrag(QWidget*, QMouseEvent*)));
         connect(button, SIGNAL(signalClicked(Piece)), this, SLOT(labelClicked(Piece)));
         connect(this, SIGNAL(signalClearBackground(Piece)), button, SLOT(slotClearBackground(Piece)));
+        button->slotClearBackground(Empty);
     }
 
     QSpacerItem* si = new QSpacerItem(0,20, QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -77,7 +78,6 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
 
     ui.buttonLayout->setColumnStretch(0,1);
     ui.buttonLayout->setColumnStretch(1,1);
-    emit signalClearBackground(Empty);
 
     ui.buttonBoxTools->button(QDialogButtonBox::RestoreDefaults)->setText(tr("Clear"));
     connect(ui.buttonBoxTools->button(QDialogButtonBox::RestoreDefaults), SIGNAL(clicked()), SLOT(slotClear()));
