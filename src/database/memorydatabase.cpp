@@ -28,7 +28,7 @@ MemoryDatabase::MemoryDatabase() : PgnDatabase(false), m_isModified(false)
 
 MemoryDatabase::~MemoryDatabase()
 {
-    clear();
+    MemoryDatabase::clear();
 }
 
 void MemoryDatabase::clear()

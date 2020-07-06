@@ -119,7 +119,7 @@ QuaZIODevice::~QuaZIODevice()
 {
     if(isOpen())
     {
-        close();
+        QuaZIODevice::close();
     }
     delete d;
 }
@@ -161,7 +161,7 @@ void QuaZIODevice::close()
     }
     if((openMode() & QIODevice::WriteOnly) != 0)
     {
-        flush();
+        QuaZIODevice::flush();
         if(deflateEnd(&d->zouts) != Z_OK)
         {
             setErrorString(d->zouts.msg);
