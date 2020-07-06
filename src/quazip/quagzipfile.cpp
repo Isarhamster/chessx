@@ -86,7 +86,7 @@ QuaGzipFile::~QuaGzipFile()
 {
     if(isOpen())
     {
-        close();
+        QuaGzipFile::close();
     }
     delete d;
 }

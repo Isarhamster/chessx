@@ -146,7 +146,6 @@ public:
 private:
 	SortCache(const Index* idx, const NameBase* nbase);
 	SortCache(const SortCache&);
-	SortCache& operator=(const SortCache&);
 
 	class CmpLess {
 		const SortCache* sc_;

@@ -9,7 +9,7 @@
 
 QuaCrc32::QuaCrc32()
 {
-    reset();
+    QuaCrc32::reset();
 }
 
 quint32 QuaCrc32::calculate(const QByteArray &data)

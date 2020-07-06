@@ -151,7 +151,7 @@ QuaZipFile::~QuaZipFile()
 {
     if(isOpen())
     {
-        close();
+        QuaZipFile::close();
     }
     delete p;
 }

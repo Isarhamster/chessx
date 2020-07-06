@@ -55,7 +55,10 @@ bool QuaZipDir::operator==(const QuaZipDir &that)
 
 QuaZipDir& QuaZipDir::operator=(const QuaZipDir &that)
 {
-    this->d = that.d;
+    if (this != &that)
+    {
+        d = that.d;
+    }
     return *this;
 }
 

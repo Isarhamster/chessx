@@ -141,7 +141,7 @@ void PreferencesDialog::slotSelectToolPath()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Select external executable"),
                                                     ui.extToolPath->text());
-    if(QFileInfo(fileName).exists())
+    if(QFileInfo::exists(fileName))
     {
         ui.extToolPath->setText(fileName);
     }

@@ -9,7 +9,7 @@
 
 QuaAdler32::QuaAdler32()
 {
-    reset();
+    QuaAdler32::reset();
 }
 
 quint32 QuaAdler32::calculate(const QByteArray &data)
