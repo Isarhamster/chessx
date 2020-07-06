@@ -2886,6 +2886,7 @@ void MainWindow::copyGames(QString destination, QList<GameId> indexes, QString s
     DatabaseInfo* pSrcDBInfo = getDatabaseInfoByPath(source);
     DatabaseInfo* pDestDBInfo = getDatabaseInfoByPath(destination);
 
+    if (!pSrcDBInfo || indexes.isEmpty()) return; // Nothing to copy
     if (pDestDBInfo == pSrcDBInfo) return; // Do not create local copy
 
     if (pDestDBInfo && pDestDBInfo->isValid() && pSrcDBInfo && pSrcDBInfo->isValid())
