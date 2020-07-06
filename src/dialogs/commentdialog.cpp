@@ -38,6 +38,18 @@ QString CommentDialog::text() const
             else if (ui.emtTime->isChecked()) lastTimeMode = Emt;
         }
     }
+
+    QString eval = ui.eval->text().trimmed();
+    if (!eval.isEmpty())
+    {
+        QString format = "[%eval %1]";
+        if(!s.isEmpty())
+        {
+            s.append(" ");
+        }
+        s.append(format.arg(eval));
+    }
+
     QString s1 = ui.textEdit->toPlainText().trimmed();
     if(!s.isEmpty() && !s1.isEmpty())
     {
@@ -85,6 +97,16 @@ void CommentDialog::setText(QString text)
         case Clk: ui.clkTime->setChecked(true); break;
         case Emt: ui.emtTime->setChecked(true); break;
         }
+    }
+
+
+    QRegExp eval(s_eval);
+    pos = eval.indexIn(text);
+    if(pos >= 0)
+    {
+        QString w = eval.cap(2);
+        text.remove(QRegExp(s_eval));
+        ui.eval->setText(w);
     }
     ui.textEdit->setPlainText(text);
 }

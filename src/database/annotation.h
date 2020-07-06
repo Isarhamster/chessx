@@ -12,5 +12,6 @@ extern const char* s_egt;
 extern const char* s_can;
 extern const char* s_csl;
 extern const char* s_cal;
+extern const char* s_eval;
 
 #endif // ANNOTATION_H

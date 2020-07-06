@@ -63,13 +63,16 @@ GameCursor::GameCursor(const GameCursor& rhs)
 
 GameCursor& GameCursor::operator=(const GameCursor& rhs)
 {
-    m_nodes = rhs.m_nodes;
-    m_currentNode = rhs.m_currentNode;
-    m_startPly = rhs.m_startPly;
-    m_startingBoard = rhs.m_startingBoard;
-    if (m_currentBoard && rhs.m_currentBoard)
+    if (this != &rhs)
     {
-        *m_currentBoard = *rhs.m_currentBoard;
+        m_nodes = rhs.m_nodes;
+        m_currentNode = rhs.m_currentNode;
+        m_startPly = rhs.m_startPly;
+        m_startingBoard = rhs.m_startingBoard;
+        if (m_currentBoard && rhs.m_currentBoard)
+        {
+            *m_currentBoard = *rhs.m_currentBoard;
+        }
     }
     return *this;
 }
@@ -763,7 +766,7 @@ static const char strSquareNames[64][3] =
     "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"
 };
 
-const QStringList GameX::s_specList = QStringList() << s_emt << s_clk << s_egt << s_csl << s_cal;
+const QStringList GameX::s_specList = QStringList() << s_csl << s_cal;
 
 GameX::GameX()
     : QObject()
@@ -1913,6 +1916,7 @@ QString GameX::textAnnotation(MoveId moveId, Position position) const
     {
         s.remove(QRegExp(s_tan));
         s.remove(QRegExp(s_can));
+        s.remove(QRegExp(s_eval));
     }
     return s;
 }
