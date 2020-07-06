@@ -47,16 +47,19 @@ FilterX::FilterX(FilterX const& rhs) : QThread()
 
 FilterX& FilterX::operator= (FilterX const& rhs)
 {
-    m_database = rhs.m_database;
-    m_count = rhs.m_count;
-	delete m_vector;
-    m_vector = new QVector<FilterX::value_type>(*rhs.m_vector);
-    m_gamesSearched = 0;
-    m_searchTime = 0;
-    currentSearch = nullptr;
-    currentSearchOperator = NullOperator;
-    m_break = false;
-    m_lock = nullptr;
+    if (this!=&rhs)
+    {
+        m_database = rhs.m_database;
+        m_count = rhs.m_count;
+        delete m_vector;
+        m_vector = new QVector<FilterX::value_type>(*rhs.m_vector);
+        m_gamesSearched = 0;
+        m_searchTime = 0;
+        currentSearch = nullptr;
+        currentSearchOperator = NullOperator;
+        m_break = false;
+        m_lock = nullptr;
+    }
     return *this;
 }
 
