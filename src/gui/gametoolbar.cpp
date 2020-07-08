@@ -39,7 +39,12 @@ void GameToolBar::slotDisplayCurrentPly(int ply)
 
 void GameToolBar::slotDisplayMaterial(const QList<double>& material)
 {
-    m_chart->setValues(material);
+    m_chart->setValues(0, material);
+}
+
+void GameToolBar::slotDisplayEvaluations(const QList<double>& evaluations)
+{
+    m_chart->setValues(1, evaluations);
 }
 
 void GameToolBar::slotDisplayTime(const QString& timeWhite, const QString &timeBlack)

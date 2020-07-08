@@ -193,6 +193,7 @@ bool DatabaseInfo::loadGame(GameId index)
 void DatabaseInfo::updateMaterial()
 {
     m_game.scoreMaterial(m_material);
+    m_game.scoreEvaluations(m_evaluations);
 }
 
 void DatabaseInfo::dbCleanChanged(bool bClean)
@@ -233,6 +234,11 @@ QUndoStack *DatabaseInfo::undoStack() const
 const QList<double>& DatabaseInfo::material() const
 {
     return m_material;
+}
+
+const QList<double>& DatabaseInfo::evaluations() const
+{
+    return m_evaluations;
 }
 
 void DatabaseInfo::restoreState(const GameX& game)

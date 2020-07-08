@@ -99,7 +99,6 @@ void CommentDialog::setText(QString text)
         }
     }
 
-
     QRegExp eval(s_eval);
     pos = eval.indexIn(text);
     if(pos >= 0)
