@@ -117,8 +117,10 @@ public:
     QUndoStack *undoStack() const;
 
     QList<double> m_material;
+    QList<double> m_evaluations;
 
     const QList<double> &material() const;
+    const QList<double> &evaluations() const;
 
     static QString ficsPath();
 

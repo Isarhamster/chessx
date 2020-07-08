@@ -353,6 +353,9 @@ public :
     /** Get a string with all special annotations including square brackets etc. */
     QString specAnnotations(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
 
+    /** Get a the current annotation for an evaluation string, d is modified only if there is such an evaluation */
+    void evaluation(double& d) const;
+
     /** Adds a nag to move at node @p moveId */
     bool dbAddNag(Nag nag, MoveId moveId = CURRENT_MOVE);
     bool addNag(Nag nag, MoveId moveId = CURRENT_MOVE);
@@ -521,6 +524,7 @@ public :
 
     /** Evaluate a list of scores for the complete game (mainline only) */
     void scoreMaterial(QList<double> &scores) const;
+    void scoreEvaluations(QList<double> &evaluations) const;
 
     /** @return ECO code for the game */
     QString ecoClassify() const;

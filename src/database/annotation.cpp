@@ -11,4 +11,4 @@ const char* s_egt = "\\[%(egt)\\s*(\\d?\\d:\\d?\\d:\\d\\d(\\.\\d)?)\\]"; // Elap
 const char* s_can = "\\[%(csl|cal)\\s*([^\\]]*)\\]";
 const char* s_csl = "\\[%(csl)\\s*([^\\]]*)\\]"; // Square
 const char* s_cal = "\\[%(cal)\\s*([^\\]]*)\\]"; // Arrow
-const char* s_eval = "\\[%(eval)\\s*((-?\\d?\\d\\.\\d\\d?)|#\\d\\d?)\\]"; // Computer evaluation
+const char* s_eval = "\\[%(eval)\\s*((-?\\d?\\d(\\.\\d\\d?)?)|#\\d\\d?)\\]"; // Computer evaluation

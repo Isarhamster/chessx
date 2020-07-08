@@ -2396,8 +2396,39 @@ void GameX::scoreMaterial(QList<double>& scores) const
     scores.append(score);
     while(g.forward())
     {
-        int score = g.board().ScoreMaterial();
+        score = g.board().ScoreMaterial();
         scores.append(score);
+    }
+}
+
+void GameX::evaluation(double& d) const
+{
+    QRegExp eval(s_eval);
+    int pos = eval.indexIn(annotation());
+    if(pos >= 0)
+    {
+        QString w = eval.cap(2);
+        bool ok;
+        double f = w.toDouble(&ok);
+        if (ok)
+        {
+            d = f;
+        }
+    }
+}
+
+void GameX::scoreEvaluations(QList<double>& evaluations) const
+{
+    GameX g = *this;
+    g.moveToStart();
+    evaluations.clear();
+    double score = 0.0;
+    g.evaluation(score);
+    evaluations.append(score);
+    while(g.forward())
+    {
+        g.evaluation(score);
+        evaluations.append(score);
     }
 }
 

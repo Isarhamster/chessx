@@ -21,6 +21,7 @@ signals:
 public slots:
     void slotDisplayCurrentPly(int ply);
     void slotDisplayMaterial(const QList<double>& material);
+    void slotDisplayEvaluations(const QList<double>& evaluations);
     void slotDisplayTime(const QString& timeWhite, const QString& timeBlack);
     void slotDisplayTime(Color color, const QString& time);
 

@@ -364,6 +364,7 @@ void MainWindow::UpdateMaterial()
     if(databaseInfo())
     {
         m_gameToolBar->slotDisplayMaterial(databaseInfo()->material());
+        m_gameToolBar->slotDisplayEvaluations(databaseInfo()->evaluations());
     }
 }
 
@@ -1891,11 +1892,12 @@ QString MainWindow::scoreText(const Analysis& analysis)
     if (analysis.isMate())
     {
         int n = analysis.movesToMate();
-        s = QString(tr("Mate in %1").arg(abs(n)));
+        s = QString("[%eval #%1]").arg(abs(n));
     }
     else
     {
-        s = QString::number(analysis.fscore(), 'f', 2);
+        QString f = QString::number(analysis.fscore(), 'f', 2);
+        s = QString("[%eval %1]").arg(f);
     }
     return s;
 }

@@ -22,22 +22,24 @@ ChartWidget::ChartWidget(QWidget *parent) :
 {
     setAutoFillBackground(true);
     setUpdatesEnabled(true);
+    m_values.append(*new QList<double>());
+    m_polygon.append(*new QPolygonF());
+    m_values.append(*new QList<double>());
+    m_polygon.append(*new QPolygonF());
 }
 
 ChartWidget::~ChartWidget()
 {
-   m_values.clear();
-   m_polygon.clear();
 }
 
-void ChartWidget::setValues(const QList<double>& values)
+void ChartWidget::setValues(int line, const QList<double>& values)
 {
-    m_values.clear();
+    m_values[line].clear();
     foreach(double d,values)
     {
-        m_values<<d;
+        m_values[line]<<d;
     }
-    updatePolygon();
+    updatePolygon(line);
 }
 
 void ChartWidget::setPly(int ply)
@@ -54,34 +56,56 @@ void ChartWidget::paintEvent(QPaintEvent*)
     painter.eraseRect(0,0,width(),height());
 
     QPen pen0(Qt::SolidLine);
-    pen0.setColor(palette().color(QPalette::Window));
+    pen0.setColor(palette().color(QPalette::Mid));
+    QColor midHalf = palette().color(QPalette::Mid);
+    midHalf.setAlpha(50);
+
+    QPen pen1(Qt::DashLine);
+    pen1.setColor(midHalf);
+    QPen pen2(Qt::DotLine);
+    pen2.setColor(midHalf);
+
     painter.setPen(pen0);
     painter.drawRect(0,0,width(),height());
 
-    QPen pen1(Qt::DashDotLine);
-    pen1.setColor(palette().color(QPalette::Mid));
     painter.setPen(pen1);
-    painter.drawLine(0,height()/2,width(),height()/2);
+    const QPolygonF& polygon = m_polygon.at(0);
 
-    for (int i=10;i<m_polygon.count();i+=10)
+    for (int i=10;i<polygon.count();i+=10)
     {
-        painter.drawLine(m_polygon[i].x(),0,m_polygon[i].x(),height());
+        painter.drawLine(polygon[i].x(),0,polygon[i].x(),height());
     }
 
-    QPen pen2(Qt::SolidLine);
-    pen2.setColor(palette().color(QPalette::BrightText));
+    for (int i=0;i<m_polygon.count();++i)
+    {
+        const QPolygonF& polygon = m_polygon.at(i);
+        QColor pcol = palette().color(i==0 ? QPalette::BrightText : QPalette::Midlight);
+        QColor col = pcol;
+        pcol.setAlpha(100.0*1.0/(i+1));
+        col.setAlpha(50.0*1.0/(i+1));
+
+        QPen pen3(Qt::SolidLine);
+        pen3.setColor(pcol);
+        painter.setPen(pen3);
+
+        QBrush brush(Qt::SolidPattern);
+        brush.setColor(col);
+        painter.setBrush(brush);
+
+        painter.drawEllipse(m_plyIndicator,height()/2-2,3,3);
+
+        painter.setRenderHints(QPainter::Antialiasing);
+        painter.drawPolygon(polygon);
+    }
+
     painter.setPen(pen2);
-
-    painter.drawEllipse(m_plyIndicator,height()/2-2,3,3);
-
-    painter.setRenderHints(QPainter::Antialiasing);
-    painter.drawPolyline(m_polygon);
+    painter.drawLine(0,height()/2,width(),height()/2);
 }
 
 void ChartWidget::resizeEvent(QResizeEvent*)
 {
     updatePly();
-    updatePolygon();
+    updatePolygons();
 }
 
 void ChartWidget::mouseReleaseEvent(QMouseEvent *event)
@@ -105,29 +129,44 @@ void ChartWidget::updatePly()
     m_plyIndicator = m_ply * multiplierW;
 }
 
-void ChartWidget::updatePolygon()
+void ChartWidget::updatePolygon(int line)
 {
     setUpdatesEnabled(false);
-    m_polygon.clear();
-    if (m_values.count()>1)
+    QList<double>& values = m_values[line];
+    QPolygonF& polygon = m_polygon[line];
+    polygon.clear();
+    if (values.count()>1)
     {
         double max = 0;
-        foreach(double d, m_values)
+        foreach(double d, values)
         {
             double absd = std::abs(d);
             if (absd > max) max = absd;
         }
 
         double multiplierH = (max != 0.0) ? ((double)height()) / (max*2.0) : 0.0;
-        double multiplierW = ((double)width()) / (m_values.count()-1);
+        double multiplierW = ((double)width()) / (values.count()-1);
 
+        polygon<<QPointF(0.0, height()/2.0);
         int i = 0;
-        foreach(double d, m_values)
+        double d;
+        foreach(d, values)
         {
-            m_polygon<<QPointF(multiplierW*i,-d*multiplierH+height()/2.0);
+            polygon<<QPointF(multiplierW*i,-d*multiplierH+height()/2.0);
             ++i;
+        }
+        if (i)
+        {
+            polygon<<QPointF(multiplierW*i, height()/2.0);
         }
     }
     setUpdatesEnabled(true);
 }
 
+void ChartWidget::updatePolygons()
+{
+    for (int i=0; i<m_values.count();++i)
+    {
+        updatePolygon(i);
+    }
+}
