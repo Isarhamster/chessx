@@ -18,14 +18,11 @@
 ChartWidget::ChartWidget(QWidget *parent) :
     QWidget(parent),
     m_ply(0),
-    m_plyIndicator(0)
+    m_plyIndicator(0),
+    m_lastSentIndicator(0)
 {
     setAutoFillBackground(true);
     setUpdatesEnabled(true);
-    m_values.append(*new QList<double>());
-    m_polygon.append(*new QPolygonF());
-    m_values.append(*new QList<double>());
-    m_polygon.append(*new QPolygonF());
 }
 
 ChartWidget::~ChartWidget()
@@ -34,6 +31,10 @@ ChartWidget::~ChartWidget()
 
 void ChartWidget::setValues(int line, const QList<double>& values)
 {
+    if (line >= m_values.size())
+    {
+        m_values.insert(line, *new QList<double>());
+    }
     m_values[line].clear();
     foreach(double d,values)
     {
@@ -67,18 +68,20 @@ void ChartWidget::paintEvent(QPaintEvent*)
 
     painter.setPen(pen0);
     painter.drawRect(0,0,width(),height());
-
     painter.setPen(pen1);
-    const QPolygonF& polygon = m_polygon.at(0);
-
-    for (int i=10;i<polygon.count();i+=10)
-    {
-        painter.drawLine(polygon[i].x(),0,polygon[i].x(),height());
-    }
 
     for (int i=0;i<m_polygon.count();++i)
     {
         const QPolygonF& polygon = m_polygon.at(i);
+
+        if (i==0)
+        {
+            for (int j=10;j<polygon.count();j+=10)
+            {
+                painter.drawLine(polygon[j].x(),0,polygon[j].x(),height());
+            }
+        }
+
         QColor pcol = palette().color(i==0 ? QPalette::BrightText : QPalette::Midlight);
         QColor col = pcol;
         pcol.setAlpha(100.0*1.0/(i+1));
@@ -92,11 +95,16 @@ void ChartWidget::paintEvent(QPaintEvent*)
         brush.setColor(col);
         painter.setBrush(brush);
 
-        painter.drawEllipse(m_plyIndicator,height()/2-2,3,3);
-
         painter.setRenderHints(QPainter::Antialiasing);
         painter.drawPolygon(polygon);
     }
+
+    QPen pen4(Qt::SolidLine);
+    QColor colPly = palette().color(QPalette::BrightText);
+    pen4.setColor(colPly);
+    pen4.setWidth(2);
+    painter.setPen(pen4);
+    painter.drawLine(m_plyIndicator,3*height()/4,m_plyIndicator,height()/4);
 
     painter.setPen(pen2);
     painter.drawLine(0,height()/2,width(),height()/2);
@@ -108,29 +116,76 @@ void ChartWidget::resizeEvent(QResizeEvent*)
     updatePolygons();
 }
 
+void ChartWidget::handleMouseEvent(QMouseEvent *event)
+{
+    if (width() && m_values.size() && (m_values[0].count()>1))
+    {
+    #if QT_VERSION < 0x050000
+        QPointF p = event->posF();
+    #else
+        QPointF p = event->localPos();
+    #endif
+
+        double multiplierW = ((double)width()) / (m_values[0].count()-1);
+        double x = 0.5 + (p.x() / multiplierW);
+        if (m_lastSentIndicator!=(int)x)
+        {
+            emit halfMoveRequested((int)x);
+            m_lastSentIndicator = (int)x;
+        }
+    }
+}
+
+void ChartWidget::enterEvent(QEvent *event)
+{
+    setCursor(QCursor(Qt::SplitHCursor));
+    QWidget::enterEvent(event);
+    m_lastSentIndicator = m_ply;
+}
+
+void ChartWidget::leaveEvent(QEvent *event)
+{
+    unsetCursor();
+    QWidget::leaveEvent(event);
+}
+
+void ChartWidget::mousePressEvent(QMouseEvent *event)
+{
+    handleMouseEvent(event);
+    QWidget::mousePressEvent(event);
+}
+
+void ChartWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    handleMouseEvent(event);
+    QWidget::mouseMoveEvent(event);
+}
+
 void ChartWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (width())
-    {
-#if QT_VERSION < 0x050000
-        QPointF p = event->posF();
-#else
-        QPointF p = event->localPos();
-#endif
-
-        double x = 0.5 + (p.x() * (m_values.count()) / width());
-        emit halfMoveRequested((int)x);
-    }
+    handleMouseEvent(event);
+    QWidget::mouseReleaseEvent(event);
 }
 
 void ChartWidget::updatePly()
 {
-    double multiplierW = ((double)width()) / (m_values.count()-1);
-    m_plyIndicator = m_ply * multiplierW;
+    if (m_values.size() && (m_values[0].count()>1))
+    {
+        double multiplierW = ((double)width()) / (m_values[0].count()-1);
+        m_plyIndicator = m_ply * multiplierW;
+    }
+    else
+    {
+        m_plyIndicator = 0;
+    }
 }
 
 void ChartWidget::updatePolygon(int line)
 {
+    if (line >= m_polygon.size())
+    {
+        m_polygon.insert(line, *new QPolygonF());
+    }
     setUpdatesEnabled(false);
     QList<double>& values = m_values[line];
     QPolygonF& polygon = m_polygon[line];
