@@ -593,39 +593,24 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
 
     MarkupType markupIndent = type == Comment ? MarkupAnnotationIndent : MarkupPreAnnotationIndent;
     MarkupType markupInline = type == Comment ? MarkupAnnotationInline : MarkupPreAnnotationInline;
+    bool useIndent = (m_options.getOptionAsString("CommentIndent") == "Always")
+        || ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline") && (m_currentVariationLevel == 0));
+    MarkupType markup = useIndent? markupIndent: markupInline;
 
     if(m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0))
     {
         text += m_endTagMap[MarkupColumnStyleMainline];
     }
-    if((m_options.getOptionAsString("CommentIndent") == "Always")
-            || ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline")
-                && (m_currentVariationLevel == 0)))
+    if (m_expandable[markup])
     {
-        if(m_expandable[markupIndent])
-        {
-            text += m_startTagMap[markupIndent].arg(mvno) +
-                    comment + m_endTagMap[markupIndent];
-        }
-        else
-        {
-            text += m_startTagMap[markupIndent] +
-                    comment + m_endTagMap[markupIndent];
-        }
+        text += m_startTagMap[markup].arg(mvno);
     }
     else
     {
-        if(m_expandable[markupInline])
-        {
-            text += m_startTagMap[markupInline].arg(mvno) +
-                    comment + m_endTagMap[markupInline];
-        }
-        else
-        {
-            text += m_startTagMap[markupInline] +
-                    comment + m_endTagMap[markupInline];
-        }
+        text += m_startTagMap[markup];
     }
+    text += comment;
+    text += m_endTagMap[markup];
     if(m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0))
     {
         text += m_startTagMap[MarkupColumnStyleMainline];
