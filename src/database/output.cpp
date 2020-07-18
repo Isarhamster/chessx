@@ -609,7 +609,14 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
     {
         text += m_startTagMap[markup];
     }
-    text += comment;
+    if (m_outputType == Html || m_outputType == NotationWidget)
+    {
+        text += comment.toHtmlEscaped();
+    }
+    else
+    {
+        text += comment;
+    }
     text += m_endTagMap[markup];
     if(m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0))
     {
