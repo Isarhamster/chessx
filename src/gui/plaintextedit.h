@@ -14,6 +14,7 @@ public:
     PlainTextEdit(QWidget* parent = nullptr);
 protected:
     virtual void keyPressEvent(QKeyEvent* event);
+    virtual void wheelEvent(QWheelEvent *e);
 };
 
 #endif // PLAINTEXTEDIT_H

@@ -146,7 +146,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QPlainTextEdit" name="editComment">
+         <widget class="PlainTextEdit" name="editComment">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -211,6 +211,11 @@
    <class>ListWidgetEx</class>
    <extends>QListWidget</extends>
    <header>listwidgetex.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PlainTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header location="global">plaintextedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
