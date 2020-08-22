@@ -23,7 +23,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -444,18 +444,29 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_8">
           <item>
-           <widget class="QCheckBox" name="cbShowDiagrams">
-            <property name="text">
-             <string>Show Diagrams</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="cbColumnStyle">
-            <property name="text">
-             <string>Column Style</string>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="QCheckBox" name="cbShowDiagrams">
+              <property name="text">
+               <string>Show Diagrams</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="cbColumnStyle">
+              <property name="text">
+               <string>Column Style</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="cbHTMLComments">
+              <property name="text">
+               <string>Enable HTML comments</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_8">

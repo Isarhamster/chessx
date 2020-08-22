@@ -31,6 +31,7 @@ bool OutputOptions::createDefaultOptions(QString path)
     if(path.isEmpty())
     {
         createOption("ColumnStyle", Boolean, "", "false", tr("Notation in Column Style"));
+        createOption("HTMLComments", Boolean, "", "true", tr("Allow HTML in comments"));
         createOption("SymbolicNag", Boolean, "", "false", tr("Show symbolic Nags"));
         createOption("TextWidth", Integer, "0:200", "80", tr("Text width"));
         createOption("VariationIndentLevel", Integer, "1:200", "4", tr("Indent variations from Level"));
@@ -53,6 +54,7 @@ bool OutputOptions::createDefaultOptions(QString path)
     {
         AppSettings->beginGroup(path);
         createOption("ColumnStyle", AppSettings->getValue("ColumnStyle").toBool() , tr("Notation in Column Style"));
+        createOption("HTMLComments", AppSettings->getValue("HTMLComments").toBool() , tr("Allow HTML in comments"));
         createOption("SymbolicNag", AppSettings->getValue("SymbolicNag").toBool(), tr("Show symbolic Nags"));
         createOption("TextWidth", "0:200", AppSettings->getValue("TextWidth").toInt(), tr("Text width"));
         createOption("VariationIndentLevel", "1:200", AppSettings->getValue("VariationIndentLevel").toInt(), tr("Indent variations from Level"));

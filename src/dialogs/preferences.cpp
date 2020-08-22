@@ -556,6 +556,7 @@ void PreferencesDialog::restoreSettings()
     ui.gameTextFontSizeSpin->setValue(AppSettings->getValue("FontSize").toInt());
     ui.cbShowDiagrams->setChecked(AppSettings->getValue("ShowDiagrams").toBool());
     ui.cbColumnStyle->setChecked(AppSettings->getValue("ColumnStyle").toBool());
+    ui.cbHTMLComments->setChecked(AppSettings->getValue("HTMLComments").toBool());
     ui.variationIndentLevel->setValue(AppSettings->getValue("VariationIndentLevel").toInt());
     ui.diagramSize->setValue(AppSettings->getValue("DiagramSize").toInt());
     ui.pieceString->setText(AppSettings->getValue("PieceString").toString());
@@ -672,6 +673,7 @@ void PreferencesDialog::saveSettings()
 
     AppSettings->setValue("FontSize", ui.gameTextFontSizeSpin->value());
     AppSettings->setValue("ShowDiagrams", ui.cbShowDiagrams->isChecked());
+    AppSettings->setValue("HTMLComments", ui.cbHTMLComments->isChecked());
     AppSettings->setValue("ColumnStyle", ui.cbColumnStyle->isChecked());
     AppSettings->setValue("VariationIndentLevel", ui.variationIndentLevel->value());
     AppSettings->setValue("DiagramSize", ui.diagramSize->value());
