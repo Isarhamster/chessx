@@ -165,6 +165,7 @@ private:
     void fontChanged(const QFont &f);
     void colorChanged(const QColor &c);
     void alignmentChanged(Qt::Alignment a);
+    void raise();
 
     QAction *actionSave;
     QAction *actionTextBold;
