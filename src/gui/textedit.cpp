@@ -39,6 +39,7 @@
 #include <QClipboard>
 #include <QColorDialog>
 #include <QComboBox>
+#include <QDockWidget>
 #include <QFontComboBox>
 #include <QFile>
 #include <QFileDialog>
@@ -472,10 +473,18 @@ void TextEdit::setCurrentFileName(const QString &fileName)
     setWindowModified(false);
 }
 
+void TextEdit::raise()
+{
+    // This is a hack to show the widget in case it is located in a hidden dock and main menu is invoked
+    QDockWidget* d = qobject_cast<QDockWidget*>(parent());
+    if (d) { d->show(); d->raise(); }
+}
+
 void TextEdit::fileNew()
 {
     if (saveDocument())
     {
+        raise();
         textEdit->clear();
         setCurrentFileName(QString());
         setupDocumentActions();
@@ -491,6 +500,7 @@ void TextEdit::fileOpen()
                                               dir, tr("ODF files (*.odt);;HTML-Files (*.htm *.html);;All Files (*)"));
     if (!fn.isEmpty())
     {
+        raise();
         load(fn);
         setupDocumentActions();
     }
