@@ -7,6 +7,7 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "actiondialog.h"
 #include "analysiswidget.h"
 #include "boardsetup.h"
 #include "boardview.h"
@@ -1748,7 +1749,7 @@ void MainWindow::setupActions()
     m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
     connect(m_menuDatabases, SIGNAL( aboutToShow()), this, SLOT(updateMenuDatabases()));
     menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()), Qt::Key_F5));
-    QMenu* refactorMenu2 = menuDatabase->addMenu(tr("Refactor"));
+    QMenu* refactorMenu2 = menuDatabase->addMenu(tr("Refactor Database"));
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Uncomment"), SLOT(slotDatabaseUncomment())));
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Remove Time"), SLOT(slotDatabaseRemoveTime())));
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Remove Variations"), SLOT(slotDatabaseRemoveVariations())));
@@ -1810,6 +1811,8 @@ void MainWindow::setupActions()
     toolbars->addAction(searchToolBar->toggleViewAction());
     toolbars->addAction(viewToolBar->toggleViewAction());
 
+    ActionDialog actionsDialog(this);
+    actionsDialog.fixList();
     KbAction::restoreKeyboardLayoutForObject(this);
 }
 

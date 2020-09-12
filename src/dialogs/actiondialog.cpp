@@ -58,6 +58,18 @@ void ActionDialog::clearShortcutText()
     ui->keySequenceEdit->clear();
 }
 
+void ActionDialog::fixList()
+{
+    if (!parent())
+        return;
+    QList<KbAction*> actions = parent()->findChildren<KbAction*>();
+    foreach (KbAction* action, actions)
+    {
+        QString text = normalizedText(action);
+        action->setStorageKey(text);
+    }
+}
+
 void ActionDialog::resetList()
 {
     if (!parent())

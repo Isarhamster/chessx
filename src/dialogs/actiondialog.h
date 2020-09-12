@@ -25,6 +25,7 @@ class ActionDialog : public QDialog
 public:
     explicit ActionDialog(QWidget *parent);
     ~ActionDialog();
+    void fixList();
 
 signals:
     void signalResetKey();

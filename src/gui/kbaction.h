@@ -23,6 +23,7 @@ public slots:
 public:
     void saveKeyShortcut();
     void restoreKeyShortcut();
+    void setStorageKey(const QString& newKey);
 
     static void restoreKeyboardLayoutForObject(QObject* pObject);
 private:

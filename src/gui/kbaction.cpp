@@ -51,6 +51,11 @@ QString KbAction::getKey() const
     return m_storageKey;
 }
 
+void KbAction::setStorageKey(const QString& newKey)
+{
+    m_storageKey = newKey;
+}
+
 void KbAction::saveKeyShortcut()
 {
     QString key = getKey();
