@@ -16,6 +16,7 @@ public:
     KbAction(const QIcon &icon, QString text, QObject* parent, const QKeySequence& key);
 
     QString getKey() const;
+    QString defaultKey() const;
 
 public slots:
     void resetKey();

@@ -41,6 +41,11 @@ void KbAction::resetKey()
     setShortcut(m_resetKey);
 }
 
+QString KbAction::defaultKey() const
+{
+    return m_resetKey.toString(QKeySequence::PortableText);
+}
+
 void KbAction::resetIcon()
 {
     setIcon(m_resetIcon);

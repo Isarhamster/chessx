@@ -144,7 +144,7 @@ void ActionDialog::accept()
             if (pItem->text() == text)
             {
                 QString newAccel = ui->actionsTable->item(i,1)->text();
-                if (newAccel != action->shortcut().toString(QKeySequence::PortableText))
+                if (newAccel != action->defaultKey())
                 {
                     action->setShortcut(QKeySequence(newAccel,QKeySequence::PortableText));
                     action->saveKeyShortcut();
