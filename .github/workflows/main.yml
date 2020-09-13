@@ -50,8 +50,8 @@ jobs:
             arch: x86
           - os: ubuntu-latest
             arch: x86
-          - os: windows-latest
-            arch: x86
+#          - os: windows-latest
+#            arch: x86
         include:
           - os: macos-latest
             triplet: x64-osx
