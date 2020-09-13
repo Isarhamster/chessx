@@ -16,6 +16,7 @@ public:
     KbAction(const QIcon &icon, QString text, QObject* parent, const QKeySequence& key);
 
     QString getKey() const;
+    QString defaultKey() const;
 
 public slots:
     void resetKey();
@@ -23,6 +24,7 @@ public slots:
 public:
     void saveKeyShortcut();
     void restoreKeyShortcut();
+    void setStorageKey(const QString& newKey);
 
     static void restoreKeyboardLayoutForObject(QObject* pObject);
 private:

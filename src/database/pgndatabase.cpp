@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   (C) 2005-2006 William Hoggarth <whoggarth@users.sourceforge.net>      *
  *   (C) 2006 Ejner Borgbjerg <ejner@users.sourceforge.net>                *

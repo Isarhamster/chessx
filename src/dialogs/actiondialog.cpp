@@ -58,6 +58,18 @@ void ActionDialog::clearShortcutText()
     ui->keySequenceEdit->clear();
 }
 
+void ActionDialog::fixList()
+{
+    if (!parent())
+        return;
+    QList<KbAction*> actions = parent()->findChildren<KbAction*>();
+    foreach (KbAction* action, actions)
+    {
+        QString text = normalizedText(action);
+        action->setStorageKey(text);
+    }
+}
+
 void ActionDialog::resetList()
 {
     if (!parent())
@@ -132,7 +144,7 @@ void ActionDialog::accept()
             if (pItem->text() == text)
             {
                 QString newAccel = ui->actionsTable->item(i,1)->text();
-                if (newAccel != action->shortcut().toString(QKeySequence::PortableText))
+                if (newAccel != action->defaultKey())
                 {
                     action->setShortcut(QKeySequence(newAccel,QKeySequence::PortableText));
                     action->saveKeyShortcut();
