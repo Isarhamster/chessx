@@ -41,8 +41,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-#        os: [windows-latest, macos-latest, ubuntu-latest]
-         os: [macos-latest, ubuntu-latest]
+         os: [windows-latest, macos-latest, ubuntu-latest]
+#        os: [macos-latest, ubuntu-latest]
          arch: [x64, x86]
         qt: ['5.14.2']
         exclude:
@@ -50,8 +50,8 @@ jobs:
             arch: x86
           - os: ubuntu-latest
             arch: x86
-#          - os: windows-latest
-#            arch: x86
+          - os: windows-latest
+            arch: x86
         include:
           - os: macos-latest
             triplet: x64-osx
@@ -60,11 +60,11 @@ jobs:
             arch: x64
             triplet: x64-linux
             vcpkg_packages: 'zlib'
-#          - os: windows-latest
-#            arch: x64
-#            triplet: x64-windows
-#            qt_arch: win64_msvc2017_64
-#            vcpkg_packages: 'zlib'
+          - os: windows-latest
+            arch: x64
+            triplet: x64-windows
+            qt_arch: win64_msvc2017_64
+            vcpkg_packages: 'zlib'
 #          - os: windows-latest
 #            arch: x86
 #            triplet: x86-windows
