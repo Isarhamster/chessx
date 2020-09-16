@@ -371,6 +371,8 @@ add_library(gui STATIC
   gui/helpbrowsershell.ui
   gui/historylabel.cpp
   gui/historylabel.h
+  gui/htmlitemdelegate.cpp
+  gui/htmlitemdelegate.h
   gui/kbaction.cpp
   gui/kbaction.h
   gui/listwidgetex.cpp
