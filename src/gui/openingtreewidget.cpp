@@ -13,6 +13,7 @@
 
 #include "boardview.h"
 #include "databaseinfo.h"
+#include "htmlitemdelegate.h"
 #include "openingtree.h"
 #include "settings.h"
 
@@ -45,6 +46,9 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     ui->OpeningTreeView->setSortingEnabled(true);
     ui->OpeningTreeView->setModel(m_openingTree);
     ui->OpeningTreeView->sortByColumn(1, Qt::DescendingOrder);
+
+    HTMLItemDelegate* htmlItemDelegate = new HTMLItemDelegate(this);
+    ui->OpeningTreeView->setItemDelegate(htmlItemDelegate);
 
     connect(ui->OpeningTreeView, SIGNAL(clicked(const QModelIndex&)), parent, SLOT(slotSearchTreeMove(const QModelIndex&)));
     connect(m_openingTree, SIGNAL(progress(int)), this, SLOT(slotOperationProgress(int)));

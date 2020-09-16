@@ -261,6 +261,7 @@ HEADERS += src/database/board.h \
   src/gui/helpbrowser.h \
   src/gui/helpbrowsershell.h \
   src/gui/historylabel.h \
+  src/gui/htmlitemdelegate.h \
   src/gui/kbaction.h \
   src/gui/listwidgetex.h \
   src/gui/loadquery.h \
@@ -417,6 +418,7 @@ SOURCES += \
   src/gui/helpbrowser.cpp \
   src/gui/helpbrowsershell.cpp \
   src/gui/historylabel.cpp \
+  src/gui/htmlitemdelegate.cpp \
   src/gui/kbaction.cpp \
   src/gui/listwidgetex.cpp \
   src/gui/loadquery.cpp \

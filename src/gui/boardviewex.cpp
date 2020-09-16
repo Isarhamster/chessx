@@ -4,6 +4,7 @@
 
 #include "boardviewex.h"
 #include "ui_boardviewex.h"
+#include "htmlitemdelegate.h"
 #include "settings.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -22,6 +23,8 @@ BoardViewEx::BoardViewEx(QWidget *parent) :
 
     connect(ui->listVariations, SIGNAL(clicked(QModelIndex)),
             this, SLOT(variationClicked(QModelIndex)));
+    HTMLItemDelegate* htmlItemDelegate = new HTMLItemDelegate(this);
+    ui->listVariations->setItemDelegate(htmlItemDelegate);
 }
 
 BoardViewEx::~BoardViewEx()
