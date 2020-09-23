@@ -634,7 +634,8 @@ bool GameCursor::removeVariation(MoveId variation)
     moveToId(parentNode);
 
     QList<MoveId> &vars = m_nodes[m_currentNode].variations;
-    vars.removeAt(vars.indexOf(variation));
+    int n = vars.indexOf(variation);
+    vars.removeAt(n);
     return true;
 }
 
@@ -701,8 +702,8 @@ QMap<MoveId, MoveId> GameCursor::compact()
         {
             v = renames[v];
         }
-        node.variations.removeAt(NO_MOVE);
-        node.variations.removeAt(ROOT_NODE);
+        // node.variations.removeAt(NO_MOVE);
+        // node.variations.removeAt(ROOT_NODE);
     }
     m_currentNode = renames[m_currentNode];
     return renames;

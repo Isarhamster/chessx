@@ -41,9 +41,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-         os: [windows-latest, macos-latest, ubuntu-latest]
-#        os: [macos-latest, ubuntu-latest]
-         arch: [x64, x86]
+        os: [macos-latest, ubuntu-latest]
+        arch: [x64, x86]
         qt: ['5.14.2']
         exclude:
           - os: macos-latest
