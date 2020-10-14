@@ -333,7 +333,7 @@ public :
     /** Sets the comment associated with move at node @p moveId */
     bool dbSetAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     bool dbAppendAnnotation(QString a, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
-    bool dbPrependAnnotation(QString a, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
+    bool dbPrependAnnotation(QString a, char delimiter=' ', MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Sets the comment associated with move at node @p moveId */
     bool setAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Edits the comment associated with move at node @p moveId */

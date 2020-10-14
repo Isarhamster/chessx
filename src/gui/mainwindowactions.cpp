@@ -1911,7 +1911,7 @@ bool MainWindow::gameAddAnalysis(const Analysis& analysis, QString annotation)
         annotation += scoreText(analysis);
         if (AppSettings->getValue("/Board/AnnotateScore").toBool())
         {
-            game().dbPrependAnnotation(scoreText(analysis)+" ");
+            game().dbPrependAnnotation(scoreText(analysis));
             UpdateGameText();
         }
         if (game().atLineEnd())
@@ -2464,7 +2464,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         }
                         else
                         {
-                            game().dbPrependAnnotation(AppSettings->getValue("/Board/AddAnnotation").toString()+"/TB ", lastNode);
+                            game().dbPrependAnnotation(AppSettings->getValue("/Board/AddAnnotation").toString()+"/TB", ' ', lastNode);
                             addAutoNag(m.color(), score, lastScore, threashold, lastNode);
                         }
                     }
@@ -2482,7 +2482,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                             {
                                 if (AppSettings->getValue("/Board/AnnotateScore").toBool())
                                 {
-                                    game().dbPrependAnnotation(scoreText(a)+" ");
+                                    game().dbPrependAnnotation(scoreText(a));
                                     UpdateGameText();
                                 }
                             }
@@ -2490,18 +2490,18 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         else
                         {
                             Move m = a.variation().constFirst();
-                            game().dbPrependAnnotation(AppSettings->getValue("/Board/AddAnnotation").toString(), lastNode);
+                            game().dbPrependAnnotation(AppSettings->getValue("/Board/AddAnnotation").toString(), ' ', lastNode);
                             addAutoNag(m.color(), score, lastScore, threashold, lastNode);
                             if (AppSettings->getValue("/Board/AnnotateScore").toBool())
                             {
-                                game().dbPrependAnnotation(scoreText(a)+" ");
+                                game().dbPrependAnnotation(scoreText(a));
                             }
                             UpdateGameText();
                         }
                     }
                     else if (AppSettings->getValue("/Board/AnnotateScore").toBool())
                     {
-                        game().dbPrependAnnotation(scoreText(a)+" ");
+                        game().dbPrependAnnotation(scoreText(a));
                         UpdateGameText();
                     }
                     lastScore = score;

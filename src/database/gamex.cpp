@@ -1647,9 +1647,13 @@ bool GameX::dbAppendAnnotation(QString a, MoveId moveId, Position position)
     return dbSetAnnotation(s, moveId, position);
 }
 
-bool GameX::dbPrependAnnotation(QString a, MoveId moveId, Position position)
+bool GameX::dbPrependAnnotation(QString a, char delimiter, MoveId moveId, Position position)
 {
     QString s = annotation();
+    if (s.length())
+    {
+        a.append(delimiter);
+    }
     s.prepend(a);
     return dbSetAnnotation(s, moveId, position);
 }
