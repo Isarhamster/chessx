@@ -86,7 +86,7 @@ MarkupNag=<a class="nag">,</a>
 MarkupColumnStyleMove=<td class="mainline">,</td>\n
 MarkupColumnStyleRow=<tr class="mainline">,</tr>\n
 MarkupColumnStyleMainline=<table>,</table>\n
-MarkupAnnotationInline= <a class="comment" href="cmt:%1">,</a>\n
+MarkupAnnotationInline=<a class="comment" href="cmt:%1">,</a>\n
 MarkupAnnotationIndent=<p class="comment"><a class="comment" href="cmt:%1">,</a></p>
 MarkupPreAnnotationInline= <a class="comment" href="precmt:%1">,</a>\n
 MarkupPreAnnotationIndent=<p class="precomment"><a class="comment" href="precmt:%1">,</a></p>

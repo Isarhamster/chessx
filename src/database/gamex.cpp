@@ -1914,14 +1914,14 @@ QString GameX::specAnnotations(MoveId moveId, Position position) const
     return retval;
 }
 
-QString GameX::textAnnotation(MoveId moveId, Position position) const
+QString GameX::textAnnotation(MoveId moveId, Position position, AnnotationFilter f) const
 {
     QString s = annotation(moveId, position);
     if (!s.isEmpty())
     {
-        s.remove(QRegExp(s_tan));
-        s.remove(QRegExp(s_can));
-        s.remove(QRegExp(s_eval));
+        if (f&FilterTan)  s.remove(QRegExp(s_tan));
+        if (f&FilterCan)  s.remove(QRegExp(s_can));
+        if (f&FilterEval) s.remove(QRegExp(s_eval));
     }
     return s;
 }
