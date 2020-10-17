@@ -938,7 +938,11 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
     QFileInfo fi(fname);
     QUrl url = QUrl::fromUserInput(fname);
-    if (!fi.completeSuffix().isEmpty())
+    if (fname == "Clipboard")
+    {
+        ActivateDatabase("Clipboard");
+    }
+    else // There used to be checks for PGN, but a redirect may still associate a suffix, so just wait and see
     {
         if (url.isValid() && !url.isRelative() &&
             ((url.scheme() == "http") || (url.scheme() == "https") || (url.scheme() == "ftp") || (url.scheme() == "sftp")))
@@ -952,10 +956,6 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
         {
             openDatabaseArchive(url.toLocalFile(), utf8);
         }
-    }
-    else if (fname == "Clipboard")
-    {
-        ActivateDatabase("Clipboard");
     }
 }
 
@@ -976,7 +976,40 @@ void MainWindow::openWebFavorite()
     }
     else
     {
-        slotConfigure(3); // TODO: Horrible hack
+        slotConfigure(4); // TODO: Horrible hack
+    }
+}
+
+void MainWindow::openLichess()
+{
+    QString account = AppSettings->getValue("/Lichess/userName").toString();
+    if (!account.isEmpty())
+    {
+        QDate date = QDate::currentDate();
+        QDate start(date.year(),date.month(),1);
+        quint64 since= start.startOfDay().toMSecsSinceEpoch();
+        QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
+        openDatabaseUrl(url, false);
+    }
+    else
+    {
+        slotConfigure(6); // TODO: Horrible hack
+    }
+}
+
+void MainWindow::openChesscom()
+{
+    QString account = AppSettings->getValue("/Chesscom/userName").toString();
+    if (!account.isEmpty())
+    {
+        QDateTime dateTime = QDateTime::currentDateTime();
+        QString s = dateTime.toString("yyyy/MM");
+        QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account).arg(s);
+        openDatabaseUrl(url, false);
+    }
+    else
+    {
+        slotConfigure(6); // TODO: Horrible hack
     }
 }
 
@@ -1358,6 +1391,8 @@ void MainWindow::setupActions()
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
     file->addAction(createAction(tr("Open FICS"), SLOT(openFICS()), QKeySequence(), fileToolBar, ":/images/fics.png"));
+    file->addAction(createAction(tr("Open Lichess"), SLOT(openLichess()), QKeySequence(), fileToolBar, ":/images/lichess.png"));
+    file->addAction(createAction(tr("Open chess.com"), SLOT(openChesscom()), QKeySequence(), fileToolBar, ":/images/chesscom.png"));
     file->addAction(createAction(tr("Web Favorite"), SLOT(openWebFavorite()), QKeySequence(), fileToolBar, ":/images/folder_web.png"));
 
     QMenu* menuRecent = file->addMenu(tr("Open recent"));
