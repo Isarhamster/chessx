@@ -987,7 +987,7 @@ void MainWindow::openLichess()
     {
         QDate date = QDate::currentDate();
         QDate start(date.year(),date.month(),1);
-        quint64 since= start.startOfDay().toMSecsSinceEpoch();
+        quint64 since= QDateTime(start).toMSecsSinceEpoch(); // Better: start.startOfDay().toMSecsSinceEpoch(); but that is Qt5
         QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
         openDatabaseUrl(url, false);
     }
