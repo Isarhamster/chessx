@@ -304,7 +304,8 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         precommentString = (m_outputType == Pgn) ? m_game.annotation(moveId, GameX::BeforeMove) :
                            m_game.textAnnotation(moveId, GameX::BeforeMove);
 
-    QString commentString = (m_outputType == Pgn) ? m_game.annotation(moveId) : m_game.textAnnotation(moveId);
+    QString commentString = (m_outputType == Pgn) ? m_game.annotation(moveId) :
+                                                    m_game.textAnnotation(moveId, GameX::AfterMove, static_cast<GameX::AnnotationFilter>(GameX::FilterTan | GameX::FilterCan));
 
     // Write precomment if any
     text += writeComment(precommentString, mvno, Precomment);
@@ -597,7 +598,7 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
         || ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline") && (m_currentVariationLevel == 0));
     MarkupType markup = useIndent? markupIndent : markupInline;
 
-    if(m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0))
+    if(m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0) && useIndent)
     {
         text += m_endTagMap[MarkupColumnStyleMainline];
     }
@@ -619,7 +620,7 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
         text += comment;
     }
     text += m_endTagMap[markup];
-    if(m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0))
+    if(m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0) && useIndent)
     {
         text += m_startTagMap[MarkupColumnStyleMainline];
     }

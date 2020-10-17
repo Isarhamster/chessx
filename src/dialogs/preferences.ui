@@ -23,7 +23,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -438,6 +438,123 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox_8">
+         <property name="title">
+          <string>Automatic Promotion</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="QCheckBox" name="cbPromoteToQueen">
+            <property name="text">
+             <string>Always queen a pawn</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="gbBoardOptions">
+         <property name="title">
+          <string>Automatic Analysis</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QCheckBox" name="cbSaveAndContinue">
+            <property name="text">
+             <string>Automatically save game and continue with next</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="cbBackwardAnalysis">
+            <property name="text">
+             <string>Analyse backwards (forward only adds NAGs '!','?'&quot;)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="cbAnalyseOnlyMainline">
+            <property name="text">
+             <string>Mainline only</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="cbAnnotateScore">
+            <property name="text">
+             <string>Always annotate engine score</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QFormLayout" name="formLayout">
+            <property name="labelAlignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_18">
+              <property name="text">
+               <string>Add Annotation at end of line</string>
+              </property>
+              <property name="buddy">
+               <cstring>editAddAnnotation</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="editAddAnnotation">
+              <property name="placeholderText">
+               <string>Marks auto-generated move</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_17">
+              <property name="text">
+               <string>Blunder Check Limit (centi-pawn)</string>
+              </property>
+              <property name="buddy">
+               <cstring>editBlunderCheck</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QSpinBox" name="editBlunderCheck">
+              <property name="maximum">
+               <number>1000</number>
+              </property>
+              <property name="singleStep">
+               <number>10</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Game Text</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_7">
+       <item>
         <widget class="QGroupBox" name="groupBox_6">
          <property name="title">
           <string>Game Text</string>
@@ -488,6 +605,42 @@
               <property name="maximum">
                <number>200</number>
               </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_24">
+            <item>
+             <widget class="QLabel" name="labelCommentsInline">
+              <property name="text">
+               <string>Indent Comments</string>
+              </property>
+              <property name="buddy">
+               <cstring>cbIndentComments</cstring>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbIndentComments">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <item>
+               <property name="text">
+                <string>Always</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Only Mainline</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Never</string>
+               </property>
+              </item>
              </widget>
             </item>
            </layout>
@@ -618,116 +771,6 @@
             </item>
             <item>
              <widget class="ColorList" name="notationColors"/>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="2" column="0">
-        <widget class="QGroupBox" name="groupBox_8">
-         <property name="title">
-          <string>Automatic Promotion</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_6">
-          <item>
-           <widget class="QCheckBox" name="cbPromoteToQueen">
-            <property name="text">
-             <string>Always queen a pawn</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QGroupBox" name="gbBoardOptions">
-         <property name="title">
-          <string>Automatic Analysis</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QCheckBox" name="cbSaveAndContinue">
-            <property name="text">
-             <string>Automatically save game and continue with next</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="cbBackwardAnalysis">
-            <property name="text">
-             <string>Analyse backwards (forward only adds NAGs '!','?'&quot;)</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="cbAnalyseOnlyMainline">
-            <property name="text">
-             <string>Mainline only</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="cbAnnotateScore">
-            <property name="text">
-             <string>Always annotate engine score</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QFormLayout" name="formLayout">
-            <property name="labelAlignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_18">
-              <property name="text">
-               <string>Add Annotation at end of line</string>
-              </property>
-              <property name="buddy">
-               <cstring>editAddAnnotation</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="editAddAnnotation">
-              <property name="placeholderText">
-               <string>Marks auto-generated move</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_17">
-              <property name="text">
-               <string>Blunder Check Limit (centi-pawn)</string>
-              </property>
-              <property name="buddy">
-               <cstring>editBlunderCheck</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QSpinBox" name="editBlunderCheck">
-              <property name="maximum">
-               <number>1000</number>
-              </property>
-              <property name="singleStep">
-               <number>10</number>
-              </property>
-             </widget>
             </item>
            </layout>
           </item>
@@ -1368,101 +1411,15 @@
      </widget>
      <widget class="QWidget" name="tabFICS">
       <attribute name="title">
-       <string notr="true">FICS</string>
+       <string notr="true">Online</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_4">
-       <property name="verticalSpacing">
-        <number>24</number>
-       </property>
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="btUseTimeseal">
-         <property name="text">
-          <string>Try to use Timeseal</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="guestLogin">
-         <property name="text">
-          <string>Log in as guest</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <spacer name="verticalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="3" column="0">
-        <widget class="QGroupBox" name="groupBox_2">
-         <property name="title">
-          <string notr="true">Credentials</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_5">
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Login</string>
-            </property>
-            <property name="buddy">
-             <cstring>userName</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_9">
-            <property name="text">
-             <string>Password</string>
-            </property>
-            <property name="buddy">
-             <cstring>passWord</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="userName"/>
-          </item>
-          <item row="4" column="1">
-           <widget class="QLineEdit" name="passWord"/>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QCheckBox" name="commandLine">
-         <property name="text">
-          <string>Show command line</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabApp">
-      <attribute name="title">
-       <string>App</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_11">
+      <layout class="QVBoxLayout" name="verticalLayout_16">
        <item>
         <widget class="QGroupBox" name="groupBox_4">
          <property name="title">
           <string>Internet</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="tablebaseCheck">
-            <property name="text">
-             <string>Use online tablebase servers</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="1">
            <widget class="QComboBox" name="tablebaseSelect">
             <property name="currentText">
@@ -1480,6 +1437,13 @@
             </item>
            </widget>
           </item>
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="tablebaseCheck">
+            <property name="text">
+             <string>Use online tablebase servers</string>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="0" colspan="2">
            <widget class="QCheckBox" name="versionCheck">
             <property name="text">
@@ -1490,6 +1454,172 @@
          </layout>
         </widget>
        </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>FICS</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="btUseTimeseal">
+            <property name="text">
+             <string>Try to use Timeseal</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="guestLogin">
+            <property name="text">
+             <string>Log in as guest</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <layout class="QFormLayout" name="formLayout_2">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Login</string>
+              </property>
+              <property name="buddy">
+               <cstring>userName</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="userName"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>Password</string>
+              </property>
+              <property name="buddy">
+               <cstring>passWord</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="passWord"/>
+            </item>
+           </layout>
+          </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="commandLine">
+            <property name="text">
+             <string>Show command line</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>Lichess</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_14">
+          <item>
+           <layout class="QFormLayout" name="formLayout_3">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_25">
+              <property name="text">
+               <string>Login</string>
+              </property>
+              <property name="buddy">
+               <cstring>userNameLichess</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="userNameLichess"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_26">
+              <property name="text">
+               <string>Password</string>
+              </property>
+              <property name="buddy">
+               <cstring>passWordLichess</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="passWordLichess">
+              <property name="placeholderText">
+               <string>not required</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>chess.com</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_15">
+          <item>
+           <layout class="QFormLayout" name="formLayout_4">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_27">
+              <property name="text">
+               <string>Login</string>
+              </property>
+              <property name="buddy">
+               <cstring>userNameChesscom</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="userNameChesscom"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_28">
+              <property name="text">
+               <string>Password</string>
+              </property>
+              <property name="buddy">
+               <cstring>passWordChesscom</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="passWordChesscom">
+              <property name="placeholderText">
+               <string>not required</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabApp">
+      <attribute name="title">
+       <string>App</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_11">
        <item>
         <widget class="QGroupBox" name="groupBox_5">
          <property name="title">

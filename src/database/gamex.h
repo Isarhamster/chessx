@@ -276,6 +276,14 @@ public :
         NextMove,
         PreviousMove
     };
+    enum AnnotationFilter
+    {
+        FilterNone = 0x00,
+        FilterTan  = 0x01,
+        FilterCan  = 0x02,
+        FilterEval = 0x04,
+        FilterAll  = (FilterTan | FilterCan | FilterEval),
+    };
 
     static const QStringList s_specList;
 
@@ -307,7 +315,7 @@ public :
     /** @return comment at move at node @p moveId including visual hints for diagrams. */
     QString annotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
     /** @return comment at move at node @p moveId. */
-    QString textAnnotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
+    QString textAnnotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove, AnnotationFilter f = FilterNone) const;
     /** Show annotations on the board */
     void indicateAnnotationsOnBoard();
     /** @return squareAnnotation at move at node @p moveId. */

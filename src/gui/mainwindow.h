@@ -470,6 +470,8 @@ protected slots:
     /** Handle event that a FICS session was opened */
     void FicsConnected();
     void HandleFicsRequestRemoveMove();
+    void openLichess();
+    void openChesscom();
     void openFICS();
     void openWebFavorite();
     void slotGameVarEnter(int index);

@@ -558,6 +558,13 @@ void PreferencesDialog::restoreSettings()
     ui.cbColumnStyle->setChecked(AppSettings->getValue("ColumnStyle").toBool());
     ui.cbHTMLComments->setChecked(AppSettings->getValue("HTMLComments").toBool());
     ui.variationIndentLevel->setValue(AppSettings->getValue("VariationIndentLevel").toInt());
+
+    ui.cbIndentComments->setItemData(0, "Always");
+    ui.cbIndentComments->setItemData(1, "OnlyMainline");
+    ui.cbIndentComments->setItemData(2, "Never");
+
+    selectInCombo(ui.cbIndentComments, AppSettings->getValue("CommentIndent").toString());
+
     ui.diagramSize->setValue(AppSettings->getValue("DiagramSize").toInt());
     ui.pieceString->setText(AppSettings->getValue("PieceString").toString());
 
@@ -584,6 +591,16 @@ void PreferencesDialog::restoreSettings()
     ui.guestLogin->setChecked(AppSettings->getValue("guestLogin").toBool());
     ui.btUseTimeseal->setChecked(AppSettings->getValue("useTimeseal").toBool());
     ui.commandLine->setChecked(AppSettings->getValue("commandline").toBool());
+    AppSettings->endGroup();
+
+    AppSettings->beginGroup("Lichess");
+    ui.userNameLichess->setText(AppSettings->getValue("userName").toString());
+    ui.passWordLichess->setText(AppSettings->getValue("passWord").toString());
+    AppSettings->endGroup();
+
+    AppSettings->beginGroup("Chesscom");
+    ui.userNameChesscom->setText(AppSettings->getValue("userName").toString());
+    ui.passWordChesscom->setText(AppSettings->getValue("passWord").toString());
     AppSettings->endGroup();
 
     AppSettings->beginGroup("Sound");
@@ -678,7 +695,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("VariationIndentLevel", ui.variationIndentLevel->value());
     AppSettings->setValue("DiagramSize", ui.diagramSize->value());
     AppSettings->setValue("PieceString", ui.pieceString->text());
-
+    AppSettings->setValue("CommentIndent", ui.cbIndentComments->currentData().toString());
     AppSettings->setValue("FontBrowserText", ui.fontText->text());
     AppSettings->setValue("FontBrowserMove", ui.fontMove->text());
 
@@ -708,6 +725,16 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("commandline", ui.commandLine->isChecked());
     AppSettings->endGroup();
 
+    AppSettings->beginGroup("Lichess");
+    AppSettings->setValue("userName", ui.userNameLichess->text());
+    AppSettings->setValue("passWord", ui.passWordLichess->text());
+    AppSettings->endGroup();
+
+    AppSettings->beginGroup("Chesscom");
+    AppSettings->setValue("userName", ui.userNameChesscom->text());
+    AppSettings->setValue("passWord", ui.passWordChesscom->text());
+    AppSettings->endGroup();
+
     AppSettings->beginGroup("Sound");
     AppSettings->setValue("Move", ui.cbSoundOn->currentIndex());
     AppSettings->setValue("ScreenReader", ui.cbScreenReader->isChecked());
@@ -722,7 +749,7 @@ bool PreferencesDialog::selectInCombo(QComboBox* combo, const QString& text)
 {
     for(int i = 0; i < combo->count(); ++i)
     {
-        if(combo->itemText(i) == text)
+        if ((combo->itemText(i) == text) || (combo->itemData(i).toString() == text))
         {
             combo->setCurrentIndex(i);
             return true;
