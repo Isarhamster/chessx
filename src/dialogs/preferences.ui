@@ -23,7 +23,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -549,7 +549,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tabGameText">
       <attribute name="title">
        <string>Game Text</string>
       </attribute>
@@ -1121,7 +1121,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_11">
+        <widget class="QGroupBox" name="anchor_webfavorite">
          <property name="title">
           <string>Web Favorite</string>
          </property>
@@ -1154,6 +1154,13 @@
            <widget class="QSpinBox" name="autoNumber">
             <property name="maximum">
              <number>9999</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_23">
+            <property name="text">
+             <string/>
             </property>
            </widget>
           </item>
@@ -1515,11 +1522,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_3">
+        <widget class="QGroupBox" name="anchor_lichess">
          <property name="title">
           <string>Lichess</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_14">
+         <layout class="QHBoxLayout" name="horizontalLayout_25">
           <item>
            <layout class="QFormLayout" name="formLayout_3">
             <item row="0" column="0">
@@ -1558,11 +1565,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_2">
+        <widget class="QGroupBox" name="anchor_chesscom">
          <property name="title">
           <string>chess.com</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_15">
+         <layout class="QHBoxLayout" name="horizontalLayout_26">
           <item>
            <layout class="QFormLayout" name="formLayout_4">
             <item row="0" column="0">

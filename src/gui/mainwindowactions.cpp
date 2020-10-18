@@ -316,13 +316,10 @@ void MainWindow::slotFileQuit()
     qApp->closeAllWindows();
 }
 
-void MainWindow::slotConfigure(int page)
+void MainWindow::slotConfigure(QString anchor)
 {
     PreferencesDialog dlg(this);
-    if (page>=0)
-    {
-        dlg.setCurrentIndex(page);
-    }
+    dlg.setAnchor(anchor);
     connect(&dlg, SIGNAL(reconfigure()), SLOT(slotReconfigure()));
     dlg.exec();
 }
