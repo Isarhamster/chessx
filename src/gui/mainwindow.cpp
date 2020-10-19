@@ -976,7 +976,7 @@ void MainWindow::openWebFavorite()
     }
     else
     {
-        slotConfigure(4); // TODO: Horrible hack
+        slotConfigure("webfavorite");
     }
 }
 
@@ -993,7 +993,7 @@ void MainWindow::openLichess()
     }
     else
     {
-        slotConfigure(6); // TODO: Horrible hack
+        slotConfigure("lichess");
     }
 }
 
@@ -1009,7 +1009,7 @@ void MainWindow::openChesscom()
     }
     else
     {
-        slotConfigure(6); // TODO: Horrible hack
+        slotConfigure("chesscom");
     }
 }
 

@@ -178,7 +178,7 @@ public slots:
     /**  */
     void slotReconfigure();
     /**  */
-    void slotConfigure(int page=-1);
+    void slotConfigure(QString anchor = "");
     /** About ChessX */
     void slotHelpAbout();
     /** Display Tracker at ChessX SourceForge */

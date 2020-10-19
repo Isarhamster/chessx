@@ -38,7 +38,7 @@ public:
      static void setupIconInMenus(QObject* pObject);
 
 public slots:
-    void setCurrentIndex(int page) { s_lastIndex = page; }
+    void setAnchor(QString anchor);
     /** Restore Default values */
     void slotReset();
     /** Execute dialog, save options on exit */

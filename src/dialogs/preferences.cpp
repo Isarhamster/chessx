@@ -119,6 +119,37 @@ PreferencesDialog::~PreferencesDialog()
 {
 }
 
+void PreferencesDialog::setAnchor(QString anchor)
+{
+    if (!anchor.isEmpty())
+    {
+        anchor.prepend("anchor_");
+        QWidget* widget = findChild<QWidget*>(anchor);
+        if (widget)
+        {
+            QLayout* layout = widget->layout();
+            if (layout)
+            {
+                QLabel* label=new QLabel("");
+                label->setPixmap(QPixmap(":/images/back.png"));
+                layout->addWidget(label);
+            }
+
+            QObject* parent = widget->parent();
+            while (parent)
+            {
+                QWidget* tab = qobject_cast<QWidget*>(parent);
+                if (tab && tab->objectName().startsWith("tab"))
+                {
+                    s_lastIndex = ui.tabWidget->indexOf(tab);
+                    break;
+                }
+                parent = widget->parent();
+            }
+        }
+    }
+}
+
 void PreferencesDialog::done(int r)
 {
     AppSettings->setLayout(this);
