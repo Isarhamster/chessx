@@ -270,6 +270,11 @@ void AnalysisWidget::setGameMode(bool gameMode)
 
 void AnalysisWidget::showAnalysis(Analysis analysis)
 {
+    Move m;
+    if (m_analyses.count() && m_analyses[0].variation().count())
+    {
+        m = m_analyses[0].variation().at(0);
+    }
     int elapsed = m_lastEngineStart.elapsed();
     int mpv = analysis.mpv() - 1;
     bool bestMove = analysis.bestMove();
@@ -322,6 +327,10 @@ void AnalysisWidget::showAnalysis(Analysis analysis)
     else if (c.getEndOfGame())
     {
         emit receivedBestMove(c);
+    }
+    if (c.variation().count() && (m!=c.variation().at(0)))
+    {
+        emit currentBestMove(c);
     }
 }
 

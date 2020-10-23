@@ -102,6 +102,7 @@ signals:
     void addVariation(const QString& san);
     void requestBoard();
     void receivedBestMove(const Analysis& analysis);
+    void currentBestMove(const Analysis& analysis);
     void signalSourceChanged(QString);
 
 protected slots:

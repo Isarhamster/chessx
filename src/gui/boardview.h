@@ -98,6 +98,9 @@ public:
     void setShowAttacks(const Color &showAttacks);
     void setShowUnderProtection(const Color &showUnderProtection);
 
+    Move getBestGuess() const;
+    void setBestGuess(const Move &bestGuess);
+
 public slots:
 
     /** Flips/unflips board. */
@@ -251,7 +254,7 @@ private:
     int m_showMoveIndicatorMode;
     QPointer<QObject> m_DbIndex;
     ThreadedGuess m_threatGuess;
-    ThreadedGuess m_bestGuess;
+    Move m_bestGuess;
     Color m_showAttacks;
     Color m_showUnderProtection;
     QMouseEvent* lastMoveEvent;

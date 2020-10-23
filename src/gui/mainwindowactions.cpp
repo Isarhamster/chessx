@@ -2426,6 +2426,11 @@ void MainWindow::addAutoNag(Color toMove, int score, int lastScore, int threasho
     }
 }
 
+void MainWindow::slotEngineCurrentBest(const Analysis& analysis)
+{
+    m_boardView->setBestGuess(analysis.variation().at(0));
+}
+
 void MainWindow::slotEngineTimeout(const Analysis& analysis)
 {
     if (m_boardView->dragged() == Empty || m_autoRespond->isChecked() || m_autoGame->isChecked()) // Do not interfer with moving a piece, unless it might be a premove
