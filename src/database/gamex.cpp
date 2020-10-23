@@ -702,8 +702,8 @@ QMap<MoveId, MoveId> GameCursor::compact()
         {
             v = renames[v];
         }
-        // node.variations.removeAt(NO_MOVE);
-        // node.variations.removeAt(ROOT_NODE);
+        node.variations.removeAll(NO_MOVE);
+        node.variations.removeAll(ROOT_NODE);
     }
     m_currentNode = renames[m_currentNode];
     return renames;
@@ -1640,6 +1640,18 @@ bool GameX::editAnnotation(QString annotation, MoveId moveId, Position position)
     return false;
 }
 
+bool GameX::appendAnnotation(QString annotation, MoveId moveId, Position position)
+{
+    GameX state = *this;
+    if (dbAppendAnnotation(annotation, moveId, position))
+    {
+        dbIndicateAnnotationsOnBoard();
+        emit signalGameModified(true, state, "Append annotation");
+        return true;
+    }
+    return false;
+}
+
 bool GameX::dbAppendAnnotation(QString a, MoveId moveId, Position position)
 {
     QString s = annotation();
@@ -1882,6 +1894,18 @@ QString GameX::timeAnnotation(MoveId moveId, Position position) const
     QString s = specAnnotation(QRegExp(s_tan), moveId);
     s = s.trimmed();
     return s;
+}
+
+void GameX::setTimeAnnotation(QString a, MoveId moveId)
+{
+    MoveId node = m_moves.makeNodeIndex(moveId);
+    if (node>ROOT_NODE)
+    {
+        QString s = annotation(node);
+        s.remove(QRegExp(s_tan));
+        dbSetAnnotation(s, node);
+        appendAnnotation(a, node);
+    }
 }
 
 QString GameX::annotation(MoveId moveId, Position position) const

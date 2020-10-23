@@ -326,6 +326,7 @@ public :
     QString specAnnotation(const QRegExp &r, MoveId moveId = CURRENT_MOVE) const;
     /** @return time annotation (either egt or clock) at move at node @p moveId. */
     QString timeAnnotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
+    void setTimeAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE);
     /** @return @p true if a move can have annotation before the move. */
     bool canHaveStartAnnotation(MoveId moveId = CURRENT_MOVE) const;
     /** @return nags for move at node @p moveId */
@@ -346,6 +347,8 @@ public :
     bool setAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Edits the comment associated with move at node @p moveId */
     bool editAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
+    /** Append to existing annotations associated with move at node @p moveId */
+    bool appendAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Sets the squareAnnotation associated with move at node @p moveId */
     bool setSquareAnnotation(QString squareAnnotation);
 

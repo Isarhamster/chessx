@@ -572,7 +572,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                             keyEvent->key() == Qt::Key_Return ||
                             keyEvent->key() == Qt::Key_Enter))
             {
-                if (obj == this || obj == m_boardView || obj == m_gameView || obj == m_mainAnalysis || obj == m_secondaryAnalysis)
+                if (obj == this || obj == m_boardView || m_gameView->findChild<QWidget*>(obj->objectName()) || obj == m_mainAnalysis || obj == m_secondaryAnalysis)
                 {
                     keyPressEvent(keyEvent);
                     return (obj != m_boardView);
@@ -685,6 +685,20 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
             {
                 Move m = game().move();
                 m_ficsConsole->SendMove(m.toAlgebraic());
+            }
+        }
+        if (m_nagText.startsWith("T"))
+        {
+            // ChessX-Special - annotate a time comment
+            m_nagText.remove(0,1);
+            if (m_nagText.count(":")==1) m_nagText.append(":00");
+            if (m_nagText.count(":")==2)
+            {
+                QTime t = QTime::fromString(m_nagText, "H:mm:ss");
+                QString ts = t.toString("H:mm:ss");
+                QString clk = "[%clk %1]";
+                QString annot = clk.arg(ts);
+                game().setTimeAnnotation(annot);
             }
         }
         m_nagText.clear(); // Not a move and not a nag
