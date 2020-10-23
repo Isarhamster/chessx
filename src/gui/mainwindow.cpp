@@ -419,6 +419,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), SLOT(slotMoveIntervalChanged(int)));
     connect(m_mainAnalysis, SIGNAL(receivedBestMove(const Analysis&)), this, SLOT(slotEngineTimeout(const Analysis&)));
+    connect(m_mainAnalysis, SIGNAL(currentBestMove(const Analysis&)), this, SLOT(slotEngineCurrentBest(const Analysis&)));
     connect(m_secondaryAnalysis, SIGNAL(receivedBestMove(const Analysis&)), this, SLOT(slotEngineTimeout(const Analysis&)));
 
     m_matchParameter.tm           = (EngineParameter::TimeModus) AppSettings->getValue("/Match/Mode").toBool();

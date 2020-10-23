@@ -272,6 +272,7 @@ public slots:
     void slotAutoPlayTimeout();
     /** Auto Play Timeout - make next move! */
     void slotEngineTimeout(const Analysis& analysis);
+    void slotEngineCurrentBest(const Analysis& analysis);
     void addAutoNag(Color toMove, int scoreText, int lastScore, int threashold, MoveId node);
     /** Filter was changed - update status bar information */
     void slotFilterChanged(bool selectGame=true);

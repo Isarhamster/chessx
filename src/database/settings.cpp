@@ -504,6 +504,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/checkColor", QColor(Qt::magenta));
     map.insert("/Board/wallColor", QColor(Qt::darkGray));
     map.insert("/Board/underprotectedColor", QColor(Qt::red));
+    map.insert("/Board/engineColor", QColor("orange"));
     map.insert("/Board/AutoPlayerInterval", 3000);
     map.insert("/Board/AutoSaveAndContinue", false);
     map.insert("/Board/BackwardAnalysis", false);
