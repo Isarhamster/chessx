@@ -100,6 +100,7 @@ public:
 
     Move getBestGuess() const;
     void setBestGuess(const Move &bestGuess);
+    void setVariations(const QList<Move>& variations);
 
 public slots:
 
@@ -194,7 +195,7 @@ private:
     /** Catch mouse events */
     bool eventFilter(QObject *obj, QEvent *ev);
 
-    void drawArrow(int square1, int square2, QColor color);
+    void drawArrow(int square1, int square2, QColor color, bool thin = false);
     void drawHiliteSquare(QPoint pos, BoardTheme::ColorRole role);
 
     QPoint posFromSquare(int square) const;
@@ -255,6 +256,7 @@ private:
     QPointer<QObject> m_DbIndex;
     ThreadedGuess m_threatGuess;
     Move m_bestGuess;
+    QList<Move> m_variations;
     Color m_showAttacks;
     Color m_showUnderProtection;
     QMouseEvent* lastMoveEvent;

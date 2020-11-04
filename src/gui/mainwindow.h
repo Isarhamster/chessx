@@ -134,7 +134,7 @@ public slots:
     /** Flip the board view */
     void slotFlipView(bool);
     void enterGameMode(bool gameMode);
-    void enterNoHintMode(bool gameMode);
+    void enterNoHintMode(bool noHintMode);
     /** Open database */
     void openDatabase(QString fname);
     /** Open database from URL*/
@@ -484,6 +484,7 @@ protected slots:
     void slotToggleBrush();
     void slotShowTargetFields();
     void slotShowThreat();
+    void slotShowVariationArrows();
     void slotShowWhiteAttacks();
     void slotShowBlackAttacks();
     void slotShowUnderprotectedWhite();
@@ -731,6 +732,7 @@ private:
 
     bool m_machineHasToMove;
     bool m_gameMode;
+    bool m_noHintMode;
     FicsClient* m_ficsClient;
     FicsConsole* m_ficsConsole;
     QActionGroup* m_gameModeGroup;

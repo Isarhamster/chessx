@@ -1309,11 +1309,23 @@ void MainWindow::displayVariations()
         listVariations.push_front(game().nextMove());
     }
 
+    bool showVariationArrows = AppSettings->getValue("/Board/showVariationArrows").toBool();
+    QList<Move> arrowMoves;
     QStringList textVariations;
-    foreach(MoveId id, listVariations)
+
+    // dont show variations in no hint mode
+    if (!m_noHintMode)
     {
-        Move move = game().move(id);
-        textVariations << game().board().moveToSan(move, true, true);
+        foreach(MoveId id, listVariations)
+        {
+            Move move = game().move(id);
+            textVariations << game().board().moveToSan(move, true, true);
+
+            if (showVariationArrows)
+            {
+                arrowMoves.push_back(move);
+            }
+        }
     }
 
     if (textVariations.isEmpty())
@@ -1343,6 +1355,9 @@ void MainWindow::displayVariations()
     }
 
     BoardViewFrame(m_boardView)->showVariations(listVariations, textVariations);
+
+    // update boardview's variation list (to display variation arrows)
+    m_boardView->setVariations(arrowMoves);
 }
 
 void MainWindow::slotGameFilterUpdate(int index, int value)
@@ -4017,11 +4032,16 @@ void MainWindow::slotFlipView(bool flip)
     m_boardView->setFlipped(flip);
 }
 
-void MainWindow::enterNoHintMode(bool gameMode)
+void MainWindow::enterNoHintMode(bool noHintMode)
 {
-    Guess::setGuessAllowed(!gameMode);
-    EngineX::setAllowEngineOutput(!gameMode);
-    Tablebase::setAllowEngineOutput(!gameMode);
+    m_noHintMode = noHintMode;
+
+    Guess::setGuessAllowed(!noHintMode);
+    EngineX::setAllowEngineOutput(!noHintMode);
+    Tablebase::setAllowEngineOutput(!noHintMode);
+
+    // show/hide variation list and arrows
+    displayVariations();
 }
 
 void MainWindow::enterGameMode(bool gameMode)
@@ -4097,6 +4117,13 @@ void MainWindow::slotShowThreat()
     QAction* bt = qobject_cast<QAction*>(sender());
     AppSettings->setValue("/Board/showThreat", bt->isChecked());
     m_boardView->configure();
+}
+
+void MainWindow::slotShowVariationArrows()
+{
+    QAction* bt = qobject_cast<QAction*>(sender());
+    AppSettings->setValue("/Board/showVariationArrows", bt->isChecked());
+    displayVariations();
 }
 
 void MainWindow::slotShowWhiteAttacks()

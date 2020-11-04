@@ -117,6 +117,7 @@
         <file alias="images/brush_erase.png">data/images/brush_erase.png</file>
         <file alias="images/show_targets.png">data/images/show_targets.png</file>
         <file alias="images/show_threat.png">data/images/show_threat.png</file>
+        <file alias="images/show_variations.png">data/images/show_variations.png</file>
         <file alias="images/engine.png">data/images/engine.png</file>
         <file alias="sounds/ding1.wav">data/sounds/ding1.wav</file>
         <file alias="sounds/fanfare.wav">data/sounds/fanfare_x.wav</file>
