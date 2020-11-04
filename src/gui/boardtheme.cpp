@@ -181,6 +181,7 @@ void BoardTheme::configure()
     setColor(BoardTheme::Frame, AppSettings->getValue("frameColor").value<QColor>());
     setColor(BoardTheme::CurrentMove, AppSettings->getValue("currentMoveColor").value<QColor>());
     setColor(BoardTheme::StoredMove, AppSettings->getValue("storedMoveColor").value<QColor>());
+    setColor(BoardTheme::VariationMove, AppSettings->getValue("variationMoveColor").value<QColor>());
     setColor(BoardTheme::Threat, AppSettings->getValue("threatColor").value<QColor>());
     setColor(BoardTheme::Target, AppSettings->getValue("targetColor").value<QColor>());
     setColor(BoardTheme::Check, AppSettings->getValue("checkColor").value<QColor>());

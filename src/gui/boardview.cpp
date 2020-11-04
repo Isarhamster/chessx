@@ -354,6 +354,23 @@ void BoardView::drawHiliting(QPaintEvent* event)
             }
         }
     }
+
+    // draw variation arrows (whether they are really displayed depends on the contents of m_variations)
+    bool thin = false;
+    foreach(Move move, m_variations)
+    {
+        Square moveFrom = move.from();
+        Square moveTo = move.to();
+        QRect rect1 = squareRect(moveFrom);
+        QRect rect2 = squareRect(moveTo);
+        QRect u = rect1.united(rect2);
+        if(event->region().intersects(u))
+        {
+            QColor c(m_theme.color(BoardTheme::VariationMove));
+            drawArrow(moveFrom, moveTo, c, thin);
+        }
+        thin = true;    // all but the first variation are drawn as thin
+    }
 }
 
 void BoardView::drawTargets(QPaintEvent* event)
@@ -872,6 +889,12 @@ void BoardView::setBestGuess(const Move &bestGuess)
     update();
 }
 
+void BoardView::setVariations(const QList<Move> &variations)
+{
+    m_variations = variations;
+    update();
+}
+
 void BoardView::setShowUnderProtection(const Color &showUnderProtection)
 {
     m_showUnderProtection = showUnderProtection;
@@ -1327,7 +1350,7 @@ void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
     drawColorRect(event, square, color);
 }
 
-void BoardView::drawArrow(int square1, int square2, QColor color)
+void BoardView::drawArrow(int square1, int square2, QColor color, bool thin)
 {
     QPainter p(this);
 
@@ -1342,7 +1365,7 @@ void BoardView::drawArrow(int square1, int square2, QColor color)
     QPoint pos2(coord + (x2 * w) + (w / 2), (y2 * h) + (h / 2));
 
     // Now to Draw Arrow Head
-    qreal headWidth = m_theme.size().width() / 4;
+    qreal headWidth = m_theme.size().width() / 4 * (thin ? 0.5 : 1);
     qreal headLength = headWidth;
     qreal headIndent = headWidth / 4;
     qreal netIndent = headLength - headIndent;
@@ -1360,7 +1383,7 @@ void BoardView::drawArrow(int square1, int square2, QColor color)
     QPointF arrowPts[7];
 
     // we will shorten the line somewhat to avoid arrows all colliding in the center of the square
-    int adjust = (w + h) / 8;
+    int adjust = (w + h) / (thin ? 16 : 8);
 
     px1 = px1 + ((adjust * dX) / arrowLength);
     px2 = px2 - ((adjust * dX) / arrowLength);

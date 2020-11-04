@@ -100,6 +100,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_lastColor('G'),
     m_machineHasToMove(false),
     m_gameMode(false),
+    m_noHintMode(false),
     m_scratchPad(nullptr),
     m_bEvalRequested(false),
     m_lastMessageWasHint(false),
@@ -1568,6 +1569,12 @@ void MainWindow::setupActions()
     m_menuView->addAction(showThreat);
     showThreat->setCheckable(true);
     showThreat->setChecked(AppSettings->getValue("/Board/showThreat").toBool());
+
+    QAction* showVariationArrows = createAction(tr("Show variation arrows"), SLOT(slotShowVariationArrows()), 0,
+                                       viewToolBar, QIcon(":/images/show_variations.png"));
+    m_menuView->addAction(showVariationArrows);
+    showVariationArrows->setCheckable(true);
+    showVariationArrows->setChecked(AppSettings->getValue("/Board/showVariationArrows").toBool());
 
     QAction* showAttackW = createAction(tr("Show covered squares from White"), SLOT(slotShowWhiteAttacks()), 0,
                                        viewToolBar, QIcon(":/images/white_wall.png"));
