@@ -1629,8 +1629,6 @@ bool GameX::setAnnotation(QString annotation, MoveId moveId, Position position)
 bool GameX::editAnnotation(QString annotation, MoveId moveId, Position position)
 {
     GameX state = *this;
-    QString spec = specAnnotations(moveId);
-    annotation.append(spec);
     if (dbSetAnnotation(annotation, moveId, position))
     {
         dbIndicateAnnotationsOnBoard();
