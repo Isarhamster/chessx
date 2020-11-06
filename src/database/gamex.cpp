@@ -2154,6 +2154,16 @@ void GameX::moveToLineEnd()
     }
 }
 
+bool GameX::dbMoveToId(MoveId moveId, QString* algebraicMoveList)
+{
+    bool moved = m_moves.moveToId(moveId, algebraicMoveList);
+    if (moved)
+    {
+        indicateAnnotationsOnBoard();
+    }
+    return moved;
+}
+
 int GameX::forward(int count)
 {
     int moved = m_moves.forward(count);

@@ -405,7 +405,7 @@ public :
     bool isEmpty() const;
 
     // ***** Moving through game *****
-    bool dbMoveToId(MoveId moveId, QString* algebraicMoveList=nullptr) { return m_moves.moveToId(moveId, algebraicMoveList); }
+    bool dbMoveToId(MoveId moveId, QString* algebraicMoveList=nullptr);
     int forward(int count = 1);
     int backward(int count = 1);
     void moveToStart();
