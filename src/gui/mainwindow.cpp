@@ -504,7 +504,17 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifdef USE_SPEECH
     qRegisterMetaType<QTextToSpeech::State>("State");
     speech = new QTextToSpeech(this);
-    speech->setLocale(QLocale(AppSettings->getValue("/General/language").toString()));
+    const QVector<QLocale> locales = speech->availableLocales();
+    QLocale current = speech->locale();
+    QLocale cxLocale(AppSettings->getValue("/General/language").toString());
+    if (locales.contains(cxLocale))
+    {
+        speech->setLocale(cxLocale);
+    }
+    else
+    {
+        qDebug() << current << locales << cxLocale;
+    }
     connect(speech, SIGNAL(stateChanged(QTextToSpeech::State)), SLOT(speechStateChanged(QTextToSpeech::State)), Qt::QueuedConnection);
 #endif
 
