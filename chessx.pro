@@ -32,11 +32,6 @@ sound {
   QT += multimedia
 }
 
-static { # Everything below takes effect with CONFIG += static
-  DEFINES += STATIC
-  message("Static build.")
-}
-
 DEFINES += QUAZIP_STATIC
 DEFINES += QT_NO_CAST_TO_ASCII
 DEFINES *= QT_USE_QSTRINGBUILDER
@@ -486,12 +481,6 @@ CONFIG(debug, debug|release) {
 CONFIG(release, debug|release) {
   DESTDIR = "release"
   OBJECTS_DIR = "obj_rel"
-  DEFINES += QT_NO_DEBUG_OUTPUT NDEBUG
-}
-
-static {
-  DESTDIR = "static"
-  OBJECTS_DIR = "obj_static"
   DEFINES += QT_NO_DEBUG_OUTPUT NDEBUG
 }
 
