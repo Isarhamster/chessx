@@ -1237,7 +1237,7 @@ bool GameX::findNextMove(Square from, Square to, PieceType promotionPiece)
                 if(m.from() == from && m.to() == to &&
                         ((promotionPiece == None) || ((m.isPromotion() && (pieceType(m.promotedPiece()) == promotionPiece)))))
                 {
-                    dbMoveToId(*i);
+                    enterVariation(*i);
                     return true;
                 }
             }
