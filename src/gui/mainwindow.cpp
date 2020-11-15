@@ -2114,7 +2114,7 @@ void MainWindow::StartCheckUpdate()
 
 void MainWindow::slotHttpDone(QNetworkReply *reply)
 {
-    QUrl url = reply->url();
+    QUrl url = reply->request().url();
 
     if (url.toString().endsWith("current.txt"))
     {

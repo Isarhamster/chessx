@@ -87,6 +87,7 @@ void DownloadManager::doDownloadToPath(const QUrl &url, const QString& filename)
     QNetworkRequest request(url);
     QByteArray userAgent = QString(QCoreApplication::applicationName() + "/" + STR_VERSION_NET).toLatin1();
     request.setRawHeader("User-Agent",userAgent);
+    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
     QNetworkReply *reply = manager.get(request);
 
     connect(reply, SIGNAL(finished()), SLOT(downloadFinished()));
@@ -150,7 +151,7 @@ void DownloadManager::downloadFinished()
 
     if(reply)
     {
-        QUrl url = reply->url();
+        QUrl url = reply->request().url();
         if(reply->error())
         {
             qDebug() << "Network Error " << reply->errorString();
