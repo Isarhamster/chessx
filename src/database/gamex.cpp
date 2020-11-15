@@ -1630,9 +1630,14 @@ bool GameX::setAnnotation(QString annotation, MoveId moveId, Position position)
 bool GameX::editAnnotation(QString annotation, MoveId moveId, Position position)
 {
     GameX state = *this;
-    annotation = textAnnotation(annotation, textFilter());
+    QString cleanAnnotation = textAnnotation(annotation, GameX::FilterAll);
+    QString specAnnotation = specAnnotations(annotation);
     QString spec = specAnnotations(moveId);
-    annotation.prepend(spec);
+    if (spec != specAnnotation)
+    {
+        annotation = cleanAnnotation.prepend(spec);
+    }
+
     if (dbSetAnnotation(annotation, moveId, position))
     {
         dbIndicateAnnotationsOnBoard();
@@ -1924,9 +1929,8 @@ QString GameX::annotation(MoveId moveId, Position position) const
     }
 }
 
-QString GameX::specAnnotations(MoveId moveId, Position position) const
+QString GameX::specAnnotations(QString s) const
 {
-    QString s = annotation(moveId, position);
     QString retval;
     foreach (QString sr, s_specList)
     {
@@ -1938,6 +1942,12 @@ QString GameX::specAnnotations(MoveId moveId, Position position) const
         }
     }
     return retval;
+}
+
+QString GameX::specAnnotations(MoveId moveId, Position position) const
+{
+    QString s = annotation(moveId, position);
+    return specAnnotations(s);
 }
 
 QString GameX::textAnnotation(QString s, AnnotationFilter f) const

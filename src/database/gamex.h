@@ -366,6 +366,7 @@ public :
 
     /** Get a string with all special annotations including square brackets etc. */
     QString specAnnotations(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
+    QString specAnnotations(QString s) const;
 
     /** Get a the current annotation for an evaluation string, d is modified only if there is such an evaluation */
     void evaluation(double& d) const;
