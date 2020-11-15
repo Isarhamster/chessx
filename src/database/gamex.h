@@ -315,7 +315,10 @@ public :
     /** @return comment at move at node @p moveId including visual hints for diagrams. */
     QString annotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
     /** @return comment at move at node @p moveId. */
+    QString textAnnotation(QString s, AnnotationFilter f) const;
     QString textAnnotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove, AnnotationFilter f = FilterNone) const;
+    AnnotationFilter textFilter() const;
+    AnnotationFilter textFilter2() const;
     /** Show annotations on the board */
     void indicateAnnotationsOnBoard();
     /** @return squareAnnotation at move at node @p moveId. */

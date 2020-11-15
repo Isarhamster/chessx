@@ -13,6 +13,7 @@
 #include "annotation.h"
 #include "ecopositions.h"
 #include "gamex.h"
+#include "settings.h"
 #include "tags.h"
 
 using namespace chessx;
@@ -1629,8 +1630,9 @@ bool GameX::setAnnotation(QString annotation, MoveId moveId, Position position)
 bool GameX::editAnnotation(QString annotation, MoveId moveId, Position position)
 {
     GameX state = *this;
+    annotation = textAnnotation(annotation, textFilter());
     QString spec = specAnnotations(moveId);
-    annotation.append(spec);
+    annotation.prepend(spec);
     if (dbSetAnnotation(annotation, moveId, position))
     {
         dbIndicateAnnotationsOnBoard();
@@ -1938,9 +1940,8 @@ QString GameX::specAnnotations(MoveId moveId, Position position) const
     return retval;
 }
 
-QString GameX::textAnnotation(MoveId moveId, Position position, AnnotationFilter f) const
+QString GameX::textAnnotation(QString s, AnnotationFilter f) const
 {
-    QString s = annotation(moveId, position);
     if (!s.isEmpty())
     {
         if (f&FilterTan)  s.remove(QRegExp(s_tan));
@@ -1948,6 +1949,22 @@ QString GameX::textAnnotation(MoveId moveId, Position position, AnnotationFilter
         if (f&FilterEval) s.remove(QRegExp(s_eval));
     }
     return s;
+}
+
+GameX::AnnotationFilter GameX::textFilter() const
+{
+    return AppSettings->getValue("/GameText/HideSpecAnnotations").toBool() ? FilterAll : FilterNone;
+}
+
+GameX::AnnotationFilter GameX::textFilter2() const
+{
+    return AppSettings->getValue("/GameText/HideSpecAnnotations").toBool() ? static_cast<GameX::AnnotationFilter>(GameX::FilterTan | GameX::FilterCan) : FilterNone;
+}
+
+QString GameX::textAnnotation(MoveId moveId, Position position, AnnotationFilter f) const
+{
+    QString s = annotation(moveId, position);
+    return textAnnotation(s, f);
 }
 
 bool GameX::canHaveStartAnnotation(MoveId moveId) const

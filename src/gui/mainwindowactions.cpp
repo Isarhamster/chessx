@@ -1252,7 +1252,7 @@ void MainWindow::moveChanged()
     // Set board first
     m_boardView->setBoard(g.board(), m_currentFrom, m_currentTo, game().atLineEnd());
 
-    QString annotation = game().textAnnotation();
+    QString annotation = game().textAnnotation(m, GameX::AfterMove, g.textFilter());
     BoardViewEx* frame = BoardViewFrame(m_boardView);
     if (frame)
     {
