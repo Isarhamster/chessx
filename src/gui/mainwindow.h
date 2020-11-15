@@ -629,6 +629,7 @@ private:
     void UpdateGameTitle();
     /** Update Game Text */
     void UpdateGameText();
+    void UpdateAnnotationView();
     /** Check if an update is available online */
     void StartCheckUpdate();
     /** Check if download of database is an option */

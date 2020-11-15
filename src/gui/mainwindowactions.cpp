@@ -349,11 +349,25 @@ void MainWindow::slotReconfigure()
     m_recentFiles.restore();
     emit reconfigure(); 	// Re-emit for children
     UpdateGameText();
+    UpdateAnnotationView();
 }
 
 void MainWindow::UpdateGameText()
 {
     m_gameView->reload(game(), m_training->isChecked() || m_training2->isChecked());
+}
+
+void MainWindow::UpdateAnnotationView()
+{
+    const GameX& g = game();
+    MoveId m = g.currentMove();
+
+    QString annotation = game().textAnnotation(m, GameX::AfterMove, g.textFilter());
+    BoardViewEx* frame = BoardViewFrame(m_boardView);
+    if (frame)
+    {
+        frame->setComment(annotation);
+    }
 }
 
 void MainWindow::UpdateMaterial()
@@ -1251,13 +1265,7 @@ void MainWindow::moveChanged()
 
     // Set board first
     m_boardView->setBoard(g.board(), m_currentFrom, m_currentTo, game().atLineEnd());
-
-    QString annotation = game().textAnnotation(m, GameX::AfterMove, g.textFilter());
-    BoardViewEx* frame = BoardViewFrame(m_boardView);
-    if (frame)
-    {
-        frame->setComment(annotation);
-    }
+    UpdateAnnotationView();
 
     m_currentFrom = InvalidSquare;
     m_currentTo = InvalidSquare;

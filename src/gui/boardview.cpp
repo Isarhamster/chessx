@@ -722,7 +722,12 @@ void BoardView::checkCursor(Qt::KeyboardModifiers modifiers)
 
     if (underMouse())
     {
-        switch (moveActionFromModifier(modifiers))
+        if (m_brushMode)
+        {
+            file = ":/images/pen.png";
+            text = tr("Draw a square or arrow annotation");
+        }
+        else switch (moveActionFromModifier(modifiers))
         {
         case ActionStandard:
             break;
@@ -809,15 +814,30 @@ void BoardView::handleMouseMoveEvent(QMouseEvent *event)
     auto b = event->buttons();
     if(!(b & Qt::LeftButton))
     {
-        if(!(mdf & Qt::ShiftModifier))
+        if (!m_brushMode)
         {
-            showGuess(squareAt(event->pos()));
-        }
-        else
-        {
-            removeGuess();
+            if(!(mdf & Qt::ShiftModifier))
+            {
+                showGuess(squareAt(event->pos()));
+            }
+            else
+            {
+                removeGuess();
+            }
         }
         return;
+    }
+
+    if (m_brushMode && (b & Qt::LeftButton) && (mdf & Qt::AltModifier))
+    {
+        Square s = squareAt(event->pos());
+        if ((m_dragStartSquare == InvalidSquare) || (m_dragStartSquare != s))
+        {
+            emit clicked(s, b, mapToGlobal(event->pos()), s);
+            m_dragStart = event->pos();
+            m_dragStartSquare = s;
+            return;
+        }
     }
 
     if(m_dragged != Empty)
@@ -991,7 +1011,8 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 
     if(m_brushMode)
     {
-        if(s != InvalidSquare)
+        m_dragStartSquare = InvalidSquare;
+        if ((s != InvalidSquare) && !(event->modifiers() & Qt::AltModifier))
         {
             Square from = squareAt(m_dragStart);
             emit clicked(s, button, mapToGlobal(event->pos()), from);
