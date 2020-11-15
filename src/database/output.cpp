@@ -302,10 +302,10 @@ QString Output::writeMove(MoveToWrite moveToWrite)
     // Read comments
     if(m_game.canHaveStartAnnotation(moveId))
         precommentString = (m_outputType == Pgn) ? m_game.annotation(moveId, GameX::BeforeMove) :
-                           m_game.textAnnotation(moveId, GameX::BeforeMove);
+                           m_game.textAnnotation(moveId, GameX::BeforeMove, m_game.textFilter2());
 
     QString commentString = (m_outputType == Pgn) ? m_game.annotation(moveId) :
-                                                    m_game.textAnnotation(moveId, GameX::AfterMove, static_cast<GameX::AnnotationFilter>(GameX::FilterTan | GameX::FilterCan));
+                                                    m_game.textAnnotation(moveId, GameX::AfterMove, m_game.textFilter2());
 
     // Write precomment if any
     text += writeComment(precommentString, mvno, Precomment);
@@ -598,7 +598,7 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
         || ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline") && (m_currentVariationLevel == 0));
     MarkupType markup = useIndent? markupIndent : markupInline;
 
-    if(m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0) && useIndent)
+    if(m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0) && !useIndent)
     {
         text += m_endTagMap[MarkupColumnStyleMainline];
     }
@@ -620,7 +620,7 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
         text += comment;
     }
     text += m_endTagMap[markup];
-    if(m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0) && useIndent)
+    if(m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0) && !useIndent)
     {
         text += m_startTagMap[MarkupColumnStyleMainline];
     }
@@ -783,7 +783,7 @@ QString Output::outputGame(const GameX* g, bool upToCurrentMove)
         text += m_startTagMap[MarkupColumnStyleMainline];
     }
 
-    QString gameComment = (m_outputType == Pgn) ? m_game.annotation(0) : m_game.textAnnotation(0);
+    QString gameComment = (m_outputType == Pgn) ? m_game.annotation(0) : m_game.textAnnotation(0, GameX::AfterMove, m_game.textFilter2());
     text += writeGameComment(gameComment);
 
     text += writeMainLine(mainId);

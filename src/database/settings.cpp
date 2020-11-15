@@ -430,11 +430,12 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/GameText/FontSize", DEFAULT_FONTSIZE);
     map.insert("/GameText/ColumnStyle", false);
     map.insert("/GameText/HTMLComments", true);
+    map.insert("/GameText/HideSpecAnnotations", true);
     map.insert("/GameText/SymbolicNag", true);
     map.insert("/GameText/TextWidth", 0);
     map.insert("/GameText/VariationIndentLevel", 1);
     map.insert("/GameText/VariationIndentSize", 3);
-    map.insert("/GameText/CommentIndent", "OnlyMainline");
+    map.insert("/GameText/CommentIndent", "Never");
     map.insert("/GameText/MainLineMoveColor", "black");
     map.insert("/GameText/VariationColor", "blue");
     map.insert("/GameText/CommentColor", "green");

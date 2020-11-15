@@ -23,7 +23,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -580,6 +580,13 @@
              <widget class="QCheckBox" name="cbHTMLComments">
               <property name="text">
                <string>Enable HTML comments</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="cbHideSpecAnnotations">
+              <property name="text">
+               <string>Hide special annotations</string>
               </property>
              </widget>
             </item>

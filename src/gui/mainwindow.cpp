@@ -2107,13 +2107,14 @@ void MainWindow::StartCheckUpdate()
         QNetworkRequest request(url);
         QByteArray userAgent = QString(QCoreApplication::applicationName() + "/" + STR_VERSION_NET).toLatin1();
         request.setRawHeader("User-Agent",userAgent);
+        request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
         m_manager->get(request);
     }
 }
 
 void MainWindow::slotHttpDone(QNetworkReply *reply)
 {
-    QUrl url = reply->url();
+    QUrl url = reply->request().url();
 
     if (url.toString().endsWith("current.txt"))
     {

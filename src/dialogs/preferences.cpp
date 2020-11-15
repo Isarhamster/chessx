@@ -590,6 +590,7 @@ void PreferencesDialog::restoreSettings()
     ui.cbShowDiagrams->setChecked(AppSettings->getValue("ShowDiagrams").toBool());
     ui.cbColumnStyle->setChecked(AppSettings->getValue("ColumnStyle").toBool());
     ui.cbHTMLComments->setChecked(AppSettings->getValue("HTMLComments").toBool());
+    ui.cbHideSpecAnnotations->setChecked(AppSettings->getValue("HideSpecAnnotations").toBool());
     ui.variationIndentLevel->setValue(AppSettings->getValue("VariationIndentLevel").toInt());
 
     ui.cbIndentComments->setItemData(0, "Always");
@@ -723,6 +724,7 @@ void PreferencesDialog::saveSettings()
 
     AppSettings->setValue("FontSize", ui.gameTextFontSizeSpin->value());
     AppSettings->setValue("ShowDiagrams", ui.cbShowDiagrams->isChecked());
+    AppSettings->setValue("HideSpecAnnotations", ui.cbHideSpecAnnotations->isChecked());
     AppSettings->setValue("HTMLComments", ui.cbHTMLComments->isChecked());
     AppSettings->setValue("ColumnStyle", ui.cbColumnStyle->isChecked());
     AppSettings->setValue("VariationIndentLevel", ui.variationIndentLevel->value());

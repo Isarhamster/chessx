@@ -97,12 +97,13 @@ void OnlineTablebase::sendIt()
     QNetworkRequest request(url);
     QByteArray userAgent = QString(QCoreApplication::applicationName() + "/" + STR_VERSION_NET).toLatin1();
     request.setRawHeader("User-Agent",userAgent);
+    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
     manager.get(request);
 }
 
 void OnlineTablebase::httpDone(QNetworkReply *reply)
 {
-    QUrl url = reply->url();
+    QUrl url = reply->request().url();
 
     if(!reply->error())
     {
