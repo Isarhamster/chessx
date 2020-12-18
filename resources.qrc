@@ -101,6 +101,7 @@
         <file alias="images/respond.png">data/images/respond.png</file>
         <file alias="images/save.png">data/images/save.png</file>
         <file alias="images/setup_board.png">data/images/setup_board.png</file>
+        <file alias="images/spray.png">data/images/spray.png</file>
         <file alias="images/square_green.png">data/images/square_green.png</file>
         <file alias="images/square_none.png">data/images/square_none.png</file>
         <file alias="images/square_red.png">data/images/square_red.png</file>

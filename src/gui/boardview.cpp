@@ -724,8 +724,16 @@ void BoardView::checkCursor(Qt::KeyboardModifiers modifiers)
     {
         if (m_brushMode)
         {
-            file = ":/images/pen.png";
-            text = tr("Draw a square or arrow annotation");
+            if (modifiers & AltModifier)
+            {
+                file = ":/images/spray.png";
+                text = tr("Spray color annotations");
+            }
+            else
+            {
+                file = ":/images/pen.png";
+                text = tr("Draw a square or arrow annotation");
+            }
         }
         else switch (moveActionFromModifier(modifiers))
         {

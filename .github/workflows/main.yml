@@ -23,7 +23,7 @@ jobs:
         path: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
         key: ${{ runner.os }}-Qt${{ env.QT_VERSION }}
     - name: Install Qt ${{ env.QT_VERSION }}
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v2.11.1
       with:
         version: ${{ env.QT_VERSION }}
         dir: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}

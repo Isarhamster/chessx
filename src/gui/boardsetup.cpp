@@ -27,6 +27,7 @@
 #include <QSpacerItem>
 #include <QSizePolicy>
 
+// Dummy change
 using namespace chessx;
 
 #if defined(_MSC_VER) && defined(_DEBUG)
