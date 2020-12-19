@@ -106,6 +106,7 @@ QString DownloadManager::saveFileName(const QUrl &url)
     QString basename = QFileInfo(path).fileName();
 
     if (basename.endsWith(".pgn") ||
+        basename.endsWith(".si4") ||
         basename.endsWith(".bin") ||
         basename.endsWith(".abk") ||
         basename.endsWith(".ctg") ||

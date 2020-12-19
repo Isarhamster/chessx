@@ -34,14 +34,6 @@ namespace Guess
 {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// CONSTANTS:
-
-const char TREEFILE_SUFFIX[] = ".stc";
-const char GZIP_SUFFIX[] = ".gz";
-const char ZIP_SUFFIX[] = ".zip";
-const char PGN_SUFFIX[] = ".pgn";
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // TYPE DEFINITIONS
 
 //  compareT: comparison type
