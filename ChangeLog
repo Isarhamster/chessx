@@ -1,3 +1,29 @@
+December 2020: Version 1.5.6
+- New Feature: Implement read support for Scid binary database (*.si4)
+
+- New feature: Spray fields in pen mode by pressing alt+Left Mouse
+- New feature: Add option to hide special annotations in view
+- New feature: Show variation arrows
+- New feature: Engine draws an arrow for its best move
+- New feature: Support online chess.com / lichess data access
+- New feature: Scroll through game with ChartWidget
+- New feature: Display eval annotations in the chart (%eval)
+- New feature: Open file from scratchpad / Drag file names to scratchpad
+- New feature: Visualization training
+- New feature: Indicate Draw percentage in OpeningTree
+
+- Bugfix: Opening tree - switching between Database and Filter did not trigger tree update
+- Bugfix: Display of symbolic pieces in OpeningTreeWidget and variation list
+- Bugfix: Hotkeys are not serialized properly
+- Bugfix: Duplicate hotkeys for menus with same name
+- Bugfix: Do not ask to save clipboard
+- Bugfix: Dark theme handling
+
+- Changed: Raise scratchpad when New or Open is invoked
+- Changed: Resize text fonts with Ctrl+ Ctrl- or Ctrl+Alt+Wheel
+- Changed: Increase max size for writable databases
+- Changed: Disable Raise of game list after filtering
+
 March 2020: Version 1.5.4
 - New Feature: Support lc0 for Mac OS
 - New feature: blunder checking
