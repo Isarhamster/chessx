@@ -366,7 +366,9 @@ void MainWindow::UpdateAnnotationView()
     BoardViewEx* frame = BoardViewFrame(m_boardView);
     if (frame)
     {
+        frame->blockSignals(true);
         frame->setComment(annotation);
+        frame->blockSignals(false);
     }
 }
 
@@ -2055,7 +2057,8 @@ void MainWindow::slotDatabaseRemoveVariations()
 
 void MainWindow::slotGameSetComment(QString annotation)
 {
-    if (game().textAnnotation() != annotation)
+    QString s = game().textAnnotation();
+    if (s != annotation)
     {
         game().editAnnotation(annotation);
         UpdateGameText();
