@@ -62,135 +62,10 @@ Free Chess Database</string>
      <property name="bottomMargin">
       <number>5</number>
      </property>
-     <item row="7" column="0">
-      <widget class="QGroupBox" name="groupBox_4">
-       <property name="title">
-        <string>Further Code</string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QLabel" name="lbCode">
-          <property name="frameShape">
-           <enum>QFrame::Panel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Sunken</enum>
-          </property>
-          <property name="text">
-           <string notr="true">James Coons
-Marius Roets
-Sean Estabrooks
-Rico Zenklusen
-Heinz Hopfgartner
-William Hoggarth</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="7" column="1">
-      <widget class="QGroupBox" name="groupTranslate">
-       <property name="title">
-        <string>Translations</string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QLabel" name="lbTranslate">
-          <property name="frameShape">
-           <enum>QFrame::Panel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Sunken</enum>
-          </property>
-          <property name="text">
-           <string notr="true">Byrial Jensen
-Bruno Rizzuti
-Jens Nissen
-Joachim Katzer
-Olivier Roset
-Marcos A. Piñas</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>License</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLabel" name="label_4">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <property name="text">
-        <string notr="true">Jens Nissen</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLabel" name="label_6">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <property name="text">
-        <string notr="true">GNU General Public License 2 - GPLv2</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
         <string>Version</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLabel" name="labelCopyRightDate">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <property name="text">
-        <string notr="true">ccc</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="labelMaintainer">
-       <property name="text">
-        <string>Maintainer</string>
        </property>
       </widget>
      </item>
@@ -220,22 +95,8 @@ Marcos A. Piñas</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string>Further Maintainers</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="labelTest">
-       <property name="text">
-        <string>Testing</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QLabel" name="label_9">
+     <item row="1" column="1">
+      <widget class="QLabel" name="labelCopyRightDate">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -249,12 +110,45 @@ Marcos A. Piñas</string>
         <enum>QFrame::Sunken</enum>
        </property>
        <property name="text">
-        <string notr="true">Michal Rudolf, Ejner Borgbjerg</string>
+        <string notr="true">ccc</string>
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
-      <widget class="QLabel" name="label_13">
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>License</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="label_6">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="text">
+        <string notr="true">GNU General Public License 2 - GPLv2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="labelMaintainer">
+       <property name="text">
+        <string>Maintainer</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLabel" name="label_4">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -272,8 +166,15 @@ Marcos A. Piñas</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
-      <widget class="QLabel" name="label_11">
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>Coders</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLabel" name="label_13">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -287,15 +188,64 @@ Marcos A. Piñas</string>
         <enum>QFrame::Sunken</enum>
        </property>
        <property name="text">
-        <string notr="true">Bruno Rizzuti</string>
+        <string notr="true">Eugene Rysaj
+Kostas Chatzikokolakis
+Jens Nissen</string>
        </property>
       </widget>
      </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="label_12">
-       <property name="text">
-        <string>Coders</string>
+     <item row="5" column="0">
+      <widget class="QGroupBox" name="groupBox_4">
+       <property name="title">
+        <string>Further Code</string>
        </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="lbCode">
+          <property name="frameShape">
+           <enum>QFrame::Panel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="text">
+           <string notr="true">James Coons
+Marius Roets
+Sean Estabrooks
+Rico Zenklusen
+Heinz Hopfgartner
+William Hoggarth</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QGroupBox" name="groupTranslate">
+       <property name="title">
+        <string>Translations</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="lbTranslate">
+          <property name="frameShape">
+           <enum>QFrame::Panel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="text">
+           <string notr="true">Byrial Jensen
+Bruno Rizzuti
+Jens Nissen
+Joachim Katzer
+Olivier Roset
+Marcos A. Piñas</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>
