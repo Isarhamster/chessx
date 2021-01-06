@@ -50,7 +50,7 @@ signals:
     void signalMergeGame(GameId gameIndex, QString source);
 
 protected:
-    virtual void selectAnchor(const QString& href);
+    virtual bool selectAnchor(const QString& href);
     virtual void setSource(const QUrl& url);
     void setupMenu();
     QAction* createAction(const QString& name, EditAction::Type type);

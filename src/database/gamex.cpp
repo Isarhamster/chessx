@@ -768,7 +768,7 @@ static const char strSquareNames[64][3] =
     "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"
 };
 
-const QStringList GameX::s_specList = QStringList() << s_csl << s_cal;
+const QStringList GameX::s_specList = QStringList() << s_csl << s_cal << s_eval;
 
 GameX::GameX()
     : QObject()
@@ -1935,10 +1935,14 @@ QString GameX::specAnnotations(QString s) const
     foreach (QString sr, s_specList)
     {
         QRegExp r(sr);
-        int pos = r.indexIn(s);
-        if(pos >= 0)
+        int pos = 0;
+        while ((pos = r.indexIn(s, pos)) >=0 )
         {
-            retval += r.cap(0);
+            if(pos >= 0)
+            {
+                retval += r.cap(0);
+            }
+            pos += r.matchedLength();
         }
     }
     return retval;

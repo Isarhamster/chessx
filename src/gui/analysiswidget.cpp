@@ -323,6 +323,7 @@ void AnalysisWidget::showAnalysis(Analysis analysis)
     {
         analysis.setElapsedTimeMS(elapsed);
         emit receivedBestMove(c);
+        emit currentBestMove(c);
     }
     else if (c.getEndOfGame())
     {
