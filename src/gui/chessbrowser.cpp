@@ -47,7 +47,7 @@ void ChessBrowser::showMove(int id)
     }
 }
 
-void ChessBrowser::selectAnchor(const QString& href)
+bool ChessBrowser::selectAnchor(const QString& href)
 {
     for(QTextBlock block = document()->begin(); block != document()->end(); block = block.next())
     {
@@ -67,10 +67,11 @@ void ChessBrowser::selectAnchor(const QString& href)
                 cursor.setPosition(fragment.position() + fragment.length(), QTextCursor::KeepAnchor);
                 setTextCursor(cursor);
                 ensureCursorVisible();
-                return;
+                return true;
             }
         }
     }
+    return false;
 }
 
 QStringList ChessBrowser::getAnchors(QList<MoveId> list)

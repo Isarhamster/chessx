@@ -64,7 +64,6 @@ static void ConvertLine(Game& src, GameX& dst, bool movesOnly = false)
             src.MoveBackup();
             dst.cursor().backward();
 
-            auto move = dst.currentMove();
             for (uint v = 0; v < varsCnt; ++v)
             {
                 src.MoveIntoVariation(v);

@@ -52,6 +52,7 @@ void GameNotationWidget::reload(const GameX& game, bool trainingMode)
 {
     auto text = m_output->output(&game, trainingMode);
     m_browser->setText(text);
+    m_browser->showMove(game.currentMove());
 }
 
 QMap<Nag, QAction*> GameNotationWidget::nagActions() const

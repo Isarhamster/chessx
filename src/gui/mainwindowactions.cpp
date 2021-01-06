@@ -366,7 +366,9 @@ void MainWindow::UpdateAnnotationView()
     BoardViewEx* frame = BoardViewFrame(m_boardView);
     if (frame)
     {
+        frame->blockSignals(true);
         frame->setComment(annotation);
+        frame->blockSignals(false);
     }
 }
 
@@ -2055,10 +2057,10 @@ void MainWindow::slotDatabaseRemoveVariations()
 
 void MainWindow::slotGameSetComment(QString annotation)
 {
-    if (game().textAnnotation() != annotation)
+    QString s = game().textAnnotation();
+    if (s != annotation)
     {
         game().editAnnotation(annotation);
-        UpdateGameText();
     }
 }
 
@@ -2451,7 +2453,10 @@ void MainWindow::addAutoNag(Color toMove, int score, int lastScore, int threasho
 
 void MainWindow::slotEngineCurrentBest(const Analysis& analysis)
 {
-    m_boardView->setBestGuess(analysis.variation().at(0));
+    if (analysis.variation().count())
+    {
+        m_boardView->setBestGuess(analysis.variation().at(0));
+    }
 }
 
 void MainWindow::slotEngineTimeout(const Analysis& analysis)

@@ -44,9 +44,6 @@ const versionT SCID_OLDEST_VERSION = 300; // Oldest readable file format: 3.0
 const char SCID_VERSION_STRING[] = "4.7.1";     // Current Scid version
 const char SCID_WEBSITE[] = "http://scid.sourceforge.net/";
 
-const char PGN_SUFFIX[] = ".pgn";
-
-
 //////////////////////////////////////////////////////////////////////
 // ASSERT macro: asserts an expression. Differs from the standard
 //    assert in that it does NOT print the expression (this is a waste,
