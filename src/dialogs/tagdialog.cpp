@@ -143,7 +143,6 @@ bool TagDialog::editTags(IndexX* index, GameX& game, GameId id)
             }
             if (removeTag)
             {
-                QString tag = ui->tagTable->item(i, 0)->text();
                 game.removeTag(tag);
                 index->removeTag(tag,id);
             }

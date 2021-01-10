@@ -958,7 +958,6 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
     {
         if(m_dragged != Empty)
         {
-            Square from = squareAt(m_dragStart);
             m_dragStartSquare = InvalidSquare;
             QRect oldr = QRect(m_dragPoint, m_theme.size());
             m_dragged = Empty;
@@ -1003,7 +1002,6 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
         {
             if(s != InvalidSquare)
             {
-                Square from = squareAt(m_dragStart);
                 emit clicked(s, button, mapToGlobal(event->pos()), from);
             }
             if (m_dragged != Empty)
@@ -1022,14 +1020,12 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
         m_dragStartSquare = InvalidSquare;
         if ((s != InvalidSquare) && !(event->modifiers() & Qt::AltModifier))
         {
-            Square from = squareAt(m_dragStart);
             emit clicked(s, button, mapToGlobal(event->pos()), from);
             m_dragged = Empty;
         }
     }
     else if(m_dragged != Empty)
     {
-        Square from = squareAt(m_dragStart);
         m_dragStartSquare = InvalidSquare;
         QRect oldr = QRect(m_dragPoint, m_theme.size());
         m_dragged = Empty;

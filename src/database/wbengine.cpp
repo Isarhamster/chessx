@@ -170,16 +170,14 @@ void WBEngine::feature(const QString& command)
 {
     //break up command into individual features
     int index = command.indexOf(' ') + 1;
-    int equalsIndex;
     int endIndex;
     QString feature;
     QString value;
 
     while(index < (int)command.length())
     {
-
         //feature name terminates with an =
-        equalsIndex = command.indexOf('=', index);
+        int equalsIndex = command.indexOf('=', index);
         feature = command.mid(index, equalsIndex - index);
 
         //string values are delimited by ", others end with whitespace

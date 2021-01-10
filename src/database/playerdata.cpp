@@ -235,10 +235,9 @@ QList<qint32> PlayerData::eloListData() const
 void PlayerData::eloFromListData(const QList<qint32>& eloListData)
 {
     int listIx = 1;
-    qint32 elem;
     for(unsigned int i = 0; i < (unsigned int)eloListData.size();)
     {
-        elem = eloListData[i++];
+        qint32 elem = eloListData[i++];
         if(elem == -9999)
         {
             elem = eloListData[i++];

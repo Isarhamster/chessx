@@ -1193,7 +1193,7 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
             c = fen[++i];
         }
 
-        if(m_moveNumber <= 0)
+        if(m_moveNumber == 0)
         {
             // Silently fix illegal movenumber
             m_moveNumber = 1;
@@ -3088,7 +3088,7 @@ QString BitBoard::toFen(bool forceExtendedFEN) const
     fen += QString::number(halfMoveClock());
     fen += " ";
     // move number
-    fen += QString::number(m_moveNumber <= 0 ? 1 : m_moveNumber);
+    fen += QString::number(m_moveNumber == 0 ? 1 : m_moveNumber);
 
     return fen;
 }

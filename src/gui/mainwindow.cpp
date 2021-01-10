@@ -1348,14 +1348,7 @@ bool MainWindow::gameEditComment(Output::CommentType type)
     else
     {
         QString spec = game().specAnnotations();
-        if (moves > 0)
-        {
-            game().setAnnotation(dlg.text()+spec);
-        }
-        else
-        {
-            game().setGameComment(dlg.text()+spec);
-        }
+        game().setAnnotation(dlg.text()+spec);
     }
     return true;
 }

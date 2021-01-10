@@ -34,7 +34,8 @@ CtgDatabase::CtgDatabase() :
     ctg_file(nullptr),
     cto_file(nullptr),
     ctb_file(nullptr),
-    m_count(0)
+    m_count(0),
+    page_bounds{}
 {
 }
 

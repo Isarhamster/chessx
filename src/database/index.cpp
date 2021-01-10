@@ -418,7 +418,7 @@ ValueIndex IndexX::getValueIndex(QString name) const
             return n;
         }
         name.append(QChar(0));
-        QString prelim = name;
+        QString prelim;
         int i = 0;
         do {
             prelim = name + QString::number(i++);
