@@ -33,6 +33,7 @@ EngineX::EngineX(const QString& name,
 {
     m_name = name;
     m_command = command;
+    m_mpv = 0;
     m_bTestMode = bTestMode;
     m_sendHistory = sendHistory;
     QTextStream* logStream = nullptr;
@@ -216,13 +217,10 @@ void EngineX::setAnalyzing(bool analyzing)
         m_analyzing = true;
         emit analysisStarted();
     }
-    else
+    else if(m_analyzing)
     {
-        if(!analyzing && m_analyzing)
-        {
-            m_analyzing = false;
-            emit analysisStopped();
-        }
+        m_analyzing = false;
+        emit analysisStopped();
     }
 }
 

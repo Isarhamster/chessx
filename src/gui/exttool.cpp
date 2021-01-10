@@ -16,7 +16,7 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-ExtTool::ExtTool(QObject *parent) : QObject(parent)
+ExtTool::ExtTool(QObject *parent) : QObject(parent), m_extToolProcess(0)
 {
 
 }

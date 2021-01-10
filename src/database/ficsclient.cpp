@@ -72,12 +72,11 @@ void FicsClient::OnSessionStarted(QString guestName)
 
 void FicsClient::OnReceiveTelnetMessage(QString s)
 {
-    int start = -1;
     int end = -1;
 
     if (InternalTelnet())
     {
-        start = s.indexOf(StartReply);
+        int start = s.indexOf(StartReply);
         end = s.indexOf(EndReply);
 
         if (end>=0)

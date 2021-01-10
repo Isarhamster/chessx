@@ -548,7 +548,7 @@ bool Position::isFreeForCastling960(squareT from, squareT to, squareT rook_from,
             if (pieceAt(square) != EMPTY) return false;
         }
         if (CalcNumChecks(square) != 0) return false;
-        if (square!=to) square += (from<=to) ? 1:-1;
+        square += (from<=to) ? 1:-1;
     }
 
     if (square_Adjacent(to, enemyKingSq)) return false;
@@ -566,7 +566,7 @@ bool Position::isFreeForCastling960(squareT from, squareT to, squareT rook_from,
         {
             if (pieceAt(square) != EMPTY) return false;
         }
-        if (square!=rook_to) square += (rook_from<=rook_to) ? 1:-1;
+        square += (rook_from<=rook_to) ? 1:-1;
     }
 
     if ((rook_from != rook_to) && (rook_to != from))
@@ -1554,8 +1554,6 @@ Position::MatchLegalMove(MoveList * mlist, pieceC mask, squareT target)
     squareT kingSq = GetKingSquare(ToMove);
     directionT dir;
 
-    unsigned int tryMove = 0;
-
     // First, verify that the target square is empty or contains
     // an enemy piece:
 
@@ -1579,7 +1577,7 @@ Position::MatchLegalMove(MoveList * mlist, pieceC mask, squareT target)
             // Increment count so we stop when we've seen all the
             // Material[p] pieces of this type.
 
-            tryMove = 0;
+            unsigned int tryMove = 0;
             ++count;
             squareT sq;
 
@@ -2472,12 +2470,12 @@ Position::Mobility(pieceC p, colorT color, squareT from)
         while(dest != last)
         {
             dest += delta;
-            pieceT p = Board[dest];
-            if(p == EMPTY)     // Empty square
+            pieceT pt = Board[dest];
+            if(pt == EMPTY)     // Empty square
             {
                 ++mobility;
             }
-            else if(piece_Color(p) == color)       // Friendly piece
+            else if(piece_Color(pt) == color)       // Friendly piece
             {
                 break;  // Finished with this direction.
             }

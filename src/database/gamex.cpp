@@ -1938,10 +1938,7 @@ QString GameX::specAnnotations(QString s) const
         int pos = 0;
         while ((pos = r.indexIn(s, pos)) >=0 )
         {
-            if(pos >= 0)
-            {
-                retval += r.cap(0);
-            }
+            retval += r.cap(0);
             pos += r.matchedLength();
         }
     }
