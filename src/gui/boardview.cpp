@@ -356,7 +356,7 @@ void BoardView::drawHiliting(QPaintEvent* event)
     }
 
     // draw variation arrows (whether they are really displayed depends on the contents of m_variations)
-    bool thin = false;
+    int thin = 0;
     foreach(Move move, m_variations)
     {
         Square moveFrom = move.from();
@@ -369,7 +369,7 @@ void BoardView::drawHiliting(QPaintEvent* event)
             QColor c(m_theme.color(BoardTheme::VariationMove));
             drawArrow(moveFrom, moveTo, c, thin);
         }
-        thin = true;    // all but the first variation are drawn as thin
+        thin++;    // all but the first variation are drawn as thin
     }
 }
 
@@ -1375,46 +1375,47 @@ void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
     drawColorRect(event, square, color);
 }
 
-void BoardView::drawArrow(int square1, int square2, QColor color, bool thin)
+void BoardView::drawArrow(int square1, int square2, QColor color, int thin)
 {
     QPainter p(this);
+    thin = std::min(thin,3);
+    if (thin) thin++;
 
-    int x1 = isFlipped() ? 7 - square1 % 8 : square1 % 8;
-    int y1 = isFlipped() ? square1 / 8 : 7 - square1 / 8;
-    int x2 = isFlipped() ? 7 - square2 % 8 : square2 % 8;
-    int y2 = isFlipped() ? square2 / 8 : 7 - square2 / 8;
-    int w = m_theme.size().width();
-    int h = m_theme.size().height();
-    int coord =  m_coordinates ? CoordinateSize : 0;
-    QPoint pos1(coord + (x1 * w) + (w / 2), (y1 * h) + (h / 2));
-    QPoint pos2(coord + (x2 * w) + (w / 2), (y2 * h) + (h / 2));
+    float x1 = isFlipped() ? 7 - square1 % 8 : square1 % 8;
+    float y1 = isFlipped() ? square1 / 8 : 7 - square1 / 8;
+    float x2 = isFlipped() ? 7 - square2 % 8 : square2 % 8;
+    float y2 = isFlipped() ? square2 / 8 : 7 - square2 / 8;
+    float w = m_theme.size().width();
+    float h = m_theme.size().height();
+    float coord =  m_coordinates ? CoordinateSize : 0;
+    QPointF pos1(coord + (x1 * w) + (w / 2), (y1 * h) + (h / 2));
+    QPointF pos2(coord + (x2 * w) + (w / 2), (y2 * h) + (h / 2));
 
     // Now to Draw Arrow Head
-    qreal headWidth = m_theme.size().width() / 4 * (thin ? 0.5 : 1);
+    qreal headWidth = m_theme.size().width() / 4;
     qreal headLength = headWidth;
     qreal headIndent = headWidth / 4;
     qreal netIndent = headLength - headIndent;
 
     qreal halfHead = headWidth / 2;
-    int px1 = pos1.x();
-    int px2 = pos2.x();
-    int py1 = pos1.y();
-    int py2 = pos2.y();
-    int dX = px2 - px1;
-    int dY = py2 - py1;
+    float px1 = pos1.x();
+    float px2 = pos2.x();
+    float py1 = pos1.y();
+    float py2 = pos2.y();
+    float dX = px2 - px1;
+    float dY = py2 - py1;
 
     qreal  arrowLength = qSqrt(dX * dX + dY * dY);
 
     QPointF arrowPts[7];
 
     // we will shorten the line somewhat to avoid arrows all colliding in the center of the square
-    int adjust = (w + h) / (thin ? 16 : 8);
+    float adjust = ((w + h) / 8);
 
     px1 = px1 + ((adjust * dX) / arrowLength);
     px2 = px2 - ((adjust * dX) / arrowLength);
     py1 = py1 + ((adjust * dY) / arrowLength);
     py2 = py2 - ((adjust * dY) / arrowLength);
-
 
     // calculate the points that form the arrow
     arrowPts[0].setX(px2 - ((netIndent * dX) / arrowLength));
@@ -1428,16 +1429,15 @@ void BoardView::drawArrow(int square1, int square2, QColor color, bool thin)
     arrowPts[2].setX(px2);
     arrowPts[2].setY(py2);
 
-    QPoint pos3(px1, py1);
-    QPoint pos4(px2- ((adjust * dX) / arrowLength), py2- ((adjust * dY) / arrowLength));
+    QPointF pos3(px1, py1);
+    QPointF pos4(px2- ((adjust * dX) / arrowLength), py2- ((adjust * dY) / arrowLength));
 
     p.save();
     p.setRenderHint(QPainter::SmoothPixmapTransform);
 
-    color.setAlpha(176);
-    QPen pen(color);
+    color.setAlpha(176-28*thin);
     int penWidth = std::max(2, (int)(headWidth / 3));
-    pen.setWidth(penWidth);
+    QPen pen(color, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
     p.setPen(pen);
     p.drawLine(pos3, pos4);
 
