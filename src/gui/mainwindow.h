@@ -317,7 +317,6 @@ public slots:
     void slotSearchReset();
     /** Training mode */
     void slotToggleTraining();
-    void slotToggleTraining2();
     /** Training mode - auto responder */
     void slotToggleAutoRespond();
     /** Reverse current filter */
