@@ -1681,7 +1681,7 @@ void MainWindow::setupActions()
     autoGroup->addAction(m_training);
     gameMenu->addAction(m_training);
 
-    m_training2 = createAction(tr("Train both sides"), SLOT(slotToggleTraining2()), Qt::CTRL + Qt::META + Qt::Key_R, gameToolBar, ":/images/training_both.png");
+    m_training2 = createAction(tr("Train both sides"), SLOT(slotToggleTraining()), Qt::CTRL + Qt::META + Qt::Key_R, gameToolBar, ":/images/training_both.png");
     m_training2->setCheckable(true);
     autoGroup->addAction(m_training2);
     gameMenu->addAction(m_training2);

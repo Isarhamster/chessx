@@ -1324,7 +1324,7 @@ void MainWindow::displayVariations()
     QStringList textVariations;
 
     // dont show variations in no hint mode
-    if (!m_noHintMode)
+    if (!(m_training->isChecked() || m_training2->isChecked()))
     {
         foreach(MoveId id, listVariations)
         {
@@ -1336,34 +1336,35 @@ void MainWindow::displayVariations()
                 arrowMoves.push_back(move);
             }
         }
+
+        if (textVariations.isEmpty())
+        {
+            QString placeHolder;
+            if (game().atLineEnd())
+            {
+                placeHolder = (game().isMainline() ? tr("End of game") : tr("End of line"));
+            }
+            else
+            {
+                placeHolder = (game().isMainline() ? tr("Main line") : tr("Line"));
+            }
+
+            MoveId start = game().variationStartMove();
+            if (start != NO_MOVE)
+            {
+                GameX g(game());
+                g.dbMoveToId(start);
+                Move startMove = g.move();
+                g.backward();
+                QString startSan = g.board().moveToSan(startMove, true, true);
+                placeHolder += " ";
+                placeHolder += startSan;
+            }
+            textVariations << placeHolder;
+        }
     }
 
-    if (textVariations.isEmpty())
-    {
-        QString placeHolder;
-        if (game().atLineEnd())
-        {
-            placeHolder = (game().isMainline() ? tr("End of game") : tr("End of line"));
-        }
-        else
-        {
-            placeHolder = (game().isMainline() ? tr("Main line") : tr("Line"));
-        }
-
-        MoveId start = game().variationStartMove();
-        if (start != NO_MOVE)
-        {
-            GameX g(game());
-            g.dbMoveToId(start);
-            Move startMove = g.move();
-            g.backward();
-            QString startSan = g.board().moveToSan(startMove, true, true);
-            placeHolder += " ";
-            placeHolder += startSan;
-        }
-        textVariations << placeHolder;
-    }
-
+    // Update list of variations
     BoardViewFrame(m_boardView)->showVariations(listVariations, textVariations);
 
     // update boardview's variation list (to display variation arrows)
@@ -2077,16 +2078,7 @@ void MainWindow::slotToggleTraining()
         enterNoHintMode(action->isChecked());
     }
     UpdateGameText();
-}
-
-void MainWindow::slotToggleTraining2()
-{
-    QAction* action = qobject_cast<QAction*>(sender());
-    if (AppSettings->getValue("/Board/noHints").toBool())
-    {
-        enterNoHintMode(action->isChecked());
-    }
-    UpdateGameText();
+    displayVariations();
 }
 
 void MainWindow::slotToggleAutoRespond()
