@@ -2083,9 +2083,9 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares, boo
     squareT sq;
 
     // Bishop/Queen/Rook attacks: look at each of the 8 directions
-    pieceT queen, rook, bishop, knight, pawn;
+    pieceT queen, rook, bishop, knight, pawn, king;
     directionT pawnDir1, pawnDir2;
-    rankT backRank;
+    rankT backRank, secRank;
     if(side == WHITE)
     {
         queen = WQ;
@@ -2093,9 +2093,11 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares, boo
         bishop = WB;
         knight = WN;
         pawn = WP;
+        king = WK;
         pawnDir1 = DOWN_LEFT;
         pawnDir2 = DOWN_RIGHT;
         backRank = RANK_1;
+        secRank = RANK_2;
     }
     else
     {
@@ -2104,9 +2106,11 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares, boo
         bishop = BB;
         knight = BN;
         pawn = BP;
+        king = BK;
         pawnDir1 = UP_LEFT;
         pawnDir2 = UP_RIGHT;
         backRank = RANK_8;
+        secRank = RANK_7;
     }
 
     unsigned int numQueensRooks = Material[queen] + Material[rook];
@@ -2224,7 +2228,7 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares, boo
         const squareT * destPtr = knightAttacks[target];
         while(true)
         {
-            squareT dest = *destPtr;
+            squareT dest = *destPtr++;
             if(dest == NULL_SQUARE)
             {
                 break;
@@ -2233,12 +2237,11 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares, boo
             {
                 fromSquares->Add(dest);
             }
-            destPtr++;
         }
     }
 
     // Now pawn attacks:
-    if(square_Rank(target) != backRank)     //if (Material[WP] > 0) {
+    if((square_Rank(target) != backRank) && (square_Rank(target) != secRank) )  //if (Material[WP] > 0) {
     {
         sq = square_Move(target, pawnDir1);
         if(Board[sq] == pawn)
@@ -2249,6 +2252,24 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares, boo
         if(Board[sq] == pawn)
         {
             fromSquares->Add(sq);
+        }
+    }
+
+    if (calcDiscoveredAttacks)
+    {
+        const squareT * destPtr = kingAttacks[target];
+        while(true)
+        {
+            squareT dest = *destPtr++;
+            if(dest == NULL_SQUARE)
+            {
+                break;
+            }
+            if(Board[dest] == king)
+            {
+                fromSquares->Add(dest);
+                break;
+            }
         }
     }
 
