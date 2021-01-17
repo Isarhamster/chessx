@@ -1778,6 +1778,24 @@ Move BitBoard::nullMove() const
     return m;
 }
 
+static int strncmpi(QByteArray a, QByteArray b, int n)
+{
+    return strncmp(a.toLower(), b.toLower(), n);
+}
+
+Move BitBoard::createCastlingK() const
+{
+    Square k = m_chess960 ? m_ksq[m_stm] : ((m_stm == White) ? e1 : e8);
+    Square to = m_chess960 ? CastlingRook(1+2*(int)m_stm) : ((m_stm == White) ? g1 : g8);
+    return prepareMove(k, to);
+}
+
+Move BitBoard::createCastlingQ() const
+{
+    Square k = m_chess960 ? m_ksq[m_stm] : ((m_stm == White) ? e1 : e8);
+    Square to = m_chess960 ? CastlingRook(2*(int)m_stm) : ((m_stm == White) ? c1 : c8);
+    return prepareMove(k, to);
+}
 
 Move BitBoard::parseMove(const QString& algebraic) const
 {
@@ -1801,20 +1819,31 @@ Move BitBoard::parseMove(const QString& algebraic) const
     {
         if (strlen(san)>=5)
         {
-            if(strncmp(san, "o-o-o", 5) == 0 || strncmp(san, "O-O-O", 5) == 0 || strncmp(san, "0-0-0", 5)  == 0)
+            if(strncmpi(san, "o-o-o", 5) == 0 || strncmp(san, "0-0-0", 5)  == 0)
             {
-                Square k = m_chess960 ? m_ksq[m_stm] : ((m_stm == White) ? e1 : e8);
-                Square to = m_chess960 ? CastlingRook(2*(int)m_stm) : ((m_stm == White) ? c1 : c8);
-                return prepareMove(k, to);
+                return createCastlingQ();
             }
         }
-        else if (strlen(san)>=3)
+        else if (strlen(san)==3)
         {
-            if(strncmp(san, "o-o", 3) == 0 || strncmp(san, "O-O", 3) == 0 || strncmp(san, "0-0", 3)  == 0)
+            if(strncmpi(san, "o-o", 3) == 0 || strncmp(san, "0-0", 3)  == 0)
             {
-                Square k = m_chess960 ? m_ksq[m_stm] : ((m_stm == White) ? e1 : e8);
-                Square to = m_chess960 ? CastlingRook(1+2*(int)m_stm) : ((m_stm == White) ? g1 : g8);
-                return prepareMove(k, to);
+                return createCastlingK();
+            }
+            else if(strncmp(san, "000", 3) == 0)
+            {
+                return createCastlingQ();
+            }
+        }
+        else if (strlen(san)==2)
+        {
+            if ((strncmp(san, "00", 2) == 0) || (strncmpi(san, "0K", 2) == 0))
+            {
+                return createCastlingK();
+            }
+            else if (strncmpi(san, "0Q", 2) == 0)
+            {
+                return createCastlingQ();
             }
         }
         return move;
@@ -1919,7 +1948,9 @@ Move BitBoard::parseMove(const QString& algebraic) const
     {
         // either a pawn or a piece, is determined by source location
         if (fromSquare == InvalidSquare)
+        {
             type = Pawn;
+        }
         else
         {
             type = m_piece[fromSquare];
@@ -1971,11 +2002,19 @@ Move BitBoard::parseMove(const QString& algebraic) const
             int base = (m_stm == White ? -8 : 8);
             if(fromFile < 0)
             {
-                fromSquare = toSquare + base;
-                quint64 bit = SetBit(fromSquare);
-                if(!(m_occupied_co[m_stm] & bit))
+                if (((m_stm == White) && (Rank(toSquare) > 1)) ||
+                    ((m_stm == Black) && (Rank(toSquare) < 7)))
                 {
-                    fromSquare += base;
+                    fromSquare = toSquare + base;
+                    quint64 bit = SetBit(fromSquare);
+                    if(!(m_occupied_co[m_stm] & bit))
+                    {
+                        if (((m_stm == White) && (Rank(toSquare) > 1)) ||
+                            ((m_stm == Black) && (Rank(toSquare) < 7)))
+                        {
+                            fromSquare += base;
+                        }
+                    }
                 }
             }
             else if(fromFile <= (int) File(toSquare))
@@ -1987,13 +2026,15 @@ Move BitBoard::parseMove(const QString& algebraic) const
                 fromSquare = toSquare + (base + 1);
             }
         }
-        // This isn't a hugely efficient way to go from here
-        move = prepareMove(fromSquare, toSquare);
-        if(move.isPromotion() && promotePiece)
+        if ((fromSquare != InvalidSquare) && (m_piece[fromSquare] == Pawn))
         {
-            move.setPromoted(promotePiece);
+            // This isn't a hugely efficient way to go from here
+            move = prepareMove(fromSquare, toSquare);
+            if(move.isPromotion() && promotePiece)
+            {
+                move.setPromoted(promotePiece);
+            }
         }
-
         return move;
     }
 

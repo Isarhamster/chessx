@@ -80,6 +80,9 @@ public:
 
     // Move factories
     //
+    Move createCastlingQ() const;
+    Move createCastlingK() const;
+
     /** parse SAN or LAN representation of move, and return proper Move() object */
     Move parseMove(const QString& algebraic) const;
     /** Return a proper Move() object given only a from-to move specification */
