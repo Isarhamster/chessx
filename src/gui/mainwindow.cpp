@@ -584,7 +584,11 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                             keyEvent->key() == Qt::Key_Return ||
                             keyEvent->key() == Qt::Key_Enter))
             {
-                if (obj == this || obj == m_boardView || m_gameView->findChild<QWidget*>(obj->objectName()) || obj == m_mainAnalysis || obj == m_secondaryAnalysis)
+                if (obj == this ||
+                    obj == m_boardView ||
+                    m_gameView->findChild<QWidget*>(obj->objectName()) ||
+                    obj == m_mainAnalysis ||
+                    obj == m_secondaryAnalysis)
                 {
                     keyPressEvent(keyEvent);
                     return (obj != m_boardView);
@@ -719,7 +723,7 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
     else
     {
         m_nagText.append(e->text());
-        if (!(m_nagText.length()<=3 && m_nagText.contains("-")) && addVariationFromSan(m_nagText)) // Avoid 0-0 / Nullmove been sent too early
+        if (!(m_nagText.length()<=3 && (m_nagText.contains("-")||m_nagText.contains("0"))) && addVariationFromSan(m_nagText)) // Avoid 0-0 / Nullmove been sent too early
         {
             if (qobject_cast<FicsDatabase*>(database()))
             {
