@@ -210,9 +210,11 @@ MainWindow::MainWindow() : QMainWindow(),
     gameTextDock->setWidget(m_gameWindow);
     connect(this, &MainWindow::reconfigure, m_gameView, &GameNotationWidget::slotReconfigure);
     addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
-    m_gameTitle = new QLabel;
+    m_gameTitle = new GameTextTitleWidget(gameTextDock);
     connect(m_gameTitle, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
     gameTextDock->setTitleBarWidget(m_gameTitle);
+
+    QWidget* w = gameTextDock->titleBarWidget();
 
     m_menuView->addAction(gameTextDock->toggleViewAction());
     gameTextDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_E);

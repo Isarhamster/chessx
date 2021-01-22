@@ -251,6 +251,7 @@ HEADERS += src/database/board.h \
   src/gui/gamelist.h \
   src/gui/gamelistsortmodel.h \
   src/gui/gamenotationwidget.h \
+  src/gui/gametexttitlewidget.h \
   src/gui/gametoolbar.h \
   src/gui/gamewindow.h \
   src/gui/helpbrowser.h \
@@ -408,6 +409,7 @@ SOURCES += \
   src/gui/gamelist.cpp \
   src/gui/gamelistsortmodel.cpp \
   src/gui/gamenotationwidget.cpp \
+  src/gui/gametexttitlewidget.cpp \
   src/gui/gametoolbar.cpp \
   src/gui/gamewindow.cpp \
   src/gui/helpbrowser.cpp \
@@ -502,13 +504,15 @@ macx {
   INSTALLATION_DATA.files = mac_osx/qt_menu.nib
   INSTALLATION_DATA.path = Contents/Resources/
   QMAKE_BUNDLE_DATA += INSTALLATION_DATA
-  ENGINE_DATA.files = data/engines-mac/uci/stockfish-10-64
-  ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
-  QMAKE_BUNDLE_DATA += ENGINE_DATA
   TIMESEAL_DATA.files = data/timeseal/mac/timeseal
   TIMESEAL_DATA.path = Contents/MacOS/data/timeseal/mac
   QMAKE_BUNDLE_DATA += TIMESEAL_DATA
   QMAKE_INFO_PLIST = mac_osx/Info.plist
+  sf10 {
+    ENGINE_DATA.files = data/engines-mac/uci/stockfish-10-64
+    ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
+    QMAKE_BUNDLE_DATA += ENGINE_DATA
+  }
 }
 
 lc0 {
