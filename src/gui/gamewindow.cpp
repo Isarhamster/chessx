@@ -25,6 +25,7 @@ GameWindow::GameWindow(QWidget *parent) :
     setObjectName("GameWindow");
 
     setupToolBox();
+    connect(ui->gameTitle, SIGNAL(linkActivated(QString)), this, SIGNAL(linkActivated(QString)));
 }
 
 GameWindow::~GameWindow()
@@ -111,4 +112,14 @@ void GameWindow::addActionAtPage(int page, QAction* action)
     {
         layout->addWidget(toolButton,rows,0);
     }
+}
+
+QString GameWindow::getTitle() const
+{
+    return ui->gameTitle->text();
+}
+
+void GameWindow::setTitle(const QString &value)
+{
+    ui->gameTitle->setText(value);
 }

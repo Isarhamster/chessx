@@ -25,9 +25,15 @@ public:
 
     GameNotationWidget* browser();
 
+    QString getTitle() const;
+    void setTitle(const QString &value);
+
 public slots:
     void saveConfig();
     void slotReconfigure();
+
+signals:
+    void linkActivated(const QString& link);
 
 protected:
     void setupSpacers();

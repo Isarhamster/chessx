@@ -13,7 +13,6 @@
 #include "historylist.h"
 #include "output.h"
 #include "engineparameter.h"
-#include "gametexttitlewidget.h"
 
 #include <QtGui>
 #include <QAction>
@@ -681,7 +680,6 @@ private:
     /* Status */
     QLabel* m_statusFilter;
     HistoryLabel* m_statusApp;
-    GameTextTitleWidget* m_gameTitle;
     /* Menus */
     QMenu* m_menuDatabases;
     QMenu* m_recentGames;

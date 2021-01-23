@@ -3811,7 +3811,7 @@ void MainWindow::UpdateGameTitle()
     {
         title.append(QString("<br>") + eco);
     }
-    m_gameTitle->setText(QString("<qt>%1</qt>").arg(title));
+    m_gameWindow->setTitle(QString("<qt>%1</qt>").arg(title));
 }
 
 void MainWindow::UpdateBoardInformation()
