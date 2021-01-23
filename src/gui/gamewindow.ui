@@ -14,16 +14,41 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>5</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="QLabel" name="gameTitle">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>New Game</string>
+      </property>
+     </widget>
+    </item>
     <item>
      <widget class="QSplitter" name="browserSplitter">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>1</verstretch>
+       </sizepolicy>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
       <property name="handleWidth">
        <number>4</number>
       </property>
-      <widget class="GameNotationWidget" name="chessBrowser"/>
+      <widget class="GameNotationWidget" name="chessBrowser" native="true"/>
       <widget class="QWidget" name="boxWidget" native="true">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
@@ -35,15 +60,15 @@
            </sizepolicy>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="boxPageMove">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>187</width>
-             <height>450</height>
+             <width>354</width>
+             <height>426</height>
             </rect>
            </property>
            <attribute name="label">
@@ -56,8 +81,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>187</width>
-             <height>450</height>
+             <width>354</width>
+             <height>426</height>
             </rect>
            </property>
            <attribute name="label">
@@ -70,8 +95,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>187</width>
-             <height>450</height>
+             <width>354</width>
+             <height>426</height>
             </rect>
            </property>
            <attribute name="label">
