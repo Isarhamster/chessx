@@ -810,10 +810,10 @@ void Output::postProcessOutput(QString& text) const
     }
 
     // Chop it up, if TextWidth option is not equal to 0
-    int start = 0;
     int textWidth = m_options.getOptionAsInt("TextWidth");
     if(textWidth)
     {
+        int start = 0;
         int length = text.length() - start;
         while(length > textWidth)
         {

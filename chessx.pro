@@ -12,8 +12,12 @@ greaterThan(QT_MAJOR_VERSION, 4) {
   QT -= multimediawidgets
   # Comment out sound for Ubuntu with Qt5 if multimedia is not available (default in Ubuntu)
   CONFIG += sound
-  # Comment out speech for Linux if libspeechdis not available
-  CONFIG += speech
+  # Comment out speech for Linux - there is a bug in Speech which will make ChessX crash (QTBUG-90626)
+  # Also comment out speech if libspeechdis is not available
+  win32|macx {
+    CONFIG += speech
+  }
+
   # Scid requires c++17
   CONFIG += c++17
   # Add lc0 to package
@@ -502,13 +506,15 @@ macx {
   INSTALLATION_DATA.files = mac_osx/qt_menu.nib
   INSTALLATION_DATA.path = Contents/Resources/
   QMAKE_BUNDLE_DATA += INSTALLATION_DATA
-  ENGINE_DATA.files = data/engines-mac/uci/stockfish-10-64
-  ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
-  QMAKE_BUNDLE_DATA += ENGINE_DATA
   TIMESEAL_DATA.files = data/timeseal/mac/timeseal
   TIMESEAL_DATA.path = Contents/MacOS/data/timeseal/mac
   QMAKE_BUNDLE_DATA += TIMESEAL_DATA
   QMAKE_INFO_PLIST = mac_osx/Info.plist
+  sf10 {
+    ENGINE_DATA.files = data/engines-mac/uci/stockfish-10-64
+    ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
+    QMAKE_BUNDLE_DATA += ENGINE_DATA
+  }
 }
 
 lc0 {

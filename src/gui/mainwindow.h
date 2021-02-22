@@ -317,7 +317,6 @@ public slots:
     void slotSearchReset();
     /** Training mode */
     void slotToggleTraining();
-    void slotToggleTraining2();
     /** Training mode - auto responder */
     void slotToggleAutoRespond();
     /** Reverse current filter */
@@ -681,7 +680,6 @@ private:
     /* Status */
     QLabel* m_statusFilter;
     HistoryLabel* m_statusApp;
-    QLabel* m_gameTitle;
     /* Menus */
     QMenu* m_menuDatabases;
     QMenu* m_recentGames;

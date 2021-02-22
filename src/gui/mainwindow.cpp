@@ -210,9 +210,9 @@ MainWindow::MainWindow() : QMainWindow(),
     gameTextDock->setWidget(m_gameWindow);
     connect(this, &MainWindow::reconfigure, m_gameView, &GameNotationWidget::slotReconfigure);
     addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
-    m_gameTitle = new QLabel;
-    connect(m_gameTitle, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
-    gameTextDock->setTitleBarWidget(m_gameTitle);
+    connect(m_gameWindow, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
+
+    QWidget* w = gameTextDock->titleBarWidget();
 
     m_menuView->addAction(gameTextDock->toggleViewAction());
     gameTextDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_E);
@@ -584,7 +584,11 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                             keyEvent->key() == Qt::Key_Return ||
                             keyEvent->key() == Qt::Key_Enter))
             {
-                if (obj == this || obj == m_boardView || m_gameView->findChild<QWidget*>(obj->objectName()) || obj == m_mainAnalysis || obj == m_secondaryAnalysis)
+                if (obj == this ||
+                    obj == m_boardView ||
+                    m_gameView->findChild<QWidget*>(obj->objectName()) ||
+                    obj == m_mainAnalysis ||
+                    obj == m_secondaryAnalysis)
                 {
                     keyPressEvent(keyEvent);
                     return (obj != m_boardView);
@@ -719,7 +723,7 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
     else
     {
         m_nagText.append(e->text());
-        if (!(m_nagText.length()<=3 && m_nagText.contains("-")) && addVariationFromSan(m_nagText)) // Avoid 0-0 / Nullmove been sent too early
+        if (!(m_nagText.length()<=3 && (m_nagText.contains("-")||m_nagText.contains("0"))) && addVariationFromSan(m_nagText)) // Avoid 0-0 / Nullmove been sent too early
         {
             if (qobject_cast<FicsDatabase*>(database()))
             {
@@ -1348,14 +1352,7 @@ bool MainWindow::gameEditComment(Output::CommentType type)
     else
     {
         QString spec = game().specAnnotations();
-        if (moves > 0)
-        {
-            game().setAnnotation(dlg.text()+spec);
-        }
-        else
-        {
-            game().setGameComment(dlg.text()+spec);
-        }
+        game().setAnnotation(dlg.text()+spec);
     }
     return true;
 }
@@ -1688,7 +1685,7 @@ void MainWindow::setupActions()
     autoGroup->addAction(m_training);
     gameMenu->addAction(m_training);
 
-    m_training2 = createAction(tr("Train both sides"), SLOT(slotToggleTraining2()), Qt::CTRL + Qt::META + Qt::Key_R, gameToolBar, ":/images/training_both.png");
+    m_training2 = createAction(tr("Train both sides"), SLOT(slotToggleTraining()), Qt::CTRL + Qt::META + Qt::Key_R, gameToolBar, ":/images/training_both.png");
     m_training2->setCheckable(true);
     autoGroup->addAction(m_training2);
     gameMenu->addAction(m_training2);

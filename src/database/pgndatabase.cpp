@@ -994,8 +994,10 @@ void PgnDatabase::skipMoves()
 
         gameText = gameText.remove(QRegExp("\\([^\\(\\)]*\\)"));
 
-        gameNumber.lastIndexIn(gameText);
-        m_index.setTag_nolock(TagNameLength, gameNumber.cap(1), m_count - 1);
+        if (gameNumber.lastIndexIn(gameText)>=0)
+        {
+            m_index.setTag_nolock(TagNameLength, gameNumber.cap(1), m_count - 1);
+        }
     }
 
     //swallow trailing whitespace

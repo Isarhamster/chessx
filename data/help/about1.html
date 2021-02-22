@@ -85,15 +85,15 @@ You can change the move rate with the slider in the bottom right corner of the s
 <p>If the focus is somewhere on the board or the notation, you can enter moves simply by starting to type.
 A label in the status bar will indicate, what you have typed. Whenever ChessX recognizes a complete move, the move
 is executed and the buffer is cleared.</p>
-<p>You can enter anything that looks like (PGN-) notation, make sure, your move us unambiguos. For example,
+<p>You can enter anything that looks like (PGN-) notation, make sure, your move is unambiguos. For example,
 typing "e4" in the starting position is fine, whereas a subsequent "e2" could either be Be2,Ne2,Ke2,Qe2 - or f1e2...
 </p>
 <p>By pressing [Enter] you can force ChessX to accept an entry or discard it, if ChessX cannot make anything reasonable of your entry.</p>
-
+<p>You can enter castling moves with 00, 0-0, 0k, O-O or 000, 0-0-0, 0q, O-O-O respectively. '--' will generate a null move.</p>
 <h3><a name="Annotate"></a>Annotating moves</h3>
 <p>Move annotations can be done by activating the context menu in the games text browser or by simply pressing the corresponding key sequence,
-e.g. '!?','!!','??','!x','?x','=','+-','-+' and so on, where 'x' is used in case the first character is ambiguous, 'x' can be the
-Return/Enter-Key or literally the small letter 'x'.</p>
+e.g. '!?','!!','??','!','?','=','+-','-+' and so on. You might have to press enter (e.g. for getting '!')</p>
+<p>Additionally 'n' will add the Nag for 'novelty' and '#' will enter a 'diagram'-tag.
 <p>You can make special annotations like drawing an arrow or coloring squares by pressing Shift+Right-Mouse-Clicking (either select a single square
 or make a drawing gesture for drawing an arrow).</p>
 <p><img src=":/images/brush_green.png" width="42" align="left">Pressing a green, red or yellow pen enters paint mode. You cannot enter moves,

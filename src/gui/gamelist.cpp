@@ -347,9 +347,10 @@ void GameList::slotContextMenu(const QPoint& pos)
         menu.addSeparator();
         QString hideText = selection.count()>1 ? tr("Hide games") : tr("Hide game");
         menu.addAction(hideText, this, SLOT(slotHideGame()));
-
         deleteAction = menu.addAction(tr("Hide deleted games"), this, SLOT(slotHideDeletedGames()));
         deleteAction->setEnabled(activated && deleted);
+        menu.addAction(tr("Select All"), this, SLOT(selectAll()));
+        menu.addSeparator();
     }
     menu.addAction(tr("Reset filter"), this, SLOT(filterSetAll()));
     menu.addAction(tr("Reverse filter"), this, SLOT(filterInvert()));

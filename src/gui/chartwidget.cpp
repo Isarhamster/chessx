@@ -204,8 +204,7 @@ void ChartWidget::updatePolygon(int line)
 
         polygon<<QPointF(0.0, height()/2.0);
         int i = 0;
-        double d;
-        foreach(d, values)
+        foreach(double d, values)
         {
             polygon<<QPointF(multiplierW*i,-d*multiplierH+height()/2.0);
             ++i;
