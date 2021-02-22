@@ -12,8 +12,12 @@ greaterThan(QT_MAJOR_VERSION, 4) {
   QT -= multimediawidgets
   # Comment out sound for Ubuntu with Qt5 if multimedia is not available (default in Ubuntu)
   CONFIG += sound
-  # Comment out speech for Linux if libspeechdis not available
-  CONFIG += speech
+  # Comment out speech for Linux - there is a bug in Speech which will make ChessX crash (QTBUG-90626)
+  # Also comment out speech if libspeechdis is not available
+  win32|macx {
+    CONFIG += speech
+  }
+
   # Scid requires c++17
   CONFIG += c++17
   # Add lc0 to package

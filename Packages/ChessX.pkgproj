@@ -583,7 +583,7 @@
 				<key>USE_HFS+_COMPRESSION</key>
 				<false/>
 				<key>VERSION</key>
-				<string>1.5.4</string>
+				<string>1.5.6</string>
 			</dict>
 			<key>TYPE</key>
 			<integer>0</integer>
@@ -782,7 +782,7 @@
 						<key>VALUE</key>
 						<dict>
 							<key>PATH</key>
-							<string>../../chessx/License.txt</string>
+							<string>../License.txt</string>
 							<key>PATH_TYPE</key>
 							<integer>1</integer>
 						</dict>
@@ -801,9 +801,9 @@
 						<key>VALUE</key>
 						<dict>
 							<key>PATH</key>
-							<string>/Users/jens/Documents/Programmieren/Projects/chessx-code/ChangeLog.txt</string>
+							<string>../ChangeLog.txt</string>
 							<key>PATH_TYPE</key>
-							<integer>0</integer>
+							<integer>1</integer>
 						</dict>
 					</dict>
 				</array>
