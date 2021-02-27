@@ -13,4 +13,6 @@ chessx.rc
 make_tarball
 .DS_Store
 Packages
-dep
+.git*
+.qmake.stash
+copydll-m64.bat

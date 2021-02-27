@@ -1,12 +1,8 @@
 CNAME=chessx-1.5.6
 __SCRIPTDIR="${0%/*}"
 
-sed -e "s/^/${CNAME}\//" scid_deps.txt  > scid_deps.txt.new 
-
 if [ -d "$CNAME" ]; then
-   tar -cf "${CNAME}.tar" --exclude-from=$__SCRIPTDIR/tar_exclude.txt ./${CNAME}
-   tar -rf "${CNAME}.tar" --files-from scid_deps.txt.new
-   gzip "${CNAME}.tar" 
+   tar -czf "${CNAME}.tar" --exclude-from=$__SCRIPTDIR/tar_exclude.txt ./${CNAME}
    echo "Ready"
 else
   echo "Directory not found"
