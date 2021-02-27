@@ -143,7 +143,7 @@ set(CMAKE_AUTOMOC OFF)
 set(CMAKE_AUTORCC OFF)
 set(CMAKE_AUTOUIC OFF)
 
-option(ENABLE_TESTING "Enable testing" ON)
+option(ENABLE_TESTING "Enable testing" OFF)
 if (ENABLE_TESTING)
   enable_testing()
   add_subdirectory(tests/unittests)
