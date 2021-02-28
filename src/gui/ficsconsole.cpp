@@ -285,6 +285,7 @@ void FicsConsole::HandleTacticsRequest(QListWidgetItem* item)
     QString request = "tell puzzlebot " + cmd;
     ui->listPuzzlebotMessages->clear();
     ui->listPuzzlebotMessages->addItem("Requesting puzzle...");
+    emit FicsShowTimer(true);
     puzzleMode = true;
     emit RequestNewGame();
     emit RequestAddTag(TagNameDate, PartialDate::today().asString());
@@ -814,6 +815,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_INTERNAL_MATCH_START:
             {
                 gameMode = true;
+                puzzleMode = false; // Better safe than sorry -> puzzleMode breaks a lot of things
                 m_ficsClient->sendCommand("time");
                 m_lastRelation = C64_REL_ISOLATED; // Anything invalid in this context
                 emit FicsShowTimer(true);
@@ -891,7 +893,6 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_INTERNAL_PUZZLEBOT:
             if (s.contains("kibitzes"))
             {
-                emit FicsShowTimer(true);
                 s.remove(QRegExp("puzzlebot[^:]*kibitzes:"));
                 s = s.trimmed();
                 if (!s.contains("tell puzzlebot"))
@@ -954,10 +955,6 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             else if (s.contains("puzzlebot backs up 1 move"))
             {
                 emit RequestRemoveLastMove();
-            }
-            else if (!s.contains("tell puzzlebot"))
-            {
-                puzzleMode = true;
             }
             break;
         case FicsClient::BLKCMD_FORWARD:

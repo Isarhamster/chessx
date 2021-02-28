@@ -1,5 +1,0 @@
-#!/bin/sh
-
-# invoke the scid executable
-DIR="$(dirname "$0")"
-exec "$DIR/../scid/scid" "$@"

@@ -55,30 +55,38 @@ macx {
 scid {
   # Scid sources
   HEADERS += \
-    dep/scid/code/src/board_def.h \
-    dep/scid/code/src/bytebuf.h \
-    dep/scid/code/src/codec.h \
-    dep/scid/code/src/codec_native.h \
-    dep/scid/code/src/codec_scid4.h \
-    dep/scid/code/src/common.h \
-    dep/scid/code/src/containers.h \
-    dep/scid/code/src/date.h \
-    dep/scid/code/src/error.h \
-    dep/scid/code/src/fastgame.h \
-    dep/scid/code/src/filebuf.h \
-    dep/scid/code/src/hfilter.h \
-    dep/scid/code/src/index.h \
-    dep/scid/code/src/indexentry.h \
-    dep/scid/code/src/game.h \
-    dep/scid/code/src/matsig.h \
-    dep/scid/code/src/movetree.h \
-    dep/scid/code/src/misc.h \
-    dep/scid/code/src/namebase.h \
-    dep/scid/code/src/position.h \
-    dep/scid/code/src/sortcache.h \
-    dep/scid/code/src/stored.h \
-    dep/scid/code/src/textbuf.h \
-    dep/scid/code/src/tree.h
+      dep/scid/code/src/attacks.h \
+      dep/scid/code/src/board_def.h \
+      dep/scid/code/src/bytebuf.h \
+      dep/scid/code/src/codec_native.h \
+      dep/scid/code/src/codec_scid4.h \
+      dep/scid/code/src/codec.h \
+      dep/scid/code/src/common.h \
+      dep/scid/code/src/containers.h \
+      dep/scid/code/src/date.h \
+      dep/scid/code/src/dstring.h \
+      dep/scid/code/src/error.h \
+      dep/scid/code/src/fastgame.h \
+      dep/scid/code/src/filebuf.h \
+      dep/scid/code/src/fullmove.h \
+      dep/scid/code/src/game.h \
+      dep/scid/code/src/hash.h \
+      dep/scid/code/src/hfilter.h \
+      dep/scid/code/src/index.h \
+      dep/scid/code/src/indexentry.h \
+      dep/scid/code/src/matsig.h \
+      dep/scid/code/src/misc.h \
+      dep/scid/code/src/movegen.h \
+      dep/scid/code/src/movelist.h \
+      dep/scid/code/src/movetree.h \
+      dep/scid/code/src/naglatex.h \
+      dep/scid/code/src/nagtext.h \
+      dep/scid/code/src/namebase.h \
+      dep/scid/code/src/position.h \
+      dep/scid/code/src/sortcache.h \
+      dep/scid/code/src/sqmove.h \
+      dep/scid/code/src/stored.h \
+      dep/scid/code/src/textbuf.h
 
   SOURCES += \
     dep/scid/code/src/codec_scid4.cpp \

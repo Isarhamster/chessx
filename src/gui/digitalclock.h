@@ -34,6 +34,7 @@ public slots:
 protected:
     bool TestColor(QString s, int seconds) const;
     QString DecrementTime(QString s) const;
+    void NextTime(QTime& t) const;
 
 private slots:
     void updateTime();

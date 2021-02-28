@@ -143,6 +143,18 @@ bool DigitalClock::TestColor(QString s, int seconds) const
     return false;
 }
 
+void DigitalClock::NextTime(QTime& t) const
+{
+    if (!m_countDown || abs(t.secsTo(QTime(0,0,0,0)))>1)
+    {
+        t = t.addSecs(m_countDown ? -1 : +1);
+    }
+    else
+    {
+        t = QTime(0,0,0,0);
+    }
+}
+
 QString DigitalClock::DecrementTime(QString s) const
 {
     QString result;
@@ -150,7 +162,7 @@ QString DigitalClock::DecrementTime(QString s) const
 
     if (t.isValid())
     {
-        t = t.addSecs(m_countDown ? -1 : +1);
+        NextTime(t);
         result = t.toString("h:mm:ss");
     }
     else
@@ -158,14 +170,7 @@ QString DigitalClock::DecrementTime(QString s) const
         t = QTime::fromString(s,"m:ss");
         if (t.isValid())
         {
-            if (!m_countDown || abs(t.secsTo(QTime(0,0,0,0)))>1)
-            {
-                t = t.addSecs(m_countDown ? -1 : +1);
-            }
-            else
-            {
-                t = QTime(0,0,0,0);
-            }
+            NextTime(t);
             result = t.toString("m:ss");
         }
     }
