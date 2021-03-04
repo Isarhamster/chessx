@@ -4158,15 +4158,18 @@ void MainWindow::slotShowUnderprotectedBlack()
 void MainWindow::slotReadAhead()
 {
 #ifdef USE_SPEECH
-    if (!m_readAhead) m_readAhead = 1;
-    speechStateChanged(QTextToSpeech::Ready);
+    if (speech)
+    {
+        if (!m_readAhead) m_readAhead = 1;
+        speechStateChanged(QTextToSpeech::Ready);
+    }
 #endif
 }
 
 #ifdef USE_SPEECH
 void MainWindow::speechStateChanged(QTextToSpeech::State  state)
 {
-    if (state == QTextToSpeech::Ready)
+    if (speech && (state == QTextToSpeech::Ready))
     {
         if (m_readAhead > 1)
         {
@@ -4182,7 +4185,7 @@ void MainWindow::speechStateChanged(QTextToSpeech::State  state)
 void MainWindow::delaySpeechTimeout()
 {
     int n = AppSettings->getValue("/Sound/PlyReadAhead").toInt();
-    if (m_readAhead<=n)
+    if (speech && (m_readAhead<=n))
     {
         GameX g = game();
         if (g.forward(m_readAhead))

@@ -503,19 +503,22 @@ MainWindow::MainWindow() : QMainWindow(),
     StartCheckUpdate();
 #ifdef USE_SPEECH
     qRegisterMetaType<QTextToSpeech::State>("State");
-    speech = new QTextToSpeech(this);
-    const QVector<QLocale> locales = speech->availableLocales();
-    QLocale current = speech->locale();
-    QLocale cxLocale(AppSettings->getValue("/General/language").toString());
-    if (locales.contains(cxLocale))
+    if (QTextToSpeech::availableEngines().count())
     {
-        speech->setLocale(cxLocale);
+        speech = new QTextToSpeech(this);
+        const QVector<QLocale> locales = speech->availableLocales();
+        QLocale current = speech->locale();
+        QLocale cxLocale(AppSettings->getValue("/General/language").toString());
+        if (locales.contains(cxLocale))
+        {
+            speech->setLocale(cxLocale);
+        }
+        else
+        {
+            qDebug() << current << locales << cxLocale;
+        }
+        connect(speech, SIGNAL(stateChanged(QTextToSpeech::State)), SLOT(speechStateChanged(QTextToSpeech::State)), Qt::QueuedConnection);
     }
-    else
-    {
-        qDebug() << current << locales << cxLocale;
-    }
-    connect(speech, SIGNAL(stateChanged(QTextToSpeech::State)), SLOT(speechStateChanged(QTextToSpeech::State)), Qt::QueuedConnection);
 #endif
 
     if (isMinimized())
@@ -2312,7 +2315,7 @@ QString MainWindow::MoveToSpeech(Move m)
 bool MainWindow::announceMove(Move m)
 {
 #ifdef USE_SPEECH
-    if (AppSettings->getValue("/Sound/Move").toInt() == 2)
+    if (speech && AppSettings->getValue("/Sound/Move").toInt() == 2)
     {
         QString s = MoveToSpeech(m);
         if (!s.isEmpty())
