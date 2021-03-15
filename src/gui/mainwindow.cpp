@@ -513,10 +513,6 @@ MainWindow::MainWindow() : QMainWindow(),
         {
             speech->setLocale(cxLocale);
         }
-        else
-        {
-            qDebug() << current << locales << cxLocale;
-        }
         connect(speech, SIGNAL(stateChanged(QTextToSpeech::State)), SLOT(speechStateChanged(QTextToSpeech::State)), Qt::QueuedConnection);
     }
 #endif

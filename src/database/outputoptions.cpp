@@ -47,8 +47,8 @@ bool OutputOptions::createDefaultOptions(QString path)
 
         createOption("ShowDiagrams", Boolean, "", "false", tr("Show Diagrams"));
         createOption("DiagramSize", Integer, "0:500", "200", tr("Diagram Size"));
-        createOption("FontBrowserText", String, "'Arial Unicode MS',Menlo", "'Arial Unicode MS',Menlo", tr("Font for text"));
-        createOption("FontBrowserMove", String, "'Arial Unicode MS',Menlo", "'Arial Unicode MS',Menlo", tr("Font for moves"));
+        createOption("FontBrowserText", String, "Arial Unicode MS", "Arial Unicode MS", tr("Font for text"));
+        createOption("FontBrowserMove", String, "Arial Unicode MS", "Arial Unicode MS", tr("Font for moves"));
     }
     else
     {
