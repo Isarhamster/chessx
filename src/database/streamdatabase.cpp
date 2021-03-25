@@ -13,11 +13,6 @@ using namespace chessx;
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-StreamDatabase::StreamDatabase() : PgnDatabase(true)
-{
-
-}
-
 bool StreamDatabase::parseFile()
 {
     // Does not do anything

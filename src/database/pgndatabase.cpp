@@ -29,9 +29,7 @@ using namespace chessx;
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-PgnDatabase::PgnDatabase(bool b64bit) :
-    Database(),
-    bUse64bit(b64bit)
+PgnDatabase::PgnDatabase() : Database()
 {
     initialise();
 }
@@ -134,14 +132,7 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
     }
 
     in >> m_allocated;
-
-    bool storageSize;
-    in >> storageSize;
-
-    if (storageSize != bUse64bit)
-    {
-        return false;
-    }
+    in >> bUse64bit;
 
     emit progress(1);
 
@@ -149,6 +140,27 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
     emit progress(5);
     in >> m_gameOffsets32;
     emit progress(10);
+
+    if (bUse64bit)
+    {
+        if (m_gameOffsets32.count())
+        {
+            m_allocated     = 0;
+            m_gameOffsets32.clear();
+            m_gameOffsets64.clear();
+            return false;
+        }
+    }
+    else
+    {
+        if (m_gameOffsets64.count())
+        {
+            m_allocated     = 0;
+            m_gameOffsets32.clear();
+            m_gameOffsets64.clear();
+            return false;
+        }
+    }
 
     in >> magic;
     if (*breakFlag || (magic != INDEX_FILE_MAGIC)) return false;
@@ -358,7 +370,7 @@ QString PgnDatabase::filename() const
 
 void PgnDatabase::clear()
 {
-    m_count = 0;
+    initialise();
     Database::clear();
 }
 
@@ -559,15 +571,6 @@ void PgnDatabase::parseTagsIntoIndex()
         }
     }
 
-    if (!m_currentLine.isEmpty())
-    {
-        // Fix some things
-        m_currentLine.replace("(", " ( ");
-        m_currentLine.replace(")", " ) ");
-        m_currentLine.replace("{", " { ");
-        m_currentLine.replace("}", " } ");
-        m_currentLine.replace("$", " $");
-    }
     // skip empty lines
     while(m_currentLine.isEmpty() && !m_file->atEnd())
     {
@@ -619,7 +622,56 @@ bool PgnDatabase::parseMoves(GameX* game)
 
 void PgnDatabase::parseLine(GameX* game)
 {
-    QVector<QStringRef> list = m_currentLine.splitRef(" ", QString::SkipEmptyParts);
+    QVector<QStringRef> list;
+
+    auto s = m_currentLine.constBegin();
+    int start = 0;
+    int n = 0;
+    while (s != m_currentLine.constEnd())
+    {
+        n++;
+        switch ((*s).toLatin1())
+        {
+            case ' ':
+            if (n>1)
+            {
+                list.push_back(QStringRef(&m_currentLine, start, n-1));
+                start += n;
+                n = 0;
+            }
+            else
+            {
+                start++;
+                n=0;
+            }
+            break;
+
+            case '.':
+                start += n;
+                n = 0;
+                break;
+
+            case '(':
+            case ')':
+            case '{':
+            case '}':
+            case '$':
+            {
+                if (n>1) list.push_back(QStringRef(&m_currentLine, start, n-1));
+                list.push_back(QStringRef(&m_currentLine, start+n-1, 1));
+                start += n;
+                n = 0;
+            }
+            break;
+        }
+        s++;
+    }
+    if (n)
+    {
+        list.push_back(QStringRef(&m_currentLine, start, n));
+    }
+
+    pushbackToken = 0;
 
     for(QVector<QStringRef>::Iterator it = list.begin(); it != list.end() && !m_inComment; ++it)
     {
@@ -646,20 +698,6 @@ void PgnDatabase::parseLine(GameX* game)
 
 inline void PgnDatabase::parseDefaultToken(GameX* game, QString token)
 {
-    //strip any move numbers
-    if(token.contains("..."))
-    {
-        token = token.section("...", 1, 1);
-    }
-    else if(token.contains('.'))
-    {
-        token = token.section('.',	1, 1);
-    }
-    else if(token.indexOf(QRegExp("[1-9]")) == 0)
-    {
-        token.clear();
-    }
-
     if(!token.isEmpty())
     {
         //look for nags
@@ -727,8 +765,14 @@ inline void PgnDatabase::parseDefaultToken(GameX* game, QString token)
 
 void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
 {
+    if (token.isEmpty()) return;
     // qDebug() << "Parsing Token:" << token << ":";
-    switch(token.at(0).toLatin1())
+    if (pushbackToken == '$')
+    {
+        game->dbAddNag((Nag)token.toInt());
+        pushbackToken = 0;
+    }
+    else switch(token.at(0).toLatin1())
     {
     case '(':
         m_newVariation = true;
@@ -754,7 +798,7 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
         m_inComment = true;
         break;
     case '$':
-        game->dbAddNag((Nag)token.mid(1).toInt());
+        pushbackToken = '$';
         break;
     case '!':
         if(token == "!")
@@ -909,15 +953,6 @@ void PgnDatabase::prepareNextLine()
 void PgnDatabase::prepareNextLineForMoveParser()
 {
     prepareNextLine();
-
-    if(m_inComment || !m_currentLine.startsWith("["))
-    {
-        m_currentLine.replace("(", " ( ");
-        m_currentLine.replace(")", " ) ");
-        m_currentLine.replace("{", " { ");
-        m_currentLine.replace("}", " } ");
-        m_currentLine.replace("$", " $");
-    }
 }
 
 IndexBaseType PgnDatabase::skipJunk()
@@ -1021,6 +1056,16 @@ IndexBaseType PgnDatabase::offset(GameId gameId) const
     {
         return m_gameOffsets32.at(gameId);
     }
+}
+
+bool PgnDatabase::get64bit() const
+{
+    return bUse64bit;
+}
+
+void PgnDatabase::set64bit(bool value)
+{
+    bUse64bit = value;
 }
 
 #define BASE_ALLOC_SIZE 0x10000
