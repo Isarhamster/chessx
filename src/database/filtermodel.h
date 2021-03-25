@@ -41,6 +41,7 @@ public:
     void disableUpdate();
     void enableUpdate();
 
+    virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
     /** Returns the number of rows in the model */
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     /** Returns the number of columns in the model */
@@ -93,6 +94,7 @@ private slots:
 private:
     void addColumns(const QStringList &tags);
     void setupColumns();
+    bool canEditItem(const QModelIndex& index) const;
     void cacheTags();
 
     /** A pointer to filter on which the model opperates */

@@ -41,6 +41,12 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
+void GameListDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
+        const QModelIndex &index) const
+{
+    QStyledItemDelegate::setModelData(editor, model, index);
+}
+
 GameList::GameList(FilterX* filter, QWidget* parent) : TableView(parent)
 {
     setSelectionMode(QAbstractItemView::ExtendedSelection);
@@ -49,7 +55,7 @@ GameList::GameList(FilterX* filter, QWidget* parent) : TableView(parent)
     m_model = new FilterModel(filter);
     connect(m_model, SIGNAL(searchProgress(int)), SIGNAL(searchProgress(int)));
     connect(m_model, SIGNAL(searchFinished()), SIGNAL(searchFinished()));
-
+    connect(m_model, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), SLOT(itemDataChanged(const QModelIndex&, const QModelIndex&)));
     sortModel = new GameListSortModel(nullptr);
     sortModel->setFilter(filter);
     sortModel->setSourceModel(m_model);
@@ -72,8 +78,10 @@ GameList::GameList(FilterX* filter, QWidget* parent) : TableView(parent)
 
     setDragEnabled(true);
     setAcceptDrops(true);
-}
 
+    setEditTriggers(QTableView::DoubleClicked);
+    setItemDelegate(new GameListDelegate);
+}
 
 GameList::~GameList()
 {
@@ -95,6 +103,18 @@ void GameList::endUpdate()
     if (m_model)
     {
         m_model->endUpdate();
+    }
+}
+
+void GameList::itemDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight)
+{
+    if (topLeft.column()==bottomRight.column())
+    {
+        GameId n = topLeft.row();
+        int column = topLeft.column();
+        QString tag = m_model->GetColumnTags().at(column);
+
+        emit gameTagChanged(n, tag);
     }
 }
 
@@ -572,14 +592,16 @@ void GameList::updateFilter(GameId index, int value)
     }
 }
 
-QList<GameId> GameList::selectedGames()
+QList<GameId> GameList::selectedGames(bool skipDeletedGames)
 {
     QList<GameId> gameIndexList;
+    Database* db = m_model->filter()->database();
+
     foreach(QModelIndex index, selectionModel()->selectedRows())
     {
         QModelIndex m = GetSourceIndex(index);
         GameId n = m.row();
-        if (VALID_INDEX(n))
+        if (VALID_INDEX(n) && (!skipDeletedGames || !db->deleted(n)))
         {
             gameIndexList.append(n);
         }
@@ -617,13 +639,13 @@ void GameList::slotMergeSelectedGames()
 
 void GameList::slotDeleteGame()
 {
-    QList<GameId> gameIndexList = selectedGames();
+    QList<GameId> gameIndexList = selectedGames(false);
     emit requestDeleteGame(gameIndexList);
 }
 
 void GameList::slotHideGame()
 {
-    QList<GameId> gameIndexList = selectedGames();
+    QList<GameId> gameIndexList = selectedGames(false);
     foreach(GameId game, gameIndexList)
     {
         m_model->set(game, 0);
@@ -652,17 +674,9 @@ void GameList::startDrag(Qt::DropActions supportedActions)
     TableView::startDrag(supportedActions);
 
     GameMimeData *mimeData = new GameMimeData;
-    mimeData->source = m_model->filter()->database()->filename();
-    foreach(QModelIndex index, selectionModel()->selectedRows())
-    {
-        QModelIndex m = GetSourceIndex(index);
-        int row = m.row();
-        GameId gameIndex = row;
-        if (VALID_INDEX(gameIndex))
-        {
-            mimeData->m_indexList.append(gameIndex);
-        }
-    }
+    Database* db = m_model->filter()->database();
+    mimeData->source = db->filename();
+    mimeData->m_indexList = selectedGames();
 
     if (mimeData->m_indexList.count() < 1000) // Avoid excessive size of clipboard
     {
