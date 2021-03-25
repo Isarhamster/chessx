@@ -62,7 +62,7 @@ public:
 	void setTag_nolock(const QString& tagName, const QString &value, GameId gameId);
 
     /** Set the valid flag accordingly */
-    bool replaceTagValue(QStringList tags, const QString& newValue, const QString& oldValue);
+    bool replaceTagValue(const QStringList &tags, const QString& newValue, const QString& oldValue);
 
     // Retrieving tags //
     //
@@ -165,7 +165,7 @@ private:
     void calculateReverseMaps(volatile bool *breakFlag);
 
     /** Add a tag name to the index */
-    TagIndex AddTagName(QString);
+    TagIndex AddTagName(const QString &);
 
     /** Add a tag value to the index */
     ValueIndex AddTagValue(QString);

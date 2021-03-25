@@ -20,14 +20,6 @@ using namespace chessx;
 // construction
 // ---------------------------------------------------------
 
-ArenaBook::ArenaBook() :
-    Database(),
-    m_file(nullptr),
-    m_posCount(0),
-    m_count(0)
-{
-}
-
 ArenaBook::~ArenaBook()
 {
     for(int i = 0; i < m_games.count(); ++i)
@@ -226,5 +218,4 @@ void ArenaBook::close()
         m_file->close();
     }
     delete m_file;
-    m_file = 0;
 }
