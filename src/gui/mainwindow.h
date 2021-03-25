@@ -419,6 +419,7 @@ public slots:
     void slotDatabaseDroppedHandler(QUrl url, QString filename);
     void slotDatabaseDroppedFailed(QUrl url);
     void slotEngineModeChanged(int mode);
+    void gameChangeTag(GameId id, QString tag);
 
 protected slots:
     /** Update recent files menu */
@@ -577,6 +578,7 @@ private slots:
     /** Cleanup after ECO file loaded. */
     void ecoLoaded(QObject*, bool);
     void slotDatabaseModified();
+    void slotDatabaseDirty(bool modified);
     void slotHttpDone(QNetworkReply *reply);
     void slotVersionFound(int major, int minor, int build);
     void slotUpdateOpeningTreeWidget();

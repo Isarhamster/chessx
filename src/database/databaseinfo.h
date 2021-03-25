@@ -140,11 +140,12 @@ signals:
     void signalRestoreState(const GameX &game);
     void signalGameModified(bool gameNeedsSaving);
     void signalMoveChanged();
-
+    void dirtyChanged(bool modified);
 
 public slots:
     void dbCleanChanged(bool);
-    void setModified(bool modified, const GameX &g, QString action);
+    void setGameModified(bool modified, const GameX &g, QString action);
+    void dbDirtyChanged(bool modified);
 
 private:
     QUndoStack* m_undoStack;

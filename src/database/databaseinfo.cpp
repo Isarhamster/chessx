@@ -42,8 +42,9 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, Database *db)
     m_undoStack = new QUndoStack((QObject*)undoGroup);
     newGame();
     connect(m_undoStack, SIGNAL(cleanChanged(bool)), SLOT(dbCleanChanged(bool)));
-    connect(&m_game, SIGNAL(signalGameModified(bool,GameX,QString)),SLOT(setModified(bool,GameX,QString)));
+    connect(&m_game, SIGNAL(signalGameModified(bool,GameX,QString)),SLOT(setGameModified(bool,GameX,QString)));
     connect(&m_game, SIGNAL(signalMoveChanged()), SIGNAL(signalMoveChanged()));
+    connect(db, SIGNAL(dirtyChanged(bool)), SLOT(dbDirtyChanged(bool)));
 }
 
 DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filter(nullptr), m_index(InvalidGameId)
@@ -53,7 +54,7 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filte
     m_utf8 = false;
     m_undoStack = new QUndoStack((QObject*)undoGroup);
     connect(m_undoStack, SIGNAL(cleanChanged(bool)), SLOT(dbCleanChanged(bool)));
-    connect(&m_game, SIGNAL(signalGameModified(bool,GameX,QString)),SLOT(setModified(bool,GameX,QString)));
+    connect(&m_game, SIGNAL(signalGameModified(bool,GameX,QString)),SLOT(setGameModified(bool,GameX,QString)));
     connect(&m_game, SIGNAL(signalMoveChanged()), SIGNAL(signalMoveChanged()));
     QFile file(fname);
     if (IsFicsDB())
@@ -82,14 +83,17 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filte
     {
         m_database = new MemoryDatabase;
     }
-    else if(file.size() < INT_MAX)
-    {
-        m_database = new PgnDatabase(false);
-    }
     else
     {
-        m_database = new PgnDatabase(true);
+        m_database = new PgnDatabase;
+        ((PgnDatabase*)m_database)->set64bit(file.size() > INT_MAX);
     }
+    connect(m_database, SIGNAL(dirtyChanged(bool)), SLOT(dbDirtyChanged(bool)));
+}
+
+void DatabaseInfo::dbDirtyChanged(bool modified)
+{
+    emit dirtyChanged(modified);
 }
 
 void DatabaseInfo::doLoadFile(QString filename)
@@ -185,7 +189,7 @@ bool DatabaseInfo::loadGame(GameId index)
     }
     m_game.moveToId(n);
     m_undoStack->clear();
-    setModified(false, GameX(), "");
+    setGameModified(false, GameX(), "");
 
     return true;
 }
@@ -211,7 +215,7 @@ bool DatabaseInfo::gameNeedsSaving() const
     return (isValid() && modified() && !m_database->isReadOnly() && !m_database->deleted(m_index));
 }
 
-void DatabaseInfo::setModified(bool modified, const GameX& g, QString action)
+void DatabaseInfo::setGameModified(bool modified, const GameX& g, QString action)
 {
     if (modified)
     {
@@ -252,7 +256,7 @@ void DatabaseInfo::newGame()
     m_game.clearTags();
     m_game.clear();
     m_index = InvalidGameId;
-    setModified(false, GameX(), "");
+    setGameModified(false, GameX(), "");
 }
 
 bool DatabaseInfo::saveGame()
@@ -302,7 +306,7 @@ bool DatabaseInfo::saveGame()
                 // In case a deleted game is saved, assume that the use wants to keep content, so undelete it
                 m_database->index()->setDeleted(m_index, false);
             }
-            setModified(false, GameX(), "");
+            setGameModified(false, GameX(), "");
             m_undoStack->setClean();
             return true;
         }
@@ -323,7 +327,7 @@ bool DatabaseInfo::saveGame()
         }
         database()->index()->setTag(TagNameLength, QString::number((m_game.plyCount() + 1) / 2), m_index);
 
-        setModified(false, GameX(), "");
+        setGameModified(false, GameX(), "");
         m_undoStack->setClean();
         return true;
     }

@@ -130,6 +130,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged(bool)));
     connect(pClipDB,SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
+    connect(pClipDB, SIGNAL(dirtyChanged(bool)), SLOT(slotDatabaseDirty(bool)));
     m_registry->m_databases.append(pClipDB);
     m_currentDatabase = pClipDB;
 
@@ -302,6 +303,8 @@ MainWindow::MainWindow() : QMainWindow(),
             this, SLOT(copyGames(QString, QList<GameId>, QString)));
     connect(m_gameList, SIGNAL(requestAppendGames(QString, QList<GameId>, QString)),
             this, SLOT(copyGames(QString, QList<GameId>, QString)));
+    connect(m_gameList, SIGNAL(gameTagChanged(GameId, QString)),
+            this, SLOT(gameChangeTag(GameId, QString)));
     connect(m_databaseList, SIGNAL(requestAppendDatabase(QString, QString)),
             this, SLOT(copyDatabase(QString, QString)));
     connect(this, SIGNAL(reconfigure()), m_databaseList, SLOT(slotReconfigure()));
@@ -1182,6 +1185,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     connect(db, SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged(bool)));
     connect(db, SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(db, SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
+    connect(db, SIGNAL(dirtyChanged(bool)), SLOT(slotDatabaseDirty(bool)));
     if(!db->open(utf8))
     {
         slotDataBaseLoaded(db);
@@ -2014,7 +2018,7 @@ bool MainWindow::QuerySaveGame(DatabaseInfo *dbInfo)
         }
         else if(n == SaveDialog::Discard)
         {
-            dbInfo->setModified(false, GameX(), ""); // Do not notify more than once
+            dbInfo->setGameModified(false, GameX(), ""); // Do not notify more than once
         }
 
         if (shouldNotify)
