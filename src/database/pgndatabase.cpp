@@ -627,12 +627,14 @@ void PgnDatabase::parseLine(GameX* game)
     auto s = m_currentLine.constBegin();
     int start = 0;
     int n = 0;
+    bool inNag = false;
     while (s != m_currentLine.constEnd())
     {
         n++;
         switch ((*s).toLatin1())
         {
-            case ' ':
+            case ' ': // WS - Separator of tokens
+            case '\t':
             if (n>1)
             {
                 list.push_back(QStringRef(&m_currentLine, start, n-1));
@@ -644,18 +646,61 @@ void PgnDatabase::parseLine(GameX* game)
                 start++;
                 n=0;
             }
+            inNag = false;
             break;
 
-            case '.':
-                start += n;
-                n = 0;
-                break;
+            case '.': // Ignore 1. and ...
+            start += n;
+            n = 0;
+            break;
 
-            case '(':
+            case '-': // Can be 0-0, -+, a2-a4 (LAN), 1-0, 0-1, 1/2-1/2, Q-a4,
+            if (!inNag)
+            {
+                if (n>1)
+                {
+                    QStringRef t(&m_currentLine, start, n-1);
+                    QChar c = t.at(0);
+                    if (!c.isLetterOrNumber())
+                    {
+                        // It's a token, not part of a move
+                        if (n>1) list.push_back(t);
+                        start += (n-1);
+                        n = 1;
+                        inNag = true;
+                    }
+                }
+                else
+                {
+                   inNag = true;
+                }
+            }
+            break;
+
+            case '=': // Avoid b8=Q to be cut in two tokens
+            if (n==1)
+            {
+                inNag = true;
+            }
+            break;
+
+            case '!': // Cut a5! / a5 ! into two token, and a5!! is still two tokens
+            case '?':
+            case '+': // Watch out for 0-0+
+            case '$':
+            if (!inNag)
+            {
+                if (n>1) list.push_back(QStringRef(&m_currentLine, start, n-1));
+                start += (n-1);
+                n = 1;
+                inNag = true;
+            }
+            break;
+
+            case '(': // Actually b8(Q) for b8=Q would be an issue here
             case ')':
             case '{':
             case '}':
-            case '$':
             {
                 if (n>1) list.push_back(QStringRef(&m_currentLine, start, n-1));
                 list.push_back(QStringRef(&m_currentLine, start+n-1, 1));
@@ -671,9 +716,7 @@ void PgnDatabase::parseLine(GameX* game)
         list.push_back(QStringRef(&m_currentLine, start, n));
     }
 
-    pushbackToken = 0;
-
-    for(QVector<QStringRef>::Iterator it = list.begin(); it != list.end() && !m_inComment; ++it)
+    for(auto it = list.begin(); it != list.end() && !m_inComment; ++it)
     {
         parseToken(game, *it);
         if(m_variation == -1)
@@ -698,67 +741,26 @@ void PgnDatabase::parseLine(GameX* game)
 
 inline void PgnDatabase::parseDefaultToken(GameX* game, QString token)
 {
-    if(!token.isEmpty())
+    if(m_newVariation)
     {
-        //look for nags
-        Nag nag = NullNag;
-        if(token.endsWith("!"))
+        game->backward();
+        m_variation = game->dbAddSanVariation(token, QString());
+        if(!m_precomment.isEmpty())
         {
-            if(token.endsWith("!!"))
-            {
-                nag = VeryGoodMove;
-            }
-            else if(token.endsWith("?!"))
-            {
-                nag = QuestionableMove;
-            }
-            else
-            {
-                nag = GoodMove;
-            }
-            token = token.section('!',	0, 0);
+            game->dbSetAnnotation(m_precomment, m_variation, GameX::BeforeMove);
+            m_precomment.clear();
+            m_inPreComment = false;
         }
-        else if(token.endsWith("?"))
+        m_newVariation = false;
+    }
+    else  	// First move in the game
+    {
+        m_variation = game->dbAddSanMove(token, QString());
+        if(!m_precomment.isEmpty())
         {
-            if(token.endsWith("??"))
-            {
-                nag = VeryPoorMove;
-            }
-            else if(token.endsWith("!?"))
-            {
-                nag = SpeculativeMove;
-            }
-            else
-            {
-                nag = PoorMove;
-            }
-            token = token.section('?',	0, 0);
-        }
-
-        if(!token.isEmpty())
-        {
-            if(m_newVariation)
-            {
-                game->backward();
-                m_variation = game->dbAddSanVariation(token, QString(), nag);
-                if(!m_precomment.isEmpty())
-                {
-                    game->dbSetAnnotation(m_precomment, m_variation, GameX::BeforeMove);
-                    m_precomment.clear();
-                    m_inPreComment = false;
-                }
-                m_newVariation = false;
-            }
-            else  	// First move in the game
-            {
-                m_variation = game->dbAddSanMove(token, QString(), nag);
-                if(!m_precomment.isEmpty())
-                {
-                    game->dbSetAnnotation(m_precomment, m_variation, GameX::BeforeMove);
-                    m_precomment.clear();
-                    m_inPreComment = false;
-                }
-            }
+            game->dbSetAnnotation(m_precomment, m_variation, GameX::BeforeMove);
+            m_precomment.clear();
+            m_inPreComment = false;
         }
     }
 }
@@ -767,12 +769,7 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
 {
     if (token.isEmpty()) return;
     // qDebug() << "Parsing Token:" << token << ":";
-    if (pushbackToken == '$')
-    {
-        game->dbAddNag((Nag)token.toInt());
-        pushbackToken = 0;
-    }
-    else switch(token.at(0).toLatin1())
+    switch(token.at(0).toLatin1())
     {
     case '(':
         m_newVariation = true;
@@ -798,7 +795,10 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
         m_inComment = true;
         break;
     case '$':
-        pushbackToken = '$';
+        if (token.length()>1)
+        {
+            game->dbAddNag((Nag)token.mid(1).toInt());
+        }
         break;
     case '!':
         if(token == "!")

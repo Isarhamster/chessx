@@ -147,7 +147,6 @@ private:
     int percentDone;
 
     bool bUse64bit {false};
-    char pushbackToken;
 };
 
 #endif
