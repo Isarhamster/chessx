@@ -418,6 +418,7 @@ public slots:
     void slotDatabaseDropped(QDropEvent*);
     void slotDatabaseDroppedHandler(QUrl url, QString filename);
     void slotDatabaseDroppedFailed(QUrl url);
+    void slotGamesDropped(QDropEvent *event);
     void slotEngineModeChanged(int mode);
     void gameChangeTag(GameId id, QString tag);
 

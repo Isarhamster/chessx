@@ -3112,6 +3112,21 @@ void MainWindow::slotDatabaseDroppedHandler(QUrl url, QString filename)
     }
 }
 
+void MainWindow::slotGamesDropped(QDropEvent *event)
+{
+    const QMimeData *mimeData = event->mimeData();
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+    if(gameMimeData)
+    {
+        foreach(GameId index, gameMimeData->m_indexList)
+        {
+            slotMergeActiveGame(index, gameMimeData->source);
+        }
+    }
+
+    event->acceptProposedAction();
+}
+
 void MainWindow::slotDatabaseDropped(QDropEvent *event)
 {
     const QMimeData *mimeData = event->mimeData();
@@ -3659,7 +3674,8 @@ BoardView* MainWindow::CreateBoardView()
         connect(boardViewEx, SIGNAL(signalNewAnnotation(QString)), SLOT(slotGameSetComment(QString)));
         connect(boardViewEx, SIGNAL(enterVariation(int)), this, SLOT(slotGameVarEnter(int)));
         connect(this, SIGNAL(signalGameIsEmpty(bool)), boardViewEx, SLOT(setAnnotationPlaceholder(bool)));
-
+        connect(boardView, SIGNAL(signalDropEvent(QDropEvent*)), this, SLOT(slotDatabaseDropped(QDropEvent*)));
+        connect(boardView, SIGNAL(signalGamesDropped(QDropEvent*)), this, SLOT(slotGamesDropped(QDropEvent*)));
 
         if (databaseInfo()->IsFicsDB())
         {
