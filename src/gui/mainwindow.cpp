@@ -38,6 +38,7 @@
 #include "helpbrowsershell.h"
 #include "historylabel.h"
 #include "kbaction.h"
+#include "lichessopeningdatabase.h"
 #include "loadquery.h"
 #include "mainwindow.h"
 #include "messagedialog.h"
@@ -314,6 +315,22 @@ MainWindow::MainWindow() : QMainWindow(),
     m_databaseList->addFileOpen(pClipDB->database()->name(), false);
     m_databaseList->setFileCurrent(pClipDB->database()->name());
 
+    LichessOpeningDatabase* lichessBase = new LichessOpeningDatabase();
+    lichessBase->open("Lichess Master", false);
+    DatabaseInfo* pLichessDB = new DatabaseInfo(&m_undoGroup, lichessBase);
+    pLichessDB->open(false);
+    m_registry->m_databases.append(pLichessDB);
+    m_databaseList->addFileOpen(lichessBase->filename(), false);
+
+#if 0 // TODO: This causes a more or less subtle multithreading issue
+    lichessBase = new LichessOpeningDatabase();
+    lichessBase->open("All Lichess standard rapid classical", false);
+    pLichessDB = new DatabaseInfo(&m_undoGroup, lichessBase);
+    pLichessDB->open(false);
+    m_registry->m_databases.append(pLichessDB);
+    m_databaseList->addFileOpen(lichessBase->filename(), false);
+#endif
+
     restoreRecentFiles();
     connect(m_databaseList, SIGNAL(raiseRequest()), dbListDock, SLOT(raise()));
     connect(this, SIGNAL(signalGameModeChanged(bool)), m_databaseList, SLOT(setDisabled(bool)));
@@ -486,6 +503,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     // Load favorites
     loadFileFavorites();
+    slotUpdateOpeningTreeWidget();
 
     qApp->installEventFilter(this);
     /* Activate clipboard */
@@ -1059,7 +1077,7 @@ void MainWindow::openDatabaseArchive(QString fname, bool utf8)
             ext == "si4" ||
             ext == "ctg" ||
             ext == "bin" ||
-            ext == "abk")
+            ext == "abk" )
     {
         openDatabaseFile(fname, utf8);
     }

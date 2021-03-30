@@ -169,6 +169,10 @@ add_library(database STATIC
   database/gameundocommand.h
   database/historylist.cpp
   database/historylist.h
+  database/lichessopening.cpp
+  database/lichessopening.h
+  database/lichessopeningdatabase.cpp
+  database/lichessopeningdatabase.h
   database/memorydatabase.cpp
   database/memorydatabase.h
   database/numbersearch.cpp

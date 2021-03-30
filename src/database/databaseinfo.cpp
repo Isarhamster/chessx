@@ -115,6 +115,7 @@ void DatabaseInfo::run()
 {
     QFileInfo fi = QFileInfo(m_filename);
     QString fname = fi.canonicalFilePath();
+    if (fname.isEmpty()) fname = m_filename; // Support virtual databases
     doLoadFile(fname);
 }
 
@@ -433,10 +434,16 @@ bool DatabaseInfo::IsBook() const
     return (fi.suffix().toLower() == "abk");
 }
 
+/* static */ bool DatabaseInfo::IsOnlineBook(QString s)
+{
+    QFileInfo fi(s);
+    return (s.contains("Lichess") && fi.suffix().isEmpty());
+}
+
 /* static */ bool DatabaseInfo::IsBook(QString s)
 {
     // Add here if more book formats come in
-    return IsPolyglotBook(s) || IsChessbaseBook(s);
+    return IsPolyglotBook(s) || IsChessbaseBook(s) || IsOnlineBook(s) ;
 }
 
 qint64 DatabaseInfo::GetDatabaseSize(QString filename)

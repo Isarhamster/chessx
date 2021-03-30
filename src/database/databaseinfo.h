@@ -107,6 +107,7 @@ public:
     static bool IsPolyglotBook(QString name);
     static bool IsChessbaseBook(QString s);
     static bool IsArenaBook(QString name);
+    static bool IsOnlineBook(QString name);
     static bool IsBook(QString name);
 
     bool modified() const;
