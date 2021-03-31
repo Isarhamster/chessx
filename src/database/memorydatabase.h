@@ -31,8 +31,6 @@ class MemoryDatabase : public PgnDatabase
 {
     Q_OBJECT
 public:
-    /** Default constructor */
-    MemoryDatabase();
     /** Destructor */
     ~MemoryDatabase();
     /** Clear a memory database */
@@ -41,8 +39,10 @@ public:
     virtual bool isReadOnly() const;
     /** @return whether the database was modified. */
     virtual bool isModified() const;
-    /** @return whether the database was modified. */
+    /** Set database dirty flag */
     void setModified(bool b);
+    /** Set database dirty flag */
+    void startTransaction(bool b);
     /** Adds a game to the database */
     bool appendGame(const GameX& game);
     /** Removes a game from the database */
@@ -63,9 +63,12 @@ protected:
     virtual bool hasIndexFile() const { return false; }
 
 private:
-    QVector <GameX*> m_games;
     bool parseFile();
-    bool m_isModified;
+
+private:
+    QVector <GameX*> m_games;
+    bool m_isModified {false};
+    bool m_transaction {false};
     mutable QReadWriteLock m_mutex;
 };
 

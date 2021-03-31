@@ -41,15 +41,15 @@ DEFINES += QT_NO_CAST_TO_ASCII
 DEFINES *= QT_USE_QSTRINGBUILDER
 
 macx {
-  QMAKE_MAC_SDK = macosx10.15
+  QMAKE_MAC_SDK = macosx11.1
   QMAKE_CXXFLAGS += -fvisibility=hidden
   QMAKE_LFLAGS_RELEASE -= -O2
   QMAKE_LFLAGS_RELEASE += -m64 -Ofast
   QMAKE_CXXFLAGS_RELEASE -= -O2
   QMAKE_CXXFLAGS_RELEASE *= -m64 -Ofast
 
-  QMAKE_LFLAGS_DEBUG += -m64 -O0
-  QMAKE_CXXFLAGS_DEBUG *= -m64 -O0
+  QMAKE_LFLAGS_DEBUG += -m64 -O0 --coverage
+  QMAKE_CXXFLAGS_DEBUG *= -m64 -O0 --coverage
 }
 
 scid {
@@ -174,6 +174,8 @@ HEADERS += src/database/board.h \
   src/database/historylist.h \
   src/database/index.h \
   src/database/indexitem.h \
+  src/database/lichessopening.h \
+  src/database/lichessopeningdatabase.h \
   src/database/memorydatabase.h \
   src/database/move.h \
   src/database/movedata.h \
@@ -343,6 +345,8 @@ SOURCES += \
   src/database/historylist.cpp \
   src/database/index.cpp \
   src/database/indexitem.cpp \
+  src/database/lichessopening.cpp \
+  src/database/lichessopeningdatabase.cpp \
   src/database/memorydatabase.cpp \
   src/database/movedata.cpp \
   src/database/nag.cpp \

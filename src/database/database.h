@@ -113,6 +113,7 @@ public:
     virtual bool isModified() const;
     /** Set / Reset the modification flag. */
     virtual void setModified(bool) { }
+    virtual void startTransaction(bool) { }
     /** Get the Valid Flag for a given game id from the index */
     virtual bool getValidFlag(GameId gameId) const;
     /** Get the Valid Flag for a given game id from the index */
@@ -134,6 +135,15 @@ protected:
     IndexX m_index;
     bool m_utf8;
     QMutex m_mutex;
+};
+
+class DatabaseTransaction
+{
+public:
+    DatabaseTransaction(Database* db) { m_db = db; if (db) db->startTransaction(true); }
+    ~DatabaseTransaction() { if (m_db) m_db->startTransaction(false); }
+private:
+    Database* m_db;
 };
 
 #endif

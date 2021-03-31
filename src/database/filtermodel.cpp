@@ -81,6 +81,16 @@ void FilterModel::addColumns(const QStringList& tags)
     m_columnTags << tags;
 }
 
+bool FilterModel::canEditItem(const QModelIndex& index) const
+{
+    int col = index.column();
+    if ((col!= 0) && (col!=10) && (col!=11))
+    {
+        return true;
+    }
+    return false;
+}
+
 void FilterModel::cacheTags()
 {
     m_columnTagIndex.clear();
@@ -135,6 +145,23 @@ void FilterModel::endUpdate()
     }
 }
 
+bool FilterModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (index.isValid())
+    {
+        GameId id = index.row();
+        m_filter->database()->index()->setTag(m_columnTags[index.column()], value.toString(), id);
+        emit dataChanged(index, index, QVector<int>() << role);
+        TagIndex tag = m_columnTagIndex[index.column()];
+        if (tag == TagNoIndex)
+        {
+            cacheTags();
+        }
+        return true;
+    }
+    return false;
+}
+
 void FilterModel::set(GameId game, int value)
 {
     filter()->set(game, value);
@@ -151,7 +178,7 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
         GameId i = index.row();
         if (VALID_INDEX(i))
         {
-            if (role == Qt::DisplayRole)
+            if ((role == Qt::DisplayRole) || (role == Qt::EditRole))
             {
                 if(index.column() == 0)
                 {
@@ -222,6 +249,10 @@ Qt::ItemFlags FilterModel::flags(const QModelIndex &index) const
 
     if(index.isValid())
     {
+        if (canEditItem(index))
+        {
+            return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | defaultFlags | Qt::ItemIsSelectable | Qt::ItemIsEditable;
+        }
         return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | defaultFlags | Qt::ItemIsSelectable;
     }
     else

@@ -11,8 +11,6 @@
 class StreamDatabase : public PgnDatabase
 {
 public:
-    StreamDatabase();
-
     bool loadNextGame(GameX &game);
 
 protected:

@@ -32,7 +32,7 @@ class PgnDatabase : public Database
     Q_OBJECT
 public:
     /** Default constructor */
-    PgnDatabase(bool b64Bit);
+    PgnDatabase();
     /** Destructor */
     ~PgnDatabase();
     //database operations
@@ -57,6 +57,9 @@ public:
     virtual quint64 count() const;
 
     virtual bool parseFile();
+    bool get64bit() const;
+    void set64bit(bool value);
+
 protected:
     //parsing methods
     /** Reads moves from the file and adds them to the game. Performs position searches if any are active */
@@ -143,7 +146,7 @@ private:
     QStack<MoveId> m_variationStack;
     int percentDone;
 
-    bool bUse64bit;
+    bool bUse64bit {false};
 };
 
 #endif

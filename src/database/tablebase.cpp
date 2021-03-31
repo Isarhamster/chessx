@@ -159,7 +159,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                             if (xdtm != -bestScore) break;
                         }
                         QJsonValue m = (*it).toObject().value("uci");
-                        Move move = Move().fromUCI(m.toString().toLatin1());
+                        Move move = Move::fromUCI(m.toString().toLatin1());
                         bestMoves.append(move);
                     }
                     if (s_allowEngineOutput && bestMoves.count())

@@ -38,6 +38,7 @@
 #include "helpbrowsershell.h"
 #include "historylabel.h"
 #include "kbaction.h"
+#include "lichessopeningdatabase.h"
 #include "loadquery.h"
 #include "mainwindow.h"
 #include "messagedialog.h"
@@ -130,6 +131,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged(bool)));
     connect(pClipDB,SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
+    connect(pClipDB, SIGNAL(dirtyChanged(bool)), SLOT(slotDatabaseDirty(bool)));
     m_registry->m_databases.append(pClipDB);
     m_currentDatabase = pClipDB;
 
@@ -302,6 +304,8 @@ MainWindow::MainWindow() : QMainWindow(),
             this, SLOT(copyGames(QString, QList<GameId>, QString)));
     connect(m_gameList, SIGNAL(requestAppendGames(QString, QList<GameId>, QString)),
             this, SLOT(copyGames(QString, QList<GameId>, QString)));
+    connect(m_gameList, SIGNAL(gameTagChanged(GameId, QString)),
+            this, SLOT(gameChangeTag(GameId, QString)));
     connect(m_databaseList, SIGNAL(requestAppendDatabase(QString, QString)),
             this, SLOT(copyDatabase(QString, QString)));
     connect(this, SIGNAL(reconfigure()), m_databaseList, SLOT(slotReconfigure()));
@@ -310,6 +314,22 @@ MainWindow::MainWindow() : QMainWindow(),
 
     m_databaseList->addFileOpen(pClipDB->database()->name(), false);
     m_databaseList->setFileCurrent(pClipDB->database()->name());
+
+    LichessOpeningDatabase* lichessBase = new LichessOpeningDatabase();
+    lichessBase->open("Lichess Master", false);
+    DatabaseInfo* pLichessDB = new DatabaseInfo(&m_undoGroup, lichessBase);
+    pLichessDB->open(false);
+    m_registry->m_databases.append(pLichessDB);
+    m_databaseList->addFileOpen(lichessBase->filename(), false);
+
+#if 0 // TODO: This causes a more or less subtle multithreading issue
+    lichessBase = new LichessOpeningDatabase();
+    lichessBase->open("All Lichess standard rapid classical", false);
+    pLichessDB = new DatabaseInfo(&m_undoGroup, lichessBase);
+    pLichessDB->open(false);
+    m_registry->m_databases.append(pLichessDB);
+    m_databaseList->addFileOpen(lichessBase->filename(), false);
+#endif
 
     restoreRecentFiles();
     connect(m_databaseList, SIGNAL(raiseRequest()), dbListDock, SLOT(raise()));
@@ -483,6 +503,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     // Load favorites
     loadFileFavorites();
+    slotUpdateOpeningTreeWidget();
 
     qApp->installEventFilter(this);
     /* Activate clipboard */
@@ -1056,7 +1077,7 @@ void MainWindow::openDatabaseArchive(QString fname, bool utf8)
             ext == "si4" ||
             ext == "ctg" ||
             ext == "bin" ||
-            ext == "abk")
+            ext == "abk" )
     {
         openDatabaseFile(fname, utf8);
     }
@@ -1182,6 +1203,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     connect(db, SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged(bool)));
     connect(db, SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(db, SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
+    connect(db, SIGNAL(dirtyChanged(bool)), SLOT(slotDatabaseDirty(bool)));
     if(!db->open(utf8))
     {
         slotDataBaseLoaded(db);
@@ -2014,7 +2036,7 @@ bool MainWindow::QuerySaveGame(DatabaseInfo *dbInfo)
         }
         else if(n == SaveDialog::Discard)
         {
-            dbInfo->setModified(false, GameX(), ""); // Do not notify more than once
+            dbInfo->setGameModified(false, GameX(), ""); // Do not notify more than once
         }
 
         if (shouldNotify)

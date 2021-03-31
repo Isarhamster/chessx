@@ -7,6 +7,7 @@
 
 #include "ctgdatabase.h"
 #include "database.h"
+#include "lichessopeningdatabase.h"
 #include "openingtreethread.h"
 #include "polyglotdatabase.h"
 
@@ -40,6 +41,11 @@ void OpeningTreeThread::run()
         ProgressUpdate(moves, games, 100, 100);
     }
     else if (CtgDatabase* pgdb = qobject_cast<CtgDatabase*>(m_filter ? m_filter->database() : nullptr))
+    {
+        games = pgdb->getMoveMapForBoard(m_board, moves);
+        ProgressUpdate(moves, games, 100, 100);
+    }
+    else if (LichessOpeningDatabase* pgdb = qobject_cast<LichessOpeningDatabase*>(m_filter ? m_filter->database() : nullptr))
     {
         games = pgdb->getMoveMapForBoard(m_board, moves);
         ProgressUpdate(moves, games, 100, 100);

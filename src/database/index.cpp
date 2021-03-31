@@ -46,7 +46,7 @@ GameId IndexX::add()
     return gameId;
 }
 
-TagIndex IndexX::AddTagName(QString name)
+TagIndex IndexX::AddTagName(const QString& name)
 {
     if(m_tagNameIndex.contains(name))
     {
@@ -68,7 +68,7 @@ ValueIndex IndexX::AddTagValue(QString name)
             return n;
         }
         name.append(QChar(0));
-        QString prelim = name;
+        QString prelim;
         int i = 0;
         do {
             prelim = name + QString::number(i++);
@@ -130,7 +130,7 @@ void IndexX::setValidFlag(GameId gameId, bool value)
     }
 }
 
-bool IndexX::replaceTagValue(QStringList tags, const QString& newValue, const QString& oldValue)
+bool IndexX::replaceTagValue(const QStringList& tags, const QString& newValue, const QString& oldValue)
 {
     QWriteLocker m(&m_mutex);
 
@@ -161,8 +161,7 @@ bool IndexX::replaceTagValue(QStringList tags, const QString& newValue, const QS
         tl << getTagIndex(t);
     }
 
-    QVector<IndexItem>::iterator i;
-    for (i = m_indexItems.begin(); i != m_indexItems.end(); ++i)
+     for (auto i = m_indexItems.begin(); i != m_indexItems.end(); ++i)
     {
         i->replaceValue(tl, valueIndex, newIndex);
     }

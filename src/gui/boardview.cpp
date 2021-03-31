@@ -15,6 +15,7 @@
  ***************************************************************************/
 
 #include "boardview.h"
+#include "GameMimeData.h"
 #include "settings.h"
 #include "guess.h"
 #include "move.h"
@@ -62,6 +63,8 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
 
     connect(&m_threatGuess, SIGNAL(guessFoundForBoard(Guess::Result, BoardX)),
             this, SLOT(showThreat(Guess::Result,BoardX)), Qt::QueuedConnection);
+
+    setAcceptDrops(true);
 }
 
 BoardView::~BoardView()
@@ -1239,8 +1242,11 @@ bool BoardView::canDrag(Square s, Qt::KeyboardModifiers mdf) const
 
 void BoardView::dragEnterEvent(QDragEnterEvent *event)
 {
-    const BoardViewMimeData *mimeData = qobject_cast<const BoardViewMimeData *>(event->mimeData());
-    if(mimeData)
+    const BoardViewMimeData *bvMimeData = qobject_cast<const BoardViewMimeData *>(event->mimeData());
+    const QMimeData *mimeData = event->mimeData();
+    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+    if (bvMimeData || gameMimeData || dbMimeData || (mimeData && mimeData->hasUrls()))
     {
         event->acceptProposedAction();
     }
@@ -1258,15 +1264,26 @@ void BoardView::dragLeaveEvent(QDragLeaveEvent *event)
 
 void BoardView::dropEvent(QDropEvent *event)
 {
-    const BoardViewMimeData *mimeData = qobject_cast<const BoardViewMimeData *>(event->mimeData());
-    if(mimeData)
+    const BoardViewMimeData *bvMimeData = qobject_cast<const BoardViewMimeData *>(event->mimeData());
+    const QMimeData *mimeData = event->mimeData();
+    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+    if(bvMimeData)
     {
         Square s = squareAt(event->pos());
         if (s != InvalidSquare)
         {
-            emit pieceDropped(s, mimeData->m_piece);
+            emit pieceDropped(s, bvMimeData->m_piece);
         }
         event->acceptProposedAction();
+    }
+    else if ((mimeData && mimeData->hasUrls()) || dbMimeData)
+    {
+        emit signalDropEvent(event);
+    }
+    else if (gameMimeData)
+    {
+        emit signalGamesDropped(event);
     }
 }
 

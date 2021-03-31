@@ -10,13 +10,14 @@
 #include "gamex.h"
 #include "movedata.h"
 
+#include <QPointer>
+
 struct ABK_MOVE;
 
 class ArenaBook : public Database
 {
     Q_OBJECT
 public:
-    ArenaBook();
     ~ArenaBook();
 
     /** Opens the given database */
@@ -44,13 +45,15 @@ public:
     /** Closes the database */
     void close();
 
-private: // BOOK Parser
-    QString m_filename;
-    QIODevice* m_file;
-    quint64 m_posCount;
-    quint64 m_count;
+private :
     void add_move(GameX *game, const ABK_MOVE* move);
     void tag_game(GameX* game, int ply, GameId index);
+
+private: // BOOK Parser
+    QString m_filename;
+    QPointer<QIODevice> m_file;
+    quint64 m_posCount {0};
+    quint64 m_count {0};
 
 private: // Game list
     QVector<GameX*> m_games;

@@ -32,7 +32,7 @@ protected:
     QPointer<CtgDatabase> m_destination;
     QString m_out;
 
-    bool m_break;
+    bool m_break {false};
 };
 
 #endif // CTGBOOKWRITER_H

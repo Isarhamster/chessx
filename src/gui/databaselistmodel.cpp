@@ -327,6 +327,7 @@ void DatabaseListModel::addEntry(DatabaseListEntry& d, const QString& s)
 {
     beginInsertRows(QModelIndex(), m_databases.count(), m_databases.count());
     d.m_name = QFileInfo(s).fileName();
+    if (d.m_name.isEmpty()) d.m_name = s; // Fix virtual database names
     m_databases.push_back(d);
     endInsertRows();
 }
