@@ -83,14 +83,16 @@ inline bool operator != (DatabaseListEntry const& lhs, DatabaseListEntry const& 
 }
 enum DblvColumns
 {
-    DBLV_FAVORITE,
+    DBLV_FIRST,
+    DBLV_FAVORITE = DBLV_FIRST,
     DBLV_NAME,
     DBLV_SIZE,
     DBLV_OPEN,
     DBLV_PATH,
     DBLV_UTF8,
     DBLV_DATE,
-    DBLV_DATE_READ
+    DBLV_DATE_READ,
+    DBLV_LAST = DBLV_DATE_READ
 };
 
 class DatabaseListModel : public QAbstractItemModel
