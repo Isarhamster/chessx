@@ -497,8 +497,8 @@ void DatabaseListModel::update(const QString& s)
 {
     if(DatabaseListEntry* e = FindEntry(s))
     {
-        QModelIndex m = createIndex(m_databases.indexOf(*e), DBLV_NAME, (void*) nullptr);
-        QModelIndex n = createIndex(m_databases.indexOf(*e), DBLV_UTF8, (void*) nullptr);
+        QModelIndex m = createIndex(m_databases.indexOf(*e), DBLV_FIRST, (void*) nullptr);
+        QModelIndex n = createIndex(m_databases.indexOf(*e), DBLV_LAST, (void*) nullptr);
         emit QAbstractItemModel::dataChanged(m, n);
     }
 }
