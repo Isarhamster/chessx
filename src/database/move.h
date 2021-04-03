@@ -55,7 +55,67 @@ public:
     Move(const chessx::Square from, const chessx::Square to);
 
     /** Construct a untested (illegal) Move from a SAN like string */
-    inline Move fromUCI(const QByteArray& bs);
+    static Move fromUCI(const QByteArray& bs)
+    {
+        const char *san = bs.constData();
+        const char* s = san;
+        char c = *(s++);
+
+        if(isFile(c))
+        {
+            // Check From
+            int fromFile = c - 'a';
+            c = *(s++);
+            if(isRank(c))
+            {
+                chessx::Square fromSquare = chessx::Square((c - '1') * 8 + fromFile);
+                fromFile = -1;
+                c = *(s++);
+                // Destination square
+                if(isFile(c))
+                {
+                    int f = c - 'a';
+                    c = *(s++);
+                    if(isRank(c))
+                    {
+                        chessx::Square toSquare = chessx::Square((c - '1') * 8 + f);
+                        Move m(fromSquare, toSquare);
+                        c = *(s++);
+                        if(c == '=' || c == '(' || QString("QRBN").indexOf(toupper(c))>=0)
+                        {
+                            if(c == '=' || c == '(')
+                            {
+                                c = *(s++);
+                            }
+                            PieceType promotePiece;
+                            switch(toupper(c))
+                            {
+                            case 'Q':
+                                promotePiece = Queen;
+                                break;
+                            case 'R':
+                                promotePiece = Rook;
+                                break;
+                            case 'B':
+                                promotePiece = Bishop;
+                                break;
+                            case 'N':
+                                promotePiece = Knight;
+                                break;
+                            default:
+                                promotePiece = None;
+                                break;
+                            }
+                            m.setPromoted(promotePiece);
+                        }
+                        return m;
+                    }
+                }
+            }
+        }
+
+        return Move();
+    }
 
     /** Set type of piece (Queen, Rook, Bishop, Knight, Pawn) pawn promoted to */
     void setPromoted(PieceType p);
@@ -273,67 +333,7 @@ inline Move::Move(const chessx::Square from, const chessx::Square to)
     : m(from | (to << 6)), u(0)
 {}
 
-inline Move Move::fromUCI(const QByteArray& bs)
-{
-    const char *san = bs.constData();
-    const char* s = san;
-    char c = *(s++);
 
-    if(isFile(c))
-    {
-        // Check From
-        int fromFile = c - 'a';
-        c = *(s++);
-        if(isRank(c))
-        {
-            chessx::Square fromSquare = chessx::Square((c - '1') * 8 + fromFile);
-            fromFile = -1;
-            c = *(s++);
-            // Destination square
-            if(isFile(c))
-            {
-                int f = c - 'a';
-                c = *(s++);
-                if(isRank(c))
-                {
-                    chessx::Square toSquare = chessx::Square((c - '1') * 8 + f);
-                    Move m(fromSquare, toSquare);
-                    c = *(s++);
-                    if(c == '=' || c == '(' || QString("QRBN").indexOf(toupper(c))>=0)
-                    {
-                        if(c == '=' || c == '(')
-                        {
-                            c = *(s++);
-                        }
-                        PieceType promotePiece;
-                        switch(toupper(c))
-                        {
-                        case 'Q':
-                            promotePiece = Queen;
-                            break;
-                        case 'R':
-                            promotePiece = Rook;
-                            break;
-                        case 'B':
-                            promotePiece = Bishop;
-                            break;
-                        case 'N':
-                            promotePiece = Knight;
-                            break;
-                        default:
-                            promotePiece = None;
-                            break;
-                        }
-                        m.setPromoted(promotePiece);
-                    }
-                    return m;
-                }
-            }
-        }
-    }
-
-    return Move();
-}
 
 inline chessx::Square Move::castlingRookFrom() const
 {

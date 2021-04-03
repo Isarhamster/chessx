@@ -22,12 +22,9 @@ using namespace chessx;
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-MemoryDatabase::MemoryDatabase() : PgnDatabase(false), m_isModified(false)
-{
-}
-
 MemoryDatabase::~MemoryDatabase()
 {
+    set64bit(false);
     MemoryDatabase::clear();
 }
 
@@ -40,6 +37,7 @@ void MemoryDatabase::clear()
     m_games.clear();
     m_index.clear();
     m_isModified = false;
+    m_transaction = false;
 
     PgnDatabase::clear();
 }
@@ -57,7 +55,16 @@ bool MemoryDatabase::isModified() const
 void MemoryDatabase::setModified(bool b)
 {
     m_isModified = b;
-    emit dirtyChanged(m_isModified);
+    if (!m_transaction) emit dirtyChanged(m_isModified);
+}
+
+void MemoryDatabase::startTransaction(bool b)
+{
+    m_transaction = b;
+    if (!b)
+    {
+        emit dirtyChanged(m_isModified);
+    }
 }
 
 bool MemoryDatabase::appendGame(const GameX& game)

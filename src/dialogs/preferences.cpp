@@ -36,6 +36,10 @@
 #include <QStyleFactory>
 #include <QTextStream>
 
+#ifdef USE_SPEECH
+#include <QTextToSpeech>
+#endif
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -644,6 +648,17 @@ void PreferencesDialog::restoreSettings()
     ui.cbScreenReader->setChecked(AppSettings->getValue("ScreenReader").toBool());
     ui.plyReadAhead->setValue(AppSettings->getValue("PlyReadAhead").toInt());
     ui.delayReadAhead->setValue(AppSettings->getValue("DelayReadAhead").toInt());
+
+#ifdef USE_SPEECH
+    if (!QTextToSpeech::availableEngines().count())
+    {
+        ui.cbScreenReader->setChecked(false);
+        ui.cbScreenReader->setEnabled(false);
+        ui.plyReadAhead->setEnabled(false);
+        ui.delayReadAhead->setEnabled(false);
+    }
+#endif
+
 #else
     ui.cbSoundOn->setCurrentIndex(0);
     ui.cbSoundOn->setEnabled(false);

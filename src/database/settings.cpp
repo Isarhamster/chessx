@@ -76,7 +76,8 @@ bool Settings::layout(QWidget* w)
             wx = values[5];
         }
         w->resize(values[2], values[3]);
-        if (w->objectName() == "MainWindow")
+        QDialog* dlg = qobject_cast<QDialog*>(w);
+        if ((w->objectName() == "MainWindow") || dlg)
         {
             int wy = values[3];
             // Check that x/y are inside the available geometry
@@ -444,8 +445,8 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/GameText/ShowHeader", false);
     map.insert("/GameText/ShowDiagrams", true);
     map.insert("/GameText/DiagramSize", 200);
-    map.insert("/GameText/FontBrowserText", "'Arial Unicode MS',Menlo");
-    map.insert("/GameText/FontBrowserMove", "'Arial Unicode MS',Menlo");
+    map.insert("/GameText/FontBrowserText", "Arial Unicode MS");
+    map.insert("/GameText/FontBrowserMove", "Arial Unicode MS");
     map.insert("/GameText/PieceString", " KQRBN");
 
     map.insert("/GameList/AdditionalTags", "");

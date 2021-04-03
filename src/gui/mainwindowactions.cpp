@@ -1589,6 +1589,15 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
     }
 }
 
+void MainWindow::slotDatabaseDirty(bool modified)
+{
+    DatabaseInfo* dbInfo = qobject_cast<DatabaseInfo*>(sender());
+    if (dbInfo == m_currentDatabase)
+    {
+        slotDatabaseModified();
+    }
+}
+
 void MainWindow::slotDatabaseModified()
 {
     slotFilterChanged();
@@ -1603,7 +1612,7 @@ bool MainWindow::slotGameSave()
     if(database()->isReadOnly())
     {
         MessageDialog::error(tr("This database is read only."));
-        databaseInfo()->setModified(false, GameX(), ""); // Do not notify more than once
+        databaseInfo()->setGameModified(false, GameX(), ""); // Do not notify more than once
         return true;
     }
 
@@ -1615,7 +1624,7 @@ void MainWindow::slotGameSaveOnly()
     if(database()->isReadOnly())
     {
         MessageDialog::error(tr("This database is read only."));
-        databaseInfo()->setModified(false, GameX(), ""); // Do not notify more than once
+        databaseInfo()->setGameModified(false, GameX(), ""); // Do not notify more than once
     }
     else
     {
@@ -1756,7 +1765,7 @@ void MainWindow::slotMergeActiveGameList(QList<GameId> gameIndexList)
                 }
             }
         }
-        databaseInfo()->setModified(true,state,tr("Merge selected games"));
+        databaseInfo()->setGameModified(true,state,tr("Merge selected games"));
     }
 }
 
@@ -2897,11 +2906,20 @@ void MainWindow::copyGame(DatabaseInfo* pTargetDB, DatabaseInfo* pSourceDB, Game
         {
             // The database is open and accessible
             pTargetDB->database()->appendGame(g);
-            if(pTargetDB == m_currentDatabase)
-            {
-                emit databaseModified();
-            }
         }
+    }
+}
+
+void MainWindow::gameChangeTag(GameId id, QString tag)
+{
+    if (databaseInfo()->currentIndex()==id)
+    {
+        game().setTag(tag, database()->index()->tagValue(tag, id));
+        database()->setModified(true);
+        m_eventList->setDatabase(databaseInfo());
+        m_playerList->setDatabase(databaseInfo());
+        emit signalGameModified(false);
+        UpdateBoardInformation();
     }
 }
 
@@ -2963,6 +2981,7 @@ void MainWindow::copyDatabase(QString target, QString src)
         DatabaseInfo* pDestDBInfo = getDatabaseInfoByPath(target);
         DatabaseInfo* pSrcDBInfo = getDatabaseInfoByPath(src);
 
+        DatabaseTransaction dbTransaction(pDestDB);
         bool done = false;
         if(pDestDBInfo && pSrcDB && pDestDB && !pDestDB->isReadOnly() && (pSrcDB != pDestDB) && !pDestDBInfo->IsBook() && !pSrcDBInfo->IsBook())
         {
@@ -3026,6 +3045,7 @@ void MainWindow::copyDatabase(QString target, QString src)
         {
             // Source is closed, target is open
             StreamDatabase streamDb;
+            streamDb.set64bit(true);
             if (streamDb.open(src, false))
             {
                 GameX g;
@@ -3072,7 +3092,6 @@ void MainWindow::copyDatabase(QString target, QString src)
             m_gameList->startUpdate();
             m_gameList->endUpdate();
             emit databaseChanged(databaseInfo());
-            emit databaseModified();
         }
     }
 }
@@ -3091,6 +3110,21 @@ void MainWindow::slotDatabaseDroppedHandler(QUrl url, QString filename)
     {
         QFile::remove(filename);
     }
+}
+
+void MainWindow::slotGamesDropped(QDropEvent *event)
+{
+    const QMimeData *mimeData = event->mimeData();
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+    if(gameMimeData)
+    {
+        foreach(GameId index, gameMimeData->m_indexList)
+        {
+            slotMergeActiveGame(index, gameMimeData->source);
+        }
+    }
+
+    event->acceptProposedAction();
 }
 
 void MainWindow::slotDatabaseDropped(QDropEvent *event)
@@ -3487,6 +3521,8 @@ void MainWindow::slotUpdateOpeningBook(QString name)
 
 void MainWindow::slotDatabaseDeleteGame(QList<GameId> gameIndexList)
 {
+    DatabaseTransaction dbTrans(database());
+
     m_gameList->startUpdate();
     foreach(GameId n, gameIndexList)
     {
@@ -3541,7 +3577,7 @@ void MainWindow::slotRenameRequest(QString tag, QString newValue, QString oldVal
         database()->setModified(true);
         m_eventList->setDatabase(databaseInfo());
         m_playerList->setDatabase(databaseInfo());
-        slotGameChanged(true);
+        emit signalGameModified(false);
         UpdateBoardInformation();
     }
 }
@@ -3638,7 +3674,8 @@ BoardView* MainWindow::CreateBoardView()
         connect(boardViewEx, SIGNAL(signalNewAnnotation(QString)), SLOT(slotGameSetComment(QString)));
         connect(boardViewEx, SIGNAL(enterVariation(int)), this, SLOT(slotGameVarEnter(int)));
         connect(this, SIGNAL(signalGameIsEmpty(bool)), boardViewEx, SLOT(setAnnotationPlaceholder(bool)));
-
+        connect(boardView, SIGNAL(signalDropEvent(QDropEvent*)), this, SLOT(slotDatabaseDropped(QDropEvent*)));
+        connect(boardView, SIGNAL(signalGamesDropped(QDropEvent*)), this, SLOT(slotGamesDropped(QDropEvent*)));
 
         if (databaseInfo()->IsFicsDB())
         {
@@ -4158,15 +4195,18 @@ void MainWindow::slotShowUnderprotectedBlack()
 void MainWindow::slotReadAhead()
 {
 #ifdef USE_SPEECH
-    if (!m_readAhead) m_readAhead = 1;
-    speechStateChanged(QTextToSpeech::Ready);
+    if (speech)
+    {
+        if (!m_readAhead) m_readAhead = 1;
+        speechStateChanged(QTextToSpeech::Ready);
+    }
 #endif
 }
 
 #ifdef USE_SPEECH
 void MainWindow::speechStateChanged(QTextToSpeech::State  state)
 {
-    if (state == QTextToSpeech::Ready)
+    if (speech && (state == QTextToSpeech::Ready))
     {
         if (m_readAhead > 1)
         {
@@ -4182,7 +4222,7 @@ void MainWindow::speechStateChanged(QTextToSpeech::State  state)
 void MainWindow::delaySpeechTimeout()
 {
     int n = AppSettings->getValue("/Sound/PlyReadAhead").toInt();
-    if (m_readAhead<=n)
+    if (speech && (m_readAhead<=n))
     {
         GameX g = game();
         if (g.forward(m_readAhead))

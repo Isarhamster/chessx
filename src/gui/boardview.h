@@ -136,6 +136,8 @@ signals:
     void pieceDropped(Square to, Piece p);
     void actionHint(const QString&);
     void signalFlipped(bool oldState, bool newState);
+    void signalDropEvent(QDropEvent*);
+    void signalGamesDropped(QDropEvent*);
 
 protected:
     /** Redraws whole board if necessary. */

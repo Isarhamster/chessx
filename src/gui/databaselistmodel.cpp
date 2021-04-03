@@ -327,6 +327,7 @@ void DatabaseListModel::addEntry(DatabaseListEntry& d, const QString& s)
 {
     beginInsertRows(QModelIndex(), m_databases.count(), m_databases.count());
     d.m_name = QFileInfo(s).fileName();
+    if (d.m_name.isEmpty()) d.m_name = s; // Fix virtual database names
     m_databases.push_back(d);
     endInsertRows();
 }
@@ -496,8 +497,8 @@ void DatabaseListModel::update(const QString& s)
 {
     if(DatabaseListEntry* e = FindEntry(s))
     {
-        QModelIndex m = createIndex(m_databases.indexOf(*e), DBLV_NAME, (void*) nullptr);
-        QModelIndex n = createIndex(m_databases.indexOf(*e), DBLV_UTF8, (void*) nullptr);
+        QModelIndex m = createIndex(m_databases.indexOf(*e), DBLV_FIRST, (void*) nullptr);
+        QModelIndex n = createIndex(m_databases.indexOf(*e), DBLV_LAST, (void*) nullptr);
         emit QAbstractItemModel::dataChanged(m, n);
     }
 }

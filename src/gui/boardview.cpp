@@ -15,6 +15,7 @@
  ***************************************************************************/
 
 #include "boardview.h"
+#include "GameMimeData.h"
 #include "settings.h"
 #include "guess.h"
 #include "move.h"
@@ -62,6 +63,8 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
 
     connect(&m_threatGuess, SIGNAL(guessFoundForBoard(Guess::Result, BoardX)),
             this, SLOT(showThreat(Guess::Result,BoardX)), Qt::QueuedConnection);
+
+    setAcceptDrops(true);
 }
 
 BoardView::~BoardView()
@@ -1239,8 +1242,11 @@ bool BoardView::canDrag(Square s, Qt::KeyboardModifiers mdf) const
 
 void BoardView::dragEnterEvent(QDragEnterEvent *event)
 {
-    const BoardViewMimeData *mimeData = qobject_cast<const BoardViewMimeData *>(event->mimeData());
-    if(mimeData)
+    const BoardViewMimeData *bvMimeData = qobject_cast<const BoardViewMimeData *>(event->mimeData());
+    const QMimeData *mimeData = event->mimeData();
+    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+    if (bvMimeData || gameMimeData || dbMimeData || (mimeData && mimeData->hasUrls()))
     {
         event->acceptProposedAction();
     }
@@ -1258,15 +1264,26 @@ void BoardView::dragLeaveEvent(QDragLeaveEvent *event)
 
 void BoardView::dropEvent(QDropEvent *event)
 {
-    const BoardViewMimeData *mimeData = qobject_cast<const BoardViewMimeData *>(event->mimeData());
-    if(mimeData)
+    const BoardViewMimeData *bvMimeData = qobject_cast<const BoardViewMimeData *>(event->mimeData());
+    const QMimeData *mimeData = event->mimeData();
+    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+    if(bvMimeData)
     {
         Square s = squareAt(event->pos());
         if (s != InvalidSquare)
         {
-            emit pieceDropped(s, mimeData->m_piece);
+            emit pieceDropped(s, bvMimeData->m_piece);
         }
         event->acceptProposedAction();
+    }
+    else if ((mimeData && mimeData->hasUrls()) || dbMimeData)
+    {
+        emit signalDropEvent(event);
+    }
+    else if (gameMimeData)
+    {
+        emit signalGamesDropped(event);
     }
 }
 
@@ -1377,77 +1394,80 @@ void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
 
 void BoardView::drawArrow(int square1, int square2, QColor color, int thin)
 {
-    QPainter p(this);
-    thin = std::min(thin,3);
-    if (thin) thin++;
+    if (square1 != square2)
+    {
+        QPainter p(this);
+        thin = std::min(thin,3);
+        if (thin) thin++;
 
-    float x1 = isFlipped() ? 7 - square1 % 8 : square1 % 8;
-    float y1 = isFlipped() ? square1 / 8 : 7 - square1 / 8;
-    float x2 = isFlipped() ? 7 - square2 % 8 : square2 % 8;
-    float y2 = isFlipped() ? square2 / 8 : 7 - square2 / 8;
-    float w = m_theme.size().width();
-    float h = m_theme.size().height();
-    float coord =  m_coordinates ? CoordinateSize : 0;
-    QPointF pos1(coord + (x1 * w) + (w / 2), (y1 * h) + (h / 2));
-    QPointF pos2(coord + (x2 * w) + (w / 2), (y2 * h) + (h / 2));
+        float x1 = isFlipped() ? 7 - square1 % 8 : square1 % 8;
+        float y1 = isFlipped() ? square1 / 8 : 7 - square1 / 8;
+        float x2 = isFlipped() ? 7 - square2 % 8 : square2 % 8;
+        float y2 = isFlipped() ? square2 / 8 : 7 - square2 / 8;
+        float w = m_theme.size().width();
+        float h = m_theme.size().height();
+        float coord =  m_coordinates ? CoordinateSize : 0;
+        QPointF pos1(coord + (x1 * w) + (w / 2), (y1 * h) + (h / 2));
+        QPointF pos2(coord + (x2 * w) + (w / 2), (y2 * h) + (h / 2));
 
-    // Now to Draw Arrow Head
-    qreal headWidth = m_theme.size().width() / 4;
-    qreal headLength = headWidth;
-    qreal headIndent = headWidth / 4;
-    qreal netIndent = headLength - headIndent;
+        // Now to Draw Arrow Head
+        qreal headWidth = m_theme.size().width() / 4;
+        qreal headLength = headWidth;
+        qreal headIndent = headWidth / 4;
+        qreal netIndent = headLength - headIndent;
 
-    qreal halfHead = headWidth / 2;
-    float px1 = pos1.x();
-    float px2 = pos2.x();
-    float py1 = pos1.y();
-    float py2 = pos2.y();
-    float dX = px2 - px1;
-    float dY = py2 - py1;
+        qreal halfHead = headWidth / 2;
+        float px1 = pos1.x();
+        float px2 = pos2.x();
+        float py1 = pos1.y();
+        float py2 = pos2.y();
+        float dX = px2 - px1;
+        float dY = py2 - py1;
 
-    qreal  arrowLength = qSqrt(dX * dX + dY * dY);
+        qreal  arrowLength = qSqrt(dX * dX + dY * dY);
 
-    QPointF arrowPts[7];
+        QPointF arrowPts[7];
 
-    // we will shorten the line somewhat to avoid arrows all colliding in the center of the square
-    float adjust = ((w + h) / 8);
+        // we will shorten the line somewhat to avoid arrows all colliding in the center of the square
+        float adjust = ((w + h) / 8);
 
-    px1 = px1 + ((adjust * dX) / arrowLength);
-    px2 = px2 - ((adjust * dX) / arrowLength);
-    py1 = py1 + ((adjust * dY) / arrowLength);
-    py2 = py2 - ((adjust * dY) / arrowLength);
+        px1 = px1 + ((adjust * dX) / arrowLength);
+        px2 = px2 - ((adjust * dX) / arrowLength);
+        py1 = py1 + ((adjust * dY) / arrowLength);
+        py2 = py2 - ((adjust * dY) / arrowLength);
 
-    // calculate the points that form the arrow
-    arrowPts[0].setX(px2 - ((netIndent * dX) / arrowLength));
-    arrowPts[0].setY(py2 - ((netIndent * dY) / arrowLength));
-    arrowPts[4].setX(px2 - ((headLength * dX) / arrowLength));
-    arrowPts[4].setY(py2 - ((headLength * dY) / arrowLength));
-    arrowPts[1].setX(arrowPts[4].x() - ((halfHead * (dY)) / arrowLength));
-    arrowPts[1].setY(arrowPts[4].y() - ((halfHead * (-dX)) / arrowLength));
-    arrowPts[3].setX(arrowPts[4].x() + ((halfHead * (dY)) / arrowLength));
-    arrowPts[3].setY(arrowPts[4].y() + ((halfHead * (-dX)) / arrowLength));
-    arrowPts[2].setX(px2);
-    arrowPts[2].setY(py2);
+        // calculate the points that form the arrow
+        arrowPts[0].setX(px2 - ((netIndent * dX) / arrowLength));
+        arrowPts[0].setY(py2 - ((netIndent * dY) / arrowLength));
+        arrowPts[4].setX(px2 - ((headLength * dX) / arrowLength));
+        arrowPts[4].setY(py2 - ((headLength * dY) / arrowLength));
+        arrowPts[1].setX(arrowPts[4].x() - ((halfHead * (dY)) / arrowLength));
+        arrowPts[1].setY(arrowPts[4].y() - ((halfHead * (-dX)) / arrowLength));
+        arrowPts[3].setX(arrowPts[4].x() + ((halfHead * (dY)) / arrowLength));
+        arrowPts[3].setY(arrowPts[4].y() + ((halfHead * (-dX)) / arrowLength));
+        arrowPts[2].setX(px2);
+        arrowPts[2].setY(py2);
 
-    QPointF pos3(px1, py1);
-    QPointF pos4(px2- ((adjust * dX) / arrowLength), py2- ((adjust * dY) / arrowLength));
+        QPointF pos3(px1, py1);
+        QPointF pos4(px2- ((adjust * dX) / arrowLength), py2- ((adjust * dY) / arrowLength));
 
-    p.save();
-    p.setRenderHint(QPainter::SmoothPixmapTransform);
+        p.save();
+        p.setRenderHint(QPainter::SmoothPixmapTransform);
 
-    color.setAlpha(176-28*thin);
-    int penWidth = std::max(2, (int)(headWidth / 3));
-    QPen pen(color, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-    p.setPen(pen);
-    p.drawLine(pos3, pos4);
+        color.setAlpha(176-28*thin);
+        int penWidth = std::max(2, (int)(headWidth / 3));
+        QPen pen(color, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        p.setPen(pen);
+        p.drawLine(pos3, pos4);
 
-    QBrush brush(color);
-    p.setBrush(brush);
-    pen.setWidth(2);
-    p.setPen(pen);
-    p.drawPolygon(arrowPts, 4);
+        QBrush brush(color);
+        p.setBrush(brush);
+        pen.setWidth(2);
+        p.setPen(pen);
+        p.drawPolygon(arrowPts, 4);
 
-    p.restore();
+        p.restore();
+    }
 }
 
 void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)

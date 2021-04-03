@@ -67,11 +67,15 @@ void ThreadedGuess::run()
                                         moveList, thinkTime);
     if (!m_dontGuess)
     {
-        if (Guess::guessAllowed())
+        if (Guess::guessAllowed() && !sm.error)
         {
             setFrom(Square(sm.from));
             setTo(Square(sm.to));
             emit guessFoundForBoard(sm, m_board);
+        }
+        else
+        {
+            clear();
         }
     }
 }

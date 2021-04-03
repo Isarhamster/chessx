@@ -22,12 +22,27 @@
 
 #include <QPointer>
 #include <QSortFilterProxyModel>
+#include <QStyledItemDelegate>
 #include "filteroperator.h"
 
 class FilterX;
 class FilterModel;
 class GameListSortModel;
 class Search;
+
+/** @ingroup GUI
+The GameListDelegate helps in detecting editing a game list. */
+
+class GameListDelegate : public QStyledItemDelegate
+{
+    Q_OBJECT
+
+public:
+    GameListDelegate(QWidget *parent = nullptr) : QStyledItemDelegate(parent) {}
+
+    void setModelData(QWidget *editor, QAbstractItemModel *model,
+                      const QModelIndex &index) const;
+};
 
 /** @ingroup GUI
 The GameList class displays list of the games in current filter. It allows
@@ -43,7 +58,7 @@ public:
     void keyPressEvent(QKeyEvent* event);
     void removeSelection();
     /** Set current database */
-    QList<GameId> selectedGames();
+    QList<GameId> selectedGames(bool skipDeletedGames=true);
 
     void startUpdate(); // TODO Remove this hack
     void endUpdate(); // TODO Remove this hack
@@ -86,6 +101,7 @@ public slots:
     void filterSetAll(int value=1);
 
 private slots:
+    void itemDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight);
     /** Re-emit the request to the receivers to perform some action */
     void itemSelected(const QModelIndex& index);
     /** Request a context menu for the list members */
@@ -108,7 +124,6 @@ private slots:
     void slotHideDeletedGames();
     /** React to a change in selected item */
     void slotItemSelected(const QModelIndex&);
-    bool triggerGameSelection(int sortRow);
 signals:
     void gameSelected(GameId);
     void raiseRequest();
@@ -126,6 +141,7 @@ signals:
     void searchProgress(int);
     void searchFinished();
     void requestAppendGames(QString path, QList<GameId> indexes, QString source);
+    void gameTagChanged(GameId,QString tag);
 
 protected: //Drag'n'Drop Support
     void startDrag(Qt::DropActions supportedActions);
@@ -139,8 +155,14 @@ protected: //Drag'n'Drop Support
     void dropEvent(QDropEvent *event);
 
 private:
+    bool triggerGameSelection(int sortRow);
+
+private slots:
+
+private:
     FilterModel* m_model;
     QPointer<GameListSortModel> sortModel;
+    QString oldTagText;
 };
 
 #endif

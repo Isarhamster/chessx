@@ -10,9 +10,7 @@
 #endif // _MSC_VER
 
 CtgBookWriter::CtgBookWriter(QObject *parent) :
-    QThread(parent),
-    m_source(0),
-    m_break(false)
+    QThread(parent)
 {
 }
 
