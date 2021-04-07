@@ -76,7 +76,8 @@ bool Settings::layout(QWidget* w)
             wx = values[5];
         }
         w->resize(values[2], values[3]);
-        if (w->objectName() == "MainWindow")
+        QDialog* dlg = qobject_cast<QDialog*>(w);
+        if ((w->objectName() == "MainWindow") || dlg)
         {
             int wy = values[3];
             // Check that x/y are inside the available geometry
