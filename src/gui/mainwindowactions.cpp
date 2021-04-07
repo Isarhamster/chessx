@@ -1084,6 +1084,16 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                                 setResultForCurrentPosition();
                             }
                         }
+                        else
+                        {
+                            // Check for draw conditions
+                            QString s = drawAnnotation();
+                            if (!s.isEmpty())
+                            {
+                                playSound(":/sounds/fanfare.wav");
+                                slotStatusMessage(s);
+                            }
+                        }
                     }
                 }
                 else
@@ -1934,10 +1944,10 @@ QString MainWindow::scoreText(const Analysis& analysis)
     return s;
 }
 
-bool MainWindow::gameAddAnalysis(const Analysis& analysis, QString annotation)
+bool MainWindow::gameAddAnalysis(const Analysis& analysis, QString annotation, bool forceLine)
 {
     Move m = analysis.variation().constFirst();
-    if(!game().currentNodeHasMove(m.from(), m.to()))
+    if(!game().currentNodeHasMove(m.from(), m.to()) || forceLine)
     {
         if (!annotation.isEmpty()) annotation += " ";
         annotation += scoreText(analysis);
@@ -1961,7 +1971,7 @@ bool MainWindow::gameAddAnalysis(const Analysis& analysis, QString annotation)
 
 void MainWindow::slotGameAddVariation(const Analysis& analysis, QString annotation)
 {
-    gameAddAnalysis(analysis, annotation);
+    gameAddAnalysis(analysis, annotation, true);
 }
 
 bool MainWindow::addVariationFromSan(const QString& san)
