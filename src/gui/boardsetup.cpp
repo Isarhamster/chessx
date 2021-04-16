@@ -214,6 +214,11 @@ void BoardSetupDialog::setFlipped(bool flipped)
     ui.boardView->setFlipped(flipped);
 }
 
+bool BoardSetupDialog::isFlipped() const
+{
+    return ui.boardView->isFlipped();
+}
+
 void BoardSetupDialog::setBoard(const BoardX& b)
 {
     ui.boardView->setBoard(b);

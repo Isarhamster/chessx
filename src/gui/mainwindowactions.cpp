@@ -626,6 +626,7 @@ void MainWindow::slotEditBoard()
     dlg.setFlipped(m_boardView->isFlipped());
     if(dlg.exec() == QDialog::Accepted)
     {
+        m_boardView->setFlipped(dlg.isFlipped());
         game().setStartingBoard(dlg.board(),tr("Set starting board"),dlg.board().chess960());
         emit signalGameLoaded(game().startingBoard());
     }
