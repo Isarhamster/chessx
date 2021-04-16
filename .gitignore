@@ -11,5 +11,8 @@ Makefile
 *.dmg
 release/*
 dmg/*
-*/obj_dbg/*
+obj_dbg/*
 */obj_rel/*
+coverage/*
+attic/*
+gcov-info/coverage.info
