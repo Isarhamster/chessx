@@ -626,6 +626,7 @@ void MainWindow::slotEditBoard()
     dlg.setFlipped(m_boardView->isFlipped());
     if(dlg.exec() == QDialog::Accepted)
     {
+        m_boardView->setFlipped(dlg.isFlipped());
         game().setStartingBoard(dlg.board(),tr("Set starting board"),dlg.board().chess960());
         emit signalGameLoaded(game().startingBoard());
     }
@@ -1082,6 +1083,16 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                                     m_match->trigger();
                                 }
                                 setResultForCurrentPosition();
+                            }
+                        }
+                        else
+                        {
+                            // Check for draw conditions
+                            QString s = drawAnnotation();
+                            if (!s.isEmpty())
+                            {
+                                playSound(":/sounds/fanfare.wav");
+                                slotStatusMessage(s);
                             }
                         }
                     }
@@ -1934,10 +1945,10 @@ QString MainWindow::scoreText(const Analysis& analysis)
     return s;
 }
 
-bool MainWindow::gameAddAnalysis(const Analysis& analysis, QString annotation)
+bool MainWindow::gameAddAnalysis(const Analysis& analysis, QString annotation, bool forceLine)
 {
     Move m = analysis.variation().constFirst();
-    if(!game().currentNodeHasMove(m.from(), m.to()))
+    if(!game().currentNodeHasMove(m.from(), m.to()) || forceLine)
     {
         if (!annotation.isEmpty()) annotation += " ";
         annotation += scoreText(analysis);
@@ -1961,7 +1972,7 @@ bool MainWindow::gameAddAnalysis(const Analysis& analysis, QString annotation)
 
 void MainWindow::slotGameAddVariation(const Analysis& analysis, QString annotation)
 {
-    gameAddAnalysis(analysis, annotation);
+    gameAddAnalysis(analysis, annotation, true);
 }
 
 bool MainWindow::addVariationFromSan(const QString& san)

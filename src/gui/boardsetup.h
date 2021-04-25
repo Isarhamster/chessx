@@ -39,6 +39,8 @@ public:
     void setBoard(const BoardX& b);
     /** Set current board */
     void setFlipped(bool flipped);
+    /** Set current board */
+    bool isFlipped() const;
     /** Return current board */
     BoardX board() const;
 

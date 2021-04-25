@@ -659,7 +659,7 @@ private:
     Color UserColor();
     void truncateVariation(GameX::Position position = GameX::AfterMove);
     bool handleGameEnd(const Analysis& analysis, QAction* action);
-    bool gameAddAnalysis(const Analysis& analysis, QString annotation);
+    bool gameAddAnalysis(const Analysis& analysis, QString annotation, bool forceLine=false);
     QString scoreText(const Analysis& analysis);
 
     /* Dialogs  */

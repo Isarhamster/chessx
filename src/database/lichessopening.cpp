@@ -9,7 +9,6 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QObject>
-#include <QRegExp>
 #include <QStringList>
 #include <QTimer>
 #include <QUrl>
