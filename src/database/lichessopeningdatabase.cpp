@@ -9,12 +9,18 @@ bool LichessOpeningDatabase::open(const QString& filename, bool)
 {
     m_filename = filename;
     QStringList internal = filename.toLower().split(" ");
-    internal.removeAt(0);
-    m_client.setDb(internal.at(0));
-    internal.removeAt(0);
-    if (internal.count()) m_client.setVariant(internal.at(0));
-    internal.removeAt(0);
-    m_client.setIntervals(internal);
+    if (internal.count()>1)
+    {
+        internal.removeAt(0);
+        m_client.setDb(internal.at(0));
+        if (internal.count()>1)
+        {
+            internal.removeAt(0);
+            m_client.setVariant(internal.at(0));
+            internal.removeAt(0);
+            m_client.setIntervals(internal);
+        }
+    }
     return true;
 }
 

@@ -54,14 +54,14 @@ SimpleLoggingHandler(QtMsgType type, const QMessageLogContext &, const QString &
 LogStream::LogStream()
 {
 #ifdef _DEBUG
-    startFileLog();
+    // startFileLog();
 #endif
 }
 
 LogStream::~LogStream()
 {
 #ifdef _DEBUG
-   stopFileLog();
+   // stopFileLog();
 #endif
 }
 
