@@ -43,6 +43,7 @@
 #include "mainwindow.h"
 #include "messagedialog.h"
 #include "memorydatabase.h"
+#include "networkhelper.h"
 #include "openingtreewidget.h"
 #include "output.h"
 #include "pgndatabase.h"
@@ -2121,11 +2122,8 @@ void MainWindow::StartCheckUpdate()
                 SLOT(slotHttpDone(QNetworkReply*)));
         connect(this, SIGNAL(signalVersionFound(int, int, int)),
                 SLOT(slotVersionFound(int, int, int)));
-        QUrl url = QUrl(QString("http://chessx.sourceforge.net/versions/current.txt"));
-        QNetworkRequest request(url);
-        QByteArray userAgent = QString(QCoreApplication::applicationName() + "/" + STR_VERSION_NET).toLatin1();
-        request.setRawHeader("User-Agent",userAgent);
-        request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+        QUrl url("http://chessx.sourceforge.net/versions/current.txt");
+        QNetworkRequest request = NetworkHelper::Request(url);
         m_manager->get(request);
     }
 }

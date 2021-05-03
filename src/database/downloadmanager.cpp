@@ -39,6 +39,7 @@
  ****************************************************************************/
 
 #include "downloadmanager.h"
+#include "networkhelper.h"
 #include "settings.h"
 #include "version.h"
 
@@ -84,10 +85,7 @@ void DownloadManager::doDownloadToPath(const QUrl &url, const QString& filename)
         return;
     }
 
-    QNetworkRequest request(url);
-    QByteArray userAgent = QString(QCoreApplication::applicationName() + "/" + STR_VERSION_NET).toLatin1();
-    request.setRawHeader("User-Agent",userAgent);
-    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    QNetworkRequest request = NetworkHelper::Request(url);
     QNetworkReply *reply = manager.get(request);
 
     connect(reply, SIGNAL(finished()), SLOT(downloadFinished()));
