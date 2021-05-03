@@ -143,7 +143,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
         case DBLV_NAME:
         {
             QString s = db.m_name;
-            if (s.endsWith(".pgn")) s.remove(".pgn");
+            if (s.endsWith(".pgn", Qt::CaseInsensitive)) s.remove(".pgn", Qt::CaseInsensitive);
             return s;
         }
         case DBLV_SIZE:

@@ -97,7 +97,7 @@ void MainWindow::slotFileNew()
     {
         return;
     }
-    if(!file.endsWith(".pgn"))
+    if(!file.endsWith(".pgn", Qt::CaseInsensitive))
     {
         file += ".pgn";
     }
@@ -3017,8 +3017,8 @@ void MainWindow::copyDatabase(QString target, QString src)
             QFile fSrc(src);
             QFile fDest(target);
 
-            if(fiDest.exists() && fiDest.suffix()=="pgn"
-                    && fiSrc.exists() && fiSrc.suffix()=="pgn"
+            if(fiDest.exists() && fiDest.suffix().toLower()=="pgn"
+                    && fiSrc.exists() && fiSrc.suffix().toLower()=="pgn"
                     && fSrc.open(QIODevice::ReadOnly) &&
                     fDest.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
             {
@@ -3036,7 +3036,7 @@ void MainWindow::copyDatabase(QString target, QString src)
                 m_databaseList->update(target);
             }
         }
-        else if (pSrcDB && pSrcDBInfo && !pSrcDBInfo->IsBook() && pSrcDBInfo->modified() && !pDestDB && fiDest.exists() && fiDest.suffix()=="pgn")
+        else if (pSrcDB && pSrcDBInfo && !pSrcDBInfo->IsBook() && pSrcDBInfo->modified() && !pDestDB && fiDest.exists() && fiDest.suffix().toLower()=="pgn")
         {
             // Src is open and modified, target is closed
             QFile fDest(target);
@@ -3052,7 +3052,7 @@ void MainWindow::copyDatabase(QString target, QString src)
                 m_databaseList->update(target);
             }
         }
-        else if (!pSrcDB && fiSrc.exists() && fiSrc.suffix()=="pgn" && pDestDB)
+        else if (!pSrcDB && fiSrc.exists() && fiSrc.suffix().toLower()=="pgn" && pDestDB)
         {
             // Source is closed, target is open
             StreamDatabase streamDb;
@@ -3073,7 +3073,7 @@ void MainWindow::copyDatabase(QString target, QString src)
                 }
             }
         }
-        else if (!pSrcDB && fiSrc.exists() && fiSrc.suffix()=="abk" && pDestDB)
+        else if (!pSrcDB && fiSrc.exists() && fiSrc.suffix().toLower()=="abk" && pDestDB)
         {
             // Source is closed, target is open
             ArenaBook abk;

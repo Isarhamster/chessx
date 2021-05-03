@@ -437,13 +437,34 @@ bool DatabaseInfo::IsBook() const
 /* static */ bool DatabaseInfo::IsOnlineBook(QString s)
 {
     QFileInfo fi(s);
-    return (s.contains("Lichess") && fi.suffix().isEmpty());
+    return (s.contains("Lichess", Qt::CaseInsensitive) && fi.suffix().isEmpty());
 }
 
 /* static */ bool DatabaseInfo::IsBook(QString s)
 {
     // Add here if more book formats come in
     return IsPolyglotBook(s) || IsChessbaseBook(s) || IsOnlineBook(s) ;
+}
+
+/* static */ bool DatabaseInfo::IsLocalDatabase(QString s)
+{
+    QFileInfo fi = QFileInfo(s);
+    QString suffix = fi.suffix().toLower();
+
+    return ((suffix == "pgn") ||
+            (suffix == "si4") ||
+            (suffix == "bin") ||
+            (suffix == "abk") ||
+            (suffix == "ctg"));
+}
+
+/* static */ bool DatabaseInfo::IsLocalArchive(QString s)
+{
+    QFileInfo fi = QFileInfo(s);
+    QString suffix = fi.suffix().toLower();
+
+    return ((suffix == "zip") ||
+            (suffix == "tgz"));
 }
 
 qint64 DatabaseInfo::GetDatabaseSize(QString filename)

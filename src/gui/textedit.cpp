@@ -413,7 +413,7 @@ bool TextEdit::load(const QString &f)
     if (!file.open(QFile::ReadOnly))
         return false;
 
-    if (f.endsWith("odt"))
+    if (f.endsWith("odt", Qt::CaseInsensitive))
     {
         OOO::Converter *doc_odt = new OOO::Converter();
         QTextDocument *doc = doc_odt->convert(f);

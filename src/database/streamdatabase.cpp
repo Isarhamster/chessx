@@ -44,7 +44,7 @@ bool StreamDatabase::loadNextGame(GameX& game)
                 loadGameHeaders(index, game);
                 QString fen = m_index.tagValue(TagNameFEN, index);
                 QString variant = m_index.tagValue(TagNameVariant, index).toLower();
-                bool chess960 = (variant.startsWith("fischer") || variant.endsWith("960"));
+                bool chess960 = (variant.startsWith("fischer", Qt::CaseInsensitive) || variant.endsWith("960"));
                 if(fen != "?")
                 {
                     game.dbSetStartingBoard(fen, chess960);

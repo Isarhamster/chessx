@@ -1071,19 +1071,13 @@ void MainWindow::openFICS()
 
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
 {
-    QFileInfo fi = QFileInfo(fname);
-    QString ext = fi.suffix().toLower();
-    if(fname.isEmpty() ||
-            ext == "pgn" ||
-            ext == "si4" ||
-            ext == "ctg" ||
-            ext == "bin" ||
-            ext == "abk" )
+    if(DatabaseInfo::IsLocalDatabase(fname))
     {
         openDatabaseFile(fname, utf8);
     }
     else
     {
+        QFileInfo fi = QFileInfo(fname);
         QString dir = AppSettings->commonDataPath();
 
         fname = fi.canonicalFilePath();
@@ -2132,7 +2126,7 @@ void MainWindow::slotHttpDone(QNetworkReply *reply)
 {
     QUrl url = reply->request().url();
 
-    if (url.toString().endsWith("current.txt"))
+    if (url.toString().endsWith("current.txt", Qt::CaseInsensitive))
     {
         if(!reply->error())
         {

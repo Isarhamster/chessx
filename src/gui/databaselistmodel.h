@@ -56,15 +56,15 @@ public:
 
     QString classType() const
     {
-        if (m_name.endsWith(".bin"))
+        if (m_name.endsWith(".bin", Qt::CaseInsensitive))
         {
             return "Polyglot";
         }
-        if (m_name.endsWith(".ctg"))
+        if (m_name.endsWith(".ctg", Qt::CaseInsensitive))
         {
             return "Chessbase Book";
         }
-        if (m_name.endsWith(".abk"))
+        if (m_name.endsWith(".abk", Qt::CaseInsensitive))
         {
             return "Arena Book";
         }
