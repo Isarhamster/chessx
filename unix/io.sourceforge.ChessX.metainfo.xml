@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>io.sourceforge.ChessX.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0-or-later</project_license>
+  <name>ChessX</name>
+  <summary>Free Chess Database</summary>
+  <description>
+    <p>
+			ChessX is an Open Source chess database. With ChessX you can operate on your collection of chess games in many ways:
+browse, edit, add, organize, analyze, etc.
+		</p>
+    <ul>
+      <li>Load and save PGN files</li>
+      <li>Work with multiple databases simultaneously</li>
+      <li>Browse games, including variations</li>
+      <li>Enter moves, variations, comments</li>
+      <li>Setup board, copy/paste FEN, merge games</li>
+      <li>Search in Databases for text or positions</li>
+      <li>Display tree of moves for the current position</li>
+      <li>Analyze using UCI and Winboard/Xboard Chess engines</li>
+      <li>Prepare for openings or opponents</li>
+      <li>Training mode (next move is hidden)</li>
+      <li>FICS Support</li>
+    </ul>
+  </description>
+  <releases>
+    <release version="1.5.6" date="2021-02-27"/>
+    <release version="1.5.4" date="2020-05-12"/>
+    <release version="1.5.0" date="2019-05-05"/>
+    <release version="1.4.6" date="2017-04-14"/>
+  </releases>
+  <screenshots>
+    <screenshot type="default">
+      <image>http://i1-win.softpedia-static.com/screenshots/ChessX_1.png</image>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://chessx.sourceforge.io</url>
+  <content_rating type="oars-1.1" />
+</component>
