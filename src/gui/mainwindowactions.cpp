@@ -57,7 +57,6 @@
 #include "settings.h"
 #include "streamdatabase.h"
 #include "tablebase.h"
-#include "tableview.h"
 #include "tagdialog.h"
 #include "tags.h"
 #include "translatingslider.h"

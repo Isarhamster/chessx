@@ -53,7 +53,6 @@
 #include "savedialog.h"
 #include "settings.h"
 #include "style.h"
-#include "tableview.h"
 #include "tagdialog.h"
 #include "tags.h"
 #include "textedit.h"
