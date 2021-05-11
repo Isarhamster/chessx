@@ -30,6 +30,7 @@ public:
 private:
     QString m_filename;
     LichessOpening m_client;
+    QStringList parseTopGame(const QJsonArray& topGames);
 
 };
 

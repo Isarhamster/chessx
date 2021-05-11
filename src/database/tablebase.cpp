@@ -8,6 +8,7 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "networkhelper.h"
 #include "settings.h"
 #include "tablebase.h"
 #include "version.h"
@@ -94,10 +95,7 @@ void OnlineTablebase::sendIt()
     url.setScheme("http");
     m_requested = url.toString();
 
-    QNetworkRequest request(url);
-    QByteArray userAgent = QString(QCoreApplication::applicationName() + "/" + STR_VERSION_NET).toLatin1();
-    request.setRawHeader("User-Agent",userAgent);
-    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    QNetworkRequest request = NetworkHelper::Request(url);
     manager.get(request);
 }
 

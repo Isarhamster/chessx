@@ -43,6 +43,7 @@
 #include "mainwindow.h"
 #include "messagedialog.h"
 #include "memorydatabase.h"
+#include "networkhelper.h"
 #include "openingtreewidget.h"
 #include "output.h"
 #include "pgndatabase.h"
@@ -52,7 +53,6 @@
 #include "savedialog.h"
 #include "settings.h"
 #include "style.h"
-#include "tableview.h"
 #include "tagdialog.h"
 #include "tags.h"
 #include "textedit.h"
@@ -1070,19 +1070,13 @@ void MainWindow::openFICS()
 
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
 {
-    QFileInfo fi = QFileInfo(fname);
-    QString ext = fi.suffix().toLower();
-    if(fname.isEmpty() ||
-            ext == "pgn" ||
-            ext == "si4" ||
-            ext == "ctg" ||
-            ext == "bin" ||
-            ext == "abk" )
+    if(DatabaseInfo::IsLocalDatabase(fname))
     {
         openDatabaseFile(fname, utf8);
     }
     else
     {
+        QFileInfo fi = QFileInfo(fname);
         QString dir = AppSettings->commonDataPath();
 
         fname = fi.canonicalFilePath();
@@ -2121,11 +2115,8 @@ void MainWindow::StartCheckUpdate()
                 SLOT(slotHttpDone(QNetworkReply*)));
         connect(this, SIGNAL(signalVersionFound(int, int, int)),
                 SLOT(slotVersionFound(int, int, int)));
-        QUrl url = QUrl(QString("http://chessx.sourceforge.net/versions/current.txt"));
-        QNetworkRequest request(url);
-        QByteArray userAgent = QString(QCoreApplication::applicationName() + "/" + STR_VERSION_NET).toLatin1();
-        request.setRawHeader("User-Agent",userAgent);
-        request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+        QUrl url("http://chessx.sourceforge.net/versions/current.txt");
+        QNetworkRequest request = NetworkHelper::Request(url);
         m_manager->get(request);
     }
 }
@@ -2134,7 +2125,7 @@ void MainWindow::slotHttpDone(QNetworkReply *reply)
 {
     QUrl url = reply->request().url();
 
-    if (url.toString().endsWith("current.txt"))
+    if (url.toString().endsWith("current.txt", Qt::CaseInsensitive))
     {
         if(!reply->error())
         {

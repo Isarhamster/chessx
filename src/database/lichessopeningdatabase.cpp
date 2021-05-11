@@ -9,13 +9,31 @@ bool LichessOpeningDatabase::open(const QString& filename, bool)
 {
     m_filename = filename;
     QStringList internal = filename.toLower().split(" ");
-    internal.removeAt(0);
-    m_client.setDb(internal.at(0));
-    internal.removeAt(0);
-    if (internal.count()) m_client.setVariant(internal.at(0));
-    internal.removeAt(0);
-    m_client.setIntervals(internal);
+    if (internal.count()>1)
+    {
+        internal.removeAt(0);
+        m_client.setDb(internal.at(0));
+        if (internal.count()>1)
+        {
+            internal.removeAt(0);
+            m_client.setVariant(internal.at(0));
+            internal.removeAt(0);
+            m_client.setIntervals(internal);
+        }
+    }
     return true;
+}
+
+QStringList LichessOpeningDatabase::parseTopGame(const QJsonArray& topGames)
+{
+    QStringList result;
+    for (QJsonArray::const_iterator it = topGames.constBegin(); it != topGames.constEnd(); ++it)
+    {
+        QString w = (*it).toObject().value("white").toString();
+        QString b = (*it).toObject().value("black").toString();
+        result.append(QString("%1-%2").arg(w).arg(b));
+    }
+    return result;
 }
 
 /** Get a map of MoveData from a given board position */
@@ -51,7 +69,7 @@ unsigned int LichessOpeningDatabase::getMoveMapForBoard(const BoardX &board, QMa
             md.localsan = board.moveToSan(m, true);
             moves.insert(m, md);
         }
-    }
+    }   
     return total;
 
 }

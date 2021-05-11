@@ -35,6 +35,7 @@
 
 /* Gentoo removed OF from their copy of zconf.h (https://bugs.gentoo.org/show_bug.cgi?id=383179) */
 /* but our copy of minizip needs it. */
+
 #ifndef OF
 #define OF(args) args
 #endif

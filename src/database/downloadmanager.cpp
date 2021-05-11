@@ -38,7 +38,9 @@
  **
  ****************************************************************************/
 
+#include "databaseinfo.h"
 #include "downloadmanager.h"
+#include "networkhelper.h"
 #include "settings.h"
 #include "version.h"
 
@@ -84,10 +86,7 @@ void DownloadManager::doDownloadToPath(const QUrl &url, const QString& filename)
         return;
     }
 
-    QNetworkRequest request(url);
-    QByteArray userAgent = QString(QCoreApplication::applicationName() + "/" + STR_VERSION_NET).toLatin1();
-    request.setRawHeader("User-Agent",userAgent);
-    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    QNetworkRequest request = NetworkHelper::Request(url);
     QNetworkReply *reply = manager.get(request);
 
     connect(reply, SIGNAL(finished()), SLOT(downloadFinished()));
@@ -100,20 +99,13 @@ QString DownloadManager::saveFileName(const QUrl &url)
 {
     QString dir = AppSettings->commonDataPath();
     QDir().mkpath(dir);
-
     QString path = url.path();
 
-    QString basename = QFileInfo(path).fileName();
-
-    if (basename.endsWith(".pgn") ||
-        basename.endsWith(".si4") ||
-        basename.endsWith(".bin") ||
-        basename.endsWith(".abk") ||
-        basename.endsWith(".ctg") ||
-        basename.endsWith(".zip") ||
-        basename.endsWith(".tgz"))
+    if (DatabaseInfo::IsLocalDatabase(path) ||
+        DatabaseInfo::IsLocalArchive(path))
     {
-        return dir + QDir::separator() + basename;
+        QFileInfo fi = QFileInfo(url.path());
+        return dir + QDir::separator() + fi.baseName();
     }
     return dir; // Name will be determined after download
 }

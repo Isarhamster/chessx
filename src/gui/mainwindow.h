@@ -59,7 +59,6 @@ class TextEdit;
 class QTimer;
 class QToolBar;
 class SaveDialog;
-class TableView;
 class ToolMainWindow;
 class TranslatingSlider;
 class PolyglotWriter;

@@ -1,4 +1,5 @@
 #include "lichessopening.h"
+#include "networkhelper.h"
 #include "settings.h"
 #include "version.h"
 
@@ -9,7 +10,6 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QObject>
-#include <QRegExp>
 #include <QStringList>
 #include <QTimer>
 #include <QUrl>
@@ -57,6 +57,8 @@ QByteArray LichessOpening::queryPosition(const QString& fen)
             }
         }
 
+        requested += "&topGames=0";
+
         if (m_requested == requested)
         {
             return reply;
@@ -66,10 +68,7 @@ QByteArray LichessOpening::queryPosition(const QString& fen)
         url.setHost("explorer.lichess.ovh");
         url.setScheme("http");
 
-        QNetworkRequest request(url);
-        QByteArray userAgent = QString(QCoreApplication::applicationName() + "/" + STR_VERSION_NET).toLatin1();
-        request.setRawHeader("User-Agent",userAgent);
-        request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+        QNetworkRequest request = NetworkHelper::Request(url);
         reply = sync_request( request );
         m_requested = requested;
         return reply;

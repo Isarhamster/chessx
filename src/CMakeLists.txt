@@ -175,6 +175,8 @@ add_library(database STATIC
   database/lichessopeningdatabase.h
   database/memorydatabase.cpp
   database/memorydatabase.h
+  database/networkhelper.cpp
+  database/networkhelper.h
   database/numbersearch.cpp
   database/numbersearch.h
   database/openingtree.cpp

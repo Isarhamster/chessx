@@ -383,11 +383,11 @@ void PreferencesDialog::slotLoadLanguageFile()
 
 void PreferencesDialog::loadFileError(QUrl url)
 {
-    if(url.toString().endsWith(".txt"))
+    if(url.toString().endsWith(".txt", Qt::CaseInsensitive))
     {
         ui.labelLoadStatus->setText(tr("Could not load server language file dictionary"));
     }
-    else if(url.toString().endsWith(".qm"))
+    else if(url.toString().endsWith(".qm", Qt::CaseInsensitive))
     {
         ui.labelLoadStatus->setText(tr("Could not load or install language pack"));
     }
@@ -395,14 +395,14 @@ void PreferencesDialog::loadFileError(QUrl url)
 
 void PreferencesDialog::slotFileLoaded(QUrl, QString name)
 {
-    if(name.endsWith(".qm"))
+    if(name.endsWith(".qm", Qt::CaseInsensitive))
     {
         name.remove(QRegExp("[^_]*_"));
         name.remove(".qm");
         ui.cbLanguage->addItem(name);
         ui.labelLoadStatus->setText(tr("Translation file loaded - select added language above!"));
     }
-    else if(name.endsWith(".txt"))
+    else if(name.endsWith(".txt", Qt::CaseInsensitive))
     {
         QFile dictFile(name);
         if(dictFile.open(QIODevice::ReadOnly))

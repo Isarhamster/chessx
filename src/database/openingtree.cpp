@@ -245,7 +245,6 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
             case 4:
                 return data.year.count() >= MinAveYear ?
                        data.year.average() : QVariant();
-
             default:
                 return QVariant();
             }

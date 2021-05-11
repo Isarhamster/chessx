@@ -52,6 +52,33 @@ macx {
   QMAKE_CXXFLAGS_DEBUG *= -m64 -O0 --coverage
 }
 
+
+unix|!macx {
+    isEmpty(PREFIX) {
+        bsd {
+            PREFIX = /usr/local
+        }
+        PREFIX = /usr
+    }
+    BINDIR = $$PREFIX/bin
+    DATADIR = $$PREFIX/share
+
+    INSTALLS += appdata desktop icons binfiles
+
+    appdata.files = unix/io.sourceforge.ChessX.metainfo.xml
+    appdata.path = $$DATADIR/metainfo
+    desktop.files = unix/chessx.desktop
+    desktop.path = $$DATADIR/applications
+
+    icons.path = $$DATADIR/icons/hicolor
+    icons.commands = install -Dm644 data/images/chessx.png    $${icons.path}/128x128/apps/chessx.png; \
+                     install -Dm644 data/images/chessx-32.png $${icons.path}/32x32/apps/chessx.png; \
+                     install -Dm644 data/images/chessx-64.png $${icons.path}/64x64/apps/chessx.png;
+
+    binfiles.files = release/chessx
+    binfiles.path = $$BINDIR
+}
+
 scid {
   # Scid sources
   HEADERS += \
@@ -180,6 +207,7 @@ HEADERS += src/database/board.h \
   src/database/move.h \
   src/database/movedata.h \
   src/database/nag.h \
+  src/database/networkhelper.h \
   src/database/numbersearch.h \
   src/database/openingtree.h \
   src/database/openingtreethread.h \
@@ -350,6 +378,7 @@ SOURCES += \
   src/database/memorydatabase.cpp \
   src/database/movedata.cpp \
   src/database/nag.cpp \
+  src/database/networkhelper.cpp \
   src/database/numbersearch.cpp \
   src/database/openingtree.cpp \
   src/database/openingtreethread.cpp \
@@ -522,20 +551,6 @@ macx {
   TIMESEAL_DATA.path = Contents/MacOS/data/timeseal/mac
   QMAKE_BUNDLE_DATA += TIMESEAL_DATA
   QMAKE_INFO_PLIST = mac_osx/Info.plist
-  sf10 {
-    ENGINE_DATA.files = data/engines-mac/uci/stockfish-10-64
-    ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
-    QMAKE_BUNDLE_DATA += ENGINE_DATA
-  }
-}
-
-lc0 {
-  LC0_ENGINE_DATA.files = data/engines-mac/uci/lc0 data/engines-mac/uci/weights.pb
-  LC0_ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
-  QMAKE_BUNDLE_DATA += LC0_ENGINE_DATA
-  LC0_ENGINE_LIB.files = $$files(data/engines-mac/uci/lib/*)
-  LC0_ENGINE_LIB.path = Contents/MacOS/data/engines-mac/uci/lib
-  QMAKE_BUNDLE_DATA += LC0_ENGINE_LIB
 }
 
 RESOURCES = \
@@ -599,8 +614,6 @@ macx {
   OTHER_FILES += \
     mac_osx/Info.plist \
     mac_osx/qt_menu.nib \
-    data/engines-mac/uci/stockfish-10-64 \
-    data/engines-mac/uci/book.bin \
     data/timeseal/mac/timeseal
 }
 
