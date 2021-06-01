@@ -1356,17 +1356,20 @@ bool MainWindow::gameEditComment(Output::CommentType type)
         if(moves > 0)
         {
             QString spec = game().specAnnotations(CURRENT_MOVE, GameX::BeforeMove);
+            spec = GameX::cleanAnnotation(spec, GameX::AnnotationFilter(GameX::FilterEval | GameX::FilterTan));
             game().setAnnotation(dlg.text()+spec, CURRENT_MOVE, GameX::BeforeMove);
         }
         else
         {
             QString spec = game().specAnnotations();
+            spec = GameX::cleanAnnotation(spec, GameX::AnnotationFilter(GameX::FilterEval | GameX::FilterTan));
             game().setGameComment(dlg.text()+spec);
         }
     }
     else
     {
         QString spec = game().specAnnotations();
+        spec = GameX::cleanAnnotation(spec, GameX::AnnotationFilter(GameX::FilterEval | GameX::FilterTan));
         game().setAnnotation(dlg.text()+spec);
     }
     return true;

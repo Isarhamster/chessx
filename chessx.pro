@@ -168,6 +168,7 @@ HEADERS += src/database/board.h \
   src/database/filtermodel.h \
   src/database/filteroperator.h \
   src/database/filtersearch.h \
+  src/database/gamecursor.h \
   src/database/gameid.h \
   src/database/gameundocommand.h \
   src/database/gamex.h \
@@ -342,6 +343,7 @@ SOURCES += \
   src/database/filter.cpp \
   src/database/filtermodel.cpp \
   src/database/filtersearch.cpp \
+  src/database/gamecursor.cpp \
   src/database/gamex.cpp \
   src/database/historylist.cpp \
   src/database/index.cpp \

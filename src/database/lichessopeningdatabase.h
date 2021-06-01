@@ -19,9 +19,9 @@ public:
     /** File-based database name */
     virtual QString filename() const { return m_filename; };
 
-    virtual void loadGameMoves(GameId index, GameX& game) { };
+    virtual void loadGameMoves(GameId /*index*/, GameX& /*game*/) { };
     /** Loads game moves and try to find a position */
-    virtual int findPosition(GameId index, const BoardX& position) { return 0; };
+    virtual int findPosition(GameId /*index*/, const BoardX& /*position*/) { return 0; };
     /** Get a map of MoveData from a given board position */
     unsigned int getMoveMapForBoard(const BoardX &board, QMap<Move, MoveData>& moves);
 
