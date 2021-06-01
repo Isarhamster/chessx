@@ -52,6 +52,33 @@ macx {
   QMAKE_CXXFLAGS_DEBUG *= -m64 -O0 --coverage
 }
 
+
+unix|!macx {
+    isEmpty(PREFIX) {
+        bsd {
+            PREFIX = /usr/local
+        }
+        PREFIX = /usr
+    }
+    BINDIR = $$PREFIX/bin
+    DATADIR = $$PREFIX/share
+
+    INSTALLS += appdata desktop icons binfiles
+
+    appdata.files = unix/io.sourceforge.ChessX.metainfo.xml
+    appdata.path = $$DATADIR/metainfo
+    desktop.files = unix/chessx.desktop
+    desktop.path = $$DATADIR/applications
+
+    icons.path = $$DATADIR/icons/hicolor
+    icons.commands = install -Dm644 data/images/chessx.png    $${icons.path}/128x128/apps/chessx.png; \
+                     install -Dm644 data/images/chessx-32.png $${icons.path}/32x32/apps/chessx.png; \
+                     install -Dm644 data/images/chessx-64.png $${icons.path}/64x64/apps/chessx.png;
+
+    binfiles.files = release/chessx
+    binfiles.path = $$BINDIR
+}
+
 scid {
   # Scid sources
   HEADERS += \
