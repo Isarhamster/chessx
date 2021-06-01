@@ -91,6 +91,8 @@ add_library(database-core STATIC
   database/filtersearch.cpp
   database/filtersearch.h
   database/gameid.h
+  database/gamecursor.cpp
+  database/gamecursor.h
   database/gamex.cpp
   database/gamex.h
   database/index.cpp
