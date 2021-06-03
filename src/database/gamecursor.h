@@ -9,7 +9,7 @@
 #define NO_MOVE -1
 #define CURRENT_MOVE -2
 
-typedef short MoveId;
+typedef int MoveId;
 
 class GameCursor
 {
