@@ -123,6 +123,8 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         action->setChecked(bUtf8);
         action->setEnabled(bHasSuffix);
 
+        menu.addAction(tr("Set dirty"), this, SLOT(slotSetDirty()));
+
         menu.exec(mapToGlobal(pos));
     }
 }
@@ -183,6 +185,16 @@ void DatabaseList::dbToggleUTF8()
         QString utf8 = m_filterModel->data(m_filterModel->index(index.row(), DBLV_UTF8)).toString();
         bool bUtf8 = (utf8.compare("UTF8") == 0);
         setFileUtf8(s, !bUtf8);
+    }
+}
+
+void DatabaseList::slotSetDirty()
+{
+    QModelIndexList list = selectionModel()->selectedRows();
+    foreach(QModelIndex index, list)
+    {
+        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
+        emit requestDirty(s);
     }
 }
 
@@ -302,6 +314,11 @@ void DatabaseList::setStars(const QString &s, int stars)
 void DatabaseList::setFileUtf8(const QString& s, bool utf8)
 {
     m_model->setFileUtf8(s, utf8);
+}
+
+bool DatabaseList::fileUtf8(const QString& s) const
+{
+    return m_model->fileUtf8(s);
 }
 
 void DatabaseList::setFileClose(const QString& s, GameId lastIndex)

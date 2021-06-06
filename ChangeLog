@@ -1,3 +1,22 @@
+May 2021: Version 1.5.8
+- New Feature: Lichess Opening Databases
+
+- New feature: Boardview as drop target for databases and games
+- New feature: Edit tags from the game list view
+
+- Changed: Performance update PGN Parser
+- Changed: #290 Windows hides dialogs if off-screen
+- Changed: CR #185 Recognize and annotate draw conditions
+- Changed: CR #191 Engine analysis not inserted in notation
+- Changed: Transfer board rotation from Board Setup
+
+- Bugfix: Open Recent does not respect UTF8
+- Bugfix: Loading of large games
+- Bugfix: Fix dirty notification from database to GUI
+- Bugfix: #287 Linux archive / build environment
+- Bugfix: #288 No speech engine available
+- Bugfix: Avoid nan in arrow painting
+
 December 2020: Version 1.5.6
 - New Feature: Implement read support for Scid binary database (*.si4)
 

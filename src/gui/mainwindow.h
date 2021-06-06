@@ -301,6 +301,8 @@ public slots:
     void slotFileCloseIndex(int, bool dontAsk=false);
     /** Close selected database. */
     void slotFileCloseName(QString fname);
+    /** Mark selected database as modified. */
+    void slotFileDirty(QString fname);
     /** Quit ChessX. Ask for confirmation before */
     void slotFileQuit();
     /** Find games matching single tag. */

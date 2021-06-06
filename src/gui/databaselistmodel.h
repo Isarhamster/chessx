@@ -117,6 +117,8 @@ public slots:
     void setFileCurrent(const QString& s);
     void update(const QString& s);
 
+    bool fileUtf8(const QString& s);
+
 public:
     void toStringList(QStringList&);
     void toAttrStringList(QStringList&) const;

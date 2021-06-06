@@ -469,6 +469,15 @@ void DatabaseListModel::setFileUtf8(const QString& s, bool utf8)
     }
 }
 
+bool DatabaseListModel::fileUtf8(const QString& s)
+{
+    if(DatabaseListEntry* e = FindEntry(s))
+    {
+        return e->m_utf8;
+    }
+    return false;
+}
+
 void DatabaseListModel::setFileCurrent(const QString& s)
 {
     for(int i = 0; i < m_databases.count(); ++i)

@@ -214,8 +214,6 @@ MainWindow::MainWindow() : QMainWindow(),
     addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
     connect(m_gameWindow, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
 
-    QWidget* w = gameTextDock->titleBarWidget();
-
     m_menuView->addAction(gameTextDock->toggleViewAction());
     gameTextDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_E);
 
@@ -298,6 +296,8 @@ MainWindow::MainWindow() : QMainWindow(),
             this, SLOT(openDatabaseUrl(QString, bool)));
     connect(m_databaseList, SIGNAL(requestCloseDatabase(QString)),
             this, SLOT(slotFileCloseName(QString)));
+    connect(m_databaseList, SIGNAL(requestDirty(QString)),
+            this, SLOT(slotFileDirty(QString)));
     connect(m_databaseList, SIGNAL(requestLinkDatabase(QString)),
             this, SLOT(setFavoriteDatabase(QString)));
     connect(m_databaseList, SIGNAL(requestAppendGames(QString, QList<GameId>, QString)),
@@ -1055,7 +1055,7 @@ void MainWindow::openChesscom()
         QDateTime dateTime = QDateTime::currentDateTime();
         QString s = dateTime.toString("yyyy/MM");
         QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account).arg(s);
-        openDatabaseUrl(url, false);
+        openDatabaseUrl(url, true);
     }
     else
     {

@@ -153,7 +153,9 @@ void MainWindow::slotFileOpenRecent()
     QAction *action = qobject_cast<QAction *>(sender());
     if(action)
     {
-        openDatabase(action->data().toString());
+        QString fileName = action->data().toString();
+        bool utf8 = m_databaseList->fileUtf8(fileName);
+        openDatabaseUrl(fileName, utf8);
     }
 }
 
@@ -272,6 +274,19 @@ void MainWindow::slotFileCloseName(QString fname)
         if (dbs[i]->database()->filename() == fname)
         {
             slotFileCloseIndex(i);
+            return;
+        }
+    }
+}
+
+void MainWindow::slotFileDirty(QString fname)
+{
+    auto dbs = m_registry->databases();
+    for (int i = 0; i < dbs.count(); i++)
+    {
+        if (dbs[i]->database()->filename() == fname)
+        {
+            dbs[i]->database()->setModified(true);
             return;
         }
     }

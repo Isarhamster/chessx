@@ -35,6 +35,8 @@ public slots:
     void slotCurrentIndexChanged(const QModelIndex&);
     void slotDoubleClicked(const QModelIndex&);
 
+    bool fileUtf8(const QString& s) const;
+
 signals:
     void selected(int);
     void raiseRequest();
@@ -44,6 +46,7 @@ signals:
     void requestAppendGames(QString path, QList<GameId> indexes, QString source);
     void requestAppendDatabase(QString dest, QString src);
     void requestMakeBook(QString s);
+    void requestDirty(QString s);
 
 protected: //Drag'n'Drop Support
     void startToDrag();
@@ -73,6 +76,7 @@ private slots:
     void slotExtTool1();
     void dbOpen();
     void dbToggleUTF8();
+    void slotSetDirty();
     void dbClose();
     void dbSetStarsForSelection(int stars);
 
