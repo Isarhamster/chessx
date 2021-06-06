@@ -84,7 +84,7 @@ bool NagSet::isOtherNag(Nag nag)
     return ((nag < NagCount) && !isEvalNag(nag) && !isMoveNag(nag));
 }
 
-QString NagSet::toString(unsigned format) const
+QString NagSet::toString(unsigned int format) const
 {
     QString moveNags;
     QString evaluationNags;
@@ -142,8 +142,8 @@ static const QString g_nagStringList[NagCount] =
     "=",
     "=",
     QString::fromUtf8("∞"),
-    "+=",
-    "=+",
+    QString::fromUtf8("⩲"),
+    QString::fromUtf8("⩱"),
     QString::fromUtf8("±"),
     QString::fromUtf8("∓"),
     "+-",
@@ -295,6 +295,9 @@ void NagSet::InitNagStringListLong()
 {
     s_ExtraNags["+/-"] = Nag::WhiteHasAModerateAdvantage;
     s_ExtraNags["-/+"] = Nag::BlackHasAModerateAdvantage;
+    s_ExtraNags["=+"] = Nag::BlackHasASlightAdvantage;
+    s_ExtraNags["+="] = Nag::WhiteHasASlightAdvantage;
+    s_ExtraNags["->"] = Nag::WhiteHasTheInitiative;
 
     g_nagStringListLong <<
                         "" <<
