@@ -610,6 +610,7 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
     {
         text += m_startTagMap[markup];
     }
+    text += " ";
     if (!m_options.getOptionAsBool("HTMLComments") &&
         ((m_outputType == Html) || (m_outputType == NotationWidget)))
     {
