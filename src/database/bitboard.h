@@ -90,6 +90,7 @@ public:
 
     // Return a nullMove -- King to the same square
     Move nullMove() const;
+    Move dummyMove() const;
 
     // Query
     //

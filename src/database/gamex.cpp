@@ -59,6 +59,7 @@ GameX::GameX()
     , m_annotations()
     , m_nags()
     , m_tags()
+    , m_needsCleanup(false)
 {
 }
 
@@ -69,6 +70,7 @@ GameX::GameX(const GameX& game)
     , m_annotations(game.m_annotations)
     , m_nags(game.m_nags)
     , m_tags(game.m_tags)
+    , m_needsCleanup(game.m_needsCleanup)
 {
     if (m_moves.currentBoard() && !game.m_moves.currentBoard())
     {
@@ -85,6 +87,7 @@ GameX& GameX::operator=(const GameX& game)
         m_annotations = game.m_annotations;
         m_nags = game.m_nags;
         m_tags = game.m_tags;
+        m_needsCleanup = game.m_needsCleanup;
         if (m_moves.currentBoard() && !game.m_moves.currentBoard())
         {
             moveToStart();
@@ -136,7 +139,6 @@ MoveId GameX::dbAddSanMove(const QString& sanMove, const QString& annotation, Na
     // qDebug() << sanMove << " : " << move.toAlgebraicDebug() << " is illegal in position " << board().toHumanFen() << " / " << board().toFen();
     return NO_MOVE;
 }
-
 
 MoveId GameX::addMove(const QString& sanMove, const QString& annotation, NagSet nags)
 {
@@ -572,6 +574,12 @@ bool GameX::replaceMove(const Move& move, const QString& annotation, NagSet nags
     return true;
 }
 
+void GameX::clearDummyNodes()
+{
+    m_moves.clearDummyNodes();
+    compact();
+}
+
 bool GameX::replaceMove(const QString& sanMove)
 {
     return replaceMove(m_moves.currentBoard()->parseMove(sanMove), QString(), NagSet(), true);
@@ -709,25 +717,40 @@ MoveId GameX::dbAddSanVariation(const QString& sanMove, const QString& annotatio
     return NO_MOVE;
 }
 
-bool GameX::promoteVariation(MoveId variation)
+void GameX::dbPromoteVariation(MoveId variation)
 {
-    if(isMainline(variation))
+    if(!isMainline(variation))
     {
-        return false;
+        m_moves.promoteVariation(variation);
     }
-    GameX state = *this;
-    m_moves.promoteVariation(variation);
-    emit signalGameModified(true, state, tr("Promote variation"));
-    return true;
+}
+
+void GameX::promoteVariation(MoveId variation)
+{
+    if(!isMainline(variation))
+    {
+        GameX state = *this;
+        dbPromoteVariation(variation);
+        emit signalGameModified(true, state, tr("Promote variation"));
+    }
+}
+
+bool GameX::dbRemoveVariation(MoveId variation)
+{
+    bool success = m_moves.removeVariation(variation);
+    if (success)
+    {
+        compact();
+    }
+    return success;
 }
 
 bool GameX::removeVariation(MoveId variation)
 {
     GameX state = *this;
-    bool success = m_moves.removeVariation(variation);
+    bool success = dbRemoveVariation(variation);
     if (success)
     {
-        compact();
         emit signalGameModified(true, state, tr("Remove variation"));
     }
     return success;
@@ -1692,6 +1715,16 @@ void GameX::compact()
     applyRenames(m_annotations, renames);
     applyRenames(m_variationStartAnnotations, renames);
     applyRenames(m_nags, renames);
+}
+
+bool GameX::needsCleanup() const
+{
+    return m_needsCleanup;
+}
+
+void GameX::setNeedsCleanup(bool value)
+{
+    m_needsCleanup = value;
 }
 
 QString GameX::ecoClassify() const

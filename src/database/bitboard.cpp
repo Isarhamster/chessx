@@ -266,7 +266,11 @@ QString BitBoard::moveToSan(const Move& move, bool translate, bool extend) const
         san += "--";
         return san;
     }
-
+    if(move.isDummyMove())
+    {
+        san += "xx";
+        return san;
+    }
     if(move.isCastling())
     {
         if (File(to)==File(g1))
@@ -1778,6 +1782,23 @@ Move BitBoard::nullMove() const
     return m;
 }
 
+// Create a null move (a2a2)
+// A Null Move is represented in pgn by a "--" although illegal
+// it is often used in ebooks to annotate ideas
+Move BitBoard::dummyMove() const
+{
+    Move m;
+    m.setDummyMove();
+    if(m_stm == Black)
+    {
+        m.setBlack();
+    }
+    m.u = m_halfMoves;
+    m.u |= (((unsigned short) m_castle & 0xF) << 8);
+    m.u |= (((unsigned short) m_epFile & 0xF) << 12);
+    return m;
+}
+
 static int strncmpi(QByteArray a, QByteArray b, int n)
 {
     return strncmp(a.toLower(), b.toLower(), n);
@@ -1860,6 +1881,13 @@ Move BitBoard::parseMove(const QString& algebraic) const
     else if (c == 'Z')
     {
         if(strncmp(san, "Z0", 2) == 0)
+        {
+            return nullMove();
+        }
+    }
+    else if (c == 'n')
+    {
+        if(strncmp(san, "null", 4) == 0)
         {
             return nullMove();
         }

@@ -430,7 +430,14 @@ MoveId GameCursor::addMove(const Move& move)
     node.previousNode = m_currentNode;
     node.parentNode = m_nodes[m_currentNode].parentNode;
     node.move = move;
-    node.SetPly(plyNumber() + 1);
+    if (move.isDummyMove())
+    {
+        node.SetPly(plyNumber());
+    }
+    else
+    {
+        node.SetPly(plyNumber() + 1);
+    }
     m_nodes.append(node);
     m_currentNode = m_nodes.size() - 1;
     m_nodes[previousNode].nextNode = m_currentNode;
@@ -645,6 +652,35 @@ void GameCursor::reparentVariation(MoveId variation, MoveId parent)
     }
 }
 
+void GameCursor::clearDummyNodes()
+{
+    auto iw = m_nodes.begin();
+    for (; iw != m_nodes.end(); ++iw)
+    {
+        auto& node = *iw;
+        if (node.Removed()) continue;
+        if (node.move.isDummyMove())
+        {
+            MoveId pre = node.previousNode;
+            MoveId nxt = node.nextNode;
+
+            if (nxt>=0)
+            {
+                if (pre>=0)
+                {
+                    m_nodes[pre].nextNode = nxt;
+                }
+                m_nodes[nxt].previousNode = pre;
+                node.remove();
+            }
+            else
+            {
+                node.move.setNullMove();
+            }
+        }
+    }
+}
+
 QMap<MoveId, MoveId> GameCursor::compact()
 {
     QMap<MoveId,MoveId> renames;
@@ -665,7 +701,6 @@ QMap<MoveId, MoveId> GameCursor::compact()
         // skip removed nodes
         if (node.Removed())
             continue;
-
         // move data
         *iw = *ir;
         // note rename

@@ -148,6 +148,8 @@ public:
     /** Check whether a given move is a null move ( an illegal move by the king to its own square ) often used as a placeholder in ebooks */
     bool isNullMove() const;
     Move& setNullMove();
+    bool isDummyMove() const;
+    Move& setDummyMove();
 
     /** Check whether move is special (promotion, castling, en passant */
     bool isSpecial() const;
@@ -308,9 +310,22 @@ inline bool Move::isNullMove() const
     return (to() == chessx::a2 && from() == chessx::a2);
 }
 
+inline bool Move::isDummyMove() const
+{
+    // Must be consistent with Guess::movelist::isNullMove
+    return (to() == chessx::a3 && from() == chessx::a3);
+}
+
 inline Move& Move::setNullMove()
 {
     m = chessx::a2 | (chessx::a2 << 6);
+    u = 0;
+    return *this;
+}
+
+inline Move& Move::setDummyMove()
+{
+    m = chessx::a3 | (chessx::a3 << 6);
     u = 0;
     return *this;
 }
@@ -381,6 +396,10 @@ inline QString Move::toAlgebraic() const
     if (isNullMove())
     {
         return QString("--");
+    }
+    if (isDummyMove())
+    {
+        return QString("xx");
     }
     if(!isLegal())
     {

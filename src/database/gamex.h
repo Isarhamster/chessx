@@ -232,6 +232,7 @@ public :
     void enterVariation(const MoveId& moveId);
 
     // ***** game modification methods *****
+    void clearDummyNodes();
     /** Adds a move at the current position, returns the move id of the added move */
     MoveId dbAddMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Adds a move at the current position, returns the move id of the added move */
@@ -286,9 +287,11 @@ public :
     /** Merge GameX @p g into this game */
     void dbMergeWithGame(const GameX& g);
     /** Promotes the given variation to the main line, returns true if successful */
-    bool promoteVariation(MoveId variation);
+    void promoteVariation(MoveId variation);
+    void dbPromoteVariation(MoveId variation);
     /** Removes the given variation, returns true if successful */
     bool removeVariation(MoveId variation);
+    bool dbRemoveVariation(MoveId variation);
     /** Removes all variations and mainline moves after the current position,
     * or before the current position if @p position == BeforeMove */
     void dbTruncateVariation(Position position = AfterMove);
@@ -369,6 +372,10 @@ public :
     bool positionRepetition3(const BoardX &board) const;
     bool insufficientMaterial(const BoardX &b) const;
 
+    void setNeedsCleanup(bool value);
+
+    bool needsCleanup() const;
+
 protected:
     /** Find the point in the this game where @p otherGame fits in the next time.
         @retval Node from where the merging shall start in other game */
@@ -404,6 +411,7 @@ private:
     // **** memory  management methods ****
     /** Remove all removed nodes */
     void compact();
+    bool m_needsCleanup;
 
     void removeTimeCommentsFromMap(AnnotationMap& map);
 

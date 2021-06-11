@@ -26,6 +26,10 @@ public:
         {
             parentNode = previousNode = nextNode = NO_MOVE;
             variations.clear();
+            setRemoved();
+        }
+        void setRemoved()
+        {
             m_ply |= 0x8000;
         }
         Node()
@@ -174,6 +178,7 @@ public:
     /** Remove all variations */
     void removeVariations();
     /** Remove nodes marked for removal */
+    void clearDummyNodes();
     QMap<MoveId, MoveId> compact();
 
     /** Change parent of each move of a variation. */
