@@ -616,22 +616,38 @@ bool PgnDatabase::parseMoves(GameX* game)
                 m_inPreComment = false;
             }
         }
+        if (game->needsCleanup())
+        {
+            game->clearDummyNodes();
+        }
     }
     return true;
 }
 
-void PgnDatabase::parseLine(GameX* game)
+char PgnDatabase::peek(QStringRef::const_iterator s)
 {
-    QVector<QStringRef> list;
+    QStringRef::const_iterator n = s+1;
+    if (n != m_currentLine.constEnd())
+    {
+        return (*n).toLatin1();
+    }
+    return 0;
+}
 
+void PgnDatabase::splitTokenList(QVector<QStringRef>& list)
+{
     auto s = m_currentLine.constBegin();
     int start = 0;
     int n = 0;
     bool inNag = false;
-    while (s != m_currentLine.constEnd())
+    int dots = 0;
+    bool breakout = false;
+
+    while (!breakout && (s != m_currentLine.constEnd()))
     {
         n++;
-        switch ((*s).toLatin1())
+        char c = (*s).toLatin1();
+        switch (c)
         {
             case ' ': // WS - Separator of tokens
             case '\t':
@@ -646,12 +662,17 @@ void PgnDatabase::parseLine(GameX* game)
                 start++;
                 n=0;
             }
+            dots = 0;
             inNag = false;
             break;
 
-            case '.': // Ignore 1. and ...
-            start += n;
-            n = 0;
+            case '.': // Count dots to figure out which side is moving.
+            if (!dots)
+            {
+                start += (n-1);
+                n = 1;
+            }
+            dots++;
             break;
 
             case '-': // Can be 0-0, -+, a2-a4 (LAN), 1-0, 0-1, 1/2-1/2, Q-a4,
@@ -661,7 +682,7 @@ void PgnDatabase::parseLine(GameX* game)
                 {
                     QStringRef t(&m_currentLine, start, n-1);
                     QChar c = t.at(0);
-                    if (!c.isLetterOrNumber())
+                    if (!c.isLetterOrNumber() && (c!='.'))
                     {
                         // It's a token, not part of a move
                         if (n>1) list.push_back(t);
@@ -677,10 +698,31 @@ void PgnDatabase::parseLine(GameX* game)
             }
             break;
 
-            case '=': // Avoid b8=Q to be cut in two tokens
-            if (n==1)
+            case '=': // Avoid b8=Q to be cut in two token
+            if (!inNag && !isalpha(peek(s)))
             {
+                if (n>1) list.push_back(QStringRef(&m_currentLine, start, n-1));
+                start += (n-1);
+                n = 1;
                 inNag = true;
+            }
+            break;
+
+            case 0:
+            {
+                Nag nag = NagSet::fromString(*s);
+                if (nag != NullNag)
+                {
+                   if (n>1) list.push_back(QStringRef(&m_currentLine, start, n-1));
+                   start += n-1;
+                   list.push_back(QStringRef(&m_currentLine, start, 1));
+                   start += 1;
+                   n = 0;
+                }
+                else
+                {
+                    m_variation = -1; // Illegal character -> Skip parsing this game
+                }
             }
             break;
 
@@ -697,15 +739,43 @@ void PgnDatabase::parseLine(GameX* game)
             }
             break;
 
+            case '{':
+            {
+                if (n>1) list.push_back(QStringRef(&m_currentLine, start, n-1));
+                list.push_back(QStringRef(&m_currentLine, start+n-1, 1));
+                start += n;
+                n = 0;
+                breakout = true;
+                break; // Let someone else parse the comments
+            }
+
             case '(': // Actually b8(Q) for b8=Q would be an issue here
             case ')':
-            case '{':
             case '}':
             {
                 if (n>1) list.push_back(QStringRef(&m_currentLine, start, n-1));
                 list.push_back(QStringRef(&m_currentLine, start+n-1, 1));
                 start += n;
                 n = 0;
+            }
+            break;
+
+            default:
+            if (c<0)
+            {
+                Nag nag = NagSet::fromString(*s);
+                if (nag != NullNag)
+                {
+                   if (n>1) list.push_back(QStringRef(&m_currentLine, start, n-1));
+                   start += n-1;
+                   list.push_back(QStringRef(&m_currentLine, start, 1));
+                   start += 1;
+                   n = 0;
+                }
+                else
+                {
+                    m_variation = -1; // Illegal character -> Skip parsing this game
+                }
             }
             break;
         }
@@ -715,8 +785,13 @@ void PgnDatabase::parseLine(GameX* game)
     {
         list.push_back(QStringRef(&m_currentLine, start, n));
     }
+}
 
-    for(auto it = list.begin(); it != list.end() && !m_inComment; ++it)
+void PgnDatabase::parseLine(GameX* game)
+{
+    QVector<QStringRef> list;
+    splitTokenList(list);
+    if(m_variation != -1) for(auto it = list.begin(); it != list.end() && !m_inComment; ++it)
     {
         parseToken(game, *it);
         if(m_variation == -1)
@@ -739,10 +814,36 @@ void PgnDatabase::parseLine(GameX* game)
     }
 }
 
-inline void PgnDatabase::parseDefaultToken(GameX* game, QString token)
+inline void PgnDatabase::parseMoveToken(GameX* game, QString token)
 {
+    if (token.startsWith("..."))
+    {
+        white = false;
+        found = true;
+        token.remove(0,3);
+    }
+    else if (token.startsWith("."))
+    {
+        white = true;
+        found = true;
+        token.remove(0,1);
+    }
+
+    if (token.isEmpty()) return;
+
     if(m_newVariation)
     {
+        bool dummyNeeded = found && (((white && game->board().whiteToMove()) ||
+                                     (!white && game->board().blackToMove())));
+        if (dummyNeeded)
+        {
+            if (!game->move(game->currentMove()).isDummyMove())
+            {
+                game->dbAddMove(game->board().dummyMove());
+                game->forward();
+                game->setNeedsCleanup(true);
+            }
+        }
         game->backward();
         m_variation = game->dbAddSanVariation(token, QString());
         if(!m_precomment.isEmpty())
@@ -753,7 +854,7 @@ inline void PgnDatabase::parseDefaultToken(GameX* game, QString token)
         }
         m_newVariation = false;
     }
-    else  	// First move in the game
+    else
     {
         m_variation = game->dbAddSanMove(token, QString());
         if(!m_precomment.isEmpty())
@@ -763,17 +864,31 @@ inline void PgnDatabase::parseDefaultToken(GameX* game, QString token)
             m_inPreComment = false;
         }
     }
+
+    found = false;
 }
 
 void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
 {
     if (token.isEmpty()) return;
     // qDebug() << "Parsing Token:" << token << ":";
-    switch(token.at(0).toLatin1())
+    char c = token.at(0).toLatin1();
+    switch(c)
     {
+    case 0:
+        {
+            Nag nag = NagSet::fromString(token.at(0));
+            if (nag != NullNag)
+            {
+                game->dbAddNag(nag);
+            }
+        }
+        break;
     case '(':
-        m_newVariation = true;
-        m_variationStack.push(game->currentMove());
+        {
+            m_newVariation = true;
+            m_variationStack.push(game->currentMove());
+        }
         break;
     case ')':
         MoveId move;
@@ -787,7 +902,7 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
         }
         game->dbMoveToId(move);
         game->forward();
-        m_newVariation = false;
+        m_newVariation    = false;
         m_variation = 0;
         break;
     case '{':
@@ -867,7 +982,7 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
             m_gameOver = true;
             break;
         }
-        parseDefaultToken(game, token.toString());
+        parseMoveToken(game, token.toString());
         break;
 
     case '0':
@@ -877,7 +992,7 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
             m_gameOver = true;
             break;
         }
-        parseDefaultToken(game, token.toString());
+        parseMoveToken(game, token.toString());
         break;
 
     case 'Z':
@@ -887,11 +1002,22 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
             game->dbAddNag(BlackHasAModerateAdvantage);
             break;
         }
-        parseDefaultToken(game, token.toString());
+        parseMoveToken(game, token.toString());
         break;
 
     default:
-        parseDefaultToken(game, token.toString());
+        if (c<0)
+        {
+            Nag nag = NagSet::fromString(token.at(0));
+            if (nag != NullNag)
+            {
+                game->dbAddNag(nag);
+            }
+        }
+        else
+        {
+            parseMoveToken(game, token.toString());
+        }
         break;
     }
 }

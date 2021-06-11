@@ -66,8 +66,11 @@ protected:
     bool parseMoves(GameX* game);
     /** Parses a line from the file */
     void parseLine(GameX* game);
+    /** Split string into list of tokens */
+    char peek(QStringRef::const_iterator s);
+    void splitTokenList(QVector<QStringRef>& list);
     /** Parses a move token from the file */
-    void parseDefaultToken(GameX* game, QString token);
+    void parseMoveToken(GameX* game, QString token);
     /** Parses a token from the file */
     void parseToken(GameX* game, const QStringRef &token);
     /** Parses a comment from the file */
@@ -145,7 +148,8 @@ private:
     QByteArray m_lineBuffer;
     QStack<MoveId> m_variationStack;
     int percentDone;
-
+    bool white;
+    bool found;
     bool bUse64bit {false};
 };
 
