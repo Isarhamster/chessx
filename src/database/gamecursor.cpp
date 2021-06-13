@@ -676,6 +676,7 @@ void GameCursor::clearDummyNodes()
             else
             {
                 node.move.setNullMove();
+                node.SetPly(node.Ply()+1);
             }
         }
     }
