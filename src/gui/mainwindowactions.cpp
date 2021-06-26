@@ -3071,7 +3071,7 @@ void MainWindow::copyDatabase(QString target, QString src)
             // Source is closed, target is open
             StreamDatabase streamDb;
             streamDb.set64bit(true);
-            if (streamDb.open(src, false))
+            if (streamDb.open(src, pDestDB->isUtf8()))
             {
                 GameX g;
                 while (streamDb.loadNextGame(g))
