@@ -277,6 +277,7 @@ HEADERS += src/database/board.h \
   src/gui/boardviewex.h \
   src/gui/chartwidget.h \
   src/gui/chessbrowser.h \
+  src/gui/chessxsettings.h \
   src/gui/colorlist.h \
   src/gui/databaselist.h \
   src/gui/databaselistmodel.h \
@@ -439,6 +440,7 @@ SOURCES += \
   src/gui/boardviewex.cpp \
   src/gui/chartwidget.cpp \
   src/gui/chessbrowser.cpp \
+  src/gui/chessxsettings.cpp \
   src/gui/colorlist.cpp \
   src/gui/databaselist.cpp \
   src/gui/databaselistmodel.cpp \

@@ -18,7 +18,7 @@
 #include <QLocale>
 #include <QTranslator>
 #include "mainwindow.h"
-#include "settings.h"
+#include "chessxsettings.h"
 #include "style.h"
 #include "logstream.h"
 
@@ -131,11 +131,11 @@ prevHook = _CrtSetReportHook(customReportHook);
     QString portableIni = Settings::portableIniPath();
     if (QFile::exists(portableIni))
     {
-        AppSettings = new Settings(portableIni);
+        AppSettings = new ChessXSettings(portableIni);
     }
     if (!AppSettings)
     {
-        AppSettings = new Settings;
+        AppSettings = new ChessXSettings;
     }
 
     bool showIcons = AppSettings->getValue("/MainWindow/ShowMenuIcons").toBool();
