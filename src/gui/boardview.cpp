@@ -427,7 +427,9 @@ void BoardView::drawUnderProtection(QPaintEvent* event)
                 {
                     if (pieceType(m_board.pieceAt(square)) != King)
                     {
-                        int numDefenders = m_board.DefendersOfSquare(square);
+                        QString fen = m_board.toFen();
+                        int numDefenders = Guess::attackersOnSquare(fen.toLatin1(), square);
+
                         if ((m_showUnderProtection == White && numDefenders < 0) ||
                             (m_showUnderProtection == Black && numDefenders > 0))
                         {
