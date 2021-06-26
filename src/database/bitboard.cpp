@@ -1757,6 +1757,17 @@ Move::List BitBoard::generateMoves() const
     return p;
 }
 
+int BitBoard::score() const
+{
+    int sum = 0;
+    Square s;
+    for (s=a1;s<=h8;s++)
+    {
+        sum += centiPawnValue(pieceAt(s));
+    }
+    return sum;
+}
+
 bool BitBoard::isIntoCheck(const Move& move) const
 {
     BitBoard peek(*this);

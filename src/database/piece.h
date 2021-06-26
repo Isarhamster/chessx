@@ -86,5 +86,13 @@ inline Piece flipPiece(Piece p)
     return p;
 }
 
+inline int centiPawnValue(Piece p)
+{
+    static const int pieceValues[] = { 0,
+                                10000, 900, 500, 300, 300, 100,
+                                -10000, -900, -500, -300, -300, -100  };
+    return pieceValues[(int)p];
+}
+
 #endif // PIECE_H
 

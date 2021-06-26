@@ -112,8 +112,6 @@ public:
     /** Gets the square annotation*/
     QString arrowAnnotation() const;
 
-    int ScoreMaterial() const;   
-    int DefendersOfSquare(chessx::Square target) const;
 private:
     static BoardX getStandardStartBoard();
 
