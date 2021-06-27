@@ -1,5 +1,5 @@
 # Main application
-DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += QT_DEPRECATED_WARNINGS HAS_GUI
 CONFIG += uic warn_on
 QT += network svg
 
@@ -321,6 +321,7 @@ HEADERS += src/database/board.h \
   src/gui/simplelabel.h \
   src/gui/style.h \
   src/gui/tableview.h \
+  src/gui/testadapter.h \
   src/gui/textbrowserex.h \
   src/gui/textedit.h \
   src/gui/toolmainwindow.h \
@@ -486,6 +487,7 @@ SOURCES += \
   src/gui/simplelabel.cpp \
   src/gui/style.cpp \
   src/gui/tableview.cpp \
+  src/gui/testadapter.cpp \
   src/gui/textedit.cpp \
   src/gui/toolmainwindow.cpp \
   src/gui/translatingslider.cpp \
