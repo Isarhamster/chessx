@@ -21,6 +21,7 @@
 #include "chessxsettings.h"
 #include "style.h"
 #include "logstream.h"
+#include "testadapter.h"
 
 // Necessary includes and defines for memory leak detection:
 #ifdef _MSC_VER
@@ -176,17 +177,26 @@ prevHook = _CrtSetReportHook(customReportHook);
         }
     }
 
-    MainWindow* mainWindow = new MainWindow;
+    int result = 0;
+    TestAdapter tests;
 
-    mainWindow->show();
+    bool exitOption = tests.dispatchTests();
+    if (!exitOption)
+    {
+        MainWindow* mainWindow = new MainWindow;
 
-    // Destroy main window and close application
-    app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
+        mainWindow->show();
 
-    LogStream logStream;
-    int result = app.exec();
+        // Destroy main window and close application
+        app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
 
-    delete AppSettings;
+        LogStream logStream;
+        result = app.exec();
+    }
+    else
+    {
+        result = tests.getResult();
+    }
 
 #if defined(_MSC_VER)
 // Once the app has finished running and has been deleted,
