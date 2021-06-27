@@ -11,11 +11,11 @@ public:
     ChessXSettings();
     ChessXSettings(const QString &fileName);
 
-    /** Restore widget's layout based on its name. Optionally show window if it is visible.
-    @return @p true if the state was restored. */
-    bool layout(QWidget* w);
-    /** Write widget's layout with its name. */
-    void setLayout(const QWidget* w);
+    virtual bool layout(QWidget* w);
+    virtual void setLayout(const QWidget* w);
+
+protected:
+    virtual void initWidgetValues(QMap<QString, QVariant>& map) const;
 };
 
 #endif // CHESSXSETTINGS_H

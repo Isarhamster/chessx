@@ -12,6 +12,7 @@
 
 #include <QCoreApplication>
 #include <QtCore>
+#include <QColor>
 #include <QDialog>
 #include <QDockWidget>
 #include <QtGui>
@@ -225,6 +226,23 @@ void ChessXSettings::setLayout(const QWidget* w)
     {
         endGroup();
     }
+}
+
+void ChessXSettings::initWidgetValues(QMap<QString, QVariant>& map) const
+{
+    map.insert("/Board/lightColor", QColor(Qt::lightGray));
+    map.insert("/Board/darkColor", QColor(Qt::darkGray));
+    map.insert("/Board/highlightColor", QColor(Qt::yellow));
+    map.insert("/Board/frameColor", QColor(Qt::black));
+    map.insert("/Board/currentMoveColor", QColor(Qt::blue));
+    map.insert("/Board/storedMoveColor", QColor(Qt::magenta));
+    map.insert("/Board/variationMoveColor", QColor(Qt::darkMagenta));
+    map.insert("/Board/threatColor", QColor(0xe0,0xe0,0xff,0x80));
+    map.insert("/Board/targetColor", QColor(Qt::darkGreen));
+    map.insert("/Board/checkColor", QColor(Qt::magenta));
+    map.insert("/Board/wallColor", QColor(Qt::darkGray));
+    map.insert("/Board/underprotectedColor", QColor(Qt::red));
+    map.insert("/Board/engineColor", QColor("orange"));
 }
 
 //////////////////////////////////////////////////////////////////////////////
