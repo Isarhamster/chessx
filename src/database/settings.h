@@ -98,6 +98,8 @@ public:
     QString getBoardPath(QString) const;
     QStringList getBoardList() const;
 
+    QString getSoundPath(QString sound) const;
+
     QString getBuiltinDbPath() const;
     QStringList getBuiltinDatabases() const;
 
@@ -107,6 +109,8 @@ public:
     QString shotsPath() const;
 
     static QString portableIniPath();
+protected:
+    virtual void initWidgetValues(QMap<QString, QVariant>&) const {};
 private:
 
     void initialize();

@@ -12,7 +12,6 @@
 
 #include <QCoreApplication>
 #include <QtCore>
-#include <QColor>
 
 using namespace chessx;
 
@@ -300,19 +299,6 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/pieceTheme", "merida");
     map.insert("/Board/pieceEffect", 2);
     map.insert("/Board/boardTheme", "brazilwood");
-    map.insert("/Board/lightColor", QColor(Qt::lightGray));
-    map.insert("/Board/darkColor", QColor(Qt::darkGray));
-    map.insert("/Board/highlightColor", QColor(Qt::yellow));
-    map.insert("/Board/frameColor", QColor(Qt::black));
-    map.insert("/Board/currentMoveColor", QColor(Qt::blue));
-    map.insert("/Board/storedMoveColor", QColor(Qt::magenta));
-    map.insert("/Board/variationMoveColor", QColor(Qt::darkMagenta));
-    map.insert("/Board/threatColor", QColor(0xe0,0xe0,0xff,0x80));
-    map.insert("/Board/targetColor", QColor(Qt::darkGreen));
-    map.insert("/Board/checkColor", QColor(Qt::magenta));
-    map.insert("/Board/wallColor", QColor(Qt::darkGray));
-    map.insert("/Board/underprotectedColor", QColor(Qt::red));
-    map.insert("/Board/engineColor", QColor("orange"));
     map.insert("/Board/AutoPlayerInterval", 3000);
     map.insert("/Board/AutoSaveAndContinue", false);
     map.insert("/Board/BackwardAnalysis", false);
@@ -348,6 +334,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Web/Favorite1", "");
     map.insert("/Web/AutoNumber1", 1000);
 
+    initWidgetValues(map);
     return map;
 }
 
@@ -458,6 +445,21 @@ QStringList Settings::getBoardList() const
 {
     QString boardDir(AppSettings->dataPath() + QDir::separator() + "themes" + QDir::separator() + "boards");
     return getImageList(boardDir, ":/themes/boards");
+}
+
+QString Settings::getSoundPath(QString sound) const
+{
+    QString soundDir(AppSettings->dataPath() + QDir::separator() + "sounds");
+    sound.append(".wav");
+
+    QString s = soundDir + QDir::separator() + sound;
+
+    if (QFile::exists(s))
+    {
+        return s;
+    }
+
+    return QString(":/sounds") + QDir::separator() + sound;
 }
 
 QString Settings::getImagePath() const

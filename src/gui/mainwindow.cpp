@@ -2345,7 +2345,8 @@ void MainWindow::playSound(QString s)
 #ifdef USE_SOUND
     if (AppSettings->getValue("/Sound/Move").toInt()==1)
     {
-        QSound::play(s);
+        QString path = AppSettings->getSoundPath(s);
+        QSound::play(path);
     }
 #endif
 }
