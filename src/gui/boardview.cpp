@@ -1594,7 +1594,7 @@ void BoardView::renderImage(QImage &image, double scaling) const
     image = pixmap.toImage();
 }
 
-QImage BoardView::renderImageForBoard(const BoardX &b, QSize size)
+QString BoardView::renderImageForBoard(const BoardX &b, QSize size)
 {
     QImage image;
     BoardView boardView(nullptr, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
@@ -1603,5 +1603,9 @@ QImage BoardView::renderImageForBoard(const BoardX &b, QSize size)
     boardView.resize(size);
     boardView.setEnabled(false);
     boardView.renderImage(image, 1.0);
-    return image;
+
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    image.save(&buffer, "PNG"); // writes the image in PNG format inside the buffer
+    return QString::fromLatin1(byteArray.toBase64().data());
 }
