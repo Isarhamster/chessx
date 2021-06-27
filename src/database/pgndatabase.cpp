@@ -1167,6 +1167,11 @@ void PgnDatabase::skipMoves()
         skipLine();
     }
 
+    if (m_file->atEnd())
+    {
+        m_lineBuffer.clear();
+    }
+
     prepareNextLine();
 }
 

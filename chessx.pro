@@ -1,5 +1,5 @@
 # Main application
-DEFINES += QT_DEPRECATED_WARNINGS HAS_GUI
+DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += uic warn_on
 QT += network svg
 
