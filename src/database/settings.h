@@ -38,6 +38,7 @@ public:
     enum {Show = 1} LayoutFlags;
     Settings();
     Settings(const QString &fileName);
+    void initialize();
     virtual ~Settings();
 
 public: // Extension Interface for GUI applications
@@ -109,13 +110,16 @@ public:
     QString shotsPath() const;
 
     static QString portableIniPath();
+
 protected:
     virtual void initWidgetValues(QMap<QString, QVariant>&) const {};
+
 private:
 
-    void initialize();
-    QMap<QString, QVariant> initDefaultValues() const;
     QString m_dataPath;
+
+    QMap<QString, QVariant> defaultValues;
+    QMap<QString, QVariant> initDefaultValues() const;
 
     QStringList getImageList(QString userPath, QString internalPath) const;
 };

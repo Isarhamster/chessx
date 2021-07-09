@@ -22,12 +22,10 @@ using namespace chessx;
 
 Settings::Settings() : QSettings(IniFormat, UserScope, "chessx", "chessx")
 {
-    initialize();
 }
 
 Settings::Settings(const QString &fileName) : QSettings(fileName, IniFormat)
 {
-    initialize();
 }
 
 Settings::~Settings()
@@ -35,6 +33,7 @@ Settings::~Settings()
 
 void Settings::initialize()
 {
+    defaultValues = initDefaultValues();
     beginGroup("GameText");
     BitBoard::PieceNames::custom().set(getValue("PieceString").toString());
     endGroup();
@@ -334,13 +333,12 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Web/Favorite1", "");
     map.insert("/Web/AutoNumber1", 1000);
 
-    initWidgetValues(map);
+    initWidgetValues(map);    
     return map;
 }
 
 QVariant Settings::getValue(const QString &key) const
 {
-    static QMap<QString, QVariant> defaultValues = initDefaultValues();
     if(defaultValues.contains(key))
     {
         return value(key, defaultValues.value(key));

@@ -139,6 +139,8 @@ prevHook = _CrtSetReportHook(customReportHook);
         AppSettings = new ChessXSettings;
     }
 
+    AppSettings->initialize();
+
     bool showIcons = AppSettings->getValue("/MainWindow/ShowMenuIcons").toBool();
     if (!showIcons) app.setAttribute(Qt::AA_DontShowIconsInMenus);  // Icons are *no longer shown* in menus
 
@@ -197,6 +199,8 @@ prevHook = _CrtSetReportHook(customReportHook);
     {
         result = tests.getResult();
     }
+
+    delete AppSettings;
 
 #if defined(_MSC_VER)
 // Once the app has finished running and has been deleted,
