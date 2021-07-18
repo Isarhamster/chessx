@@ -61,8 +61,8 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_bestGuess.setNullMove();
     m_threatGuess.setThinkTime(500);
 
-    connect(&m_threatGuess, SIGNAL(guessFoundForBoard(Guess::Result, BoardX)),
-            this, SLOT(showThreat(Guess::Result,BoardX)), Qt::QueuedConnection);
+    connect(&m_threatGuess, SIGNAL(guessFoundForBoard(Guess::Result,BoardX)),
+            this, SLOT(showThreat(Guess::Result,BoardX)),Qt::QueuedConnection);
 
     setAcceptDrops(true);
 }

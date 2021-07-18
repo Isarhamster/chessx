@@ -122,9 +122,9 @@ bool TagDialog::editTags(IndexX* index, GameX& game, GameId id)
     ui->tagTable->resizeColumnsToContents();
 
     connect(ui->tagTable, SIGNAL(cellActivated(int,int)),
-            this, SLOT(saveOldTagText(int, int)));
-    connect(ui->tagTable, SIGNAL(cellChanged(int, int)),
-            this, SLOT(validateTag(int, int)));
+            this, SLOT(saveOldTagText(int,int)));
+    connect(ui->tagTable, SIGNAL(cellChanged(int,int)),
+            this, SLOT(validateTag(int,int)));
 
     int result = exec();
 

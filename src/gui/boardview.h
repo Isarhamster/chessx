@@ -115,25 +115,25 @@ public slots:
     /** Disable / Enable Board for move entry. */
     void setDisabled(bool disabled);
     /** Show FICS premove */
-    void setStoredMove(Square from, Square to);
+    void setStoredMove(chessx::Square from, chessx::Square to);
 
 signals:
     /** User clicked source and destination squares */
-    void moveMade(Square from, Square to, int button);
+    void moveMade(chessx::Square from, chessx::Square to, int button);
     /** User requests an evaluation from the current position with the piece @p from replaced at @p to */
-    void evalRequest(Square from, Square to);
-    void evalMove(Square from, Square to);
+    void evalRequest(chessx::Square from, chessx::Square to);
+    void evalMove(chessx::Square from, chessx::Square to);
     void evalModeDone();
     /** User dragged and dropped a piece holding Control */
-    void copyPiece(Square from, Square to);
+    void copyPiece(chessx::Square from, chessx::Square to);
     /** User dragged and dropped a piece holding Control */
-    void invalidMove(Square from);
+    void invalidMove(chessx::Square from);
     /** User clicked square */
-    void clicked(Square square, int button, QPoint pos, Square from);
+    void clicked(chessx::Square square, int button, QPoint pos, chessx::Square from);
     /** User moved mouse wheel. */
     void wheelScrolled(int dir);
     /** Indicate that a piece was dropped to the board */
-    void pieceDropped(Square to, Piece p);
+    void pieceDropped(chessx::Square to, Piece p);
     void actionHint(const QString&);
     void signalFlipped(bool oldState, bool newState);
     void signalDropEvent(QDropEvent*);

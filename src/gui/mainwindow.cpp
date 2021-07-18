@@ -178,7 +178,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_ficsConsole, SIGNAL(SignalGameResult(QString)), this, SLOT(HandleFicsResultRequest(QString)));
     connect(m_ficsConsole, SIGNAL(RequestNewGame()), this, SLOT(HandleFicsNewGameRequest()));
     connect(m_ficsConsole, SIGNAL(FicsShowTimer(bool)), this, SLOT(SlotShowTimer(bool)));
-    connect(m_ficsConsole, SIGNAL(FicsShowTime(int, QString)), this, SLOT(SlotDisplayTime(int,QString)));
+    connect(m_ficsConsole, SIGNAL(FicsShowTime(int,QString)), this, SLOT(SlotDisplayTime(int,QString)));
     connect(m_ficsConsole, SIGNAL(RequestSaveGame()), this, SLOT(HandleFicsSaveGameRequest()));
     connect(m_ficsConsole, SIGNAL(RequestCloseFICS()), this, SLOT(HandleFicsCloseRequest()));
     connect(m_ficsConsole, SIGNAL(RequestAddTag(QString,QString)), this, SLOT(HandleFicsAddTagRequest(QString,QString)));
@@ -208,7 +208,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameView, &GameNotationWidget::actionRequested, this, &MainWindow::slotGameModify);
     connect(m_gameView, &GameNotationWidget::queryActiveGame, this, &MainWindow::slotGetActiveGame);
     connect(m_gameView, &GameNotationWidget::signalMergeGame, this, &MainWindow::slotMergeActiveGame);
-    connect(this, SIGNAL(signalGameLoaded(const BoardX&)), gameTextDock, SLOT(raise()));
+    connect(this, SIGNAL(signalGameLoaded(BoardX)), gameTextDock, SLOT(raise()));
     gameTextDock->setWidget(m_gameWindow);
     connect(this, &MainWindow::reconfigure, m_gameView, &GameNotationWidget::slotReconfigure);
     addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
@@ -247,7 +247,7 @@ MainWindow::MainWindow() : QMainWindow(),
     playerListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
     connect(m_playerList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByPlayer(QString)));
     connect(m_playerList, SIGNAL(renameRequest(QString)), SLOT(slotRenamePlayer(QString)));
-    connect(m_playerList, SIGNAL(filterEcoPlayerRequest(QString, QString, QString, QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString, QString, QString, QString)));
+    connect(m_playerList, SIGNAL(filterEcoPlayerRequest(QString,QString,QString,QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString,QString,QString,QString)));
     connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_playerList, SLOT(setDatabase(DatabaseInfo*)));
     connect(this, SIGNAL(reconfigure()), m_playerList, SLOT(slotReconfigure()));
     // playerListDock->hide();
@@ -262,8 +262,8 @@ MainWindow::MainWindow() : QMainWindow(),
     eventListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_P);
     connect(m_eventList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByEvent(QString)));
     connect(m_eventList, SIGNAL(renameRequest(QString)), SLOT(slotRenameEvent(QString)));
-    connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString, QString)), m_gameList, SLOT(slotFilterListByEventPlayer(QString, QString)));
-    connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString, QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
+    connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString,QString)), m_gameList, SLOT(slotFilterListByEventPlayer(QString,QString)));
+    connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString,QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
     connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_eventList, SLOT(setDatabase(DatabaseInfo*)));
     connect(this, SIGNAL(reconfigure()), m_eventList, SLOT(slotReconfigure()));
     eventListDock->hide();
@@ -277,8 +277,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_menuView->addAction(ecoListDock->toggleViewAction());
     ecoListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_E);
     connect(m_ecoList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByEco(QString)));
-    connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString, QString, QString, QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString, QString, QString, QString)));
-    connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString, QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
+    connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString,QString,QString,QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString,QString,QString,QString)));
+    connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString,QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
     connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_ecoList, SLOT(setDatabase(DatabaseInfo*)));
     connect(this, SIGNAL(reconfigure()), m_ecoList, SLOT(slotReconfigure()));
     ecoListDock->hide();
@@ -292,22 +292,22 @@ MainWindow::MainWindow() : QMainWindow(),
     // addDockWidget(Qt::RightDockWidgetArea, dbListDock);
     m_menuView->addAction(dbListDock->toggleViewAction());
     dbListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_D);
-    connect(m_databaseList, SIGNAL(requestOpenDatabase(QString, bool)),
-            this, SLOT(openDatabaseUrl(QString, bool)));
+    connect(m_databaseList, SIGNAL(requestOpenDatabase(QString,bool)),
+            this, SLOT(openDatabaseUrl(QString,bool)));
     connect(m_databaseList, SIGNAL(requestCloseDatabase(QString)),
             this, SLOT(slotFileCloseName(QString)));
     connect(m_databaseList, SIGNAL(requestDirty(QString)),
             this, SLOT(slotFileDirty(QString)));
     connect(m_databaseList, SIGNAL(requestLinkDatabase(QString)),
             this, SLOT(setFavoriteDatabase(QString)));
-    connect(m_databaseList, SIGNAL(requestAppendGames(QString, QList<GameId>, QString)),
-            this, SLOT(copyGames(QString, QList<GameId>, QString)));
-    connect(m_gameList, SIGNAL(requestAppendGames(QString, QList<GameId>, QString)),
-            this, SLOT(copyGames(QString, QList<GameId>, QString)));
-    connect(m_gameList, SIGNAL(gameTagChanged(GameId, QString)),
-            this, SLOT(gameChangeTag(GameId, QString)));
-    connect(m_databaseList, SIGNAL(requestAppendDatabase(QString, QString)),
-            this, SLOT(copyDatabase(QString, QString)));
+    connect(m_databaseList, SIGNAL(requestAppendGames(QString,QList<GameId>,QString)),
+            this, SLOT(copyGames(QString,QList<GameId>,QString)));
+    connect(m_gameList, SIGNAL(requestAppendGames(QString,QList<GameId>,QString)),
+            this, SLOT(copyGames(QString,QList<GameId>,QString)));
+    connect(m_gameList, SIGNAL(gameTagChanged(GameId,QString)),
+            this, SLOT(gameChangeTag(GameId,QString)));
+    connect(m_databaseList, SIGNAL(requestAppendDatabase(QString,QString)),
+            this, SLOT(copyDatabase(QString,QString)));
     connect(this, SIGNAL(reconfigure()), m_databaseList, SLOT(slotReconfigure()));
     connect(m_databaseList, SIGNAL(requestMakeBook(QString)),
             this, SLOT(slotMakeBook(QString)));
@@ -439,9 +439,9 @@ MainWindow::MainWindow() : QMainWindow(),
     m_sliderSpeed->setMaximumWidth(400); // Arbitrary limit - not really needed
 
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), SLOT(slotMoveIntervalChanged(int)));
-    connect(m_mainAnalysis, SIGNAL(receivedBestMove(const Analysis&)), this, SLOT(slotEngineTimeout(const Analysis&)));
-    connect(m_mainAnalysis, SIGNAL(currentBestMove(const Analysis&)), this, SLOT(slotEngineCurrentBest(const Analysis&)));
-    connect(m_secondaryAnalysis, SIGNAL(receivedBestMove(const Analysis&)), this, SLOT(slotEngineTimeout(const Analysis&)));
+    connect(m_mainAnalysis, SIGNAL(receivedBestMove(Analysis)), this, SLOT(slotEngineTimeout(Analysis)));
+    connect(m_mainAnalysis, SIGNAL(currentBestMove(Analysis)), this, SLOT(slotEngineCurrentBest(Analysis)));
+    connect(m_secondaryAnalysis, SIGNAL(receivedBestMove(Analysis)), this, SLOT(slotEngineTimeout(Analysis)));
 
     m_matchParameter.tm           = (EngineParameter::TimeModus) AppSettings->getValue("/Match/Mode").toBool();
     m_matchParameter.ms_totalTime = AppSettings->getValue("/Match/TotalTime").toInt();
@@ -488,7 +488,7 @@ MainWindow::MainWindow() : QMainWindow(),
     show();
     downloadManager = new DownloadManager(this);
     downloadManager2 = new DownloadManager(this);
-    connect(downloadManager2, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(slotDatabaseDroppedHandler(QUrl,QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
+    connect(downloadManager2, SIGNAL(onDownloadFinished(QUrl,QString)), this, SLOT(slotDatabaseDroppedHandler(QUrl,QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
     connect(downloadManager2, SIGNAL(downloadError(QUrl)), this, SLOT(slotDatabaseDroppedFailed(QUrl)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
 
     /* Load files from command line */
@@ -519,7 +519,7 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Load ECO file */
     slotStatusMessage(tr("Loading ECO file..."));
     EcoThread* ecothread = new EcoThread();
-    connect(ecothread, SIGNAL(loaded(QObject*, bool)), this, SLOT(ecoLoaded(QObject*, bool)));
+    connect(ecothread, SIGNAL(loaded(QObject*,bool)), this, SLOT(ecoLoaded(QObject*,bool)));
     ecothread->start();
     StartCheckUpdate();
 #ifdef USE_SPEECH
@@ -528,7 +528,6 @@ MainWindow::MainWindow() : QMainWindow(),
     {
         speech = new QTextToSpeech(this);
         const QVector<QLocale> locales = speech->availableLocales();
-        QLocale current = speech->locale();
         QLocale cxLocale(AppSettings->getValue("/General/language").toString());
         if (locales.contains(cxLocale))
         {
@@ -548,18 +547,18 @@ void MainWindow::setupAnalysisWidget(DockWidgetEx* analysisDock, AnalysisWidget*
 {
     analysisDock->setWidget(analysis);
     // addDockWidget(Qt::RightDockWidgetArea, analysisDock);
-    connect(analysis, SIGNAL(addVariation(Analysis, QString)),
-            SLOT(slotGameAddVariation(Analysis, QString)));
+    connect(analysis, SIGNAL(addVariation(Analysis,QString)),
+            SLOT(slotGameAddVariation(Analysis,QString)));
     connect(analysis, SIGNAL(addVariation(QString)),
             SLOT(slotGameAddVariation(QString)));
-    connect(this, SIGNAL(boardChange(const BoardX&, const QString&)), analysis, SLOT(setPosition(const BoardX&,QString)));
+    connect(this, SIGNAL(boardChange(BoardX,QString)), analysis, SLOT(setPosition(BoardX,QString)));
     connect(this, SIGNAL(reconfigure()), analysis, SLOT(slotReconfigure()));
     // Make sure engine is disabled if dock is hidden
     connect(analysisDock, SIGNAL(visibilityChanged(bool)),
             analysis, SLOT(slotVisibilityChanged(bool)));
     m_menuView->addAction(analysisDock->toggleViewAction());
     analysisDock->hide();
-    connect(this, SIGNAL(signalGameLoaded(const BoardX&)), analysis, SLOT(slotUciNewGame(const BoardX&)));
+    connect(this, SIGNAL(signalGameLoaded(BoardX)), analysis, SLOT(slotUciNewGame(BoardX)));
     connect(this, SIGNAL(signalGameModeChanged(bool)), analysis, SLOT(setDisabled(bool)));
     connect(this, SIGNAL(signalUpdateDatabaseList(QStringList)), analysis, SLOT(slotUpdateBooks(QStringList)));
     connect(analysis, SIGNAL(signalSourceChanged(QString)), this, SLOT(slotUpdateOpeningBook(QString)));
@@ -986,7 +985,6 @@ QString MainWindow::ficsPath() const
 
 void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
-    QFileInfo fi(fname);
     QUrl url = QUrl::fromUserInput(fname);
     if (fname == "Clipboard")
     {
@@ -2116,8 +2114,8 @@ void MainWindow::StartCheckUpdate()
         m_manager = new QNetworkAccessManager(this);
         connect(m_manager, SIGNAL(finished(QNetworkReply*)),
                 SLOT(slotHttpDone(QNetworkReply*)));
-        connect(this, SIGNAL(signalVersionFound(int, int, int)),
-                SLOT(slotVersionFound(int, int, int)));
+        connect(this, SIGNAL(signalVersionFound(int,int,int)),
+                SLOT(slotVersionFound(int,int,int)));
         QUrl url("http://chessx.sourceforge.net/versions/current.txt");
         QNetworkRequest request = NetworkHelper::Request(url);
         m_manager->get(request);

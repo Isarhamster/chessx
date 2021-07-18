@@ -1614,7 +1614,7 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
     }
 }
 
-void MainWindow::slotDatabaseDirty(bool modified)
+void MainWindow::slotDatabaseDirty(bool /*modified*/)
 {
     DatabaseInfo* dbInfo = qobject_cast<DatabaseInfo*>(sender());
     if (dbInfo == m_currentDatabase)
@@ -3566,14 +3566,14 @@ void MainWindow::slotDatabaseDeleteGame(QList<GameId> gameIndexList)
 void MainWindow::slotRenameEvent(QString ts)
 {
     RenameTagDialog dlg(this, ts, TagNameEvent);
-    connect(&dlg, SIGNAL(renameRequest(QString, QString, QString)), SLOT(slotRenameRequest(QString, QString, QString)));
+    connect(&dlg, SIGNAL(renameRequest(QString,QString,QString)), SLOT(slotRenameRequest(QString,QString,QString)));
     dlg.exec();
 }
 
 void MainWindow::slotRenamePlayer(QString ts)
 {
     RenameTagDialog dlg(this, ts, TagNameWhite);
-    connect(&dlg, SIGNAL(renameRequest(QString, QString, QString)), SLOT(slotRenameRequest(QString, QString, QString)));
+    connect(&dlg, SIGNAL(renameRequest(QString,QString,QString)), SLOT(slotRenameRequest(QString,QString,QString)));
     dlg.exec();
 }
 
@@ -3689,12 +3689,12 @@ BoardView* MainWindow::CreateBoardView()
         boardView->setDbIndex(m_currentDatabase);
 
         connect(this, SIGNAL(reconfigure()), boardView, SLOT(configure()));
-        connect(boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
-        connect(boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotBoardClick(Square, int, QPoint, Square)));
+        connect(boardView, SIGNAL(moveMade(Square,Square,int)), SLOT(slotBoardMove(Square,Square,int)));
+        connect(boardView, SIGNAL(clicked(Square,int,QPoint,Square)), SLOT(slotBoardClick(Square,int,QPoint,Square)));
         connect(boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
         connect(boardView, SIGNAL(actionHint(QString)), SLOT(slotStatusMessageHint(QString)));
-        connect(boardView, SIGNAL(evalRequest(Square, Square)), SLOT(slotEvalRequest(Square, Square)));
-        connect(boardView, SIGNAL(evalMove(Square, Square)), SLOT(slotEvalMove(Square, Square)));
+        connect(boardView, SIGNAL(evalRequest(Square,Square)), SLOT(slotEvalRequest(Square,Square)));
+        connect(boardView, SIGNAL(evalMove(Square,Square)), SLOT(slotEvalMove(Square,Square)));
         connect(boardView, SIGNAL(evalModeDone()), SLOT(slotResumeBoard()));
         connect(boardViewEx, SIGNAL(signalNewAnnotation(QString)), SLOT(slotGameSetComment(QString)));
         connect(boardViewEx, SIGNAL(enterVariation(int)), this, SLOT(slotGameVarEnter(int)));
@@ -4019,8 +4019,8 @@ void MainWindow::slotMakeBook(QString pathIn)
                 bool uniform;
                 dlg.getBookParameters(out, maxPly, minGame, uniform, result, filterResult);
                 PolyglotWriter* polyglotWriter = new PolyglotWriter(this);
-                connect(polyglotWriter, SIGNAL(bookBuildError(QString, PolyglotWriter*)), SLOT(slotBookBuildError(QString, PolyglotWriter*)));
-                connect(polyglotWriter, SIGNAL(bookBuildFinished(QString, PolyglotWriter*)), SLOT(slotBookDone(QString, PolyglotWriter*)), Qt::QueuedConnection);
+                connect(polyglotWriter, SIGNAL(bookBuildError(QString,PolyglotWriter*)), SLOT(slotBookBuildError(QString,PolyglotWriter*)));
+                connect(polyglotWriter, SIGNAL(bookBuildFinished(QString,PolyglotWriter*)), SLOT(slotBookDone(QString,PolyglotWriter*)), Qt::QueuedConnection);
                 connect(polyglotWriter, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)), Qt::QueuedConnection);
                 startOperation(tr("Build book"));
                 m_polyglotWriters.append(polyglotWriter);

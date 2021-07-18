@@ -48,7 +48,7 @@ AnalysisWidget::AnalysisWidget(QWidget *parent)
     ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
 
     m_tablebase = new OnlineTablebase;
-    connect(m_tablebase, SIGNAL(bestMove(QList<Move>, int)), this, SLOT(showTablebaseMove(QList<Move>, int)));
+    connect(m_tablebase, SIGNAL(bestMove(QList<Move>,int)), this, SLOT(showTablebaseMove(QList<Move>,int)));
 }
 
 AnalysisWidget::~AnalysisWidget()
@@ -82,7 +82,7 @@ void AnalysisWidget::startEngine()
         connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
         connect(m_engine, SIGNAL(error(QProcess::ProcessError)), SLOT(engineError(QProcess::ProcessError)));
         connect(m_engine, SIGNAL(deactivated()), SLOT(engineDeactivated()));
-        connect(m_engine, SIGNAL(analysisUpdated(const Analysis&)),
+        connect(m_engine, SIGNAL(analysisUpdated(Analysis)),
                 SLOT(showAnalysis(Analysis)));
         m_engine->setMoveTime(m_moveTime);
         m_engine->activate();

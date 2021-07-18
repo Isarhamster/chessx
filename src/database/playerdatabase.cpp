@@ -21,8 +21,8 @@ http://doc.trolltech.com/4.0/qdatastream.html
 
 static quint32 Magic = (quint32)0xB0D0A0D0; // 'magic' number
 static quint32 Version = (quint32)100; // file format version
-static QString Mapfile_suffix = ".cpm";
-static QString Datafile_suffix = ".cpd";
+static QString Mapfile_suffix = QStringLiteral(".cpm");
+static QString Datafile_suffix = QStringLiteral(".cpd");
 
 bool PlayerDatabase::create(const QString& fname)
 {

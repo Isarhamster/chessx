@@ -95,9 +95,9 @@ private slots:
     /** Change current piece using wheel */
     void slotChangePiece(int dir);
     /** A Drop operation was inidcated by the boardview */
-    void slotDroppedPiece(Square s, Piece p);
+    void slotDroppedPiece(chessx::Square s, Piece p);
     /** Select square and insert piece */
-    void slotSelected(Square s, int button);
+    void slotSelected(chessx::Square s, int button);
     /** Manually adjust castling rights. */
     void slotCastlingRights();
     /** Manually adjust en passant square. */
@@ -109,11 +109,11 @@ private slots:
     /** Adjust move number. */
     void slotMoveNumber();
     /** Move piece */
-    void slotMovePiece(Square from, Square to);
+    void slotMovePiece(chessx::Square from, chessx::Square to);
     /** Copy piece */
-    void slotCopyPiece(Square from, Square to);
+    void slotCopyPiece(chessx::Square from, chessx::Square to);
     /** Remove piece */
-    void slotInvalidMove(Square from);
+    void slotInvalidMove(chessx::Square from);
     /** Toggle side to move */
     void slotToggleSide();
 
