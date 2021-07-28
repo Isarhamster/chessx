@@ -2308,7 +2308,15 @@ QString MainWindow::MoveToSpeech(Move m)
     s += " ";
     s += m.fromSquareString();
     s += " ";
-    s += tr("to");
+    int n = m.capturedType();
+    if (n)
+    {
+        s += tr("takes");
+    }
+    else
+    {
+        s += tr("to");
+    }
     s += " ";
     s += m.toSquareString();
     s += " ";
@@ -2318,6 +2326,14 @@ QString MainWindow::MoveToSpeech(Move m)
         s += tr("promotes to");
         s += " ";
         s = PieceToSpeech(pieceType(m.promotedPiece()));
+    }
+    if (m.isMate())
+    {
+        s += tr(" check mate");
+    }
+    else if (m.isCheck())
+    {
+        s += tr(" check");
     }
     return s;
 }

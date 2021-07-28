@@ -2785,6 +2785,14 @@ Move BitBoard::prepareMove(const Square& from, const Square& to) const
 
     BitBoard peek(*this);
     peek.doMove(move);
+    if (peek.isCheckmate())
+    {
+        move.setMate();
+    }
+    else if (peek.isCheck())
+    {
+        move.setCheck();
+    }
     peek.swapToMove();
     if(peek.isCheck())    // Don't allow move into check even if its a null move
     {
