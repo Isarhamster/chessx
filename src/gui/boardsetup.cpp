@@ -84,12 +84,12 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
     connect(ui.buttonBoxTools->button(QDialogButtonBox::RestoreDefaults), SIGNAL(clicked()), SLOT(slotClear()));
     connect(ui.buttonBoxTools->button(QDialogButtonBox::Reset), SIGNAL(clicked()), SLOT(slotReset()));
 
-    connect(ui.boardView, SIGNAL(clicked(Square,int,QPoint,Square)), SLOT(slotSelected(Square,int)));
-    connect(ui.boardView, SIGNAL(moveMade(Square,Square,int)), SLOT(slotMovePiece(Square,Square)));
-    connect(ui.boardView, SIGNAL(copyPiece(Square,Square)), SLOT(slotCopyPiece(Square,Square)));
-    connect(ui.boardView, SIGNAL(invalidMove(Square)), SLOT(slotInvalidMove(Square)));
+    connect(ui.boardView, SIGNAL(clicked(chessx::Square,int,QPoint,chessx::Square)), SLOT(slotSelected(chessx::Square,int)));
+    connect(ui.boardView, SIGNAL(moveMade(chessx::Square,chessx::Square,int)), SLOT(slotMovePiece(chessx::Square,chessx::Square)));
+    connect(ui.boardView, SIGNAL(copyPiece(chessx::Square,chessx::Square)), SLOT(slotCopyPiece(chessx::Square,chessx::Square)));
+    connect(ui.boardView, SIGNAL(invalidMove(chessx::Square)), SLOT(slotInvalidMove(chessx::Square)));
     connect(ui.boardView, SIGNAL(wheelScrolled(int)), SLOT(slotChangePiece(int)));
-    connect(ui.boardView, SIGNAL(pieceDropped(Square,Piece)), SLOT(slotDroppedPiece(Square,Piece)));
+    connect(ui.boardView, SIGNAL(pieceDropped(chessx::Square,Piece)), SLOT(slotDroppedPiece(chessx::Square,Piece)));
     connect(ui.toMoveButton, SIGNAL(clicked()), SLOT(slotToggleSide()));
     connect(ui.wkCastleCheck, SIGNAL(clicked(bool)), SLOT(slotCastlingRights()));
     connect(ui.wqCastleCheck, SIGNAL(clicked(bool)), SLOT(slotCastlingRights()));

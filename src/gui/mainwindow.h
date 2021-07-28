@@ -331,15 +331,15 @@ public slots:
     /** Move @p index was selected in Opening Tree. */
     void slotSearchTreeMove(const QModelIndex& index);
     /** Made given move on the board */
-    void slotBoardMove(Square from, Square to, int button=0);
+    void slotBoardMove(chessx::Square from, chessx::Square to, int button=0);
     /** Make a evalution with the current board and piece @p from placed at @p to */
-    void slotEvalRequest(Square from, Square to);
+    void slotEvalRequest(chessx::Square from, chessx::Square to);
     /** Make a evalution with the current board and piece @p from moved to @p to */
-    void slotEvalMove(Square from, Square to);
+    void slotEvalMove(chessx::Square from, chessx::Square to);
     /** Resume the last position after an if-evaluation by slotEvalRequest / slotEvalMove */
     void slotResumeBoard();
     /** Board square was clicked */
-    void slotBoardClick(Square square, int button, QPoint pos, Square from);
+    void slotBoardClick(chessx::Square square, int button, QPoint pos, chessx::Square from);
     /** Browse current game by mouse wheel */
     void slotBoardMoveWheel(int wheel);
     /** Update GUI after current move was changed. Update BoardView to current board,

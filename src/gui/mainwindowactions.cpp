@@ -3689,12 +3689,12 @@ BoardView* MainWindow::CreateBoardView()
         boardView->setDbIndex(m_currentDatabase);
 
         connect(this, SIGNAL(reconfigure()), boardView, SLOT(configure()));
-        connect(boardView, SIGNAL(moveMade(Square,Square,int)), SLOT(slotBoardMove(Square,Square,int)));
-        connect(boardView, SIGNAL(clicked(Square,int,QPoint,Square)), SLOT(slotBoardClick(Square,int,QPoint,Square)));
+        connect(boardView, SIGNAL(moveMade(chessx::Square,chessx::Square,int)), SLOT(slotBoardMove(chessx::Square,chessx::Square,int)));
+        connect(boardView, SIGNAL(clicked(chessx::Square,int,QPoint,chessx::Square)), SLOT(slotBoardClick(chessx::Square,int,QPoint,chessx::Square)));
         connect(boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
         connect(boardView, SIGNAL(actionHint(QString)), SLOT(slotStatusMessageHint(QString)));
-        connect(boardView, SIGNAL(evalRequest(Square,Square)), SLOT(slotEvalRequest(Square,Square)));
-        connect(boardView, SIGNAL(evalMove(Square,Square)), SLOT(slotEvalMove(Square,Square)));
+        connect(boardView, SIGNAL(evalRequest(chessx::Square,chessx::Square)), SLOT(slotEvalRequest(chessx::Square,chessx::Square)));
+        connect(boardView, SIGNAL(evalMove(chessx::Square,chessx::Square)), SLOT(slotEvalMove(chessx::Square,chessx::Square)));
         connect(boardView, SIGNAL(evalModeDone()), SLOT(slotResumeBoard()));
         connect(boardViewEx, SIGNAL(signalNewAnnotation(QString)), SLOT(slotGameSetComment(QString)));
         connect(boardViewEx, SIGNAL(enterVariation(int)), this, SLOT(slotGameVarEnter(int)));
