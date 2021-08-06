@@ -1,16 +1,14 @@
-![Icon](https://a.fsdn.com/allura/p/chessx/icon?1436713538)ChessX
+![Icon](https://github.com/Isarhamster/chessx/raw/master/data/images/chessx-64.png)ChessX
 =================================================================
 
-1. Description
----------------
+# 1. Description
 
 A free and open source chess database application for Linux, Mac OS X and
 Windows.
 
 [ChessX Web Site](http://chessx.sourceforge.net/)
 
-2. Features
-------------
+# 2. Features
 
 * Multi-platform. Supports Windows, Linux and Mac OS X
 * Load and save PGN files
@@ -26,15 +24,13 @@ Windows.
 * Integrated Stockfish engine
 * FICS Support
 
-3. Requirements
----------------
+# 3. Requirements
   
-To compile ChessX, you need zlib, qmake and Qt5 version 5.14.1 or above.
+To compile ChessX, you need zlib, qmake and **Qt5 version 5.14.1** or above.
 
 **known issue:** FICS does not work properly with Qt4
 
-4. Compilation
---------------
+# 4. Compilation
 
 Compiling the source is simple. Execute:
 
@@ -47,10 +43,9 @@ and then
 If the compilation is successful you should be able to run ChessX
 executable in **bin** (or **release**) subdirectory. It is called: **chessx** on Linux, **chessx.app** on Mac OS, and **chessx.exe** on Windows
 
-4.1 Compilation in Linux x64 systems
-------------------------------------
+## 4.1 Compilation in Linux x64 systems
 
-On Linux x64, the  following commands are required for succesful compilation
+On Linux x64, the  following commands are required for successful compilation:
 
 Build the translations
 
@@ -64,12 +59,12 @@ Compile with
 
      make
 
-If compilation finishes succesfully, the executable will be found as:
+If compilation finishes successfully, the executable will be found as:
 
      release/chessx
 
-5. Problems
------------
+# 5. Problems
+
 
 You may check your Qt version by running:
 
@@ -92,20 +87,20 @@ Depending on your installed libraries, you may have to experiment with
 # INCLUDEPATH += <path to qt>/QtZlib
 ```
 
-6. Debugging
-------------
+# 6. Debugging
+
 
 If you want to help debugging ChessX, rebuild with debug option enabled:
 
      qmake -recursive -after "CONFIG+=debug"
      make
 
-***
+*************
 
 **License:** GPLv2
 
-:copyright: 2005-2017, Maintained by Jens Nissen and Ejner Borgbjerg <br>
-:copyright: 2005-2017, Other developers: Michal Rudolf, Bruno Rizzuti, Marius Roets, Sean Estabrooks, Rico Zenklusen, William Hoggarth, and Heinz Hopfgartner
+:copyright: 2021 -- 2005, Maintained by Jens Nissen and Ejner Borgbjerg <br>
+:copyright: 2021 -- 2005, Other developers: Michal Rudolf, Bruno Rizzuti, Marius Roets, Sean Estabrooks, Rico Zenklusen, William Hoggarth, and Heinz Hopfgartner
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
