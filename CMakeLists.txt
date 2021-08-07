@@ -124,7 +124,7 @@ if (CMAKE_HOST_APPLE)
   target_sources(chessx PRIVATE
     mac_osx/Info.plist
     mac_osx/qt_menu.nib
-    data/images/chessx.icns
+    data/icons/chessx.ico
   )
 
   set_property(
@@ -132,7 +132,7 @@ if (CMAKE_HOST_APPLE)
     APPEND PROPERTY
     RESOURCE
       mac_osx/qt_menu.nib
-      data/images/chessx.icns
+      data/icons/chessx.ico
   )
 
   # TODO: embed engines & timeseal

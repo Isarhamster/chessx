@@ -70,12 +70,20 @@ unix|!macx {
     desktop.files = unix/chessx.desktop
     desktop.path = $$DATADIR/applications
 
+    icons256.path = $$DATADIR/icons/hicolor/256x256/apps
+    icons256.files = data/icons/256x256/apps/chessx.png
     icons128.path = $$DATADIR/icons/hicolor/128x128/apps
-    icons128.files = data/images/icons-128/chessx.png
+    icons128.files = data/icons/128x128/apps/chessx.png
     icons64.path = $$DATADIR/icons/hicolor/64x64/apps
-    icons64.files = data/images/icons-64/chessx.png
+    icons64.files = data/icons/64x64/apps/chessx.png
+    icons48.path = $$DATADIR/icons/hicolor/48x48/apps
+    icons48.files = data/icons/48x48/apps/chessx.png
     icons32.path = $$DATADIR/icons/hicolor/32x32/apps
-    icons32.files = data/images/icons-32/chessx.png
+    icons32.files = data/icons/32x32/apps/chessx.png
+    icons24.path = $$DATADIR/icons/hicolor/24x24/apps
+    icons24.files = data/icons/24x24/apps/chessx.png
+    icons16.path = $$DATADIR/icons/hicolor/16x16/apps
+    icons16.files = data/icons/16x16/apps/chessx.png
 
     binfiles.files = release/chessx
     binfiles.path = $$BINDIR
@@ -548,7 +556,7 @@ CONFIG(release, debug|release) {
 
 TARGET = chessx
 
-ICON = data/images/chessx.icns
+ICON = data/icons/chessx.ico
 RC_FILE = src/chessx.rc
 
 macx {
@@ -628,7 +636,7 @@ macx {
 win32 {
   OTHER_FILES += \
     src/chessx.rc \
-    src/chessx.ico
+    data/icons/chessx.ico
 }
 
 DISTFILES += \

@@ -22,7 +22,7 @@
         <file alias="images/black_chess.png">data/images/black_chess.png</file>
         <file alias="images/bug.png">data/images/bug_add.png</file>
         <file alias="images/camera.png">data/images/camera.png</file>
-        <file alias="images/chessx.png">data/images/icons-128/chessx.png</file>
+        <file alias="images/chessx.png">data/icons/128x128/apps/chessx.png</file>
         <file alias="images/chip.png">data/images/chip.png</file>
         <file alias="images/circle_black.svg">data/images/circle_black.svg</file>
         <file alias="images/circle_blue.svg">data/images/circle_blue.svg</file>
