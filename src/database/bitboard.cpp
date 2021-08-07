@@ -1757,6 +1757,17 @@ Move::List BitBoard::generateMoves() const
     return p;
 }
 
+int BitBoard::score() const
+{
+    int sum = 0;
+    Square s;
+    for (s=a1;s<=h8;s++)
+    {
+        sum += centiPawnValue(pieceAt(s));
+    }
+    return sum;
+}
+
 bool BitBoard::isIntoCheck(const Move& move) const
 {
     BitBoard peek(*this);
@@ -2774,6 +2785,14 @@ Move BitBoard::prepareMove(const Square& from, const Square& to) const
 
     BitBoard peek(*this);
     peek.doMove(move);
+    if (peek.isCheckmate())
+    {
+        move.setMate();
+    }
+    else if (peek.isCheck())
+    {
+        move.setCheck();
+    }
     peek.swapToMove();
     if(peek.isCheck())    // Don't allow move into check even if its a null move
     {

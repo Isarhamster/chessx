@@ -279,6 +279,7 @@ HEADERS += src/database/board.h \
   src/gui/boardviewex.h \
   src/gui/chartwidget.h \
   src/gui/chessbrowser.h \
+  src/gui/chessxsettings.h \
   src/gui/colorlist.h \
   src/gui/databaselist.h \
   src/gui/databaselistmodel.h \
@@ -322,6 +323,7 @@ HEADERS += src/database/board.h \
   src/gui/simplelabel.h \
   src/gui/style.h \
   src/gui/tableview.h \
+  src/gui/testadapter.h \
   src/gui/textbrowserex.h \
   src/gui/textedit.h \
   src/gui/toolmainwindow.h \
@@ -441,6 +443,7 @@ SOURCES += \
   src/gui/boardviewex.cpp \
   src/gui/chartwidget.cpp \
   src/gui/chessbrowser.cpp \
+  src/gui/chessxsettings.cpp \
   src/gui/colorlist.cpp \
   src/gui/databaselist.cpp \
   src/gui/databaselistmodel.cpp \
@@ -486,6 +489,7 @@ SOURCES += \
   src/gui/simplelabel.cpp \
   src/gui/style.cpp \
   src/gui/tableview.cpp \
+  src/gui/testadapter.cpp \
   src/gui/textedit.cpp \
   src/gui/toolmainwindow.cpp \
   src/gui/translatingslider.cpp \

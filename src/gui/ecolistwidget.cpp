@@ -25,14 +25,14 @@ ECOListWidget::ECOListWidget(QWidget *parent) :
     ui->renameItem->setVisible(false);
 
     setObjectName("ECOListWidget");
-    connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findECO(const QString&)));
+    connect(ui->filterEdit, SIGNAL(textChanged(QString)), SLOT(findECO(QString)));
     connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedECO()));
     connect(ui->addFilter, SIGNAL(clicked()), SLOT(filterSelectedECOAdd()));
-    connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedECO()));
+    connect(ui->tagList, SIGNAL(doubleClicked(QModelIndex)), SLOT(filterSelectedECO()));
 
     selectECO(QString());
     QItemSelectionModel* selectionModel = ui->tagList->selectionModel();
-    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
+    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             this, SLOT(selectionChangedSlot()));
 
     ui->detailText->setOpenLinks(true);

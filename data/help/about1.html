@@ -123,7 +123,7 @@ need to adapt the castling rights or the side to move to make your position lega
 
 <h3><a name="Analyse"></a>Analysing games</h3>
 <p>There are two analysis windows where two different engines can be configured to analyse the current board position.</p>
-<p>Engines must be configured before in the Preferences Dialog. A default engine (Stockfish) comes with this installation
+<p>Engines must be configured before in the Preferences Dialog (see <a href="#Engines">Installing engines</a>). A default engine (Stockfish) comes with this installation
 and will be configured as first engine, if no other entries exist.
 Stockfish is an open source engine (see <a href="http://stockfishchess.org">Homepage of Stockfish</a>.
 The source code for Stockfish is also located on the homepage. Note that Stockfish is licensed under <a href="about3.html">GPLv3</a></p>
@@ -137,6 +137,20 @@ Logging will be sent to a file 'name.log' where name is the "given" name in the 
 path + /log. What the program data path resolves to can be found in the About box.</p>
 <p>Some engines (e.g. lc0) have issues keeping a proper internal state across two position commands, therefore ChessX allows sending
 a complete game history instead of an updated position. This can be disabled via the "Send History" check box.</p>
+
+<h3><a name="Engines"></a>Installing engines</h3>
+<p>First of all, you need to install the engine somewhere on your harddisk. Remember where the installer of the engine put its executable,
+this information is needed lateron.</p>
+<p>Open the Preferences Dialog, select the tab "Engines". Press "Add..." and browse to the path wherever your engine was installed. Press "Open".
+The executable will appear in the list of engines. In the lower half of the tab you will find some options.
+Most of the modern engines are UCI engines so leave "the "UCI" selected. But quite a few engines (notably lc0 and stockfish) like a particular way of
+transmitting a position so select "Send History" for stockfish, lc0 and possibly other engines.</p>
+<p>For fine-tuning you can open the "Options" Dialog. This will load engine specific tweaks. The most interesting option usually is the number of threads
+the engine is allowed to use. Selecting a larger number will make the engine stronger but also use more power and your computer might heat up quickly.</p>
+<p>A note for Mac Users: Try to open the Options Dialog even if you do not want to tweak the options. This is the easiest way to check if the engine is working.
+If you get an error message, try to start the engine from the terminal. If it's not running from the terminal, ChessX won't be able to use it either.
+Regarding Stockfish: do not use the official stockfish distribution, the engines usually do not work even with the latest macs. The error messsage usually
+contains something like "Illegal instruction: 4". In this case, just fetch the source code and build stockfish yourself.</p>
 
 <h3><a name="Game"></a>Playing (out) games against an engine</h3>
 <p><img src=":/images/respond.png" width="42" align="left">You can play out a game after the final position by activating Auto Respond mode.

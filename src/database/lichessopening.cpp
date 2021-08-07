@@ -28,7 +28,7 @@ QByteArray LichessOpening::sync_request( QNetworkRequest& request )
     QNetworkAccessManager manager;
     QNetworkReply* reply;
     QEventLoop connection_loop;
-    connect(&manager, SIGNAL( finished( QNetworkReply* ) ), &connection_loop, SLOT( quit() ) );
+    connect(&manager, SIGNAL( finished(QNetworkReply*) ), &connection_loop, SLOT( quit() ) );
     reply = manager.get( request );
     connection_loop.exec();
     reply->deleteLater();
@@ -38,8 +38,6 @@ QByteArray LichessOpening::sync_request( QNetworkRequest& request )
 QByteArray LichessOpening::queryPosition(const QString& fen)
 {
     QUrl url;
-    QString prep(fen.simplified());
-    QString count(prep.left(prep.indexOf(" ")));
 
     if (AppSettings->getValue("/General/onlineTablebases").toBool())
     {

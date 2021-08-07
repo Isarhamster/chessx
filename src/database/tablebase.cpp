@@ -194,7 +194,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                 ret.replace("Draw", "0");
                 ret.replace("Lose in ", "-");
 
-                QStringList moveList = ret.split('\n',QString::SkipEmptyParts);
+                QStringList moveList = ret.split('\n',Qt::SkipEmptyParts);
                 if (moveList.size() >= 1)
                 {
                     QList<Move> bestMoves;
@@ -202,7 +202,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                     int bestScore;
                     foreach(QString tbMove, moveList)
                     {
-                        QStringList fld = tbMove.split(' ',QString::SkipEmptyParts);
+                        QStringList fld = tbMove.split(' ',Qt::SkipEmptyParts);
                         if(fld.size() < 3)
                         {
                             break;

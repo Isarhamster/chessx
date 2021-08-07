@@ -659,7 +659,7 @@ bool MainWindow::addRemoteMoveFrom64Char(QString s)
             moveChanged();
             if (!announceMove(m))
             {
-                playSound(":/sounds/move.wav");
+                playSound("move");
             }
         }
         return true;
@@ -699,7 +699,7 @@ void MainWindow::HandleFicsNewGameRequest()
 void MainWindow::HandleFicsSaveGameRequest()
 {
     ActivateFICSDatabase();
-    playSound(":/sounds/fanfare.wav");
+    playSound("fanfare");
     SimpleSaveGame();
 }
 
@@ -764,7 +764,7 @@ void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
             {
                 game().setStartingBoard(b,tr("Set starting board"),b.chess960());
                 emit signalGameLoaded(game().startingBoard());
-                playSound(":/sounds/ding1.wav");
+                playSound("ding1");
             }
         }
     }
@@ -820,7 +820,7 @@ void MainWindow::triggerBoardMove()
         moveChanged(); // The move's currents where set after forward(), thus repair effects
         if (!announceMove(m))
         {
-            playSound(":/sounds/move.wav");
+            playSound("move");
         }
     }
     else
@@ -972,7 +972,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
             {
                 if (game().atLineEnd())
                 {
-                    playSound(":/sounds/fanfare.wav");
+                    playSound("fanfare");
                     if(m_training->isChecked()) m_training->trigger();
                     if(m_training2->isChecked()) m_training2->trigger();
                 }
@@ -1003,7 +1003,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                         if (par.tm != EngineParameter::TIME_GONG && m_matchTime[currentColor] > m_matchParameter.ms_totalTime)
                         {
                             ok = false;
-                            playSound(":/sounds/fanfare.wav");
+                            playSound("fanfare");
                             if (m_autoRespond->isChecked())
                             {
                                 m_autoRespond->trigger();
@@ -1087,7 +1087,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                             if (game().board().isStalemate() ||
                                 game().board().isCheckmate())
                             {
-                                playSound(":/sounds/fanfare.wav");
+                                playSound("fanfare");
                                 if (m_autoRespond->isChecked())
                                 {
                                     m_autoRespond->trigger();
@@ -1105,7 +1105,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                             QString s = drawAnnotation();
                             if (!s.isEmpty())
                             {
-                                playSound(":/sounds/fanfare.wav");
+                                playSound("fanfare");
                                 slotStatusMessage(s);
                             }
                         }
@@ -1614,7 +1614,7 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
     }
 }
 
-void MainWindow::slotDatabaseDirty(bool modified)
+void MainWindow::slotDatabaseDirty(bool /*modified*/)
 {
     DatabaseInfo* dbInfo = qobject_cast<DatabaseInfo*>(sender());
     if (dbInfo == m_currentDatabase)
@@ -2396,7 +2396,7 @@ bool MainWindow::doEngineMove(Move m, EngineParameter matchParameter)
     if (game().board().isStalemate() ||
         game().board().isCheckmate())
     {
-        playSound(":/sounds/fanfare.wav");
+        playSound("fanfare");
         // The game is terminated immediately
         setResultForCurrentPosition();
         return false;
@@ -2405,7 +2405,7 @@ bool MainWindow::doEngineMove(Move m, EngineParameter matchParameter)
     {
         if (!announceMove(m))
         {
-            playSound(":/sounds/move.wav");
+            playSound("move");
         }
     }
     return true;
@@ -2433,7 +2433,7 @@ bool MainWindow::handleGameEnd(const Analysis& analysis, QAction* action)
 {
     if (gameIsDraw())
     {
-        playSound(":/sounds/fanfare.wav");
+        playSound("fanfare");
         // Game is drawn by repetition or 50 move rule
         action->trigger();
         if (game().isMainline())
@@ -2453,7 +2453,7 @@ bool MainWindow::handleGameEnd(const Analysis& analysis, QAction* action)
         {
             setResultAgainstColorToMove();
         }
-        playSound(":/sounds/fanfare.wav");
+        playSound("fanfare");
         // Game is terminated by engine
         action->trigger();
         return true;
@@ -2579,7 +2579,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
 
                 if (m_matchParameter.tm != EngineParameter::TIME_GONG && m_matchTime[game().board().toMove()] > m_matchParameter.ms_totalTime)
                 {
-                    playSound(":/sounds/fanfare.wav");
+                    playSound("fanfare");
                     m_autoRespond->trigger();
                     if (game().isMainline())
                     {
@@ -2652,7 +2652,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
 
             if (m_matchParameter.tm != EngineParameter::TIME_GONG && m_matchTime[game().board().toMove()] > m_matchParameter.ms_totalTime)
             {
-                playSound(":/sounds/fanfare.wav");
+                playSound("fanfare");
                 m_engineMatch->trigger();
                 if (game().isMainline())
                 {
@@ -2662,7 +2662,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             }
             else if (gameIsDraw())
             {
-                playSound(":/sounds/fanfare.wav");
+                playSound("fanfare");
                 m_engineMatch->trigger();
                 if (game().isMainline())
                 {
@@ -2680,7 +2680,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 {
                     setResultAgainstColorToMove();
                 }
-                playSound(":/sounds/fanfare.wav");
+                playSound("fanfare");
                 // Game is terminated by engine
                 m_engineMatch->trigger();
             }
@@ -2702,26 +2702,26 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             }
             else
             {
-                playSound(":/sounds/fanfare.wav");
+                playSound("fanfare");
                 // Engines did not send something useful - could be drawn or something else
                 m_engineMatch->trigger();
             }
         }
         else if (m_engineMatch->isChecked())
         {
-            playSound(":/sounds/fanfare.wav");
+            playSound("fanfare");
             // Engines did not make progress or user intervention
             m_engineMatch->trigger();
         }
         else if (m_autoRespond->isChecked())
         {
-            playSound(":/sounds/fanfare.wav");
+            playSound("fanfare");
             // Engines did not make progress or user intervention
             m_autoRespond->trigger();
         }
         else if (m_autoGame->isChecked())
         {
-            playSound(":/sounds/fanfare.wav");
+            playSound("fanfare");
             // Engines did not make progress or user intervention
             m_autoGame->trigger();
         }
@@ -3071,7 +3071,7 @@ void MainWindow::copyDatabase(QString target, QString src)
             // Source is closed, target is open
             StreamDatabase streamDb;
             streamDb.set64bit(true);
-            if (streamDb.open(src, false))
+            if (streamDb.open(src, pDestDB->isUtf8()))
             {
                 GameX g;
                 while (streamDb.loadNextGame(g))
@@ -3566,14 +3566,14 @@ void MainWindow::slotDatabaseDeleteGame(QList<GameId> gameIndexList)
 void MainWindow::slotRenameEvent(QString ts)
 {
     RenameTagDialog dlg(this, ts, TagNameEvent);
-    connect(&dlg, SIGNAL(renameRequest(QString, QString, QString)), SLOT(slotRenameRequest(QString, QString, QString)));
+    connect(&dlg, SIGNAL(renameRequest(QString,QString,QString)), SLOT(slotRenameRequest(QString,QString,QString)));
     dlg.exec();
 }
 
 void MainWindow::slotRenamePlayer(QString ts)
 {
     RenameTagDialog dlg(this, ts, TagNameWhite);
-    connect(&dlg, SIGNAL(renameRequest(QString, QString, QString)), SLOT(slotRenameRequest(QString, QString, QString)));
+    connect(&dlg, SIGNAL(renameRequest(QString,QString,QString)), SLOT(slotRenameRequest(QString,QString,QString)));
     dlg.exec();
 }
 
@@ -3619,7 +3619,7 @@ bool MainWindow::slotGameMoveNext()
     {
         if (!announceMove(m))
         {
-            playSound(":/sounds/move.wav");
+            playSound("move");
         }
     }
     m_currentFrom = m.from();
@@ -3689,12 +3689,12 @@ BoardView* MainWindow::CreateBoardView()
         boardView->setDbIndex(m_currentDatabase);
 
         connect(this, SIGNAL(reconfigure()), boardView, SLOT(configure()));
-        connect(boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
-        connect(boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotBoardClick(Square, int, QPoint, Square)));
+        connect(boardView, SIGNAL(moveMade(chessx::Square,chessx::Square,int)), SLOT(slotBoardMove(chessx::Square,chessx::Square,int)));
+        connect(boardView, SIGNAL(clicked(chessx::Square,int,QPoint,chessx::Square)), SLOT(slotBoardClick(chessx::Square,int,QPoint,chessx::Square)));
         connect(boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
         connect(boardView, SIGNAL(actionHint(QString)), SLOT(slotStatusMessageHint(QString)));
-        connect(boardView, SIGNAL(evalRequest(Square, Square)), SLOT(slotEvalRequest(Square, Square)));
-        connect(boardView, SIGNAL(evalMove(Square, Square)), SLOT(slotEvalMove(Square, Square)));
+        connect(boardView, SIGNAL(evalRequest(chessx::Square,chessx::Square)), SLOT(slotEvalRequest(chessx::Square,chessx::Square)));
+        connect(boardView, SIGNAL(evalMove(chessx::Square,chessx::Square)), SLOT(slotEvalMove(chessx::Square,chessx::Square)));
         connect(boardView, SIGNAL(evalModeDone()), SLOT(slotResumeBoard()));
         connect(boardViewEx, SIGNAL(signalNewAnnotation(QString)), SLOT(slotGameSetComment(QString)));
         connect(boardViewEx, SIGNAL(enterVariation(int)), this, SLOT(slotGameVarEnter(int)));
@@ -4019,8 +4019,8 @@ void MainWindow::slotMakeBook(QString pathIn)
                 bool uniform;
                 dlg.getBookParameters(out, maxPly, minGame, uniform, result, filterResult);
                 PolyglotWriter* polyglotWriter = new PolyglotWriter(this);
-                connect(polyglotWriter, SIGNAL(bookBuildError(QString, PolyglotWriter*)), SLOT(slotBookBuildError(QString, PolyglotWriter*)));
-                connect(polyglotWriter, SIGNAL(bookBuildFinished(QString, PolyglotWriter*)), SLOT(slotBookDone(QString, PolyglotWriter*)), Qt::QueuedConnection);
+                connect(polyglotWriter, SIGNAL(bookBuildError(QString,PolyglotWriter*)), SLOT(slotBookBuildError(QString,PolyglotWriter*)));
+                connect(polyglotWriter, SIGNAL(bookBuildFinished(QString,PolyglotWriter*)), SLOT(slotBookDone(QString,PolyglotWriter*)), Qt::QueuedConnection);
                 connect(polyglotWriter, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)), Qt::QueuedConnection);
                 startOperation(tr("Build book"));
                 m_polyglotWriters.append(polyglotWriter);

@@ -238,23 +238,17 @@ QMap<Output::OutputType, QString>& Output::getFormats()
 QString Output::writeDiagram(int n) const
 {
     QString imageString;
-    if((m_outputType == NotationWidget) && (AppSettings->getValue("/GameText/ShowDiagrams").toBool()))
+    if(m_renderer && (m_outputType == NotationWidget) && (AppSettings->getValue("/GameText/ShowDiagrams").toBool()))
     {
         GameX g = m_game;
         g.forward(1);
 
-        QImage image = m_renderer(g.board(), QSize(n, n));
-
-        QByteArray byteArray;
-        QBuffer buffer(&byteArray);
-        image.save(&buffer, "PNG"); // writes the image in PNG format inside the buffer
-        QString iconBase64 = QString::fromLatin1(byteArray.toBase64().data());
+        QString iconBase64 = m_renderer(g.board(), QSize(n, n));
         imageString = QString("\n") +
                       m_startTagMap[MarkupDiagram] +
                       "<img alt='Diagram' src='data:image/gif;base64," + iconBase64 + "'>\n" +
                       m_endTagMap[MarkupDiagram];
     }
-
     return imageString;
 }
 

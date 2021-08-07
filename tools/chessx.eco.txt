@@ -98,7 +98,7 @@ A00v "Benko Opening"  1.g3 d5 2.Bg2 c6 *
 A00v "Benko Opening"  1.g3 d5 2.Bg2 e5 *
 A00v "Benko Opening"  1.g3 d5 2.Bg2 Nf6 *
 
-A01 "NimzowE50itsch-Larsen Attack"  1.b3 *
+A01 "Nimzowitsch-Larsen Attack"  1.b3 *
 A01 "Nimzowitsch-Larsen: Polish Variation"  1.b3 b5 *
 A01 "Nimzowitsch-Larsen: Symmetrical"  1.b3 b6 *
 A01 "Nimzowitsch-Larsen: Dutch Variation"  1.b3 f5 *

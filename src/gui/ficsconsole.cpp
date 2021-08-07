@@ -42,7 +42,7 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
 
     ui->tabWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    connect(ui->tabWidget, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(SlotContextMenu(const QPoint&)));
+    connect(ui->tabWidget, SIGNAL(customContextMenuRequested(QPoint)), SLOT(SlotContextMenu(QPoint)));
     connect(ui->tabWidget, SIGNAL(tabBarClicked(int)), SLOT(SlotTabClicked(int)));
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), SLOT(SlotTabChanged(int)));
 
@@ -54,7 +54,7 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
 
     connect(ui->textOut, SIGNAL(editingFinished()), SLOT(SendCommand()));
     connect(m_ficsClient, SIGNAL(receivedMessage(int,QString)), SLOT(HandleMessage(int,QString)), Qt::QueuedConnection);
-    connect(m_ficsClient, SIGNAL(receivedBoard(int, QString)), SLOT(HandleBoard(int, QString)), Qt::QueuedConnection);
+    connect(m_ficsClient, SIGNAL(receivedBoard(int,QString)), SLOT(HandleBoard(int,QString)), Qt::QueuedConnection);
     connect(m_ficsClient, SIGNAL(commandStarted(int)), SLOT(CommandStarted(int)), Qt::QueuedConnection);
     connect(m_ficsClient, SIGNAL(disconnected()), SLOT(Disconnected()), Qt::QueuedConnection);
 
@@ -65,12 +65,12 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     connect(ui->listPlayers, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), this, SLOT(HandleHistoryRequest(QTableWidgetItem*)));
     connect(ui->listSeeks, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(HandleSeekRequest(QListWidgetItem*)));
 
-    connect(ui->listGames, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(CMHandleObserveRequest(const QPoint&)));
-    connect(ui->listHistory, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(CMHandleExamineRequest(const QPoint&)));
-    connect(ui->listRelay, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(CMHandleRelayRequest(const QPoint&)));
-    connect(ui->listPuzzle, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(CMHandleTacticsRequest(const QPoint&)));
-    connect(ui->listPlayers, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(CMHandleHistoryRequest(const QPoint&)));
-    connect(ui->listSeeks, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(CMHandleSeekRequest(const QPoint&)));
+    connect(ui->listGames, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(CMHandleObserveRequest(QPoint)));
+    connect(ui->listHistory, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(CMHandleExamineRequest(QPoint)));
+    connect(ui->listRelay, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(CMHandleRelayRequest(QPoint)));
+    connect(ui->listPuzzle, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(CMHandleTacticsRequest(QPoint)));
+    connect(ui->listPlayers, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(CMHandleHistoryRequest(QPoint)));
+    connect(ui->listSeeks, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(CMHandleSeekRequest(QPoint)));
 
     QListWidgetItem* item = new QListWidgetItem(tr("Get Mate"));
     item->setData(Qt::UserRole, "gm");
@@ -683,7 +683,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             {
                 if (s.startsWith("Game"))
                 {
-                    QStringList l = s.split(" ",QString::SkipEmptyParts);
+                    QStringList l = s.split(" ",Qt::SkipEmptyParts);
                     if (l.size()>=6)
                     {
                         QString nameWhite = l[2];
@@ -741,7 +741,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_XTELL:
             if (!s.startsWith("(") && s.length() > 1)
             {
-                QStringList l = s.split(" ", QString::SkipEmptyParts);
+                QStringList l = s.split(" ", Qt::SkipEmptyParts);
                 if (l.length() == 5)
                 {
                     // todo: Convert List to table widget
@@ -784,7 +784,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             break;
         case FicsClient::BLKCMD_SOUGHT:
             {
-                QStringList l = s.split(" ",QString::SkipEmptyParts);
+                QStringList l = s.split(" ",Qt::SkipEmptyParts);
                 if (l.size() >= 8)
                 {
                     QString sought = btgSeek->checkedButton()->objectName().remove(0,2).toLower();
@@ -860,7 +860,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_SHOWLIST:
             if (!s.contains("--"))
             {
-                QStringList l = s.split(" ", QString::SkipEmptyParts);
+                QStringList l = s.split(" ", Qt::SkipEmptyParts);
                 foreach(QString name, l)
                 {
                     ui->listNoPlay->addItem(name);

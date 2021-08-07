@@ -17,9 +17,8 @@
 #include "filter.h"
 
 #include <QtCore>
-#include <QtGui/QImage>
 
-typedef QImage (*BoardRenderingFunc)(const BoardX &b, QSize pxSize);
+typedef QString (*BoardRenderingFunc)(const BoardX &b, QSize pxSize);
 
 /** @ingroup Core
 The Output class converts game to various formats.
@@ -113,7 +112,7 @@ public:
      * @param pathToTemplateFile The full path to the file that contains the
      *        the template for the output to be generated
      * @see Output::OutputType */
-    Output(OutputType output, BoardRenderingFunc renderer, const QString& pathToTemplateFile = "");
+    Output(OutputType output, BoardRenderingFunc renderer = nullptr, const QString& pathToTemplateFile = "");
     ~Output();
 
     /** Create the output for the given game

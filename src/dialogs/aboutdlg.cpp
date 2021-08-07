@@ -45,7 +45,7 @@ AboutDlg::AboutDlg(QWidget *parent) :
     version += " UNIX";
 #endif
 #endif
-#ifdef Q_OS_DARWIN
+#ifdef Q_OS_MACOS
     version += " MAC";
 #endif
 #ifdef Q_OS_WIN

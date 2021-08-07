@@ -18,9 +18,10 @@
 #include <QLocale>
 #include <QTranslator>
 #include "mainwindow.h"
-#include "settings.h"
+#include "chessxsettings.h"
 #include "style.h"
 #include "logstream.h"
+#include "testadapter.h"
 
 // Necessary includes and defines for memory leak detection:
 #ifdef _MSC_VER
@@ -131,12 +132,14 @@ prevHook = _CrtSetReportHook(customReportHook);
     QString portableIni = Settings::portableIniPath();
     if (QFile::exists(portableIni))
     {
-        AppSettings = new Settings(portableIni);
+        AppSettings = new ChessXSettings(portableIni);
     }
     if (!AppSettings)
     {
-        AppSettings = new Settings;
+        AppSettings = new ChessXSettings;
     }
+
+    AppSettings->initialize();
 
     bool showIcons = AppSettings->getValue("/MainWindow/ShowMenuIcons").toBool();
     if (!showIcons) app.setAttribute(Qt::AA_DontShowIconsInMenus);  // Icons are *no longer shown* in menus
@@ -176,15 +179,26 @@ prevHook = _CrtSetReportHook(customReportHook);
         }
     }
 
-    MainWindow* mainWindow = new MainWindow;
+    int result = 0;
+    TestAdapter tests;
 
-    mainWindow->show();
+    bool exitOption = tests.dispatchTests();
+    if (!exitOption)
+    {
+        MainWindow* mainWindow = new MainWindow;
 
-    // Destroy main window and close application
-    app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
+        mainWindow->show();
 
-    LogStream logStream;
-    int result = app.exec();
+        // Destroy main window and close application
+        app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
+
+        LogStream logStream;
+        result = app.exec();
+    }
+    else
+    {
+        result = tests.getResult();
+    }
 
     delete AppSettings;
 

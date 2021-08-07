@@ -165,6 +165,11 @@ public:
     bool isEnPassant() const;
     /** Check if move is completely legal in the context it was created */
     bool isLegal() const;
+    /** This move gives a check */
+    bool isCheck() const;
+    bool isMate() const;
+    /** Return piece type of captured piece (or 0 if none) */
+    unsigned int capturedType() const;
 
     Color color() const;
 
@@ -274,8 +279,6 @@ private:
     unsigned int action() const;
     /** Return captured piece or En passant for doMove() and undoMove() */
     unsigned int removal() const;
-    /** Return piece type of captured piece (or 0 if none) */
-    unsigned int capturedType() const;
 
     // The move definition 'm' bitfield layout:
     // 00000000 00000000 00000000 00111111 = from square     = bits 1-6
@@ -640,7 +643,17 @@ inline void Move::setPromoted(PieceType p)
 
 inline void Move::setCheck()
 {
-    m |= (1 << 30);
+    m |= (1ul << 30);
+}
+
+inline bool Move::isCheck() const
+{
+    return (m & (1ul << 30));
+}
+
+inline bool Move::isMate() const
+{
+    return (m & (1ul << 29));
 }
 
 inline void Move::setMate()

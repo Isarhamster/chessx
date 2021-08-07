@@ -204,7 +204,7 @@ void UCIEngine::processMessage(const QString& message)
 
     if(message.startsWith("id"))
     {
-        QStringList list = message.split(" " ,QString::SkipEmptyParts);
+        QStringList list = message.split(" " ,Qt::SkipEmptyParts);
         if (list.length()>2)
         {
             if (list[1] == "name")
@@ -303,8 +303,8 @@ void UCIEngine::parseAnalysis(const QString& message)
 {
     // Sample: info score cp 20  depth 3 nodes 423 time 15 pv f1c4 g8f6 b1c3
     Analysis analysis;
-    bool multiPVFound, timeFound, nodesFound, depthFound, scoreFound, variationFound;
-    multiPVFound = timeFound = nodesFound = depthFound = scoreFound = variationFound = false;
+    bool multiPVFound, timeFound, nodesFound, depthFound, scoreFound;
+    multiPVFound = timeFound = nodesFound = depthFound = scoreFound = false;
 
     QString info = message.section(' ', 1, -1, QString::SectionSkipEmpty);
     int section = 0;
@@ -458,7 +458,7 @@ void UCIEngine::parseOptions(const QString& message)
                    } phase;
 
     phase = EXPECT_OPTION;
-    QStringList list = message.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    QStringList list = message.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
 
     QStringList nameVals;
     QString defVal;

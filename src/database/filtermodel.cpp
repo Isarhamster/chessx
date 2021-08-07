@@ -103,7 +103,7 @@ void FilterModel::cacheTags()
 QStringList FilterModel::additionalTags()
 {
     QString addTags = AppSettings->getValue("/GameList/AdditionalTags").toString();
-    QStringList tags = addTags.split(QRegExp("[^a-zA-Z]"), QString::SkipEmptyParts);
+    QStringList tags = addTags.split(QRegExp("[^a-zA-Z]"), Qt::SkipEmptyParts);
     return tags;
 }
 

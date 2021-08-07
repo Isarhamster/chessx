@@ -1861,7 +1861,7 @@ int Engine::SearchRoot(int depth, int alpha, int beta, MoveList * mlist)
     for(unsigned int movenum = 0; (int) movenum < mlist->size(); ++movenum)
     {
         simpleMoveT * sm = mlist->Get(movenum);
-        unsigned int oldNodeCount = NodeCount;
+        //unsigned int oldNodeCount = NodeCount;
         // Make this move and search it:
         DoMove(sm);
         InCheck[Ply] = Pos.IsKingInCheck(sm);

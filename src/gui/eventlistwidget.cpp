@@ -23,15 +23,15 @@ EventListWidget::EventListWidget(QWidget *parent) :
     ui->tagList->setModel(m_filterModel);
 
     setObjectName("EventListWidget");
-    connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findEvent(const QString&)));
+    connect(ui->filterEdit, SIGNAL(textChanged(QString)), SLOT(findEvent(QString)));
     connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedEvent()));
     connect(ui->addFilter, SIGNAL(clicked()), SLOT(filterSelectedEventAdd()));
     connect(ui->renameItem, SIGNAL(clicked()), SLOT(renameSelectedEvent()));
-    connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedEvent()));
+    connect(ui->tagList, SIGNAL(doubleClicked(QModelIndex)), SLOT(filterSelectedEvent()));
 
     selectEvent(QString());
     QItemSelectionModel* selectionModel = ui->tagList->selectionModel();
-    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
+    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             this, SLOT(selectionChangedSlot()));
 
     ui->detailText->setOpenLinks(false);

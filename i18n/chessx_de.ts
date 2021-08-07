@@ -286,7 +286,7 @@ b%2
 %3 am Zug.</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3167"/>
+        <location filename="../src/database/bitboard.cpp" line="3178"/>
         <source>w%1
 b%2
 %3 to move</source>
@@ -295,12 +295,12 @@ s%2
 %3 am Zug</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3184"/>
+        <location filename="../src/database/bitboard.cpp" line="3195"/>
         <source>White</source>
         <translation>Weiß</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3184"/>
+        <location filename="../src/database/bitboard.cpp" line="3195"/>
         <source>Black</source>
         <translation>Schwarz</translation>
     </message>
@@ -603,44 +603,44 @@ Bitte Installation prüfen.</translation>
 <context>
     <name>BoardView</name>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="747"/>
+        <location filename="../src/gui/boardview.cpp" line="749"/>
         <source>Query for piece in case of promotion</source>
         <translation>Nach Umwandlungsfigur fragen</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="751"/>
+        <location filename="../src/gui/boardview.cpp" line="753"/>
         <source>Replace remainder of game with new move</source>
         <translation>Rest der Partie mit neuem Zug ersetzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="755"/>
+        <location filename="../src/gui/boardview.cpp" line="757"/>
         <source>Insert new move and keep as much as possible of remaining moves</source>
         <translatorcomment>Neuen Zug einsetzen und möglichst viele Züge erhalten</translatorcomment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="759"/>
+        <location filename="../src/gui/boardview.cpp" line="761"/>
         <source>Force adding a variation</source>
         <translation>Erzwinge eine neue Variante</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="738"/>
-        <location filename="../src/gui/boardview.cpp" line="763"/>
+        <location filename="../src/gui/boardview.cpp" line="740"/>
+        <location filename="../src/gui/boardview.cpp" line="765"/>
         <source>Draw a square or arrow annotation</source>
         <translation>Ein Feld oder einen Pfeil zeichnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="733"/>
+        <location filename="../src/gui/boardview.cpp" line="735"/>
         <source>Spray color annotations</source>
         <translation>Farbe versprühen</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="767"/>
+        <location filename="../src/gui/boardview.cpp" line="769"/>
         <source>Query the engine as if piece was located at target</source>
         <translation>Engine nach Zug fragen mit der Figur am aktuellen Ort</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="771"/>
+        <location filename="../src/gui/boardview.cpp" line="773"/>
         <source>Query the engine for the best reply</source>
         <translation>Engine nach bester Antwort fragen</translation>
     </message>
@@ -1842,106 +1842,106 @@ Bitte Installation prüfen.</translation>
 <context>
     <name>GameX</name>
     <message>
-        <location filename="../src/database/gamex.cpp" line="106"/>
+        <location filename="../src/database/gamex.cpp" line="107"/>
         <source>Copy game</source>
         <translation>Partie kopieren</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="128"/>
-        <location filename="../src/database/gamex.cpp" line="544"/>
+        <location filename="../src/database/gamex.cpp" line="129"/>
+        <location filename="../src/database/gamex.cpp" line="545"/>
         <source>Add move</source>
         <translation>Zug hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="392"/>
+        <location filename="../src/database/gamex.cpp" line="393"/>
         <source>Merge game</source>
         <translation>Partien verschmelzen</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="572"/>
+        <location filename="../src/database/gamex.cpp" line="573"/>
         <source>Replace move</source>
         <translation>Zug ersetzen</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="600"/>
+        <location filename="../src/database/gamex.cpp" line="601"/>
         <source>Add line</source>
         <translation>Zugfolge anfügen</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="612"/>
-        <location filename="../src/database/gamex.cpp" line="624"/>
-        <location filename="../src/database/gamex.cpp" line="636"/>
+        <location filename="../src/database/gamex.cpp" line="613"/>
+        <location filename="../src/database/gamex.cpp" line="625"/>
+        <location filename="../src/database/gamex.cpp" line="637"/>
         <source>Add variation</source>
         <translation>Variante hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="734"/>
+        <location filename="../src/database/gamex.cpp" line="735"/>
         <source>Promote variation</source>
         <translation>Variante aufwerten</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="754"/>
+        <location filename="../src/database/gamex.cpp" line="755"/>
         <source>Remove variation</source>
         <translation>Variante löschen</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="808"/>
+        <location filename="../src/database/gamex.cpp" line="809"/>
         <source>Truncate variation</source>
         <translation>Variante beschneiden</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="841"/>
+        <location filename="../src/database/gamex.cpp" line="842"/>
         <source>Remove variations</source>
         <translation>Varianten löschen</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="873"/>
+        <location filename="../src/database/gamex.cpp" line="874"/>
         <source>Remove comments</source>
         <translation>Kommentare löschen</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="880"/>
+        <location filename="../src/database/gamex.cpp" line="881"/>
         <source>Remove time comments</source>
         <translation>Zeitanmerkungen löschen</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="929"/>
+        <location filename="../src/database/gamex.cpp" line="930"/>
         <source>Set annotation</source>
         <translation>Kommentar ändern</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="1092"/>
+        <location filename="../src/database/gamex.cpp" line="1093"/>
         <source>Colorize square</source>
         <translation>Felder einfärben</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="1139"/>
+        <location filename="../src/database/gamex.cpp" line="1140"/>
         <source>Paint arrow</source>
         <translation>Pfeil einzeichnen</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="1310"/>
+        <location filename="../src/database/gamex.cpp" line="1311"/>
         <source>Add nag</source>
         <translation>Auszeichnung hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="1330"/>
+        <location filename="../src/database/gamex.cpp" line="1331"/>
         <source>Set nags</source>
         <translation>Auszeichnung setzen</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="1379"/>
-        <location filename="../src/database/gamex.cpp" line="1388"/>
+        <location filename="../src/database/gamex.cpp" line="1380"/>
+        <location filename="../src/database/gamex.cpp" line="1389"/>
         <source>Move variation</source>
         <translation>Variante verschieben</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="1414"/>
+        <location filename="../src/database/gamex.cpp" line="1415"/>
         <source>Enumerate variations</source>
         <translation>Aufzählung in Varianten</translation>
     </message>
     <message>
-        <location filename="../src/database/gamex.cpp" line="1596"/>
+        <location filename="../src/database/gamex.cpp" line="1597"/>
         <source>Set result</source>
         <translation>Ergebnis setzen</translation>
     </message>
@@ -5485,6 +5485,34 @@ chessx.sourceforge.net</translation>
         <location filename="../src/dialogs/tagdialog.cpp" line="59"/>
         <source>Enter value...</source>
         <translation>Wert ändern...</translation>
+    </message>
+</context>
+<context>
+    <name>TestAdapter</name>
+    <message>
+        <location filename="../src/gui/testadapter.cpp" line="25"/>
+        <source>Exit after processing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/testadapter.cpp" line="30"/>
+        <source>Input Database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/testadapter.cpp" line="31"/>
+        <source>Input</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/testadapter.cpp" line="34"/>
+        <source>Output Database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/testadapter.cpp" line="35"/>
+        <source>Output</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
