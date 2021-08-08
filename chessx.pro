@@ -63,7 +63,7 @@ unix|!macx {
     BINDIR = $$PREFIX/bin
     DATADIR = $$PREFIX/share
 
-    INSTALLS += appdata desktop icons128 icons64 icons32 binfiles
+    INSTALLS += appdata desktop icons256 icons128 icons64 icons48 icons32 icons24 icons16 binfiles
 
     appdata.files = unix/io.sourceforge.ChessX.metainfo.xml
     appdata.path = $$DATADIR/metainfo
