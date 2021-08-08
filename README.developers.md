@@ -1,6 +1,12 @@
 **Note:** If you start working with code, please read though the following rules:
 
-### 1. Use Qt naming scheme. You may have a look at Qt API to learn it
+### 1. Official ChessX's source code at
+
+https://github.com/Isarhamster/chessx
+
+### 2. Use Qt naming scheme.
+
+You may have a look at the [Qt API](https://www.doxygen.nl/index.html) to learn it
  
 Here are some examples:
 
@@ -12,9 +18,9 @@ Here are some examples:
 * _Checks:_ `isReadOnly()`
 * _Functions with acronyms:_ `moveToSan()`, `fromSan()`
 
-### 2. Use Doxygen format to comment your code
+### 3. Use Doxygen format to comment your code
 
-* Start class documentation with Doxygen header
+* Start a class documentation with the [Doxygen](https://www.doxygen.nl/index.html) header
 
 ```
   /** @ingroup Database
@@ -43,7 +49,7 @@ Here are some examples:
 
 and verify that your class is documented correctly.
 
-### 3. Format your code with tabs
+### 4. Format your code with tabs
 
 We advocate using [astyle](http://astyle.sourceforge.net) to indent your code. To use astyle, put
 
