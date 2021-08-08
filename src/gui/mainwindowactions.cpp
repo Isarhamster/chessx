@@ -126,8 +126,10 @@ void MainWindow::slotFileOpen()
            << tr("Arena books (*.abk)")
            << tr("Chessbase books (*.ctg)");
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Open database"),
-                        AppSettings->value("/General/DefaultDataPath").toString(),
-                        filters.join(";;"));
+						      AppSettings->value("/General/DefaultDataPath").toString(),
+						      filters.join(";;"),NULL ,
+						      QFileDialog::DontUseNativeDialog
+						      );
     foreach(QString file, files)
     {
         if(!file.isEmpty())
@@ -140,8 +142,9 @@ void MainWindow::slotFileOpen()
 void MainWindow::slotFileOpenUtf8()
 {
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Open database"),
-                        AppSettings->value("/General/DefaultDataPath").toString(),
-                        tr("PGN databases (*.pgn)"));
+						      AppSettings->value("/General/DefaultDataPath").toString(),
+						      tr("PGN databases (*.pgn)"), NULL,
+						      QFileDialog::DontUseNativeDialog );
     foreach(QString file, files)
     {
         if(!file.isEmpty())
