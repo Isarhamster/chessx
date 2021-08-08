@@ -6,7 +6,7 @@ https://github.com/Isarhamster/chessx
 
 ### 2. Use Qt naming scheme.
 
-You may have a look at the [Qt API](https://www.doxygen.nl/index.html) to learn it
+You may have a look at the [Qt API](https://doc.qt.io/qt-5/) to learn it
  
 Here are some examples:
 
