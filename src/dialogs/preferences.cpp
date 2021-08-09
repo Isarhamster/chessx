@@ -61,9 +61,9 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     QPushButton *engineDownButton = ui.buttonBoxEngines->addButton(tr("Down"), QDialogButtonBox::ActionRole);
 
     connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(buttonClicked(QAbstractButton*)));
-    connect(ui.engineList, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-            SLOT(slotSelectEngine(QListWidgetItem*, QListWidgetItem*)));
-    connect(ui.engineName, SIGNAL(textChanged(const QString&)), SLOT(slotEngineNameChange(const QString&)));
+    connect(ui.engineList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+            SLOT(slotSelectEngine(QListWidgetItem*,QListWidgetItem*)));
+    connect(ui.engineName, SIGNAL(textChanged(QString)), SLOT(slotEngineNameChange(QString)));
     connect(addEngineButton, SIGNAL(clicked(bool)), SLOT(slotAddEngine()));
     connect(deleteEngineButton, SIGNAL(clicked(bool)), SLOT(slotDeleteEngine()));
     connect(engineUpButton, SIGNAL(clicked(bool)), SLOT(slotEngineUp()));
@@ -101,7 +101,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
         QUrl url = QUrl(QString("http://chessx.sourceforge.net/translations/dict.txt"));
         downloadManager = new DownloadManager(this);
         connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadFileError(QUrl)), Qt::QueuedConnection);
-        connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(slotFileLoaded(QUrl, QString)), Qt::QueuedConnection);
+        connect(downloadManager, SIGNAL(onDownloadFinished(QUrl,QString)), this, SLOT(slotFileLoaded(QUrl,QString)), Qt::QueuedConnection);
         QString path = AppSettings->getTempPath();
         downloadManager->doDownloadToPath(url, path + QDir::separator() + "dict.txt");
     }

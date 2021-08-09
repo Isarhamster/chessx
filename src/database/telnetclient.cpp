@@ -112,7 +112,7 @@ void TelnetClient::DispatchReadData(QByteArray bytes)
         default:
         {
             bool endsWithCR = data.endsWith("\n");
-            QStringList lines = data.split("\n", QString::SkipEmptyParts);
+            QStringList lines = data.split("\n", Qt::SkipEmptyParts);
             if (lines.count() && !endsWithCR)
             {
                 m_remainder = lines.back();

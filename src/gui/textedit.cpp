@@ -74,7 +74,7 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-const QString rsrcPath = ":/textedit";
+const QString rsrcPath = QStringLiteral(":/textedit");
 
 TextEdit::TextEdit(QWidget *parent, QMenu *menu)
     : ToolMainWindow(parent)

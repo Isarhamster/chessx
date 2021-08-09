@@ -13,6 +13,7 @@
 #include "annotation.h"
 #include "ecopositions.h"
 #include "gamex.h"
+#include "guess.h"
 #include "settings.h"
 #include "tags.h"
 
@@ -1764,13 +1765,12 @@ void GameX::scoreMaterial(QList<double>& scores) const
     GameX g = *this;
     g.moveToStart();
     scores.clear();
-    int score = g.board().ScoreMaterial();
-    scores.append(score);
-    while(g.forward())
+
+    do
     {
-        score = g.board().ScoreMaterial();
+        int score = g.board().score();
         scores.append(score);
-    }
+    } while(g.forward());
 }
 
 void GameX::evaluation(double& d) const

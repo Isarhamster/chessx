@@ -212,6 +212,8 @@ public:
     int numAttackedBy(const unsigned int color, chessx::Square square) const;
     /** Generate all possible moves in a given position */
     Move::List generateMoves() const;
+    /** Calculate a material evaluation */
+    int score() const;
 protected:
     unsigned int countSetBits(quint64 n) const;
 private:

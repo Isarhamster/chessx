@@ -15,6 +15,8 @@ typedef struct Result
     {
         error = -1;
         score = 0;
+        from = 0;
+        to = 0;
     }
 } Result;
 

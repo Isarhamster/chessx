@@ -43,8 +43,8 @@ TableView::TableView(QWidget *parent)
     setContextMenuPolicy(Qt::CustomContextMenu);
     horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    connect(horizontalHeader(), SIGNAL(customContextMenuRequested(const QPoint&)),
-            this, SLOT(ShowContextMenu(const QPoint&)));
+    connect(horizontalHeader(), SIGNAL(customContextMenuRequested(QPoint)),
+            this, SLOT(ShowContextMenu(QPoint)));
     connect(&m_dragTimer, SIGNAL(timeout()), this, SLOT(SlotDragTimer()));
     m_dragTimer.setSingleShot(true);
 }

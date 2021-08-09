@@ -191,11 +191,11 @@ void ActionDialog::resetKeys()
     emit signalResetKey();
     disconnect(ui->actionsTable, SIGNAL(cellClicked(int,int)),
             this, SLOT(saveOldActionText(int, int)));
-    disconnect(ui->actionsTable, SIGNAL(cellChanged(int, int)),
-            this, SLOT(validateAction(int, int)));
+    disconnect(ui->actionsTable, SIGNAL(cellChanged(int,int)),
+            this, SLOT(validateAction(int,int)));
     resetList();
     connect(ui->actionsTable, SIGNAL(cellClicked(int,int)),
-            this, SLOT(saveOldActionText(int, int)));
-    connect(ui->actionsTable, SIGNAL(cellChanged(int, int)),
-            this, SLOT(validateAction(int, int)));
+            this, SLOT(saveOldActionText(int,int)));
+    connect(ui->actionsTable, SIGNAL(cellChanged(int,int)),
+            this, SLOT(validateAction(int,int)));
 }

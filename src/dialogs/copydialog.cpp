@@ -23,7 +23,7 @@
 CopyDialog::CopyDialog(QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
     ui.setupUi(this);
-    connect(ui.databaseList, SIGNAL(itemDoubleClicked(QListWidgetItem *)), SLOT(accept()));
+    connect(ui.databaseList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(accept()));
     AppSettings->layout(this);
 }
 

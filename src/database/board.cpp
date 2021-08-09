@@ -14,7 +14,6 @@
 #include <QFile>
 #include <QHash>
 #include "board.h"
-#include "guess.h"
 #include "square.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -308,18 +307,6 @@ void BoardX::setArrowAnnotation(QString arrowAnnotation)
 QString BoardX::arrowAnnotation() const
 {
     return m_arrowAnnotation;
-}
-
-int BoardX::ScoreMaterial() const
-{
-    QString fen = toFen();
-    return Guess::scorePosFromFen(fen.toLatin1());
-}
-
-int BoardX::DefendersOfSquare(Square target) const
-{
-    QString fen = toFen();
-    return Guess::attackersOnSquare(fen.toLatin1(), target);
 }
 
 BoardX BoardX::getStandardStartBoard()

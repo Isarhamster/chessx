@@ -45,11 +45,11 @@ DatabaseList::DatabaseList(DatabaseRegistry* registry, QWidget* parent) :
 
     setModel(m_filterModel);
 
-    connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
-    connect(this, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(slotDoubleClicked(const QModelIndex&)));
-    connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
-    connect(m_model, SIGNAL(OnSelectIndex(const QModelIndex &)), SLOT(slotCurrentIndexChanged(const QModelIndex &)));
+    connect(this, SIGNAL(clicked(QModelIndex)), SLOT(itemSelected(QModelIndex)));
+    connect(this, SIGNAL(doubleClicked(QModelIndex)), SLOT(slotDoubleClicked(QModelIndex)));
+    connect(this, SIGNAL(activated(QModelIndex)), SLOT(itemSelected(QModelIndex)));
+    connect(this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(slotContextMenu(QPoint)));
+    connect(m_model, SIGNAL(OnSelectIndex(QModelIndex)), SLOT(slotCurrentIndexChanged(QModelIndex)));
 
     setAlternatingRowColors(true);
     setDragEnabled(true);
