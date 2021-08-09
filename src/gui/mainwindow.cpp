@@ -1426,6 +1426,8 @@ void MainWindow::setupActions()
     QMenu* file = menuBar()->addMenu(tr("&File"));
     QToolBar* fileToolBar = addToolBar(tr("File"));
     fileToolBar->setObjectName("FileToolBar");
+    fileToolBar->setIconSize(toolbarIconSize);
+    
     file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), Qt::CTRL + Qt::SHIFT + Qt::Key_N, fileToolBar, ":/images/new.png"));
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
@@ -1467,7 +1469,8 @@ void MainWindow::setupActions()
     QMenu* edit = menuBar()->addMenu(tr("&Edit"));
     QToolBar* editToolBar = addToolBar(tr("Edit"));
     editToolBar->setObjectName("EditToolBar");
-
+    editToolBar->setIconSize(toolbarIconSize);
+    
     QAction *undoAction = m_undoGroup.createUndoAction(this, tr("Undo"));
     QAction *redoAction = m_undoGroup.createRedoAction(this, tr("Redo"));
     undoAction->setShortcut(Qt::CTRL + Qt::Key_Z);
@@ -1581,6 +1584,8 @@ void MainWindow::setupActions()
 
     QToolBar* viewToolBar = addToolBar(tr("View"));
     viewToolBar->setObjectName("ViewToolBarMain");
+    viewToolBar->setIconSize(toolbarIconSize);
+    
     QAction* showTargets = createAction(tr("Show target fields"), SLOT(slotShowTargetFields()), 0,
                                        viewToolBar, QIcon(":/images/show_targets.png"));
     m_menuView->addAction(showTargets);
@@ -1637,8 +1642,11 @@ void MainWindow::setupActions()
     QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
     QToolBar* gameToolBar = addToolBar(tr("Game"));
     gameToolBar->setObjectName("GameToolBarMain");
+    gameToolBar->setIconSize(toolbarIconSize);
+    
     QToolBar* dbToolBar = addToolBar(tr("Database"));
     dbToolBar->setObjectName("DbToolBarMain");
+    dbToolBar->setIconSize(toolbarIconSize);
 
     QAction* newAction = createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New,
                                       dbToolBar, ":/images/new_game.png");
@@ -1795,6 +1803,7 @@ void MainWindow::setupActions()
     QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
     QToolBar* searchToolBar = addToolBar(tr("Search"));
     searchToolBar->setObjectName("SearchToolBar");
+    searchToolBar->setIconSize(toolbarIconSize);
 
     QAction* actionFindTag = createAction(tr("Find tag..."), SLOT(slotSearchTag()), Qt::CTRL + Qt::SHIFT + Qt::Key_T, searchToolBar, ":/images/find_tag.png");
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), actionFindTag, SLOT(setEnabled(bool)));

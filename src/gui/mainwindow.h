@@ -127,7 +127,9 @@ protected:
     void SwitchToClipboard();
     /** Update the list of last open games insided the current database */
     void updateLastGameList();
-public slots:
+    /* Sets size for icons in the toolbar */
+    QSize toolbarIconSize = QSize(64,64);
+  public slots:
     /** Enter gaming mode */
     void slotToggleGameMode();
     /** Flip the board view */
