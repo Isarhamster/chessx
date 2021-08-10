@@ -591,6 +591,7 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.notationColors, tr("NAGs"), "NagColor");
 
     ui.gameTextFontSizeSpin->setValue(AppSettings->getValue("FontSize").toInt());
+    ui.IconSizeSlider->setValue(AppSettings->getValue("ToolbarIconSize").toInt());
     ui.cbShowDiagrams->setChecked(AppSettings->getValue("ShowDiagrams").toBool());
     ui.cbColumnStyle->setChecked(AppSettings->getValue("ColumnStyle").toBool());
     ui.cbHTMLComments->setChecked(AppSettings->getValue("HTMLComments").toBool());
@@ -738,6 +739,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->beginGroup("GameText");
 
     AppSettings->setValue("FontSize", ui.gameTextFontSizeSpin->value());
+    AppSettings->setValue("ToolbarIconSize", ui.IconSizeSlider->value());
     AppSettings->setValue("ShowDiagrams", ui.cbShowDiagrams->isChecked());
     AppSettings->setValue("HideSpecAnnotations", ui.cbHideSpecAnnotations->isChecked());
     AppSettings->setValue("HTMLComments", ui.cbHTMLComments->isChecked());
