@@ -21,6 +21,7 @@
 #include <QTextToSpeech>
 #endif
 #include <QUndoGroup>
+#include <QToolBar>
 
 using namespace chessx;
 
@@ -128,7 +129,8 @@ protected:
     /** Update the list of last open games insided the current database */
     void updateLastGameList();
     /* Sets size for icons in the toolbar */
-    QSize toolbarIconSize = QSize(64,64);
+    QToolBar * fileToolBar, * editToolBar, * viewToolBar, * gameToolBar, * dbToolBar, * searchToolBar;
+    bool resizeToolBarIcons (const quint8);
   public slots:
     /** Enter gaming mode */
     void slotToggleGameMode();
