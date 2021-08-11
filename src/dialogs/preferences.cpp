@@ -591,7 +591,14 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.notationColors, tr("NAGs"), "NagColor");
 
     ui.gameTextFontSizeSpin->setValue(AppSettings->getValue("FontSize").toInt());
+
+    /*
+      Icon Resizing slider saves new value in configuration, 
+      then emits signal with the new value
+    */
     ui.IconSizeSlider->setValue(AppSettings->getValue("ToolbarIconSize").toInt());
+    connect (ui.IconSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderNewValue(int)));
+    
     ui.cbShowDiagrams->setChecked(AppSettings->getValue("ShowDiagrams").toBool());
     ui.cbColumnStyle->setChecked(AppSettings->getValue("ColumnStyle").toBool());
     ui.cbHTMLComments->setChecked(AppSettings->getValue("HTMLComments").toBool());
@@ -909,4 +916,9 @@ void PreferencesDialog::on_savePreferences_clicked()
     {
         QFile::copy(settingsPath, newPath);
     }
+}
+
+/*A signal is emitted if resizing icon slider changes position*/
+void PreferencesDialog::sliderNewValue(int newValue){
+  emit iconsizeSliderSetting(newValue);
 }

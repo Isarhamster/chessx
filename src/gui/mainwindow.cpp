@@ -1420,10 +1420,10 @@ QAction* MainWindow::createAction(QString name, const char* slot, const QKeySequ
     return action;
 }
 
-/* resizes Tool Bar Icons in the Main Window given the Scaling factor */
+/* Slot for resizing Tool Bar Icons in the Main Window given the Scaling factor */
 /* Default scale factor is read from the config value */
 bool MainWindow::resizeToolBarIcons (
-				     quint8 scale = AppSettings->getValue("/GameText/ToolbarIconSize").toInt()
+				     const int scale = AppSettings->getValue("/GameText/ToolbarIconSize").toInt()
 				     ){
   /* When scale out of range error, returns false */
   if (scale > 6) { return false; }
@@ -1434,8 +1434,8 @@ bool MainWindow::resizeToolBarIcons (
 			 QSize(32,32),
 			 QSize(48,48),
 			 QSize(64,64),
-			 QSize(128,128),
-			 QSize(256,256)};
+			 QSize(72,72),
+			 QSize(96,96)};
 
   /*Resizes every declared ToolBar*/
   this->fileToolBar->setIconSize(IconSizes[scale]);

@@ -130,8 +130,8 @@ protected:
     void updateLastGameList();
     /* Sets size for icons in the toolbar */
     QToolBar * fileToolBar, * editToolBar, * viewToolBar, * gameToolBar, * dbToolBar, * searchToolBar;
-    bool resizeToolBarIcons (const quint8);
   public slots:
+    bool resizeToolBarIcons (const int);
     /** Enter gaming mode */
     void slotToggleGameMode();
     /** Flip the board view */
