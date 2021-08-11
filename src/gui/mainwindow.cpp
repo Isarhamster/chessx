@@ -1459,9 +1459,9 @@ void MainWindow::setupActions()
     file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), Qt::CTRL + Qt::SHIFT + Qt::Key_N, fileToolBar, ":/images/new.png"));
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
-    file->addAction(createAction(tr("Open FICS"), SLOT(openFICS()), QKeySequence(), fileToolBar, ":/images/fics.png"));
-    file->addAction(createAction(tr("Open Lichess"), SLOT(openLichess()), QKeySequence(), fileToolBar, ":/images/lichess.png"));
-    file->addAction(createAction(tr("Open chess.com"), SLOT(openChesscom()), QKeySequence(), fileToolBar, ":/images/chesscom.png"));
+    file->addAction(createAction(tr("Connect to FICS"), SLOT(openFICS()), QKeySequence(), fileToolBar, ":/images/fics_offline.png"));
+    file->addAction(createAction(tr("Open Lichess"), SLOT(openLichess()), QKeySequence(), fileToolBar, ":/images/lichess_fetch.png"));
+    file->addAction(createAction(tr("Open chess.com"), SLOT(openChesscom()), QKeySequence(), fileToolBar, ":/images/chesscom_fetch.png"));
     file->addAction(createAction(tr("Web Favorite"), SLOT(openWebFavorite()), QKeySequence(), fileToolBar, ":/images/folder_web.png"));
 
     QMenu* menuRecent = file->addMenu(tr("Open recent"));

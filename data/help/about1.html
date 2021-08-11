@@ -317,13 +317,21 @@ each engine gets a fixed amount of time for the whole game. ChessX will supervis
 insufficient material or the 50 move rule.</p>
 
 <h3><a name="FICS"></a>Online Chess</h3>
-<p><img src=":/images/fics.png" width="42" align="left">ChessX supports online access to games played or stored on the free internet chess server.</p>
+
+<p><img src=":/images/fics_offline.png" width="42"
+	align="left"><img src=":/images/fics_online.png" width="42">
+
+ ChessX supports online access to games played or stored on the free internet
+ chess server (FICS).</p>
 <p>If you have a FICS account, you can enter the credentials in the Preferences, otherwise, ChessX will login as guest.</p>
 <p>ChessX connects to FICS upon opening the virtual database FICS. A successful connection is indicated in the message pane of the FICS console.</p>
 <p>Selecting the tab "Games" will read in the list of games which are currently played on FICS. Double clicking a games will start monitoring this game.
-Selecting Players will read in all players currently connected to FICS. Double-clicking a player will read in the players history (last 10 games).
-Double clicking a game from the History pane will read in the game into the current game of the FICS database. You can finally save any observed or examined game and transfer it
-to a persistent database. Games in the FICS database are not persistent!</p>
+Selecting Players will read in all players currently connected to
+  FICS. Double-clicking a player will read in the players history (last 10
+  games). Double clicking a game from the History pane will read in the game
+  into the current game of the FICS database. You can finally save any
+  observed or examined game and store it in your local database. <!-- Games in the FICS database are not persistent! -->
+  <!-- I believe they are --></p>
 <p>For playing games online, using TimeSeal is recommended. See the message pane upon connecting to FICS.
 It will show, if Telnet or Timeseal is used. Telnet will give you a disadvantage for faster games so this is not recommended.</p>
 <p>You can accept incoming match requests from other players pressing "Accept" or you can seek for an opponent in the seek pane.</p>
@@ -331,8 +339,10 @@ It will show, if Telnet or Timeseal is used. Telnet will give you a disadvantage
 dropping it somewhere, the premove piece and its target square a indicated. An active premove can be cancelled by clicking somewhere on the board
 or by selecting a new premove.</p>
 <p>Chess variants are not supported in Online mode</p>
-<p><img src=":/images/lichess.png" width="42" align="left"><img src=":/images/chesscom.png" width="42">
-Get the games you played this month on lichess / chess.com. Requires a user name to be set in the preferences.</p>
+
+<p><img src=":/images/lichess_fetch.png" width="42" align="left"><img src=":/images/chesscom_fetch.png" width="42">
+
+It fetches the games you played this month on lichess or chess.com. It requires an user name to be set in the preferences.</p>
 
 <h3><a name="Variants"></a>Chess Variants</h3>
 <p>ChessX supports Chess 960 games (also call Fisherandom).</p>
