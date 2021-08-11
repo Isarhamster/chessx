@@ -1420,12 +1420,42 @@ QAction* MainWindow::createAction(QString name, const char* slot, const QKeySequ
     return action;
 }
 
+/* Slot for resizing Tool Bar Icons in the Main Window given the Scaling factor */
+/* Default scale factor is read from the config value */
+bool MainWindow::resizeToolBarIcons (
+				     const int scale = AppSettings->getValue("/GameText/ToolbarIconSize").toInt()
+				     ){
+  /* When scale out of range error, returns false */
+  if (scale > 6) { return false; }
+  
+  /* IconSizes array returns a translator from scale to pixel size */
+  QSize IconSizes [7] = {QSize(16,16),
+			 QSize(24,24),
+			 QSize(32,32),
+			 QSize(48,48),
+			 QSize(64,64),
+			 QSize(72,72),
+			 QSize(96,96)};
+
+  /*Resizes every declared ToolBar*/
+  this->fileToolBar->setIconSize(IconSizes[scale]);
+  this->editToolBar->setIconSize(IconSizes[scale]);
+  this->viewToolBar->setIconSize(IconSizes[scale]);
+  this->gameToolBar->setIconSize(IconSizes[scale]);
+  this->dbToolBar->setIconSize(IconSizes[scale]);
+  this->searchToolBar->setIconSize(IconSizes[scale]);
+
+  /* Once sucessfully resizes all toolbar icons returns true */
+  return true;
+}
+
 void MainWindow::setupActions()
 {
     /* File menu */
     QMenu* file = menuBar()->addMenu(tr("&File"));
-    QToolBar* fileToolBar = addToolBar(tr("File"));
+    fileToolBar = addToolBar(tr("File"));
     fileToolBar->setObjectName("FileToolBar");
+    
     file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), Qt::CTRL + Qt::SHIFT + Qt::Key_N, fileToolBar, ":/images/new.png"));
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
@@ -1465,9 +1495,9 @@ void MainWindow::setupActions()
 
     /* Edit menu */
     QMenu* edit = menuBar()->addMenu(tr("&Edit"));
-    QToolBar* editToolBar = addToolBar(tr("Edit"));
+    editToolBar = addToolBar(tr("Edit"));
     editToolBar->setObjectName("EditToolBar");
-
+    
     QAction *undoAction = m_undoGroup.createUndoAction(this, tr("Undo"));
     QAction *redoAction = m_undoGroup.createRedoAction(this, tr("Redo"));
     undoAction->setShortcut(Qt::CTRL + Qt::Key_Z);
@@ -1579,8 +1609,9 @@ void MainWindow::setupActions()
                                        nullptr, style()->standardIcon(QStyle::SP_TitleBarCloseButton)));
     m_menuView->addSeparator();
 
-    QToolBar* viewToolBar = addToolBar(tr("View"));
+    viewToolBar = addToolBar(tr("View"));
     viewToolBar->setObjectName("ViewToolBarMain");
+    
     QAction* showTargets = createAction(tr("Show target fields"), SLOT(slotShowTargetFields()), 0,
                                        viewToolBar, QIcon(":/images/show_targets.png"));
     m_menuView->addAction(showTargets);
@@ -1635,9 +1666,10 @@ void MainWindow::setupActions()
 
     /* Game menu */
     QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
-    QToolBar* gameToolBar = addToolBar(tr("Game"));
+    gameToolBar = addToolBar(tr("Game"));
     gameToolBar->setObjectName("GameToolBarMain");
-    QToolBar* dbToolBar = addToolBar(tr("Database"));
+    
+    dbToolBar = addToolBar(tr("Database"));
     dbToolBar->setObjectName("DbToolBarMain");
 
     QAction* newAction = createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New,
@@ -1793,7 +1825,7 @@ void MainWindow::setupActions()
 
     /* Search menu */
     QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
-    QToolBar* searchToolBar = addToolBar(tr("Search"));
+    searchToolBar = addToolBar(tr("Search"));
     searchToolBar->setObjectName("SearchToolBar");
 
     QAction* actionFindTag = createAction(tr("Find tag..."), SLOT(slotSearchTag()), Qt::CTRL + Qt::SHIFT + Qt::Key_T, searchToolBar, ":/images/find_tag.png");
@@ -1824,6 +1856,8 @@ void MainWindow::setupActions()
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), reverseFilter, SLOT(setEnabled(bool)));
     search->addAction(reverseFilter);
 
+    resizeToolBarIcons( );
+    
     /* Database menu */
     QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));
     m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
