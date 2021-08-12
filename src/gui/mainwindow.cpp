@@ -1066,7 +1066,9 @@ void MainWindow::openChesscom()
 
 void MainWindow::openFICS()
 {
-    openDatabaseFile(ficsPath(), false);
+  /* Disable the Fics toggle while connection is being stablished */
+  ficsButton->setEnabled(false);
+  openDatabaseFile(ficsPath(), false);
 }
 
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
@@ -1456,11 +1458,17 @@ bool MainWindow::resizeToolBarIcons (
 To display online or offline states
 */
 void MainWindow::FicsToggleConnected(){
+    /* Update pixmap*/
     ficsButton->setIcon(QIcon(":/images/fics_online.png"));
+    /* show the toggle as checked to indicate connection is online */
     ficsButton->setChecked(true);
+    /* enable the button once again once connection is succesfully established */
+    ficsButton->setEnabled(true);
 }
 void MainWindow::FicsToggleDisconnected(){
+     /*Update pixmap */
     ficsButton->setIcon(QIcon(":/images/fics_offline.png"));
+    /* show the toggle as not checked to indicate connection is offline */
     ficsButton->setChecked(false);
 }
 
