@@ -687,7 +687,7 @@
               <property name="font">
                <font>
                 <family>Courier New</family>
-                <pointsize>14</pointsize>
+                <pointsize>12</pointsize>
                </font>
               </property>
               <property name="toolTip">
@@ -701,17 +701,8 @@
               </property>
              </widget>
             </item>
-            <item>
-             <widget class="QToolButton" name="tbUK">
-              <property name="text">
-               <string>...</string>
-              </property>
-              <property name="icon">
-               <iconset resource="../../resources.qrc">
-                <normaloff>:/images/flag_gb.png</normaloff>:/images/flag_gb.png</iconset>
-              </property>
-             </widget>
-            </item>
+ 	    <!--Sorting Pieces Language by alphabetic Order -->
+	    <!--de-->
             <item>
              <widget class="QToolButton" name="tbGermany">
               <property name="text">
@@ -723,6 +714,20 @@
               </property>
              </widget>
             </item>
+	    <!-- Adding Spanish -->
+	    <!--es-->
+	    <item>
+              <widget class="QToolButton" name="tbES">
+		<property name="text">
+		  <string>...</string>
+		</property>
+		<property name="icon">
+		  <iconset resource="../../resources.qrc">
+                  <normaloff>:/images/flag_es.png</normaloff>:/images/flag_es.png</iconset>
+		</property>
+              </widget>
+            </item>
+	    <!--fr-->
             <item>
              <widget class="QToolButton" name="tbFrance">
               <property name="text">
@@ -734,6 +739,19 @@
               </property>
              </widget>
             </item>
+	    <!--gb-->
+	    <item>
+              <widget class="QToolButton" name="tbUK">
+		<property name="text">
+		  <string>...</string>
+		</property>
+		<property name="icon">
+		  <iconset resource="../../resources.qrc">
+                  <normaloff>:/images/flag_gb.png</normaloff>:/images/flag_gb.png</iconset>
+		</property>
+              </widget>
+            </item>
+	    <!--pl-->
             <item>
              <widget class="QToolButton" name="tbPoland">
               <property name="text">
@@ -761,6 +779,7 @@
             </item>
            </layout>
           </item>
+	  
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_18">
             <item>
