@@ -1066,9 +1066,18 @@ void MainWindow::openChesscom()
 
 void MainWindow::openFICS()
 {
-  /* Disable the Fics toggle while connection is being stablished */
-  ficsButton->setEnabled(false);
-  openDatabaseFile(ficsPath(), false);
+  //Requests a terminate connection if Fics Toggle is checked
+  if (!ficsButton->isChecked()){
+    HandleFicsCloseRequest();
+  }
+  
+  //Opens Database (and connects) if Fics Toggle is unchecked
+  if (ficsButton->isChecked()){
+    // Disable the Fics toggle while connection is being stablished
+    ficsButton->setEnabled(false);
+    //Attempt etablishing a connection
+    openDatabaseFile(ficsPath(), false);
+  }
 }
 
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
