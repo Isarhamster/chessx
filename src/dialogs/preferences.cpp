@@ -21,6 +21,7 @@
 #include "engineoptiondialog.h"
 #include "downloadmanager.h"
 
+
 #include <QAction>
 #include <QCheckBox>
 #include <QColorDialog>
@@ -35,6 +36,7 @@
 #include <QSpinBox>
 #include <QStyleFactory>
 #include <QTextStream>
+#include <QMap>
 
 #ifdef USE_SPEECH
 #include <QTextToSpeech>
@@ -345,34 +347,24 @@ void PreferencesDialog::slotShowOptionDialog()
 
 void PreferencesDialog::slotChangePieceString()
 {
-   //ensure a default value is initiated
-   QString pieceString = " KQRBN";
-   //Nested if structure is not necessary
-   if((QToolButton*)sender() == ui.tbES)
-    {
-        pieceString = " RDTAC";
-    }
-    if((QToolButton*)sender() == ui.tbGB)
-    {
-        pieceString = " KQRBN";
-    }
-    if((QToolButton*)sender() == ui.tbDE)
-    {
-        pieceString = " KDTLS";
-    }
-    if((QToolButton*)sender() == ui.tbFR)
-    {
-        pieceString = " RDTFC";
-    }
-    if((QToolButton*)sender() == ui.tbPL)
-    {
-        pieceString = " KHWGS";
-    }
-    if((QToolButton*)sender() == ui.tbSymbolic)
+  //ensure a default value is initiated
+  QString pieceString = " KQRBN";
+  //Initialize and build a lookup map for the different languages
+  QMap<QToolButton*, QString> pieceMap;
+  pieceMap[ui.tbDE] = " KDTLS";
+  pieceMap[ui.tbES] = " RDTAC";
+  pieceMap[ui.tbFR] = " RDTFC";
+  pieceMap[ui.tbGB] = " KQRBN";
+  pieceMap[ui.tbPL] = " KHWGS";
+  //Assign piece string given the Mapped sender
+  pieceString = pieceMap[(QToolButton*)sender()];
+  //Clear, if symbolic
+  if((QToolButton*)sender() == ui.tbSymbolic)
     {
         pieceString.clear();
     }
-    ui.pieceString->setText(pieceString);
+  //setText
+  ui.pieceString->setText(pieceString);
 }
 
 void PreferencesDialog::slotLoadLanguageFile()
