@@ -351,6 +351,7 @@ void PreferencesDialog::slotChangePieceString()
   QString pieceString = " KQRBN";
   //Initialize and build a lookup map for the different languages
   QMap<QToolButton*, QString> pieceMap;
+  pieceMap[ui.tbSymbolic] = QString( ) ; //Assigns the Null string
   pieceMap[ui.tbDE] = " KDTLS";
   pieceMap[ui.tbES] = " RDTAC";
   pieceMap[ui.tbFR] = " RDTFC";
@@ -358,11 +359,6 @@ void PreferencesDialog::slotChangePieceString()
   pieceMap[ui.tbPL] = " KHWGS";
   //Assign piece string given the Mapped sender
   pieceString = pieceMap[(QToolButton*)sender()];
-  //Clear, if symbolic
-  if((QToolButton*)sender() == ui.tbSymbolic)
-    {
-        pieceString.clear();
-    }
   //setText
   ui.pieceString->setText(pieceString);
 }
