@@ -186,6 +186,9 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_ficsConsole, SIGNAL(RequestRemoveLastMove()), this, SLOT(HandleFicsRequestRemoveMove()));
     connect(m_ficsClient, SIGNAL(disconnected()), SLOT(FicsDisconnected()), Qt::QueuedConnection);
     connect(m_ficsClient, SIGNAL(connected()), SLOT(FicsConnected()), Qt::QueuedConnection);
+
+
+    
     connect(m_ficsConsole, SIGNAL(RequestStoredMove()), SLOT(slotBoardStoredMove()));
     connect(this, SIGNAL(reconfigure()), m_ficsConsole, SLOT(slotReconfigure()));
     m_ficsConsole->setEnabled(false);
@@ -1449,6 +1452,18 @@ bool MainWindow::resizeToolBarIcons (
   return true;
 }
 
+/* Slot to change the pixmap of the Action for FICS connection
+To display online or offline states
+*/
+void MainWindow::FicsToggleConnected(){
+    ficsButton->setIcon(QIcon(":/images/fics_online.png"));
+    ficsButton->setChecked(true);
+}
+void MainWindow::FicsToggleDisconnected(){
+    ficsButton->setIcon(QIcon(":/images/fics_offline.png"));
+    ficsButton->setChecked(false);
+}
+
 void MainWindow::setupActions()
 {
     /* File menu */
@@ -1459,11 +1474,16 @@ void MainWindow::setupActions()
     file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), Qt::CTRL + Qt::SHIFT + Qt::Key_N, fileToolBar, ":/images/new.png"));
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
-    file->addAction(createAction(tr("Connect to FICS"), SLOT(openFICS()), QKeySequence(), fileToolBar, ":/images/fics_offline.png"));
+    ficsButton =  createAction(tr("Connect to FICS"), SLOT(openFICS()), QKeySequence(), fileToolBar, ":/images/fics_offline.png");
+    ficsButton->setCheckable(true);
+    file->addAction(ficsButton);
     file->addAction(createAction(tr("Open Lichess"), SLOT(openLichess()), QKeySequence(), fileToolBar, ":/images/lichess_fetch.png"));
     file->addAction(createAction(tr("Open chess.com"), SLOT(openChesscom()), QKeySequence(), fileToolBar, ":/images/chesscom_fetch.png"));
     file->addAction(createAction(tr("Web Favorite"), SLOT(openWebFavorite()), QKeySequence(), fileToolBar, ":/images/folder_web.png"));
 
+    connect(m_ficsClient, SIGNAL(disconnected()), this, SLOT(FicsToggleDisconnected()));
+    connect(m_ficsClient, SIGNAL(connected()), this, SLOT(FicsToggleConnected()));
+    
     QMenu* menuRecent = file->addMenu(tr("Open recent"));
     connect(menuRecent, SIGNAL( aboutToShow()), this, SLOT(updateMenuRecent()));
     file->addSeparator();

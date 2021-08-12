@@ -130,8 +130,14 @@ protected:
     void updateLastGameList();
     /* Sets size for icons in the toolbar */
     QToolBar * fileToolBar, * editToolBar, * viewToolBar, * gameToolBar, * dbToolBar, * searchToolBar;
+    /* Sets the Fics button to become available class Wide */
+    QAction * ficsButton;     
   public slots:
+    /** Changes the Size of the Icons on the Toolbar **/
     bool resizeToolBarIcons (const int);
+    /** Toggle the Pixmap of FICS icon to reflect connect or disconnect status **/
+    void FicsToggleConnected();
+    void FicsToggleDisconnected();
     /** Enter gaming mode */
     void slotToggleGameMode();
     /** Flip the board view */
