@@ -708,7 +708,7 @@
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
-                <normaloff>:/images/FlagUK.png</normaloff>:/images/FlagUK.png</iconset>
+                <normaloff>:/images/flag_gb.png</normaloff>:/images/flag_gb.png</iconset>
               </property>
              </widget>
             </item>
@@ -719,7 +719,7 @@
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
-                <normaloff>:/images/FlagGermany.png</normaloff>:/images/FlagGermany.png</iconset>
+                <normaloff>:/images/flag_de.png</normaloff>:/images/flag_de.png</iconset>
               </property>
              </widget>
             </item>
@@ -730,7 +730,7 @@
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
-                <normaloff>:/images/FlagFrance.png</normaloff>:/images/FlagFrance.png</iconset>
+                <normaloff>:/images/flag_fr.png</normaloff>:/images/flag_fr.png</iconset>
               </property>
              </widget>
             </item>
@@ -741,7 +741,7 @@
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
-                <normaloff>:/images/FlagPoland.png</normaloff>:/images/FlagPoland.png</iconset>
+                <normaloff>:/images/flag_pl.png</normaloff>:/images/flag_pl.png</iconset>
               </property>
              </widget>
             </item>
