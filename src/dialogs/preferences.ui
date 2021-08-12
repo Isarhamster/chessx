@@ -704,7 +704,7 @@
  	    <!--Sorting Pieces Language by alphabetic Order -->
 	    <!--de-->
             <item>
-             <widget class="QToolButton" name="tbGermany">
+             <widget class="QToolButton" name="tbDE">
               <property name="text">
                <string>...</string>
               </property>
@@ -729,7 +729,7 @@
             </item>
 	    <!--fr-->
             <item>
-             <widget class="QToolButton" name="tbFrance">
+             <widget class="QToolButton" name="tbFR">
               <property name="text">
                <string>...</string>
               </property>
@@ -741,7 +741,7 @@
             </item>
 	    <!--gb-->
 	    <item>
-              <widget class="QToolButton" name="tbUK">
+              <widget class="QToolButton" name="tbGB">
 		<property name="text">
 		  <string>...</string>
 		</property>
@@ -753,7 +753,7 @@
             </item>
 	    <!--pl-->
             <item>
-             <widget class="QToolButton" name="tbPoland">
+             <widget class="QToolButton" name="tbPL">
               <property name="text">
                <string>...</string>
               </property>

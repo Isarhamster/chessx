@@ -73,11 +73,11 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     connect(ui.browsePathButton, SIGNAL(clicked(bool)), SLOT(slotSelectDataBasePath()));
     connect(ui.engineOptionMore, SIGNAL(clicked(bool)), SLOT(slotShowOptionDialog()));
     
-    connect(ui.tbUK, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbGB, SIGNAL(clicked()), SLOT(slotChangePieceString()));
     connect(ui.tbES, SIGNAL(clicked()), SLOT(slotChangePieceString()));
-    connect(ui.tbGermany, SIGNAL(clicked()), SLOT(slotChangePieceString()));
-    connect(ui.tbFrance, SIGNAL(clicked()), SLOT(slotChangePieceString()));
-    connect(ui.tbPoland, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbDE, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbFR, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbPL, SIGNAL(clicked()), SLOT(slotChangePieceString()));
     connect(ui.tbSymbolic, SIGNAL(clicked()), SLOT(slotChangePieceString()));
 
     connect(ui.btLoadLang, SIGNAL(clicked()), SLOT(slotLoadLanguageFile()));
@@ -352,19 +352,19 @@ void PreferencesDialog::slotChangePieceString()
     {
         pieceString = " RDTAC";
     }
-    if((QToolButton*)sender() == ui.tbUK)
+    if((QToolButton*)sender() == ui.tbGB)
     {
         pieceString = " KQRBN";
     }
-    if((QToolButton*)sender() == ui.tbGermany)
+    if((QToolButton*)sender() == ui.tbDE)
     {
         pieceString = " KDTLS";
     }
-    if((QToolButton*)sender() == ui.tbFrance)
+    if((QToolButton*)sender() == ui.tbFR)
     {
         pieceString = " RDTFC";
     }
-    if((QToolButton*)sender() == ui.tbPoland)
+    if((QToolButton*)sender() == ui.tbPL)
     {
         pieceString = " KHWGS";
     }
