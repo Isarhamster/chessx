@@ -1686,6 +1686,25 @@ void MainWindow::truncateVariation(GameX::Position position)
     emit signalGameLoaded(game().startingBoard());
 }
 
+/*Slot that updates the Main window title to reflect boardview flipping status*/
+void MainWindow::updateWindowTitleFlipped(bool wasFlipped, bool m_flipped){
+  (void) wasFlipped; //Silences unused warning
+  QString TitleFormatted = QString ( );
+  //Title for white pieces down
+  if (!m_flipped){
+    TitleFormatted = QStringList({
+	QChar(0x2655), " ", QChar(0x2022),
+	  " ChessX ", QChar(0x2022), " %1"}).join("");
+  }
+  //Title for black pieces down
+  if (m_flipped){
+    TitleFormatted = QStringList({
+	QChar(0x265B), " ", QChar(0x2022),
+	  " ChessX ", QChar(0x2022), " %1"}).join("");
+  }
+  setWindowTitle(TitleFormatted.arg(databaseName()));
+}
+
 void MainWindow::slotGameModify(const EditAction& action)
 {
     if((action.type() != EditAction::CopyHtml) &&
@@ -3344,11 +3363,16 @@ void MainWindow::slotDatabaseChanged()
 {
     m_undoGroup.setActiveStack(databaseInfo()->undoStack());
     database()->index()->calculateCache();
+
     //Note: ChessX is not a translatable string. 
     QString TitleFormatted = QStringList({
 	QChar(0x2655), " ", QChar(0x2022),
 	  " ChessX ", QChar(0x2022), " %1"}).join("");
+
     setWindowTitle(TitleFormatted.arg(databaseName()));
+    connect(m_boardView, SIGNAL(signalFlipped(bool,bool)),
+	    this, SLOT(updateWindowTitleFlipped(bool,bool)));
+      
     m_gameList->setFilter(databaseInfo()->filter());
     updateLastGameList();
     slotFilterChanged();

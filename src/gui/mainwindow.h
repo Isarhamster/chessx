@@ -127,7 +127,9 @@ protected:
     void SwitchToClipboard();
     /** Update the list of last open games insided the current database */
     void updateLastGameList();
-public slots:
+  public slots:
+    /** Changes window title in response to boardview flipping**/
+    void updateWindowTitleFlipped(bool, bool);
     /** Enter gaming mode */
     void slotToggleGameMode();
     /** Flip the board view */
