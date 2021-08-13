@@ -3344,7 +3344,11 @@ void MainWindow::slotDatabaseChanged()
 {
     m_undoGroup.setActiveStack(databaseInfo()->undoStack());
     database()->index()->calculateCache();
-    setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
+    //Note: ChessX is not a translatable string. 
+    QString TitleFormatted = QStringList({
+	QChar(0x2655), " ", QChar(0x2022),
+	  " ChessX ", QChar(0x2022), " %1"}).join("");
+    setWindowTitle(TitleFormatted.arg(databaseName()));
     m_gameList->setFilter(databaseInfo()->filter());
     updateLastGameList();
     slotFilterChanged();
