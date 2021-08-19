@@ -2348,12 +2348,12 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1719"/>
         <source>Play engine</source>
-        <translation>Jugar contra el motor</translation>
+        <translation>Jugar por el motor</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1724"/>
         <source>Match against engine</source>
-        <translation>Juego contra el motor</translation>
+        <translation>Jugar contra el motor</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1791"/>
@@ -2697,7 +2697,7 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="2220"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="2224"/>
         <source>Engine Match</source>
-        <translation>Jugar contra el motor</translation>
+        <translation>Juego de motores</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1740"/>
