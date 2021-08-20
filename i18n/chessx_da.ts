@@ -4097,13 +4097,13 @@ Skal jeg downloade en database?</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="519"/>
-        <source>Put the initials of the pieces here, mind the initial space.</source>
-        <translation>Placer initialer for brikkerne her. Bemærk det indledende mellemrum.</translation>
+        <source>Put the initials of the pieces here.</source>
+        <translation>Placer initialer for brikkerne her.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="525"/>
-        <source> KQRBN - Mind the initial space!</source>
-        <translation> KDTLS - Bemærk det indledende mellemrum!</translation>
+        <source>KQRBN</source>
+        <translation>KDTLS</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="532"/>

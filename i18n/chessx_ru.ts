@@ -4154,13 +4154,13 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="519"/>
-        <source>Put the initials of the pieces here, mind the initial space.</source>
-        <translation>Вставте начало фигур здесь (следите за начальным местом).</translation>
+        <source>Put the initials of the pieces here.</source>
+        <translation>Вставте начало фигур здесь.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="525"/>
-        <source> KQRBN - Mind the initial space!</source>
-        <translation> KQRBN - следите за начальным местом!</translation>
+        <source>KQRBN</source>
+        <translation>KQRBN</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="532"/>

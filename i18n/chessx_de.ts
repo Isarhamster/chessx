@@ -4543,13 +4543,13 @@ chessx.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="694"/>
-        <source>Put the initials of the pieces here, mind the initial space.</source>
-        <translation>Initialen der Figuren eingeben, aufpassen auf den ersten Blank.</translation>
+        <source>Put the initials of the pieces here.</source>
+        <translation>Initialen der Figuren eingeben.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="700"/>
-        <source> KQRBN - Mind the initial space!</source>
-        <translation> KQRBN - Aufpassen auf das erste Blank!</translation>
+        <source>KQRBN</source>
+        <translation>KQRBN</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="707"/>

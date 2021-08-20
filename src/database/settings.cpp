@@ -249,7 +249,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/GameText/DiagramSize", 200);
     map.insert("/GameText/FontBrowserText", "Arial Unicode MS");
     map.insert("/GameText/FontBrowserMove", "Arial Unicode MS");
-    map.insert("/GameText/PieceString", " KQRBN");
+    map.insert("/GameText/PieceString", "KQRBN");
 
     map.insert("/GameList/AdditionalTags", "");
 
@@ -359,7 +359,8 @@ void Settings::setValue(const QString &key, const QVariant& val)
     QSettings::setValue(key, val);
     if (key == "PieceString" && group() == "GameText")
     {
-        BitBoard::PieceNames::custom().set(val.toString());
+      //Handle initial space internally
+      BitBoard::PieceNames::custom().set(QString(" ").append(val.toString()));
     }
 }
 
