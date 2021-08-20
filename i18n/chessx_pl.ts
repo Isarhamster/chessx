@@ -121,14 +121,6 @@ Free Chess Database</source>
 <context>
     <name>Analysis</name>
     <message>
-        <source>Mate in</source>
-        <translation type="vanished">Mat w</translation>
-    </message>
-    <message>
-        <source> (depth %1)</source>
-        <translation type="vanished"> (głębokość %1)</translation>
-    </message>
-    <message>
         <location filename="../src/database/analysis.cpp" line="223"/>
         <source>Resigns</source>
         <translation type="unfinished"></translation>
@@ -160,14 +152,6 @@ Free Chess Database</source>
         <location filename="../src/gui/analysiswidget.cpp" line="127"/>
         <source>Stop</source>
         <translation>Stop</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="obsolete">Błąd</translation>
-    </message>
-    <message>
-        <source>There was an error running engine &lt;b&gt;%1&lt;/b&gt;.</source>
-        <translation type="vanished">Wystąpił błąd podczasu uruchamiania programu &lt;b&gt;%1&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.cpp" line="141"/>
@@ -238,10 +222,6 @@ Free Chess Database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;b&gt;Tablebase:&lt;/b&gt; </source>
-        <translation type="vanished">&lt;b&gt;Tablica końcówek&lt;/b&gt; </translation>
-    </message>
-    <message>
         <location filename="../src/gui/analysiswidget.ui" line="43"/>
         <source>&amp;Lines:</source>
         <translation>&amp;Warianty:</translation>
@@ -255,10 +235,6 @@ Free Chess Database</source>
         <location filename="../src/gui/analysiswidget.ui" line="66"/>
         <source>Pin engine to current position</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>...</source>
-        <translation type="obsolete">...</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="89"/>
@@ -275,14 +251,6 @@ Free Chess Database</source>
         <location filename="../src/gui/analysiswidget.cpp" line="150"/>
         <source>Analyze</source>
         <translation>Start</translation>
-    </message>
-    <message>
-        <source>Mate in</source>
-        <translation type="obsolete">Mat w</translation>
-    </message>
-    <message>
-        <source>F2</source>
-        <translation type="obsolete">F2</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="20"/>
@@ -373,34 +341,14 @@ b%2
         <translation>Oba króle pod szachem</translation>
     </message>
     <message>
-        <source>Invalid position</source>
-        <translation type="obsolete">Nieprawidłowa pozycja</translation>
-    </message>
-    <message>
-        <source>White</source>
-        <translation type="obsolete">Białe</translation>
-    </message>
-    <message>
-        <source>Black</source>
-        <translation type="obsolete">Czarne</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.ui" line="26"/>
         <source>Setup position</source>
         <translation>Ustaw pozycję</translation>
     </message>
     <message>
-        <source>Move: </source>
-        <translation type="obsolete">Posunięcie: </translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.cpp" line="83"/>
         <source>Clear</source>
         <translation>Wyczyść</translation>
-    </message>
-    <message>
-        <source>&amp;Reset</source>
-        <translation type="vanished">&amp;Resetuj</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="92"/>
@@ -411,14 +359,6 @@ b%2
         <location filename="../src/gui/boardsetup.ui" line="102"/>
         <source>Move:</source>
         <translation>Posunięcie:</translation>
-    </message>
-    <message>
-        <source>&amp;Ok</source>
-        <translation type="vanished">&amp;Ok</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Anuluj</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="46"/>
@@ -485,10 +425,6 @@ b%2
 %1.</translation>
     </message>
     <message>
-        <source>FEN: %1</source>
-        <translation type="vanished">FEN: %1</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.cpp" line="528"/>
         <source>Illegal position: %1</source>
         <translation>Nieprawidłowa pozycja: %1</translation>
@@ -504,25 +440,9 @@ b%2
         <translation>Brak tekstu w schowku.</translation>
     </message>
     <message>
-        <source>Board</source>
-        <translation type="vanished">Pozycja</translation>
-    </message>
-    <message>
-        <source>&amp;Advanced</source>
-        <translation type="vanished">&amp;Zaawanasowane</translation>
-    </message>
-    <message>
-        <source>Ply: </source>
-        <translation type="obsolete">Półruch: </translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.ui" line="266"/>
         <source>En passant file:</source>
         <translation>Kolumna bicia w przelocie:</translation>
-    </message>
-    <message>
-        <source>Castling rights</source>
-        <translation type="vanished">Roszada</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="237"/>
@@ -609,38 +529,6 @@ b%2
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>a</source>
-        <translation type="vanished">a</translation>
-    </message>
-    <message>
-        <source>b</source>
-        <translation type="vanished">b</translation>
-    </message>
-    <message>
-        <source>c</source>
-        <translation type="vanished">c</translation>
-    </message>
-    <message>
-        <source>d</source>
-        <translation type="vanished">d</translation>
-    </message>
-    <message>
-        <source>e</source>
-        <translation type="vanished">e</translation>
-    </message>
-    <message>
-        <source>f</source>
-        <translation type="vanished">f</translation>
-    </message>
-    <message>
-        <source>g</source>
-        <translation type="vanished">g</translation>
-    </message>
-    <message>
-        <source>h</source>
-        <translation type="vanished">h</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.ui" line="355"/>
         <source>Halfmove clock:</source>
         <translation>Licznik ruchów:</translation>
@@ -658,10 +546,6 @@ b%2
 </context>
 <context>
     <name>BoardTheme</name>
-    <message>
-        <source>Error</source>
-        <translation type="obsolete">Błąd</translation>
-    </message>
     <message>
         <location filename="../src/gui/boardtheme.cpp" line="203"/>
         <source>Cannot find piece data.
@@ -737,17 +621,9 @@ Please check your installation.</source>
 <context>
     <name>ChessBrowser</name>
     <message>
-        <source>Remove</source>
-        <translation type="obsolete">Usuń</translation>
-    </message>
-    <message>
         <location filename="../src/gui/chessbrowser.cpp" line="126"/>
         <source>Add start comment...</source>
         <translation>Dodaj komentarz początkowy...</translation>
-    </message>
-    <message>
-        <source>Add comment...</source>
-        <translation type="vanished">Dodaj komentarz...</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="127"/>
@@ -855,10 +731,6 @@ Please check your installation.</source>
         <location filename="../src/gui/chessbrowser.cpp" line="188"/>
         <source>Remove Variations</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Small font</source>
-        <translation type="vanished">Mała czcionka</translation>
     </message>
 </context>
 <context>
@@ -1216,13 +1088,6 @@ Please check your installation.</source>
     </message>
 </context>
 <context>
-    <name>EngineData</name>
-    <message>
-        <source>New engine</source>
-        <translation type="vanished">Nowy program</translation>
-    </message>
-</context>
-<context>
     <name>EngineOptionDialog</name>
     <message>
         <location filename="../src/gui/engineoptiondialog.ui" line="14"/>
@@ -1297,10 +1162,6 @@ Please check your installation.</source>
         <location filename="../src/database/eventinfo.cpp" line="217"/>
         <source>Date: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Date: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</source>
-        <translation type="obsolete">Data: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/database/eventinfo.cpp" line="225"/>
@@ -1670,21 +1531,6 @@ Please check your installation.</source>
     </message>
 </context>
 <context>
-    <name>Game</name>
-    <message>
-        <source>Add move</source>
-        <translation type="obsolete">Dodaj posunięcie</translation>
-    </message>
-    <message>
-        <source>Add variation</source>
-        <translation type="obsolete">Dodaj wariant</translation>
-    </message>
-    <message>
-        <source>Remove variation</source>
-        <translation type="obsolete">Usuń wariant</translation>
-    </message>
-</context>
-<context>
     <name>GameList</name>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="54"/>
@@ -1957,97 +1803,6 @@ Please check your installation.</source>
     </message>
 </context>
 <context>
-    <name>HelpWindow</name>
-    <message>
-        <source>ChessX - help viewer</source>
-        <translation type="obsolete">ChessX - przeglądarka pomocy</translation>
-    </message>
-    <message>
-        <source>&amp;Open ...</source>
-        <translation type="obsolete">&amp;Otwórz...</translation>
-    </message>
-    <message>
-        <source>Opens a help page</source>
-        <translation type="obsolete">Otwiera stronę pomocy</translation>
-    </message>
-    <message>
-        <source>&amp;Print</source>
-        <translation type="obsolete">&amp;Drukuj</translation>
-    </message>
-    <message>
-        <source>Prints the current page</source>
-        <translation type="obsolete">Drukuje aktualną stronę</translation>
-    </message>
-    <message>
-        <source>E&amp;xit</source>
-        <translation type="obsolete">Za&amp;kończ</translation>
-    </message>
-    <message>
-        <source>Exits the help browser</source>
-        <translation type="obsolete">Zamyka przeglądarkę pomocy</translation>
-    </message>
-    <message>
-        <source>&amp;Forward</source>
-        <translation type="obsolete">&amp;Naprzód</translation>
-    </message>
-    <message>
-        <source>Next document in history</source>
-        <translation type="obsolete">Następny dokument w historii</translation>
-    </message>
-    <message>
-        <source>&amp;Back</source>
-        <translation type="obsolete">&amp;Wstecz</translation>
-    </message>
-    <message>
-        <source>Go back in history</source>
-        <translation type="obsolete">Poprzedni dokument w historii</translation>
-    </message>
-    <message>
-        <source>&amp;Home</source>
-        <translation type="obsolete">&amp;Spis treści</translation>
-    </message>
-    <message>
-        <source>Open the start page of the helpsystem</source>
-        <translation type="obsolete">Otwiera stronę początkową</translation>
-    </message>
-    <message>
-        <source>&amp;About</source>
-        <translation type="obsolete">&amp;O programie</translation>
-    </message>
-    <message>
-        <source>About ChessX</source>
-        <translation type="obsolete">O programie ChessX</translation>
-    </message>
-    <message>
-        <source>History</source>
-        <translation type="obsolete">Historia</translation>
-    </message>
-    <message>
-        <source>&amp;File</source>
-        <translation type="obsolete">&amp;Plik</translation>
-    </message>
-    <message>
-        <source>Na&amp;vigate</source>
-        <translation type="obsolete">&amp;Nawigacja</translation>
-    </message>
-    <message>
-        <source>&amp;Help</source>
-        <translation type="obsolete">Pomo&amp;c</translation>
-    </message>
-    <message>
-        <source>Ready</source>
-        <translation type="obsolete">Gotowe</translation>
-    </message>
-    <message>
-        <source>Select a help file ...</source>
-        <translation type="obsolete">Wybierz plik pomocy...</translation>
-    </message>
-    <message>
-        <source>Help pages (*.html *.htm )</source>
-        <translation type="obsolete">Pliki pomocy (*.html, *.htm)</translation>
-    </message>
-</context>
-<context>
     <name>LoadQuery</name>
     <message>
         <location filename="../src/gui/loadquery.ui" line="14"/>
@@ -2084,10 +1839,6 @@ Shall I download a database?</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <source>Game Text</source>
-        <translation type="vanished">Tekst partii</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="139"/>
         <source>Game List</source>
         <translation>Lista partii</translation>
@@ -2101,26 +1852,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="624"/>
         <source>ECO Loaded.</source>
         <translation>Plik ECO wczytany.</translation>
-    </message>
-    <message>
-        <source>Quit</source>
-        <translation type="obsolete">Zakończ</translation>
-    </message>
-    <message>
-        <source>Do you want to quit?</source>
-        <translation type="obsolete">Na pewno zakończyć?</translation>
-    </message>
-    <message>
-        <source>[Clipboard]</source>
-        <translation type="vanished">[Schowek]</translation>
-    </message>
-    <message>
-        <source>Database %1 is already opened.</source>
-        <translation type="vanished">Baza %1 już jest otwarta.</translation>
-    </message>
-    <message>
-        <source>Database %1 opened successfully (%2 seconds).</source>
-        <translation type="obsolete">Baza %1 odczytana pomyślnie (%2 s.).</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="125"/>
@@ -2418,106 +2149,14 @@ Shall I download a database?</source>
         <translation>Skoczek</translation>
     </message>
     <message>
-        <source>Promotion</source>
-        <translation type="vanished">Promocja</translation>
-    </message>
-    <message>
-        <source>Promote to:</source>
-        <translation type="vanished">Promuj:</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="3347"/>
         <source>%1 - ChessX</source>
         <translation>%1 - ChessX</translation>
     </message>
     <message>
-        <source>Updating tree...</source>
-        <translation type="vanished">Uaktualnianie drzewa...</translation>
-    </message>
-    <message>
-        <source>Tree updated</source>
-        <translation type="vanished">Drzewo uaktualnione</translation>
-    </message>
-    <message>
-        <source>Add move</source>
-        <translation type="obsolete">Dodaj posunięcie</translation>
-    </message>
-    <message>
-        <source>There is already next move in current game. What do you want to do?</source>
-        <translation type="obsolete">W tej partii już jest następne posunięcie. Co zrobić?</translation>
-    </message>
-    <message>
-        <source>Add variation</source>
-        <translation type="obsolete">Dodaj wariant</translation>
-    </message>
-    <message>
-        <source>Add new mainline</source>
-        <translation type="obsolete">Dodaj nowe posunięcie</translation>
-    </message>
-    <message>
-        <source>Replace current move</source>
-        <translation type="obsolete">Zastąp aktualne posunięcie</translation>
-    </message>
-    <message>
-        <source>Game %1: &lt;b&gt;&lt;a href=&quot;tag:white&quot;&gt;%2&lt;/a&gt; %3 - &lt;a href=&quot;tag:black&quot;&gt;%4&lt;/a&gt; %5&lt;/b&gt;</source>
-        <translation type="obsolete">Partia %1: &lt;b&gt;&lt;a href=&quot;tag:white&quot;&gt;%2&lt;/a&gt; %3 - &lt;a href=&quot;tag:black&quot;&gt;%4&lt;/a&gt; %5&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>%1(%2) %3</source>
-        <translation type="obsolete">%1(%2) %3</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;%1(%2), %3, %4&lt;/i&gt;</source>
-        <translation type="obsolete">&lt;i&gt;%1(%2), %3, %4&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>(Start of game)</source>
-        <translation type="obsolete">(Początek partii)</translation>
-    </message>
-    <message>
-        <source>(End of game)</source>
-        <translation type="obsolete">(Koniec partii)</translation>
-    </message>
-    <message>
-        <source>(End of line)</source>
-        <translation type="obsolete">(Koniec wariantu)</translation>
-    </message>
-    <message>
-        <source>Last move: %1 &amp;nbsp; &amp;nbsp; Next: %2</source>
-        <translation type="obsolete">Poprzednie: %1 &amp;nbsp; &amp;nbsp; Następne: %2</translation>
-    </message>
-    <message>
-        <source>(&amp;lt;-Var)</source>
-        <translation type="obsolete">(&amp;lt;-War)</translation>
-    </message>
-    <message>
-        <source>&lt;br&gt;Variations: &amp;nbsp; </source>
-        <translation type="obsolete">&lt;br&gt;Warianty: &amp;nbsp;(sp)</translation>
-    </message>
-    <message numerus="yes">
-        <source>Loses in %n move(s)</source>
-        <translation type="obsolete">
-            <numerusform>Przegrywa w %n posunięciu</numerusform>
-            <numerusform>Przegrywa w %n posunięciach</numerusform>
-            <numerusform>Przegrywa w %n posunięciach</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>Wins in %n move(s)</source>
-        <translation type="obsolete">
-            <numerusform>Wygrywa w %n posunięciu</numerusform>
-            <numerusform>Wygrywa w %n posunięciach</numerusform>
-            <numerusform>Wygrywa w %n posunięciach</numerusform>
-        </translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2509"/>
         <source>Draw</source>
         <translation type="unfinished">Remis</translation>
-    </message>
-    <message>
-        <source>&lt;br&gt;Tablebase: &lt;a href=&quot;egtb:%1&quot;&gt;%2%3 %1&lt;/a&gt; -- %4</source>
-        <translation type="obsolete">&lt;br&gt;Tablica końcówek: &lt;a href=&quot;egtb:%1&quot;&gt;%2%3 %1&lt;/a&gt; -- %4</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1555"/>
@@ -2528,22 +2167,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="1555"/>
         <source>Game number:</source>
         <translation>Numer partii:</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;&lt;a href=&quot;tag:white&quot;&gt;%1&lt;/a&gt;&lt;/b&gt; %2 - &lt;b&gt;&lt;a href=&quot;tag:black&quot;&gt;%3&lt;/a&gt;&lt;/b&gt; %4</source>
-        <translation type="vanished">&lt;b&gt;&lt;a href=&quot;tag:white&quot;&gt;%1&lt;/a&gt;&lt;/b&gt; %2 - &lt;b&gt;&lt;a href=&quot;tag:black&quot;&gt;%3&lt;/a&gt;&lt;/b&gt; %4</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;%1&lt;/b&gt; &amp;nbsp; %2</source>
-        <translation type="vanished">&lt;b&gt;%1&lt;/b&gt; &amp;nbsp; %2</translation>
-    </message>
-    <message>
-        <source> %1: %2/%3 </source>
-        <translation type="vanished"> %1: %2/%3 </translation>
-    </message>
-    <message>
-        <source>ChessX - %1</source>
-        <translation type="obsolete">ChessX - %1</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1426"/>
@@ -2584,18 +2207,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1467"/>
         <source>&amp;Edit</source>
         <translation>&amp;Edycja</translation>
-    </message>
-    <message>
-        <source>&amp;Copy FEN</source>
-        <translation type="vanished">Kopiuj &amp;FEN</translation>
-    </message>
-    <message>
-        <source>&amp;Paste FEN</source>
-        <translation type="vanished">Wklej F&amp;EN</translation>
-    </message>
-    <message>
-        <source>Position &amp;Setup...</source>
-        <translation type="obsolete">&amp;Ustaw pozycję...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="94"/>
@@ -2659,10 +2270,6 @@ Shall I download a database?</source>
         <translation>&amp;Ustawienia...</translation>
     </message>
     <message>
-        <source>&amp;Player information...</source>
-        <translation type="vanished">&amp;Informacje o graczu...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1637"/>
         <source>&amp;Game</source>
         <translation>P&amp;artia</translation>
@@ -2671,14 +2278,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1648"/>
         <source>&amp;Load</source>
         <translation>&amp;Wczytaj</translation>
-    </message>
-    <message>
-        <source>&amp;First</source>
-        <translation type="vanished">&amp;Pierwszą</translation>
-    </message>
-    <message>
-        <source>&amp;Last</source>
-        <translation type="vanished">&amp;Ostatnią</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1654"/>
@@ -3200,33 +2799,9 @@ Shall I download a database?</source>
         <translation>Powrót do wariantu głównego</translation>
     </message>
     <message>
-        <source>&amp;Save....</source>
-        <translation type="vanished">&amp;Zapisz...</translation>
-    </message>
-    <message>
-        <source>&amp;Analyze</source>
-        <translation type="vanished">&amp;Analiza</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1795"/>
         <source>Fi&amp;nd</source>
         <translation>&amp;Znajdź</translation>
-    </message>
-    <message>
-        <source>Find &amp;tag</source>
-        <translation type="vanished">Znajdź &amp;znacznik</translation>
-    </message>
-    <message>
-        <source>Find &amp;position</source>
-        <translation type="vanished">Znajdź &amp;pozycję</translation>
-    </message>
-    <message>
-        <source>&amp;Reset filter</source>
-        <translation type="vanished">&amp;Resetuj filtr</translation>
-    </message>
-    <message>
-        <source>&amp;Reverse filter</source>
-        <translation type="vanished">&amp;Odwróć filtr</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1837"/>
@@ -3275,10 +2850,6 @@ Shall I download a database?</source>
         <translation> (%1 s.)</translation>
     </message>
     <message>
-        <source>&amp;Current game</source>
-        <translation type="obsolete">&amp;Aktualną partię</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1563"/>
         <source>&amp;View</source>
         <translation>&amp;Widok</translation>
@@ -3287,10 +2858,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1828"/>
         <source>&amp;Database</source>
         <translation>&amp;Baza</translation>
-    </message>
-    <message>
-        <source>&amp;Player Database...</source>
-        <translation type="obsolete">Baza &amp;graczy...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1680"/>
@@ -3303,22 +2870,9 @@ Shall I download a database?</source>
         <translation>Pomo&amp;c</translation>
     </message>
     <message>
-        <source>&amp;Tip of the day</source>
-        <translation type="obsolete">&amp;Podpowiedź dnia</translation>
-    </message>
-    <message>
-        <source>&amp;Report a bug...</source>
-        <translation type="vanished">&amp;Raport o błędzie...
-</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1875"/>
         <source>&amp;About ChessX</source>
         <translation>&amp;O programie ChessX</translation>
-    </message>
-    <message>
-        <source>&amp;Debug</source>
-        <translation type="vanished">&amp;Debugowanie</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1287"/>
@@ -3336,30 +2890,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="346"/>
         <source>Opening Tree</source>
         <translation>Drzewo debiutowe</translation>
-    </message>
-    <message>
-        <source>Analysis</source>
-        <translation type="vanished">Analiza</translation>
-    </message>
-    <message>
-        <source>Database %1 successfully saved.</source>
-        <translation type="obsolete">Zapisano bazę %1.</translation>
-    </message>
-    <message>
-        <source>Compiled with &apos;fastbits&apos; option&lt;br&gt;</source>
-        <translation type="vanished">Skompilowane z opcją &apos;fastbits&apos;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <source>About ChessX</source>
-        <translation type="vanished">O programie ChessX</translation>
-    </message>
-    <message>
-        <source>&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Free chess database available under GPLv2.&lt;br&gt;Version %1&lt;br&gt;%2Copyright 2005-2010 ChessX developers&lt;p&gt;Current developer and maintainer: &lt;a href=&quot;mailto:mrudolf@kdewebdev.org&quot;&gt;Michal Rudolf&lt;/a&gt;&lt;p&gt;Testing, usability and website: Bruno Rizzuti&lt;p&gt;Additional coding: Marius Roets, Sean Estabrooks, Rico Zenklusen, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.&lt;p&gt;Homepage: &lt;a href=&quot;http://chessx.sf.net&quot;&gt;http://chessx.sf.net&lt;/a&gt;&lt;br&gt;Mailing list: &lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net</source>
-        <translation type="vanished">&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Darmowa baza szachowa na licencji GPLv2.&lt;br&gt;Wersja %1&lt;br&gt;%2&lt;p&gt;Copyright 2005-2010 Autorzy ChessX&lt;br&gt;Główny programistai opiekun: &lt;a href=&quot;mailto:mrudolf@kdewebdev.org&quot;&gt;Michał Rudolf&lt;/a&gt;&lt;p&gt;Testowanie, dopracowanie interfejsu, opieka nad stroną WWW: Bruno Rizzuti&lt;p&gt;Fragmentu kodu: Marius Roets, Sean Estabrooks, Rico Zenklusen, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.&lt;p&gt;Strona domowa: &lt;a href=&quot;http://chessx.sf.net&quot;&gt;http://chessx.sf.net&lt;/a&gt;&lt;br&gt;Lista dyskusyjna: &lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net</translation>
-    </message>
-    <message>
-        <source>&amp;Save</source>
-        <translation type="vanished">&amp;Zapisz</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1512"/>
@@ -3380,10 +2910,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1643"/>
         <source>&amp;New</source>
         <translation>&amp;Nowa</translation>
-    </message>
-    <message>
-        <source>Tree updated (%1 s.)</source>
-        <translation type="obsolete">Drzewo uaktualnione (%1 s.)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1291"/>
@@ -3437,10 +2963,6 @@ Shall I download a database?</source>
         <translation>Schowek zawiera FEN, ale z nieprawidłową pozycję. Takie pozycje można wkleić tylko w oknie &lt;b&gt;Ustaw pozycję&lt;/b&gt;.</translation>
     </message>
     <message>
-        <source>&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Free chess database available under GPLv2.&lt;br&gt;Version %1&lt;br&gt;%2&lt;p&gt;Copyright 2005-2007 ChessX developers&lt;br&gt;Core developers: Marius Roets, Michal Rudolf, Rico Zenklusen.&lt;br&gt;Additional coding: Sean Estabrooks, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.&lt;br&gt;&lt;p&gt;Homepage: &lt;a href=&quot;http://chessx.sf.net&quot;&gt;http://chessx.sf.net&lt;/a&gt;&lt;br&gt;Mailing list: &lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net</source>
-        <translation type="obsolete">&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Darmowa baza szachowa na licencji  GPLv2.&lt;br&gt;Wersja %1&lt;br&gt;%2&lt;p&gt;Copyright 2005-2007 Autorzy ChessX&lt;br&gt;Główni programiści: Marius Roets, Michal Rudolf, Rico Zenklusen.&lt;br&gt;Dodatkowy kod: Sean Estabrooks, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.&lt;br&gt;&lt;p&gt;Strona domowa: &lt;a href=&quot;http://chessx.sf.net&quot;&gt;http://chessx.sf.net&lt;/a&gt;&lt;br&gt;Lista dyskusyjna: &lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net&lt;/a&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="3238"/>
         <source>You need at least two open databases to copy games</source>
         <translation>Do kopiowania potrzebne są przynajmniej dwie otwarte bazy</translation>
@@ -3454,10 +2976,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1429"/>
         <source>&amp;New database...</source>
         <translation>&amp;Nowa baza...</translation>
-    </message>
-    <message>
-        <source>Open &amp;recent...</source>
-        <translation type="vanished">Otwórz o&amp;statnie...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1789"/>
@@ -4405,45 +3923,6 @@ Shall I download a database?</source>
     </message>
 </context>
 <context>
-    <name>PlayerDialog</name>
-    <message>
-        <source>Player Database</source>
-        <translation type="obsolete">Baza graczy</translation>
-    </message>
-    <message>
-        <source>Player Information</source>
-        <translation type="vanished">Informacje o graczu</translation>
-    </message>
-    <message>
-        <source>&amp;Players</source>
-        <translation type="vanished">&amp;Gracze</translation>
-    </message>
-    <message>
-        <source>&amp;Find:</source>
-        <translation type="vanished">&amp;Znajdź:</translation>
-    </message>
-    <message>
-        <source>&amp;Show player</source>
-        <translation type="vanished">&amp;Pokaż gracza</translation>
-    </message>
-    <message>
-        <source>&amp;Update list</source>
-        <translation type="vanished">&amp;Uaktualnij listę</translation>
-    </message>
-    <message>
-        <source>&amp;Information</source>
-        <translation type="vanished">&amp;Informacja</translation>
-    </message>
-    <message>
-        <source>&amp;Update player</source>
-        <translation type="vanished">&amp;Uaktualnij gracza</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;i&gt;No player chosen.&lt;/i&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;i&gt;Nie wybrano gracza.&lt;/i&gt;&lt;/html&gt;</translation>
-    </message>
-</context>
-<context>
     <name>PlayerInfo</name>
     <message>
         <location filename="../src/database/playerinfo.cpp" line="193"/>
@@ -4650,14 +4129,6 @@ Shall I download a database?</source>
         <translation>[dwukolorowa]</translation>
     </message>
     <message>
-        <source>ChessX Preferences</source>
-        <translation type="obsolete">Ustawienia ChessX</translation>
-    </message>
-    <message>
-        <source>&amp;Board</source>
-        <translation type="vanished">&amp;Szachownica</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="278"/>
         <source>&amp;Colors:</source>
         <translation>&amp;Kolory:</translation>
@@ -4676,10 +4147,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.ui" line="307"/>
         <source>Mouse Behaviour</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Guess move on left-click</source>
-        <translation type="vanished">&amp;Zgaduj ruchy przy lewym kliknięciu</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="369"/>
@@ -4739,33 +4206,9 @@ Shall I download a database?</source>
         <translation>&amp;Zestaw figur:</translation>
     </message>
     <message>
-        <source>&amp;General</source>
-        <translation type="obsolete">&amp;Ogólne</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="1457"/>
         <source>Use online tablebase servers</source>
         <translation>Użyj zdalnych baz końcówek</translation>
-    </message>
-    <message>
-        <source>Confirm before quit</source>
-        <translation type="obsolete">Potwierdź zakończenie</translation>
-    </message>
-    <message>
-        <source>&amp;Ok</source>
-        <translation type="vanished">&amp;OK</translation>
-    </message>
-    <message>
-        <source>&amp;Apply</source>
-        <translation type="vanished">&amp;Zastosuj</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Anuluj</translation>
-    </message>
-    <message>
-        <source>Show Tip of the day on startup</source>
-        <translation type="obsolete">Pokaż podpowiedź przy starcie</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="55"/>
@@ -4773,25 +4216,9 @@ Shall I download a database?</source>
         <translation>XBoard</translation>
     </message>
     <message>
-        <source>Select Directory in which Engine will run</source>
-        <translation type="obsolete">Wybierz katalog programu szachowego</translation>
-    </message>
-    <message>
-        <source>Select engine command file to run</source>
-        <translation type="obsolete">Polecenie uruchamiające program szachowy</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.cpp" line="206"/>
         <source>New Engine</source>
         <translation type="unfinished">Nowy program</translation>
-    </message>
-    <message>
-        <source>plain</source>
-        <translation type="vanished">zwykłe</translation>
-    </message>
-    <message>
-        <source>outline</source>
-        <translation type="vanished">z brzegiem</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="158"/>
@@ -4874,10 +4301,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.ui" line="449"/>
         <source>Always queen a pawn</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Engines</source>
-        <translation type="vanished">&amp;Programy</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="978"/>
@@ -5316,14 +4739,6 @@ Shall I download a database?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>WinBoard</source>
-        <translation type="vanished">WinBoard</translation>
-    </message>
-    <message>
-        <source>UCI</source>
-        <translation type="vanished">UCI</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="707"/>
         <location filename="../src/dialogs/preferences.ui" line="718"/>
         <location filename="../src/dialogs/preferences.ui" line="729"/>
@@ -5385,10 +4800,6 @@ Shall I download a database?</source>
         <translation>Dodaj...</translation>
     </message>
     <message>
-        <source>&amp;Advanced</source>
-        <translation type="vanished">&amp;Zaawansowane</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="1105"/>
         <source>&amp;Edit PGN files smaller than:</source>
         <translation>&amp;Edytuj pliki PGN mniejsze niż:</translation>
@@ -5399,17 +4810,9 @@ Shall I download a database?</source>
         <translation> MB</translation>
     </message>
     <message>
-        <source>New</source>
-        <translation type="obsolete">Nowy</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.cpp" line="60"/>
         <source>Up</source>
         <translation>W górę</translation>
-    </message>
-    <message>
-        <source>outline+shadow</source>
-        <translation type="vanished">obramowanie i cień</translation>
     </message>
 </context>
 <context>
@@ -5446,54 +4849,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/quicksearch.ui" line="14"/>
         <source>Quick Tag Search</source>
         <translation>Szybkie wyszukiwanie</translation>
-    </message>
-    <message>
-        <source>Game number</source>
-        <translation type="vanished">Numer partii</translation>
-    </message>
-    <message>
-        <source>White</source>
-        <translation type="vanished">Białe</translation>
-    </message>
-    <message>
-        <source>Black</source>
-        <translation type="vanished">Czarne</translation>
-    </message>
-    <message>
-        <source>Event</source>
-        <translation type="vanished">Turniej</translation>
-    </message>
-    <message>
-        <source>Site</source>
-        <translation type="vanished">Miejsce</translation>
-    </message>
-    <message>
-        <source>Round</source>
-        <translation type="vanished">Runda</translation>
-    </message>
-    <message>
-        <source>Date</source>
-        <translation type="vanished">Data</translation>
-    </message>
-    <message>
-        <source>Result</source>
-        <translation type="vanished">Wynik</translation>
-    </message>
-    <message>
-        <source>ECO</source>
-        <translation type="vanished">ECO</translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="vanished">Długość</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Anuluj</translation>
-    </message>
-    <message>
-        <source>&amp;Find</source>
-        <translation type="vanished">&amp;Znajdź</translation>
     </message>
     <message>
         <location filename="../src/dialogs/quicksearch.cpp" line="35"/>
@@ -5554,14 +4909,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/quicksearch.ui" line="57"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>White Elo</source>
-        <translation type="vanished">Elo białych</translation>
-    </message>
-    <message>
-        <source>Black Elo</source>
-        <translation type="vanished">Elo czarnych</translation>
     </message>
 </context>
 <context>
@@ -5631,14 +4978,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/savedialog.ui" line="14"/>
         <source>Save Game</source>
         <translation>Zapisz partię</translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="vanished">&amp;OK</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Anuluj</translation>
     </message>
     <message>
         <location filename="../src/dialogs/savedialog.ui" line="207"/>
@@ -5760,22 +5099,6 @@ Shall I download a database?</source>
         <translation>Wynik:</translation>
     </message>
     <message>
-        <source>1-0</source>
-        <translation type="vanished">1-0</translation>
-    </message>
-    <message>
-        <source>1/2-1/2</source>
-        <translation type="vanished">1/2-1/2</translation>
-    </message>
-    <message>
-        <source>0-1</source>
-        <translation type="vanished">0-1</translation>
-    </message>
-    <message>
-        <source>*</source>
-        <translation type="vanished">*</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/savedialog.cpp" line="267"/>
         <source>Dates are not properly formatted!</source>
         <translation type="unfinished"></translation>
@@ -5788,10 +5111,6 @@ Shall I download a database?</source>
 </context>
 <context>
     <name>TableView</name>
-    <message>
-        <source>Small font</source>
-        <translation type="vanished">Mała czcionka</translation>
-    </message>
     <message>
         <location filename="../src/gui/tableview.cpp" line="166"/>
         <source>Hide Column</source>
@@ -6104,33 +5423,6 @@ Do you want to save your changes?</source>
         <location filename="../src/gui/textedit.cpp" line="558"/>
         <source>Print Document</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>TipOfDayDialog</name>
-    <message>
-        <source>No tips available!</source>
-        <translation type="obsolete">Brak podpowiedzi!</translation>
-    </message>
-    <message>
-        <source>Tip of the day</source>
-        <translation type="obsolete">Podpowiedź dnia</translation>
-    </message>
-    <message>
-        <source>Show tip on startup</source>
-        <translation type="obsolete">Pokaż podpowiedź przy starcie</translation>
-    </message>
-    <message>
-        <source>&amp;Previous</source>
-        <translation type="obsolete">&amp;Poprzednia</translation>
-    </message>
-    <message>
-        <source>&amp;Next</source>
-        <translation type="obsolete">&amp;Następna</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="obsolete">&amp;Zamknij</translation>
     </message>
 </context>
 </TS>

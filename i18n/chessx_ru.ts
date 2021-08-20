@@ -9,12 +9,6 @@
         <translation>О программе ChessX</translation>
     </message>
     <message>
-        <source>&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
-Free Chess Database </source>
-        <translation type="vanished">&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
-Шахматная база</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="68"/>
         <source>Version</source>
         <translation>Версия</translation>
@@ -33,14 +27,6 @@ Free Chess Database </source>
         <location filename="../src/dialogs/aboutdlg.ui" line="146"/>
         <source>Maintainer</source>
         <translation>Руководитель проекта</translation>
-    </message>
-    <message>
-        <source>Further Maintainers</source>
-        <translation type="vanished">Помощники руководителя проекта</translation>
-    </message>
-    <message>
-        <source>Testing</source>
-        <translation type="vanished">Тестирование</translation>
     </message>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="43"/>
@@ -102,10 +88,6 @@ Free Chess Database</source>
         <location filename="../src/dialogs/aboutdlg.ui" line="404"/>
         <source>Contact</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>Контакты</source>
-        <translation type="obsolete">Kontakt</translation>
     </message>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="413"/>
@@ -255,10 +237,6 @@ Free Chess Database</source>
         <translation>Движок на этой позиции фиксирован</translation>
     </message>
     <message>
-        <source>...</source>
-        <translation type="obsolete">...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/analysiswidget.ui" line="89"/>
         <source>Select an engine</source>
         <translation>Выбор движка</translation>
@@ -282,14 +260,6 @@ Free Chess Database</source>
 </context>
 <context>
     <name>BitBoard</name>
-    <message>
-        <source>w%1
-b%2
-%3 to move.</source>
-        <translation type="vanished">w%1
-b%2
-%3 в ходе.</translation>
-    </message>
     <message>
         <location filename="../src/database/bitboard.cpp" line="3186"/>
         <source>w%1
@@ -491,21 +461,9 @@ b%2
         <translation>Буфер обмена пустой.</translation>
     </message>
     <message>
-        <source>Board</source>
-        <translation type="obsolete">Brett</translation>
-    </message>
-    <message>
-        <source>&amp;Advanced</source>
-        <translation type="obsolete">&amp;Продвинутый</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.ui" line="266"/>
         <source>En passant file:</source>
         <translation>Линия взятия на проходе:</translation>
-    </message>
-    <message>
-        <source>Castling rights</source>
-        <translation type="obsolete">Рокировки</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="81"/>
@@ -650,10 +608,6 @@ Please check your installation.</source>
 <context>
     <name>BoardViewEx</name>
     <message>
-        <source>Form</source>
-        <translation type="obsolete">Форма</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardviewex.ui" line="157"/>
         <source>Comments and annotations will be displayed here. You can modify them, too.</source>
         <translation type="unfinished"></translation>
@@ -779,13 +733,6 @@ Please check your installation.</source>
         <location filename="../src/gui/chessbrowser.cpp" line="188"/>
         <source>Remove Variations</source>
         <translation>Удалить варианты</translation>
-    </message>
-</context>
-<context>
-    <name>ClipboardDatabase</name>
-    <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Буфер обмена</translation>
     </message>
 </context>
 <context>
@@ -915,10 +862,6 @@ Please check your installation.</source>
         <location filename="../src/gui/databaselist.cpp" line="126"/>
         <source>Set dirty</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add to favorites</source>
-        <translation type="obsolete">Добавить в избранное</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="105"/>
@@ -1221,10 +1164,6 @@ Please check your installation.</source>
         <location filename="../src/database/eventinfo.cpp" line="217"/>
         <source>Date: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</source>
         <translation>Дата: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <source>Date: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</source>
-        <translation type="vanished">Дата: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/database/eventinfo.cpp" line="225"/>
@@ -1594,93 +1533,6 @@ Please check your installation.</source>
     </message>
 </context>
 <context>
-    <name>Game</name>
-    <message>
-        <source>Add move</source>
-        <translation type="vanished">Добавить ход</translation>
-    </message>
-    <message>
-        <source>Merge game</source>
-        <translation type="vanished">Склеить партии</translation>
-    </message>
-    <message>
-        <source>Replace move</source>
-        <translation type="vanished">Заменить ход</translation>
-    </message>
-    <message>
-        <source>Add Variation</source>
-        <translation type="obsolete">Добавить вариант</translation>
-    </message>
-    <message>
-        <source>Promote Variation</source>
-        <translation type="obsolete">Поднять вариант</translation>
-    </message>
-    <message>
-        <source>Copy game</source>
-        <translation type="vanished">Копировать партию</translation>
-    </message>
-    <message>
-        <source>Add variation</source>
-        <translation type="vanished">Добавить вариант</translation>
-    </message>
-    <message>
-        <source>Promote variation</source>
-        <translation type="vanished">Поднять вариант</translation>
-    </message>
-    <message>
-        <source>Remove variation</source>
-        <translation type="vanished">Удалить вариант</translation>
-    </message>
-    <message>
-        <source>Truncate variation</source>
-        <translation type="vanished">Обрезать вариант</translation>
-    </message>
-    <message>
-        <source>Remove variations</source>
-        <translation type="vanished">Удалить вариант</translation>
-    </message>
-    <message>
-        <source>Remove comments</source>
-        <translation type="vanished">Удалить комментарии</translation>
-    </message>
-    <message>
-        <source>Set annotation</source>
-        <translation type="vanished">Комментарии устанавливают</translation>
-    </message>
-    <message>
-        <source>Colorize square</source>
-        <translation type="vanished">Цвета полей</translation>
-    </message>
-    <message>
-        <source>Paint arrow</source>
-        <translation type="vanished">Рисовать стрелки</translation>
-    </message>
-    <message>
-        <source>Add nag</source>
-        <translation type="vanished">Добавить награду</translation>
-    </message>
-    <message>
-        <source>Set nags</source>
-        <translation type="vanished">Установить награду</translation>
-    </message>
-    <message>
-        <source>Move variation</source>
-        <translation type="vanished">Варианты ходов</translation>
-    </message>
-    <message>
-        <source>Enumerate variations</source>
-        <translation type="vanished">Нумерация вариантов</translation>
-    </message>
-    <message>
-        <source>Set result</source>
-        <translation type="vanished">Установить результат</translation>
-    </message>
-    <message>
-        <source>Set variant</source>
-        <translation type="vanished">Установить вариант</translation>
-    </message>
-</context>
-<context>
     <name>GameList</name>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="54"/>
@@ -1989,10 +1841,6 @@ Shall I download a database?</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <source>Game Text</source>
-        <translation type="vanished">Нотация</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="139"/>
         <source>Game List</source>
         <translation>Список</translation>
@@ -2038,14 +1886,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="168"/>
         <source>Saving %1...</source>
         <translation>Сохраняю %1...</translation>
-    </message>
-    <message>
-        <source>PGN databases (*.pgn);;Polyglot books (*.bin)</source>
-        <translation type="vanished">PGN база (*.pgn);;Polyglot книга (*.bin)</translation>
-    </message>
-    <message>
-        <source>The current database is modified!</source>
-        <translation type="vanished">Текущая база изменена!</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="185"/>
@@ -2166,14 +2006,6 @@ Shall I download a database?</source>
         <translation>Склейка выбранных партий</translation>
     </message>
     <message>
-        <source>Automatic responses</source>
-        <translation type="vanished">Автоответы</translation>
-    </message>
-    <message>
-        <source>Play both sides</source>
-        <translation type="vanished">Играть за обе стороны</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2224"/>
         <source>Analysis Pane 2 is not running an engine for automatic analysis.</source>
         <translation>Анализ 2 не может запустить движок для автоанализа.</translation>
@@ -2202,10 +2034,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="2842"/>
         <source>all</source>
         <translation>все</translation>
-    </message>
-    <message>
-        <source>Append game %1 to %2.</source>
-        <translation type="vanished">Партия %1 в %2 добавлена.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2993"/>
@@ -2287,10 +2115,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="3437"/>
         <source>Search ended</source>
         <translation>Поиск завершен</translation>
-    </message>
-    <message>
-        <source>Updating tree...</source>
-        <translation type="obsolete">Обновление дерева…</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1555"/>
@@ -2495,10 +2319,6 @@ Shall I download a database?</source>
         <translation>Тренировка</translation>
     </message>
     <message>
-        <source>Auto Respond</source>
-        <translation type="vanished">Авто ответ</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1709"/>
         <source>Auto Player</source>
         <translation>Авто игрок</translation>
@@ -2682,14 +2502,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1795"/>
         <source>Fi&amp;nd</source>
         <translation>&amp;Поиск</translation>
-    </message>
-    <message>
-        <source>&amp;Reset filter</source>
-        <translation type="obsolete">&amp;Сброс фильтра</translation>
-    </message>
-    <message>
-        <source>&amp;Reverse filter</source>
-        <translation type="obsolete">&amp;Обратить фильтр</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1837"/>
@@ -3198,10 +3010,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1429"/>
         <source>&amp;New database...</source>
         <translation>&amp;Новая база данных…</translation>
-    </message>
-    <message>
-        <source>Open &amp;recent...</source>
-        <translation type="obsolete">&amp;Letzte öffnen...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1829"/>
@@ -4323,10 +4131,6 @@ Shall I download a database?</source>
         <translation>Использовать онлайн эндшпильные базы</translation>
     </message>
     <message>
-        <source>&amp;Board</source>
-        <translation type="vanished">&amp;Доска</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="278"/>
         <source>&amp;Colors:</source>
         <translation>&amp;Цвета:</translation>
@@ -4335,10 +4139,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.ui" line="116"/>
         <source>Board &amp;style:</source>
         <translation>Стиль &amp;доски:</translation>
-    </message>
-    <message>
-        <source>&amp;Guess move on left-click</source>
-        <translation type="vanished">&amp;Быстрый ход по левому клику</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="150"/>
@@ -4848,18 +4648,6 @@ Shall I download a database?</source>
         <translation>Новый движок</translation>
     </message>
     <message>
-        <source>plain</source>
-        <translation type="obsolete">простой</translation>
-    </message>
-    <message>
-        <source>outline</source>
-        <translation type="obsolete">вне строки</translation>
-    </message>
-    <message>
-        <source>&amp;Engines</source>
-        <translation type="vanished">&amp;Движки</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="866"/>
         <source>Name:</source>
         <translation>Название:</translation>
@@ -4885,10 +4673,6 @@ Shall I download a database?</source>
         <translation>Поведение мыши</translation>
     </message>
     <message>
-        <source>Next guess on right click</source>
-        <translation type="vanished">Следующий быстрый ход по правому клику</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="369"/>
         <source>Wheel sensitivity</source>
         <translation>Чувствительность колесика</translation>
@@ -4909,10 +4693,6 @@ Shall I download a database?</source>
         <translation>Показывать координаты</translation>
     </message>
     <message>
-        <source>Show threat</source>
-        <translation type="vanished">Показывать угрозу</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="194"/>
         <source>Colored copies</source>
         <translation>Цветные копии</translation>
@@ -4928,17 +4708,9 @@ Shall I download a database?</source>
         <translation>Партия</translation>
     </message>
     <message>
-        <source>Autoplayer</source>
-        <translation type="vanished">Автоигра</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="465"/>
         <source>Automatically save game and continue with next</source>
         <translation>Автоматически сохранять партию и переходить к следующей</translation>
-    </message>
-    <message>
-        <source>Auto Analysis backwards</source>
-        <translation type="vanished">Возврат автоанализа</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="443"/>
@@ -5001,10 +4773,6 @@ Shall I download a database?</source>
         <translation>Звук</translation>
     </message>
     <message>
-        <source>Indicate opponent&apos;s move</source>
-        <translation type="vanished">Озвучивать ход</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.cpp" line="61"/>
         <source>Down</source>
         <translation>Вниз</translation>
@@ -5043,10 +4811,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.cpp" line="60"/>
         <source>Up</source>
         <translation>Вверх</translation>
-    </message>
-    <message>
-        <source>outline+shadow</source>
-        <translation type="obsolete">внестроки+тень</translation>
     </message>
 </context>
 <context>
@@ -5377,10 +5141,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/tagdetailwidget.ui" line="35"/>
         <source>Filter:</source>
         <translation>Фильтр:</translation>
-    </message>
-    <message>
-        <source>Selected Item</source>
-        <translation type="vanished">Выбранное значение</translation>
     </message>
     <message>
         <location filename="../src/gui/tagdetailwidget.ui" line="48"/>

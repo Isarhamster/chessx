@@ -9,12 +9,6 @@
         <translation>Om ChessX</translation>
     </message>
     <message>
-        <source>&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
-Free Chess Database </source>
-        <translation type="vanished">&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
-Fri skakdatabase </translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="68"/>
         <source>Version</source>
         <translation>Version</translation>
@@ -33,14 +27,6 @@ Fri skakdatabase </translation>
         <location filename="../src/dialogs/aboutdlg.ui" line="146"/>
         <source>Maintainer</source>
         <translation>Vedligeholder</translation>
-    </message>
-    <message>
-        <source>Further Maintainers</source>
-        <translation type="vanished">Yderligere vedligeholdere</translation>
-    </message>
-    <message>
-        <source>Testing</source>
-        <translation type="vanished">Testing</translation>
     </message>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="43"/>
@@ -131,10 +117,6 @@ Free Chess Database</source>
         <source>Keyboard Shortcut</source>
         <translation>Tastaturgenvej</translation>
     </message>
-    <message>
-        <source>...</source>
-        <translation type="obsolete">...</translation>
-    </message>
 </context>
 <context>
     <name>Analysis</name>
@@ -185,10 +167,6 @@ Free Chess Database</source>
         <location filename="../src/gui/analysiswidget.ui" line="66"/>
         <source>Pin engine to current position</source>
         <translation>Lås motor til aktuelle stilling</translation>
-    </message>
-    <message>
-        <source>...</source>
-        <translation type="vanished">...</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="89"/>
@@ -273,14 +251,6 @@ Free Chess Database</source>
         <translation>&lt;i&gt;Åbningsbog:&lt;/i&gt;</translation>
     </message>
     <message>
-        <source>&lt;a href=&quot;0&quot; title=&quot;Click to add move to game&quot;&gt;[+]&lt;/a&gt; &lt;b&gt;Tablebase:&lt;/b&gt; </source>
-        <translation type="vanished">&lt;a href=&quot;0&quot; title=&quot;Klik for at tilføje træk til parti&quot;&gt;[+]&lt;/a&gt;&lt;b&gt;Slutspilsdatabase:&lt;/b&gt; </translation>
-    </message>
-    <message>
-        <source>&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1/%2&lt;br&gt;</source>
-        <translation type="vanished">&lt;br&gt;&lt;b&gt;Kompleksitet:&lt;/b&gt; %1/%2&lt;br&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/analysiswidget.cpp" line="613"/>
         <source>&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1&lt;br&gt;</source>
         <translation>&lt;br&gt;&lt;b&gt;Kompleksitet:&lt;/b&gt; %1&lt;br&gt;</translation>
@@ -288,14 +258,6 @@ Free Chess Database</source>
 </context>
 <context>
     <name>BitBoard</name>
-    <message>
-        <source>w%1
-b%2
-%3 to move.</source>
-        <translation type="vanished">H: %1
-S: %2
-%3 i trækket.</translation>
-    </message>
     <message>
         <location filename="../src/database/bitboard.cpp" line="3186"/>
         <source>w%1
@@ -369,10 +331,6 @@ S: %2
         <translation>Opsæt stilling</translation>
     </message>
     <message>
-        <source>Board</source>
-        <translation type="vanished">Bræt</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.ui" line="81"/>
         <source>Tools</source>
         <translation>Værktøjer</translation>
@@ -419,14 +377,6 @@ S: %2
         <location filename="../src/gui/boardsetup.cpp" line="83"/>
         <source>Clear</source>
         <translation>Ryd</translation>
-    </message>
-    <message>
-        <source>&amp;Advanced</source>
-        <translation type="vanished">&amp;Avanceret</translation>
-    </message>
-    <message>
-        <source>Castling rights</source>
-        <translation type="vanished">Rokaderettigheder</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="237"/>
@@ -657,11 +607,6 @@ Please check your installation.</source>
 <context>
     <name>BoardViewEx</name>
     <message>
-        <source>Form</source>
-        <translatorcomment>Bruges ikke ifølge udvikler</translatorcomment>
-        <translation type="obsolete">Form</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardviewex.ui" line="157"/>
         <source>Comments and annotations will be displayed here. You can modify them, too.</source>
         <translation type="unfinished"></translation>
@@ -786,13 +731,6 @@ Please check your installation.</source>
         <location filename="../src/gui/chessbrowser.cpp" line="188"/>
         <source>Remove Variations</source>
         <translation>Fjern varianter</translation>
-    </message>
-</context>
-<context>
-    <name>ClipboardDatabase</name>
-    <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Udklipsholder</translation>
     </message>
 </context>
 <context>
@@ -924,10 +862,6 @@ Please check your installation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add to favorites</source>
-        <translation type="vanished">Føj til foretrukne</translation>
-    </message>
-    <message>
         <location filename="../src/gui/databaselist.cpp" line="105"/>
         <source>Remove from Favorites</source>
         <translation>Fjern fra foretrukne</translation>
@@ -941,10 +875,6 @@ Please check your installation.</source>
         <location filename="../src/gui/databaselist.cpp" line="110"/>
         <source>Make a Polyglot book...</source>
         <translation>Lav en Polyglot-åbningsbog ...</translation>
-    </message>
-    <message>
-        <source>: File not found</source>
-        <translation type="vanished">: Filen blev ikke fundet</translation>
     </message>
 </context>
 <context>
@@ -990,10 +920,6 @@ Please check your installation.</source>
         <location filename="../src/gui/databaselistmodel.cpp" line="59"/>
         <source>Read</source>
         <translation>Læst</translation>
-    </message>
-    <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Udklipsholder</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselistmodel.cpp" line="201"/>
@@ -1160,14 +1086,6 @@ Please check your installation.</source>
         <source>Black Player</source>
         <translation>Sort spiller</translation>
     </message>
-    <message>
-        <source>&lt;table&gt;&lt;tr&gt;&lt;th&gt;White Player&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;table&gt;&lt;tr&gt;&lt;th&gt;Hvid spiller&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;a name=&apos;ListBlack&apos;&gt;&lt;/a&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Black Player&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;a name=&apos;ListBlack&apos;&gt;&lt;/a&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Sort spiller&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</translation>
-    </message>
 </context>
 <context>
     <name>EngineOptionDialog</name>
@@ -1244,10 +1162,6 @@ Please check your installation.</source>
         <location filename="../src/database/eventinfo.cpp" line="217"/>
         <source>Date: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</source>
         <translation>Dato: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <source>Date: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</source>
-        <translation type="vanished">Dato: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/database/eventinfo.cpp" line="225"/>
@@ -1617,93 +1531,6 @@ Please check your installation.</source>
     </message>
 </context>
 <context>
-    <name>Game</name>
-    <message>
-        <source>Add move</source>
-        <translation type="vanished">Tilføj træk</translation>
-    </message>
-    <message>
-        <source>Merge game</source>
-        <translation type="vanished">Flet partier</translation>
-    </message>
-    <message>
-        <source>Replace move</source>
-        <translation type="vanished">Erstat træk</translation>
-    </message>
-    <message>
-        <source>Add Variation</source>
-        <translation type="vanished">Tilføj variant</translation>
-    </message>
-    <message>
-        <source>Promote Variation</source>
-        <translation type="vanished">Ophøj variant</translation>
-    </message>
-    <message>
-        <source>Copy game</source>
-        <translation type="vanished">Kopiér parti</translation>
-    </message>
-    <message>
-        <source>Add variation</source>
-        <translation type="vanished">Tilføj variant</translation>
-    </message>
-    <message>
-        <source>Promote variation</source>
-        <translation type="vanished">Ophøj variant</translation>
-    </message>
-    <message>
-        <source>Remove variation</source>
-        <translation type="vanished">Fjern variant</translation>
-    </message>
-    <message>
-        <source>Truncate variation</source>
-        <translation type="vanished">Beskær variant</translation>
-    </message>
-    <message>
-        <source>Remove variations</source>
-        <translation type="vanished">Fjern varianter</translation>
-    </message>
-    <message>
-        <source>Remove comments</source>
-        <translation type="vanished">Fjern kommentarer</translation>
-    </message>
-    <message>
-        <source>Set annotation</source>
-        <translation type="vanished">Sæt symboler</translation>
-    </message>
-    <message>
-        <source>Colorize square</source>
-        <translation type="vanished">Farvelæg felt</translation>
-    </message>
-    <message>
-        <source>Paint arrow</source>
-        <translation type="vanished">Lav en pil</translation>
-    </message>
-    <message>
-        <source>Add nag</source>
-        <translation type="vanished">Tilføj symbol</translation>
-    </message>
-    <message>
-        <source>Set nags</source>
-        <translation type="vanished">Sæt symboler</translation>
-    </message>
-    <message>
-        <source>Move variation</source>
-        <translation type="vanished">Flyt variant</translation>
-    </message>
-    <message>
-        <source>Enumerate variations</source>
-        <translation type="vanished">Nummerer variationer</translation>
-    </message>
-    <message>
-        <source>Set result</source>
-        <translation type="vanished">Sæt resultat</translation>
-    </message>
-    <message>
-        <source>Set variant</source>
-        <translation type="vanished">Sæt variant</translation>
-    </message>
-</context>
-<context>
     <name>GameList</name>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="54"/>
@@ -2013,10 +1840,6 @@ Skal jeg downloade en database?</translation>
 <context>
     <name>MainWindow</name>
     <message>
-        <source>Game Text</source>
-        <translation type="vanished">Partitekst</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="199"/>
         <source>Game Time</source>
         <translation>Tid</translation>
@@ -2080,10 +1903,6 @@ Skal jeg downloade en database?</translation>
         <location filename="../src/gui/mainwindow.cpp" line="624"/>
         <source>ECO Load Error.</source>
         <translation>ECO-indlæsningsfejl.</translation>
-    </message>
-    <message>
-        <source>[Clipboard]</source>
-        <translation type="vanished">[Udklipsholder]</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1155"/>
@@ -2154,14 +1973,6 @@ Skal jeg downloade en database?</translation>
         <location filename="../src/gui/mainwindow.cpp" line="1431"/>
         <source>Open in UTF8...</source>
         <translation>Åbn i UTF8 ...</translation>
-    </message>
-    <message>
-        <source>Open &amp;recent...</source>
-        <translation type="vanished">Åbn n&amp;ylig ...</translation>
-    </message>
-    <message>
-        <source>&amp;Save</source>
-        <translation type="vanished">&amp;Gem</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1443"/>
@@ -2620,10 +2431,6 @@ Skal jeg downloade en database?</translation>
         <translation>Træning</translation>
     </message>
     <message>
-        <source>Auto Respond</source>
-        <translation type="vanished">Auto-svar</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1709"/>
         <source>Auto Player</source>
         <translation>Auto-spiller</translation>
@@ -2794,14 +2601,6 @@ Skal jeg downloade en database?</translation>
         <translation>Søg</translation>
     </message>
     <message>
-        <source>&amp;Reset filter</source>
-        <translation type="vanished">&amp;Nulstil filter</translation>
-    </message>
-    <message>
-        <source>&amp;Reverse filter</source>
-        <translation type="vanished">&amp;Omvend filter</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1828"/>
         <source>&amp;Database</source>
         <translation>&amp;Database</translation>
@@ -2915,18 +2714,10 @@ Skal jeg downloade en database?</translation>
         <translation>Åbn database</translation>
     </message>
     <message>
-        <source>PGN databases (*.pgn);;Polyglot books (*.bin)</source>
-        <translation type="vanished">PGN-databaser (*.pgn);;Polyglot-åbningsbøger (*.bin)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="118"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="141"/>
         <source>PGN databases (*.pgn)</source>
         <translation>PGN-databaser (*.pgn)</translation>
-    </message>
-    <message>
-        <source>The current database is modified!</source>
-        <translation type="vanished">Den aktuelle database er ændret!</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="185"/>
@@ -3069,14 +2860,6 @@ Skal jeg downloade en database?</translation>
         <translation>Flet valgte partier</translation>
     </message>
     <message>
-        <source>Automatic responses</source>
-        <translation type="vanished">Automatiske svar</translation>
-    </message>
-    <message>
-        <source>Play both sides</source>
-        <translation type="vanished">Spil begge sider</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2184"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="2220"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="2322"/>
@@ -3134,10 +2917,6 @@ Skal jeg downloade en database?</translation>
         <translation>Alle</translation>
     </message>
     <message>
-        <source>Append game %1 to %2.</source>
-        <translation type="vanished">Tilføj parti %1 til %2.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2993"/>
         <source>Appended %1 games to %2.</source>
         <translation>Tilføjede %1 partier til %2.</translation>
@@ -3161,10 +2940,6 @@ Skal jeg downloade en database?</translation>
         <location filename="../src/gui/mainwindowactions.cpp" line="4060"/>
         <source>Book build finished with Error</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Udklipsholder</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="3023"/>
@@ -3216,10 +2991,6 @@ Skal jeg downloade en database?</translation>
         <translation>Søgningen er afsluttet</translation>
     </message>
     <message>
-        <source>Updating tree...</source>
-        <translation type="vanished">Opdaterer træ ...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="3858"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Nyt parti&lt;/b&gt;</translation>
@@ -3248,38 +3019,6 @@ Skal jeg downloade en database?</translation>
         <location filename="../src/gui/mainwindowactions.cpp" line="4059"/>
         <source>Polyglot Error</source>
         <translation>Polyglot-fejl</translation>
-    </message>
-    <message>
-        <source>Please configure your email preferences first.</source>
-        <translation type="vanished">Please configure your email preferences first.</translation>
-    </message>
-    <message>
-        <source>Hello</source>
-        <translation type="vanished">Hej</translation>
-    </message>
-    <message>
-        <source>the attachment provides new game data.</source>
-        <translation type="vanished">the attachment provides new game data.</translation>
-    </message>
-    <message>
-        <source>You can open the file with ChessX.</source>
-        <translation type="vanished">You can open the file with ChessX.</translation>
-    </message>
-    <message>
-        <source>Edit game tags</source>
-        <translation type="vanished">Rediger parti egenskaber</translation>
-    </message>
-    <message>
-        <source>EMail error</source>
-        <translation type="vanished">EMail fejl</translation>
-    </message>
-    <message>
-        <source>EMail sent to</source>
-        <translation type="vanished">EMail sent to</translation>
-    </message>
-    <message>
-        <source>EMail sent</source>
-        <translation type="vanished">EMail sent</translation>
     </message>
 </context>
 <context>
@@ -4230,14 +3969,6 @@ Skal jeg downloade en database?</translation>
         <source>Black Openings</source>
         <translation>Sorte åbninger</translation>
     </message>
-    <message>
-        <source>&lt;p&gt;White Openings:&lt;/p&gt;&lt;ul&gt;</source>
-        <translation type="vanished">&lt;p&gt;Hvide åbninger:&lt;/p&gt;&lt;ul&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;/ul&gt;&lt;p&gt;Black Openings:&lt;/p&gt;&lt;ul&gt;</source>
-        <translation type="vanished">&lt;/ul&gt;&lt;p&gt;Sorte åbninger:&lt;/p&gt;&lt;ul&gt;</translation>
-    </message>
 </context>
 <context>
     <name>PlayerListWidget</name>
@@ -4256,25 +3987,9 @@ Skal jeg downloade en database?</translation>
         <translation>Indstillinger</translation>
     </message>
     <message>
-        <source>&amp;Board</source>
-        <translation type="vanished">&amp;Bræt</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="278"/>
         <source>&amp;Colors:</source>
         <translation>&amp;Farver:</translation>
-    </message>
-    <message>
-        <source>plain</source>
-        <translation type="vanished">enkel</translation>
-    </message>
-    <message>
-        <source>outline</source>
-        <translation type="vanished">kontur</translation>
-    </message>
-    <message>
-        <source>outline+shadow</source>
-        <translation type="vanished">kontur+skygge</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="150"/>
@@ -4295,14 +4010,6 @@ Skal jeg downloade en database?</translation>
         <location filename="../src/dialogs/preferences.ui" line="307"/>
         <source>Mouse Behaviour</source>
         <translation>Museopførsel</translation>
-    </message>
-    <message>
-        <source>&amp;Guess move on left-click</source>
-        <translation type="vanished">&amp;Gæt træk ved venstreklik</translation>
-    </message>
-    <message>
-        <source>Next guess on right click</source>
-        <translation type="vanished">Næste gæt ved højreklik</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="369"/>
@@ -4340,10 +4047,6 @@ Skal jeg downloade en database?</translation>
         <translation>Parti</translation>
     </message>
     <message>
-        <source>Autoplayer</source>
-        <translation type="vanished">Autospiller</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="465"/>
         <source>Automatically save game and continue with next</source>
         <translation>Gem partiet automatisk og fortsæt med næste</translation>
@@ -4359,10 +4062,6 @@ Skal jeg downloade en database?</translation>
         <source>Colored copies</source>
         <translatorcomment>Kopier af brættet i farver i modsætning til sort/hvid</translatorcomment>
         <translation>Farvede kopier</translation>
-    </message>
-    <message>
-        <source>Show threat</source>
-        <translation type="vanished">Vis trussel</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="126"/>
@@ -4421,10 +4120,6 @@ Skal jeg downloade en database?</translation>
         <translation>Farver:</translation>
     </message>
     <message>
-        <source>Auto Analysis backwards</source>
-        <translation type="vanished">Autoanalyse bagfra</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="443"/>
         <source>Automatic Promotion</source>
         <translation>Automatisk bondeforvandling</translation>
@@ -4433,10 +4128,6 @@ Skal jeg downloade en database?</translation>
         <location filename="../src/dialogs/preferences.ui" line="449"/>
         <source>Always queen a pawn</source>
         <translation>Altid til dronning</translation>
-    </message>
-    <message>
-        <source>&amp;Engines</source>
-        <translation type="vanished">&amp;Motorer</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="882"/>
@@ -4502,10 +4193,6 @@ Skal jeg downloade en database?</translation>
         <location filename="../src/dialogs/preferences.ui" line="1788"/>
         <source>Sound</source>
         <translation>Lyd</translation>
-    </message>
-    <message>
-        <source>Indicate opponent&apos;s move</source>
-        <translation type="vanished">Når modstander trækker</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="61"/>
@@ -5127,14 +4814,6 @@ Skal jeg downloade en database?</translation>
         <source>NAGs</source>
         <translation>Symboler</translation>
     </message>
-    <message>
-        <source>TLS encryption</source>
-        <translation type="vanished">TLS sikkerhed</translation>
-    </message>
-    <message>
-        <source>Sender address</source>
-        <translation type="vanished">Sender adresse</translation>
-    </message>
 </context>
 <context>
     <name>PromotionDialog</name>
@@ -5420,15 +5099,6 @@ Skal jeg downloade en database?</translation>
         <translation>Resultat:</translation>
     </message>
     <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Udklipsholder</translation>
-    </message>
-    <message>
-        <source>Dates are not properly formatted!</source>
-        <comment>Invalid Data</comment>
-        <translation type="vanished">Datoer er ikke korrekt formaterede!</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/savedialog.cpp" line="267"/>
         <source>Dates are not properly formatted!</source>
         <translation>Datoer er ikke korrekt formaterede!</translation>
@@ -5473,10 +5143,6 @@ Skal jeg downloade en database?</translation>
         <location filename="../src/gui/tagdetailwidget.ui" line="35"/>
         <source>Filter:</source>
         <translation>Filter:</translation>
-    </message>
-    <message>
-        <source>Selected Item</source>
-        <translation type="vanished">Valgt linje</translation>
     </message>
     <message>
         <location filename="../src/gui/tagdetailwidget.ui" line="48"/>

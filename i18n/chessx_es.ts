@@ -9,12 +9,6 @@
         <translation>Acerca de Chessx</translation>
     </message>
     <message>
-        <source>&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
-Free Chess Database </source>
-        <translation type="vanished">&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
-Base de datos de ajedrez, libre </translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="68"/>
         <source>Version</source>
         <translation>Versión</translation>
@@ -33,14 +27,6 @@ Base de datos de ajedrez, libre </translation>
         <location filename="../src/dialogs/aboutdlg.ui" line="146"/>
         <source>Maintainer</source>
         <translation>Programador responsable</translation>
-    </message>
-    <message>
-        <source>Further Maintainers</source>
-        <translation type="vanished">Otros programadores</translation>
-    </message>
-    <message>
-        <source>Testing</source>
-        <translation type="vanished">Pruebas</translation>
     </message>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="43"/>
@@ -132,10 +118,6 @@ Base de datos de ajedrez, libre</translation>
         <source>Keyboard Shortcut</source>
         <translation>Atajo de teclado</translation>
     </message>
-    <message>
-        <source>...</source>
-        <translation type="obsolete">...</translation>
-    </message>
 </context>
 <context>
     <name>Analysis</name>
@@ -196,10 +178,6 @@ Base de datos de ajedrez, libre</translation>
         <location filename="../src/gui/analysiswidget.ui" line="96"/>
         <source>Select a GUI book</source>
         <translation>Seleccione un libro GUI</translation>
-    </message>
-    <message>
-        <source>...</source>
-        <translation type="vanished">...</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="109"/>
@@ -274,14 +252,6 @@ Base de datos de ajedrez, libre</translation>
         <translation>&lt;i&gt;Libro:&lt;/i&gt;</translation>
     </message>
     <message>
-        <source>&lt;a href=&quot;0&quot; title=&quot;Click to add move to game&quot;&gt;[+]&lt;/a&gt; &lt;b&gt;Tablebase:&lt;/b&gt; </source>
-        <translation type="vanished">&lt;a href=&quot;0&quot; title=&quot;Click para adicionar movimiento al juego&quot;&gt;[+]&lt;/a&gt; &lt;b&gt;Tablebase:&lt;/b&gt; </translation>
-    </message>
-    <message>
-        <source>&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1/%2&lt;br&gt;</source>
-        <translation type="vanished">&lt;br&gt;&lt;b&gt;Complejidad:&lt;/b&gt; %1/%2&lt;br&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/analysiswidget.cpp" line="613"/>
         <source>&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1&lt;br&gt;</source>
         <translation>&lt;br&gt;&lt;b&gt;Complejidad:&lt;/b&gt; %1&lt;br&gt;</translation>
@@ -289,14 +259,6 @@ Base de datos de ajedrez, libre</translation>
 </context>
 <context>
     <name>BitBoard</name>
-    <message>
-        <source>w%1
-b%2
-%3 to move.</source>
-        <translation type="vanished">b%1
-n%2
-%3 para mover.</translation>
-    </message>
     <message>
         <location filename="../src/database/bitboard.cpp" line="3186"/>
         <source>w%1
@@ -370,10 +332,6 @@ n%2
         <translation>Configurar posición</translation>
     </message>
     <message>
-        <source>Board</source>
-        <translation type="vanished">Tablero</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.ui" line="81"/>
         <source>Tools</source>
         <translation>Herramientas</translation>
@@ -420,14 +378,6 @@ n%2
         <location filename="../src/gui/boardsetup.cpp" line="83"/>
         <source>Clear</source>
         <translation>Limpiar</translation>
-    </message>
-    <message>
-        <source>&amp;Advanced</source>
-        <translation type="vanished">&amp;Avanzado</translation>
-    </message>
-    <message>
-        <source>Castling rights</source>
-        <translation type="vanished">Posibles enroques</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="237"/>
@@ -786,13 +736,6 @@ Por favor verifique la instalación.</translation>
     </message>
 </context>
 <context>
-    <name>ClipboardDatabase</name>
-    <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Portapapeles</translation>
-    </message>
-</context>
-<context>
     <name>CommentDialog</name>
     <message>
         <location filename="../src/dialogs/commentdialog.ui" line="20"/>
@@ -921,10 +864,6 @@ Por favor verifique la instalación.</translation>
         <translation>Ajustar injusticia</translation>
     </message>
     <message>
-        <source>Add to favorites</source>
-        <translation type="vanished">Añadir a favoritos</translation>
-    </message>
-    <message>
         <location filename="../src/gui/databaselist.cpp" line="105"/>
         <source>Remove from Favorites</source>
         <translation>Quitar de favoritos</translation>
@@ -938,10 +877,6 @@ Por favor verifique la instalación.</translation>
         <location filename="../src/gui/databaselist.cpp" line="110"/>
         <source>Make a Polyglot book...</source>
         <translation>Hacer un libro Polyglot...</translation>
-    </message>
-    <message>
-        <source>: File not found</source>
-        <translation type="vanished">: Archivo no encontrado</translation>
     </message>
 </context>
 <context>
@@ -987,10 +922,6 @@ Por favor verifique la instalación.</translation>
         <location filename="../src/gui/databaselistmodel.cpp" line="59"/>
         <source>Read</source>
         <translation>Leer</translation>
-    </message>
-    <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Portapapeles</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselistmodel.cpp" line="201"/>
@@ -1157,14 +1088,6 @@ Por favor verifique la instalación.</translation>
         <source>Black Player</source>
         <translation>Jugador Negras</translation>
     </message>
-    <message>
-        <source>&lt;table&gt;&lt;tr&gt;&lt;th&gt;White Player&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;table&gt;&lt;tr&gt;&lt;th&gt;Jugador Blancas&lt;/th&gt;&lt;th&gt;Resultado&lt;/th&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;a name=&apos;ListBlack&apos;&gt;&lt;/a&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Black Player&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;a name=&apos;ListBlack&apos;&gt;&lt;/a&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Jugador Negras&lt;/th&gt;&lt;th&gt;Resultado&lt;/th&gt;&lt;/tr&gt;</translation>
-    </message>
 </context>
 <context>
     <name>EngineOptionDialog</name>
@@ -1241,10 +1164,6 @@ Por favor verifique la instalación.</translation>
         <location filename="../src/database/eventinfo.cpp" line="217"/>
         <source>Date: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</source>
         <translation>Fecha: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <source>Date: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</source>
-        <translation type="vanished">Fecha: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/database/eventinfo.cpp" line="225"/>
@@ -1615,97 +1534,6 @@ Por favor verifique la instalación.</translation>
     </message>
 </context>
 <context>
-    <name>Game</name>
-    <message>
-        <source>Add move</source>
-        <translation type="vanished">Añadir movimiento</translation>
-    </message>
-    <message>
-        <source>Merge game</source>
-        <translation type="vanished">Combinar juego</translation>
-    </message>
-    <message>
-        <source>Replace move</source>
-        <translation type="vanished">Reemplazar movimiento</translation>
-    </message>
-    <message>
-        <source>Add Variation</source>
-        <translation type="vanished">Añadir variación</translation>
-    </message>
-    <message>
-        <source>Promote Variation</source>
-        <translation type="vanished">Promover variación</translation>
-    </message>
-    <message>
-        <source>Copy game</source>
-        <translation type="vanished">Copiar juego</translation>
-    </message>
-    <message>
-        <source>Add line</source>
-        <translation type="vanished">Añadir línea</translation>
-    </message>
-    <message>
-        <source>Add variation</source>
-        <translation type="vanished">Añadir variación</translation>
-    </message>
-    <message>
-        <source>Promote variation</source>
-        <translation type="vanished">Promover variación</translation>
-    </message>
-    <message>
-        <source>Remove variation</source>
-        <translation type="vanished">Eliminar variación</translation>
-    </message>
-    <message>
-        <source>Truncate variation</source>
-        <translation type="vanished">Truncar variación</translation>
-    </message>
-    <message>
-        <source>Remove variations</source>
-        <translation type="vanished">Eliminar variaciones</translation>
-    </message>
-    <message>
-        <source>Remove comments</source>
-        <translation type="vanished">Eliminar comentarios</translation>
-    </message>
-    <message>
-        <source>Set annotation</source>
-        <translation type="vanished">Escribir una anotación</translation>
-    </message>
-    <message>
-        <source>Colorize square</source>
-        <translation type="vanished">Colorear casilla</translation>
-    </message>
-    <message>
-        <source>Paint arrow</source>
-        <translation type="vanished">Pintar flecha</translation>
-    </message>
-    <message>
-        <source>Add nag</source>
-        <translation type="vanished">Añadir símbolo</translation>
-    </message>
-    <message>
-        <source>Set nags</source>
-        <translation type="vanished">Añadir símbolos</translation>
-    </message>
-    <message>
-        <source>Move variation</source>
-        <translation type="vanished">Variante de movimiento</translation>
-    </message>
-    <message>
-        <source>Enumerate variations</source>
-        <translation type="vanished">Enumerar variaciones</translation>
-    </message>
-    <message>
-        <source>Set result</source>
-        <translation type="vanished">Establecer resultados</translation>
-    </message>
-    <message>
-        <source>Set variant</source>
-        <translation type="vanished">Ajuste variante</translation>
-    </message>
-</context>
-<context>
     <name>GameList</name>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="54"/>
@@ -2020,10 +1848,6 @@ Shall I download a database?</source>
         <translation>Lista de juegos</translation>
     </message>
     <message>
-        <source>Game Text</source>
-        <translation type="vanished">Texto de juego</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="199"/>
         <source>Game Time</source>
         <translation>Tiempo de juego</translation>
@@ -2082,10 +1906,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="624"/>
         <source>ECO Load Error.</source>
         <translation>Error en carga de ECO.</translation>
-    </message>
-    <message>
-        <source>[Clipboard]</source>
-        <translation type="vanished">[Portapapeles]</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1155"/>
@@ -2156,14 +1976,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1431"/>
         <source>Open in UTF8...</source>
         <translation>Abrir en UTF8...</translation>
-    </message>
-    <message>
-        <source>Open &amp;recent...</source>
-        <translation type="vanished">Abrir &amp;reciente...</translation>
-    </message>
-    <message>
-        <source>&amp;Save</source>
-        <translation type="vanished">&amp;Guardar</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1443"/>
@@ -2678,10 +2490,6 @@ Shall I download a database?</source>
         <translation>Entrenamiento</translation>
     </message>
     <message>
-        <source>Auto Respond</source>
-        <translation type="vanished">Responder automáticamente</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1709"/>
         <source>Auto Player</source>
         <translation>Jugador automático</translation>
@@ -2802,14 +2610,6 @@ Shall I download a database?</source>
         <translation>Buscar posición...</translation>
     </message>
     <message>
-        <source>&amp;Reset filter</source>
-        <translation type="vanished">&amp;Reiniciar filtro</translation>
-    </message>
-    <message>
-        <source>&amp;Reverse filter</source>
-        <translation type="vanished">&amp;Invertir filtro</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1828"/>
         <source>&amp;Database</source>
         <translation>&amp;Base de datos</translation>
@@ -2917,18 +2717,10 @@ Shall I download a database?</source>
         <translation>Abrir base de datos</translation>
     </message>
     <message>
-        <source>PGN databases (*.pgn);;Polyglot books (*.bin)</source>
-        <translation type="vanished">Bases de Datos PGN (*.pgn);;Libros Polyglot (*.bin)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="118"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="141"/>
         <source>PGN databases (*.pgn)</source>
         <translation>Bases de datos PGN (*.pgn)</translation>
-    </message>
-    <message>
-        <source>The current database is modified!</source>
-        <translation type="vanished">La base de datos actual ha sido modificada!</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="185"/>
@@ -2939,14 +2731,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="168"/>
         <source>Saving %1...</source>
         <translation>Guardando %1...</translation>
-    </message>
-    <message>
-        <source>PGN databases (*.pgn);;Polyglot books (*.bin);;Arena books (*.abk)</source>
-        <translation type="vanished">Base de datos PGN (*.pgn);;Libros Polyglot (*.bin);;Libros Arena (*.abk)</translation>
-    </message>
-    <message>
-        <source>PGN databases (*.pgn);;Polyglot books (*.bin);;Arena books (*.abk);;Chessbase books (*.ctg)</source>
-        <translation type="vanished">Base de datos PGN (*pgn);; Libros Polyglot (*.bin);; Libros Arena (*.abk);; Libros Chessbase (*ctg)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="172"/>
@@ -3079,14 +2863,6 @@ Shall I download a database?</source>
         <translation>Combinar juegos seleccionados</translation>
     </message>
     <message>
-        <source>Automatic responses</source>
-        <translation type="vanished">Respuestas automáticas</translation>
-    </message>
-    <message>
-        <source>Play both sides</source>
-        <translation type="vanished">Jugar ambos lados</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2184"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="2220"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="2322"/>
@@ -3144,10 +2920,6 @@ Shall I download a database?</source>
         <translation>Todo</translation>
     </message>
     <message>
-        <source>Append game %1 to %2.</source>
-        <translation type="vanished">Agregar juego %1 a %2.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2993"/>
         <source>Appended %1 games to %2.</source>
         <translation>Añadido %1 juegos a %2.</translation>
@@ -3171,10 +2943,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="4060"/>
         <source>Book build finished with Error</source>
         <translation>Construcción de libro termino con Error</translation>
-    </message>
-    <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Portapapeles</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="3023"/>
@@ -3226,10 +2994,6 @@ Shall I download a database?</source>
         <translation>Búsqueda finalizada</translation>
     </message>
     <message>
-        <source>Updating tree...</source>
-        <translation type="vanished">Actualizando árbol</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="3858"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Nuevo juego&lt;/b&gt;</translation>
@@ -3258,38 +3022,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="4059"/>
         <source>Polyglot Error</source>
         <translation>Error en Polyglot</translation>
-    </message>
-    <message>
-        <source>Please configure your email preferences first.</source>
-        <translation type="vanished">Por favor configure los parámetros de su email, primero.</translation>
-    </message>
-    <message>
-        <source>Hello</source>
-        <translation type="vanished">Hola</translation>
-    </message>
-    <message>
-        <source>the attachment provides new game data.</source>
-        <translation type="vanished">el adjunto provee datos de un nuevo juego.</translation>
-    </message>
-    <message>
-        <source>You can open the file with ChessX.</source>
-        <translation type="vanished">Usted puede abrir el archivo con ChessX.</translation>
-    </message>
-    <message>
-        <source>Edit game tags</source>
-        <translation type="vanished">Editar etiquetas del juego</translation>
-    </message>
-    <message>
-        <source>EMail error</source>
-        <translation type="vanished">Error de e-mail</translation>
-    </message>
-    <message>
-        <source>EMail sent to</source>
-        <translation type="vanished">e-mail enviado a</translation>
-    </message>
-    <message>
-        <source>EMail sent</source>
-        <translation type="vanished">e-mail enviado</translation>
     </message>
 </context>
 <context>
@@ -4237,14 +3969,6 @@ Shall I download a database?</source>
         <source>Black Openings</source>
         <translation>Aperturas para Negras</translation>
     </message>
-    <message>
-        <source>&lt;p&gt;White Openings:&lt;/p&gt;&lt;ul&gt;</source>
-        <translation type="vanished">&lt;p&gt;Aperturas para Blancas:&lt;/p&gt;&lt;ul&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;/ul&gt;&lt;p&gt;Black Openings:&lt;/p&gt;&lt;ul&gt;</source>
-        <translation type="vanished">&lt;/ul&gt;&lt;p&gt;Aperturas para Negras:&lt;/p&gt;&lt;ul&gt;</translation>
-    </message>
 </context>
 <context>
     <name>PlayerListWidget</name>
@@ -4263,10 +3987,6 @@ Shall I download a database?</source>
         <translation>Preferencias</translation>
     </message>
     <message>
-        <source>&amp;Board</source>
-        <translation type="vanished">&amp;Tablero</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="67"/>
         <source>Highlight current move:</source>
         <translation>Resaltar movimiento actual:</translation>
@@ -4275,14 +3995,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.ui" line="307"/>
         <source>Mouse Behaviour</source>
         <translation>Comportamiento del ratón</translation>
-    </message>
-    <message>
-        <source>&amp;Guess move on left-click</source>
-        <translation type="vanished">&amp;Adivinar movimiento con click izquierdo</translation>
-    </message>
-    <message>
-        <source>Next guess on right click</source>
-        <translation type="vanished">Indicar posibles movimientos con click derecho</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="369"/>
@@ -4308,18 +4020,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.ui" line="150"/>
         <source>&amp;Draw frame between squares</source>
         <translation>&amp;Dibujar un contorno entre los cuadros</translation>
-    </message>
-    <message>
-        <source>plain</source>
-        <translation type="vanished">plano</translation>
-    </message>
-    <message>
-        <source>outline</source>
-        <translation type="vanished">contorno</translation>
-    </message>
-    <message>
-        <source>outline+shadow</source>
-        <translation type="vanished">contorno+sombra</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="168"/>
@@ -4358,10 +4058,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.ui" line="437"/>
         <source>Game</source>
         <translation>Juego</translation>
-    </message>
-    <message>
-        <source>Autoplayer</source>
-        <translation type="vanished">Jugador autómatico</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="465"/>
@@ -4426,10 +4122,6 @@ Shall I download a database?</source>
         <translation>Colores:</translation>
     </message>
     <message>
-        <source>Auto Analysis backwards</source>
-        <translation type="vanished">Auto-análisis retrógrado</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="443"/>
         <source>Automatic Promotion</source>
         <translation>Promoción automática</translation>
@@ -4438,10 +4130,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.ui" line="449"/>
         <source>Always queen a pawn</source>
         <translation>Siempre coronar peón a Dama</translation>
-    </message>
-    <message>
-        <source>&amp;Engines</source>
-        <translation type="vanished">&amp;Motores</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="882"/>
@@ -4966,10 +4654,6 @@ Shall I download a database?</source>
         <translation>Retraso entre movidas [ms]</translation>
     </message>
     <message>
-        <source>Indicate opponent&apos;s move</source>
-        <translation type="vanished">Indicar el movimiento del oponente</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="1860"/>
         <source>Portable Preferences</source>
         <translation>Preferencias portables</translation>
@@ -5128,14 +4812,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.cpp" line="591"/>
         <source>NAGs</source>
         <translation>glifos de anotación (NAGs)</translation>
-    </message>
-    <message>
-        <source>TLS encryption</source>
-        <translation type="vanished">Cifrado TLS</translation>
-    </message>
-    <message>
-        <source>Sender address</source>
-        <translation type="vanished">Dirección del remitente</translation>
     </message>
 </context>
 <context>
@@ -5422,15 +5098,6 @@ Shall I download a database?</source>
         <translation>Resultado:</translation>
     </message>
     <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Portapapeles</translation>
-    </message>
-    <message>
-        <source>Dates are not properly formatted!</source>
-        <comment>Invalid Data</comment>
-        <translation type="vanished">¡El formato de las fechas es incorrecto!</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/savedialog.cpp" line="267"/>
         <source>Dates are not properly formatted!</source>
         <translation>¡El formato de las fechas es incorrecto!</translation>
@@ -5475,10 +5142,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/tagdetailwidget.ui" line="35"/>
         <source>Filter:</source>
         <translation>Filtro:</translation>
-    </message>
-    <message>
-        <source>Selected Item</source>
-        <translation type="vanished">Elemento seleccionado</translation>
     </message>
     <message>
         <location filename="../src/gui/tagdetailwidget.ui" line="48"/>

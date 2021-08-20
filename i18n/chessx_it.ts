@@ -9,13 +9,6 @@
         <translation>Informazioni su ChessX</translation>
     </message>
     <message>
-        <source>&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
-Free Chess Database </source>
-        <translatorcomment>Translated as &quot;free as in beer&quot;.</translatorcomment>
-        <translation type="vanished">&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
-Database Scacchistico Gratuito </translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="68"/>
         <source>Version</source>
         <translation>Versione</translation>
@@ -34,14 +27,6 @@ Database Scacchistico Gratuito </translation>
         <location filename="../src/dialogs/aboutdlg.ui" line="146"/>
         <source>Maintainer</source>
         <translation>Sviluppatore</translation>
-    </message>
-    <message>
-        <source>Further Maintainers</source>
-        <translation type="vanished">Ulteriori sviluppatori</translation>
-    </message>
-    <message>
-        <source>Testing</source>
-        <translation type="vanished">Controllo</translation>
     </message>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="43"/>
@@ -131,10 +116,6 @@ Free Chess Database</source>
         <location filename="../src/dialogs/actiondialog.ui" line="44"/>
         <source>Keyboard Shortcut</source>
         <translation>Abbreviazione da tastiera</translation>
-    </message>
-    <message>
-        <source>...</source>
-        <translation type="obsolete">...</translation>
     </message>
 </context>
 <context>
@@ -265,10 +246,6 @@ Free Chess Database</source>
         <translation>Ferma il motore alla posizione corrente</translation>
     </message>
     <message>
-        <source>...</source>
-        <translation type="vanished">...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/analysiswidget.ui" line="89"/>
         <source>Select an engine</source>
         <translation type="unfinished"></translation>
@@ -281,14 +258,6 @@ Free Chess Database</source>
 </context>
 <context>
     <name>BitBoard</name>
-    <message>
-        <source>w%1
-b%2
-%3 to move.</source>
-        <translation type="vanished">w%1
-b%2
-%3 per muovere.</translation>
-    </message>
     <message>
         <location filename="../src/database/bitboard.cpp" line="3186"/>
         <source>w%1
@@ -451,10 +420,6 @@ b%2
         <translation>Setta la posizione</translation>
     </message>
     <message>
-        <source>Board</source>
-        <translation type="vanished">Scacchiera</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.cpp" line="83"/>
         <source>Clear</source>
         <translation>Svuota</translation>
@@ -470,17 +435,9 @@ b%2
         <translation>Mosse:</translation>
     </message>
     <message>
-        <source>&amp;Advanced</source>
-        <translation type="vanished">&amp;Avanzate</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.ui" line="266"/>
         <source>En passant file:</source>
         <translation>Colonna per la presa en passant:</translation>
-    </message>
-    <message>
-        <source>Castling rights</source>
-        <translation type="vanished">Diritti d&apos;arrocco</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="81"/>
@@ -650,10 +607,6 @@ Please check your installation.</source>
 <context>
     <name>BoardViewEx</name>
     <message>
-        <source>Form</source>
-        <translation type="obsolete">Da</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardviewex.ui" line="157"/>
         <source>Comments and annotations will be displayed here. You can modify them, too.</source>
         <translation type="unfinished"></translation>
@@ -779,13 +732,6 @@ Please check your installation.</source>
         <location filename="../src/gui/chessbrowser.cpp" line="188"/>
         <source>Remove Variations</source>
         <translation>Rimuovi varianti</translation>
-    </message>
-</context>
-<context>
-    <name>ClipboardDatabase</name>
-    <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Appunti</translation>
     </message>
 </context>
 <context>
@@ -915,10 +861,6 @@ Please check your installation.</source>
         <location filename="../src/gui/databaselist.cpp" line="126"/>
         <source>Set dirty</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add to favorites</source>
-        <translation type="vanished">Aggiungi ai preferiti</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="105"/>
@@ -1223,10 +1165,6 @@ Please check your installation.</source>
         <location filename="../src/database/eventinfo.cpp" line="217"/>
         <source>Date: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</source>
         <translation>Data: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <source>Date: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</source>
-        <translation type="vanished">Data: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/database/eventinfo.cpp" line="225"/>
@@ -1602,78 +1540,6 @@ Please check your installation.</source>
     </message>
 </context>
 <context>
-    <name>Game</name>
-    <message>
-        <source>Add move</source>
-        <translation type="vanished">Aggiungi mossa</translation>
-    </message>
-    <message>
-        <source>Merge game</source>
-        <translation type="vanished">Unisci partita</translation>
-    </message>
-    <message>
-        <source>Replace move</source>
-        <translation type="vanished">Sostituisci mossa</translation>
-    </message>
-    <message>
-        <source>Add Variation</source>
-        <translation type="vanished">Aggiungi variante</translation>
-    </message>
-    <message>
-        <source>Promote Variation</source>
-        <translation type="vanished">Promuovi variante</translation>
-    </message>
-    <message>
-        <source>Remove variation</source>
-        <translation type="vanished">Elimina variante</translation>
-    </message>
-    <message>
-        <source>Truncate variation</source>
-        <translation type="vanished">Tronca variante</translation>
-    </message>
-    <message>
-        <source>Remove variations</source>
-        <translation type="vanished">Rimuovi varianti</translation>
-    </message>
-    <message>
-        <source>Remove comments</source>
-        <translation type="vanished">Rimuovi commento</translation>
-    </message>
-    <message>
-        <source>Set annotation</source>
-        <translation type="vanished">Immetti annotazione</translation>
-    </message>
-    <message>
-        <source>Colorize square</source>
-        <translation type="vanished">Colora casella</translation>
-    </message>
-    <message>
-        <source>Paint arrow</source>
-        <translatorcomment>Paint in &quot;paint arrow&quot; and colorize in &quot;colorize square&quot; are translated with the same term</translatorcomment>
-        <translation type="vanished">Colora freccia</translation>
-    </message>
-    <message>
-        <source>Add nag</source>
-        <translation type="vanished">Aggiungi NAG</translation>
-    </message>
-    <message>
-        <source>Set nags</source>
-        <translation type="vanished">Imposta NAG</translation>
-    </message>
-    <message>
-        <source>Move variation</source>
-        <translation type="vanished">Variante di mossa</translation>
-    </message>
-    <message>
-        <source>Enumerate variations</source>
-        <translation type="vanished">Enumera le Varianti</translation>
-    </message>
-    <message>
-        <source>Set result</source>
-        <translation type="vanished">Imposta risultato</translation>
-    </message>
-</context>
-<context>
     <name>GameList</name>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="54"/>
@@ -1983,10 +1849,6 @@ Devo caricare un database?</translation>
 <context>
     <name>MainWindow</name>
     <message>
-        <source>Game Text</source>
-        <translation type="vanished">Testo della partita</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="139"/>
         <source>Game List</source>
         <translation>Elenco delle partite</translation>
@@ -2065,10 +1927,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/mainwindow.cpp" line="1430"/>
         <source>&amp;Open...</source>
         <translation>&amp;Apri...</translation>
-    </message>
-    <message>
-        <source>Open &amp;recent...</source>
-        <translation type="vanished">Apri file &amp;recente...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1443"/>
@@ -2286,10 +2144,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/mainwindow.cpp" line="1687"/>
         <source>Match</source>
         <translation>Match</translation>
-    </message>
-    <message>
-        <source>Auto Respond</source>
-        <translation type="vanished">Auto-rispondi</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1729"/>
@@ -2785,14 +2639,6 @@ Devo caricare un database?</translation>
         <translation>Trova</translation>
     </message>
     <message>
-        <source>&amp;Reset filter</source>
-        <translation type="vanished">&amp;Resetta il filtro</translation>
-    </message>
-    <message>
-        <source>&amp;Reverse filter</source>
-        <translation type="vanished">&amp;Inverti il filtro</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1828"/>
         <source>&amp;Database</source>
         <translation>&amp;Database</translation>
@@ -2874,14 +2720,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/mainwindowactions.cpp" line="168"/>
         <source>Saving %1...</source>
         <translation>Salvataggio %1...</translation>
-    </message>
-    <message>
-        <source>PGN databases (*.pgn);;Polyglot books (*.bin)</source>
-        <translation type="vanished">Database PGN (*.pgn);;Libri Polyglot (*.bin)</translation>
-    </message>
-    <message>
-        <source>The current database is modified!</source>
-        <translation type="vanished">Il database corrente è stato modificato!</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="185"/>
@@ -3082,10 +2920,6 @@ Devo caricare un database?</translation>
         <translation>tutto</translation>
     </message>
     <message>
-        <source>Append game %1 to %2.</source>
-        <translation type="vanished">Aggiungi partita %1 in coda a %2.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2993"/>
         <source>Appended %1 games to %2.</source>
         <translation>Aggiunto in coda %1 partite a %2.</translation>
@@ -3198,10 +3032,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/mainwindowactions.cpp" line="3437"/>
         <source>Search ended</source>
         <translation>Ricerca terminata</translation>
-    </message>
-    <message>
-        <source>Updating tree...</source>
-        <translation type="vanished">Aggiornamento albero...</translation>
     </message>
 </context>
 <context>
@@ -4546,10 +4376,6 @@ Devo caricare un database?</translation>
         <translation>Colori:</translation>
     </message>
     <message>
-        <source>Auto Analysis backwards</source>
-        <translation type="vanished">Auto-analisi alla rovescia</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="443"/>
         <source>Automatic Promotion</source>
         <translation>Promozione automatica</translation>
@@ -4713,10 +4539,6 @@ Devo caricare un database?</translation>
         <translation>Suono</translation>
     </message>
     <message>
-        <source>Indicate opponent&apos;s move</source>
-        <translation type="vanished">Indica mossa dell&apos;avversario</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="168"/>
         <location filename="../src/dialogs/preferences.ui" line="250"/>
         <location filename="../src/dialogs/preferences.ui" line="648"/>
@@ -4853,36 +4675,14 @@ Devo caricare un database?</translation>
         <translation>Linea di comando, anche $(InputPath), $(InputFile)</translation>
     </message>
     <message>
-        <source>&amp;Board</source>
-        <translation type="vanished">&amp;Scacchiera</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="140"/>
         <source>&amp;Chess set:</source>
         <translation>&amp;Pezzi:</translation>
     </message>
     <message>
-        <source>plain</source>
-        <translatorcomment>non sono sicuro proprio per niente!</translatorcomment>
-        <translation type="vanished">puro</translation>
-    </message>
-    <message>
-        <source>outline</source>
-        <translatorcomment>non sono sicuro</translatorcomment>
-        <translation type="vanished">bordo</translation>
-    </message>
-    <message>
-        <source>outline+shadow</source>
-        <translation type="vanished">bordo+ombra</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="150"/>
         <source>&amp;Draw frame between squares</source>
         <translation>&amp;Traccia cornice tra le caselle</translation>
-    </message>
-    <message>
-        <source>&amp;Guess move on left-click</source>
-        <translation type="vanished">&amp;Indovina la mossa al click del tasto sinistro</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="116"/>
@@ -4893,10 +4693,6 @@ Devo caricare un database?</translation>
         <location filename="../src/dialogs/preferences.ui" line="278"/>
         <source>&amp;Colors:</source>
         <translation>&amp;Colori:</translation>
-    </message>
-    <message>
-        <source>&amp;Engines</source>
-        <translation type="vanished">&amp;Motori d&apos;analisi</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="707"/>
@@ -4930,10 +4726,6 @@ Devo caricare un database?</translation>
         <translation>Comportamento del mouse</translation>
     </message>
     <message>
-        <source>Next guess on right click</source>
-        <translation type="vanished">Indovina successiva al click del tasto destro</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="369"/>
         <source>Wheel sensitivity</source>
         <translation>Sensibilità della rotella</translation>
@@ -4962,10 +4754,6 @@ Devo caricare un database?</translation>
         <location filename="../src/dialogs/preferences.ui" line="437"/>
         <source>Game</source>
         <translation>Partita</translation>
-    </message>
-    <message>
-        <source>Autoplayer</source>
-        <translation type="vanished">Auto-gioco</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="465"/>
@@ -5384,11 +5172,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/tagdetailwidget.ui" line="35"/>
         <source>Filter:</source>
         <translation>Filtro:</translation>
-    </message>
-    <message>
-        <source>Selected Item</source>
-        <translatorcomment>Not sure if &quot;oggetto&quot; is the right translation for &quot;item&quot; here.</translatorcomment>
-        <translation type="vanished">Oggetto selezionato</translation>
     </message>
     <message>
         <location filename="../src/gui/tagdetailwidget.ui" line="48"/>

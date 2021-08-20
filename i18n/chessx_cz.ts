@@ -9,12 +9,6 @@
         <translation>O programu ChessX</translation>
     </message>
     <message>
-        <source>&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
-Free Chess Database </source>
-        <translation type="vanished">&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
-Volná verze šachové databáze</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="68"/>
         <source>Version</source>
         <translation>Verze</translation>
@@ -33,14 +27,6 @@ Volná verze šachové databáze</translation>
         <location filename="../src/dialogs/aboutdlg.ui" line="146"/>
         <source>Maintainer</source>
         <translation>Podpora</translation>
-    </message>
-    <message>
-        <source>Further Maintainers</source>
-        <translation type="vanished">Další podpora</translation>
-    </message>
-    <message>
-        <source>Testing</source>
-        <translation type="vanished">Tester</translation>
     </message>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="43"/>
@@ -251,10 +237,6 @@ Free Chess Database</source>
         <translation>Analýza a oprava zde</translation>
     </message>
     <message>
-        <source>...</source>
-        <translation type="vanished">...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/analysiswidget.ui" line="89"/>
         <source>Select an engine</source>
         <translation>Vybrat motor</translation>
@@ -278,22 +260,6 @@ Free Chess Database</source>
 </context>
 <context>
     <name>BitBoard</name>
-    <message>
-        <source>w%1
-b%2
-%3 přesun.</source>
-        <translation type="vanished">w%1
-b%2
-%3 na tahu.</translation>
-    </message>
-    <message>
-        <source>w%1
-b%2
-%3 to move.</source>
-        <translation type="vanished">w%1
-b%2
-%3 na tahu</translation>
-    </message>
     <message>
         <location filename="../src/database/bitboard.cpp" line="3186"/>
         <source>w%1
@@ -495,21 +461,9 @@ b%2
         <translation>Žádný text ve schránce.</translation>
     </message>
     <message>
-        <source>Board</source>
-        <translation type="vanished">Šachovnice</translation>
-    </message>
-    <message>
-        <source>&amp;Advanced</source>
-        <translation type="vanished">&amp;Pokočilé</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.ui" line="266"/>
         <source>En passant file:</source>
         <translation>En passant linie:</translation>
-    </message>
-    <message>
-        <source>Castling rights</source>
-        <translation type="vanished">Povoleno rošáda</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="81"/>
@@ -654,10 +608,6 @@ Please check your installation.</source>
 <context>
     <name>BoardViewEx</name>
     <message>
-        <source>Form</source>
-        <translation type="vanished">Formulář</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardviewex.ui" line="157"/>
         <source>Comments and annotations will be displayed here. You can modify them, too.</source>
         <translation type="unfinished"></translation>
@@ -783,13 +733,6 @@ Please check your installation.</source>
         <location filename="../src/gui/chessbrowser.cpp" line="188"/>
         <source>Remove Variations</source>
         <translation>Odstranit varianty</translation>
-    </message>
-</context>
-<context>
-    <name>ClipboardDatabase</name>
-    <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Schránka</translation>
     </message>
 </context>
 <context>
@@ -919,10 +862,6 @@ Please check your installation.</source>
         <location filename="../src/gui/databaselist.cpp" line="126"/>
         <source>Set dirty</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add to favorites</source>
-        <translation type="vanished">Přidat mezi oblíbené</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="105"/>
@@ -1225,10 +1164,6 @@ Please check your installation.</source>
         <location filename="../src/database/eventinfo.cpp" line="217"/>
         <source>Date: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</source>
         <translation>Datum: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <source>Date: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</source>
-        <translation type="vanished">Datum: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/database/eventinfo.cpp" line="225"/>
@@ -1598,93 +1533,6 @@ Please check your installation.</source>
     </message>
 </context>
 <context>
-    <name>Game</name>
-    <message>
-        <source>Add move</source>
-        <translation type="vanished">Přidat tah</translation>
-    </message>
-    <message>
-        <source>Merge game</source>
-        <translation type="vanished">Sloučit hru</translation>
-    </message>
-    <message>
-        <source>Replace move</source>
-        <translation type="vanished">Nahradit tah</translation>
-    </message>
-    <message>
-        <source>Add Variation</source>
-        <translation type="vanished">Přidat variantu</translation>
-    </message>
-    <message>
-        <source>Promote Variation</source>
-        <translation type="vanished">Podpořit variantu</translation>
-    </message>
-    <message>
-        <source>Copy game</source>
-        <translation type="vanished">Kopie partie</translation>
-    </message>
-    <message>
-        <source>Add variation</source>
-        <translation type="vanished">Přidat variantu</translation>
-    </message>
-    <message>
-        <source>Promote variation</source>
-        <translation type="vanished">Podpořit variantu</translation>
-    </message>
-    <message>
-        <source>Remove variation</source>
-        <translation type="vanished">Odstranit variantu</translation>
-    </message>
-    <message>
-        <source>Truncate variation</source>
-        <translation type="vanished">Zkrátit variantu</translation>
-    </message>
-    <message>
-        <source>Remove variations</source>
-        <translation type="vanished">Odstranit varianty</translation>
-    </message>
-    <message>
-        <source>Remove comments</source>
-        <translation type="vanished">Odstranit komentáře</translation>
-    </message>
-    <message>
-        <source>Set annotation</source>
-        <translation type="vanished">Nastavit komentář</translation>
-    </message>
-    <message>
-        <source>Colorize square</source>
-        <translation type="vanished">Obarvit pole</translation>
-    </message>
-    <message>
-        <source>Paint arrow</source>
-        <translation type="vanished">Nakreslit šipku</translation>
-    </message>
-    <message>
-        <source>Add nag</source>
-        <translation type="vanished">Přidat ocenění</translation>
-    </message>
-    <message>
-        <source>Set nags</source>
-        <translation type="vanished">Nastavit ocenění</translation>
-    </message>
-    <message>
-        <source>Move variation</source>
-        <translation type="vanished">Varianta tahu</translation>
-    </message>
-    <message>
-        <source>Enumerate variations</source>
-        <translation type="vanished">Výčet změn</translation>
-    </message>
-    <message>
-        <source>Set result</source>
-        <translation type="vanished">Nastavit výsledek</translation>
-    </message>
-    <message>
-        <source>Set variant</source>
-        <translation type="vanished">Nastavit variantu</translation>
-    </message>
-</context>
-<context>
     <name>GameList</name>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="54"/>
@@ -1994,10 +1842,6 @@ Shall I download a database?</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <source>Game Text</source>
-        <translation type="vanished">Notace</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="139"/>
         <source>Game List</source>
         <translation>Seznam partií</translation>
@@ -2043,14 +1887,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="168"/>
         <source>Saving %1...</source>
         <translation>Ukládání %1...</translation>
-    </message>
-    <message>
-        <source>PGN databases (*.pgn);;Polyglot books (*.bin)</source>
-        <translation type="vanished">PGN seznam databází (*.pgn);;Polyglot knihy (*.bin)</translation>
-    </message>
-    <message>
-        <source>The current database is modified!</source>
-        <translation type="vanished">Aktuálni databáze je změněna!</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="185"/>
@@ -2171,14 +2007,6 @@ Shall I download a database?</source>
         <translation>Sloučit vybrané části</translation>
     </message>
     <message>
-        <source>Automatic responses</source>
-        <translation type="vanished">Automatická odpověď</translation>
-    </message>
-    <message>
-        <source>Play both sides</source>
-        <translation type="vanished">Hrát na obou stranách</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2224"/>
         <source>Analysis Pane 2 is not running an engine for automatic analysis.</source>
         <translation>Analýza 2 nemá aktivní motor pro automatickou analýzu.</translation>
@@ -2207,10 +2035,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="2842"/>
         <source>all</source>
         <translation>vše</translation>
-    </message>
-    <message>
-        <source>Append game %1 to %2.</source>
-        <translation type="vanished">Připojení partie %1 do %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2993"/>
@@ -2292,10 +2116,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="3437"/>
         <source>Search ended</source>
         <translation>Vyhledávání dokončeno</translation>
-    </message>
-    <message>
-        <source>Updating tree...</source>
-        <translation type="vanished">Aktualizace stromu...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1555"/>
@@ -2500,10 +2320,6 @@ Shall I download a database?</source>
         <translation>Trénování</translation>
     </message>
     <message>
-        <source>Auto Respond</source>
-        <translation type="vanished">Automaticky reagovat</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1709"/>
         <source>Auto Player</source>
         <translation>Automatický přehrávač</translation>
@@ -2687,14 +2503,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1795"/>
         <source>Fi&amp;nd</source>
         <translation>&amp;Najít</translation>
-    </message>
-    <message>
-        <source>&amp;Reset filter</source>
-        <translation type="vanished">&amp;Obnovit filtr</translation>
-    </message>
-    <message>
-        <source>&amp;Reverse filter</source>
-        <translation type="vanished">&amp;Invertovat filtr</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1837"/>
@@ -3203,10 +3011,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1429"/>
         <source>&amp;New database...</source>
         <translation>&amp;Nová databáze...</translation>
-    </message>
-    <message>
-        <source>Open &amp;recent...</source>
-        <translation type="vanished">&amp;Otevřít nedávnou...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1829"/>
@@ -4328,10 +4132,6 @@ Shall I download a database?</source>
         <translation>Použít online tablebase servery</translation>
     </message>
     <message>
-        <source>&amp;Board</source>
-        <translation type="vanished">&amp;Šachovnice</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="278"/>
         <source>&amp;Colors:</source>
         <translation>&amp;Barvy:</translation>
@@ -4340,10 +4140,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.ui" line="116"/>
         <source>Board &amp;style:</source>
         <translation>&amp;Styl šachovnice:</translation>
-    </message>
-    <message>
-        <source>&amp;Guess move on left-click</source>
-        <translation type="vanished">&amp;Hádej dál levým tlačítkem myši</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="150"/>
@@ -4853,18 +4649,6 @@ Shall I download a database?</source>
         <translation>Nový motor</translation>
     </message>
     <message>
-        <source>plain</source>
-        <translation type="vanished">prostý</translation>
-    </message>
-    <message>
-        <source>outline</source>
-        <translation type="vanished">obrys</translation>
-    </message>
-    <message>
-        <source>&amp;Engines</source>
-        <translation type="vanished">&amp;Motory</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="866"/>
         <source>Name:</source>
         <translation>Jméno:</translation>
@@ -4890,10 +4674,6 @@ Shall I download a database?</source>
         <translation>CHování myši</translation>
     </message>
     <message>
-        <source>Next guess on right click</source>
-        <translation type="vanished">Další návrh, když klepnete pravým tlačítkem myši</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="369"/>
         <source>Wheel sensitivity</source>
         <translation>Rychlost kolečkem myši</translation>
@@ -4914,10 +4694,6 @@ Shall I download a database?</source>
         <translation>Nakresli souřadnice šachovnice</translation>
     </message>
     <message>
-        <source>Show threat</source>
-        <translation type="vanished">Zobraz hrozbu</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="194"/>
         <source>Colored copies</source>
         <translation>Barevné kopie</translation>
@@ -4933,17 +4709,9 @@ Shall I download a database?</source>
         <translation>Partie</translation>
     </message>
     <message>
-        <source>Autoplayer</source>
-        <translation type="vanished">Konkurz</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="465"/>
         <source>Automatically save game and continue with next</source>
         <translation>Automaticky uložit hru a pokračovat s další</translation>
-    </message>
-    <message>
-        <source>Auto Analysis backwards</source>
-        <translation type="vanished">Zpětná automatická analýza</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="443"/>
@@ -5006,10 +4774,6 @@ Shall I download a database?</source>
         <translation>Zvuk</translation>
     </message>
     <message>
-        <source>Indicate opponent&apos;s move</source>
-        <translation type="vanished">Poznámka na soupeřových tazích </translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.cpp" line="61"/>
         <source>Down</source>
         <translation>Dolů</translation>
@@ -5049,10 +4813,6 @@ Shall I download a database?</source>
         <source>Up</source>
         <translation>Nahoru</translation>
     </message>
-    <message>
-        <source>outline+shadow</source>
-        <translation type="vanished">Osnova+stín</translation>
-    </message>
 </context>
 <context>
     <name>PromotionDialog</name>
@@ -5084,10 +4844,6 @@ Shall I download a database?</source>
 </context>
 <context>
     <name>QuickSearchDialog</name>
-    <message>
-        <source>Vyhledávání dat partií</source>
-        <translation type="vanished">Partiedaten Suche</translation>
-    </message>
     <message>
         <location filename="../src/dialogs/quicksearch.ui" line="50"/>
         <source>Value or Range like 2000-2300</source>
@@ -5386,10 +5142,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/tagdetailwidget.ui" line="35"/>
         <source>Filter:</source>
         <translation>Filtr:</translation>
-    </message>
-    <message>
-        <source>Selected Item</source>
-        <translation type="vanished">Označit položku</translation>
     </message>
     <message>
         <location filename="../src/gui/tagdetailwidget.ui" line="48"/>

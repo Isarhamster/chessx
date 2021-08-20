@@ -9,12 +9,6 @@
         <translation>Despre ChessX</translation>
     </message>
     <message>
-        <source>&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
-Free Chess Database </source>
-        <translation type="vanished">&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
-Bază de date gratis pentru şah</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="68"/>
         <source>Version</source>
         <translation>Versiune</translation>
@@ -33,14 +27,6 @@ Bază de date gratis pentru şah</translation>
         <location filename="../src/dialogs/aboutdlg.ui" line="146"/>
         <source>Maintainer</source>
         <translation>Manager de proiect</translation>
-    </message>
-    <message>
-        <source>Further Maintainers</source>
-        <translation type="vanished">Alţi manageri de proiect</translation>
-    </message>
-    <message>
-        <source>Testing</source>
-        <translation type="vanished">Testare</translation>
     </message>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="43"/>
@@ -99,10 +85,6 @@ Free Chess Database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>sss</source>
-        <translation type="vanished">sss</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="404"/>
         <source>Contact</source>
         <translation>Contact</translation>
@@ -134,14 +116,6 @@ Free Chess Database</source>
         <location filename="../src/dialogs/actiondialog.ui" line="44"/>
         <source>Keyboard Shortcut</source>
         <translation>Scurtături tastatură</translation>
-    </message>
-    <message>
-        <source>Restore the original keyboard assignment</source>
-        <translation type="vanished">Restaurare asignările iniţiale ale tastaturii</translation>
-    </message>
-    <message>
-        <source>Reset</source>
-        <translation type="vanished">Reiniţializare</translation>
     </message>
 </context>
 <context>
@@ -193,10 +167,6 @@ Free Chess Database</source>
         <location filename="../src/gui/analysiswidget.ui" line="66"/>
         <source>Pin engine to current position</source>
         <translation>Poziţionează motorul la poziţia curentă</translation>
-    </message>
-    <message>
-        <source>...</source>
-        <translation type="vanished">...</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="89"/>
@@ -283,10 +253,6 @@ Free Chess Database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;a href=&quot;0&quot; title=&quot;Click to add move to game&quot;&gt;[+]&lt;/a&gt; &lt;b&gt;Tablebase:&lt;/b&gt; </source>
-        <translation type="vanished">&lt;a href=&quot;0&quot; title=&quot;Click pentru a adăuga mutări la partidă&quot;&gt;[+]&lt;/a&gt; &lt;b&gt;Tablebase:&lt;/b&gt;.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/analysiswidget.cpp" line="613"/>
         <source>&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1&lt;br&gt;</source>
         <translation type="unfinished"></translation>
@@ -294,14 +260,6 @@ Free Chess Database</source>
 </context>
 <context>
     <name>BitBoard</name>
-    <message>
-        <source>w%1
-b%2
-%3 to move.</source>
-        <translation type="vanished">w%1
-n%2
-%3 la mutare.</translation>
-    </message>
     <message>
         <location filename="../src/database/bitboard.cpp" line="3186"/>
         <source>w%1
@@ -373,10 +331,6 @@ b%2
         <translation>Aranjare poziţie</translation>
     </message>
     <message>
-        <source>Board</source>
-        <translation type="vanished">Tablă</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.ui" line="81"/>
         <source>Tools</source>
         <translation>Unelte</translation>
@@ -423,18 +377,6 @@ b%2
         <location filename="../src/gui/boardsetup.cpp" line="83"/>
         <source>Clear</source>
         <translation>Curăţă</translation>
-    </message>
-    <message>
-        <source>&amp;Reset</source>
-        <translation type="vanished">&amp;Reiniţializare</translation>
-    </message>
-    <message>
-        <source>&amp;Advanced</source>
-        <translation type="vanished">&amp;Avansat</translation>
-    </message>
-    <message>
-        <source>Castling rights</source>
-        <translation type="vanished">Drept la rocadă</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="237"/>
@@ -511,14 +453,6 @@ b%2
         <location filename="../src/gui/boardsetup.cpp" line="46"/>
         <source>Copy Text</source>
         <translation>Copiază text</translation>
-    </message>
-    <message>
-        <source>&amp;Ok</source>
-        <translation type="vanished">&amp;Ok</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Cancel</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="354"/>
@@ -672,10 +606,6 @@ Please check your installation.</source>
 <context>
     <name>BoardViewEx</name>
     <message>
-        <source>Form</source>
-        <translation type="obsolete">Formă</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardviewex.ui" line="157"/>
         <source>Comments and annotations will be displayed here. You can modify them, too.</source>
         <translation type="unfinished"></translation>
@@ -803,13 +733,6 @@ Please check your installation.</source>
     </message>
 </context>
 <context>
-    <name>ClipboardDatabase</name>
-    <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Clipboard</translation>
-    </message>
-</context>
-<context>
     <name>CommentDialog</name>
     <message>
         <location filename="../src/dialogs/commentdialog.ui" line="20"/>
@@ -841,14 +764,6 @@ Please check your installation.</source>
         <location filename="../src/dialogs/commentdialog.ui" line="129"/>
         <source>Evaluation</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Elapsed time</source>
-        <translation type="vanished">Timp scurs</translation>
-    </message>
-    <message>
-        <source>Clock time</source>
-        <translation type="vanished">Timp ceas</translation>
     </message>
     <message>
         <location filename="../src/dialogs/commentdialog.ui" line="103"/>
@@ -947,10 +862,6 @@ Please check your installation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add to favorites</source>
-        <translation type="vanished">Adaugă la favorite</translation>
-    </message>
-    <message>
         <location filename="../src/gui/databaselist.cpp" line="105"/>
         <source>Remove from Favorites</source>
         <translation>Elimină din favorite</translation>
@@ -1009,10 +920,6 @@ Please check your installation.</source>
         <location filename="../src/gui/databaselistmodel.cpp" line="59"/>
         <source>Read</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Clipboard</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselistmodel.cpp" line="201"/>
@@ -1180,14 +1087,6 @@ Please check your installation.</source>
         <source>Black Player</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>&lt;table&gt;&lt;tr&gt;&lt;th&gt;White Player&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;table&gt;&lt;tr&gt;&lt;th&gt;Jucătorul cu albele&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;a name=&apos;ListBlack&apos;&gt;&lt;/a&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Black Player&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;a name=&apos;ListBlack&apos;&gt;&lt;/a&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Jucătorul cu negrele&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</translation>
-    </message>
 </context>
 <context>
     <name>EngineOptionDialog</name>
@@ -1195,10 +1094,6 @@ Please check your installation.</source>
         <location filename="../src/gui/engineoptiondialog.ui" line="14"/>
         <source>Engine Options</source>
         <translation>Opţiuni motor</translation>
-    </message>
-    <message>
-        <source>Reset</source>
-        <translation type="vanished">Reset</translation>
     </message>
 </context>
 <context>
@@ -1268,10 +1163,6 @@ Please check your installation.</source>
         <location filename="../src/database/eventinfo.cpp" line="217"/>
         <source>Date: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Date: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</source>
-        <translation type="vanished">Data: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/database/eventinfo.cpp" line="225"/>
@@ -1590,17 +1481,9 @@ Please check your installation.</source>
         <translation>Alb</translation>
     </message>
     <message>
-        <source>WhiteElo</source>
-        <translation type="vanished">Elo Alb</translation>
-    </message>
-    <message>
         <location filename="../src/database/filtermodel.cpp" line="57"/>
         <source>Black</source>
         <translation>Negru</translation>
-    </message>
-    <message>
-        <source>BlackElo</source>
-        <translation type="vanished">Elo Negru</translation>
     </message>
     <message>
         <location filename="../src/database/filtermodel.cpp" line="56"/>
@@ -1646,17 +1529,6 @@ Please check your installation.</source>
         <location filename="../src/database/filtermodel.cpp" line="65"/>
         <source>Moves</source>
         <translation>Mutări</translation>
-    </message>
-</context>
-<context>
-    <name>Game</name>
-    <message>
-        <source>Promote Variation</source>
-        <translation type="vanished">Promovează Variantă</translation>
-    </message>
-    <message>
-        <source>Remove variation</source>
-        <translation type="vanished">Eliminare variantă</translation>
     </message>
 </context>
 <context>
@@ -1766,10 +1638,6 @@ Please check your installation.</source>
         <location filename="../src/gui/gamelist.cpp" line="376"/>
         <source>Reverse filter</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Selected game</source>
-        <translation type="vanished">Jocul selectat</translation>
     </message>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="361"/>
@@ -1972,10 +1840,6 @@ Shall I download a database?</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <source>Game Text</source>
-        <translation type="vanished">Text Joc</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="199"/>
         <source>Game Time</source>
         <translation>Timp Joc</translation>
@@ -2039,10 +1903,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="624"/>
         <source>ECO Load Error.</source>
         <translation>Eroare la încărcare ECO.</translation>
-    </message>
-    <message>
-        <source>[Clipboard]</source>
-        <translation type="vanished">[Clipboard]</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1155"/>
@@ -2113,14 +1973,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1431"/>
         <source>Open in UTF8...</source>
         <translation>Deschide în UTF8...</translation>
-    </message>
-    <message>
-        <source>Open &amp;recent...</source>
-        <translation type="vanished">Deschide &amp;recent...</translation>
-    </message>
-    <message>
-        <source>&amp;Save</source>
-        <translation type="vanished">&amp;Salvează</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1443"/>
@@ -2493,10 +2345,6 @@ Shall I download a database?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Paste</source>
-        <translation type="vanished">&amp;Lipeşte</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1559"/>
         <source>&amp;Preferences...</source>
         <translation>&amp;Preferinţe...</translation>
@@ -2515,10 +2363,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1569"/>
         <source>Stay on Top</source>
         <translation>Mereu Deasupra</translation>
-    </message>
-    <message>
-        <source>New board</source>
-        <translation type="vanished">Tablă nouă</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1578"/>
@@ -2571,10 +2415,6 @@ Shall I download a database?</source>
         <translation>&amp;Aleatoriu</translation>
     </message>
     <message>
-        <source>&amp;Save....</source>
-        <translation type="vanished">&amp;Salvează....</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1680"/>
         <source>&amp;Flip board</source>
         <translation>&amp;Roteşte tabla</translation>
@@ -2583,10 +2423,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1699"/>
         <source>Training</source>
         <translation>Antrenament</translation>
-    </message>
-    <message>
-        <source>Auto Respond</source>
-        <translation type="vanished">Răspuns automat</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1709"/>
@@ -2772,22 +2608,6 @@ Shall I download a database?</source>
         <translation>Caută</translation>
     </message>
     <message>
-        <source>Find &amp;tag</source>
-        <translation type="vanished">Găseşte &amp;etichetă</translation>
-    </message>
-    <message>
-        <source>Find &amp;position</source>
-        <translation type="vanished">Găseşte &amp;poziţie</translation>
-    </message>
-    <message>
-        <source>&amp;Reset filter</source>
-        <translation type="vanished">&amp;Reiniţializare filtru</translation>
-    </message>
-    <message>
-        <source>&amp;Reverse filter</source>
-        <translation type="vanished">&amp;Inversează filtru</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1828"/>
         <source>&amp;Database</source>
         <translation>&amp;Baza de date</translation>
@@ -2821,10 +2641,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1868"/>
         <source>Customize Keyboard...</source>
         <translation>Personalizează tastatură...</translation>
-    </message>
-    <message>
-        <source>&amp;Report a bug...</source>
-        <translation type="vanished">&amp;Raportează un bug...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1875"/>
@@ -2883,10 +2699,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="141"/>
         <source>PGN databases (*.pgn)</source>
         <translation>Baze de date PGN (*.pgn)</translation>
-    </message>
-    <message>
-        <source>The current database is modified!</source>
-        <translation type="vanished">Baza de date curentă este modificată!</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="185"/>
@@ -3076,10 +2888,6 @@ Shall I download a database?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Append game %1 to %2.</source>
-        <translation type="vanished">Ataşează partida %1 la %2.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2993"/>
         <source>Appended %1 games to %2.</source>
         <translation type="unfinished"></translation>
@@ -3093,10 +2901,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="3442"/>
         <source>Searching...</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Clipboard</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="3023"/>
@@ -3187,10 +2991,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="3437"/>
         <source>Search ended</source>
         <translation>Căutarea finalizată</translation>
-    </message>
-    <message>
-        <source>Updating tree...</source>
-        <translation type="vanished">Actualizează arborele...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="3858"/>
@@ -4169,14 +3969,6 @@ Shall I download a database?</source>
         <source>Black Openings</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>&lt;p&gt;White Openings:&lt;/p&gt;&lt;ul&gt;</source>
-        <translation type="vanished">&lt;p&gt;Deschiderile Albului:&lt;/p&gt;&lt;ul&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;/ul&gt;&lt;p&gt;Black Openings:&lt;/p&gt;&lt;ul&gt;</source>
-        <translation type="vanished">&lt;/ul&gt;&lt;p&gt;Deschiderile negrului:&lt;/p&gt;&lt;ul&gt;</translation>
-    </message>
 </context>
 <context>
     <name>PlayerListWidget</name>
@@ -4195,45 +3987,9 @@ Shall I download a database?</source>
         <translation>Preferinte</translation>
     </message>
     <message>
-        <source>&amp;Ok</source>
-        <translation type="vanished">&amp;Ok</translation>
-    </message>
-    <message>
-        <source>&amp;Apply</source>
-        <translation type="vanished">&amp;Aplică</translation>
-    </message>
-    <message>
-        <source>&amp;Reset</source>
-        <translation type="vanished">&amp;Reiniţializare</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Cancel</translation>
-    </message>
-    <message>
-        <source>&amp;Board</source>
-        <translation type="vanished">&amp;Tablă de şah</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="278"/>
         <source>&amp;Colors:</source>
         <translation>&amp;Culori:</translation>
-    </message>
-    <message>
-        <source>plain</source>
-        <translation type="vanished">simplu</translation>
-    </message>
-    <message>
-        <source>outline</source>
-        <translation type="vanished">contur</translation>
-    </message>
-    <message>
-        <source>outline+shadow</source>
-        <translation type="vanished">contur+umbră</translation>
-    </message>
-    <message>
-        <source>Highlight current move</source>
-        <translation type="vanished">Evidenţiază mutarea curentă</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="150"/>
@@ -4249,14 +4005,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.ui" line="307"/>
         <source>Mouse Behaviour</source>
         <translation>Comportamentul mouse-ului</translation>
-    </message>
-    <message>
-        <source>&amp;Guess move on left-click</source>
-        <translation type="vanished">&amp;Ghiceşte mutarea la click stânga</translation>
-    </message>
-    <message>
-        <source>Next guess on right click</source>
-        <translation type="vanished">Mutare sugerată la click dreapta</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="369"/>
@@ -4289,17 +4037,9 @@ Shall I download a database?</source>
         <translation>Partidă</translation>
     </message>
     <message>
-        <source>Autoplayer</source>
-        <translation type="vanished">Jucător automat</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="465"/>
         <source>Automatically save game and continue with next</source>
         <translation>Salvează automat jocul şi continuă</translation>
-    </message>
-    <message>
-        <source>&amp;Engines</source>
-        <translation type="vanished">&amp;Motoare de joc</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="882"/>
@@ -5114,62 +4854,6 @@ Shall I download a database?</source>
         <translation>Căutare Rapidă Tag</translation>
     </message>
     <message>
-        <source>Game Number</source>
-        <translation type="vanished">Numărul Partidei</translation>
-    </message>
-    <message>
-        <source>White</source>
-        <translation type="vanished">Alb</translation>
-    </message>
-    <message>
-        <source>White Elo</source>
-        <translation type="vanished">Elo Alb</translation>
-    </message>
-    <message>
-        <source>Black</source>
-        <translation type="vanished">Negru</translation>
-    </message>
-    <message>
-        <source>Black Elo</source>
-        <translation type="vanished">Elo Negru</translation>
-    </message>
-    <message>
-        <source>Event</source>
-        <translation type="vanished">Eveniment</translation>
-    </message>
-    <message>
-        <source>Site</source>
-        <translation type="vanished">Loc</translation>
-    </message>
-    <message>
-        <source>Round</source>
-        <translation type="vanished">Rundă</translation>
-    </message>
-    <message>
-        <source>Date</source>
-        <translation type="vanished">Data</translation>
-    </message>
-    <message>
-        <source>Result</source>
-        <translation type="vanished">Rezultat</translation>
-    </message>
-    <message>
-        <source>ECO</source>
-        <translation type="vanished">ECO</translation>
-    </message>
-    <message>
-        <source>Number of Moves</source>
-        <translation type="vanished">Număr de Mutări</translation>
-    </message>
-    <message>
-        <source>&amp;Find</source>
-        <translation type="vanished">&amp;Găseşte</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Cancel</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/quicksearch.ui" line="50"/>
         <source>Value or Range like 2000-2300</source>
         <translation>Valoare sau Rang 2000-2300</translation>
@@ -5291,10 +4975,6 @@ Shall I download a database?</source>
         <source>Rename</source>
         <translation>Redenumeşte</translation>
     </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">Închide</translation>
-    </message>
 </context>
 <context>
     <name>SaveDialog</name>
@@ -5302,18 +4982,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/savedialog.ui" line="14"/>
         <source>Save Game</source>
         <translation>Salvează partida</translation>
-    </message>
-    <message>
-        <source>&amp;Discard Changes</source>
-        <translation type="vanished">&amp;Respinge schimbările</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Cancel</translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <location filename="../src/dialogs/savedialog.ui" line="23"/>
@@ -5435,15 +5103,6 @@ Shall I download a database?</source>
         <translation>Rezultat:</translation>
     </message>
     <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Clipboard</translation>
-    </message>
-    <message>
-        <source>Dates are not properly formatted!</source>
-        <comment>Invalid Data</comment>
-        <translation type="vanished">Datele nu sunt formatate corespunzător!</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/savedialog.cpp" line="267"/>
         <source>Dates are not properly formatted!</source>
         <translation type="unfinished">Datele nu sunt formatate corespunzător!</translation>
@@ -5485,17 +5144,9 @@ Shall I download a database?</source>
 <context>
     <name>TagDetailWidget</name>
     <message>
-        <source>Form</source>
-        <translation type="vanished">Formă</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tagdetailwidget.ui" line="35"/>
         <source>Filter:</source>
         <translation>Filtru:</translation>
-    </message>
-    <message>
-        <source>Selected Item</source>
-        <translation type="vanished">Item Selectat</translation>
     </message>
     <message>
         <location filename="../src/gui/tagdetailwidget.ui" line="48"/>

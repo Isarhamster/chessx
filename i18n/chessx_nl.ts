@@ -169,10 +169,6 @@ Free Chess Database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>...</source>
-        <translation type="obsolete">...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/analysiswidget.ui" line="89"/>
         <source>Select an engine</source>
         <translation type="unfinished"></translation>
@@ -192,14 +188,6 @@ Free Chess Database</source>
         <location filename="../src/gui/analysiswidget.cpp" line="127"/>
         <source>Stop</source>
         <translation>Stop</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="vanished">Fout</translation>
-    </message>
-    <message>
-        <source>There was an error running engine &lt;b&gt;%1&lt;/b&gt;.</source>
-        <translation type="vanished">Er treedt een fout op tijdens gebruik van de engine.</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.cpp" line="141"/>
@@ -266,10 +254,6 @@ Free Chess Database</source>
         <location filename="../src/gui/analysiswidget.cpp" line="618"/>
         <source>&lt;i&gt;Book:&lt;/i&gt;</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Tablebase:&lt;/b&gt; </source>
-        <translation type="vanished">&lt;b&gt;Tablebase:&lt;/b&gt; </translation>
     </message>
 </context>
 <context>
@@ -345,17 +329,9 @@ b%2
         <translation>Zet stelling op</translation>
     </message>
     <message>
-        <source>Board</source>
-        <translation type="vanished">Bord</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.cpp" line="83"/>
         <source>Clear</source>
         <translation>Wis</translation>
-    </message>
-    <message>
-        <source>&amp;Reset</source>
-        <translation type="vanished">&amp;Reset</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="92"/>
@@ -368,17 +344,9 @@ b%2
         <translation>Zet:</translation>
     </message>
     <message>
-        <source>&amp;Advanced</source>
-        <translation type="vanished">&amp;Geavanceerd</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.ui" line="266"/>
         <source>En passant file:</source>
         <translation>En passant rij:</translation>
-    </message>
-    <message>
-        <source>Castling rights</source>
-        <translation type="vanished">Rechten om te rokeren</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="237"/>
@@ -465,38 +433,6 @@ b%2
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>a</source>
-        <translation type="vanished">a</translation>
-    </message>
-    <message>
-        <source>b</source>
-        <translation type="vanished">b</translation>
-    </message>
-    <message>
-        <source>c</source>
-        <translation type="vanished">c</translation>
-    </message>
-    <message>
-        <source>d</source>
-        <translation type="vanished">d</translation>
-    </message>
-    <message>
-        <source>e</source>
-        <translation type="vanished">e</translation>
-    </message>
-    <message>
-        <source>f</source>
-        <translation type="vanished">f</translation>
-    </message>
-    <message>
-        <source>g</source>
-        <translation type="vanished">g</translation>
-    </message>
-    <message>
-        <source>h</source>
-        <translation type="vanished">h</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.ui" line="355"/>
         <source>Halfmove clock:</source>
         <translation>Halve zet klok:</translation>
@@ -510,18 +446,6 @@ b%2
         <location filename="../src/gui/boardsetup.cpp" line="45"/>
         <source>Copy FEN</source>
         <translation>Copieer FEN</translation>
-    </message>
-    <message>
-        <source>&amp;Ok</source>
-        <translation type="vanished">&amp;Ok</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Annuleer</translation>
-    </message>
-    <message>
-        <source>Invalid position</source>
-        <translation type="vanished">Ongeldige stelling</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="46"/>
@@ -603,10 +527,6 @@ b%2
         <translation>Onbekende reden</translation>
     </message>
     <message>
-        <source>FEN: %1</source>
-        <translation type="vanished">FEN: %1</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.cpp" line="528"/>
         <source>Illegal position: %1</source>
         <translation>Illegale stelling: %1</translation>
@@ -624,10 +544,6 @@ b%2
 </context>
 <context>
     <name>BoardTheme</name>
-    <message>
-        <source>Error</source>
-        <translation type="vanished">Fout</translation>
-    </message>
     <message>
         <location filename="../src/gui/boardtheme.cpp" line="203"/>
         <source>Cannot find piece data.
@@ -706,10 +622,6 @@ Please check your installation.</source>
         <location filename="../src/gui/chessbrowser.cpp" line="126"/>
         <source>Add start comment...</source>
         <translation>Voeg startcommentaar toe</translation>
-    </message>
-    <message>
-        <source>Add comment...</source>
-        <translation type="vanished">Voeg commentaat toe...</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="127"/>
@@ -817,10 +729,6 @@ Please check your installation.</source>
         <location filename="../src/gui/chessbrowser.cpp" line="188"/>
         <source>Remove Variations</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Small font</source>
-        <translation type="vanished">Klein lettertype</translation>
     </message>
 </context>
 <context>
@@ -1621,13 +1529,6 @@ Please check your installation.</source>
     </message>
 </context>
 <context>
-    <name>Game</name>
-    <message>
-        <source>Remove variation</source>
-        <translation type="obsolete">Verwijder variant</translation>
-    </message>
-</context>
-<context>
     <name>GameList</name>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="54"/>
@@ -1900,97 +1801,6 @@ Please check your installation.</source>
     </message>
 </context>
 <context>
-    <name>HelpWindow</name>
-    <message>
-        <source>ChessX - help viewer</source>
-        <translation type="vanished">ChessX - hulp raadplegen</translation>
-    </message>
-    <message>
-        <source>&amp;Open ...</source>
-        <translation type="vanished">&amp;Open ...</translation>
-    </message>
-    <message>
-        <source>Opens a help page</source>
-        <translation type="vanished">Opent een hulppagina</translation>
-    </message>
-    <message>
-        <source>&amp;Print</source>
-        <translation type="vanished">&amp;Druk af</translation>
-    </message>
-    <message>
-        <source>Prints the current page</source>
-        <translation type="vanished">Drukt de huidige pagina af</translation>
-    </message>
-    <message>
-        <source>E&amp;xit</source>
-        <translation type="vanished">Sluit af</translation>
-    </message>
-    <message>
-        <source>Exits the help browser</source>
-        <translation type="vanished">Sluit de hulp af</translation>
-    </message>
-    <message>
-        <source>&amp;Forward</source>
-        <translation type="vanished">&amp;Volgende</translation>
-    </message>
-    <message>
-        <source>Next document in history</source>
-        <translation type="vanished">Volgend document in geschiedenis</translation>
-    </message>
-    <message>
-        <source>&amp;Back</source>
-        <translation type="vanished">&amp;Terug</translation>
-    </message>
-    <message>
-        <source>Go back in history</source>
-        <translation type="vanished">Ga terug in de geschiedenis</translation>
-    </message>
-    <message>
-        <source>&amp;Home</source>
-        <translation type="vanished">&amp;Begin</translation>
-    </message>
-    <message>
-        <source>Open the start page of the helpsystem</source>
-        <translation type="vanished">Open de startpagina van het helpsysteem</translation>
-    </message>
-    <message>
-        <source>&amp;About</source>
-        <translation type="vanished">&amp;Over</translation>
-    </message>
-    <message>
-        <source>About ChessX</source>
-        <translation type="vanished">Over ChessX</translation>
-    </message>
-    <message>
-        <source>History</source>
-        <translation type="vanished">Geschiedenis</translation>
-    </message>
-    <message>
-        <source>&amp;File</source>
-        <translation type="vanished">&amp;Bestand</translation>
-    </message>
-    <message>
-        <source>Na&amp;vigate</source>
-        <translation type="vanished">Na&amp;vigeer</translation>
-    </message>
-    <message>
-        <source>&amp;Help</source>
-        <translation type="vanished">&amp;Help</translation>
-    </message>
-    <message>
-        <source>Ready</source>
-        <translation type="vanished">Gereed</translation>
-    </message>
-    <message>
-        <source>Select a help file ...</source>
-        <translation type="vanished">Selecteer een helpbestand</translation>
-    </message>
-    <message>
-        <source>Help pages (*.html *.htm )</source>
-        <translation type="vanished">Hulp pagina&apos;s (*.html *.htm )</translation>
-    </message>
-</context>
-<context>
     <name>LoadQuery</name>
     <message>
         <location filename="../src/gui/loadquery.ui" line="14"/>
@@ -2027,10 +1837,6 @@ Shall I download a database?</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <source>Game Text</source>
-        <translation type="vanished">Partij Tekst</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="139"/>
         <source>Game List</source>
         <translation>Partij Lijst</translation>
@@ -2041,10 +1847,6 @@ Shall I download a database?</source>
         <translation>Openingen boom</translation>
     </message>
     <message>
-        <source>Analysis</source>
-        <translation type="vanished">Analyse</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="520"/>
         <source>Loading ECO file...</source>
         <translation>ECO bestand laden...</translation>
@@ -2053,14 +1855,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="624"/>
         <source>ECO Loaded.</source>
         <translation>ECO geladen.</translation>
-    </message>
-    <message>
-        <source>[Clipboard]</source>
-        <translation type="vanished">[Klembord]</translation>
-    </message>
-    <message>
-        <source>Database %1 is already opened.</source>
-        <translation type="vanished">Database %1 is reeds geopend.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1191"/>
@@ -2111,14 +1905,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1430"/>
         <source>&amp;Open...</source>
         <translation>&amp;Open...</translation>
-    </message>
-    <message>
-        <source>Open &amp;recent...</source>
-        <translation type="vanished">Open &amp;recent...</translation>
-    </message>
-    <message>
-        <source>&amp;Save</source>
-        <translation type="vanished">&amp;Bewaar</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1448"/>
@@ -2191,14 +1977,6 @@ Shall I download a database?</source>
         <translation>Opzetten &amp;stelling...</translation>
     </message>
     <message>
-        <source>&amp;Copy FEN</source>
-        <translation type="vanished">&amp;Copieer FEN</translation>
-    </message>
-    <message>
-        <source>&amp;Paste FEN</source>
-        <translation type="vanished">&amp;Plak FEN</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1559"/>
         <source>&amp;Preferences...</source>
         <translation>&amp;Voorkeuren...</translation>
@@ -2214,10 +1992,6 @@ Shall I download a database?</source>
         <translation>&amp;Draai bord</translation>
     </message>
     <message>
-        <source>&amp;Player information...</source>
-        <translation type="vanished">&amp;Spelers informatie</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1637"/>
         <source>&amp;Game</source>
         <translation>&amp;Partij</translation>
@@ -2226,14 +2000,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1648"/>
         <source>&amp;Load</source>
         <translation>&amp;Laad</translation>
-    </message>
-    <message>
-        <source>&amp;First</source>
-        <translation type="vanished">&amp;Eerste</translation>
-    </message>
-    <message>
-        <source>&amp;Last</source>
-        <translation type="vanished">&amp;Laatste</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1654"/>
@@ -2812,33 +2578,9 @@ Shall I download a database?</source>
         <translation>&amp;Nieuw</translation>
     </message>
     <message>
-        <source>&amp;Save....</source>
-        <translation type="vanished">&amp;Bewaar</translation>
-    </message>
-    <message>
-        <source>&amp;Analyze</source>
-        <translation type="vanished">&amp;Analyseer</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1795"/>
         <source>Fi&amp;nd</source>
         <translation>Zoe&amp;k</translation>
-    </message>
-    <message>
-        <source>Find &amp;tag</source>
-        <translation type="vanished">Zoek &amp;tag</translation>
-    </message>
-    <message>
-        <source>Find &amp;position</source>
-        <translation type="vanished">Zoek &amp;stelling</translation>
-    </message>
-    <message>
-        <source>&amp;Reset filter</source>
-        <translation type="vanished">&amp;Reset filter</translation>
-    </message>
-    <message>
-        <source>&amp;Reverse filter</source>
-        <translation type="vanished">&amp;Omgekeerde filter</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1828"/>
@@ -2872,17 +2614,9 @@ Shall I download a database?</source>
         <translation>&amp;Help</translation>
     </message>
     <message>
-        <source>&amp;Report a bug...</source>
-        <translation type="vanished">&amp;Meld een fout...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1875"/>
         <source>&amp;About ChessX</source>
         <translation>&amp;Over ChessX</translation>
-    </message>
-    <message>
-        <source>&amp;Debug</source>
-        <translation type="vanished">&amp;Debug</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1928"/>
@@ -2898,18 +2632,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1993"/>
         <source> (%1 s.)</source>
         <translation> (%1 s.)</translation>
-    </message>
-    <message>
-        <source>Compiled with &apos;fastbits&apos; option&lt;br&gt;</source>
-        <translation type="vanished">Gecompileerd met &apos;fastbits&apos; optie&lt;br&gt;</translation>
-    </message>
-    <message>
-        <source>About ChessX</source>
-        <translation type="vanished">Over ChessX</translation>
-    </message>
-    <message>
-        <source>&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Free chess database available under GPLv2.&lt;br&gt;Version %1&lt;br&gt;%2Copyright 2005-2010 ChessX developers&lt;p&gt;Current developer and maintainer: &lt;a href=&quot;mailto:mrudolf@kdewebdev.org&quot;&gt;Michal Rudolf&lt;/a&gt;&lt;p&gt;Testing, usability and website: Bruno Rizzuti&lt;p&gt;Additional coding: Marius Roets, Sean Estabrooks, Rico Zenklusen, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.&lt;p&gt;Homepage: &lt;a href=&quot;http://chessx.sf.net&quot;&gt;http://chessx.sf.net&lt;/a&gt;&lt;br&gt;Mailing list: &lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net</source>
-        <translation type="vanished">&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Free chess database available under GPLv2.&lt;br&gt;Version %1&lt;br&gt;%2Copyright 2005-2010 ChessX developers&lt;p&gt;Current developer and maintainer: &lt;a href=&quot;mailto:mrudolf@kdewebdev.org&quot;&gt;Michal Rudolf&lt;/a&gt;&lt;p&gt;Testing, usability and website: Bruno Rizzuti&lt;p&gt;Additional coding: Marius Roets, Sean Estabrooks, Rico Zenklusen, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.&lt;p&gt;Homepage: &lt;a href=&quot;http://chessx.sf.net&quot;&gt;http://chessx.sf.net&lt;/a&gt;&lt;br&gt;Mailing list: &lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="92"/>
@@ -3204,14 +2926,6 @@ Shall I download a database?</source>
         <translation>Paard</translation>
     </message>
     <message>
-        <source>Promotion</source>
-        <translation type="vanished">Promotie</translation>
-    </message>
-    <message>
-        <source>Promote to:</source>
-        <translation type="vanished">Promoveer tot:</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1555"/>
         <source>Load Game</source>
         <translation>Laad partij</translation>
@@ -3227,18 +2941,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="1651"/>
         <source>This database is read only.</source>
         <translation>Deze database is alleen lezen.</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;&lt;a href=&quot;tag:white&quot;&gt;%1&lt;/a&gt;&lt;/b&gt; %2 - &lt;b&gt;&lt;a href=&quot;tag:black&quot;&gt;%3&lt;/a&gt;&lt;/b&gt; %4</source>
-        <translation type="vanished">&lt;b&gt;&lt;a href=&quot;tag:wit&quot;&gt;%1&lt;/a&gt;&lt;/b&gt; %2 - &lt;b&gt;&lt;a href=&quot;tag:zwart&quot;&gt;%3&lt;/a&gt;&lt;/b&gt; %4</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;%1&lt;/b&gt; &amp;nbsp; %2</source>
-        <translation type="vanished">&lt;b&gt;%1&lt;/b&gt; &amp;nbsp; %2</translation>
-    </message>
-    <message>
-        <source> %1: %2/%3 </source>
-        <translation type="vanished"> %1: %2/%3 </translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="3238"/>
@@ -3314,14 +3016,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="3347"/>
         <source>%1 - ChessX</source>
         <translation>%1 - ChessX</translation>
-    </message>
-    <message>
-        <source>Updating tree...</source>
-        <translation type="vanished">Aanpassen boom...</translation>
-    </message>
-    <message>
-        <source>Tree updated</source>
-        <translation type="vanished">Boom aangepast</translation>
     </message>
 </context>
 <context>
@@ -4222,41 +3916,6 @@ Shall I download a database?</source>
     </message>
 </context>
 <context>
-    <name>PlayerDialog</name>
-    <message>
-        <source>Player Information</source>
-        <translation type="vanished">Spelers informatie</translation>
-    </message>
-    <message>
-        <source>&amp;Players</source>
-        <translation type="vanished">&amp;Spelers</translation>
-    </message>
-    <message>
-        <source>&amp;Find:</source>
-        <translation type="vanished">&amp;Zoek</translation>
-    </message>
-    <message>
-        <source>&amp;Show player</source>
-        <translation type="vanished">&amp;Laat speler zien</translation>
-    </message>
-    <message>
-        <source>&amp;Update list</source>
-        <translation type="vanished">&amp;Ververs lijst</translation>
-    </message>
-    <message>
-        <source>&amp;Information</source>
-        <translation type="vanished">&amp;Informatie</translation>
-    </message>
-    <message>
-        <source>&amp;Update player</source>
-        <translation type="vanished">&amp;Ververs speler</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;i&gt;No player chosen.&lt;/i&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;i&gt;Geen speler gekozen.&lt;/i&gt;&lt;/html&gt;</translation>
-    </message>
-</context>
-<context>
     <name>PlayerInfo</name>
     <message>
         <location filename="../src/database/playerinfo.cpp" line="193"/>
@@ -4322,22 +3981,6 @@ Shall I download a database?</source>
         <translation>Voorkeuren</translation>
     </message>
     <message>
-        <source>&amp;Ok</source>
-        <translation type="vanished">&amp;Ok</translation>
-    </message>
-    <message>
-        <source>&amp;Apply</source>
-        <translation type="vanished">&amp;Pas toe</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Annuleer</translation>
-    </message>
-    <message>
-        <source>&amp;Board</source>
-        <translation type="vanished">&amp;Bord</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="307"/>
         <source>Mouse Behaviour</source>
         <translation type="unfinished"></translation>
@@ -4380,18 +4023,6 @@ Shall I download a database?</source>
         <translation>&amp;Schaakstukken set:</translation>
     </message>
     <message>
-        <source>plain</source>
-        <translation type="vanished">puur</translation>
-    </message>
-    <message>
-        <source>outline</source>
-        <translation type="vanished">rand</translation>
-    </message>
-    <message>
-        <source>outline+shadow</source>
-        <translation type="vanished">rand+schaduw</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="268"/>
         <source>Show move indicator</source>
         <translation type="unfinished"></translation>
@@ -4410,10 +4041,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.ui" line="150"/>
         <source>&amp;Draw frame between squares</source>
         <translation>&amp;Teken rand om velden</translation>
-    </message>
-    <message>
-        <source>&amp;Guess move on left-click</source>
-        <translation type="vanished">&amp;Voorspel zet bij linker muisklik</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="116"/>
@@ -4663,10 +4290,6 @@ Shall I download a database?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Engines</source>
-        <translation type="vanished">&amp;Engines</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="1005"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
@@ -4898,14 +4521,6 @@ Shall I download a database?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>WinBoard</source>
-        <translation type="vanished">WinBoard</translation>
-    </message>
-    <message>
-        <source>UCI</source>
-        <translation type="vanished">UCI</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="707"/>
         <location filename="../src/dialogs/preferences.ui" line="718"/>
         <location filename="../src/dialogs/preferences.ui" line="729"/>
@@ -4970,10 +4585,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.cpp" line="60"/>
         <source>Up</source>
         <translation>Omhoog</translation>
-    </message>
-    <message>
-        <source>&amp;Advanced</source>
-        <translation type="vanished">&amp;Geavanceerd</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1457"/>
@@ -5233,62 +4844,6 @@ Shall I download a database?</source>
         <translation>Snelle Tag Zoekopdracht</translation>
     </message>
     <message>
-        <source>Game number</source>
-        <translation type="vanished">Partij nummer</translation>
-    </message>
-    <message>
-        <source>White</source>
-        <translation type="vanished">Wit</translation>
-    </message>
-    <message>
-        <source>White Elo</source>
-        <translation type="vanished">Elo wit</translation>
-    </message>
-    <message>
-        <source>Black</source>
-        <translation type="vanished">Zwart</translation>
-    </message>
-    <message>
-        <source>Black Elo</source>
-        <translation type="vanished">Elo zwart</translation>
-    </message>
-    <message>
-        <source>Event</source>
-        <translation type="vanished">Evenement</translation>
-    </message>
-    <message>
-        <source>Site</source>
-        <translation type="vanished">Plaats</translation>
-    </message>
-    <message>
-        <source>Round</source>
-        <translation type="vanished">Ronde</translation>
-    </message>
-    <message>
-        <source>Date</source>
-        <translation type="vanished">Datum</translation>
-    </message>
-    <message>
-        <source>Result</source>
-        <translation type="vanished">Resultaat</translation>
-    </message>
-    <message>
-        <source>ECO</source>
-        <translation type="vanished">ECO</translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="vanished">Lengte</translation>
-    </message>
-    <message>
-        <source>&amp;Find</source>
-        <translation type="vanished">&amp;Zoek</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Annuleer</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/quicksearch.ui" line="40"/>
         <source>&amp;Value:</source>
         <translation>&amp;Waarde:</translation>
@@ -5418,14 +4973,6 @@ Shall I download a database?</source>
         <translation>Bewaar Partij</translation>
     </message>
     <message>
-        <source>&amp;OK</source>
-        <translation type="vanished">&amp;OK</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Annuleer</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/savedialog.ui" line="23"/>
         <source>Players</source>
         <translation>Spelers</translation>
@@ -5440,22 +4987,6 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/savedialog.ui" line="59"/>
         <source>&amp;White:</source>
         <translation>&amp;Wit:</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Player name in &lt;span style=&quot; font-weight:600;&quot;&gt;surname, name&lt;/span&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt; &lt;/span&gt;format. Some examples:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Kasparov, Garry&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Tal, Mikhail N&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Granda Zuniga, Julio E&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Player name in &lt;span style=&quot; font-weight:600;&quot;&gt;surname, name&lt;/span&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt; &lt;/span&gt;format. Some examples:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Kasparov, Garry&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Tal, Mikhail N&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Granda Zuniga, Julio E&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/dialogs/savedialog.ui" line="89"/>
@@ -5526,53 +5057,9 @@ p, li { white-space: pre-wrap; }
         <translation>Toernooi</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Date of the first round of the tournament in &lt;span style=&quot; font-weight:600;&quot;&gt;YYYY.MM.DD&lt;/span&gt; format. Replace trailing part with ?? if necessary.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Some examples:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;2007.03.03&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;2006.05.?? &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1935.??.?? &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Date of the first round of the tournament in &lt;span style=&quot; font-weight:600;&quot;&gt;YYYY.MM.DD&lt;/span&gt; format. Replace trailing part with ?? if necessary.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Some examples:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;2007.03.03&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;2006.05.?? &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1935.??.?? &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Site of the tournament in &lt;span style=&quot; font-weight:600;&quot;&gt;Place CNT&lt;/span&gt; format, where CNT is three-letter country code. Some examples:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Ontario CAN&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Warsaw POL&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;New York USA&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Site of the tournament in &lt;span style=&quot; font-weight:600;&quot;&gt;Place CNT&lt;/span&gt; format, where CNT is three-letter country code. Some examples:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Ontario CAN&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Warsaw POL&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;New York USA&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/savedialog.ui" line="307"/>
         <source>E&amp;vent date:</source>
         <translation>Datum e&amp;venement</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/dialogs/savedialog.ui" line="327"/>
@@ -5590,24 +5077,6 @@ p, li { white-space: pre-wrap; }
         <translation>Partij informatie</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Round number. For rounds with more than one game (usually in knock out or team tournaments) &lt;span style=&quot; font-weight:600;&quot;&gt;X.Y &lt;/span&gt;format is used.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Some examples:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;3&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1.4&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;8.15&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Round number. For rounds with more than one game (usually in knock out or team tournaments) &lt;span style=&quot; font-weight:600;&quot;&gt;X.Y &lt;/span&gt;format is used.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Some examples:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;3&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1.4&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;8.15&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/savedialog.ui" line="246"/>
         <source>&amp;Round:</source>
         <translation>&amp;Ronde:</translation>
@@ -5618,43 +5087,9 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Datum:</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Date of this round of the tournament in &lt;span style=&quot; font-weight:600;&quot;&gt;YYYY.MM.DD&lt;/span&gt; format. Replace trailing part with ?? if necessary.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Some examples:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;2007.03.03&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;2006.05.?? &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1935.??.?? &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Date of this round of the tournament in &lt;span style=&quot; font-weight:600;&quot;&gt;YYYY.MM.DD&lt;/span&gt; format. Replace trailing part with ?? if necessary.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Some examples:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;2007.03.03&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;2006.05.?? &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1935.??.?? &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/savedialog.ui" line="154"/>
         <source>Result:</source>
         <translation>Resultaat:</translation>
-    </message>
-    <message>
-        <source>1-0</source>
-        <translation type="vanished">1-0</translation>
-    </message>
-    <message>
-        <source>1/2-1/2</source>
-        <translation type="vanished">1/2-1/2</translation>
-    </message>
-    <message>
-        <source>0-1</source>
-        <translation type="vanished">0-1</translation>
-    </message>
-    <message>
-        <source>*</source>
-        <translation type="vanished">*</translation>
     </message>
     <message>
         <location filename="../src/dialogs/savedialog.cpp" line="267"/>
@@ -5669,10 +5104,6 @@ p, li { white-space: pre-wrap; }
 </context>
 <context>
     <name>TableView</name>
-    <message>
-        <source>Small font</source>
-        <translation type="vanished">Klein lettertype</translation>
-    </message>
     <message>
         <location filename="../src/gui/tableview.cpp" line="166"/>
         <source>Hide Column</source>
