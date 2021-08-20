@@ -21,7 +21,6 @@
 #include "engineoptiondialog.h"
 #include "downloadmanager.h"
 
-
 #include <QAction>
 #include <QCheckBox>
 #include <QColorDialog>
@@ -348,8 +347,10 @@ void PreferencesDialog::slotShowOptionDialog()
 void PreferencesDialog::slotChangePieceString()
 {
   //ensure a default value is initiated
-  QString pieceString = "KQRBN";
-  //Initialize and build a lookup map for the different languages
+  QString pieceString = QString ( );
+  
+  //Assign piece string given the mapped sender
+  //defines a QMap for multiple International Symbols
   QMap<QToolButton*, QString> pieceMap;
   pieceMap[ui.tbSymbolic] = QString( ) ; //Assigns the Null string
   pieceMap[ui.tbDE] = "KDTLS";
@@ -357,8 +358,9 @@ void PreferencesDialog::slotChangePieceString()
   pieceMap[ui.tbFR] = "RDTFC";
   pieceMap[ui.tbGB] = "KQRBN";
   pieceMap[ui.tbPL] = "KHWGS";
-  //Assign piece string given the mapped sender
-  pieceString = pieceMap[(QToolButton*)sender()];
+
+  //Assign the language notations per the sender
+  pieceString =  pieceMap.value((QToolButton*)sender());
   //reset ui text
   ui.pieceString->setText(pieceString);
 }

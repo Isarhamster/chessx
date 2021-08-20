@@ -35,7 +35,7 @@ void Settings::initialize()
 {
     defaultValues = initDefaultValues();
     beginGroup("GameText");
-    BitBoard::PieceNames::custom().set(getValue("PieceString").toString());
+    BitBoard::PieceNames::custom().set(QString(" ").append(getValue("PieceString").toString()));
     endGroup();
 }
 
@@ -249,7 +249,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/GameText/DiagramSize", 200);
     map.insert("/GameText/FontBrowserText", "Arial Unicode MS");
     map.insert("/GameText/FontBrowserMove", "Arial Unicode MS");
-    map.insert("/GameText/PieceString", "KQRBN");
+    map.insert("/GameText/PieceString", QString( ));
 
     map.insert("/GameList/AdditionalTags", "");
 

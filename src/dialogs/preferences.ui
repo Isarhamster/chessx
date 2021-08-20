@@ -697,7 +697,7 @@
                <string/>
               </property>
               <property name="placeholderText">
-               <string> KQRBN - Mind the initial space!</string>
+               <string>KQRBN</string>
               </property>
              </widget>
             </item>
