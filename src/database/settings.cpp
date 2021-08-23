@@ -256,7 +256,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/MainWindow/GameToolBar", false);
     map.insert("/MainWindow/VerticalTabs", false);
     map.insert("/MainWindow/DarkTheme", false);
-    map.insert("/MainWindow/Theme", "plastique");
+    map.insert("/MainWindow/Theme", "Adwaita");
     map.insert("/MainWindow/StayOnTop", false);
     map.insert("/MainWindow/FilterFollowsGame", false);
     map.insert("/MainWindow/ShowMenuIcons", true);
