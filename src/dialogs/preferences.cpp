@@ -576,6 +576,7 @@ void PreferencesDialog::restoreSettings()
         ui.theme->addItem(s);
     }
     ui.theme->addItem("Orange");
+    ui.theme->addItem("Plastik");
     int n = ui.theme->findText(AppSettings->getValue("/MainWindow/Theme").toString());
     if (n>=0) ui.theme->setCurrentIndex(n);
 
