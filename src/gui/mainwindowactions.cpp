@@ -1689,18 +1689,25 @@ void MainWindow::truncateVariation(GameX::Position position)
 /*Slot that updates the Main window title to reflect boardview flipping status*/
 void MainWindow::updateWindowTitleFlipped(bool wasFlipped, bool m_flipped){
   (void) wasFlipped; //Silences unused warning
+
+  QString bullet = QString(QChar(0x2022));
+  QString whiteQueen = QString(QChar(0x2655));
+  QString blackQueen = QString(QChar(0x265B));
+  QString whiteRook = QString(QChar(0x2656));
+  QString blackRook = QString(QChar(0x265C));
+  
   QString TitleFormatted = QString ( );
-  //Title for white pieces down
+  //Title for white pieces down uses white Rook
   if (!m_flipped){
-    TitleFormatted = QStringList({
-	QChar(0x2655), " ", QChar(0x2022),
-	  " ChessX ", QChar(0x2022), " %1"}).join("");
+    TitleFormatted = QStringList(
+				 {whiteRook, " ", bullet, " ChessX ", bullet, " %1"}
+				 ).join("");
   }
-  //Title for black pieces down
+  //Title for black pieces down uses black Rook
   if (m_flipped){
-    TitleFormatted = QStringList({
-	QChar(0x265B), " ", QChar(0x2022),
-	  " ChessX ", QChar(0x2022), " %1"}).join("");
+    TitleFormatted = QStringList(
+				 {blackRook, " ", bullet, " ChessX ", bullet, " %1"}
+				 ).join("");
   }
   setWindowTitle(TitleFormatted.arg(databaseName()));
 }
@@ -3364,10 +3371,16 @@ void MainWindow::slotDatabaseChanged()
     m_undoGroup.setActiveStack(databaseInfo()->undoStack());
     database()->index()->calculateCache();
 
-    //Note: ChessX is not a translatable string. 
+    QString bullet = QString(QChar(0x2022));
+    QString whiteQueen = QString(QChar(0x2655));
+    QString blackQueen = QString(QChar(0x265B));
+    QString whiteRook = QString(QChar(0x2656));
+    QString blackRook = QString(QChar(0x265C));
+  
+    //Note: ChessX is not a translatable string.
     QString TitleFormatted = QStringList({
-	QChar(0x2655), " ", QChar(0x2022),
-	  " ChessX ", QChar(0x2022), " %1"}).join("");
+	whiteRook, " ", bullet, " ChessX ", bullet, " %1"
+	  }).join("");
 
     setWindowTitle(TitleFormatted.arg(databaseName()));
     connect(m_boardView, SIGNAL(signalFlipped(bool,bool)),
