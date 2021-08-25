@@ -41,7 +41,7 @@ the archive is stored at the Default Data Path and its content is extracted. Aga
 the files are opened afterwards.</p>
 
 <h3><a name="Web"></a>Opening a periodic database from the web</h3>
-<p><img class="button" src=":/images/folder_web.png" width="42" align="left">For regularly loading a periodically updated
+<p><img class="button" src=":/images/folder_web.png" width="64" align="left">For regularly loading a periodically updated
 database from the web, enter the target URL into the preference for Web Favorite, where $1 can
 be replaced by an incrementing counter. Let's say amonthincheckers.com
 hosts a monthly database update at "http://amonthincheckers.com/zips/amic123g.zip"
@@ -77,7 +77,7 @@ pressing the Meta-Key while dragging the pawn to the eigth row.</p>
 on castling in Chess960.</p>
 
 <h3><a name="Replay"></a>Let ChessX replay the game</h3>
-<p><img src=":/images/replay.png" width="42" align="left">If you want ChessX to replay the game, select "Game->Auto Player".
+<p><img src=":/images/replay.png" width="64" align="left">If you want ChessX to replay the game, select "Game->Auto Player".
 You can change the move rate with the slider in the bottom right corner of the status bar.</p>
 
 <h3><a name="Enter"></a>Entering moves with the keyboard</h3>
@@ -96,9 +96,9 @@ e.g. '!?','!!','??','!','?','=','+-','-+' and so on. You might have to press ent
 <p>Additionally 'n' will add the Nag for 'novelty' and '#' will enter a 'diagram'-tag.
 <p>You can make special annotations like drawing an arrow or coloring squares by pressing Shift+Right-Mouse-Clicking (either select a single square
 or make a drawing gesture for drawing an arrow).</p>
-<p><img src=":/images/brush_green.png" width="42" align="left">Pressing a green, red or yellow pen enters paint mode. You cannot enter moves,
+<p><img src=":/images/brush_green.png" width="64" align="left">Pressing a green, red or yellow pen enters paint mode. You cannot enter moves,
 instead, you can paint squares and arrows without having to press Shift+Right-Mouse.<br></p>
-<p><img src=":/images/brush_erase.png" width="42" align="left">Pressing the grey pen selects the eraser.<br>Pressing Shift+grey pen erases all markups at once.<br></p>
+<p><img src=":/images/brush_erase.png" width="64" align="left">Pressing the grey pen selects the eraser.<br>Pressing Shift+grey pen erases all markups at once.<br></p>
 <h3><a name="Save"></a>Saving games</h3>
 <p>Saving games is slightly confusing! A game needs to be saved into the database (Press CTRL+S, Menu Game/Save). From there,
 the whole database needs to be saved to disk by pressing CTRL+Shift+S / Menu File/Save. This is somewhat inconvenient but on the other hand prevents
@@ -153,14 +153,14 @@ Regarding Stockfish: do not use the official stockfish distribution, the engines
 contains something like "Illegal instruction: 4". In this case, just fetch the source code and build stockfish yourself.</p>
 
 <h3><a name="Game"></a>Playing (out) games against an engine</h3>
-<p><img src=":/images/respond.png" width="42" align="left">You can play out a game after the final position by activating Auto Respond mode.
+<p><img src=":/images/respond.png" width="64" align="left">You can play out a game after the final position by activating Auto Respond mode.
 Whenever you make a move the engine in pane 1 will start to analyse the
 position for the time defined by the slider at the bottom right of the status bar. If the allotted time is over, the
 engine will make the best move found so far.</p>
 <p>If you start a game with Chess960 rules you will need an engine that supports this. The integrated Stockfish is ready for Chess960.</p>
 
 <h3><a name="Auto-Annotate"></a>Automatically annotating games</h3>
-<p><img src=":/images/annotate.png" width="42" align="left">Activating menu "Game->Auto Analysis" will start to move through the
+<p><img src=":/images/annotate.png" width="64" align="left">Activating menu "Game->Auto Analysis" will start to move through the
 current game, analysing each position for some time. After the alotted time is over, annotations will be inserted into the game
 text. Then ChessX will continue with the next move.</p>
 <p>There are a couple of options which have an influence on the behaviuor:</p>
@@ -288,51 +288,67 @@ menu for either of the three refactoring methods.</p>
 <p>Note: Refactoring a game can be undone, while there is no Undo for refactoring a complete database.</p>
 
 <h3><a name="Training"></a>Training Modes</h3>
-<p><img src=":/images/training.png" width="42" align="left">Selecting "Game/Training" starts the training mode. Moves starting from the current move are hidden on the game sheet. You can't modify a game
+<p><img src=":/images/training.png" width="64" align="left">Selecting "Game/Training" starts the training mode. Moves starting from the current move are hidden on the game sheet. You can't modify a game
 so you can make any move in a position. If the move is the right one (the one that was played or a existing variation) then the move is executed
 and the game is moved one step forward.
 The game notation is updated and variations on that move become visible. Ideal for use with a tactics database.</p>
 <p>If you have no idea what to move, you can get hints by hovering with the mouse over your pieces. Perhaps, the right move pops up!
 See the chapter on Making Moves and the associated preferences to enable move guesses.</p>
-<p><img src=":/images/training_both.png" width="42" align="left">Selecting "Game/Training both sides" forces you to play both sides while hiding the sheet.</p>
+<p><img src=":/images/training_both.png" width="64" align="left">Selecting "Game/Training both sides" forces you to play both sides while hiding the sheet.</p>
 <br>
 
 <h3><a name="Training"></a>Training with kids</h3>
 <p>There are a couple of features for training with kids or players on club level.</p>
-<p><img src=":/images/black_wall.png" width="42" align="left">To illustrate the power of pieces you can make ChessX mark all covered squares by
+<p><img src=":/images/black_wall.png" width="64" align="left">To illustrate the power of pieces you can make ChessX mark all covered squares by
 the white or black pieces. E.g. you can visualize the net around a king or the way bishop and knight block all escape routes in the infamous endgame against the lone king.</p>
-<p><img src=":/images/threat_white.png" width="42" align="left">The threat indicators help visualizing underprotected pieces so that beginners learn that loose pieces drop off.</p>
+<p><img src=":/images/threat_white.png" width="64" align="left">The threat indicators help visualizing underprotected pieces so that beginners learn that loose pieces drop off.</p>
 <p>More advanced is the option to let ChessX read out the next moves without making them on the board. Pupils are expected to visualize the upcoming position without actually seeing the moves on the board.
 After showing the moves on the board, ChessX will read out the next few moves again. See "Game/Read moves ahead" and the settings dialog ("App/Sound/Number of plies to read ahead").</p>
 <h3><a name="Match"></a>Playing matches</h3>
-<p><img src=":/images/black_chess.png" width="42" align="left">Match allows two humans to play a game of chess. The match button makes sure, that ChessX does not give away hints on the position. This effectively disables
+<p><img src=":/images/black_chess.png" width="64" align="left">Match allows two humans to play a game of chess. The match button makes sure, that ChessX does not give away hints on the position. This effectively disables
 engine output, tablebase output, moving back or forward in a game, changing databases etc.</p>
-<p><img src=":/images/game_engine.png" width="42" align="left">Play a game against an engine with time limit.</p>
+<p><img src=":/images/game_engine.png" width="64" align="left">Play a game against an engine with time limit.</p>
 <br>
 <h3><a name="Engine-Match"></a>Matches between engines</h3>
-<p><img src=":/images/chip.png" width="42" align="left">With "Game/Engine Match" you can arrange a match between two engines. Analysis pane 1 will play the white pieces, pane 2 with the black pieces.
+<p><img src=":/images/chip.png" width="64" align="left">With "Game/Engine Match" you can arrange a match between two engines. Analysis pane 1 will play the white pieces, pane 2 with the black pieces.
 Starting an engine match brings up the match parameter dialog.
 If activated, the elapsed game time is annotated. You can play with Gong (each move will be made within a fixed time) or sudden death, where
 each engine gets a fixed amount of time for the whole game. ChessX will supervise the time and also adjudicate a draw in case of a three-fold repetition,
 insufficient material or the 50 move rule.</p>
 
 <h3><a name="FICS"></a>Online Chess</h3>
-<p><img src=":/images/fics.png" width="42" align="left">ChessX supports online access to games played or stored on the free internet chess server.</p>
+
+<p><img src=":/images/fics_offline.png" width="64"></p>
+
+<p> <img src=":/images/fics_online.png" width="64" align="left">
+<img src=":/images/fics_online_timeseal.png" width="64" align="left"></p>
+
+ ChessX supports online access to games played or stored on the free internet
+ chess server (FICS).</p>
 <p>If you have a FICS account, you can enter the credentials in the Preferences, otherwise, ChessX will login as guest.</p>
 <p>ChessX connects to FICS upon opening the virtual database FICS. A successful connection is indicated in the message pane of the FICS console.</p>
 <p>Selecting the tab "Games" will read in the list of games which are currently played on FICS. Double clicking a games will start monitoring this game.
-Selecting Players will read in all players currently connected to FICS. Double-clicking a player will read in the players history (last 10 games).
-Double clicking a game from the History pane will read in the game into the current game of the FICS database. You can finally save any observed or examined game and transfer it
-to a persistent database. Games in the FICS database are not persistent!</p>
-<p>For playing games online, using TimeSeal is recommended. See the message pane upon connecting to FICS.
-It will show, if Telnet or Timeseal is used. Telnet will give you a disadvantage for faster games so this is not recommended.</p>
+Selecting Players will read in all players currently connected to
+  FICS. Double-clicking a player will read in the players history (last 10
+  games). Double clicking a game from the History pane will read in the game
+  into the current game of the FICS database. You can finally save any
+  observed or examined game and store it in your local database. <!-- Games in the FICS database are not persistent! -->
+  <!-- I believe they are --></p>
+<p>For playing games online, using timeseal is recommended. This is configured
+  in the Preferences panel. See the message
+  pane upon connecting to FICS,  it will show, if telnet or timeseal is
+  used. The icon of the FICS button in the toolbar will show a timer if
+  timeseal is used. Telnet will give you a
+  disadvantage for faster games, so this protocol is not recommended. </p>
 <p>You can accept incoming match requests from other players pressing "Accept" or you can seek for an opponent in the seek pane.</p>
 <p>While waiting for your opponents move, you can already grab a piece and hover over a target square or you can enter a premove by
 dropping it somewhere, the premove piece and its target square a indicated. An active premove can be cancelled by clicking somewhere on the board
 or by selecting a new premove.</p>
 <p>Chess variants are not supported in Online mode</p>
-<p><img src=":/images/lichess.png" width="42" align="left"><img src=":/images/chesscom.png" width="42">
-Get the games you played this month on lichess / chess.com. Requires a user name to be set in the preferences.</p>
+
+<p><img src=":/images/lichess_fetch.png" width="64" align="left"><img src=":/images/chesscom_fetch.png" width="64">
+
+It fetches the games you played this month on lichess or chess.com. It requires an user name to be set in the preferences.</p>
 
 <h3><a name="Variants"></a>Chess Variants</h3>
 <p>ChessX supports Chess 960 games (also call Fisherandom).</p>
