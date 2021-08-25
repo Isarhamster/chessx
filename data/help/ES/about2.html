@@ -1,0 +1,98 @@
+<html>
+
+<head>
+
+<link rel="stylesheet" type="text/css" href=":/help/about.css" />
+<link rel="stylesheet" type="text/css" href="about.css" />
+<meta content="en" name="language" />
+<meta content="en" http-equiv="Content-Language" />
+<meta name="viewport" content="user-scalable=no, width=device-width" />
+
+<title>ChessX Reference</title>
+
+<body>
+
+<div id="container">
+<div id="header">
+
+<h1>ChessX Help</h1>
+
+<div id="nav">
+<ul>
+
+ <li><a href="about0.html">Basics</a></li>
+ <li><a href="about1.html">Manual</a></li>
+ <li><a href="about1a.html">Customizing ChessX</a></li>
+ <li><b>Reference</b></li>
+ <li><a href="about3.html">Copyrights</a></li>
+
+</ul>
+</div>
+</div>
+
+<div id="content">
+
+<h2><a name="Referenz">ChessX Reference</a></h2>
+
+<h3><a name="PGN-DB"></a>About PGN Databases</h3>
+
+<p>PGN is a portable format between different chess programs, a file format,
+that can be written and read sequentially, but not modified at random places.</p>
+<p>ChessX is a viewer for these files, thus ChessX is somewhat limited in handling chess data
+as these files can <i>not really</i> be handled like a proper database.</p>
+<p>To work around some of these issues, ChessX handles smaller and larger files differently.
+You can configure the limit where ChessX switches the algorithm according to your computers performance.</p>
+<p>Smaller databases are read completely into memory and can be read and written.</p>
+<p>Larger files are only indexed and as of version 0.9.4, the index is also saved to disk for a faster reopening
+of a PGN file. As the games are not in memory, this algorithm does not allow saving the files again, so the
+database is opened read-only</p>
+
+<h3><a name="Index-DB"></a>About Index Databases</h3>
+
+<p>The index files are saved in the index-subdirectory of the Default Data Path. If the index directory or one
+of its files is deleted, ChessX will recreate the Index file the next time you open the PGN file.</p>
+<p>ChessX will open the index file instead of the PGN file if the filename fits (e.g. "chess.cxi" fits to any "chess.pgn")
+if the date of the last modification fits to the date stored in the index file. So ChessX won't care for the path
+where your PGN is located (you can relocate the file after indexing), but this limits the Index to only one file
+with the same basename.</p>
+<p>ChessX versions 0.9.6 and lower have index format 0, later versions support index format 1 and 0.
+On occasion, ChessX versions > 0.9.6 will not be able to read a version 0 format and will thus recreate the index file with the
+latest version. These occasions depend on the timezone when the file was created and the time it was read (summer/winter)
+and the version of the Qt libraries ChessX was compiled with.</p>
+
+<h3><a name="Themes"></a>About themes and file system</h3>
+<p>ChessX reads and writes files at different locations
+<ul>
+<li>Intermediate files arer put into the temp folder offered by the OS (see About Dialog for the exact path)
+<li>Themes are put into the program data directory assigned by the OS (see About Dialog again)
+<li>PGN databases are stored in a user defined folder (see Preferences Dialog)
+</ul>
+</p>
+<p>ChessX has builtin themes and languages, which can be extended by external themes.
+These themes need to be stored in defined subfolders of the program data directory.
+Starting from <i>ProgramDataPath/data/</i>
+<ul>
+<li>Translation files are stored in <i>lang/</i>
+<li>Theme files in <i>themes/...</i>
+<li>Output templates in <i>templates/</i>
+<li>Windows Engines in <i>engines/uci/</i> and <i>engines/winboard/</i>
+<li>Mac OS Engines in <i>engines-mac/uci/</i> and <i>engines-mac/winboard/</i>
+</ul>
+</p>
+<p>Board themes are put into <i>themes/boards</i> while simple piece sets are put into <i>themes/</i>.
+Outlined and shadowed piece sets are put into <i>themes/outline</i> and <i>themes/shadow</i> respectively.
+</p>
+<p>The About dialog gives hints on the actual paths (which depend on the operating system).</p>
+
+<h3><a name="Complexity"></a>About the Complexity in the Analysis output</h3>
+<p>The value given with "complexity" tries to give a hint on the complexity of a position with the help of the
+engine as suggested by Matej Guid and Ivan Bratko. As complexity metric for an individual move, the sum of the absolute
+differences between the evaluation of the best and the second best move is calculated.
+It is invoked at every time that a change in evaluation occurs when the search depth is increased.
+Therefore, the number of lines has to be set to '2' to start the calculation.</p>
+</div>
+</div>
+
+</body>
+
+</html>
