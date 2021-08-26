@@ -608,7 +608,13 @@ OTHER_FILES += \
   data/help/about3.html \
   data/help/about4.html \
   data/help/about5.html \
-  data/help/about6.html \
+  data/help/ES/about0.html \
+  data/help/ES/about1.html \
+  data/help/ES/about1a.html \
+  data/help/ES/about2.html \
+  data/help/ES/about3.html \
+  data/help/ES/about4.html \
+  data/help/ES/about5.html \
   setup7-64.iss \
   setup7-32.iss \
   setupXP.iss \

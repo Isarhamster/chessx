@@ -6,6 +6,7 @@
 #include "settings.h"
 #include <QUrl>
 #include <QFile>
+#include <QTextStream>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -32,8 +33,15 @@ QVariant HelpBrowser::loadResource(int type, const QUrl &name)
 
 void HelpBrowser::SetStartPage()
 {
-    setSource(QUrl("qrc:/help/about0.html"));
-    reload(); // Workaround bug in Qt
+  QString lang = AppSettings->getValue("/General/language").toString();
+  QTextStream(stdout) << "Language selection is: " << lang << endl;
+  setSource(QUrl("qrc:/help/about0.html"));
+  //hardcodes Spanish help Pages if language is set to Spanish
+  if (lang=="es"){
+    QTextStream(stdout) << "Spanish has been shown truth " << endl;
+    setSource(QUrl("qrc:/help/ES/about0.html"));
+  }
+  reload(); // Workaround bug in Qt
 }
 
 void HelpBrowser::slotSourceChanged(const QUrl& url)
