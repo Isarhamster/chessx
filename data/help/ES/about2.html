@@ -4,18 +4,18 @@
 
 <link rel="stylesheet" type="text/css" href=":/help/about.css" />
 <link rel="stylesheet" type="text/css" href="about.css" />
-<meta content="en" name="language" />
-<meta content="en" http-equiv="Content-Language" />
+<meta content="es" name="language" />
+<meta content="es" http-equiv="Content-Language" />
 <meta name="viewport" content="user-scalable=no, width=device-width" />
 
-<title>ChessX Reference</title>
+<title>Referencia de ChessX</title>
 
 <body>
 
 <div id="container">
 <div id="header">
 
-<h1>ChessX Help</h1>
+<h1>Ayuda de ChessX</h1>
 
 <div id="nav">
 <ul>
@@ -23,7 +23,7 @@
  <li><a href="about0.html">Basics</a></li>
  <li><a href="about1.html">Manual</a></li>
  <li><a href="about1a.html">Customizing ChessX</a></li>
- <li><b>Reference</b></li>
+ <li><b>Referencia</b></li>
  <li><a href="about3.html">Copyrights</a></li>
 
 </ul>
@@ -32,64 +32,102 @@
 
 <div id="content">
 
-<h2><a name="Referenz">ChessX Reference</a></h2>
+<h2><a name="Referenz">Referencia de ChessX</a></h2>
 
-<h3><a name="PGN-DB"></a>About PGN Databases</h3>
+<h3><a name="PGN-DB"></a>Sobre las bases de datos PGN</h3>
 
-<p>PGN is a portable format between different chess programs, a file format,
-that can be written and read sequentially, but not modified at random places.</p>
-<p>ChessX is a viewer for these files, thus ChessX is somewhat limited in handling chess data
-as these files can <i>not really</i> be handled like a proper database.</p>
-<p>To work around some of these issues, ChessX handles smaller and larger files differently.
-You can configure the limit where ChessX switches the algorithm according to your computers performance.</p>
-<p>Smaller databases are read completely into memory and can be read and written.</p>
-<p>Larger files are only indexed and as of version 0.9.4, the index is also saved to disk for a faster reopening
-of a PGN file. As the games are not in memory, this algorithm does not allow saving the files again, so the
-database is opened read-only</p>
+<p>PGN es un formato portable entre diferentes programas de Ajedrez, que puede
+  ser leído y escrito secuencialmente, pero que no puede ser modificado
+  aleátoriamente.</p>
 
-<h3><a name="Index-DB"></a>About Index Databases</h3>
+<p>ChessX es un programa para ver y editar éste tipo de archivos, aúnque
+  ChessX es parcialmente límitado en como manejar datos de Ajedrez, ya que
+  éste tipo de archivos <em>realmente no pueden</em> ser tratados como una
+  base de datos propiamente dicha.</p>
 
-<p>The index files are saved in the index-subdirectory of the Default Data Path. If the index directory or one
-of its files is deleted, ChessX will recreate the Index file the next time you open the PGN file.</p>
-<p>ChessX will open the index file instead of the PGN file if the filename fits (e.g. "chess.cxi" fits to any "chess.pgn")
-if the date of the last modification fits to the date stored in the index file. So ChessX won't care for the path
-where your PGN is located (you can relocate the file after indexing), but this limits the Index to only one file
-with the same basename.</p>
-<p>ChessX versions 0.9.6 and lower have index format 0, later versions support index format 1 and 0.
-On occasion, ChessX versions > 0.9.6 will not be able to read a version 0 format and will thus recreate the index file with the
-latest version. These occasions depend on the timezone when the file was created and the time it was read (summer/winter)
-and the version of the Qt libraries ChessX was compiled with.</p>
+<p>Para trabajar alrededor de éste tipo de problemas, ChessX maneja archivos
+  grandes y pequeños diferentemente. Es posible configurar el limite donde
+  ChessX cambia el algoritmo, teniendo en cuenta la capacidad de su
+  ordenador.</p>
 
-<h3><a name="Themes"></a>About themes and file system</h3>
-<p>ChessX reads and writes files at different locations
-<ul>
-<li>Intermediate files arer put into the temp folder offered by the OS (see About Dialog for the exact path)
-<li>Themes are put into the program data directory assigned by the OS (see About Dialog again)
-<li>PGN databases are stored in a user defined folder (see Preferences Dialog)
-</ul>
+<p>Bases de datos pequeñas son leídas completamente en memoria y pueden ser
+  leídas y escritas.</p>
+
+<p>Bases de datos más grandes son únicamente indexadas, desde la version de
+  ChessX 0.9.4. El índice es guardado a disco, lo que permite lectura de él
+  PGN más rápidamente. Débido a que los juegos no son retenidos en memoria, el
+  algoritmo no permite guardar los archivos nuevamente, por lo tanto la base
+  de datos funciona en modo de sólo lectura.</p>
+
+<h3><a name="Index-DB"></a>Sobre los índices de las bases de datos</h3>
+
+<p>Los archivos índices se guardan el el subdirectorio "index" en la ruta de
+  datos por defecto. Sí el directorio "index" o el archivo correspondiente es
+  eliminado, ChessX genera el archivo índice nuevamente, cuando el archivo PGN
+  es abierto.</p>
+
+<p>ChessX abrirá el archivo índice, en vez de él archivo PGN si el nombre de
+  archivo índice es coincidente (por ej, "chess.cxi" corresponde a cualquier
+  "chess.pgn") si la fecha de la última modificación corresponde a la fecha
+  almacenada en el archivo índice. Para ChessX es irrelevante la ruta donde el
+  archivo PGN está localizado (es decir, usted puede relocalizar el archivo
+  PGN una vez se haya almacenado el archivo índice), aúnque ésto límita a los
+  índices de ChessX en que sólo puede manejar un archivo PGN por cada nombre
+  de base idéntico.</p>
+
+<p>Las versiones ChessX 0.9.6 e inferiores soportan archivos índices formato 0
+  y 1.  En ocasiones, las versiones ChessX &gt; 0.9.6 no logran abrir un
+  índice version 0, y en tales casos ChessX generará el archivo índice
+  correspondiente a la nueva versión. En estas ocasiones, el comportamiento
+  del programa depende de el huso horario, de cuando el archivo fue creado, y
+  de cuando fue últimamente leído (verano o invierno) y de la versión de las
+  librerías Qt con las que ChessX fue compilado.</p>
+
+<h3><a name="Themes"></a>Sobre los temas y los archivos de sistema</h3>
+
+<p>ChessX lee y escribe archivos en diferentes localizaciones:
+
+  <ul>
+    <li>Archivos intermedios son puestos en el directorio temporal, y depende
+      de él OS (Vea el diálogo Sobre ChessX para ubicar la ruta exacta)
+    <li>Los temas son puestos en el directorio de datos de programa, que es
+      asignado por el OS (nuevamente, vea el diálogo Sobre ChessX)
+    <li>Las bases de datos PGN son almacenadas en un folder definido por el
+      usuario en el diálogo de Preferencias
+  </ul>
 </p>
-<p>ChessX has builtin themes and languages, which can be extended by external themes.
-These themes need to be stored in defined subfolders of the program data directory.
-Starting from <i>ProgramDataPath/data/</i>
-<ul>
-<li>Translation files are stored in <i>lang/</i>
-<li>Theme files in <i>themes/...</i>
-<li>Output templates in <i>templates/</i>
-<li>Windows Engines in <i>engines/uci/</i> and <i>engines/winboard/</i>
-<li>Mac OS Engines in <i>engines-mac/uci/</i> and <i>engines-mac/winboard/</i>
-</ul>
-</p>
-<p>Board themes are put into <i>themes/boards</i> while simple piece sets are put into <i>themes/</i>.
-Outlined and shadowed piece sets are put into <i>themes/outline</i> and <i>themes/shadow</i> respectively.
-</p>
-<p>The About dialog gives hints on the actual paths (which depend on the operating system).</p>
 
-<h3><a name="Complexity"></a>About the Complexity in the Analysis output</h3>
-<p>The value given with "complexity" tries to give a hint on the complexity of a position with the help of the
-engine as suggested by Matej Guid and Ivan Bratko. As complexity metric for an individual move, the sum of the absolute
-differences between the evaluation of the best and the second best move is calculated.
-It is invoked at every time that a change in evaluation occurs when the search depth is increased.
-Therefore, the number of lines has to be set to '2' to start the calculation.</p>
+<p>ChessX tiene incorporados temas e idiomas, que son extensibles con temas
+  externos. Éstos temas tienes que ser almacenados en subdirectorios, en el
+  directorio de datos de programa, iniciando en  <em>DirectorioDeDatosdePrograma/data/</em>
+  <ul>
+    <li>Archivos de traducción de idiomas se almacenan en <em>lang/</em>
+    <li>Archivos de temas en <em>themes/</em>
+    <li>Templados en <em>templates/</em>
+    <li>Motores de Ajedrez para MS&trade; Windows en <em>engines/uci/</em> y <em>engines/winboard/</em>
+    <li>Motores de Ajedrez para OS X en <em>engines-mac/uci/</em> y <em>engines-mac/winboard/</em>
+  </ul>
+</p>
+
+<p>Los temas de tablero so puestos en <em>themes/boards</em> y los temas para
+  figurines de las piezas se colocan simplemente en <em>themes/</em>.</p>
+  
+<p>Los figurines de las piezas con contorno o con sombras son colocados
+  en <em>themes/outline</em> y en <em>themes/shadow</em> respéctivamente.
+</p>
+
+<p>El diálog Sobre ChessX índica las rutas exactas, las cuáles dependen de él
+  sistema operativo.</p>
+
+<h3><a name="Complexity"></a>Sobre la complejidad de el resultado de análisis</h3>
+
+<p>El valor dado con la "complejidad" trata de estimar la complejidad de la
+  posición con ayuda de los motores de análisis como fue sugerido por Matej
+  Guid e Iván Bratko. Como métrica de la complejidad de una movida individual,
+  la suma absoluta de las diferencias entre la evaluación de la mejor y la
+  segunda mejor movida es calculada. Se invoca cada vez que un cambio en la
+  evaluación ocurre cuando la profundidad de búsqueda es incrementada. Por lo
+  tanto, el número de líneas debe ser ajustado a '2' para iniciar el cálculo.</p>
 </div>
 </div>
 
