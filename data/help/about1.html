@@ -104,14 +104,14 @@ typing "e4" in the starting position is fine, whereas a subsequent "e2" could
 <p>Move annotations can be done by activating the context menu in the games text browser or by simply pressing the corresponding key sequence,
 e.g. '!?','!!','??','!','?','=','+-','-+' and so on. You might have to press enter (e.g. for getting '!')</p>
 <p>Additionally 'n' will add the Nag for 'novelty' and '#' will enter a 'diagram'-tag.
-<p>You can make special annotations like drawing an arrow or coloring squares by pressing Shift+Right-Mouse-Clicking (either select a single square
+<p>You can make special annotations like drawing an arrow or coloring squares by pressing SHIFT+Right-Mouse-Clicking (either select a single square
 or make a drawing gesture for drawing an arrow).</p>
 <p><img src=":/images/brush_green.png" width="64" align="left">Pressing a green, red or yellow pen enters paint mode. You cannot enter moves,
-instead, you can paint squares and arrows without having to press Shift+Right-Mouse.<br></p>
-<p><img src=":/images/brush_erase.png" width="64" align="left">Pressing the grey pen selects the eraser.<br>Pressing Shift+grey pen erases all markups at once.<br></p>
+instead, you can paint squares and arrows without having to press SHIFT+Right-Mouse.<br></p>
+<p><img src=":/images/brush_erase.png" width="64" align="left">Pressing the grey pen selects the eraser.<br>Pressing SHIFT+grey pen erases all markups at once.<br></p>
 <h3><a name="Save"></a>Saving games</h3>
 <p>Saving games is slightly confusing! A game needs to be saved into the database (Press CTRL+S, Menu Game/Save). From there,
-the whole database needs to be saved to disk by pressing CTRL+Shift+S / Menu File/Save. This is somewhat inconvenient but on the other hand prevents
+the whole database needs to be saved to disk by pressing CTRL+SHIFT+S or Menu File/Save. This is somewhat inconvenient but on the other hand prevents
 you from mistakenly overwriting games or files.</p>
 <p>If you want to commit a database to harddisk immediately and automatically when saving a game, you can select Option "Commit Database
 after Saving Game" from the Database Pane in the Preferences Dialog.</p>
@@ -120,7 +120,7 @@ lost upon closing ChessX! So you need to open at least one other database for wr
 into this database by either dragging the games to that database or using "Copy Games" from the Database menu.</p>
 
 <h3><a name="Switch"></a>Switching databases</h3>
-<p>Switching between open databases can be achieved by either the Database menu, pressing CTRL+Shift+Number 0 .. 9,
+<p>Switching between open databases can be achieved by either the Database menu, pressing CTRL+SHIFT+Number 0&hellip; 9,
 right-clicking or double-clicking into the database list or clicking onto the board's tab
 associated with the database. The currently selected database is highlighted in the database list!</p>
 
@@ -141,7 +141,7 @@ Most of the modern engines are UCI engines so leave "the "UCI" selected. But qui
 transmitting a position so select "Send History" for stockfish, lc0 and possibly other engines.</p>
 <p>For fine-tuning you can open the "Options" Dialog. This will load engine specific tweaks. The most interesting option usually is the number of threads
 the engine is allowed to use. Selecting a larger number will make the engine stronger but also use more power and your computer might heat up quickly.</p>
-<p>A note for OS X Users: Try to open the Options Dialog even if you do not want to tweak the options. This is the easiest way to check if the engine is working.
+<p><em>A note for OS X Users</em>: Try to open the Options Dialog even if you do not want to tweak the options. This is the easiest way to check if the engine is working.
 If you get an error message, try to start the engine from the terminal. If it's not running from the terminal, ChessX won't be able to use it either.
 Regarding Stockfish: do not use the official stockfish distribution, the
   engines usually do not work even with the latest OS X computers. The error messsage usually
@@ -227,12 +227,12 @@ an algorithm, how the GUI shall select moves if several moves are available for 
 <p>ChessX displays books like any other database in the Opening Tree Browser. Drag a Polyglot book
 an Arena Book or a Chessbase book to the Database List or open the book via menu. Once it is open, it becomes available as any other open database
 in the combo box "Source" beneath the opening tree.</p>
-<p>One note on Chessbase books: Three files are required with externsion 'ctg', 'ctb' and 'cto'. They all need to have the same basename and reside
+<p><em>One note on Chessbase books:</em> Three files are required with externsion 'ctg', 'ctb' and 'cto'. They all need to have the same basename and reside
 within the same directory.</p>
-<p>One note on Polyglot: Books can be difficult to interpret: they are made for engines, as they give a hint on moves,
+<p><em>One note on Polyglot:</em> Books can be difficult to interpret: they are made for engines, as they give a hint on moves,
 the engine should play. Moves which did not succeed at all are usually not part of Polyglot books.</p>
 <p>So do not learn openings from Polyglot books - important moves might be missing!</p>
-<p>One note on Arena: Unlike Polyglot or Chessbase, Arena books are a compressed set of games, so they are handled like read-only databases. You can drag games from Arena books
+<p><em>One note on Arena:</em> Unlike Polyglot or Chessbase, Arena books are a compressed set of games, so they are handled like read-only databases. You can drag games from Arena books
 like from any other database.<p>
 <h3><a name="Create-Book"></a>Creating your own book</h3>
 <p>You can create your own Polyglot book by selecting a open PGN or Arena database (right click with the mouse) and select "Make Polyglot book".</p>
@@ -290,7 +290,7 @@ each move alternative. The database is updated continuously, the progress bar gi
 search in the opening tree. Especially on large databases this can speed up further searches (but will of course miss other move orders
 into the same position).</p>
 <p>Usually, clicking onto one of the moves in opening tree will only update the small overview in the opening tree widget.
-Pressing Shift while clicking onto a move will add the move to the current game (if the position permits)</p>
+Pressing SHIFT while clicking onto a move will add the move to the current game (if the position permits)</p>
 
 <h3><a name="Duplicate games"></a>Filter duplicate games</h3>
 <p>Filtering duplicate games searches for exact matching, all further copies of a game within the
@@ -312,7 +312,7 @@ is the list of games.</p>
 <h3><a name="Refactor"></a>Refactor games or active database</h3>
 <p>You can clean games or complete databases from variations, time annotations or comments. See either the game or the database
 menu for either of the three refactoring methods.</p>
-<p>Note: Refactoring a game can be undone, while there is no Undo for refactoring a complete database.</p>
+<p><em>Note:</em> Refactoring a game can be undone, while there is no Undo for refactoring a complete database.</p>
 
 <h3><a name="Training"></a>Training Modes</h3>
 <p><img src=":/images/training.png" width="64" align="left">Selecting "Game/Training" starts the training mode. Moves starting from the current move are hidden on the game sheet. You can't modify a game
