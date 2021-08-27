@@ -44,8 +44,7 @@
   
   <p>Se puede arrastrar archivos desde el navegador de internet a la lista de
     la base de datos de ChessX. &Eacute;stos son decargados en la ruta por defecto
-    configurada por &eacute;l usuario (ver la entrada en el men&uacute; en Preferencias / Avanzadas / Ruta
-    de datos por defecto). Si el archivo esta compreso (*.zip), el archivo se
+    configurada por &eacute;l usuario (ver la entrada en el diálogo Preferencias / Base de datos / Ruta por defecto para bases de datos). Si el archivo esta compreso (*.zip), el archivo se
     almacena en la ruta de datos por defecto y su contenido es autom&aacute;ticamente
     extra&iacute;do. Nuevamente, si hay archivos PGN dentro, los archivos son
     subsecuentemente cargardos en el programa</p>
@@ -55,8 +54,8 @@
   <p><img class="button" src=":/images/folder_web.png" width="42"
 	  align="left">
     Para cargar una base de datos actualizada peri&oacute;dicamente desde la Web,
-    entre la direcci&oacute;n URL referente en el di&aacute;logo de Preferencias para
-    p&aacute;gina web favorita, donde $1 puede reemplazar un contador de
+    entre la direcci&oacute;n URL referida en el di&aacute;logo de
+	  Preferencias / Base de datos / Página Web favorita, donde $1 puede reemplazar un contador de
     incremento. Digamos, por ejemplo que revistadeAjedrezmensual.com
     distribuye una base de datos mensual en <code>&ldquo;http://revistadeAjedrezmensual.com/zips/amic123g.zip&rdquo;</code> donde 123
     corresponde a un n&uacute;mero de actualizaci&oacute;n que incrementa cada que una
@@ -73,20 +72,20 @@
   <p>Dependiendo de los ajustes in el menu de Preferencias / Tablero, se
     puede, bien sea:
     <ul>
-      <li>Hacer click en una pieza y luego en una casilla destino (si
-	adivinanza de movidas est&aacute; desactivado)
-      <li>Hacer click en una pieza y aceptar la movida adivinada (en caso de
-	que la siguiente movida con click derecho est&eacute; desactivada)
+      <li>Hacer click en una pieza y luego en una casilla destino (cuando sin
+      pistas en el modo entrenamiento  est&aacute; desactivado)
+      <li>Hacer click en una pieza y aceptar la movida sugerida (en caso de
+	que click derecho est&eacute; desactivado para la siguiente sugerencia)
       <li>Hacer click derecho en una pieza y luego nuevamente hasta que la
-	casilla destino est&eacute; resaltada, y luego presionando el click izquierdo
-	para aceptar la movida (en caso de que &eacute;l click derecho este activado
-	para la siguiente adivinanza).
+	casilla destino est&eacute; resaltada, y luego presionando el click
+	izquierdo para aceptar la movida (en caso de que click
+	derecho est&eacute; activado para la siguiente sugerencia).
     </ul>
   </p>
   
-  <p>Retroceder una movida puede hacerse con click derecho (en el caso de que
-    click derecho est&eacute; configurado para retroceder) o presionando CTRL+click
-    derecho si retroceder no est&aacute; asignado a el bot&oacute;n derecho del rat&oacute;n</p>
+  <p>Retroceder una movida puede hacerse con click derecho (en caso de que
+    click derecho est&eacute; configurado para retroceder / remover una
+    movida) o presionando CTRL+click derecho si retroceder no est&aacute; asignado a el bot&oacute;n derecho del rat&oacute;n</p>
   
   <!-- Wouldnt it be the other way around? right click if its configured and
   CTRL+right click if its not configured?
@@ -108,7 +107,7 @@
 
   <p>Cuando se promueve un pe&oacute;n, ChessX muestra un di&aacute;logo de selecci&oacute;n para
     determinar que pieza se desea escojer. &Eacute;sto puede deshabilitarse en el
-    di&aacute;log de Preferencias. Cu&aacute;ndo la promoci&oacute;n aut&oacute;matica a Dama esta activa,
+    di&aacute;logo de Preferencias / Juego / Promoci&oacute;n autom&aacute;tica. Cu&aacute;ndo la promoci&oacute;n aut&oacute;matica a Dama esta activa,
     se puede forzar a &eacute;l dialogo de selecci&oacute;n presionando la tecla Meta a la
     vez que se arr&aacute;stra el pe&oacute;n a la octava fila.</p>
 
@@ -173,15 +172,15 @@
   <h3><a name="Save"></a>Salvando juegos</h3>
   
   <p>&iexcl;Salvar juegos puede ser lig&eacute;ramente confuso! Un juego debe ser salvado
-    primero en la base de datos (presionando CTRL+s, o en el men&uacute;
-    Juego/Guardar). luego, la base de datos debe ser salvada a el disco
-    presionando CTRL+SHIFT+S o en el men&uacute; Archivo/Guardar. &Eacute;ste proceso puede
+    primero en la base de datos (presionando CTRL+S, o en el men&uacute;
+    Juego / Guardar). luego, la base de datos debe ser salvada a el disco
+    presionando CTRL+SHIFT+S o en el men&uacute; Archivo / Guardar base de datos. &Eacute;ste proceso puede
     parecer inconveniente pero por otro lado previene que juegos o archivos
     sean escritos err&oacute;neamente.</p>
   
   <p>Si prefiere cometer a la base de datos e inmediatamente salvar a disco
     aut&oacute;maticamente al guardar juego, la opci&oacute;n puede seleccionarse en
-    &ldquo;Someter base de datos a disco al salvar el Juego&rdquo; en la pesta&ntilde;a de Base
+    &ldquo;Someter la base de datos a disco al guardar juego&rdquo; en la pesta&ntilde;a de Base
     de datos en el di&aacute;logo de Preferencias.</p>
   
   <p>Por defecto, una base de datos portapapeles se abre. &Eacute;sta no tiene
@@ -189,7 +188,7 @@
     tablero portapapeles se elimina! Es necesario abrir al menos una base de
     datos adicional para escribir y transferir cualquier contenido desde el
     portapapeles a esta base de datos arrastrando los juegos a la base de
-    datos, o usando el men&uacute; &ldquo;Copiar juegos&rdquo; desde el men&uacute; de bases de datos</p>
+    datos, o usando el men&uacute; &ldquo;Copiar juegos&hellip;&rdquo; desde el men&uacute; Bases de datos</p>
 
   <h3><a name="Switch"></a>Cambiando bases de datos</h3>
   
@@ -222,8 +221,7 @@
     ejecutable de el motor de an&aacute;lisis, ya que &eacute;sta informaci&oacute;n es necesaria
     posteriormente.</p>
   
-  <p>En el di&aacute;logo de Preferencias, se seleciona la pesta&ntilde;a de &ldquo;Motores de
-    an&aacute;lisis&rdquo; y se presiona el bot&oacute;n para &ldquo;A&ntilde;adir&hellip;&rdquo;, luego se busca la ruta
+  <p>En el di&aacute;logo de Preferencias, se seleciona la pesta&ntilde;a de &ldquo;Motores&rdquo; y se presiona el bot&oacute;n para &ldquo;A&ntilde;adir&hellip;&rdquo;, luego se busca la ruta
     donde se haya instalado el motor de an&aacute;lisis y se selecciona, presionado
     &ldquo;Abrir&rdquo;.</p>
 
@@ -235,7 +233,7 @@
     casos seleccionar &ldquo;Enviar historia&rdquo; para Stockfish, lc0 y posiblemente otros
     motores de an&aacute;lisis, ser&iacute;a lo apropiado.</p>
   
-  <p>Para calibrar, es posible abrie el di&aacute;logo de &ldquo;Opciones&rdquo;.  Opciones
+  <p>Para calibrar, es posible abrir el di&aacute;logo de &ldquo;Opciones&rdquo;.  Opciones
     espec&iacute;ficas de cada motor se pueden optimizar ac&aacute;.  La opci&oacute;n m&aacute;s
     interesante es usualmente el n&uacute;mero de bandas que se permite a el motor
     usar simultane&aacute;mente. Un gran n&uacute;mero hace que el motor sea m&aacute;s poderoso,
@@ -250,11 +248,11 @@
     an&aacute;lisis, ChessX tampoco podr&aacute; usarlo.</p>
 
   <p>En referencia a Stockfish: no es recomendable usar la distribuci&oacute;n de
-    Stockfish oficial en OS X, ya que estas no funcionan apropiadamente, ni
-    siquiera con las ultimas versiones en estas computadoras. El mensaje de
+    Stockfish oficial en OS X, ya que &eacute;sta no funciona apropiadamente, ni
+    siquiera con la &uacute;ltima versi&oacute;n de OS X. El mensaje de
     error generado usualmente contiene un texto similar a &ldquo;Instruction ilegal:
     4&rdquo;. En &eacute;ste caso, es recomendable obtener el c&oacute;digo fuente y compilarlo en
-    la computadora directamente. </p>
+    la computadora directamente.</p>
   
   <h3><a name="Analyse"></a>Analisis de juegos</h3>
   
@@ -279,12 +277,12 @@
 
   <!-- about5.html, not about3.html     -->
   
-  <p>El comportamiento de los motores de an&aacute;lisis puede ser calibrado con los
-    protocolos seleccionables en el di&aacute;logo de motores de an&aacute;lisis en
-    Preferencias (funciona &uacute;nicamente para UCI; Winboard se usa raramente, ya
-    que su especificaci&oacute;n carece de finura y es d&iacute;ficil de implementar
-    correctamente por los desarrolladores de programas de interfaz gr&aacute;fica de
-    usuario &mdash; GUI).</p>
+  <p>El comportamiento de los motores de an&aacute;lisis puede ser calibrado
+    con los protocolos seleccionables en el di&aacute;logo de Motores, en
+    Preferencias (funciona &uacute;nicamente para UCI; Winboard se usa
+    raramente, ya que su especificaci&oacute;n carece de finura y es
+    d&iacute;ficil de implementar correctamente por los desarrolladores de
+    programas de interfaz gr&aacute;fica de usuario &mdash; GUI).</p>
   
   <p>La velocidad a la que ocurren movidas puede ser ajustada con el selector
     localizado en la esquina inferior derecha de la barra de
@@ -296,18 +294,20 @@
     complejidad Guid-Bratko es c&aacute;lculado  &mdash; vea la referencia para
     detalles.</p>
   
-  <p><em>Una pista</em> para los desarrolladores de motores: Es posible hacer un <em>log</em> de
-    la comunicaci&oacute;n desde y hacia el motor con el se&ntilde;uelo &ldquo;<em>Log</em>&rdquo; en los ajustes
-    del motor de an&aacute;lisis. Logging envia el archivo llamado <code>&lsquo;name.log&rsquo;</code> donde
-    el nombre es el &ldquo;indicado&rdquo; en los ajustes de motor. El directorio de Logging
-    es la <code>RutadeDatosdePrograma/log</code>. La ruta de datos de programa puede
-    determinarse en el di&aacute;logo sobre ChessX.</p>
+  <p><em>Una pista</em> para los desarrolladores de motores: Es posible hacer
+    un <em>log</em> de la comunicaci&oacute;n desde y hacia el motor con la
+    casilla &ldquo;<em>Log</em>&rdquo; en Preferencias / Motores. Logging
+    envia el archivo llamado <code>&lsquo;nombre.log&rsquo;</code> donde 
+    el nombre es el indicado en la pesta&ntilde;a Motores. El
+    directorio de Logging es la <code>RutadeDatosdePrograma/log</code>. La
+    ruta de datos de programa puede determinarse en el di&aacute;logo sobre
+    ChessX.</p> 
   
   <p>Algunos motores de an&aacute;lisis (por ejemplo lc0) tienen problemas para
     mantener un estado interno apropriado a travez de comandos de dos
     posiciones, por lo tanto ChessX permite enviar la historia completa de un
-    juego en lugar de la posici&oacute;n actualizada. Esto se deshabilitar chequeando
-    la casilla &ldquo;Enviar historia&rdquo;</p>
+    juego en lugar de la posici&oacute;n actualizada. Esto se puede
+    deshabilitar dese la casilla &ldquo;Enviar historia&rdquo;</p>
 
   <h3><a name="Game"></a>Jugando contra la maquina</h3>
   
@@ -337,24 +337,24 @@
     <li>El selector en la barra de estado determina cu&aacute;nto tiempo la m&aacute;quina
       utiliza para pensar cada posici&oacute;n
     <li>Seleccionando en el men&uacute; Preferencias &rarr; Juego &rarr; guardar
-      autom&aacute;ticamente y continuar con el siguiente juego, el motor de an&aacute;lisis
+      juego autom&aacute;ticamente y continuar con el siguiente, el motor de an&aacute;lisis
       progresar&aacute; por toda la base de datos. Seleccione &eacute;sta opci&oacute;n, inicie el
       motor de an&aacute;lisis 1, abra el primer juego de la base de datos, y
       finalmente seleccione la primera movida, para analisar la base de datos completamente.
     <li>Seleccionando en el men&uacute; Preferencias &rarr; Base de datos &rarr;
-      Someter la base de datos a disco al salvar Juego, es una opci&oacute;n
+      Someter la base de datos a disco al guardar juego, es una opci&oacute;n
       recomendada, ya que somete la base de datos al disco una vez termina el
       an&aacute;lisis de cada uno de los juegos, especialmente cuando se analisa una
       base de dato completa, &eacute;ste procedimiento prevendr&iacute;a que todo el
       an&aacute;lisis se perder&iacute;a s&iacute;, por ejemplo, el computador se desconect&aacute; accidentalmente.
-    <li>Seleccionando en el men&uacute; Preferencias &rarr; Juego &rarr; Verificar
-      l&iacute;mite de d&iacute;sparate, permite establecer un l&iacute;mite en centipeones
-    <li>Seleccionando en el men&uacute; Preferencias &rarr; Juego &rarr; An&aacute;lisis
-      autom&aacute;tico retrogrado, entrar&aacute; variaciones en el juego, &uacute;nicamente si la
-      evaluaci&oacute;n de la movida es superior a el l&iacute;mite en centipeones
-      &iacute;ndicado. El an&aacute;lisis hacia adelante solamente a&ntilde;ade glifos NAG (?, ??, !, !!)
-    <li>Seleccionando en el men&uacute; Preferencias &rarr; Juego &rarr; A&ntilde;adir
-      anotaci&oacute;n, el texto &iacute;ndicado se adiciona a las l&iacute;neas o glifos NAG,
+    <li>La selecci&oacute;n en el men&uacute; Preferencias &rarr; Juego &rarr;
+      L&iacute;mite de verificaci&oacute;n de disparate (centi-pe&oacute;n), permite establecer un l&iacute;mite en centipeones
+    <li>Seleccionando en el men&uacute; Preferencias &rarr; Juego &rarr;
+      An&aacute;lisis retrogrado, entrar&aacute; variaciones en el juego,
+      &uacute;nicamente si la evaluaci&oacute;n de la movida es superior a el
+      l&iacute;mite en centipeones &iacute;ndicado. En este modo, el an&aacute;lisis hacia adelante solamente a&ntilde;ade s&iacute;mbolos (?, ??, !, !!)
+    <li>Seleccionando en el men&uacute; Preferencias &rarr; Juego &rarr;
+      A&ntilde;adir  anotaci&oacute;n en el final de l&iacute;nea, el texto &iacute;ndicado se adiciona a las l&iacute;neas o glifos NAG,
       permiti&eacute;ndo que el an&aacute;lisis autom&aacute;tico sea distinguido de l&iacute;neas o
       comentarios que ya est&eacute;n existentes
     <li>Seleccionando en el men&uacute; Preferencias &rarr; Juego &rarr; &Uacute;nicamente
@@ -366,11 +366,12 @@
   
   <h3><a name="Engine-Books"></a>Usando libros con los motores de analisis</h3>
   
-<p>Los motores UCI puedes soportar libros. Simplemente ajuste la opci&oacute;n
-  UsarLibro como verdad, ajuste el nombre de &eacute;l &ldquo;Archivo de Libro&rdquo; y reinicie
-  el motor de an&aacute;lisis. El motor de an&aacute;lisis responder&aacute; inmediatamente con una
-  movida existente en el libro cu&aacute;nd est&eacute; jugando (ver arriba),  pero
-  dependiendo de la opci&oacute;n &ldquo;Mejor movida en el libro&rdquo;, la movida realizada por
+<p>Los motores UCI puedes soportar libros. Simplemente ajuste el nombre de el
+  directorio donde se inicia el motor, y reinicie
+  el motor de an&aacute;lisis. El motor de an&aacute;lisis responder&aacute;
+  inmediatamente con una   movida existente en el libro cu&aacute;nd
+  est&eacute; jugando (ver arriba),  pero   dependiendo de la opci&oacute;n
+  &ldquo;Mejor movida en el libro&rdquo;, la movida realizada por 
   el motor puede ser, o no ser, la mejor movida presente en el libro. En el
   modo de an&aacute;lisis infinito, el motor no usar&aacute; la informaci&oacute;n presente en el
   libro de aperturas.</p>
@@ -572,11 +573,11 @@
 
 <p>En caso de que no se tenga una idea de que mover, se puede obtener pistas
   al mover en rat&oacute;n sobre las piezas. &iexcl;Es posible que la m&oacute;vida correcta
-  aparezca!.   Vea el cap&iacute;tulo sobre hacer movidas y las preferencias
+  aparezca!.  Vea el cap&iacute;tulo sobre hacer movidas y las preferencias
   asociadas a la habilitaci&oacute;n de adivinanza de movientos.</p>
 
 <p><img src=":/images/training_both.png" width="42" align="left">
-  Seleccionando &ldquo;Juego / Entrenamiento en ambos lados&rdquo; fuerza a que ambos lads
+  Seleccionando &ldquo;Juego / Entrenar ambos lados&rdquo; fuerza a que ambos lados
   sean jugados, ocultando las movidas jugadas.</p>
 
 <!-- fixing duplicate a_tag-->
@@ -601,8 +602,7 @@
   movida que es hecha en el tablero. Los estudiantes, se espera, visualizen la
   posici&oacute;n anunciada sin que esta sea a&uacute;n hecha sobre el tablero. Una vez la
   movida es ejecutada, ChessX leer&iacute;a unas pocas movidas, nuevamente. Vea
-  &ldquo;Juego / Leer movidas adelante&rdquo; y el di&aacute;logo de Preferencias en
-  &ldquo;App / Sonido / N&uacute;mero de turnos a leer&rdquo;.</p>
+  &ldquo;Preferencias / App / Sonido / Hablar las movidas&rdquo; y &ldquo;App / Sonido / N&uacute;mero de turnos a revisar hacia adelante&rdquo;.</p>
 
 <h3><a name="Match"></a>Jugando partidas</h3>
 

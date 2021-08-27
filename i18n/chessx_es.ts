@@ -16,7 +16,7 @@
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="94"/>
         <source>Copyright</source>
-        <translation>Copyright</translation>
+        <translation>Derechos de autor</translation>
     </message>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="120"/>
@@ -2160,7 +2160,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1719"/>
         <source>Play engine</source>
-        <translation>Jugar por el motor</translation>
+        <translation>Motor en auto responder</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1724"/>
@@ -2202,7 +2202,7 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1840"/>
         <location filename="../src/gui/mainwindow.cpp" line="1842"/>
         <source>Scratch Pad</source>
-        <translation>Block de notas</translation>
+        <translation>Bloc de notas</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1870"/>
@@ -2407,7 +2407,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1624"/>
         <source>Show underprotected black pieces</source>
-        <translation>Mostrasr piezas Negras desprotegidas</translation>
+        <translation>Mostrar piezas Negras desprotegidas</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1637"/>
@@ -4410,7 +4410,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1480"/>
         <source>Try to use Timeseal</source>
-        <translation>Intente utilizar timeseal</translation>
+        <translation>Usar timeseal</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1343"/>
@@ -4435,7 +4435,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1457"/>
         <source>Use online tablebase servers</source>
-        <translation>Usar servidores con tablero online</translation>
+        <translation>Usar servidores con tablebase en línea</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1444"/>
@@ -5395,7 +5395,7 @@ Shall I download a database?</source>
         <location filename="../src/gui/textedit.cpp" line="451"/>
         <source>The scratchpad has been modified.
 Do you want to save your changes?</source>
-        <translation>El Block de Notas ha sido modificado.
+        <translation>El bloc de notas ha sido modificado.
 Desea guardar los cambios?</translation>
     </message>
     <message>
