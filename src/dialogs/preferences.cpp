@@ -586,6 +586,9 @@ void PreferencesDialog::restoreSettings()
 
     ui.iconsVisible->setChecked(AppSettings->getValue("/MainWindow/ShowMenuIcons").toBool());
     ui.cbAutoRaise->setChecked(AppSettings->getValue("/MainWindow/AutoRaise").toBool());
+    ui.IconSizeSlider->setValue(AppSettings->getValue("/MainWindow/ToolbarIconSize").toInt());
+    connect (ui.IconSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderNewValue(int)));
+
     // Read Game List settings
     AppSettings->beginGroup("GameText");
 
@@ -596,13 +599,6 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.notationColors, tr("NAGs"), "NagColor");
 
     ui.gameTextFontSizeSpin->setValue(AppSettings->getValue("FontSize").toInt());
-
-    /*
-      Icon Resizing slider saves new value in configuration, 
-      then emits signal with the new value
-    */
-    ui.IconSizeSlider->setValue(AppSettings->getValue("ToolbarIconSize").toInt());
-    connect (ui.IconSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderNewValue(int)));
     
     ui.cbShowDiagrams->setChecked(AppSettings->getValue("ShowDiagrams").toBool());
     ui.cbColumnStyle->setChecked(AppSettings->getValue("ColumnStyle").toBool());
