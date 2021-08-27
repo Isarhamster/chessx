@@ -131,7 +131,7 @@ protected:
     /* Sets size for icons in the toolbar */
     QToolBar * fileToolBar, * editToolBar, * viewToolBar, * gameToolBar, * dbToolBar, * searchToolBar;
   public slots:
-    bool resizeToolBarIcons (const int);
+    void resizeToolBarIcons(int scale);
     /** Enter gaming mode */
     void slotToggleGameMode();
     /** Flip the board view */

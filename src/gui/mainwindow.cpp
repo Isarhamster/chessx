@@ -86,6 +86,9 @@
 #include <QTimer>
 #include <QToolBar>
 
+template< typename T, std::size_t N >
+inline constexpr std::size_t sizeofArray( const T(&)[N] ) noexcept { return N; }
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -1050,17 +1053,17 @@ void MainWindow::openLichess()
     {
         account = db.getHandle();
         start = db.getStartDate();
-    }
 
-    if (!account.isEmpty())
-    {
-        quint64 since= QDateTime(start).toMSecsSinceEpoch(); // Better: start.startOfDay().toMSecsSinceEpoch(); but that is Qt5
-        QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
-        openDatabaseUrl(url, false);
-    }
-    else
-    {
-        slotConfigure("lichess");
+        if (!account.isEmpty())
+        {
+            quint64 since= QDateTime(start).toMSecsSinceEpoch(); // Better: start.startOfDay().toMSecsSinceEpoch(); but that is Qt5
+            QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
+            openDatabaseUrl(url, false);
+        }
+        else
+        {
+            slotConfigure("lichess");
+        }
     }
 }
 
@@ -1083,16 +1086,16 @@ void MainWindow::openChesscom()
     {
         account = db.getHandle();
         start = db.getStartDate();
-    }
-    if (!account.isEmpty())
-    {
-        QString s = start.toString("yyyy/MM");
-        QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account).arg(s);
-        openDatabaseUrl(url, true);
-    }
-    else
-    {
-        slotConfigure("chesscom");
+        if (!account.isEmpty())
+        {
+            QString s = start.toString("yyyy/MM");
+            QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account).arg(s);
+            openDatabaseUrl(url, true);
+        }
+        else
+        {
+            slotConfigure("chesscom");
+        }
     }
 }
 
@@ -1457,31 +1460,27 @@ QAction* MainWindow::createAction(QString name, const char* slot, const QKeySequ
 
 /* Slot for resizing Tool Bar Icons in the Main Window given the Scaling factor */
 /* Default scale factor is read from the config value */
-bool MainWindow::resizeToolBarIcons (
-				     const int scale = AppSettings->getValue("/GameText/ToolbarIconSize").toInt()
-				     ){
-  /* When scale out of range error, returns false */
-  if (scale > 6) { return false; }
-  
-  /* IconSizes array returns a translator from scale to pixel size */
-  QSize IconSizes [7] = {QSize(16,16),
-			 QSize(24,24),
-			 QSize(32,32),
-			 QSize(48,48),
-			 QSize(64,64),
-			 QSize(72,72),
-			 QSize(96,96)};
+void MainWindow::resizeToolBarIcons (int scale)
+{
+    /* IconSizes array returns a translator from scale to pixel size */
+    QSize IconSizes[] = {QSize(16,16),
+             QSize(24,24),
+             QSize(32,32),
+             QSize(48,48),
+             QSize(64,64),
+             QSize(72,72),
+             QSize(96,96)};
 
-  /*Resizes every declared ToolBar*/
-  this->fileToolBar->setIconSize(IconSizes[scale]);
-  this->editToolBar->setIconSize(IconSizes[scale]);
-  this->viewToolBar->setIconSize(IconSizes[scale]);
-  this->gameToolBar->setIconSize(IconSizes[scale]);
-  this->dbToolBar->setIconSize(IconSizes[scale]);
-  this->searchToolBar->setIconSize(IconSizes[scale]);
-
-  /* Once sucessfully resizes all toolbar icons returns true */
-  return true;
+    if (scale < (int) sizeofArray(IconSizes))
+    {
+        QSize& sz = IconSizes[scale];
+        fileToolBar->setIconSize(sz);
+        editToolBar->setIconSize(sz);
+        viewToolBar->setIconSize(sz);
+        gameToolBar->setIconSize(sz);
+        dbToolBar->setIconSize(sz);
+        searchToolBar->setIconSize(sz);
+    }
 }
 
 void MainWindow::setupActions()
@@ -1891,7 +1890,7 @@ void MainWindow::setupActions()
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), reverseFilter, SLOT(setEnabled(bool)));
     search->addAction(reverseFilter);
 
-    resizeToolBarIcons( );
+    resizeToolBarIcons(AppSettings->getValue("/MainWindow/ToolbarIconSize").toInt());
     
     /* Database menu */
     QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));
