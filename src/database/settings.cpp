@@ -231,6 +231,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/General/BuiltinDbInstalled", false);
 
     map.insert("/GameText/FontSize", DEFAULT_FONTSIZE);
+    map.insert("/GameText/ToolbarIconSize", DEFAULT_ICONSIZE);
     map.insert("/GameText/ColumnStyle", false);
     map.insert("/GameText/HTMLComments", true);
     map.insert("/GameText/HideSpecAnnotations", true);
