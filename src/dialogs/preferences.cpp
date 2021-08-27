@@ -452,6 +452,11 @@ int PreferencesDialog::exec()
         saveSettings();
         emit reconfigure();
     }
+    else
+    {
+        // Fix icon sizes in case of cancel pressed
+        emit iconsizeSliderSetting(AppSettings->getValue("/MainWindow/ToolbarIconSize").toInt());
+    }
     return result;
 }
 
@@ -742,11 +747,11 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("/MainWindow/Theme", ui.theme->currentText());
     AppSettings->setValue("/MainWindow/ShowMenuIcons", ui.iconsVisible->isChecked());
     AppSettings->setValue("/MainWindow/AutoRaise", ui.cbAutoRaise->isChecked());
+    AppSettings->setValue("/MainWindow/ToolbarIconSize", ui.IconSizeSlider->value());
 
     AppSettings->beginGroup("GameText");
 
     AppSettings->setValue("FontSize", ui.gameTextFontSizeSpin->value());
-    AppSettings->setValue("ToolbarIconSize", ui.IconSizeSlider->value());
     AppSettings->setValue("ShowDiagrams", ui.cbShowDiagrams->isChecked());
     AppSettings->setValue("HideSpecAnnotations", ui.cbHideSpecAnnotations->isChecked());
     AppSettings->setValue("HTMLComments", ui.cbHTMLComments->isChecked());
@@ -918,7 +923,8 @@ void PreferencesDialog::on_savePreferences_clicked()
     }
 }
 
-/*A signal is emitted if resizing icon slider changes position*/
-void PreferencesDialog::sliderNewValue(int newValue){
-  emit iconsizeSliderSetting(newValue);
+/* A signal is emitted if resizing icon slider changes position */
+void PreferencesDialog::sliderNewValue(int newValue)
+{
+    emit iconsizeSliderSetting(newValue);
 }

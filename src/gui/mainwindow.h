@@ -133,7 +133,8 @@ protected:
   public slots:
     /** Changes window title in response to boardview flipping**/
     void updateWindowTitleFlipped(bool, bool);
-    bool resizeToolBarIcons (const int);
+    /** resizes icons in the toolbar **/
+    void resizeToolBarIcons(int scale);
     /** Enter gaming mode */
     void slotToggleGameMode();
     /** Flip the board view */
