@@ -134,7 +134,7 @@ protected:
     QAction * ficsButton;     
   public slots:
     /** Changes the Size of the Icons on the Toolbar **/
-    bool resizeToolBarIcons (const int);
+    void resizeToolBarIcons(int scale);
     /** Toggle the Pixmap of FICS icon to reflect connect or disconnect status **/
     void FicsToggleConnected();
     void FicsToggleDisconnected();

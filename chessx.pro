@@ -41,7 +41,6 @@ DEFINES += QT_NO_CAST_TO_ASCII
 DEFINES *= QT_USE_QSTRINGBUILDER
 
 macx {
-  QMAKE_MAC_SDK = macosx11.1
   QMAKE_CXXFLAGS += -fvisibility=hidden
   QMAKE_LFLAGS_RELEASE -= -O2
   QMAKE_LFLAGS_RELEASE += -m64 -Ofast
@@ -142,6 +141,7 @@ FORMS += \
   src/dialogs/copydialog.ui \
   src/dialogs/dlgsavebook.ui \
   src/dialogs/matchparameterdlg.ui \
+  src/dialogs/onlinebase.ui \
   src/dialogs/preferences.ui \
   src/dialogs/promotiondialog.ui \
   src/dialogs/quicksearch.ui \
@@ -246,6 +246,7 @@ HEADERS += src/database/board.h \
   src/dialogs/copydialog.h \
   src/dialogs/dlgsavebook.h \
   src/dialogs/matchparameterdlg.h \
+  src/dialogs/onlinebase.h \
   src/dialogs/preferences.h \
   src/dialogs/promotiondialog.h \
   src/dialogs/quicksearch.h \
@@ -418,6 +419,7 @@ SOURCES += \
   src/dialogs/copydialog.cpp \
   src/dialogs/dlgsavebook.cpp \
   src/dialogs/matchparameterdlg.cpp \
+  src/dialogs/onlinebase.cpp \
   src/dialogs/preferences.cpp \
   src/dialogs/promotiondialog.cpp \
   src/dialogs/quicksearch.cpp \
@@ -564,7 +566,7 @@ RESOURCES = \
 
 TRANSLATIONS = i18n/chessx_de.ts
 
-#\
+#        i18n/chessx_fr.ts \
 #        i18n/chessx_da.ts \
 #        i18n/chessx_fr.ts \
 #        i18n/chessx_it.ts \
