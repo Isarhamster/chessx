@@ -335,7 +335,9 @@ void MainWindow::slotConfigure(QString anchor)
     PreferencesDialog dlg(this);
     dlg.setAnchor(anchor);
     connect(&dlg, SIGNAL(reconfigure()), SLOT(slotReconfigure()));
+    connect(&dlg, SIGNAL(iconsizeSliderSetting(int)), this, SLOT(resizeToolBarIcons(int)));
     dlg.exec();
+
 }
 
 void MainWindow::slotReconfigure()
