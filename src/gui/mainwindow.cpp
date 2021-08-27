@@ -44,6 +44,7 @@
 #include "messagedialog.h"
 #include "memorydatabase.h"
 #include "networkhelper.h"
+#include "onlinebase.h"
 #include "openingtreewidget.h"
 #include "output.h"
 #include "pgndatabase.h"
@@ -1031,10 +1032,28 @@ void MainWindow::openWebFavorite()
 void MainWindow::openLichess()
 {
     QString account = AppSettings->getValue("/Lichess/userName").toString();
+    QDate date = QDate::currentDate();
+    QDate start(date.year(),date.month(),1);
+
+    OnlineBase db;
+
+    QAction* action = qobject_cast<QAction*>(sender());
+    if (action)
+    {
+        db.setWindowIcon(action->icon());
+        db.setWindowTitle(action->text());
+    }
+
+    db.setHandle(account);
+    db.setStartDate(start);
+    if (db.exec() == QDialog::Accepted)
+    {
+        account = db.getHandle();
+        start = db.getStartDate();
+    }
+
     if (!account.isEmpty())
     {
-        QDate date = QDate::currentDate();
-        QDate start(date.year(),date.month(),1);
         quint64 since= QDateTime(start).toMSecsSinceEpoch(); // Better: start.startOfDay().toMSecsSinceEpoch(); but that is Qt5
         QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
         openDatabaseUrl(url, false);
@@ -1048,10 +1067,26 @@ void MainWindow::openLichess()
 void MainWindow::openChesscom()
 {
     QString account = AppSettings->getValue("/Chesscom/userName").toString();
+    QDate date = QDate::currentDate();
+    QDate start(date.year(),date.month(),1);
+
+    OnlineBase db;
+    QAction* action = qobject_cast<QAction*>(sender());
+    if (action)
+    {
+        db.setWindowIcon(action->icon());
+        db.setWindowTitle(action->text());
+    }
+    db.setHandle(account);
+    db.setStartDate(start);
+    if (db.exec() == QDialog::Accepted)
+    {
+        account = db.getHandle();
+        start = db.getStartDate();
+    }
     if (!account.isEmpty())
     {
-        QDateTime dateTime = QDateTime::currentDateTime();
-        QString s = dateTime.toString("yyyy/MM");
+        QString s = start.toString("yyyy/MM");
         QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account).arg(s);
         openDatabaseUrl(url, true);
     }
