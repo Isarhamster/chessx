@@ -335,7 +335,9 @@ void MainWindow::slotConfigure(QString anchor)
     PreferencesDialog dlg(this);
     dlg.setAnchor(anchor);
     connect(&dlg, SIGNAL(reconfigure()), SLOT(slotReconfigure()));
+    connect(&dlg, SIGNAL(iconsizeSliderSetting(int)), this, SLOT(resizeToolBarIcons(int)));
     dlg.exec();
+
 }
 
 void MainWindow::slotReconfigure()
@@ -1684,6 +1686,32 @@ void MainWindow::truncateVariation(GameX::Position position)
 {
     game().truncateVariation(position);
     emit signalGameLoaded(game().startingBoard());
+}
+
+/*Slot that updates the Main window title to reflect boardview flipping status*/
+void MainWindow::updateWindowTitleFlipped(bool wasFlipped, bool m_flipped){
+  (void) wasFlipped; //Silences unused warning
+
+  QString bullet = QString(QChar(0x2022));
+  QString whiteQueen = QString(QChar(0x2655));
+  QString blackQueen = QString(QChar(0x265B));
+  QString whiteRook = QString(QChar(0x2656));
+  QString blackRook = QString(QChar(0x265C));
+  
+  QString TitleFormatted = QString ( );
+  //Title for white pieces down uses white Rook
+  if (!m_flipped){
+    TitleFormatted = QStringList(
+				 {whiteRook, " ", bullet, " ChessX ", bullet, " %1"}
+				 ).join("");
+  }
+  //Title for black pieces down uses black Rook
+  if (m_flipped){
+    TitleFormatted = QStringList(
+				 {blackRook, " ", bullet, " ChessX ", bullet, " %1"}
+				 ).join("");
+  }
+  setWindowTitle(TitleFormatted.arg(databaseName()));
 }
 
 void MainWindow::slotGameModify(const EditAction& action)
@@ -3344,7 +3372,22 @@ void MainWindow::slotDatabaseChanged()
 {
     m_undoGroup.setActiveStack(databaseInfo()->undoStack());
     database()->index()->calculateCache();
-    setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
+
+    QString bullet = QString(QChar(0x2022));
+    QString whiteQueen = QString(QChar(0x2655));
+    QString blackQueen = QString(QChar(0x265B));
+    QString whiteRook = QString(QChar(0x2656));
+    QString blackRook = QString(QChar(0x265C));
+  
+    //Note: ChessX is not a translatable string.
+    QString TitleFormatted = QStringList({
+	whiteRook, " ", bullet, " ChessX ", bullet, " %1"
+	  }).join("");
+
+    setWindowTitle(TitleFormatted.arg(databaseName()));
+    connect(m_boardView, SIGNAL(signalFlipped(bool,bool)),
+	    this, SLOT(updateWindowTitleFlipped(bool,bool)));
+      
     m_gameList->setFilter(databaseInfo()->filter());
     updateLastGameList();
     slotFilterChanged();

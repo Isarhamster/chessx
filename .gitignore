@@ -16,3 +16,13 @@ obj_dbg/*
 coverage/*
 attic/*
 gcov-info/coverage.info
+lib/chessx-pgn/moc_database.cpp
+lib/chessx-pgn/moc_filter.cpp
+lib/chessx-pgn/moc_gamex.cpp
+lib/chessx-pgn/moc_index.cpp
+lib/chessx-pgn/moc_memorydatabase.cpp
+lib/chessx-pgn/moc_output.cpp
+lib/chessx-pgn/moc_pgndatabase.cpp
+lib/chessx-pgn/moc_predefs.h
+lib/chessx-pgn/moc_search.cpp
+lib/chessx-pgn/moc_settings.cpp

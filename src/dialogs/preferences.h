@@ -100,10 +100,15 @@ private:
 signals:
     /** Signal emitted when changes are applied. */
     void reconfigure();
-
+    /** Signal emitted when the slider for Icon resizing changes **/
+    /** int is new value **/
+    void iconsizeSliderSetting(int);
+      
 protected slots:
     /** Call restoration of layout from Settings storage */
     void restoreLayout();
+    /** slot to emit signal on resizing icon slider change **/
+    void sliderNewValue(int newValue);
 
     void buttonClicked(QAbstractButton *button);
 private slots:

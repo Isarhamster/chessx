@@ -452,6 +452,11 @@ int PreferencesDialog::exec()
         saveSettings();
         emit reconfigure();
     }
+    else
+    {
+        // Fix icon sizes in case of cancel pressed
+        emit iconsizeSliderSetting(AppSettings->getValue("/MainWindow/ToolbarIconSize").toInt());
+    }
     return result;
 }
 
@@ -581,6 +586,9 @@ void PreferencesDialog::restoreSettings()
 
     ui.iconsVisible->setChecked(AppSettings->getValue("/MainWindow/ShowMenuIcons").toBool());
     ui.cbAutoRaise->setChecked(AppSettings->getValue("/MainWindow/AutoRaise").toBool());
+    ui.IconSizeSlider->setValue(AppSettings->getValue("/MainWindow/ToolbarIconSize").toInt());
+    connect (ui.IconSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderNewValue(int)));
+
     // Read Game List settings
     AppSettings->beginGroup("GameText");
 
@@ -591,6 +599,7 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.notationColors, tr("NAGs"), "NagColor");
 
     ui.gameTextFontSizeSpin->setValue(AppSettings->getValue("FontSize").toInt());
+    
     ui.cbShowDiagrams->setChecked(AppSettings->getValue("ShowDiagrams").toBool());
     ui.cbColumnStyle->setChecked(AppSettings->getValue("ColumnStyle").toBool());
     ui.cbHTMLComments->setChecked(AppSettings->getValue("HTMLComments").toBool());
@@ -734,6 +743,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("/MainWindow/Theme", ui.theme->currentText());
     AppSettings->setValue("/MainWindow/ShowMenuIcons", ui.iconsVisible->isChecked());
     AppSettings->setValue("/MainWindow/AutoRaise", ui.cbAutoRaise->isChecked());
+    AppSettings->setValue("/MainWindow/ToolbarIconSize", ui.IconSizeSlider->value());
 
     AppSettings->beginGroup("GameText");
 
@@ -907,4 +917,10 @@ void PreferencesDialog::on_savePreferences_clicked()
     {
         QFile::copy(settingsPath, newPath);
     }
+}
+
+/* A signal is emitted if resizing icon slider changes position */
+void PreferencesDialog::sliderNewValue(int newValue)
+{
+    emit iconsizeSliderSetting(newValue);
 }
