@@ -44,6 +44,7 @@
 #include "messagedialog.h"
 #include "memorydatabase.h"
 #include "networkhelper.h"
+#include "onlinebase.h"
 #include "openingtreewidget.h"
 #include "output.h"
 #include "pgndatabase.h"
@@ -84,6 +85,9 @@
 #endif
 #include <QTimer>
 #include <QToolBar>
+
+template< typename T, std::size_t N >
+inline constexpr std::size_t sizeofArray( const T(&)[N] ) noexcept { return N; }
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -1031,33 +1035,67 @@ void MainWindow::openWebFavorite()
 void MainWindow::openLichess()
 {
     QString account = AppSettings->getValue("/Lichess/userName").toString();
-    if (!account.isEmpty())
+    QDate date = QDate::currentDate();
+    QDate start(date.year(),date.month(),1);
+
+    OnlineBase db;
+
+    QAction* action = qobject_cast<QAction*>(sender());
+    if (action)
     {
-        QDate date = QDate::currentDate();
-        QDate start(date.year(),date.month(),1);
-        quint64 since= QDateTime(start).toMSecsSinceEpoch(); // Better: start.startOfDay().toMSecsSinceEpoch(); but that is Qt5
-        QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
-        openDatabaseUrl(url, false);
+        db.setWindowIcon(action->icon());
+        db.setWindowTitle(action->text());
     }
-    else
+
+    db.setHandle(account);
+    db.setStartDate(start);
+    if (db.exec() == QDialog::Accepted)
     {
-        slotConfigure("lichess");
+        account = db.getHandle();
+        start = db.getStartDate();
+
+        if (!account.isEmpty())
+        {
+            quint64 since= QDateTime(start).toMSecsSinceEpoch(); // Better: start.startOfDay().toMSecsSinceEpoch(); but that is Qt5
+            QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
+            openDatabaseUrl(url, false);
+        }
+        else
+        {
+            slotConfigure("lichess");
+        }
     }
 }
 
 void MainWindow::openChesscom()
 {
     QString account = AppSettings->getValue("/Chesscom/userName").toString();
-    if (!account.isEmpty())
+    QDate date = QDate::currentDate();
+    QDate start(date.year(),date.month(),1);
+
+    OnlineBase db;
+    QAction* action = qobject_cast<QAction*>(sender());
+    if (action)
     {
-        QDateTime dateTime = QDateTime::currentDateTime();
-        QString s = dateTime.toString("yyyy/MM");
-        QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account).arg(s);
-        openDatabaseUrl(url, true);
+        db.setWindowIcon(action->icon());
+        db.setWindowTitle(action->text());
     }
-    else
+    db.setHandle(account);
+    db.setStartDate(start);
+    if (db.exec() == QDialog::Accepted)
     {
-        slotConfigure("chesscom");
+        account = db.getHandle();
+        start = db.getStartDate();
+        if (!account.isEmpty())
+        {
+            QString s = start.toString("yyyy/MM");
+            QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account).arg(s);
+            openDatabaseUrl(url, true);
+        }
+        else
+        {
+            slotConfigure("chesscom");
+        }
     }
 }
 
@@ -1420,12 +1458,38 @@ QAction* MainWindow::createAction(QString name, const char* slot, const QKeySequ
     return action;
 }
 
+/* Slot for resizing Tool Bar Icons in the Main Window given the Scaling factor */
+/* Default scale factor is read from the config value */
+void MainWindow::resizeToolBarIcons (int scale)
+{
+    /* IconSizes array returns a translator from scale to pixel size */
+    QSize IconSizes[] = {QSize(16,16),
+             QSize(24,24),
+             QSize(32,32),
+             QSize(48,48),
+             QSize(64,64),
+             QSize(72,72),
+             QSize(96,96)};
+
+    if (scale < (int) sizeofArray(IconSizes))
+    {
+        QSize& sz = IconSizes[scale];
+        fileToolBar->setIconSize(sz);
+        editToolBar->setIconSize(sz);
+        viewToolBar->setIconSize(sz);
+        gameToolBar->setIconSize(sz);
+        dbToolBar->setIconSize(sz);
+        searchToolBar->setIconSize(sz);
+    }
+}
+
 void MainWindow::setupActions()
 {
     /* File menu */
     QMenu* file = menuBar()->addMenu(tr("&File"));
-    QToolBar* fileToolBar = addToolBar(tr("File"));
+    fileToolBar = addToolBar(tr("File"));
     fileToolBar->setObjectName("FileToolBar");
+    
     file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), Qt::CTRL + Qt::SHIFT + Qt::Key_N, fileToolBar, ":/images/new.png"));
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
@@ -1465,9 +1529,9 @@ void MainWindow::setupActions()
 
     /* Edit menu */
     QMenu* edit = menuBar()->addMenu(tr("&Edit"));
-    QToolBar* editToolBar = addToolBar(tr("Edit"));
+    editToolBar = addToolBar(tr("Edit"));
     editToolBar->setObjectName("EditToolBar");
-
+    
     QAction *undoAction = m_undoGroup.createUndoAction(this, tr("Undo"));
     QAction *redoAction = m_undoGroup.createRedoAction(this, tr("Redo"));
     undoAction->setShortcut(Qt::CTRL + Qt::Key_Z);
@@ -1579,8 +1643,9 @@ void MainWindow::setupActions()
                                        nullptr, style()->standardIcon(QStyle::SP_TitleBarCloseButton)));
     m_menuView->addSeparator();
 
-    QToolBar* viewToolBar = addToolBar(tr("View"));
+    viewToolBar = addToolBar(tr("View"));
     viewToolBar->setObjectName("ViewToolBarMain");
+    
     QAction* showTargets = createAction(tr("Show target fields"), SLOT(slotShowTargetFields()), 0,
                                        viewToolBar, QIcon(":/images/show_targets.png"));
     m_menuView->addAction(showTargets);
@@ -1635,9 +1700,10 @@ void MainWindow::setupActions()
 
     /* Game menu */
     QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
-    QToolBar* gameToolBar = addToolBar(tr("Game"));
+    gameToolBar = addToolBar(tr("Game"));
     gameToolBar->setObjectName("GameToolBarMain");
-    QToolBar* dbToolBar = addToolBar(tr("Database"));
+    
+    dbToolBar = addToolBar(tr("Database"));
     dbToolBar->setObjectName("DbToolBarMain");
 
     QAction* newAction = createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New,
@@ -1793,7 +1859,7 @@ void MainWindow::setupActions()
 
     /* Search menu */
     QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
-    QToolBar* searchToolBar = addToolBar(tr("Search"));
+    searchToolBar = addToolBar(tr("Search"));
     searchToolBar->setObjectName("SearchToolBar");
 
     QAction* actionFindTag = createAction(tr("Find tag..."), SLOT(slotSearchTag()), Qt::CTRL + Qt::SHIFT + Qt::Key_T, searchToolBar, ":/images/find_tag.png");
@@ -1824,6 +1890,8 @@ void MainWindow::setupActions()
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), reverseFilter, SLOT(setEnabled(bool)));
     search->addAction(reverseFilter);
 
+    resizeToolBarIcons(AppSettings->getValue("/MainWindow/ToolbarIconSize").toInt());
+    
     /* Database menu */
     QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));
     m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));

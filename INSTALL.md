@@ -1,4 +1,4 @@
-![Icon](data/icons/64x64/apps/chessx.png)ChessX
+![Icon](https://github.com/Isarhamster/chessx/raw/master/data/images/chessx-64.png)ChessX
 =================================================================
 
 # 1. Description
