@@ -48,10 +48,11 @@
         <file alias="images/find_pos.png">data/images/edit_find.png</file>
         <file alias="images/find_tag.png">data/images/edit_find_tag.png</file>
         <file alias="images/first.png">data/images/button_first.png</file>
-        <file alias="images/FlagFrance.png">data/images/FlagFrance.png</file>
-        <file alias="images/FlagGermany.png">data/images/FlagGermany.png</file>
-        <file alias="images/FlagPoland.png">data/images/FlagPoland.png</file>
-        <file alias="images/FlagUK.png">data/images/FlagUK.png</file>
+        <file alias="images/flag_de.png">data/images/flag_de.png</file>
+        <file alias="images/flag_es.png">data/images/flag_es.png</file>
+        <file alias="images/flag_fr.png">data/images/flag_fr.png</file>
+	<file alias="images/flag_gb.png">data/images/flag_gb.png</file>
+	<file alias="images/flag_pl.png">data/images/flag_pl.png</file>
         <file alias="images/flip_board.png">data/images/flip_board.png</file>
         <file alias="images/flip-horizontal.png">data/images/flip-horizontal.png</file>
         <file alias="images/flip-vertical.png">data/images/flip-vertical.png</file>

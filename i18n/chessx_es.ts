@@ -4094,13 +4094,13 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="519"/>
-        <source>Put the initials of the pieces here, mind the initial space.</source>
-        <translation>Poner piezas de inicio aquí, recuerda el espacio inicial</translation>
+        <source>Put the initials of the pieces here.</source>
+        <translation>Poner piezas de inicio aquí.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="525"/>
-        <source> KQRBN - Mind the initial space!</source>
-        <translation>RDTAC - Recuerda el espacio inicial!</translation>
+        <source>KQRBN</source>
+        <translation>RDTAC</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="532"/>

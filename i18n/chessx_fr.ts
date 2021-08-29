@@ -4010,14 +4010,13 @@ Dois-je télécharger une base ?</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="519"/>
-        <source>Put the initials of the pieces here, mind the initial space.</source>
-        <translatorcomment>Que peut vouloir dire l&apos;expression &quot;mind the initial space&quot; ???</translatorcomment>
-        <translation>Mettre les initiales des pièces ici, garder l&apos;espace initial.</translation>
+        <source>Put the initials of the pieces here.</source>
+        <translation>Mettre les initiales des pièces ici.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="525"/>
-        <source> KQRBN - Mind the initial space!</source>
-        <translation> KQRBN - Garder l&apos;espace initial!</translation>
+        <source>KQRBN</source>
+        <translation>KQRBN</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="594"/>

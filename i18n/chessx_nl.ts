@@ -4037,12 +4037,12 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="498"/>
-        <source>Put the initials of the pieces here, mind the initial space.</source>
+        <source>Put the initials of the pieces here.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="504"/>
-        <source> KQRBN - Mind the initial space!</source>
+        <source>KQRBN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

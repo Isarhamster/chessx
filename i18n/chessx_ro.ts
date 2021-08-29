@@ -3990,15 +3990,15 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="498"/>
-        <source>Put the initials of the pieces here, mind the initial space.</source>
+        <source>Put the initials of the pieces here.</source>
         <translatorcomment>de văzut</translatorcomment>
-        <translation>Pune iniţialele pieselor aici, păstrează spaţiul iniţial.</translation>
+        <translation>Pune iniţialele pieselor aici.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="504"/>
-        <source> KQRBN - Mind the initial space!</source>
+        <source>KQRBN</source>
         <translatorcomment>de văzut</translatorcomment>
-        <translation> KQRBN - Păstrează spaţiul iniţial!</translation>
+        <translation>KQRBN</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="573"/>

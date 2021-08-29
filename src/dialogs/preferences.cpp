@@ -35,6 +35,7 @@
 #include <QSpinBox>
 #include <QStyleFactory>
 #include <QTextStream>
+#include <QMap>
 
 #ifdef USE_SPEECH
 #include <QTextToSpeech>
@@ -72,11 +73,12 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     connect(ui.commandButton, SIGNAL(clicked(bool)), SLOT(slotSelectEngineCommand()));
     connect(ui.browsePathButton, SIGNAL(clicked(bool)), SLOT(slotSelectDataBasePath()));
     connect(ui.engineOptionMore, SIGNAL(clicked(bool)), SLOT(slotShowOptionDialog()));
-
-    connect(ui.tbUK, SIGNAL(clicked()), SLOT(slotChangePieceString()));
-    connect(ui.tbGermany, SIGNAL(clicked()), SLOT(slotChangePieceString()));
-    connect(ui.tbFrance, SIGNAL(clicked()), SLOT(slotChangePieceString()));
-    connect(ui.tbPoland, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    
+    connect(ui.tbGB, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbES, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbDE, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbFR, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbPL, SIGNAL(clicked()), SLOT(slotChangePieceString()));
     connect(ui.tbSymbolic, SIGNAL(clicked()), SLOT(slotChangePieceString()));
 
     connect(ui.btLoadLang, SIGNAL(clicked()), SLOT(slotLoadLanguageFile()));
@@ -344,32 +346,23 @@ void PreferencesDialog::slotShowOptionDialog()
 
 void PreferencesDialog::slotChangePieceString()
 {
-    QString pieceString;
-    if((QToolButton*)sender() == ui.tbUK)
-    {
-        pieceString = " KQRBN";
-    }
-    else if((QToolButton*)sender() == ui.tbGermany)
-    {
-        pieceString = " KDTLS";
-    }
-    else if((QToolButton*)sender() == ui.tbFrance)
-    {
-        pieceString = " RDTFC";
-    }
-    else if((QToolButton*)sender() == ui.tbPoland)
-    {
-        pieceString = " KHWGS";
-    }
-    else if((QToolButton*)sender() == ui.tbSymbolic)
-    {
-        pieceString.clear();
-    }
-    else
-    {
-        pieceString = " KQRBN";
-    }
-    ui.pieceString->setText(pieceString);
+  //ensure a default value is initiated
+  QString pieceString = QString ( );
+  
+  //Assign piece string given the mapped sender
+  //defines a QMap for multiple International Symbols
+  QMap<QToolButton*, QString> pieceMap;
+  pieceMap[ui.tbSymbolic] = QString( ) ; //Assigns the Null string
+  pieceMap[ui.tbDE] = "KDTLS";
+  pieceMap[ui.tbES] = "RDTAC";
+  pieceMap[ui.tbFR] = "RDTFC";
+  pieceMap[ui.tbGB] = "KQRBN";
+  pieceMap[ui.tbPL] = "KHWGS";
+
+  //Assign the language notations per the sender
+  pieceString =  pieceMap.value((QToolButton*)sender());
+  //reset ui text
+  ui.pieceString->setText(pieceString);
 }
 
 void PreferencesDialog::slotLoadLanguageFile()

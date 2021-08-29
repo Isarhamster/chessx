@@ -4159,13 +4159,13 @@ Devo caricare un database?</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="519"/>
-        <source>Put the initials of the pieces here, mind the initial space.</source>
-        <translation>Metti qui le iniziali per i pezzi, attenzione allo spazio iniziale.</translation>
+        <source>Put the initials of the pieces here.</source>
+        <translation>Metti qui le iniziali per i pezzi.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="525"/>
-        <source> KQRBN - Mind the initial space!</source>
-        <translation>.RDTAC - Attenzione allo spazio iniziale!</translation>
+        <source>KQRBN</source>
+        <translation>RDTAC</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="594"/>
