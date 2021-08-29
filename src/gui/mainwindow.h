@@ -131,6 +131,9 @@ protected:
     /* Sets size for icons in the toolbar */
     QToolBar * fileToolBar, * editToolBar, * viewToolBar, * gameToolBar, * dbToolBar, * searchToolBar;
   public slots:
+    /** Changes window title in response to boardview flipping**/
+    void updateWindowTitleFlipped(bool, bool);
+    /** resizes icons in the toolbar **/
     void resizeToolBarIcons(int scale);
     /** Enter gaming mode */
     void slotToggleGameMode();
