@@ -133,7 +133,9 @@ protected:
     /* Sets the Fics button to become available class Wide */
     QAction * ficsButton;     
   public slots:
-    /** Changes the Size of the Icons on the Toolbar **/
+    /** Changes window title in response to boardview flipping**/
+    void updateWindowTitleFlipped(bool, bool);
+    /** resizes icons in the toolbar **/
     void resizeToolBarIcons(int scale);
     /** Toggle the Pixmap of FICS icon to reflect connect or disconnect status **/
     void FicsToggleConnected();
