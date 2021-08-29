@@ -2419,6 +2419,7 @@ bool MainWindow::announceMove(Move m)
         }
     }
 #endif
+    (void) m; //silences unused parameter `m' ifndef USE_SPEECH
     return false;
 }
 

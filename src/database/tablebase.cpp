@@ -133,7 +133,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                     QJsonValue jdtm = doc.object().value("dtm");
                     int dtm = jdtm.toInt();
                     QJsonValue jdtz = doc.object().value("dtz");
-                    int bestScore;
+                    int bestScore =0; //Initialize as zero to avoid compilation warning
                     if (result)
                     {
                         bestScore = jdtm.isNull() ? 0 : dtm - ((dtm>0) ? 1:(-1));
@@ -199,7 +199,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                 {
                     QList<Move> bestMoves;
                     bool first = true;
-                    int bestScore;
+                    int bestScore =0; //Initialize as zero to avoid compilation warning
                     foreach(QString tbMove, moveList)
                     {
                         QStringList fld = tbMove.split(' ',Qt::SkipEmptyParts);

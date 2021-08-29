@@ -10,7 +10,7 @@ HTMLItemDelegate::HTMLItemDelegate(QObject *parent) :
 
 void HTMLItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QStyleOptionViewItemV4 options = option;
+  QStyleOptionViewItem options = option; // silences deprecated QstyleOptionViewItem warning
     initStyleOption(&options, index);
 
     painter->save();
