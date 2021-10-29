@@ -8,6 +8,8 @@
 #define ROOT_NODE 0
 #define NO_MOVE -1
 #define CURRENT_MOVE -2
+#define PREV_MOVE -3
+#define NEXT_MOVE -4
 
 typedef int MoveId;
 

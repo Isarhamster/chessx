@@ -113,6 +113,14 @@ MoveId GameCursor::makeNodeIndex(MoveId moveId) const
     {
         moveId = m_currentNode;
     }
+    else if (moveId == PREV_MOVE)
+    {
+        moveId = m_nodes[m_currentNode].previousNode;
+    }
+    else if (moveId == NEXT_MOVE)
+    {
+        moveId = m_nodes[m_currentNode].nextNode;
+    }
     bool rangeOk = 0 <= moveId && moveId < m_nodes.size();
     if (!rangeOk || m_nodes[moveId].Removed())
     {
@@ -310,14 +318,20 @@ bool GameCursor::variationHasSiblings(MoveId variation) const
     }
     if(isMainline(variation))
     {
-        return false;
+        MoveId prevNode = m_nodes[variation].previousNode;
+        prevNode = makeNodeIndex(prevNode);
+        if(prevNode == NO_MOVE)
+        {
+            return false;
+        }
+        return (variationCount(prevNode) > 0);
     }
     while(!atLineStart(variation))
     {
         variation = m_nodes[variation].previousNode;
     }
     MoveId parent = m_nodes[variation].parentNode;
-    return (variationCount(parent) > 1);
+    return (variationCount(parent) > 0);
 }
 
 bool GameCursor::moveToId(MoveId moveId, QString* algebraicMoveList)

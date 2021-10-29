@@ -1487,6 +1487,25 @@ void MainWindow::slotGameVarUp()
         {
             game().moveToId(game().variations().at(n));
         }
+        else
+        {
+            if(!m_training2->isChecked())
+            {
+                // Do not show next move in training 2 mode
+                game().forward();
+            }
+        }
+    }
+    else
+    {
+        if(!game().atLineStart() && !m_training2->isChecked())
+        {
+            if (game().variationCount(PREV_MOVE))
+            {
+                game().backward();
+                game().moveToId(game().variations().last());
+            }
+        }
     }
 }
 
@@ -1511,6 +1530,17 @@ void MainWindow::slotGameVarDown()
             {
                 // Do not show next move in training 2 mode
                 game().forward();
+            }
+        }
+    }
+    else
+    {
+        if(!game().atLineStart() && !m_training2->isChecked())
+        {
+            if (game().variationCount(PREV_MOVE))
+            {
+                game().backward();
+                game().moveToId(game().variations().first());
             }
         }
     }
@@ -3185,11 +3215,12 @@ void MainWindow::slotDatabaseDropped(QDropEvent *event)
     const QMimeData *mimeData = event->mimeData();
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
 
+    QString currentBase = databaseInfo()->displayName();
     if(dbMimeData && dbMimeData->hasUrls())
     {
         foreach (QUrl url, dbMimeData->urls())
         {
-            copyDatabase(databaseInfo()->displayName(), url.toString());
+            copyDatabase(currentBase, url.toString());
         }
     }
     else if(mimeData && mimeData->hasUrls())
@@ -3198,12 +3229,12 @@ void MainWindow::slotDatabaseDropped(QDropEvent *event)
         {
             if ((url.scheme() == "http") || (url.scheme() == "https") || (url.scheme() == "ftp") || (url.scheme() == "sftp"))
             {
-                m_mapDatabaseToDroppedUrl[url] = databaseInfo()->displayName();
+                m_mapDatabaseToDroppedUrl[url] = currentBase;
                 downloadManager2->doDownloadToPath(url, "");
             }
             else
             {
-                copyDatabase(databaseInfo()->displayName(), url.path());
+                copyDatabase(currentBase, url.path());
             }
         }
     }
