@@ -79,7 +79,8 @@ private slots:
     void slotSetDirty();
     void dbClose();
     void dbSetStarsForSelection(int stars);
-
+private:
+    QStringList selectionList(int item);
 private:
     DatabaseListModel* m_model;
     QSortFilterProxyModel* m_filterModel;

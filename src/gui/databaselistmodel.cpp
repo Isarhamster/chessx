@@ -417,7 +417,6 @@ void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite, int in
             e.m_lastGameIndex = index;
             QModelIndex m = createIndex(m_databases.indexOf(e), DBLV_FAVORITE, (void*)  nullptr);
             emit QAbstractItemModel::dataChanged(m, m);
-            emit OnSelectIndex(m);
         }
         return;
     }
