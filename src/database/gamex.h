@@ -149,6 +149,7 @@ public :
     bool dbPrependAnnotation(QString a, char delimiter=' ', MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Sets the comment associated with move at node @p moveId */
     bool setAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
+    bool prependAnnotation(QString a, char delimiter=' ', MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Edits the comment associated with move at node @p moveId */
     bool editAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Append to existing annotations associated with move at node @p moveId */

@@ -526,6 +526,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(ecothread, SIGNAL(loaded(QObject*,bool)), this, SLOT(ecoLoaded(QObject*,bool)));
     ecothread->start();
     StartCheckUpdate();
+
 #ifdef USE_SPEECH
     qRegisterMetaType<QTextToSpeech::State>("State");
     if (QTextToSpeech::availableEngines().count())
@@ -1024,7 +1025,7 @@ void MainWindow::openWebFavorite()
     QString url = favoriteUrl();
     if (!url.isEmpty())
     {
-        openDatabaseUrl(favoriteUrl(), false);
+        openDatabaseUrl(url, false);
     }
     else
     {
@@ -1082,6 +1083,7 @@ void MainWindow::openChesscom()
     }
     db.setHandle(account);
     db.setStartDate(start);
+    db.setDateFormat("MM/yyyy");
     if (db.exec() == QDialog::Accepted)
     {
         account = db.getHandle();
@@ -1102,6 +1104,58 @@ void MainWindow::openChesscom()
 void MainWindow::openFICS()
 {
     openDatabaseFile(ficsPath(), false);
+}
+
+void MainWindow::copyDatabaseArchive(QString fname, QString destination)
+{
+    if(DatabaseInfo::IsLocalDatabase(fname))
+    {
+        copyDatabase(destination, fname);
+    }
+    else
+    {
+        QFileInfo fi = QFileInfo(fname);
+        QString dir = AppSettings->commonDataPath();
+
+        fname = fi.canonicalFilePath();
+
+        if(!fname.isEmpty())
+        {
+            QuaZip zip(fname);
+            if(zip.open(QuaZip::mdUnzip))
+            {
+                // first, we need some information about archive itself
+                // QString comment = zip.getComment();
+                // and now we are going to access files inside it
+                QuaZipFile file(&zip);
+                for(bool more = zip.goToFirstFile(); more; more = zip.goToNextFile())
+                {
+                    file.open(QIODevice::ReadOnly);
+                    QString outName = dir + QDir::separator() + file.getActualFileName();
+                    QDir pathOut;
+                    outName = pathOut.absoluteFilePath(outName);
+                    if(!QFile::exists(outName))
+                    {
+                        QDir().mkpath(dir);
+
+                        QFile out(outName);
+                        if(out.open(QIODevice::WriteOnly))
+                        {
+                            out.write(file.readAll());
+                            out.close();
+                            copyDatabase(destination, outName);
+                        }
+                        else
+                        {
+                            qDebug() << "File Error: " << out.error();
+                        }
+                    }
+                    file.close();
+                }
+                zip.close();
+            }
+        }
+    }
 }
 
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
@@ -1259,6 +1313,16 @@ void MainWindow::loadReady(QUrl url, QString fileName)
         int n = AppSettings->getValue("Web/AutoNumber1").toInt();
         ++n;
         AppSettings->setValue("Web/AutoNumber1",n);
+    }
+    if (url == fav)
+    {
+        QString target = AppSettings->getValue("Web/Destination1").toString();
+        if (!target.isEmpty())
+        {
+            // Instead of opening database, append it to a target database
+            copyDatabaseArchive(fileName, target);
+            return;
+        }
     }
     openDatabaseArchive(fileName, false);
 }

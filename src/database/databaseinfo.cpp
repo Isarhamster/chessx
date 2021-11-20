@@ -199,6 +199,7 @@ void DatabaseInfo::updateMaterial()
 {
     m_game.scoreMaterial(m_material);
     m_game.scoreEvaluations(m_evaluations);
+    emit signalGameModified(!m_undoStack->isClean());
 }
 
 void DatabaseInfo::dbCleanChanged(bool bClean)
@@ -228,7 +229,6 @@ void DatabaseInfo::setGameModified(bool modified, const GameX& g, QString action
         m_undoStack->clear();
     }
     updateMaterial();
-    emit signalGameModified(!m_undoStack->isClean());
 }
 
 QUndoStack *DatabaseInfo::undoStack() const
@@ -339,7 +339,6 @@ void DatabaseInfo::replaceGame(const GameX &game)
 {
     m_game = game;
     updateMaterial();
-    emit signalGameModified(!m_undoStack->isClean());
 }
 
 QString DatabaseInfo::dbPath() const

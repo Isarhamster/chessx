@@ -147,6 +147,7 @@ protected:
     void openDatabaseUrl(QString fname, bool utf8);
     /** Open a list of databases from a ZIP archive */
     void openDatabaseArchive(QString fname, bool utf8);
+    void copyDatabaseArchive(QString fname, QString destination);
     /** Open database from a local File */
     void openDatabaseFile(QString fname, bool utf8);
     /** Add favorite status to a database */
@@ -526,7 +527,7 @@ protected:
     void activateBoardViewForDbIndex(void *dbIndex);
     void closeBoardViewForDbIndex(void *dbIndex);
     int findBoardView(void *dbIndex) const;
-    void UpdateMaterial();
+    void UpdateMaterialWidget();
     bool ActivateDatabase(QString fname);
     bool addRemoteMoveFrom64Char(QString s);
     void newGame();

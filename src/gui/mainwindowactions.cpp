@@ -388,7 +388,7 @@ void MainWindow::UpdateAnnotationView()
     }
 }
 
-void MainWindow::UpdateMaterial()
+void MainWindow::UpdateMaterialWidget()
 {
     if(databaseInfo())
     {
@@ -1747,7 +1747,8 @@ void MainWindow::updateWindowTitleFlipped(bool wasFlipped, bool m_flipped){
 void MainWindow::slotGameModify(const EditAction& action)
 {
     if((action.type() != EditAction::CopyHtml) &&
-       (action.type() != EditAction::CopyText))
+       (action.type() != EditAction::CopyText) &&
+       (action.type() != EditAction::CopyTextSelection))
     {
         game().moveToId(action.move());
     }
@@ -1820,6 +1821,9 @@ void MainWindow::slotGameModify(const EditAction& action)
         break;
     case EditAction::CopyText:
         QApplication::clipboard()->setText(m_gameView->getText());
+        break;
+    case EditAction::CopyTextSelection:
+        QApplication::clipboard()->setText(m_gameView->getTextSelection());
         break;
     case EditAction::Uncomment:
         slotGameUncomment();
@@ -1908,7 +1912,7 @@ void MainWindow::slotGetActiveGame(const GameX** g)
 
 void MainWindow::slotGameChanged(bool /*bModified*/)
 {
-    UpdateMaterial();
+    UpdateMaterialWidget();
     UpdateGameText();
     UpdateGameTitle();
     moveChanged();
@@ -2596,7 +2600,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                             {
                                 if (AppSettings->getValue("/Board/AnnotateScore").toBool())
                                 {
-                                    game().dbPrependAnnotation(scoreText(a));
+                                    game().prependAnnotation(scoreText(a));
                                     UpdateGameText();
                                 }
                             }
@@ -2608,14 +2612,14 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                             addAutoNag(m.color(), score, lastScore, threashold, lastNode);
                             if (AppSettings->getValue("/Board/AnnotateScore").toBool())
                             {
-                                game().dbPrependAnnotation(scoreText(a));
+                                game().prependAnnotation(scoreText(a));
                             }
                             UpdateGameText();
                         }
                     }
                     else if (AppSettings->getValue("/Board/AnnotateScore").toBool())
                     {
-                        game().dbPrependAnnotation(scoreText(a));
+                        game().prependAnnotation(scoreText(a));
                         UpdateGameText();
                     }
                     lastScore = score;

@@ -630,6 +630,7 @@ void PreferencesDialog::restoreSettings()
     AppSettings->beginGroup("Web");
     ui.webFavorite->setText(AppSettings->getValue("Favorite1").toString());
     ui.autoNumber->setValue(AppSettings->getValue("AutoNumber1").toInt());
+    ui.editWebDestination->setText(AppSettings->getValue("Destination1").toString());
     AppSettings->endGroup();
 
     AppSettings->beginGroup("FICS");
@@ -775,6 +776,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->beginGroup("Web");
     AppSettings->setValue("Favorite1", ui.webFavorite->text());
     AppSettings->setValue("AutoNumber1", ui.autoNumber->value());
+    AppSettings->setValue("Destination1", ui.editWebDestination->text());
     AppSettings->endGroup();
 
     AppSettings->beginGroup("FICS");
@@ -923,4 +925,15 @@ void PreferencesDialog::on_savePreferences_clicked()
 void PreferencesDialog::sliderNewValue(int newValue)
 {
     emit iconsizeSliderSetting(newValue);
+}
+
+void PreferencesDialog::on_toolSearchWebDestination_clicked()
+{
+    QString file = QFileDialog::getOpenFileName(this, tr("New database"),
+                   AppSettings->value("/General/DefaultDataPath").toString(),
+                   tr("PGN database (*.pgn)"));
+    if(!file.isEmpty())
+    {
+        ui.editWebDestination->setText(file);
+    }
 }

@@ -933,6 +933,17 @@ bool GameX::setAnnotation(QString annotation, MoveId moveId, Position position)
     return false;
 }
 
+bool GameX::prependAnnotation(QString a, char delimiter, MoveId moveId, Position position)
+{
+    GameX state = *this;
+    if (dbPrependAnnotation(a, delimiter, moveId, position))
+    {
+        emit signalGameModified(false, state, QString());
+        return true;
+    }
+    return false;
+}
+
 bool GameX::editAnnotation(QString annotation, MoveId moveId, Position position)
 {
     GameX state = *this;

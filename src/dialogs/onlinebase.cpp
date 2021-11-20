@@ -18,6 +18,11 @@ QDate OnlineBase::getStartDate() const
     return ui->startDate->date();
 }
 
+void OnlineBase::setDateFormat(const QString& format)
+{
+    ui->startDate->setDisplayFormat(format);
+}
+
 void OnlineBase::setStartDate(const QDate &value)
 {
     ui->startDate->setDate(value);

@@ -48,7 +48,7 @@ AnalysisWidget::AnalysisWidget(QWidget *parent)
     ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
 
     m_tablebase = new OnlineTablebase;
-    connect(m_tablebase, SIGNAL(bestMove(QList<Move>,int)), this, SLOT(showTablebaseMove(QList<Move>,int)));
+    connect(m_tablebase, SIGNAL(bestMove(QList<Move>,int)), this, SLOT(showTablebaseMove(QList<Move>,int)), Qt::QueuedConnection);
 }
 
 AnalysisWidget::~AnalysisWidget()
