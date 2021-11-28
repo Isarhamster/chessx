@@ -516,6 +516,11 @@ void PreferencesDialog::restoreSettings()
     QString pieceTheme = AppSettings->getValue("pieceTheme").toString();
     ui.pieceEffect->setCurrentIndex(AppSettings->getValue("pieceEffect").toInt());
     QString boardTheme = AppSettings->getValue("boardTheme").toString();
+    QString defaultTheme = tr("[plain colors]");
+    if (boardTheme.isEmpty())
+    {
+        boardTheme = defaultTheme;
+    }
 
     ui.boardColorsList->clear();
     restoreColorItem(ui.boardColorsList, tr("Light squares"), "lightColor");
@@ -554,7 +559,7 @@ void PreferencesDialog::restoreSettings()
         QString trim(it.next());
         ui.boardThemeCombo->addItem(trim.left(trim.length() - 4));
     }
-    ui.boardThemeCombo->addItem(tr("[plain colors]"));
+    ui.boardThemeCombo->addItem(defaultTheme);
 
     selectInCombo(ui.cbLanguage, lang);
     selectInCombo(ui.pieceThemeCombo, pieceTheme);
