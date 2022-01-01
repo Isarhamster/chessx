@@ -1,5 +1,10 @@
 add_subdirectory(quazip)
 
+add_library(compat INTERFACE)
+target_include_directories(compat INTERFACE
+  compat
+)
+
 add_library(bitboard STATIC
   database/bitboard.cpp
   database/bitboard.h
@@ -75,6 +80,7 @@ add_library(eco STATIC
 target_link_libraries(eco
   PRIVATE
     qt_config
+    compat
   PUBLIC
     board
     Qt5::Core
@@ -238,6 +244,7 @@ target_include_directories(database
 target_link_libraries(database
   PRIVATE
     qt_config
+    compat
     Qt5::Widgets
   PUBLIC
     database-core
@@ -292,6 +299,9 @@ add_library(gui STATIC
   dialogs/matchparameterdlg.cpp
   dialogs/matchparameterdlg.h
   dialogs/matchparameterdlg.ui
+  dialogs/onlinebase.cpp
+  dialogs/onlinebase.h
+  dialogs/onlinebase.ui
   dialogs/preferences.cpp
   dialogs/preferences.h
   dialogs/preferences.ui
@@ -338,6 +348,8 @@ add_library(gui STATIC
   gui/chartwidget.h
   gui/chessbrowser.cpp
   gui/chessbrowser.h
+  gui/chessxsettings.cpp
+  gui/chessxsettings.h
   gui/colorlist.cpp
   gui/colorlist.h
   gui/databaselist.cpp
@@ -432,6 +444,8 @@ add_library(gui STATIC
   gui/tableview.cpp
   gui/tableview.h
   gui/tagdetailwidget.ui
+  gui/testadapter.cpp
+  gui/testadapter.h
   gui/textbrowserex.h
   gui/textedit.cpp
   gui/textedit.h
@@ -450,6 +464,7 @@ target_include_directories(gui
 target_link_libraries(gui
   PRIVATE
     qt_config
+    compat
     eco
     quazip
     Qt5::PrintSupport
