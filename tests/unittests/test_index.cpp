@@ -70,7 +70,7 @@ TEST_CASE("testing Index read from PGN database")
     // TODO: remove
     AppSettings = new Settings;
 
-    PgnDatabase db { false };
+    PgnDatabase db;
     db.open(RESOURCE_PATH "game1.pgn", false);
     db.parseFile();
 

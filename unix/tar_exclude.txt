@@ -7,6 +7,7 @@ tools
 engines
 engines-mac
 timeseal
+doctest
 resource.h
 chessx.rc
 .svn

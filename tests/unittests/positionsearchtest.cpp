@@ -12,7 +12,7 @@ void PositionSearchTest::testSearch()
     // required by PgnDatabase::open() to check if indexing is enabled
     // TODO: remove
     AppSettings = new Settings;
-    PgnDatabase db { false };
+    PgnDatabase db;
     QVERIFY(db.open(RESOURCE_PATH "t1.pgn", false));
     QVERIFY(db.parseFile());
 
