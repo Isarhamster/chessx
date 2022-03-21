@@ -12,6 +12,7 @@
 #include "bitboard.h"
 #include "square.h"
 #include "bitfind.h"
+#include <string.h>
 
 #ifdef _MSC_VER
 #include <intrin.h>
@@ -494,7 +495,6 @@ void BitBoard::setAt(const Square s, const Piece p)
     {
     case Pawn:
         m_pawns   |= bit;
-        ++m_pawnCount[_color];
         break;
     case Knight:
         m_knights |= bit;
@@ -544,7 +544,6 @@ void BitBoard::removeAt(const Square s)
     {
     case Pawn:
         m_pawns   ^= bit;
-        --m_pawnCount[_color];
         break;
     case Knight:
         m_knights ^= bit;
@@ -646,8 +645,6 @@ BoardStatus BitBoard::validate() const
         }
     }
 
-    Q_ASSERT(wp == m_pawnCount[White]);
-    Q_ASSERT(bp == m_pawnCount[Black]);
     Q_ASSERT(wp + wk + wo == m_pieceCount[White]);
     Q_ASSERT(bp + bk + bo == m_pieceCount[Black]);
 
@@ -897,7 +894,6 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
             m_piece[s] = Pawn;
             m_pawns |= SetBit(s);
             m_occupied_co[Black] |= SetBit(s);
-            ++m_pawnCount[Black];
             ++m_pieceCount[Black];
             s++;
             break;
@@ -941,7 +937,6 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
             m_piece[s] = Pawn;
             m_pawns |= SetBit(s);
             m_occupied_co[White] |= SetBit(s);
-            ++m_pawnCount[White];
             ++m_pieceCount[White];
             s++;
             break;
@@ -1366,6 +1361,9 @@ bool BitBoard::hasAmbiguousCastlingRooks(char file000, char file00) const
 
 unsigned int BitBoard::countSetBits(quint64 n) const
 {
+#ifdef __GNUC__
+    return (__builtin_popcountll(n));
+#else
     unsigned int count = 0;
     while (n)
     {
@@ -1373,6 +1371,7 @@ unsigned int BitBoard::countSetBits(quint64 n) const
       count++;
     }
     return count;
+#endif
 }
 
 void BitBoard::fromChess960pos(int i)
@@ -2268,7 +2267,6 @@ bool BitBoard::doMove(const Move& m)
     case Move::PROMOTE:
         m_halfMoves = 0;
         m_pawns ^= bb_from;
-        --m_pawnCount[m_stm];
         switch(m.promoted())
         {
         case Knight:
@@ -2304,7 +2302,6 @@ bool BitBoard::doMove(const Move& m)
         }
         break;
     case Pawn:
-        --m_pawnCount[sntm];
         --m_pieceCount[sntm];
         m_halfMoves = 0;
         m_pawns ^= bb_to;
@@ -2339,7 +2336,6 @@ bool BitBoard::doMove(const Move& m)
         m_occupied_co[sntm] ^= bb_to;
         break;
     case Move::ENPASSANT:
-        --m_pawnCount[sntm];
         --m_pieceCount[sntm];
         m_halfMoves = 0;
         unsigned int epsq = to + (m_stm == White ? -8 : 8);  // annoying move, the capture is not on the 'to' square
@@ -2492,7 +2488,6 @@ void BitBoard::undoMove(const Move& m)
     case Move::PROMOTE:
         m_pawns ^= bb_from;
         m_piece[from] = Pawn;
-        ++m_pawnCount[sntm];
         switch(m.promoted())
         {
         case Knight:
@@ -2525,7 +2520,6 @@ void BitBoard::undoMove(const Move& m)
         }
         break;
     case Pawn:
-        ++m_pawnCount[m_stm];
         ++m_pieceCount[m_stm];
         m_pawns ^= bb_to;
         m_occupied_co[m_stm] ^= bb_to;
@@ -2551,7 +2545,6 @@ void BitBoard::undoMove(const Move& m)
         m_occupied_co[m_stm] ^= bb_to;
         break;
     case Move::ENPASSANT:
-        ++m_pawnCount[m_stm];
         ++m_pieceCount[m_stm];
         replace = Empty;
         unsigned int epsq = to + (sntm == White ? -8 : 8);  // annoying move, the capture is not on the 'to' square
@@ -2957,19 +2950,30 @@ bool BitBoard::prepareCastle960(Move& move) const
 bool BitBoard::canBeReachedFrom(const BitBoard& target) const
 {
     if(m_pieceCount[White] > target.m_pieceCount[White] ||
-            m_pieceCount[Black] > target.m_pieceCount[Black] ||
-            m_pawnCount[White] > target.m_pawnCount[White] ||
-            m_pawnCount[Black] > target.m_pawnCount[Black])
+       m_pieceCount[Black] > target.m_pieceCount[Black])
     {
         return false;
     }
+
+    if (countSetBits(m_pawns) > countSetBits(target.m_pawns))
+    {
+        return false;
+    }
+
+    quint64 pawns = m_pawns & m_occupied_co[White] & 0xFF00ull;
+    quint64 pawnsTarget = target.m_pawns & target.m_occupied_co[White] & 0xFF00ull;
+    if (pawns & ~pawnsTarget) return false; // Pawns cannot return to second rank
+
+    pawns = m_pawns & m_occupied_co[Black] & 0x00FF000000000000uLL;
+    pawnsTarget = target.m_pawns & target.m_occupied_co[Black] & 0x00FF000000000000uLL;
+    if (pawns & ~pawnsTarget) return false; // Pawns cannot return to 7.th rank
 
     return true;
 }
 
 bool BitBoard::insufficientMaterial() const
 {
-    if (m_pawnCount[White]==0 && m_pawnCount[Black]==0)
+    if (m_pawns==0)
     {
         if ((m_pieceCount[White] <= 2) && (m_pieceCount[Black] <= 2))
         {
