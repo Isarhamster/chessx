@@ -487,6 +487,8 @@ void PreferencesDialog::restoreSettings()
     ui.automaticECO->setChecked(AppSettings->getValue("automaticECO").toBool());
     ui.useIndexFile->setChecked(AppSettings->getValue("useIndexFile").toBool());
     ui.cbAutoCommitDB->setChecked(AppSettings->getValue("autoCommitDB").toBool());
+    ui.mergeAddSource->setChecked(AppSettings->getValue("mergeAddSource").toBool());
+    ui.mergeAddTag->setText(AppSettings->getValue("mergeAddTag").toString());
     QString lang = AppSettings->getValue("language").toString();
     AppSettings->endGroup();
     AppSettings->beginGroup("/Board/");
@@ -696,6 +698,8 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("useIndexFile", QVariant(ui.useIndexFile->isChecked()));
     AppSettings->setValue("autoCommitDB", QVariant(ui.cbAutoCommitDB->isChecked()));
     AppSettings->setValue("language", QVariant(ui.cbLanguage->currentText()));
+    AppSettings->setValue("mergeAddSource", QVariant(ui.mergeAddSource->isChecked()));
+    AppSettings->setValue("mergeAddTag", QVariant(ui.mergeAddTag->text()));
     AppSettings->endGroup();
     AppSettings->beginGroup("/Board/");
     AppSettings->setValue("showFrame", QVariant(ui.boardFrameCheck->isChecked()));

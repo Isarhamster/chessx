@@ -2991,6 +2991,7 @@ void MainWindow::copyGame(DatabaseInfo* pTargetDB, DatabaseInfo* pSourceDB, Game
         GameX g;
         if(pSourceDB->database()->loadGame(index, g))
         {
+            g.setSourceTag(pSourceDB->database()->name());
             // The database is open and accessible
             pTargetDB->database()->appendGame(g);
         }
@@ -3079,6 +3080,7 @@ void MainWindow::copyDatabase(QString target, QString src)
                 GameX g;
                 if(pSrcDB->loadGame(i, g))
                 {
+                    g.setSourceTag(pSrcDB->name());
                     pDestDB->appendGame(g);
                 }
             }
@@ -3138,6 +3140,7 @@ void MainWindow::copyDatabase(QString target, QString src)
                 GameX g;
                 while (streamDb.loadNextGame(g))
                 {
+                    g.setSourceTag(fiSrc.fileName());
                     pDestDB->appendGame(g);
                 }
                 QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName(), pDestDB->name());
@@ -3163,6 +3166,7 @@ void MainWindow::copyDatabase(QString target, QString src)
                     GameX g;
                     if (abk.loadGame(i,g))
                     {
+                        g.setSourceTag(pSrcDB->name());
                         pDestDB->appendGame(g);
                     }
                 }
@@ -3321,9 +3325,13 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
     switch(dlg.getMode())
     {
     case CopyDialog::SingleGame:
-        targetDb->database()->appendGame(game());
-        n = 1;
-        break;
+        {
+            GameX g = game();
+            g.setSourceTag(m_currentDatabase->database()->name());
+            targetDb->database()->appendGame(g);
+            n = 1;
+            break;
+        }
     case CopyDialog::Selection:
         foreach (GameId i, gameIndexList)
         {
@@ -3331,6 +3339,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
             if(database()->loadGame(i, g))
             {
                 ++n;
+                g.setSourceTag(m_currentDatabase->database()->name());
                 targetDb->database()->appendGame(g);
             }
         }
@@ -3342,6 +3351,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
             if(databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
             {
                 ++n;
+                g.setSourceTag(m_currentDatabase->database()->name());
                 targetDb->database()->appendGame(g);
             }
         }
@@ -3353,6 +3363,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
             if(database()->loadGame(i, g))
             {
                 ++n;
+                g.setSourceTag(m_currentDatabase->database()->name());
                 targetDb->database()->appendGame(g);
             }
         }

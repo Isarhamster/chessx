@@ -1570,6 +1570,14 @@ void GameX::setTag(const QString& tag, const QString& value)
     m_tags[tag] = value;
 }
 
+void GameX::setSourceTag(const QString& value)
+{
+    if(AppSettings->getValue("/General/mergeAddSource").toBool())
+    {
+        setTag(AppSettings->getValue("/General/mergeAddTag").toString(), value);
+    }
+}
+
 void GameX::removeTag(const QString& tag)
 {
     m_tags.remove(tag);

@@ -725,7 +725,6 @@
              <widget class="QLineEdit" name="pieceString">
               <property name="font">
                <font>
-                <family>Courier New</family>
                 <pointsize>14</pointsize>
                </font>
               </property>
@@ -1083,8 +1082,15 @@
            </widget>
           </item>
           <item>
+           <widget class="QCheckBox" name="mergeAddSource">
+            <property name="text">
+             <string>Add source tag when merging files</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <layout class="QGridLayout" name="gridLayout4">
-            <item row="3" column="1">
+            <item row="4" column="1">
              <layout class="QHBoxLayout" name="horizontalLayout_5">
               <item>
                <widget class="QLineEdit" name="defaultDataBasePath">
@@ -1109,6 +1115,42 @@
              </layout>
             </item>
             <item row="3" column="0">
+             <widget class="QLabel" name="lbRecentFiles">
+              <property name="text">
+               <string>Number of recent files:</string>
+              </property>
+              <property name="buddy">
+               <cstring>spinBoxRecentFiles</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QSpinBox" name="limitSpin">
+              <property name="suffix">
+               <string> MB</string>
+              </property>
+              <property name="minimum">
+               <number>0</number>
+              </property>
+              <property name="maximum">
+               <number>3000</number>
+              </property>
+              <property name="value">
+               <number>10</number>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QSpinBox" name="spinBoxRecentFiles">
+              <property name="maximum">
+               <number>10</number>
+              </property>
+              <property name="value">
+               <number>4</number>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
              <widget class="QLabel" name="lbDataBasePath">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -1124,27 +1166,7 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
-             <widget class="QSpinBox" name="spinBoxRecentFiles">
-              <property name="maximum">
-               <number>10</number>
-              </property>
-              <property name="value">
-               <number>4</number>
-              </property>
-             </widget>
-            </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="lbRecentFiles">
-              <property name="text">
-               <string>Number of recent files:</string>
-              </property>
-              <property name="buddy">
-               <cstring>spinBoxRecentFiles</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
              <widget class="QLabel" name="lbLimitSpin">
               <property name="text">
                <string>&amp;Edit PGN files smaller than:</string>
@@ -1154,19 +1176,20 @@
               </property>
              </widget>
             </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_24">
+              <property name="text">
+               <string>Source tag name</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="1">
-             <widget class="QSpinBox" name="limitSpin">
-              <property name="suffix">
-               <string> MB</string>
-              </property>
-              <property name="minimum">
-               <number>0</number>
-              </property>
-              <property name="maximum">
-               <number>3000</number>
-              </property>
-              <property name="value">
-               <number>10</number>
+             <widget class="QLineEdit" name="mergeAddTag">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
              </widget>
             </item>

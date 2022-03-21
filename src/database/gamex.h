@@ -323,6 +323,8 @@ public :
     const TagMap &tags() const;
     /** Sets the value of the given tag */
     void setTag(const QString& tag, const QString& value);
+    /** Sets the value of the configured source tag */
+    void setSourceTag(const QString& value);
     /** Query existance of tag */
     bool hasTag(const QString& tag) const;
     /** Removes a tag */
