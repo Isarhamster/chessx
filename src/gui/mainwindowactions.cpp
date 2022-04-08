@@ -855,14 +855,25 @@ void MainWindow::slotEvalRequest(Square from, Square to)
     {
         return;
     }
+    if (from == chessx::InvalidSquare)
+    {
+        return;
+    }
     BoardX b = game().board();
     Piece p = b.pieceAt(from);
     b.removeFrom(from);
-    b.setAt(to, p);
+    if (to != chessx::InvalidSquare)
+    {
+        b.setAt(to, p);
+    }
     if (b.validate() == Valid)
     {
         m_bEvalRequested = true;
         m_mainAnalysis->setPosition(b);
+    }
+    else
+    {
+        m_mainAnalysis->clear();
     }
 }
 
@@ -872,15 +883,26 @@ void MainWindow::slotEvalMove(Square from, Square to)
     {
         return;
     }
+    if (from == chessx::InvalidSquare)
+    {
+        return;
+    }
     BoardX b = game().board();
     Piece p = b.pieceAt(from);
     b.removeFrom(from);
-    b.setAt(to, p);
+    if (to != chessx::InvalidSquare)
+    {
+        b.setAt(to, p);
+    }
     b.swapToMove();
     if (b.validate() == Valid)
     {
         m_bEvalRequested = true;
         m_mainAnalysis->setPosition(b);
+    }
+    else
+    {
+        m_mainAnalysis->clear();
     }
 }
 

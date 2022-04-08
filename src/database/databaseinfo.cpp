@@ -116,7 +116,7 @@ void DatabaseInfo::run()
     QFileInfo fi = QFileInfo(m_filename);
     QString fname = fi.canonicalFilePath();
     if (fname.isEmpty()) fname = m_filename; // Support virtual databases
-    doLoadFile(fname);
+    if (!fname.isEmpty()) doLoadFile(fname);
 }
 
 bool DatabaseInfo::open(bool utf8)

@@ -609,6 +609,11 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
     }
 }
 
+void AnalysisWidget::clear()
+{
+    ui.variationText->clear();
+}
+
 void AnalysisWidget::updateAnalysis()
 {
     QString text;
