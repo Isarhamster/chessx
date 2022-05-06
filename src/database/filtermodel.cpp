@@ -84,7 +84,7 @@ void FilterModel::addColumns(const QStringList& tags)
 bool FilterModel::canEditItem(const QModelIndex& index) const
 {
     int col = index.column();
-    if ((col!= 0) && (col!=10) && (col!=11))
+    if ((col!= 0) && (col!=11))
     {
         return true;
     }

@@ -485,6 +485,7 @@ void PreferencesDialog::restoreSettings()
     ui.tablebaseSelect->setCurrentIndex(AppSettings->getValue("tablebaseSource").toInt());
     ui.versionCheck->setChecked(AppSettings->getValue("onlineVersionCheck").toBool());
     ui.automaticECO->setChecked(AppSettings->getValue("automaticECO").toBool());
+    ui.preserveECO->setChecked(AppSettings->getValue("preserveECO").toBool());
     ui.useIndexFile->setChecked(AppSettings->getValue("useIndexFile").toBool());
     ui.cbAutoCommitDB->setChecked(AppSettings->getValue("autoCommitDB").toBool());
     ui.mergeAddSource->setChecked(AppSettings->getValue("mergeAddSource").toBool());
@@ -695,6 +696,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("tablebaseSource", QVariant(ui.tablebaseSelect->currentIndex()));
     AppSettings->setValue("onlineVersionCheck", QVariant(ui.versionCheck->isChecked()));
     AppSettings->setValue("automaticECO", QVariant(ui.automaticECO->isChecked()));
+    AppSettings->setValue("preserveECO", QVariant(ui.preserveECO->isChecked()));
     AppSettings->setValue("useIndexFile", QVariant(ui.useIndexFile->isChecked()));
     AppSettings->setValue("autoCommitDB", QVariant(ui.cbAutoCommitDB->isChecked()));
     AppSettings->setValue("language", QVariant(ui.cbLanguage->currentText()));

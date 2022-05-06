@@ -271,16 +271,24 @@ bool DatabaseInfo::saveGame()
         return false;
     }
 
-    QString eco;
+    QString eco = m_game.tag(TagNameECO).left(3);
+    if(eco == "?")
+    {
+        eco.clear();
+    }
+
     if(AppSettings->getValue("/General/automaticECO").toBool())
     {
-        eco = m_game.ecoClassify().left(3);
-        if(!eco.isEmpty())
+        if(eco.isEmpty() || !AppSettings->getValue("/General/automaticECO").toBool())
         {
-            m_game.setTag(TagNameECO, eco);
-            if (VALID_INDEX(m_index))
+            eco = m_game.ecoClassify().left(3);
+            if(!eco.isEmpty())
             {
-                database()->index()->setTag(TagNameECO, eco, m_index);
+                m_game.setTag(TagNameECO, eco);
+                if (VALID_INDEX(m_index))
+                {
+                    database()->index()->setTag(TagNameECO, eco, m_index);
+                }
             }
         }
     }

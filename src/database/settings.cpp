@@ -221,6 +221,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
 
     map.insert("/General/EditLimit", 10);
     map.insert("/General/automaticECO", true);
+    map.insert("/General/preserveECO", true);
     map.insert("/General/useIndexFile", true);
     map.insert("/General/ListFontSize", DEFAULT_LISTFONTSIZE);
     map.insert("/General/onlineTablebases", true);
