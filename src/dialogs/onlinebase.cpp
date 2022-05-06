@@ -6,6 +6,8 @@ OnlineBase::OnlineBase(QWidget *parent) :
     ui(new Ui::OnlineBase)
 {
     ui->setupUi(this);
+    ui->tournament->hide();
+    ui->lb_Tournament->hide();
 }
 
 OnlineBase::~OnlineBase()
@@ -36,4 +38,16 @@ QString OnlineBase::getHandle() const
 void OnlineBase::setHandle(const QString &value)
 {
     ui->userName->setText(value);
+}
+
+const QString OnlineBase::getTournament() const
+{
+    return ui->tournament->text();
+}
+
+void OnlineBase::setTournament(const QString &newTournament)
+{
+    ui->lb_Tournament->show();
+    ui->tournament->show();
+    ui->tournament->setText(newTournament);
 }

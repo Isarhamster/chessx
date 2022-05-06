@@ -991,6 +991,7 @@ QString MainWindow::ficsPath() const
 void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
     QUrl url = QUrl::fromUserInput(fname);
+    if (fname.startsWith("http")) url.setScheme("http");
     if (fname == "Clipboard")
     {
         ActivateDatabase("Clipboard");
@@ -1040,6 +1041,7 @@ void MainWindow::openLichess()
     QDate start(date.year(),date.month(),1);
 
     OnlineBase db;
+    db.setTournament("");
 
     QAction* action = qobject_cast<QAction*>(sender());
     if (action)
@@ -1052,18 +1054,35 @@ void MainWindow::openLichess()
     db.setStartDate(start);
     if (db.exec() == QDialog::Accepted)
     {
+        QString tournament = db.getTournament();
         account = db.getHandle();
         start = db.getStartDate();
 
-        if (!account.isEmpty())
+        if (tournament.isEmpty())
         {
-            quint64 since= QDateTime(start).toMSecsSinceEpoch(); // Better: start.startOfDay().toMSecsSinceEpoch(); but that is Qt5
-            QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
-            openDatabaseUrl(url, false);
+            if (!account.isEmpty())
+            {
+                quint64 since= QDateTime(start).toMSecsSinceEpoch(); // Better: start.startOfDay().toMSecsSinceEpoch(); but that is Qt5
+                QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
+                openDatabaseUrl(url, false);
+            }
+            else
+            {
+                slotConfigure("lichess");
+            }
         }
         else
         {
-            slotConfigure("lichess");
+            QString url;
+            if (account.isEmpty())
+            {
+                url = QString("https://lichess.org/api/tournament/%1/games").arg(tournament);
+            }
+            else
+            {
+                url = QString("https://lichess.org/api/tournament/%1/games?player=%2").arg(tournament).arg(account);
+            }
+            openDatabaseUrl(url, false);
         }
     }
 }
