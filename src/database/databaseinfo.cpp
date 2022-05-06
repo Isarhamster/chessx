@@ -279,7 +279,7 @@ bool DatabaseInfo::saveGame()
 
     if(AppSettings->getValue("/General/automaticECO").toBool())
     {
-        if(eco.isEmpty() || !AppSettings->getValue("/General/automaticECO").toBool())
+        if(eco.isEmpty() || !AppSettings->getValue("/General/preserveECO").toBool())
         {
             eco = m_game.ecoClassify().left(3);
             if(!eco.isEmpty())
