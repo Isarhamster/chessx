@@ -56,15 +56,15 @@ public:
 
     QString classType() const
     {
-        if (m_name.endsWith(".bin"))
+        if (m_name.endsWith(".bin", Qt::CaseInsensitive))
         {
             return "Polyglot";
         }
-        if (m_name.endsWith(".ctg"))
+        if (m_name.endsWith(".ctg", Qt::CaseInsensitive))
         {
             return "Chessbase Book";
         }
-        if (m_name.endsWith(".abk"))
+        if (m_name.endsWith(".abk", Qt::CaseInsensitive))
         {
             return "Arena Book";
         }
@@ -116,6 +116,8 @@ public slots:
     void setFileClose(const QString& s, int lastIndex);
     void setFileCurrent(const QString& s);
     void update(const QString& s);
+
+    bool fileUtf8(const QString& s);
 
 public:
     void toStringList(QStringList&);

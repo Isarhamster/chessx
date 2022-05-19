@@ -91,6 +91,8 @@ add_library(database-core STATIC
   database/filtersearch.cpp
   database/filtersearch.h
   database/gameid.h
+  database/gamecursor.cpp
+  database/gamecursor.h
   database/gamex.cpp
   database/gamex.h
   database/index.cpp
@@ -175,6 +177,8 @@ add_library(database STATIC
   database/lichessopeningdatabase.h
   database/memorydatabase.cpp
   database/memorydatabase.h
+  database/networkhelper.cpp
+  database/networkhelper.h
   database/numbersearch.cpp
   database/numbersearch.h
   database/openingtree.cpp

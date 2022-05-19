@@ -85,6 +85,7 @@ private:
     QAction* m_removeNags;
     QAction* m_enumerateVariations1;
     QAction* m_enumerateVariations2;
+    QAction* m_copyTextSelection;
     QMenu* m_gameMenu;
     QMenu* m_browserMenu;
     QMenu* m_mainMenu;

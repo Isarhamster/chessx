@@ -143,7 +143,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
         case DBLV_NAME:
         {
             QString s = db.m_name;
-            if (s.endsWith(".pgn")) s.remove(".pgn");
+            if (s.endsWith(".pgn", Qt::CaseInsensitive)) s.remove(".pgn", Qt::CaseInsensitive);
             return s;
         }
         case DBLV_SIZE:
@@ -417,7 +417,6 @@ void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite, int in
             e.m_lastGameIndex = index;
             QModelIndex m = createIndex(m_databases.indexOf(e), DBLV_FAVORITE, (void*)  nullptr);
             emit QAbstractItemModel::dataChanged(m, m);
-            emit OnSelectIndex(m);
         }
         return;
     }
@@ -467,6 +466,15 @@ void DatabaseListModel::setFileUtf8(const QString& s, bool utf8)
             emit QAbstractItemModel::dataChanged(m, m);
         }
     }
+}
+
+bool DatabaseListModel::fileUtf8(const QString& s)
+{
+    if(DatabaseListEntry* e = FindEntry(s))
+    {
+        return e->m_utf8;
+    }
+    return false;
 }
 
 void DatabaseListModel::setFileCurrent(const QString& s)

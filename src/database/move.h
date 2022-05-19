@@ -148,6 +148,8 @@ public:
     /** Check whether a given move is a null move ( an illegal move by the king to its own square ) often used as a placeholder in ebooks */
     bool isNullMove() const;
     Move& setNullMove();
+    bool isDummyMove() const;
+    Move& setDummyMove();
 
     /** Check whether move is special (promotion, castling, en passant */
     bool isSpecial() const;
@@ -163,6 +165,11 @@ public:
     bool isEnPassant() const;
     /** Check if move is completely legal in the context it was created */
     bool isLegal() const;
+    /** This move gives a check */
+    bool isCheck() const;
+    bool isMate() const;
+    /** Return piece type of captured piece (or 0 if none) */
+    unsigned int capturedType() const;
 
     Color color() const;
 
@@ -272,8 +279,6 @@ private:
     unsigned int action() const;
     /** Return captured piece or En passant for doMove() and undoMove() */
     unsigned int removal() const;
-    /** Return piece type of captured piece (or 0 if none) */
-    unsigned int capturedType() const;
 
     // The move definition 'm' bitfield layout:
     // 00000000 00000000 00000000 00111111 = from square     = bits 1-6
@@ -308,9 +313,22 @@ inline bool Move::isNullMove() const
     return (to() == chessx::a2 && from() == chessx::a2);
 }
 
+inline bool Move::isDummyMove() const
+{
+    // Must be consistent with Guess::movelist::isNullMove
+    return (to() == chessx::a3 && from() == chessx::a3);
+}
+
 inline Move& Move::setNullMove()
 {
     m = chessx::a2 | (chessx::a2 << 6);
+    u = 0;
+    return *this;
+}
+
+inline Move& Move::setDummyMove()
+{
+    m = chessx::a3 | (chessx::a3 << 6);
     u = 0;
     return *this;
 }
@@ -381,6 +399,10 @@ inline QString Move::toAlgebraic() const
     if (isNullMove())
     {
         return QString("--");
+    }
+    if (isDummyMove())
+    {
+        return QString("xx");
     }
     if(!isLegal())
     {
@@ -621,7 +643,17 @@ inline void Move::setPromoted(PieceType p)
 
 inline void Move::setCheck()
 {
-    m |= (1 << 30);
+    m |= (1ul << 30);
+}
+
+inline bool Move::isCheck() const
+{
+    return (m & (1ul << 30));
+}
+
+inline bool Move::isMate() const
+{
+    return (m & (1ul << 29));
 }
 
 inline void Move::setMate()

@@ -22,6 +22,7 @@ public:
 
     QString getHtml() const;
     QString getText() const;
+    QString getTextSelection() const;
 
     QString generateText(const GameX& game, bool trainingMode);
     void reload(const GameX& game, bool trainingMode);

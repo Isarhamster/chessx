@@ -205,7 +205,7 @@ public:
 
     void addNag(Nag nag);
     void removeNag(Nag nag);
-    QString toString(unsigned format) const;
+    QString toString(unsigned int format) const;
     static const QString& nagToString(Nag nag);
     static const QString& nagToStringHTML(Nag nag);
     static bool isMoveNag(Nag nag);

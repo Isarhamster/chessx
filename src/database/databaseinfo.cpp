@@ -116,7 +116,7 @@ void DatabaseInfo::run()
     QFileInfo fi = QFileInfo(m_filename);
     QString fname = fi.canonicalFilePath();
     if (fname.isEmpty()) fname = m_filename; // Support virtual databases
-    doLoadFile(fname);
+    if (!fname.isEmpty()) doLoadFile(fname);
 }
 
 bool DatabaseInfo::open(bool utf8)
@@ -199,6 +199,7 @@ void DatabaseInfo::updateMaterial()
 {
     m_game.scoreMaterial(m_material);
     m_game.scoreEvaluations(m_evaluations);
+    emit signalGameModified(!m_undoStack->isClean());
 }
 
 void DatabaseInfo::dbCleanChanged(bool bClean)
@@ -228,7 +229,6 @@ void DatabaseInfo::setGameModified(bool modified, const GameX& g, QString action
         m_undoStack->clear();
     }
     updateMaterial();
-    emit signalGameModified(!m_undoStack->isClean());
 }
 
 QUndoStack *DatabaseInfo::undoStack() const
@@ -271,16 +271,24 @@ bool DatabaseInfo::saveGame()
         return false;
     }
 
-    QString eco;
+    QString eco = m_game.tag(TagNameECO).left(3);
+    if(eco == "?")
+    {
+        eco.clear();
+    }
+
     if(AppSettings->getValue("/General/automaticECO").toBool())
     {
-        eco = m_game.ecoClassify().left(3);
-        if(!eco.isEmpty())
+        if(eco.isEmpty() || !AppSettings->getValue("/General/preserveECO").toBool())
         {
-            m_game.setTag(TagNameECO, eco);
-            if (VALID_INDEX(m_index))
+            eco = m_game.ecoClassify().left(3);
+            if(!eco.isEmpty())
             {
-                database()->index()->setTag(TagNameECO, eco, m_index);
+                m_game.setTag(TagNameECO, eco);
+                if (VALID_INDEX(m_index))
+                {
+                    database()->index()->setTag(TagNameECO, eco, m_index);
+                }
             }
         }
     }
@@ -339,7 +347,6 @@ void DatabaseInfo::replaceGame(const GameX &game)
 {
     m_game = game;
     updateMaterial();
-    emit signalGameModified(!m_undoStack->isClean());
 }
 
 QString DatabaseInfo::dbPath() const
@@ -437,13 +444,34 @@ bool DatabaseInfo::IsBook() const
 /* static */ bool DatabaseInfo::IsOnlineBook(QString s)
 {
     QFileInfo fi(s);
-    return (s.contains("Lichess") && fi.suffix().isEmpty());
+    return (s.contains("Lichess", Qt::CaseInsensitive) && fi.suffix().isEmpty());
 }
 
 /* static */ bool DatabaseInfo::IsBook(QString s)
 {
     // Add here if more book formats come in
     return IsPolyglotBook(s) || IsChessbaseBook(s) || IsOnlineBook(s) ;
+}
+
+/* static */ bool DatabaseInfo::IsLocalDatabase(QString s)
+{
+    QFileInfo fi = QFileInfo(s);
+    QString suffix = fi.suffix().toLower();
+
+    return ((suffix == "pgn") ||
+            (suffix == "si4") ||
+            (suffix == "bin") ||
+            (suffix == "abk") ||
+            (suffix == "ctg"));
+}
+
+/* static */ bool DatabaseInfo::IsLocalArchive(QString s)
+{
+    QFileInfo fi = QFileInfo(s);
+    QString suffix = fi.suffix().toLower();
+
+    return ((suffix == "zip") ||
+            (suffix == "tgz"));
 }
 
 qint64 DatabaseInfo::GetDatabaseSize(QString filename)

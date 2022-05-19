@@ -84,7 +84,7 @@ void FilterModel::addColumns(const QStringList& tags)
 bool FilterModel::canEditItem(const QModelIndex& index) const
 {
     int col = index.column();
-    if ((col!= 0) && (col!=10) && (col!=11))
+    if ((col!= 0) && (col!=11))
     {
         return true;
     }
@@ -103,7 +103,7 @@ void FilterModel::cacheTags()
 QStringList FilterModel::additionalTags()
 {
     QString addTags = AppSettings->getValue("/GameList/AdditionalTags").toString();
-    QStringList tags = addTags.split(QRegExp("[^a-zA-Z]"), QString::SkipEmptyParts);
+    QStringList tags = addTags.split(QRegExp("[^a-zA-Z]"), Qt::SkipEmptyParts);
     return tags;
 }
 

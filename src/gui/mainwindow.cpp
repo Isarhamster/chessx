@@ -43,6 +43,8 @@
 #include "mainwindow.h"
 #include "messagedialog.h"
 #include "memorydatabase.h"
+#include "networkhelper.h"
+#include "onlinebase.h"
 #include "openingtreewidget.h"
 #include "output.h"
 #include "pgndatabase.h"
@@ -52,7 +54,6 @@
 #include "savedialog.h"
 #include "settings.h"
 #include "style.h"
-#include "tableview.h"
 #include "tagdialog.h"
 #include "tags.h"
 #include "textedit.h"
@@ -84,6 +85,9 @@
 #endif
 #include <QTimer>
 #include <QToolBar>
+
+template< typename T, std::size_t N >
+inline constexpr std::size_t sizeofArray( const T(&)[N] ) noexcept { return N; }
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -178,7 +182,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_ficsConsole, SIGNAL(SignalGameResult(QString)), this, SLOT(HandleFicsResultRequest(QString)));
     connect(m_ficsConsole, SIGNAL(RequestNewGame()), this, SLOT(HandleFicsNewGameRequest()));
     connect(m_ficsConsole, SIGNAL(FicsShowTimer(bool)), this, SLOT(SlotShowTimer(bool)));
-    connect(m_ficsConsole, SIGNAL(FicsShowTime(int, QString)), this, SLOT(SlotDisplayTime(int,QString)));
+    connect(m_ficsConsole, SIGNAL(FicsShowTime(int,QString)), this, SLOT(SlotDisplayTime(int,QString)));
     connect(m_ficsConsole, SIGNAL(RequestSaveGame()), this, SLOT(HandleFicsSaveGameRequest()));
     connect(m_ficsConsole, SIGNAL(RequestCloseFICS()), this, SLOT(HandleFicsCloseRequest()));
     connect(m_ficsConsole, SIGNAL(RequestAddTag(QString,QString)), this, SLOT(HandleFicsAddTagRequest(QString,QString)));
@@ -208,13 +212,11 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameView, &GameNotationWidget::actionRequested, this, &MainWindow::slotGameModify);
     connect(m_gameView, &GameNotationWidget::queryActiveGame, this, &MainWindow::slotGetActiveGame);
     connect(m_gameView, &GameNotationWidget::signalMergeGame, this, &MainWindow::slotMergeActiveGame);
-    connect(this, SIGNAL(signalGameLoaded(const BoardX&)), gameTextDock, SLOT(raise()));
+    connect(this, SIGNAL(signalGameLoaded(BoardX)), gameTextDock, SLOT(raise()));
     gameTextDock->setWidget(m_gameWindow);
     connect(this, &MainWindow::reconfigure, m_gameView, &GameNotationWidget::slotReconfigure);
     addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
     connect(m_gameWindow, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
-
-    QWidget* w = gameTextDock->titleBarWidget();
 
     m_menuView->addAction(gameTextDock->toggleViewAction());
     gameTextDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_E);
@@ -249,7 +251,7 @@ MainWindow::MainWindow() : QMainWindow(),
     playerListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
     connect(m_playerList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByPlayer(QString)));
     connect(m_playerList, SIGNAL(renameRequest(QString)), SLOT(slotRenamePlayer(QString)));
-    connect(m_playerList, SIGNAL(filterEcoPlayerRequest(QString, QString, QString, QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString, QString, QString, QString)));
+    connect(m_playerList, SIGNAL(filterEcoPlayerRequest(QString,QString,QString,QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString,QString,QString,QString)));
     connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_playerList, SLOT(setDatabase(DatabaseInfo*)));
     connect(this, SIGNAL(reconfigure()), m_playerList, SLOT(slotReconfigure()));
     // playerListDock->hide();
@@ -264,8 +266,8 @@ MainWindow::MainWindow() : QMainWindow(),
     eventListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_P);
     connect(m_eventList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByEvent(QString)));
     connect(m_eventList, SIGNAL(renameRequest(QString)), SLOT(slotRenameEvent(QString)));
-    connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString, QString)), m_gameList, SLOT(slotFilterListByEventPlayer(QString, QString)));
-    connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString, QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
+    connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString,QString)), m_gameList, SLOT(slotFilterListByEventPlayer(QString,QString)));
+    connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString,QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
     connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_eventList, SLOT(setDatabase(DatabaseInfo*)));
     connect(this, SIGNAL(reconfigure()), m_eventList, SLOT(slotReconfigure()));
     eventListDock->hide();
@@ -279,8 +281,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_menuView->addAction(ecoListDock->toggleViewAction());
     ecoListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_E);
     connect(m_ecoList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByEco(QString)));
-    connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString, QString, QString, QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString, QString, QString, QString)));
-    connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString, QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
+    connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString,QString,QString,QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString,QString,QString,QString)));
+    connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString,QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
     connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_ecoList, SLOT(setDatabase(DatabaseInfo*)));
     connect(this, SIGNAL(reconfigure()), m_ecoList, SLOT(slotReconfigure()));
     ecoListDock->hide();
@@ -294,20 +296,22 @@ MainWindow::MainWindow() : QMainWindow(),
     // addDockWidget(Qt::RightDockWidgetArea, dbListDock);
     m_menuView->addAction(dbListDock->toggleViewAction());
     dbListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_D);
-    connect(m_databaseList, SIGNAL(requestOpenDatabase(QString, bool)),
-            this, SLOT(openDatabaseUrl(QString, bool)));
+    connect(m_databaseList, SIGNAL(requestOpenDatabase(QString,bool)),
+            this, SLOT(openDatabaseUrl(QString,bool)));
     connect(m_databaseList, SIGNAL(requestCloseDatabase(QString)),
             this, SLOT(slotFileCloseName(QString)));
+    connect(m_databaseList, SIGNAL(requestDirty(QString)),
+            this, SLOT(slotFileDirty(QString)));
     connect(m_databaseList, SIGNAL(requestLinkDatabase(QString)),
             this, SLOT(setFavoriteDatabase(QString)));
-    connect(m_databaseList, SIGNAL(requestAppendGames(QString, QList<GameId>, QString)),
-            this, SLOT(copyGames(QString, QList<GameId>, QString)));
-    connect(m_gameList, SIGNAL(requestAppendGames(QString, QList<GameId>, QString)),
-            this, SLOT(copyGames(QString, QList<GameId>, QString)));
-    connect(m_gameList, SIGNAL(gameTagChanged(GameId, QString)),
-            this, SLOT(gameChangeTag(GameId, QString)));
-    connect(m_databaseList, SIGNAL(requestAppendDatabase(QString, QString)),
-            this, SLOT(copyDatabase(QString, QString)));
+    connect(m_databaseList, SIGNAL(requestAppendGames(QString,QList<GameId>,QString)),
+            this, SLOT(copyGames(QString,QList<GameId>,QString)));
+    connect(m_gameList, SIGNAL(requestAppendGames(QString,QList<GameId>,QString)),
+            this, SLOT(copyGames(QString,QList<GameId>,QString)));
+    connect(m_gameList, SIGNAL(gameTagChanged(GameId,QString)),
+            this, SLOT(gameChangeTag(GameId,QString)));
+    connect(m_databaseList, SIGNAL(requestAppendDatabase(QString,QString)),
+            this, SLOT(copyDatabase(QString,QString)));
     connect(this, SIGNAL(reconfigure()), m_databaseList, SLOT(slotReconfigure()));
     connect(m_databaseList, SIGNAL(requestMakeBook(QString)),
             this, SLOT(slotMakeBook(QString)));
@@ -439,9 +443,9 @@ MainWindow::MainWindow() : QMainWindow(),
     m_sliderSpeed->setMaximumWidth(400); // Arbitrary limit - not really needed
 
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), SLOT(slotMoveIntervalChanged(int)));
-    connect(m_mainAnalysis, SIGNAL(receivedBestMove(const Analysis&)), this, SLOT(slotEngineTimeout(const Analysis&)));
-    connect(m_mainAnalysis, SIGNAL(currentBestMove(const Analysis&)), this, SLOT(slotEngineCurrentBest(const Analysis&)));
-    connect(m_secondaryAnalysis, SIGNAL(receivedBestMove(const Analysis&)), this, SLOT(slotEngineTimeout(const Analysis&)));
+    connect(m_mainAnalysis, SIGNAL(receivedBestMove(Analysis)), this, SLOT(slotEngineTimeout(Analysis)));
+    connect(m_mainAnalysis, SIGNAL(currentBestMove(Analysis)), this, SLOT(slotEngineCurrentBest(Analysis)));
+    connect(m_secondaryAnalysis, SIGNAL(receivedBestMove(Analysis)), this, SLOT(slotEngineTimeout(Analysis)));
 
     m_matchParameter.tm           = (EngineParameter::TimeModus) AppSettings->getValue("/Match/Mode").toBool();
     m_matchParameter.ms_totalTime = AppSettings->getValue("/Match/TotalTime").toInt();
@@ -488,7 +492,7 @@ MainWindow::MainWindow() : QMainWindow(),
     show();
     downloadManager = new DownloadManager(this);
     downloadManager2 = new DownloadManager(this);
-    connect(downloadManager2, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(slotDatabaseDroppedHandler(QUrl,QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
+    connect(downloadManager2, SIGNAL(onDownloadFinished(QUrl,QString)), this, SLOT(slotDatabaseDroppedHandler(QUrl,QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
     connect(downloadManager2, SIGNAL(downloadError(QUrl)), this, SLOT(slotDatabaseDroppedFailed(QUrl)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
 
     /* Load files from command line */
@@ -519,16 +523,16 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Load ECO file */
     slotStatusMessage(tr("Loading ECO file..."));
     EcoThread* ecothread = new EcoThread();
-    connect(ecothread, SIGNAL(loaded(QObject*, bool)), this, SLOT(ecoLoaded(QObject*, bool)));
+    connect(ecothread, SIGNAL(loaded(QObject*,bool)), this, SLOT(ecoLoaded(QObject*,bool)));
     ecothread->start();
     StartCheckUpdate();
+
 #ifdef USE_SPEECH
     qRegisterMetaType<QTextToSpeech::State>("State");
     if (QTextToSpeech::availableEngines().count())
     {
         speech = new QTextToSpeech(this);
         const QVector<QLocale> locales = speech->availableLocales();
-        QLocale current = speech->locale();
         QLocale cxLocale(AppSettings->getValue("/General/language").toString());
         if (locales.contains(cxLocale))
         {
@@ -548,18 +552,18 @@ void MainWindow::setupAnalysisWidget(DockWidgetEx* analysisDock, AnalysisWidget*
 {
     analysisDock->setWidget(analysis);
     // addDockWidget(Qt::RightDockWidgetArea, analysisDock);
-    connect(analysis, SIGNAL(addVariation(Analysis, QString)),
-            SLOT(slotGameAddVariation(Analysis, QString)));
+    connect(analysis, SIGNAL(addVariation(Analysis,QString)),
+            SLOT(slotGameAddVariation(Analysis,QString)));
     connect(analysis, SIGNAL(addVariation(QString)),
             SLOT(slotGameAddVariation(QString)));
-    connect(this, SIGNAL(boardChange(const BoardX&, const QString&)), analysis, SLOT(setPosition(const BoardX&,QString)));
+    connect(this, SIGNAL(boardChange(BoardX,QString)), analysis, SLOT(setPosition(BoardX,QString)));
     connect(this, SIGNAL(reconfigure()), analysis, SLOT(slotReconfigure()));
     // Make sure engine is disabled if dock is hidden
     connect(analysisDock, SIGNAL(visibilityChanged(bool)),
             analysis, SLOT(slotVisibilityChanged(bool)));
     m_menuView->addAction(analysisDock->toggleViewAction());
     analysisDock->hide();
-    connect(this, SIGNAL(signalGameLoaded(const BoardX&)), analysis, SLOT(slotUciNewGame(const BoardX&)));
+    connect(this, SIGNAL(signalGameLoaded(BoardX)), analysis, SLOT(slotUciNewGame(BoardX)));
     connect(this, SIGNAL(signalGameModeChanged(bool)), analysis, SLOT(setDisabled(bool)));
     connect(this, SIGNAL(signalUpdateDatabaseList(QStringList)), analysis, SLOT(slotUpdateBooks(QStringList)));
     connect(analysis, SIGNAL(signalSourceChanged(QString)), this, SLOT(slotUpdateOpeningBook(QString)));
@@ -986,8 +990,8 @@ QString MainWindow::ficsPath() const
 
 void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
-    QFileInfo fi(fname);
     QUrl url = QUrl::fromUserInput(fname);
+    if (fname.startsWith("http")) url.setScheme("http");
     if (fname == "Clipboard")
     {
         ActivateDatabase("Clipboard");
@@ -1022,7 +1026,7 @@ void MainWindow::openWebFavorite()
     QString url = favoriteUrl();
     if (!url.isEmpty())
     {
-        openDatabaseUrl(favoriteUrl(), false);
+        openDatabaseUrl(url, false);
     }
     else
     {
@@ -1033,33 +1037,86 @@ void MainWindow::openWebFavorite()
 void MainWindow::openLichess()
 {
     QString account = AppSettings->getValue("/Lichess/userName").toString();
-    if (!account.isEmpty())
+    QDate date = QDate::currentDate();
+    QDate start(date.year(),date.month(),1);
+
+    OnlineBase db;
+    db.setTournament("");
+
+    QAction* action = qobject_cast<QAction*>(sender());
+    if (action)
     {
-        QDate date = QDate::currentDate();
-        QDate start(date.year(),date.month(),1);
-        quint64 since= QDateTime(start).toMSecsSinceEpoch(); // Better: start.startOfDay().toMSecsSinceEpoch(); but that is Qt5
-        QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
-        openDatabaseUrl(url, false);
+        db.setWindowIcon(action->icon());
+        db.setWindowTitle(action->text());
     }
-    else
+
+    db.setHandle(account);
+    db.setStartDate(start);
+    if (db.exec() == QDialog::Accepted)
     {
-        slotConfigure("lichess");
+        QString tournament = db.getTournament();
+        account = db.getHandle();
+        start = db.getStartDate();
+
+        if (tournament.isEmpty())
+        {
+            if (!account.isEmpty())
+            {
+                quint64 since= QDateTime(start).toMSecsSinceEpoch(); // Better: start.startOfDay().toMSecsSinceEpoch(); but that is Qt5
+                QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
+                openDatabaseUrl(url, false);
+            }
+            else
+            {
+                slotConfigure("lichess");
+            }
+        }
+        else
+        {
+            QString url;
+            if (account.isEmpty())
+            {
+                url = QString("https://lichess.org/api/tournament/%1/games").arg(tournament);
+            }
+            else
+            {
+                url = QString("https://lichess.org/api/tournament/%1/games?player=%2").arg(tournament).arg(account);
+            }
+            openDatabaseUrl(url, false);
+        }
     }
 }
 
 void MainWindow::openChesscom()
 {
     QString account = AppSettings->getValue("/Chesscom/userName").toString();
-    if (!account.isEmpty())
+    QDate date = QDate::currentDate();
+    QDate start(date.year(),date.month(),1);
+
+    OnlineBase db;
+    QAction* action = qobject_cast<QAction*>(sender());
+    if (action)
     {
-        QDateTime dateTime = QDateTime::currentDateTime();
-        QString s = dateTime.toString("yyyy/MM");
-        QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account).arg(s);
-        openDatabaseUrl(url, false);
+        db.setWindowIcon(action->icon());
+        db.setWindowTitle(action->text());
     }
-    else
+    db.setHandle(account);
+    db.setStartDate(start);
+    db.setDateFormat("MM/yyyy");
+    if (db.exec() == QDialog::Accepted)
     {
-        slotConfigure("chesscom");
+        account = db.getHandle();
+        start = db.getStartDate();
+        if (!account.isEmpty())
+        {
+            QString s = start.toString("yyyy/MM");
+            QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account).arg(s);
+            openDatabaseUrl(url, true);
+        }
+        else
+        {
+            slotConfigure("chesscom");
+        }
     }
 }
 
@@ -1068,21 +1125,67 @@ void MainWindow::openFICS()
     openDatabaseFile(ficsPath(), false);
 }
 
+void MainWindow::copyDatabaseArchive(QString fname, QString destination)
+{
+    if(DatabaseInfo::IsLocalDatabase(fname))
+    {
+        copyDatabase(destination, fname);
+    }
+    else
+    {
+        QFileInfo fi = QFileInfo(fname);
+        QString dir = AppSettings->commonDataPath();
+
+        fname = fi.canonicalFilePath();
+
+        if(!fname.isEmpty())
+        {
+            QuaZip zip(fname);
+            if(zip.open(QuaZip::mdUnzip))
+            {
+                // first, we need some information about archive itself
+                // QString comment = zip.getComment();
+                // and now we are going to access files inside it
+                QuaZipFile file(&zip);
+                for(bool more = zip.goToFirstFile(); more; more = zip.goToNextFile())
+                {
+                    file.open(QIODevice::ReadOnly);
+                    QString outName = dir + QDir::separator() + file.getActualFileName();
+                    QDir pathOut;
+                    outName = pathOut.absoluteFilePath(outName);
+                    if(!QFile::exists(outName))
+                    {
+                        QDir().mkpath(dir);
+
+                        QFile out(outName);
+                        if(out.open(QIODevice::WriteOnly))
+                        {
+                            out.write(file.readAll());
+                            out.close();
+                            copyDatabase(destination, outName);
+                        }
+                        else
+                        {
+                            qDebug() << "File Error: " << out.error();
+                        }
+                    }
+                    file.close();
+                }
+                zip.close();
+            }
+        }
+    }
+}
+
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
 {
-    QFileInfo fi = QFileInfo(fname);
-    QString ext = fi.suffix().toLower();
-    if(fname.isEmpty() ||
-            ext == "pgn" ||
-            ext == "si4" ||
-            ext == "ctg" ||
-            ext == "bin" ||
-            ext == "abk" )
+    if(DatabaseInfo::IsLocalDatabase(fname))
     {
         openDatabaseFile(fname, utf8);
     }
     else
     {
+        QFileInfo fi = QFileInfo(fname);
         QString dir = AppSettings->commonDataPath();
 
         fname = fi.canonicalFilePath();
@@ -1230,6 +1333,16 @@ void MainWindow::loadReady(QUrl url, QString fileName)
         ++n;
         AppSettings->setValue("Web/AutoNumber1",n);
     }
+    if (url == fav)
+    {
+        QString target = AppSettings->getValue("Web/Destination1").toString();
+        if (!target.isEmpty())
+        {
+            // Instead of opening database, append it to a target database
+            copyDatabaseArchive(fileName, target);
+            return;
+        }
+    }
     openDatabaseArchive(fileName, false);
 }
 
@@ -1362,17 +1475,20 @@ bool MainWindow::gameEditComment(Output::CommentType type)
         if(moves > 0)
         {
             QString spec = game().specAnnotations(CURRENT_MOVE, GameX::BeforeMove);
+            spec = GameX::cleanAnnotation(spec, GameX::AnnotationFilter(GameX::FilterEval | GameX::FilterTan));
             game().setAnnotation(dlg.text()+spec, CURRENT_MOVE, GameX::BeforeMove);
         }
         else
         {
             QString spec = game().specAnnotations();
+            spec = GameX::cleanAnnotation(spec, GameX::AnnotationFilter(GameX::FilterEval | GameX::FilterTan));
             game().setGameComment(dlg.text()+spec);
         }
     }
     else
     {
         QString spec = game().specAnnotations();
+        spec = GameX::cleanAnnotation(spec, GameX::AnnotationFilter(GameX::FilterEval | GameX::FilterTan));
         game().setAnnotation(dlg.text()+spec);
     }
     return true;
@@ -1425,12 +1541,38 @@ QAction* MainWindow::createAction(QString name, const char* slot, const QKeySequ
     return action;
 }
 
+/* Slot for resizing Tool Bar Icons in the Main Window given the Scaling factor */
+/* Default scale factor is read from the config value */
+void MainWindow::resizeToolBarIcons (int scale)
+{
+    /* IconSizes array returns a translator from scale to pixel size */
+    QSize IconSizes[] = {QSize(16,16),
+             QSize(24,24),
+             QSize(32,32),
+             QSize(48,48),
+             QSize(64,64),
+             QSize(72,72),
+             QSize(96,96)};
+
+    if (scale < (int) sizeofArray(IconSizes))
+    {
+        QSize& sz = IconSizes[scale];
+        fileToolBar->setIconSize(sz);
+        editToolBar->setIconSize(sz);
+        viewToolBar->setIconSize(sz);
+        gameToolBar->setIconSize(sz);
+        dbToolBar->setIconSize(sz);
+        searchToolBar->setIconSize(sz);
+    }
+}
+
 void MainWindow::setupActions()
 {
     /* File menu */
     QMenu* file = menuBar()->addMenu(tr("&File"));
-    QToolBar* fileToolBar = addToolBar(tr("File"));
+    fileToolBar = addToolBar(tr("File"));
     fileToolBar->setObjectName("FileToolBar");
+    
     file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), Qt::CTRL + Qt::SHIFT + Qt::Key_N, fileToolBar, ":/images/new.png"));
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
@@ -1470,9 +1612,9 @@ void MainWindow::setupActions()
 
     /* Edit menu */
     QMenu* edit = menuBar()->addMenu(tr("&Edit"));
-    QToolBar* editToolBar = addToolBar(tr("Edit"));
+    editToolBar = addToolBar(tr("Edit"));
     editToolBar->setObjectName("EditToolBar");
-
+    
     QAction *undoAction = m_undoGroup.createUndoAction(this, tr("Undo"));
     QAction *redoAction = m_undoGroup.createRedoAction(this, tr("Redo"));
     undoAction->setShortcut(Qt::CTRL + Qt::Key_Z);
@@ -1584,8 +1726,9 @@ void MainWindow::setupActions()
                                        nullptr, style()->standardIcon(QStyle::SP_TitleBarCloseButton)));
     m_menuView->addSeparator();
 
-    QToolBar* viewToolBar = addToolBar(tr("View"));
+    viewToolBar = addToolBar(tr("View"));
     viewToolBar->setObjectName("ViewToolBarMain");
+    
     QAction* showTargets = createAction(tr("Show target fields"), SLOT(slotShowTargetFields()), 0,
                                        viewToolBar, QIcon(":/images/show_targets.png"));
     m_menuView->addAction(showTargets);
@@ -1640,9 +1783,10 @@ void MainWindow::setupActions()
 
     /* Game menu */
     QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
-    QToolBar* gameToolBar = addToolBar(tr("Game"));
+    gameToolBar = addToolBar(tr("Game"));
     gameToolBar->setObjectName("GameToolBarMain");
-    QToolBar* dbToolBar = addToolBar(tr("Database"));
+    
+    dbToolBar = addToolBar(tr("Database"));
     dbToolBar->setObjectName("DbToolBarMain");
 
     QAction* newAction = createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New,
@@ -1798,7 +1942,7 @@ void MainWindow::setupActions()
 
     /* Search menu */
     QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
-    QToolBar* searchToolBar = addToolBar(tr("Search"));
+    searchToolBar = addToolBar(tr("Search"));
     searchToolBar->setObjectName("SearchToolBar");
 
     QAction* actionFindTag = createAction(tr("Find tag..."), SLOT(slotSearchTag()), Qt::CTRL + Qt::SHIFT + Qt::Key_T, searchToolBar, ":/images/find_tag.png");
@@ -1829,6 +1973,8 @@ void MainWindow::setupActions()
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), reverseFilter, SLOT(setEnabled(bool)));
     search->addAction(reverseFilter);
 
+    resizeToolBarIcons(AppSettings->getValue("/MainWindow/ToolbarIconSize").toInt());
+    
     /* Database menu */
     QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));
     m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
@@ -2119,13 +2265,10 @@ void MainWindow::StartCheckUpdate()
         m_manager = new QNetworkAccessManager(this);
         connect(m_manager, SIGNAL(finished(QNetworkReply*)),
                 SLOT(slotHttpDone(QNetworkReply*)));
-        connect(this, SIGNAL(signalVersionFound(int, int, int)),
-                SLOT(slotVersionFound(int, int, int)));
-        QUrl url = QUrl(QString("http://chessx.sourceforge.net/versions/current.txt"));
-        QNetworkRequest request(url);
-        QByteArray userAgent = QString(QCoreApplication::applicationName() + "/" + STR_VERSION_NET).toLatin1();
-        request.setRawHeader("User-Agent",userAgent);
-        request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+        connect(this, SIGNAL(signalVersionFound(int,int,int)),
+                SLOT(slotVersionFound(int,int,int)));
+        QUrl url("http://chessx.sourceforge.net/versions/current.txt");
+        QNetworkRequest request = NetworkHelper::Request(url);
         m_manager->get(request);
     }
 }
@@ -2134,7 +2277,7 @@ void MainWindow::slotHttpDone(QNetworkReply *reply)
 {
     QUrl url = reply->request().url();
 
-    if (url.toString().endsWith("current.txt"))
+    if (url.toString().endsWith("current.txt", Qt::CaseInsensitive))
     {
         if(!reply->error())
         {
@@ -2316,7 +2459,15 @@ QString MainWindow::MoveToSpeech(Move m)
     s += " ";
     s += m.fromSquareString();
     s += " ";
-    s += tr("to");
+    int n = m.capturedType();
+    if (n)
+    {
+        s += tr("takes");
+    }
+    else
+    {
+        s += tr("to");
+    }
     s += " ";
     s += m.toSquareString();
     s += " ";
@@ -2326,6 +2477,14 @@ QString MainWindow::MoveToSpeech(Move m)
         s += tr("promotes to");
         s += " ";
         s = PieceToSpeech(pieceType(m.promotedPiece()));
+    }
+    if (m.isMate())
+    {
+        s += tr(" check mate");
+    }
+    else if (m.isCheck())
+    {
+        s += tr(" check");
     }
     return s;
 }
@@ -2351,7 +2510,8 @@ void MainWindow::playSound(QString s)
 #ifdef USE_SOUND
     if (AppSettings->getValue("/Sound/Move").toInt()==1)
     {
-        QSound::play(s);
+        QString path = AppSettings->getSoundPath(s);
+        QSound::play(path);
     }
 #endif
 }

@@ -29,6 +29,7 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     ui->setupUi(this);
 
     qRegisterMetaType<QList<MoveData> >("QList<MoveData>");
+    qRegisterMetaType<QList<Move> >("QList<Move>");
 
     m_openingTree = new OpeningTree(ui->OpeningTreeView);
 
@@ -50,7 +51,7 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     HTMLItemDelegate* htmlItemDelegate = new HTMLItemDelegate(this);
     ui->OpeningTreeView->setItemDelegate(htmlItemDelegate);
 
-    connect(ui->OpeningTreeView, SIGNAL(clicked(const QModelIndex&)), parent, SLOT(slotSearchTreeMove(const QModelIndex&)));
+    connect(ui->OpeningTreeView, SIGNAL(clicked(QModelIndex)), parent, SLOT(slotSearchTreeMove(QModelIndex)));
     connect(m_openingTree, SIGNAL(progress(int)), this, SLOT(slotOperationProgress(int)));
     connect(m_openingTree, SIGNAL(openingTreeUpdated()), this, SLOT(slotTreeUpdate()));
     connect(m_openingTree, SIGNAL(openingTreeUpdateStarted()), this, SLOT(slotTreeUpdateStarted()));

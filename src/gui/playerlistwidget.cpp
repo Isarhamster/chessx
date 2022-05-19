@@ -27,15 +27,15 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
     ui->tagList->setModel(m_filterModel);
 
     setObjectName("PlayerListWidget");
-    connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findPlayers(const QString&)));
+    connect(ui->filterEdit, SIGNAL(textChanged(QString)), SLOT(findPlayers(QString)));
     connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedPlayer()));
     connect(ui->addFilter, SIGNAL(clicked()), SLOT(filterSelectedPlayerAdd()));
     connect(ui->renameItem, SIGNAL(clicked()), SLOT(renameSelectedPlayer()));
-    connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedPlayer()));
+    connect(ui->tagList, SIGNAL(doubleClicked(QModelIndex)), SLOT(filterSelectedPlayer()));
 
     selectPlayer(QString());
     QItemSelectionModel* selectionModel = ui->tagList->selectionModel();
-    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
+    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             this, SLOT(selectionChangedSlot()));
 
     ui->detailText->setOpenLinks(true);

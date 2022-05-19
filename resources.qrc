@@ -157,14 +157,17 @@
         <file alias="themes/boards/aluminium.png">data/themes/boards/aluminium.png</file>
         <file alias="themes/boards/brazilwood.png">data/themes/boards/brazilwood.png</file>
         <file alias="themes/boards/cherry.png">data/themes/boards/cherry.png</file>
+        <file alias="themes/boards/cumaru.png">data/themes/boards/cumaru.png</file>
         <file alias="themes/boards/lanta.png">data/themes/boards/lanta.png</file>
         <file alias="themes/boards/lapis.png">data/themes/boards/lapis.png</file>
         <file alias="themes/boards/mahogony.png">data/themes/boards/mahogony.png</file>
         <file alias="themes/boards/maple.png">data/themes/boards/maple.png</file>
         <file alias="themes/boards/marble.png">data/themes/boards/marble.png</file>
+        <file alias="themes/boards/purpleheart.png">data/themes/boards/purpleheart.png</file>
         <file alias="themes/boards/sand.png">data/themes/boards/sand.png</file>
         <file alias="themes/boards/sandlewood.png">data/themes/boards/sandlewood.png</file>
         <file alias="themes/boards/slate.png">data/themes/boards/slate.png</file>
+        <file alias="themes/boards/silverwood.png">data/themes/boards/silverwood.png</file>
         <file alias="themes/boards/wood.png">data/themes/boards/wood.png</file>
         <file alias="themes/leipzig.png">data/themes/leipzig.png</file>
         <file alias="themes/merida.png">data/themes/merida.png</file>

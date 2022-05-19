@@ -20,7 +20,7 @@ public:
     enum Type {None, RemovePreviousMoves, RemoveNextMoves, RemoveVariation, PromoteVariation,
                EnumerateVariations1, EnumerateVariations2, VariationUp, VariationDown,
                EditGameComment, EditPrecomment, EditComment, AddNag, ClearNags, AddNullMove, CopyHtml, CopyText,
-               Uncomment, RemoveVariations
+               Uncomment, RemoveVariations, CopyTextSelection
               };
     /** Standard constructor. */
     EditAction(Type type = None);

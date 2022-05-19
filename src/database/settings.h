@@ -14,8 +14,6 @@
 #include <QString>
 #include "engineoptiondata.h"
 
-class QWidget;
-
 /** @ingroup Core
     The Settings class provides a wrapper to Qt QSettings class. It allows to
     easily save/restore application settings and get paths for various resources.
@@ -24,12 +22,16 @@ class QWidget;
 #ifdef Q_OS_MAC
 #define MIN_WHEEL_COUNT 120
 #define DEFAULT_FONTSIZE 12
+#define DEFAULT_ICONSIZE 2
 #define DEFAULT_LISTFONTSIZE 12
 #else
 #define MIN_WHEEL_COUNT 0
+#define DEFAULT_ICONSIZE 2
 #define DEFAULT_FONTSIZE 10
 #define DEFAULT_LISTFONTSIZE 10
 #endif
+
+class QWidget;
 
 class Settings : public QSettings
 {
@@ -38,13 +40,15 @@ public:
     enum {Show = 1} LayoutFlags;
     Settings();
     Settings(const QString &fileName);
-    ~Settings();
-public slots:
+    void initialize();
+    virtual ~Settings();
+
+public: // Extension Interface for GUI applications
     /** Restore widget's layout based on its name. Optionally show window if it is visible.
     @return @p true if the state was restored. */
-    bool layout(QWidget* w);
+    virtual bool layout(QWidget*) { return false; }
     /** Write widget's layout with its name. */
-    void setLayout(const QWidget* w);
+    virtual void setLayout(const QWidget*) {}
 public:
     /** @return directory where data are stored. */
     QString dataPath();
@@ -97,6 +101,8 @@ public:
     QString getBoardPath(QString) const;
     QStringList getBoardList() const;
 
+    QString getSoundPath(QString sound) const;
+
     QString getBuiltinDbPath() const;
     QStringList getBuiltinDatabases() const;
 
@@ -106,11 +112,16 @@ public:
     QString shotsPath() const;
 
     static QString portableIniPath();
+
+protected:
+    virtual void initWidgetValues(QMap<QString, QVariant>&) const {};
+
 private:
 
-    void initialize();
-    QMap<QString, QVariant> initDefaultValues() const;
     QString m_dataPath;
+
+    QMap<QString, QVariant> defaultValues;
+    QMap<QString, QVariant> initDefaultValues() const;
 
     QStringList getImageList(QString userPath, QString internalPath) const;
 };

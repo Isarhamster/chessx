@@ -91,7 +91,7 @@ void DlgSaveBook::slotSelectTargetPath()
     {
         return;
     }
-    if(!file.endsWith(".bin"))
+    if(!file.endsWith(".bin", Qt::CaseInsensitive))
     {
         file += ".bin";
     }

@@ -48,7 +48,7 @@ AnalysisWidget::AnalysisWidget(QWidget *parent)
     ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
 
     m_tablebase = new OnlineTablebase;
-    connect(m_tablebase, SIGNAL(bestMove(QList<Move>, int)), this, SLOT(showTablebaseMove(QList<Move>, int)));
+    connect(m_tablebase, SIGNAL(bestMove(QList<Move>,int)), this, SLOT(showTablebaseMove(QList<Move>,int)), Qt::QueuedConnection);
 }
 
 AnalysisWidget::~AnalysisWidget()
@@ -82,7 +82,7 @@ void AnalysisWidget::startEngine()
         connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
         connect(m_engine, SIGNAL(error(QProcess::ProcessError)), SLOT(engineError(QProcess::ProcessError)));
         connect(m_engine, SIGNAL(deactivated()), SLOT(engineDeactivated()));
-        connect(m_engine, SIGNAL(analysisUpdated(const Analysis&)),
+        connect(m_engine, SIGNAL(analysisUpdated(Analysis)),
                 SLOT(showAnalysis(Analysis)));
         m_engine->setMoveTime(m_moveTime);
         m_engine->activate();
@@ -513,18 +513,25 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
     {
         bool first = true;
         QStringList also;
-        foreach(Move move, bestMoves)
+        if (!bestMoves.isEmpty()) foreach(Move move, bestMoves)
         {
             if (first)
             {
                 first = false;
                 QString result;
 
-                bool dtz = false;
-                if (abs(score) & 0x800)
+                bool dtm = false;
+                if (score > 0x800)
                 {
-                    dtz = true;
+                    score -= 0x800;
+                    dtm = true;
                 }
+                else if (score < -0x800)
+                {
+                    score += 0x800;
+                    dtm = true;
+                }
+
                 m_score_tb = 0;
                 if(score == 0)
                 {
@@ -532,16 +539,16 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                 }
                 else
                 {
-                    if (!dtz)
+                    if (dtm)
                     {
                         if((score < 0) == (m_board.toMove() == Black))
                         {
-                            result = tr("White wins in %n moves", "", qAbs(score));
+                            result = tr("White mates in %n move(s)", "", (qAbs(score)+1)/2);
                             m_score_tb = 1;
                         }
                         else
                         {
-                            result = tr("Black wins in %n moves", "", qAbs(score));
+                            result = tr("Black mates in %n move(s)", "", (qAbs(score)+1)/2);
                             m_score_tb = -1;
                         }
                     }
@@ -549,12 +556,12 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                     {
                         if((score < 0) == (m_board.toMove() == Black))
                         {
-                            result = tr("White wins");
+                            result = tr("White wins (reset in %n move(s))", "", (qAbs(score)+1)/2);
                             m_score_tb = 1;
                         }
                         else
                         {
-                            result = tr("Black wins");
+                            result = tr("Black wins (reset in %n move(s))", "", (qAbs(score)+1)/2);
                             m_score_tb = -1;
                         }
                     }
@@ -579,12 +586,32 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                 also.append(m_board.moveToFullSan(move1,true));
             }
         }
+        else if (score)
+        {
+            QString result;
+            if((score < 0) == (m_board.toMove() == Black))
+            {
+                result = tr("White wins");
+                m_score_tb = 1;
+            }
+            else
+            {
+                result = tr("Black wins");
+                m_score_tb = -1;
+            }
+            m_tablebaseEvaluation = result;
+        }
         if (!also.isEmpty())
         {
             m_tablebaseEvaluation.append(QString(" === %1").arg(also.join(" ")));
         }
         updateAnalysis();
     }
+}
+
+void AnalysisWidget::clear()
+{
+    ui.variationText->clear();
 }
 
 void AnalysisWidget::updateAnalysis()

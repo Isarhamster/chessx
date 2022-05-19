@@ -19,9 +19,9 @@
 
 static QTextStream out(stdout, QIODevice::WriteOnly);
 
-static QString db_name = "players";
-static QString source = "ratings.ssp";
-static QString picture_dir = "playerphotos";
+static QString db_name = QStringLiteral("players");
+static QString source = QStringLiteral("ratings.ssp");
+static QString picture_dir = QStringLiteral("playerphotos");
 
 void queryNewest()
 {

@@ -97,7 +97,7 @@ void OpeningTreeThread::run()
             m_filter->database()->findPosition(m_board, opts, rqBuffer, rsBuffer, moves);
 
             // update progress
-            for (auto rs: rsBuffer)
+            for (auto&& rs: qAsConst(rsBuffer)) // Avoid detaching container
             {
                 if (rs != NO_MOVE)
                     games += 1;

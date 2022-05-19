@@ -51,7 +51,7 @@ database is opened read-only</p>
 
 <p>The index files are saved in the index-subdirectory of the Default Data Path. If the index directory or one
 of its files is deleted, ChessX will recreate the Index file the next time you open the PGN file.</p>
-<p>ChessX will open the index file instead of the PGN file if the filename fits (e.g. "chess.cxi" fits to any "chess.pgn")
+<p>ChessX will open the index file instead of the PGN file if the filename fits (e.g. <code>"chess.cxi"</code> fits to any <code>"chess.pgn"</code>)
 if the date of the last modification fits to the date stored in the index file. So ChessX won't care for the path
 where your PGN is located (you can relocate the file after indexing), but this limits the Index to only one file
 with the same basename.</p>
@@ -70,17 +70,17 @@ and the version of the Qt libraries ChessX was compiled with.</p>
 </p>
 <p>ChessX has builtin themes and languages, which can be extended by external themes.
 These themes need to be stored in defined subfolders of the program data directory.
-Starting from <i>ProgramDataPath/data/</i>
+Starting from <code>ProgramDataPath/data/</code>
 <ul>
-<li>Translation files are stored in <i>lang/</i>
-<li>Theme files in <i>themes/...</i>
-<li>Output templates in <i>templates/</i>
-<li>Windows Engines in <i>engines/uci/</i> and <i>engines/winboard/</i>
-<li>Mac OS Engines in <i>engines-mac/uci/</i> and <i>engines-mac/winboard/</i>
+<li>Translation files are stored in <code>lang/</code>
+<li>Theme files in <code>themes/</code>
+<li>Output templates in <code>templates/</code>
+<li>Windows Engines in <code>engines/uci/</code> and <code>engines/winboard/</code>
+<li>OS X Engines in <code>engines-mac/uci/</code> and <code>engines-mac/winboard/</code>
 </ul>
 </p>
-<p>Board themes are put into <i>themes/boards</i> while simple piece sets are put into <i>themes/</i>.
-Outlined and shadowed piece sets are put into <i>themes/outline</i> and <i>themes/shadow</i> respectively.
+<p>Board themes are put into <code>themes/boards</code> while simple piece sets are put into <code>themes/</code>.
+Outlined and shadowed piece sets are put into <code>themes/outline</code> and <code>themes/shadow</code> respectively.
 </p>
 <p>The About dialog gives hints on the actual paths (which depend on the operating system).</p>
 

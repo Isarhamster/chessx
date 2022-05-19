@@ -156,7 +156,7 @@ void MemoryDatabase::parseGame()
 
     QString fen = m_index.tagValue(TagNameFEN, m_count - 1);
     QString variant = m_index.tagValue(TagNameVariant, m_count - 1).toLower();
-    bool chess960 = (variant.startsWith("fischer") || variant.endsWith("960"));
+    bool chess960 = (variant.startsWith("fischer", Qt::CaseInsensitive) || variant.endsWith("960"));
     if(fen != "?")
     {
         game->dbSetStartingBoard(fen, chess960);
@@ -175,7 +175,7 @@ void MemoryDatabase::parseGame()
 
     if(AppSettings->getValue("/General/automaticECO").toBool())
     {
-        if(eco.isEmpty())
+        if(eco.isEmpty() || !AppSettings->getValue("/General/preserveECO").toBool())
         {
             eco = game->ecoClassify().left(3);
             if(!eco.isEmpty())

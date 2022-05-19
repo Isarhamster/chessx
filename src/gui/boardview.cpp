@@ -61,8 +61,8 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_bestGuess.setNullMove();
     m_threatGuess.setThinkTime(500);
 
-    connect(&m_threatGuess, SIGNAL(guessFoundForBoard(Guess::Result, BoardX)),
-            this, SLOT(showThreat(Guess::Result,BoardX)), Qt::QueuedConnection);
+    connect(&m_threatGuess, SIGNAL(guessFoundForBoard(Guess::Result,BoardX)),
+            this, SLOT(showThreat(Guess::Result,BoardX)),Qt::QueuedConnection);
 
     setAcceptDrops(true);
 }
@@ -427,7 +427,9 @@ void BoardView::drawUnderProtection(QPaintEvent* event)
                 {
                     if (pieceType(m_board.pieceAt(square)) != King)
                     {
-                        int numDefenders = m_board.DefendersOfSquare(square);
+                        QString fen = m_board.toFen();
+                        int numDefenders = Guess::attackersOnSquare(fen.toLatin1(), square);
+
                         if ((m_showUnderProtection == White && numDefenders < 0) ||
                             (m_showUnderProtection == Black && numDefenders > 0))
                         {
@@ -1592,7 +1594,7 @@ void BoardView::renderImage(QImage &image, double scaling) const
     image = pixmap.toImage();
 }
 
-QImage BoardView::renderImageForBoard(const BoardX &b, QSize size)
+QString BoardView::renderImageForBoard(const BoardX &b, QSize size)
 {
     QImage image;
     BoardView boardView(nullptr, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
@@ -1601,5 +1603,9 @@ QImage BoardView::renderImageForBoard(const BoardX &b, QSize size)
     boardView.resize(size);
     boardView.setEnabled(false);
     boardView.renderImage(image, 1.0);
-    return image;
+
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    image.save(&buffer, "PNG"); // writes the image in PNG format inside the buffer
+    return QString::fromLatin1(byteArray.toBase64().data());
 }

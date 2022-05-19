@@ -1,4 +1,5 @@
 #include "lichessopening.h"
+#include "networkhelper.h"
 #include "settings.h"
 #include "version.h"
 
@@ -27,7 +28,7 @@ QByteArray LichessOpening::sync_request( QNetworkRequest& request )
     QNetworkAccessManager manager;
     QNetworkReply* reply;
     QEventLoop connection_loop;
-    connect(&manager, SIGNAL( finished( QNetworkReply* ) ), &connection_loop, SLOT( quit() ) );
+    connect(&manager, SIGNAL( finished(QNetworkReply*) ), &connection_loop, SLOT( quit() ) );
     reply = manager.get( request );
     connection_loop.exec();
     reply->deleteLater();
@@ -37,8 +38,6 @@ QByteArray LichessOpening::sync_request( QNetworkRequest& request )
 QByteArray LichessOpening::queryPosition(const QString& fen)
 {
     QUrl url;
-    QString prep(fen.simplified());
-    QString count(prep.left(prep.indexOf(" ")));
 
     if (AppSettings->getValue("/General/onlineTablebases").toBool())
     {
@@ -56,6 +55,8 @@ QByteArray LichessOpening::queryPosition(const QString& fen)
             }
         }
 
+        requested += "&topGames=0";
+
         if (m_requested == requested)
         {
             return reply;
@@ -65,10 +66,7 @@ QByteArray LichessOpening::queryPosition(const QString& fen)
         url.setHost("explorer.lichess.ovh");
         url.setScheme("http");
 
-        QNetworkRequest request(url);
-        QByteArray userAgent = QString(QCoreApplication::applicationName() + "/" + STR_VERSION_NET).toLatin1();
-        request.setRawHeader("User-Agent",userAgent);
-        request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+        QNetworkRequest request = NetworkHelper::Request(url);
         reply = sync_request( request );
         m_requested = requested;
         return reply;

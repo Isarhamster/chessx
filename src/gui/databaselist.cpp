@@ -45,11 +45,11 @@ DatabaseList::DatabaseList(DatabaseRegistry* registry, QWidget* parent) :
 
     setModel(m_filterModel);
 
-    connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
-    connect(this, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(slotDoubleClicked(const QModelIndex&)));
-    connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
-    connect(m_model, SIGNAL(OnSelectIndex(const QModelIndex &)), SLOT(slotCurrentIndexChanged(const QModelIndex &)));
+    connect(this, SIGNAL(clicked(QModelIndex)), SLOT(itemSelected(QModelIndex)));
+    connect(this, SIGNAL(doubleClicked(QModelIndex)), SLOT(slotDoubleClicked(QModelIndex)));
+    connect(this, SIGNAL(activated(QModelIndex)), SLOT(itemSelected(QModelIndex)));
+    connect(this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(slotContextMenu(QPoint)));
+    connect(m_model, SIGNAL(OnSelectIndex(QModelIndex)), SLOT(slotCurrentIndexChanged(QModelIndex)));
 
     setAlternatingRowColors(true);
     setDragEnabled(true);
@@ -123,6 +123,8 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         action->setChecked(bUtf8);
         action->setEnabled(bHasSuffix);
 
+        menu.addAction(tr("Set dirty"), this, SLOT(slotSetDirty()));
+
         menu.exec(mapToGlobal(pos));
     }
 }
@@ -162,46 +164,66 @@ void DatabaseList::itemSelected(const QModelIndex& index)
     }
 }
 
-void DatabaseList::dbOpen()
+QStringList DatabaseList::selectionList(int item)
 {
     QModelIndexList list = selectionModel()->selectedRows();
+    QStringList l;
     foreach(QModelIndex index, list)
     {
-        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
-        QString utf8 = m_filterModel->data(m_filterModel->index(index.row(), DBLV_UTF8)).toString();
-        bool bUtf8 = (utf8.compare("UTF8") == 0);
+        l << m_filterModel->data(m_filterModel->index(index.row(), item)).toString();
+    }
+    return l;
+}
+
+void DatabaseList::dbOpen()
+{
+    QStringList l1 = selectionList(DBLV_PATH);
+    QStringList l2 = selectionList(DBLV_UTF8);
+    foreach(QString s, l1)
+    {
+        if (l2.isEmpty()) break;
+        bool bUtf8 = (l2.front().compare("UTF8") == 0);
+        l2.pop_front();
         emit requestOpenDatabase(s, bUtf8);
     }
 }
 
 void DatabaseList::dbToggleUTF8()
 {
-    QModelIndexList list = selectionModel()->selectedRows();
-    foreach(QModelIndex index, list)
+    QStringList l1 = selectionList(DBLV_PATH);
+    QStringList l2 = selectionList(DBLV_UTF8);
+    foreach(QString s, l1)
     {
-        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
-        QString utf8 = m_filterModel->data(m_filterModel->index(index.row(), DBLV_UTF8)).toString();
-        bool bUtf8 = (utf8.compare("UTF8") == 0);
+        if (l2.isEmpty()) break;
+        bool bUtf8 = (l2.front().compare("UTF8") == 0);
+        l2.pop_front();
         setFileUtf8(s, !bUtf8);
+    }
+}
+
+void DatabaseList::slotSetDirty()
+{
+    QStringList l1 = selectionList(DBLV_PATH);
+    foreach(QString s, l1)
+    {
+        emit requestDirty(s);
     }
 }
 
 void DatabaseList::dbClose()
 {
-    QModelIndexList list = selectionModel()->selectedRows();
-    foreach(QModelIndex index, list)
+    QStringList l1 = selectionList(DBLV_PATH);
+    foreach(QString s, l1)
     {
-        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
         emit requestCloseDatabase(s);
     }
 }
 
 void DatabaseList::dbSetStarsForSelection(int stars)
 {
-    QModelIndexList list = selectionModel()->selectedRows();
-    foreach(QModelIndex index, list)
+    QStringList l1 = selectionList(DBLV_PATH);
+    foreach(QString s, l1)
     {
-        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
         setFileFavorite(s, true, 0);
         setStars(s,stars);
     }
@@ -302,6 +324,11 @@ void DatabaseList::setStars(const QString &s, int stars)
 void DatabaseList::setFileUtf8(const QString& s, bool utf8)
 {
     m_model->setFileUtf8(s, utf8);
+}
+
+bool DatabaseList::fileUtf8(const QString& s) const
+{
+    return m_model->fileUtf8(s);
 }
 
 void DatabaseList::setFileClose(const QString& s, GameId lastIndex)
@@ -486,10 +513,9 @@ void DatabaseList::startToDrag()
 {
     DbMimeData *mimeData = new DbMimeData;
     QList<QUrl> urlList;
-    QModelIndexList list = selectionModel()->selectedRows();
-    foreach(QModelIndex index, list)
+    QStringList l1 = selectionList(DBLV_PATH);
+    foreach(QString s, l1)
     {
-        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
         urlList << QUrl(s);
     }
     mimeData->setUrls(urlList);

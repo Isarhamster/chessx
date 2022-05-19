@@ -33,7 +33,8 @@ void ChartWidget::setValues(int line, const QList<double>& values)
 {
     if (line >= m_values.size())
     {
-        m_values.insert(line, *new QList<double>());
+        QList<double> l;
+        m_values.insert(line, l);
     }
     m_values[line].clear();
     foreach(double d,values)

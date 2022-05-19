@@ -26,7 +26,7 @@ QString EngineData::commandToName(const QString& command)
     {
         name[0] = name[0].toUpper();
     }
-    if(name.endsWith(".exe"))
+    if(name.endsWith(".exe", Qt::CaseInsensitive))
     {
         name.truncate(name.length() - 4);
     }

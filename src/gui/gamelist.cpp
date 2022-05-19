@@ -55,16 +55,16 @@ GameList::GameList(FilterX* filter, QWidget* parent) : TableView(parent)
     m_model = new FilterModel(filter);
     connect(m_model, SIGNAL(searchProgress(int)), SIGNAL(searchProgress(int)));
     connect(m_model, SIGNAL(searchFinished()), SIGNAL(searchFinished()));
-    connect(m_model, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), SLOT(itemDataChanged(const QModelIndex&, const QModelIndex&)));
+    connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SLOT(itemDataChanged(QModelIndex,QModelIndex)));
     sortModel = new GameListSortModel(nullptr);
     sortModel->setFilter(filter);
     sortModel->setSourceModel(m_model);
     sortModel->setDynamicSortFilter(true);
     setModel(sortModel);
 
-    connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
-    connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
+    connect(this, SIGNAL(clicked(QModelIndex)), SLOT(itemSelected(QModelIndex)));
+    connect(this, SIGNAL(activated(QModelIndex)), SLOT(itemSelected(QModelIndex)));
+    connect(this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(slotContextMenu(QPoint)));
     connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
             this, SLOT(slotItemSelected(QModelIndex)));
 #if QT_VERSION < 0x050000
@@ -413,7 +413,7 @@ void GameList::simpleSearch(int tagid)
     }
     else
     {
-        QStringList list = value.split("-", QString::SkipEmptyParts);
+        QStringList list = value.split("-", Qt::SkipEmptyParts);
         if ((list.size() > 1) && (dlg.tag() != 9)) // Tag 9 is the Result
         {
             // Filter a range

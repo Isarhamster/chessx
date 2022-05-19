@@ -129,14 +129,14 @@ int PlayerData::estimatedElo(int eloListIndex)
     QMap<int, int>::const_iterator it;
     if(m_elo.contains(eloListIndex))
     {
-        it = m_elo.find(eloListIndex);
+        it = m_elo.constFind(eloListIndex);
         return it.value();
     }
     else
     {
         if(m_estimatedEloCache.contains(eloListIndex))   //use cached result
         {
-            it = m_estimatedEloCache.find(eloListIndex);
+            it = m_estimatedEloCache.constFind(eloListIndex);
             return it.value();
         }
         else    //search in previous elo lists
@@ -146,7 +146,7 @@ int PlayerData::estimatedElo(int eloListIndex)
             {
                 if(m_elo.contains(i))
                 {
-                    it = m_elo.find(i);
+                    it = m_elo.constFind(i);
                     result = it.value();
                     break;
                 }

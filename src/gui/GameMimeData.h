@@ -21,7 +21,7 @@ public:
 class DbMimeData : public QMimeData
 {
     Q_OBJECT
-#ifdef Q_OS_DARWIN
+#ifdef Q_OS_MACOS
 public:
     QList<QUrl> urls() const { return m_urls; }
     void setUrls(const QList<QUrl> &urls) { m_urls = urls; }

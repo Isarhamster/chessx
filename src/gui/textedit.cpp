@@ -74,7 +74,7 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-const QString rsrcPath = ":/textedit";
+const QString rsrcPath = QStringLiteral(":/textedit");
 
 TextEdit::TextEdit(QWidget *parent, QMenu *menu)
     : ToolMainWindow(parent)
@@ -413,7 +413,7 @@ bool TextEdit::load(const QString &f)
     if (!file.open(QFile::ReadOnly))
         return false;
 
-    if (f.endsWith("odt"))
+    if (f.endsWith("odt", Qt::CaseInsensitive))
     {
         OOO::Converter *doc_odt = new OOO::Converter();
         QTextDocument *doc = doc_odt->convert(f);
@@ -833,7 +833,14 @@ PasteTextEdit::~PasteTextEdit()
 
 bool PasteTextEdit::eventFilter(QObject *obj, QEvent *event)
 {
-    if(event->type() == QEvent::Shortcut)
+    QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+    if(keyEvent && (keyEvent->key() == Qt::Key_Return ||
+                    keyEvent->key() == Qt::Key_Enter))
+    {
+        keyPressEvent(keyEvent);
+        return true;
+    }
+    else if(event->type() == QEvent::Shortcut)
     {
         if (obj != this)
         {
@@ -843,6 +850,47 @@ bool PasteTextEdit::eventFilter(QObject *obj, QEvent *event)
 
     // standard event processing
     return QObject::eventFilter(obj, event);
+}
+
+void PasteTextEdit::keyPressEvent(QKeyEvent* event)
+{
+    // Pressing Return is ignored
+    if(event && event->type() == QEvent::KeyRelease &&
+            (event->key() == Qt::Key_Return ||
+            event->key() == Qt::Key_Enter))
+    {
+        QKeyEvent event2(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
+        QTextEdit::keyPressEvent(&event2);
+        return;
+    }
+
+    // ZoomIn / Out with Control++ or Control+-
+    if(event->key() == Qt::Key_Minus && (event->modifiers() & Qt::ControlModifier))
+    {
+        zoomOut();
+    }
+    else if(event->key() == Qt::Key_Plus && (event->modifiers() & Qt::ControlModifier))
+    {
+        zoomIn();
+    }
+
+    QTextEdit::keyPressEvent(event);
+}
+
+void PasteTextEdit::wheelEvent(QWheelEvent *e)
+{
+    Qt::KeyboardModifiers m = e->modifiers();
+
+    // ZoomIn / Out with Control+Alt+Wheel
+    if ((m & (Qt::ControlModifier | Qt::AltModifier)) == (Qt::ControlModifier | Qt::AltModifier))
+    {
+        const int delta = e->delta();
+        if (delta < 0)
+            zoomOut();
+        else if (delta > 0)
+            zoomIn();
+    }
+    QTextEdit::wheelEvent(e);
 }
 
 bool PasteTextEdit::canInsertUsingMimeData(const QMimeData *source) const

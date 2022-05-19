@@ -90,6 +90,7 @@ public:
 
     // Return a nullMove -- King to the same square
     Move nullMove() const;
+    Move dummyMove() const;
 
     // Query
     //
@@ -211,6 +212,8 @@ public:
     int numAttackedBy(const unsigned int color, chessx::Square square) const;
     /** Generate all possible moves in a given position */
     Move::List generateMoves() const;
+    /** Calculate a material evaluation */
+    int score() const;
 protected:
     unsigned int countSetBits(quint64 n) const;
 private:
@@ -286,7 +289,6 @@ private:
     unsigned char m_castle;                // flags for castle legality  (these can be merged)
     unsigned short m_halfMoves;            // Number of moves since last pawn move or capture
     unsigned int m_moveNumber;             // Move number in game (incremented after each black move)
-    unsigned char m_pawnCount[2];          // Number of pawns for each side
     unsigned char m_pieceCount[2];         // Number of pieces INCLUDING pawns for each side
     unsigned char m_chess960;              // 0 = standard, 1 = Chess960
 };

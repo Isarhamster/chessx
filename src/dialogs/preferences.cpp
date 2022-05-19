@@ -61,9 +61,9 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     QPushButton *engineDownButton = ui.buttonBoxEngines->addButton(tr("Down"), QDialogButtonBox::ActionRole);
 
     connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(buttonClicked(QAbstractButton*)));
-    connect(ui.engineList, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-            SLOT(slotSelectEngine(QListWidgetItem*, QListWidgetItem*)));
-    connect(ui.engineName, SIGNAL(textChanged(const QString&)), SLOT(slotEngineNameChange(const QString&)));
+    connect(ui.engineList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+            SLOT(slotSelectEngine(QListWidgetItem*,QListWidgetItem*)));
+    connect(ui.engineName, SIGNAL(textChanged(QString)), SLOT(slotEngineNameChange(QString)));
     connect(addEngineButton, SIGNAL(clicked(bool)), SLOT(slotAddEngine()));
     connect(deleteEngineButton, SIGNAL(clicked(bool)), SLOT(slotDeleteEngine()));
     connect(engineUpButton, SIGNAL(clicked(bool)), SLOT(slotEngineUp()));
@@ -101,7 +101,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
         QUrl url = QUrl(QString("http://chessx.sourceforge.net/translations/dict.txt"));
         downloadManager = new DownloadManager(this);
         connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadFileError(QUrl)), Qt::QueuedConnection);
-        connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(slotFileLoaded(QUrl, QString)), Qt::QueuedConnection);
+        connect(downloadManager, SIGNAL(onDownloadFinished(QUrl,QString)), this, SLOT(slotFileLoaded(QUrl,QString)), Qt::QueuedConnection);
         QString path = AppSettings->getTempPath();
         downloadManager->doDownloadToPath(url, path + QDir::separator() + "dict.txt");
     }
@@ -383,11 +383,11 @@ void PreferencesDialog::slotLoadLanguageFile()
 
 void PreferencesDialog::loadFileError(QUrl url)
 {
-    if(url.toString().endsWith(".txt"))
+    if(url.toString().endsWith(".txt", Qt::CaseInsensitive))
     {
         ui.labelLoadStatus->setText(tr("Could not load server language file dictionary"));
     }
-    else if(url.toString().endsWith(".qm"))
+    else if(url.toString().endsWith(".qm", Qt::CaseInsensitive))
     {
         ui.labelLoadStatus->setText(tr("Could not load or install language pack"));
     }
@@ -395,14 +395,14 @@ void PreferencesDialog::loadFileError(QUrl url)
 
 void PreferencesDialog::slotFileLoaded(QUrl, QString name)
 {
-    if(name.endsWith(".qm"))
+    if(name.endsWith(".qm", Qt::CaseInsensitive))
     {
         name.remove(QRegExp("[^_]*_"));
         name.remove(".qm");
         ui.cbLanguage->addItem(name);
         ui.labelLoadStatus->setText(tr("Translation file loaded - select added language above!"));
     }
-    else if(name.endsWith(".txt"))
+    else if(name.endsWith(".txt", Qt::CaseInsensitive))
     {
         QFile dictFile(name);
         if(dictFile.open(QIODevice::ReadOnly))
@@ -452,6 +452,11 @@ int PreferencesDialog::exec()
         saveSettings();
         emit reconfigure();
     }
+    else
+    {
+        // Fix icon sizes in case of cancel pressed
+        emit iconsizeSliderSetting(AppSettings->getValue("/MainWindow/ToolbarIconSize").toInt());
+    }
     return result;
 }
 
@@ -480,8 +485,11 @@ void PreferencesDialog::restoreSettings()
     ui.tablebaseSelect->setCurrentIndex(AppSettings->getValue("tablebaseSource").toInt());
     ui.versionCheck->setChecked(AppSettings->getValue("onlineVersionCheck").toBool());
     ui.automaticECO->setChecked(AppSettings->getValue("automaticECO").toBool());
+    ui.preserveECO->setChecked(AppSettings->getValue("preserveECO").toBool());
     ui.useIndexFile->setChecked(AppSettings->getValue("useIndexFile").toBool());
     ui.cbAutoCommitDB->setChecked(AppSettings->getValue("autoCommitDB").toBool());
+    ui.mergeAddSource->setChecked(AppSettings->getValue("mergeAddSource").toBool());
+    ui.mergeAddTag->setText(AppSettings->getValue("mergeAddTag").toString());
     QString lang = AppSettings->getValue("language").toString();
     AppSettings->endGroup();
     AppSettings->beginGroup("/Board/");
@@ -511,6 +519,11 @@ void PreferencesDialog::restoreSettings()
     QString pieceTheme = AppSettings->getValue("pieceTheme").toString();
     ui.pieceEffect->setCurrentIndex(AppSettings->getValue("pieceEffect").toInt());
     QString boardTheme = AppSettings->getValue("boardTheme").toString();
+    QString defaultTheme = tr("[plain colors]");
+    if (boardTheme.isEmpty())
+    {
+        boardTheme = defaultTheme;
+    }
 
     ui.boardColorsList->clear();
     restoreColorItem(ui.boardColorsList, tr("Light squares"), "lightColor");
@@ -549,7 +562,7 @@ void PreferencesDialog::restoreSettings()
         QString trim(it.next());
         ui.boardThemeCombo->addItem(trim.left(trim.length() - 4));
     }
-    ui.boardThemeCombo->addItem(tr("[plain colors]"));
+    ui.boardThemeCombo->addItem(defaultTheme);
 
     selectInCombo(ui.cbLanguage, lang);
     selectInCombo(ui.pieceThemeCombo, pieceTheme);
@@ -581,6 +594,9 @@ void PreferencesDialog::restoreSettings()
 
     ui.iconsVisible->setChecked(AppSettings->getValue("/MainWindow/ShowMenuIcons").toBool());
     ui.cbAutoRaise->setChecked(AppSettings->getValue("/MainWindow/AutoRaise").toBool());
+    ui.IconSizeSlider->setValue(AppSettings->getValue("/MainWindow/ToolbarIconSize").toInt());
+    connect (ui.IconSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderNewValue(int)));
+
     // Read Game List settings
     AppSettings->beginGroup("GameText");
 
@@ -591,6 +607,7 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.notationColors, tr("NAGs"), "NagColor");
 
     ui.gameTextFontSizeSpin->setValue(AppSettings->getValue("FontSize").toInt());
+    
     ui.cbShowDiagrams->setChecked(AppSettings->getValue("ShowDiagrams").toBool());
     ui.cbColumnStyle->setChecked(AppSettings->getValue("ColumnStyle").toBool());
     ui.cbHTMLComments->setChecked(AppSettings->getValue("HTMLComments").toBool());
@@ -621,6 +638,7 @@ void PreferencesDialog::restoreSettings()
     AppSettings->beginGroup("Web");
     ui.webFavorite->setText(AppSettings->getValue("Favorite1").toString());
     ui.autoNumber->setValue(AppSettings->getValue("AutoNumber1").toInt());
+    ui.editWebDestination->setText(AppSettings->getValue("Destination1").toString());
     AppSettings->endGroup();
 
     AppSettings->beginGroup("FICS");
@@ -678,9 +696,12 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("tablebaseSource", QVariant(ui.tablebaseSelect->currentIndex()));
     AppSettings->setValue("onlineVersionCheck", QVariant(ui.versionCheck->isChecked()));
     AppSettings->setValue("automaticECO", QVariant(ui.automaticECO->isChecked()));
+    AppSettings->setValue("preserveECO", QVariant(ui.preserveECO->isChecked()));
     AppSettings->setValue("useIndexFile", QVariant(ui.useIndexFile->isChecked()));
     AppSettings->setValue("autoCommitDB", QVariant(ui.cbAutoCommitDB->isChecked()));
     AppSettings->setValue("language", QVariant(ui.cbLanguage->currentText()));
+    AppSettings->setValue("mergeAddSource", QVariant(ui.mergeAddSource->isChecked()));
+    AppSettings->setValue("mergeAddTag", QVariant(ui.mergeAddTag->text()));
     AppSettings->endGroup();
     AppSettings->beginGroup("/Board/");
     AppSettings->setValue("showFrame", QVariant(ui.boardFrameCheck->isChecked()));
@@ -734,6 +755,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("/MainWindow/Theme", ui.theme->currentText());
     AppSettings->setValue("/MainWindow/ShowMenuIcons", ui.iconsVisible->isChecked());
     AppSettings->setValue("/MainWindow/AutoRaise", ui.cbAutoRaise->isChecked());
+    AppSettings->setValue("/MainWindow/ToolbarIconSize", ui.IconSizeSlider->value());
 
     AppSettings->beginGroup("GameText");
 
@@ -765,6 +787,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->beginGroup("Web");
     AppSettings->setValue("Favorite1", ui.webFavorite->text());
     AppSettings->setValue("AutoNumber1", ui.autoNumber->value());
+    AppSettings->setValue("Destination1", ui.editWebDestination->text());
     AppSettings->endGroup();
 
     AppSettings->beginGroup("FICS");
@@ -906,5 +929,22 @@ void PreferencesDialog::on_savePreferences_clicked()
     if (settingsPath != newPath)
     {
         QFile::copy(settingsPath, newPath);
+    }
+}
+
+/* A signal is emitted if resizing icon slider changes position */
+void PreferencesDialog::sliderNewValue(int newValue)
+{
+    emit iconsizeSliderSetting(newValue);
+}
+
+void PreferencesDialog::on_toolSearchWebDestination_clicked()
+{
+    QString file = QFileDialog::getOpenFileName(this, tr("New database"),
+                   AppSettings->value("/General/DefaultDataPath").toString(),
+                   tr("PGN database (*.pgn)"));
+    if(!file.isEmpty())
+    {
+        ui.editWebDestination->setText(file);
     }
 }

@@ -109,6 +109,8 @@ public:
     static bool IsArenaBook(QString name);
     static bool IsOnlineBook(QString name);
     static bool IsBook(QString name);
+    static bool IsLocalDatabase(QString name);
+    static bool IsLocalArchive(QString name);
 
     bool modified() const;
     bool gameNeedsSaving() const;

@@ -41,7 +41,6 @@ DEFINES += QT_NO_CAST_TO_ASCII
 DEFINES *= QT_USE_QSTRINGBUILDER
 
 macx {
-  QMAKE_MAC_SDK = macosx11.1
   QMAKE_CXXFLAGS += -fvisibility=hidden
   QMAKE_LFLAGS_RELEASE -= -O2
   QMAKE_LFLAGS_RELEASE += -m64 -Ofast
@@ -50,6 +49,33 @@ macx {
 
   QMAKE_LFLAGS_DEBUG += -m64 -O0 --coverage
   QMAKE_CXXFLAGS_DEBUG *= -m64 -O0 --coverage
+}
+
+
+unix|!macx {
+    isEmpty(PREFIX) {
+        bsd {
+            PREFIX = /usr/local
+        }
+        PREFIX = /usr
+    }
+    BINDIR = $$PREFIX/bin
+    DATADIR = $$PREFIX/share
+
+    INSTALLS += appdata desktop icons binfiles
+
+    appdata.files = unix/io.sourceforge.ChessX.metainfo.xml
+    appdata.path = $$DATADIR/metainfo
+    desktop.files = unix/chessx.desktop
+    desktop.path = $$DATADIR/applications
+
+    icons.path = $$DATADIR/icons/hicolor
+    icons.commands = install -Dm644 data/images/chessx.png    $${icons.path}/128x128/apps/chessx.png; \
+                     install -Dm644 data/images/chessx-32.png $${icons.path}/32x32/apps/chessx.png; \
+                     install -Dm644 data/images/chessx-64.png $${icons.path}/64x64/apps/chessx.png;
+
+    binfiles.files = release/chessx
+    binfiles.path = $$BINDIR
 }
 
 scid {
@@ -115,6 +141,7 @@ FORMS += \
   src/dialogs/copydialog.ui \
   src/dialogs/dlgsavebook.ui \
   src/dialogs/matchparameterdlg.ui \
+  src/dialogs/onlinebase.ui \
   src/dialogs/preferences.ui \
   src/dialogs/promotiondialog.ui \
   src/dialogs/quicksearch.ui \
@@ -168,6 +195,7 @@ HEADERS += src/database/board.h \
   src/database/filtermodel.h \
   src/database/filteroperator.h \
   src/database/filtersearch.h \
+  src/database/gamecursor.h \
   src/database/gameid.h \
   src/database/gameundocommand.h \
   src/database/gamex.h \
@@ -180,6 +208,7 @@ HEADERS += src/database/board.h \
   src/database/move.h \
   src/database/movedata.h \
   src/database/nag.h \
+  src/database/networkhelper.h \
   src/database/numbersearch.h \
   src/database/openingtree.h \
   src/database/openingtreethread.h \
@@ -217,6 +246,7 @@ HEADERS += src/database/board.h \
   src/dialogs/copydialog.h \
   src/dialogs/dlgsavebook.h \
   src/dialogs/matchparameterdlg.h \
+  src/dialogs/onlinebase.h \
   src/dialogs/preferences.h \
   src/dialogs/promotiondialog.h \
   src/dialogs/quicksearch.h \
@@ -248,6 +278,7 @@ HEADERS += src/database/board.h \
   src/gui/boardviewex.h \
   src/gui/chartwidget.h \
   src/gui/chessbrowser.h \
+  src/gui/chessxsettings.h \
   src/gui/colorlist.h \
   src/gui/databaselist.h \
   src/gui/databaselistmodel.h \
@@ -291,6 +322,7 @@ HEADERS += src/database/board.h \
   src/gui/simplelabel.h \
   src/gui/style.h \
   src/gui/tableview.h \
+  src/gui/testadapter.h \
   src/gui/textbrowserex.h \
   src/gui/textedit.h \
   src/gui/toolmainwindow.h \
@@ -341,6 +373,7 @@ SOURCES += \
   src/database/filter.cpp \
   src/database/filtermodel.cpp \
   src/database/filtersearch.cpp \
+  src/database/gamecursor.cpp \
   src/database/gamex.cpp \
   src/database/historylist.cpp \
   src/database/index.cpp \
@@ -350,6 +383,7 @@ SOURCES += \
   src/database/memorydatabase.cpp \
   src/database/movedata.cpp \
   src/database/nag.cpp \
+  src/database/networkhelper.cpp \
   src/database/numbersearch.cpp \
   src/database/openingtree.cpp \
   src/database/openingtreethread.cpp \
@@ -385,6 +419,7 @@ SOURCES += \
   src/dialogs/copydialog.cpp \
   src/dialogs/dlgsavebook.cpp \
   src/dialogs/matchparameterdlg.cpp \
+  src/dialogs/onlinebase.cpp \
   src/dialogs/preferences.cpp \
   src/dialogs/promotiondialog.cpp \
   src/dialogs/quicksearch.cpp \
@@ -408,6 +443,7 @@ SOURCES += \
   src/gui/boardviewex.cpp \
   src/gui/chartwidget.cpp \
   src/gui/chessbrowser.cpp \
+  src/gui/chessxsettings.cpp \
   src/gui/colorlist.cpp \
   src/gui/databaselist.cpp \
   src/gui/databaselistmodel.cpp \
@@ -453,6 +489,7 @@ SOURCES += \
   src/gui/simplelabel.cpp \
   src/gui/style.cpp \
   src/gui/tableview.cpp \
+  src/gui/testadapter.cpp \
   src/gui/textedit.cpp \
   src/gui/toolmainwindow.cpp \
   src/gui/translatingslider.cpp \
@@ -522,20 +559,6 @@ macx {
   TIMESEAL_DATA.path = Contents/MacOS/data/timeseal/mac
   QMAKE_BUNDLE_DATA += TIMESEAL_DATA
   QMAKE_INFO_PLIST = mac_osx/Info.plist
-  sf10 {
-    ENGINE_DATA.files = data/engines-mac/uci/stockfish-10-64
-    ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
-    QMAKE_BUNDLE_DATA += ENGINE_DATA
-  }
-}
-
-lc0 {
-  LC0_ENGINE_DATA.files = data/engines-mac/uci/lc0 data/engines-mac/uci/weights.pb
-  LC0_ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
-  QMAKE_BUNDLE_DATA += LC0_ENGINE_DATA
-  LC0_ENGINE_LIB.files = $$files(data/engines-mac/uci/lib/*)
-  LC0_ENGINE_LIB.path = Contents/MacOS/data/engines-mac/uci/lib
-  QMAKE_BUNDLE_DATA += LC0_ENGINE_LIB
 }
 
 RESOURCES = \
@@ -543,7 +566,7 @@ RESOURCES = \
 
 TRANSLATIONS = i18n/chessx_de.ts
 
-#\
+#        i18n/chessx_fr.ts \
 #        i18n/chessx_da.ts \
 #        i18n/chessx_fr.ts \
 #        i18n/chessx_it.ts \
@@ -599,8 +622,6 @@ macx {
   OTHER_FILES += \
     mac_osx/Info.plist \
     mac_osx/qt_menu.nib \
-    data/engines-mac/uci/stockfish-10-64 \
-    data/engines-mac/uci/book.bin \
     data/timeseal/mac/timeseal
 }
 
