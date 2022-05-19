@@ -2303,11 +2303,11 @@ void MainWindow::QueryLoadDatabase()
     {
         if(dlg.largeDB())
         {
-            openDatabaseUrl("http://chessx.sourceforge.net/db/bundesliga2000.pgn.zip", false);
+            openDatabaseUrl("http://chessx.sourceforge.io/db/bundesliga2000.pgn.zip", false);
         }
         else
         {
-            openDatabaseUrl("http://chessx.sourceforge.net/db/SBL1213.pgn.zip", false);
+            openDatabaseUrl("http://chessx.sourceforge.io/db/SBL1213.pgn.zip", false);
         }
     }
     AppSettings->setValue("/General/BuiltinDbInstalled", QVariant(true));
