@@ -12,6 +12,7 @@
 #define GAME_H_INCLUDED
 
 #include <QObject>
+#include <QRegExp>
 #include "board.h"
 #include "gamecursor.h"
 #include "gameid.h"
@@ -306,6 +307,8 @@ public :
     /** Remove all variations */
     void removeVariations();
     void removeVariationsDb();
+    void removeNullLines();
+    void removeNullLinesDb();
     /** Remove all Comments */
     void removeComments();
     /** Remove all time Comments */

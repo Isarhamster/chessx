@@ -72,6 +72,7 @@
 #include <QMenu>
 #include <QPixmap>
 #include <QProgressBar>
+#include <QRegExp>
 #include <QScreen>
 #include <QStatusBar>
 #ifdef USE_SPEECH
@@ -2108,6 +2109,11 @@ void MainWindow::slotGameRemoveVariations()
     game().removeVariations();
 }
 
+void MainWindow::slotGameRemoveNullLines()
+{
+    game().removeNullLines();
+}
+
 void MainWindow::slotDatabaseUncomment()
 {
     if (MessageDialog::yesNo(tr("Delete all comments from all games?"), databaseInfo()->database()->name()))
@@ -2145,6 +2151,28 @@ void MainWindow::slotDatabaseRemoveTime()
                 if(database()->loadGame(i, g))
                 {
                     g.removeTimeCommentsDb();
+                    database()->replace(i, g);
+                }
+            }
+        }
+    }
+}
+
+void MainWindow::slotDatabaseRemoveNullLines()
+{
+    if (MessageDialog::yesNo(tr("Prune null moves from all games?"), databaseInfo()->database()->name()))
+    {
+        game().removeNullLinesDb();
+        slotGameChanged(true);
+        SimpleSaveGame();
+        GameX g;
+        for (GameId i = 0, sz = static_cast<GameId>(database()->index()->count()); i < sz; ++i)
+        {
+            if(i != databaseInfo()->currentIndex())
+            {
+                if(database()->loadGame(i, g))
+                {
+                    g.removeNullLinesDb();
                     database()->replace(i, g);
                 }
             }

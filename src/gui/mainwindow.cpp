@@ -73,6 +73,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QProgressBar>
+#include <QRegExp>
 #include <QSizePolicy>
 #ifdef USE_SOUND
 #include <QSound>
@@ -248,7 +249,7 @@ MainWindow::MainWindow() : QMainWindow(),
     playerListDock->setWidget(m_playerList);
     // addDockWidget(Qt::RightDockWidgetArea, playerListDock);
     m_menuView->addAction(playerListDock->toggleViewAction());
-    playerListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
+    playerListDock->toggleViewAction()->setShortcut(Qt::CTRL | Qt::ALT | Qt::Key_P);
     connect(m_playerList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByPlayer(QString)));
     connect(m_playerList, SIGNAL(renameRequest(QString)), SLOT(slotRenamePlayer(QString)));
     connect(m_playerList, SIGNAL(filterEcoPlayerRequest(QString,QString,QString,QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString,QString,QString,QString)));
@@ -1062,7 +1063,7 @@ void MainWindow::openLichess()
         {
             if (!account.isEmpty())
             {
-                quint64 since= QDateTime(start).toMSecsSinceEpoch(); // Better: start.startOfDay().toMSecsSinceEpoch(); but that is Qt5
+                quint64 since= start.startOfDay().toMSecsSinceEpoch();
                 QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
                 openDatabaseUrl(url, false);
             }
@@ -1939,6 +1940,7 @@ void MainWindow::setupActions()
     refactorMenu->addAction(createAction(refactorMenu, tr("Uncomment"), SLOT(slotGameUncomment())));
     refactorMenu->addAction(createAction(refactorMenu, tr("Remove Time"), SLOT(slotGameRemoveTime())));
     refactorMenu->addAction(createAction(refactorMenu, tr("Remove Variations"), SLOT(slotGameRemoveVariations())));
+    refactorMenu->addAction(createAction(refactorMenu, tr("Prune null moves"), SLOT(slotGameRemoveNullLines())));
 
     /* Search menu */
     QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
@@ -1984,6 +1986,7 @@ void MainWindow::setupActions()
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Uncomment"), SLOT(slotDatabaseUncomment())));
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Remove Time"), SLOT(slotDatabaseRemoveTime())));
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Remove Variations"), SLOT(slotDatabaseRemoveVariations())));
+    refactorMenu2->addAction(createAction(refactorMenu2, tr("Prune null moves"), SLOT(slotDatabaseRemoveNullLines())));
     menuDatabase->addSeparator();
     menuDatabase->addAction(createAction(tr("Clear clipboard"), SLOT(slotDatabaseClearClipboard())));
 
@@ -2030,7 +2033,7 @@ void MainWindow::setupActions()
     debug->addAction(createAction("Copy HTML", SLOT(slotGameViewSource())));
     debug->addAction(createAction("Dump Movenodes", SLOT(slotGameDumpMoveNodes())));
     debug->addAction(createAction("Dump Board", SLOT(slotGameDumpBoard())));
-    debug->addAction(createAction("Make Screenshot", SLOT(slotScreenShot()), Qt::CTRL + Qt::Key_F12));
+    debug->addAction(createAction("Make Screenshot", SLOT(slotScreenShot()), Qt::CTRL | Qt::Key_F12));
     debug->addAction(createAction("Compile ECO", SLOT(slotCompileECO())));
 #endif
 

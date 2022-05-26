@@ -10,6 +10,7 @@
 
 #include <QtDebug>
 #include <QFile>
+#include <QRegExp>
 #include "annotation.h"
 #include "ecopositions.h"
 #include "gamex.h"
@@ -835,11 +836,25 @@ void GameX::removeVariationsDb()
     compact();
 }
 
+void GameX::removeNullLinesDb()
+{
+    moveToStart();
+    m_moves.removeNullLines();
+    compact();
+}
+
 void GameX::removeVariations()
 {
     GameX state = *this;
     removeVariationsDb();
     emit signalGameModified(true, state, tr("Remove variations"));
+}
+
+void GameX::removeNullLines()
+{
+    GameX state = *this;
+    removeNullLinesDb();
+    emit signalGameModified(true, state, tr("Remove null lines"));
 }
 
 void GameX::removeCommentsDb()
@@ -1713,10 +1728,9 @@ void GameX::dumpAnnotations(MoveId moveId) const
     }
 }
 
-
 void GameX::dumpAllMoveNodes() const
 {
-    qDebug() << endl;
+    qDebug() << Qt::endl;
     qDebug() << "Current Node: " << m_moves.currMove();
     for(int i = 0, sz = m_moves.capacity(); i < sz; ++i)
     {
@@ -1725,12 +1739,18 @@ void GameX::dumpAllMoveNodes() const
     }
     int moves, comments, nags;
     moveCount(&moves, &comments, &nags);
-    qDebug() << "Moves: " << moves << " Comments: " << comments << " Nags: " << nags << endl;
-    qDebug() << "----------------------------------" << endl;
+    qDebug() << "Moves: " << moves << " Comments: " << comments << " Nags: " << nags << Qt::endl;
+    qDebug() << "----------------------------------" << Qt::endl;
 }
 
 void GameX::compact()
 {
+//    MoveId currentNode = currentMove();
+//    if (m_moves.isRemoved(currentNode))
+//    {
+//        // All kind of funny stuff happens once the current node is deleted
+//        m_moves.moveToStart();
+//    }
     auto renames = m_moves.compact();
     applyRenames(m_annotations, renames);
     applyRenames(m_variationStartAnnotations, renames);
