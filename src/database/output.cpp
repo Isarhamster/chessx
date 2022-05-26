@@ -10,7 +10,7 @@
 
 #include <algorithm>
 #include <QMap>
-
+#include <QRegExp>
 #include "board.h"
 #include "output.h"
 #include "settings.h"
@@ -967,7 +967,7 @@ bool Output::append(const QString& filename, GameX& game)
             out.setCodec(textCodec);
         }
     }
-    out << endl;
+    out << Qt::endl;
     out << output(&game);
     f.close();
     return true;
@@ -985,7 +985,7 @@ void Output::append(const QString& filename, Database& database)
     {
         out.setCodec(QTextCodec::codecForName("utf8"));
     }
-    out << endl;
+    out << Qt::endl;
     output(out, database);
     f.close();
 }

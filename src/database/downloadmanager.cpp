@@ -52,6 +52,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QRegExp>
 #include <QStringList>
 #include <QUrl>
 

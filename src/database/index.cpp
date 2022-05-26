@@ -16,6 +16,7 @@
 #include <QMultiHash>
 #include <QWriteLocker>
 #include <QReadLocker>
+#include <QRegExp>
 #include <QVector>
 
 #include "index.h"

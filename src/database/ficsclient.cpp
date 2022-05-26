@@ -4,6 +4,7 @@
 
 #include "ficsclient.h"
 #include "settings.h"
+#include <QRegExp>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -76,21 +77,21 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
 
     if (InternalTelnet())
     {
-        int start = s.indexOf(StartReply);
-        end = s.indexOf(EndReply);
+        int start = s.indexOf((char)StartReply);
+        end = s.indexOf((char)EndReply);
 
         if (end>=0)
         {
-            s.remove(EndReply);
+            s.remove((char)EndReply);
         }
 
-        s.remove(PoseStart);
-        s.remove(PoseEnd);
+        s.remove((char)PoseStart);
+        s.remove((char)PoseEnd);
 
         if (start>=0)
         {
-            s.remove(StartReply);
-            QStringList l = s.split(Separator);
+            s.remove((char)StartReply);
+            QStringList l = s.split((char)Separator);
             m_cmd = l[1].toInt();
 
             emit commandStarted(m_cmd);
@@ -104,7 +105,7 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
     }
     else
     {
-        s.remove(EndReply);
+        s.remove((char)EndReply);
         QRegExp regCmd("fics%[^9]*99([\\d]*)(.*)");
 
         if (regCmd.indexIn(s) >= 0)

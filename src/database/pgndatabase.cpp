@@ -14,7 +14,7 @@
 #include <QStringList>
 #include <QtDebug>
 #include <QMutexLocker>
-
+#include <QRegExp>
 #include "board.h"
 #include "nag.h"
 

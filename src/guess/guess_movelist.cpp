@@ -160,7 +160,7 @@ void MoveList::dumpMoves() const
         s.push_back(sm.toString());
         s.push_back(" ");
     }
-    qDebug() << s << endl;
+    qDebug() << s << Qt::endl;
 }
 //////////////////////////////////////////////////////////////////////
 //  EOF: movelist.cpp

@@ -337,11 +337,11 @@ QString BitBoard::moveToSan(const Move& move, bool translate, bool extend) const
                 }
                 if(column)
                 {
-                    san += 'a' + File(from);
+                    san += (char)('a' + File(from));
                 }
                 if(row)
                 {
-                    san += '1' + Rank(from);
+                    san += (char)('1' + Rank(from));
                 }
             }
         }
@@ -351,14 +351,14 @@ QString BitBoard::moveToSan(const Move& move, bool translate, bool extend) const
         {
             if(isPawn)
             {
-                san += 'a' + File(from);
+                san += (char)('a' + File(from));
             }
             san += 'x';
         }
 
         //destination square
-        san += 'a' + File(to);
-        san += '1' + Rank(to);
+        san += (char)('a' + File(to));
+        san += (char)('1' + Rank(to));
     }
 
     if(move.isPromotion())
@@ -2004,7 +2004,7 @@ Move BitBoard::parseMove(const QString& algebraic) const
         PieceType promotePiece = None;
 
         // Promotion as in bxc8=Q or bxc8(Q) or bxc8(Q)
-        if(c == '=' || c == '(' || QString("QRBN").indexOf(toupper(c))>=0)
+        if(c == '=' || c == '(' || QString("QRBN").indexOf((char)toupper(c))>=0)
         {
             if(c == '=' || c == '(')
             {
@@ -3127,19 +3127,19 @@ QString BitBoard::toFen(bool forceExtendedFEN) const
         {
             if(castlingRights() & WhiteQueenside)
             {
-                fen += 'A'+File(CastlingRook(0));
+                fen += (char)('A'+File(CastlingRook(0)));
             }
             if(castlingRights() & WhiteKingside)
             {
-                fen += 'A'+File(CastlingRook(1));
+                fen += (char)('A'+File(CastlingRook(1)));
             }
             if(castlingRights() & BlackQueenside)
             {
-                fen += 'a'+File(CastlingRook(2));
+                fen += (char)('a'+File(CastlingRook(2)));
             }
             if(castlingRights() & BlackKingside)
             {
-                fen += 'a'+File(CastlingRook(3));
+                fen += (char)('a'+File(CastlingRook(3)));
             }
         }
         else
@@ -3171,8 +3171,8 @@ QString BitBoard::toFen(bool forceExtendedFEN) const
     }
     else
     {
-        fen += 'a' + (m_epSquare & 7);
-        fen += '1' + ((m_epSquare & 56) >> 3);
+        fen += (char)('a' + (m_epSquare & 7));
+        fen += (char)('1' + ((m_epSquare & 56) >> 3));
         fen += ' ';
     }
 

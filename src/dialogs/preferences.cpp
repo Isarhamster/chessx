@@ -34,6 +34,7 @@
 #include <QPushButton>
 #include <QSpinBox>
 #include <QStyleFactory>
+#include <QRegExp>
 #include <QTextStream>
 
 #ifdef USE_SPEECH

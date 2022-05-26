@@ -18,6 +18,7 @@
 #include <QString>
 #include <QStringList>
 #include <QStringListModel>
+#include <QRegExp>
 
 using namespace chessx;
 

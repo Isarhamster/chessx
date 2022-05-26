@@ -12,6 +12,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QList>
+#include <QRegExp>
 
 using namespace chessx;
 

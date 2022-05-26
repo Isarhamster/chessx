@@ -24,6 +24,7 @@
 #include <QtGui>
 #include <QPixmap>
 #include <QPushButton>
+#include <QRegExp>
 #include <QSpacerItem>
 #include <QSizePolicy>
 
@@ -372,7 +373,7 @@ void BoardSetupDialog::slotClear()
 
 void BoardSetupDialog::slotSelected(Square square, int button)
 {
-    Piece piece = (button & Qt::MidButton) ? Empty : m_selectedPiece;
+    Piece piece = (button & Qt::MiddleButton) ? Empty : m_selectedPiece;
     if(button & Qt::RightButton)
     {
         if(piece >= BlackKing)
