@@ -19,7 +19,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QObject>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QStringList>
 #include <QTimer>
 #include <QUrl>
@@ -69,8 +69,8 @@ void OnlineTablebase::sendIt()
     QUrl url;
     QString prep(m_fen.simplified());
     QString count(prep.left(prep.indexOf(" ")));
-    int white = count.count(QRegExp("[A-Z]"));
-    int black = count.count(QRegExp("[a-z]"));
+    int white = count.count(QRegularExpression("[A-Z]"));
+    int black = count.count(QRegularExpression("[a-z]"));
 
     if(white + black > 7 || black < 1 || white < 1)
     {
@@ -181,16 +181,16 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
 
                 if(ret[5] == 'w')
                 {
-                    ret.remove(QRegExp("NEXTCOLOR.*\\n"));
+                    ret.remove(QRegularExpression("NEXTCOLOR.*\\n"));
                 }
                 else
                 {
-                    ret.remove(QRegExp(".*NEXTCOLOR\\n"));
+                    ret.remove(QRegularExpression(".*NEXTCOLOR\\n"));
                 }
                 ret.remove(0, ret.indexOf("\n") + 1);
                 ret.remove(":");
                 ret.remove("Win in ");
-                ret.replace(QRegExp("[-x]"), " ");
+                ret.replace(QRegularExpression("[-x]"), " ");
                 ret.replace("Draw", "0");
                 ret.replace("Lose in ", "-");
 

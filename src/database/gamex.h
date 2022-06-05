@@ -12,7 +12,7 @@
 #define GAME_H_INCLUDED
 
 #include <QObject>
-#include <QRegExp>
+#include <QRegularExpression>
 #include "board.h"
 #include "gamecursor.h"
 #include "gameid.h"
@@ -128,7 +128,7 @@ public :
     /** @return arrowAnnotation at move at node @p moveId. */
     QString arrowAnnotation(MoveId moveId = CURRENT_MOVE) const;
     /** @return annotation at move at node @p moveId. */
-    QString specAnnotation(const QRegExp &r, MoveId moveId = CURRENT_MOVE) const;
+    QString specAnnotation(const QRegularExpression &r, MoveId moveId = CURRENT_MOVE) const;
     /** @return time annotation (either egt or clock) at move at node @p moveId. */
     QString timeAnnotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
     void setTimeAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE);

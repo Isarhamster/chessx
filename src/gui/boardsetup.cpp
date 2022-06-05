@@ -24,7 +24,7 @@
 #include <QtGui>
 #include <QPixmap>
 #include <QPushButton>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QSpacerItem>
 #include <QSizePolicy>
 
@@ -557,7 +557,7 @@ void BoardSetupDialog::slotPasteFen()
     }
 
     // Another go at Fens copied from Wikis: [FEN]***[/FEN] is reduced to ***
-    fen.remove(QRegExp("\\[[^\\]]*\\]"));
+    fen.remove(QRegularExpression("\\[[^\\]]*\\]"));
 
     // Now parse the hopefully naked Fen
     BoardX b;

@@ -52,7 +52,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QStringList>
 #include <QUrl>
 
@@ -166,10 +166,11 @@ void DownloadManager::downloadFinished()
                 {
                     // Create a temporary file
                     QString s = reply->rawHeader("Content-Disposition").constData();
-                    QRegExp re("filename=(.*)");
-                    if (s.contains(re))
+                    QRegularExpression re("filename=(.*)");
+                    QRegularExpressionMatch match;
+                    if (s.contains(re, &match))
                     {
-                        s = re.cap(1);
+                        s = match.captured(1);
                         s.remove("'");
                         s.remove("\"");
                         s = s.trimmed();

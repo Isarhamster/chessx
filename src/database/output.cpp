@@ -10,7 +10,9 @@
 
 #include <algorithm>
 #include <QMap>
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QTextCodec>
+#include <QTextStream>
 #include "board.h"
 #include "output.h"
 #include "settings.h"
@@ -98,7 +100,7 @@ void Output::readTemplateFile(const QString& path)
         {
             line = stream.readLine(); // line of text excluding '\n'
             i++;
-            if((line.indexOf(QRegExp("^\\s*$")) != -1) || (line.indexOf(QRegExp("^\\s*#")) != -1))
+            if((line.indexOf(QRegularExpression("^\\s*$")) != -1) || (line.indexOf(QRegularExpression("^\\s*#")) != -1))
             {
                 // Skip blank lines and comments (#)
                 continue;
@@ -797,11 +799,15 @@ QString Output::outputGame(const GameX* g, bool upToCurrentMove)
 
 void Output::postProcessOutput(QString& text) const
 {
-    QRegExp var("@(\\w+)@");
-    while(var.indexIn(text) != -1)
+    QRegularExpression var("@(\\w+)@");
+    QRegularExpressionMatch match;
+    while(text.indexOf(var, 0, &match)>=0)
     {
-        QStringList cap = var.capturedTexts();
-        text.replace("@" + cap[1] + "@", m_options.getOptionAsString(cap[1]));
+        QStringList cap = match.capturedTexts();
+        if (cap.length()>1)
+        {
+            text.replace("@" + cap[1] + "@", m_options.getOptionAsString(cap[1]));
+        }
     }
 
     // Chop it up, if TextWidth option is not equal to 0

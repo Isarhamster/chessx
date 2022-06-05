@@ -73,7 +73,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QProgressBar>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QSizePolicy>
 #ifdef USE_SOUND
 #include <QSound>
@@ -867,7 +867,7 @@ void MainWindow::gameLoad(GameId index)
                     QString name = AppSettings->getValue("/Board/PlayerTurnBoard").toString();
                     if (!name.isEmpty())
                     {
-                        QRegExp re(name);
+                        QRegularExpression re(name);
                         QString nameWhite = game().tag(TagNameWhite);
                         QString nameBlack = game().tag(TagNameBlack);
                         if (nameBlack.indexOf(re) >= 0)
@@ -2225,10 +2225,11 @@ void MainWindow::restoreRecentFiles()
         m_databaseList->setFileFavorite(s, true, *it1++);
         bool bUtf8 = (attribute.contains("utf8"));
         m_databaseList->setFileUtf8(s, bUtf8);
-        QRegExp regExp("stars([0-9])");
-        if (regExp.indexIn(attribute) >= 0)
+        QRegularExpression regExp("stars([0-9])");
+        QRegularExpressionMatch match;
+        if (attribute.indexOf(regExp, 0, &match) >= 0)
         {
-           QString d = regExp.cap(1);
+           QString d = match.captured(1);
            m_databaseList->setStars(s, d.toInt());
         }
     }
@@ -2248,10 +2249,11 @@ void MainWindow::loadFileFavorites()
         {
             QString attribute = it != attributes.cend() ? *it++ : "";
             bool bUtf8 = (attribute.contains("utf8"));
-            QRegExp regExp("stars([0-9])");
-            if (regExp.indexIn(attribute) >= 0)
+            QRegularExpression regExp("stars([0-9])");
+            QRegularExpressionMatch match;
+            if (attribute.indexOf(regExp, 0, &match) >= 0)
             {
-               QString d = regExp.cap(1);
+               QString d = match.captured(1);
                if (d.toInt() == stars)
                {
                    openDatabaseFile(s, bUtf8);
@@ -2285,13 +2287,18 @@ void MainWindow::slotHttpDone(QNetworkReply *reply)
         if(!reply->error())
         {
             QString answer(reply->readAll());
-            QRegExp rx("(\\d\\d?)\\.(\\d\\d?)\\.(\\d\\d?)");
-            if(answer.indexOf(rx) > -1)
+            QRegularExpression rx("(\\d\\d?)\\.(\\d\\d?)\\.(\\d\\d?)");
+            QRegularExpressionMatch match;
+            if(answer.indexOf(rx, 0, &match) >= 0)
             {
-                int major = rx.capturedTexts().at(1).toInt();
-                int minor = rx.capturedTexts().at(2).toInt();
-                int build = rx.capturedTexts().at(3).toInt();
-                emit signalVersionFound(major, minor, build);
+                QStringList list = match.capturedTexts();
+                if (list.length() >= 3)
+                {
+                    int major = list.at(1).toInt();
+                    int minor = list.at(2).toInt();
+                    int build = list.at(3).toInt();
+                    emit signalVersionFound(major, minor, build);
+                }
             }
         }
         reply->deleteLater();

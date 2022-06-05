@@ -72,7 +72,7 @@
 #include <QMenu>
 #include <QPixmap>
 #include <QProgressBar>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QScreen>
 #include <QStatusBar>
 #ifdef USE_SPEECH
@@ -515,7 +515,7 @@ bool MainWindow::pasteFen(QString& msg, QString fen, bool newGame)
     }
 
     // Another go at Fens copied from Wikis: [FEN]***[/FEN] is reduced to ***
-    fen.remove(QRegExp("\\[[^\\]]*\\]"));
+    fen.remove(QRegularExpression("\\[[^\\]]*\\]"));
 
     BoardX board;
     if(!board.isValidFen(fen))
@@ -598,7 +598,7 @@ void MainWindow::slotEditMergePGN()
     if(!pgn.isEmpty())
     {
         pgn.append("\n*\n");
-        if (pgn.startsWith("[") || (pgn.indexOf(QRegExp("\\d+\\."),0)==0)) // looks like something containing tags or starting with 1.xxx
+        if (pgn.startsWith("[") || (pgn.indexOf(QRegularExpression("\\d+\\."),0)==0)) // looks like something containing tags or starting with 1.xxx
         {
             MemoryDatabase pgnDatabase;
             if(pgnDatabase.openString(pgn))
@@ -714,7 +714,7 @@ void MainWindow::HandleFicsCloseRequest()
 
 void MainWindow::HandleFicsResultRequest(QString s)
 {
-    s = s.remove(QRegExp("\\{[^\\}]*\\}")).trimmed();
+    s = s.remove(QRegularExpression("\\{[^\\}]*\\}")).trimmed();
     ActivateFICSDatabase();
     game().setResult(ResultFromString(s));
 }
@@ -2089,8 +2089,8 @@ bool MainWindow::addVariationFromSan(const QString& san)
 bool MainWindow::slotGameAddVariation(const QString& san)
 {
     QString s = san;
-    s = s.remove(QRegExp("-.*"));
-    s = s.remove(QRegExp("[0-9]*\\."));   
+    s = s.remove(QRegularExpression("-.*"));
+    s = s.remove(QRegularExpression("[0-9]*\\."));
     return addVariationFromSan(s);
 }
 

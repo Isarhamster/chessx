@@ -151,7 +151,10 @@ void EngineX::activate()
         connect(m_process, SIGNAL(error(QProcess::ProcessError)), SLOT(processError(QProcess::ProcessError)));
         connect(m_process, SIGNAL(readyReadStandardOutput()), SLOT(pollProcess()));
         connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(processExited()));
-        m_process->start(m_command);
+        QStringList parameters = QProcess::splitCommand(m_command);
+        QString cmd = parameters.at(0);
+        parameters.pop_front();
+        m_process->start(cmd, parameters);
     }
 }
 

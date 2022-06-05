@@ -8,7 +8,7 @@
 #include "database.h"
 #include "databaseinfo.h"
 #include "tags.h"
-#include <QRegExp>
+#include <QRegularExpression>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -76,7 +76,9 @@ void ECOListWidget::findECO(const QString& s)
     }
     else
     {
-        QStringList newList = m_list.filter(QRegExp(s, Qt::CaseInsensitive));
+        QRegularExpression rx(s);
+        rx.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
+        QStringList newList = m_list.filter(rx);
         m_filterModel->setStringList(newList);
         if (newList.count()==1)
         {

@@ -11,7 +11,7 @@
 #include <QDataStream>
 #include <QDir>
 #include <QFile>
-#include <QRegExp>
+#include <QRegularExpression>>
 
 #include "spellchecker.h"
 
@@ -402,7 +402,7 @@ QString Spellchecker::standardise(const QString& string,
 {
     //remove exterraneous characters
     QString standardised = string;
-    standardised.remove(QRegExp("[.,\\s-_()]"));
+    standardised.remove(QRegularExpression("[.,\\s-_()]"));
 
     if(spellingType == Player)
     {

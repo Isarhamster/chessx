@@ -5,7 +5,7 @@
 
 #include "annotation.h"
 #include "commentdialog.h"
-#include <QRegExp>
+#include <QRegularExpression>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -62,13 +62,14 @@ QString CommentDialog::text() const
 
 void CommentDialog::setText(QString text)
 {
-    text.remove(QRegExp(s_can));
-    QRegExp tan(s_tan);
-    int pos = tan.indexIn(text);
+    text.remove(QRegularExpression(s_can));
+    QRegularExpression tan(s_tan);
+    QRegularExpressionMatch match;
+    int pos = text.indexOf(tan, 0, &match);
     if(pos >= 0)
     {
-        QString w = tan.cap(1);
-        QString t = tan.cap(2);
+        QString w = match.captured(1);
+        QString t = match.captured(2);
         text = text.remove(tan);
         QString format = (t.contains(".")) ? "H:mm:ss.z" : "H:mm:ss";
         ui.timeEdit->setDisplayFormat(format);
@@ -100,12 +101,12 @@ void CommentDialog::setText(QString text)
         }
     }
 
-    QRegExp eval(s_eval);
-    pos = eval.indexIn(text);
+    QRegularExpression eval(s_eval);
+    pos = text.indexOf(eval, 0, &match);
     if(pos >= 0)
     {
-        QString w = eval.cap(2);
-        text.remove(QRegExp(s_eval));
+        QString w = match.captured(2);
+        text.remove(QRegularExpression(s_eval));
         ui.eval->setText(w);
     }
     ui.textEdit->setPlainText(text);

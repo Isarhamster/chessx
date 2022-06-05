@@ -34,7 +34,7 @@
 #include <QPushButton>
 #include <QSpinBox>
 #include <QStyleFactory>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QTextStream>
 
 #ifdef USE_SPEECH
@@ -398,7 +398,7 @@ void PreferencesDialog::slotFileLoaded(QUrl, QString name)
 {
     if(name.endsWith(".qm", Qt::CaseInsensitive))
     {
-        name.remove(QRegExp("[^_]*_"));
+        name.remove(QRegularExpression("[^_]*_"));
         name.remove(".qm");
         ui.cbLanguage->addItem(name);
         ui.labelLoadStatus->setText(tr("Translation file loaded - select added language above!"));
@@ -551,7 +551,7 @@ void PreferencesDialog::restoreSettings()
     while(it1.hasNext())
     {
         QString trim(it1.next());
-        trim.remove(QRegExp("[^_]*_"));
+        trim.remove(QRegularExpression("[^_]*_"));
         trim.remove(".qm");
         ui.cbLanguage->addItem(trim);
     }

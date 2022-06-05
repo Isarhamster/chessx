@@ -10,7 +10,7 @@
 
 #include <QtDebug>
 #include <QFile>
-#include <QRegExp>
+#include <QRegularExpression>
 #include "annotation.h"
 #include "ecopositions.h"
 #include "gamex.h"
@@ -867,7 +867,7 @@ void GameX::removeCommentsDb()
 
 void GameX::removeTimeCommentsFromMap(AnnotationMap& map)
 {
-    QRegExp tan(s_tan);
+    QRegularExpression tan(s_tan);
     AnnotationMap::iterator i;
     for (i = map.begin(); i != map.end(); ++i)
     {
@@ -1061,7 +1061,7 @@ bool GameX::setSquareAnnotation(QString squareAnnotation)
     squareAnnotation = squareAnnotation.trimmed();
 
     QString s = annotation();
-    s.remove(QRegExp(s_csl));
+    s.remove(QRegularExpression(s_csl));
 
     if(!squareAnnotation.isEmpty())
     {
@@ -1087,9 +1087,9 @@ bool GameX::appendSquareAnnotation(Square s, QChar colorCode)
     }
     else
     {
-        annot.replace(QRegExp(QString(",.") + sq), ""); 	// if not first annotation remove annotation with preceding comma
-        annot.replace(QRegExp(QString(".") + sq + ","), ""); // if first annotation remove annotation with trailing comma
-        annot.replace(QRegExp(QString(".") + sq), ""); 	// if only annotation remove annotation
+        annot.replace(QRegularExpression(QString(",.") + sq), ""); 	// if not first annotation remove annotation with preceding comma
+        annot.replace(QRegularExpression(QString(".") + sq + ","), ""); // if first annotation remove annotation with trailing comma
+        annot.replace(QRegularExpression(QString(".") + sq), ""); 	// if only annotation remove annotation
         if(colorCode != QChar(0))
         {
             if(annot.isEmpty())
@@ -1140,9 +1140,9 @@ bool GameX::appendArrowAnnotation(Square dest, Square src, QChar colorCode)
     }
     else
     {
-        annot.replace(QRegExp(QString(",.") + sqSrc + sqDest), ""); 	// if not first annotation remove annotation with preceding comma
-        annot.replace(QRegExp(QString(".") + sqSrc + sqDest + ","), ""); // if first annotation remove annotation with trailing comma
-        annot.replace(QRegExp(QString(".") + sqSrc + sqDest), ""); 	// if only annotation remove annotation
+        annot.replace(QRegularExpression(QString(",.") + sqSrc + sqDest), ""); 	// if not first annotation remove annotation with preceding comma
+        annot.replace(QRegularExpression(QString(".") + sqSrc + sqDest + ","), ""); // if first annotation remove annotation with trailing comma
+        annot.replace(QRegularExpression(QString(".") + sqSrc + sqDest), ""); 	// if only annotation remove annotation
 
         if(colorCode != QChar(0))
         {
@@ -1169,7 +1169,7 @@ bool GameX::appendArrowAnnotation(Square dest, Square src, QChar colorCode)
 
 QString GameX::squareAnnotation(MoveId moveId) const
 {
-    QString s = specAnnotation(QRegExp(s_csl), moveId);
+    QString s = specAnnotation(QRegularExpression(s_csl), moveId);
     return s;
 }
 
@@ -1178,7 +1178,7 @@ bool GameX::setArrowAnnotation(QString arrowAnnotation)
     arrowAnnotation = arrowAnnotation.trimmed();
 
     QString s = annotation();
-    s.remove(QRegExp(s_cal));
+    s.remove(QRegularExpression(s_cal));
 
     if(!arrowAnnotation.isEmpty())
     {
@@ -1191,11 +1191,11 @@ bool GameX::setArrowAnnotation(QString arrowAnnotation)
 
 QString GameX::arrowAnnotation(MoveId moveId) const
 {
-    QString s = specAnnotation(QRegExp(s_cal), moveId);
+    QString s = specAnnotation(QRegularExpression(s_cal), moveId);
     return s;
 }
 
-QString GameX::specAnnotation(const QRegExp& r, MoveId moveId) const
+QString GameX::specAnnotation(const QRegularExpression &r, MoveId moveId) const
 {
     MoveId node = m_moves.makeNodeIndex(moveId);
     if(node == NO_MOVE)
@@ -1209,10 +1209,12 @@ QString GameX::specAnnotation(const QRegExp& r, MoveId moveId) const
         return QString("");
     }
 
-    int pos = r.indexIn(annotation);
+    QRegularExpressionMatch match;
+    int pos = annotation.indexOf(r, 0, &match);
+
     if(pos >= 0)
     {
-        return r.cap(2);
+        return match.captured(2);
     }
 
     return "";
@@ -1230,7 +1232,7 @@ QString GameX::timeAnnotation(MoveId moveId, Position position) const
         else return "";
     }
 
-    QString s = specAnnotation(QRegExp(s_tan), moveId);
+    QString s = specAnnotation(QRegularExpression(s_tan), moveId);
     s = s.trimmed();
     return s;
 }
@@ -1241,7 +1243,7 @@ void GameX::setTimeAnnotation(QString a, MoveId moveId)
     if (node>ROOT_NODE)
     {
         QString s = annotation(node);
-        s.remove(QRegExp(s_tan));
+        s.remove(QRegularExpression(s_tan));
         dbSetAnnotation(s, node);
         appendAnnotation(a, node);
     }
@@ -1266,12 +1268,13 @@ QString GameX::specAnnotations(QString s) const
     QString retval;
     foreach (QString sr, s_specList)
     {
-        QRegExp r(sr);
+        QRegularExpression r(sr);
+        QRegularExpressionMatch match;
         int pos = 0;
-        while ((pos = r.indexIn(s, pos)) >=0 )
+        while ((pos = s.indexOf(r, 0, &match) >=0))
         {
-            retval += r.cap(0);
-            pos += r.matchedLength();
+            retval += match.captured(0);
+            pos += match.lastCapturedIndex();
         }
     }
     return retval;
@@ -1287,9 +1290,9 @@ QString GameX::specAnnotations(MoveId moveId, Position position) const
 {
     if (!s.isEmpty())
     {
-        if (f&FilterTan)  s.remove(QRegExp(s_tan));
-        if (f&FilterCan)  s.remove(QRegExp(s_can));
-        if (f&FilterEval) s.remove(QRegExp(s_eval));
+        if (f&FilterTan)  s.remove(QRegularExpression(s_tan));
+        if (f&FilterCan)  s.remove(QRegularExpression(s_can));
+        if (f&FilterEval) s.remove(QRegularExpression(s_eval));
     }
     return s;
 }
@@ -1434,7 +1437,7 @@ void GameX::enumerateVariations(MoveId moveId, char a)
             for(int i = 0; i < v.size(); ++i)
             {
                 QString oldAnnotation = annotation(v[i], GameX::BeforeMove);
-                oldAnnotation.remove(QRegExp("^.\\)"));
+                oldAnnotation.remove(QRegularExpression("^.\\)"));
                 QString s = QString("%1) %2").arg(QChar(a + i)).arg(oldAnnotation).trimmed();
                 dbSetAnnotation(s, v[i], GameX::BeforeMove);
             }
@@ -1814,11 +1817,12 @@ void GameX::scoreMaterial(QList<double>& scores) const
 
 void GameX::evaluation(double& d) const
 {
-    QRegExp eval(s_eval);
-    int pos = eval.indexIn(annotation());
+    QRegularExpression eval(s_eval);
+    QRegularExpressionMatch match;
+    int pos = annotation().indexOf(eval, 0, &match);
     if(pos >= 0)
     {
-        QString w = eval.cap(2);
+        QString w = match.captured(2);
         bool ok;
         double f = w.toDouble(&ok);
         if (ok)

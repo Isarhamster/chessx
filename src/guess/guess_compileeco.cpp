@@ -12,7 +12,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QList>
-#include <QRegExp>
+#include <QRegularExpression>
 
 using namespace chessx;
 
@@ -105,7 +105,7 @@ bool parseAsciiEcoData(const QString& ecoFile)
     QString line;
     BoardX board;
     QString ecoCode;
-    QRegExp ecoRegExp("[A-Z]\\d{2}[a-z]?");
+    QRegularExpression ecoRegExp("[A-Z]\\d{2}[a-z]?");
     QStringList tokenList;
     QString token;
     Move move;
