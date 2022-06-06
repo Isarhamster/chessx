@@ -884,7 +884,7 @@ void PasteTextEdit::wheelEvent(QWheelEvent *e)
     // ZoomIn / Out with Control+Alt+Wheel
     if ((m & (Qt::ControlModifier | Qt::AltModifier)) == (Qt::ControlModifier | Qt::AltModifier))
     {
-        const int delta = e->delta();
+        const int delta = e->angleDelta().y();
         if (delta < 0)
             zoomOut();
         else if (delta > 0)

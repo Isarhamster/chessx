@@ -11,7 +11,7 @@
 #include <QDataStream>
 #include <QDir>
 #include <QFile>
-#include <QRegularExpression>>
+#include <QRegularExpression>
 
 #include "spellchecker.h"
 

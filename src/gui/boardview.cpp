@@ -1095,7 +1095,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 
 void BoardView::wheelEvent(QWheelEvent* e)
 {
-    m_wheelCurrentDelta += e->delta();
+    m_wheelCurrentDelta += e->angleDelta().y();
     if(abs(m_wheelCurrentDelta) > m_minDeltaWheel)
     {
         int change = m_wheelCurrentDelta < 0 ? WheelDown : WheelUp;

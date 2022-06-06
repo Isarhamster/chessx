@@ -16,6 +16,7 @@
 
 #include <QtGui>
 #include <QAction>
+#include <QElapsedTimer>
 #include <QMainWindow>
 #ifdef USE_SPEECH
 #include <QTextToSpeech>
@@ -708,7 +709,7 @@ private:
     
     QPointer<DatabaseInfo> m_currentDatabase;
     QString m_eco;
-    QTime m_operationTime;
+    QElapsedTimer m_operationTime;
     int m_operationFlag;
     /** Currently updated tree. May be NULL if no update in progress. */
     QString m_nagText;
@@ -753,7 +754,7 @@ private:
     QActionGroup* m_gameModeGroup;
     TextEdit* m_scratchPad;
     int m_matchTime[2];
-    QTime m_elapsedUserTime;
+    QElapsedTimer m_elapsedUserTime;
     bool m_elapsedUserTimeValid;
     EngineParameter m_matchParameter;
     bool m_bEvalRequested;

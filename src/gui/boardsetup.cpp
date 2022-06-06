@@ -470,7 +470,7 @@ void BoardSetupDialog::slotInvalidMove(Square from)
 
 void BoardSetupDialog::wheelEvent(QWheelEvent* e)
 {
-    m_wheelCurrentDelta += e->delta();
+    m_wheelCurrentDelta += e->angleDelta().y();
     if(abs(m_wheelCurrentDelta) > m_minDeltaWheel)
     {
         slotChangePiece(m_wheelCurrentDelta < 0 ? BoardView::WheelDown : BoardView::WheelUp);

@@ -613,7 +613,7 @@ bool GameCursor::moveVariationUp(MoveId moveId)
     auto possible = i > 0;
     if (possible)
     {
-        vars.swap(i, i - 1);
+        vars.swapItemsAt(i, i - 1);
     }
     return possible;
 }
@@ -631,7 +631,7 @@ bool GameCursor::moveVariationDown(MoveId moveId)
     auto possible = 0 <= i && i + 1 < vars.size();
     if (possible)
     {
-        vars.swap(i, i + 1);
+        vars.swapItemsAt(i, i + 1);
     }
     return possible;
 }
