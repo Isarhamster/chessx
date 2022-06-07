@@ -16,7 +16,6 @@
 #include <QFont>
 #include <QDomDocument>
 #include <QDomElement>
-#include <QXmlSimpleReader>
 #include <QDebug>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -74,16 +73,11 @@ bool StyleParser::parseContentFile()
 
 bool StyleParser::parseStyleFile()
 {
-  QXmlSimpleReader reader;
-
-  QXmlInputSource source;
-  source.setData( m_pDocument->styles() );
-
   QString errorMsg;
   int errorLine, errorCol;
 
   QDomDocument document;
-  if ( !document.setContent( &source, &reader, &errorMsg, &errorLine, &errorCol ) ) {
+  if ( !document.setContent( m_pDocument->styles(), &errorMsg, &errorLine, &errorCol ) ) {
     qDebug( "%s at (%d,%d)", qPrintable( errorMsg ), errorLine, errorCol );
     return false;
   }
@@ -110,16 +104,11 @@ bool StyleParser::parseStyleFile()
 
 bool StyleParser::parseMetaFile()
 {
-  QXmlSimpleReader reader;
-
-  QXmlInputSource source;
-  source.setData( m_pDocument->meta() );
-
   QString errorMsg;
   int errorLine, errorCol;
 
   QDomDocument document;
-  if ( !document.setContent( &source, &reader, &errorMsg, &errorLine, &errorCol ) ) {
+  if ( !document.setContent( m_pDocument->meta(), &errorMsg, &errorLine, &errorCol ) ) {
     qDebug( "%s at (%d,%d)", qPrintable( errorMsg ), errorLine, errorCol );
     return false;
   }

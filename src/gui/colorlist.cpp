@@ -95,7 +95,7 @@ void ColorList::setItemColor(QListWidgetItem* item, const QColor& color)
     QPixmap pix(iconSize());
     pix.fill(Qt::transparent);
     QPainter painter(&pix);
-    painter.setBrush(palette().color(QPalette::Background));
+    painter.setBrush(palette().color(QPalette::Window));
     painter.setPen(palette().color(QPalette::Text));
     painter.setBrush(color);
     painter.drawRect(0, 0, 99, iconSize().height() - 1);

@@ -1583,7 +1583,7 @@ void BoardView::renderImage(QImage &image, double scaling) const
     boardView.setBoard(board());
 
     QPalette Pal(palette());
-    Pal.setColor(QPalette::Background, Qt::transparent);
+    Pal.setColor(QPalette::Window, Qt::transparent);
     boardView.setAutoFillBackground(true);
     boardView.setPalette(Pal);
     QRect sourceRect = boardView.totalRect();

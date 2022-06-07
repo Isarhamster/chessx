@@ -81,13 +81,10 @@ QTextDocument* Converter::convert(const QString &fileName)
     /**
      * Create the dom of the content
      */
-    QXmlSimpleReader reader;
-
-    QXmlInputSource source;
-    source.setData(oooDocument.content());
     QString errorMsg;
     QDomDocument document;
-    if (!document.setContent(&source, &reader, &errorMsg))
+    int errorLine, errorCol;
+    if (!document.setContent(oooDocument.content(), true, &errorMsg, &errorLine, &errorCol))
     {
         setError(QString("Invalid XML document: %1").arg(errorMsg), -1);
         delete m_Cursor;
