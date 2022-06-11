@@ -63,7 +63,8 @@ PartialDate& PartialDate::fromString(const QString& s)
 {
     m_bIsValid = false;
     QString test = s.trimmed();
-    QRegularExpression regExp("^[\\?0-9]{4}([\\./]([\\?0-9]){1,2}){,2}$");
+    QRegularExpression regExp("^[\\?0-9]{4}([\\.\\/-]([\\?0-9]){1,2}){0,2}$");
+    QRegularExpression sep("[\\./-]");
     if (test.isEmpty() || test == "?")
     {
         m_year = 0;
@@ -73,7 +74,6 @@ PartialDate& PartialDate::fromString(const QString& s)
     }
     else if (test.indexOf(regExp)==0)
     {
-        QRegularExpression sep("[\\./]");
         m_year = test.section(sep, 0, 0).toInt();
         m_month = test.section(sep, 1, 1).toInt();
         m_day = test.section(sep, 2, 2).toInt();
@@ -81,22 +81,22 @@ PartialDate& PartialDate::fromString(const QString& s)
     }
     else
     {
-        QRegularExpression regExpContinental("^(([\\?0-9]){1,2}\\.){,2}[\\?0-9]{4}$");
+        QRegularExpression regExpContinental("^(([\\?0-9]){1,2}[\\.\\/-]){0,2}[\\?0-9]{4}$");
         if(test.indexOf(regExpContinental)==0)
         {
-            m_day = test.section('.', 0, 0).toInt();
-            m_month = test.section('.', 1, 1).toInt();
-            m_year = test.section('.', 2, 2).toInt();
+            m_day = test.section(sep, 0, 0).toInt();
+            m_month = test.section(sep, 1, 1).toInt();
+            m_year = test.section(sep, 2, 2).toInt();
             m_bIsValid = !year() || asDate().isValid();
         }
         else
         {
-            QRegularExpression regExpAmerican("^(([\\?0-9]){1,2}/){,2}[\\?0-9]{4}$");
+            QRegularExpression regExpAmerican("^(([\\?0-9]){1,2}\\/){0,2}[\\?0-9]{4}$");
             if(test.indexOf(regExpAmerican)==0)
             {
-                m_month = test.section('/', 0, 0).toInt();
-                m_day = test.section('/', 1, 1).toInt();
-                m_year = test.section('/', 2, 2).toInt();
+                m_month = test.section(sep, 0, 0).toInt();
+                m_day = test.section(sep, 1, 1).toInt();
+                m_year = test.section(sep, 2, 2).toInt();
                 m_bIsValid = !year() || asDate().isValid();
             }
         }
