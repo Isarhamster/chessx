@@ -51,9 +51,9 @@ void TelnetClient::DispatchReadData(QByteArray bytes)
     m_remainder.clear();
     data.append(QString::fromLatin1(bytes));
 
-    bool sendXON = data.contains(0x13);
-    data.remove(0x13);
-    data.remove(0x07);
+    bool sendXON = data.contains(QChar(0x13));
+    data.remove(QChar(0x13));
+    data.remove(QChar(0x07));
 
     switch (m_state)
     {

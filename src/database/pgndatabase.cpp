@@ -1028,7 +1028,7 @@ void PgnDatabase::parseComment(GameX* game)
 
     if(end >= 0)
     {
-        m_comment.append(m_currentLine.leftRef(end));
+        m_comment.append(m_currentLine.left(end));
         m_inComment = false;
         if(m_newVariation || game->plyCount() == 0)
         {

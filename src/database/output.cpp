@@ -11,13 +11,14 @@
 #include <algorithm>
 #include <QMap>
 #include <QRegularExpression>
-#include <QTextCodec>
 #include <QTextStream>
 #include "board.h"
 #include "output.h"
 #include "settings.h"
 #include "tags.h"
 #include "partialdate.h"
+#include "qt6compat.h"
+
 
 const char* TEMPLATE_DIR = "templates";
 const char* DEFAULT_HTML_TEMPLATE = "html-default.template";
@@ -865,11 +866,7 @@ void Output::output(QTextStream& out, Database& database)
 {
     if(!database.isUtf8() && (m_outputType == Pgn))
     {
-        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
-        if(textCodec)
-        {
-            out.setCodec(textCodec);
-        }
+        SET_CODEC_LATIN1(out);
     }
 
     QString header = m_header;
@@ -915,7 +912,7 @@ void Output::output(const QString& filename, const GameX& game)
     QTextStream out(&f);
     if((m_outputType == Html) || (m_outputType == NotationWidget))
     {
-        out.setCodec(QTextCodec::codecForName("utf8"));
+        SET_CODEC_UTF8(out);
     }
     out << output(&game);
     f.close();
@@ -931,7 +928,7 @@ void Output::output(const QString& filename, FilterX& filter)
     QTextStream out(&f);
     if((m_outputType == Html) || (m_outputType == NotationWidget))
     {
-        out.setCodec(QTextCodec::codecForName("utf8"));
+        SET_CODEC_UTF8(out);
     }
     output(out, filter);
     f.close();
@@ -947,7 +944,7 @@ void Output::output(const QString& filename, Database& database)
     QTextStream out(&f);
     if((m_outputType == Html) || (m_outputType == NotationWidget))
     {
-        out.setCodec(QTextCodec::codecForName("utf8"));
+        SET_CODEC_UTF8(out);
     }
     output(out, database);
     f.close();
@@ -963,15 +960,11 @@ bool Output::append(const QString& filename, GameX& game)
     QTextStream out(&f);
     if((m_outputType == Html) || (m_outputType == NotationWidget))
     {
-        out.setCodec(QTextCodec::codecForName("utf8"));
+        SET_CODEC_UTF8(out);
     }
     else
     {
-        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
-        if(textCodec)
-        {
-            out.setCodec(textCodec);
-        }
+        SET_CODEC_LATIN1(out);
     }
     out << Qt::endl;
     out << output(&game);
@@ -989,7 +982,7 @@ void Output::append(const QString& filename, Database& database)
     QTextStream out(&f);
     if((m_outputType == Html) || (m_outputType == NotationWidget))
     {
-        out.setCodec(QTextCodec::codecForName("utf8"));
+        SET_CODEC_UTF8(out);
     }
     out << Qt::endl;
     output(out, database);

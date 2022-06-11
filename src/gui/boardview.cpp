@@ -805,7 +805,11 @@ void BoardView::keyReleaseEvent(QKeyEvent *event)
     QWidget::keyReleaseEvent(event);
 }
 
+#if QT_VERSION < 0x060000
 void BoardView::enterEvent(QEvent *event)
+#else
+void BoardView::enterEvent(QEnterEvent *event)
+#endif
 {
     setFocus();
     raise();

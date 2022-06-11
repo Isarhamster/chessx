@@ -154,7 +154,11 @@ protected:
     virtual void wheelEvent(QWheelEvent* e);
     virtual void keyPressEvent(QKeyEvent *);
     virtual void keyReleaseEvent(QKeyEvent *);
-    virtual void enterEvent(QEvent *);
+#if QT_VERSION < 0x060000
+    virtual void enterEvent(QEvent *event);
+#else
+    virtual void enterEvent(QEnterEvent *event);
+#endif
     virtual void leaveEvent(QEvent *event);
     void handleMouseMoveEvent(QMouseEvent *event);
 

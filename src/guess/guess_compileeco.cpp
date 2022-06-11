@@ -14,6 +14,8 @@
 #include <QList>
 #include <QRegularExpression>
 
+#include "qt6compat.h"
+
 using namespace chessx;
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -100,7 +102,7 @@ bool parseAsciiEcoData(const QString& ecoFile)
         return false;
     }
     QTextStream ecoStream(&file);
-    ecoStream.setCodec("ISO-8859-1");
+    SET_CODEC_LATIN1(ecoStream);
 
     QString line;
     BoardX board;

@@ -46,7 +46,7 @@ QString Settings::dataPath()
 #if QT_VERSION < 0x050000
         m_dataPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 #else
-        m_dataPath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+        m_dataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
 #endif
 
         m_dataPath.append(QDir::separator());

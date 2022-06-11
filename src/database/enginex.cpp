@@ -8,6 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include <QProcess>
+
 #include "settings.h"
 #include "enginex.h"
 #include "wbengine.h"

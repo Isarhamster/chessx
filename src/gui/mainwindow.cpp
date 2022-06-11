@@ -75,9 +75,6 @@
 #include <QProgressBar>
 #include <QRegularExpression>
 #include <QSizePolicy>
-#ifdef USE_SOUND
-#include <QSound>
-#endif
 #include <QSplitter>
 #include <QStatusBar>
 #include <QTabBar>
@@ -86,6 +83,7 @@
 #endif
 #include <QTimer>
 #include <QToolBar>
+#include "qt6compat.h"
 
 template< typename T, std::size_t N >
 inline constexpr std::size_t sizeofArray( const T(&)[N] ) noexcept { return N; }
