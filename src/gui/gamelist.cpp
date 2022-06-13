@@ -60,6 +60,7 @@ GameList::GameList(FilterX* filter, QWidget* parent) : TableView(parent)
     sortModel->setFilter(filter);
     sortModel->setSourceModel(m_model);
     sortModel->setDynamicSortFilter(true);
+    sortModel->setSortRole(Qt::UserRole);
     setModel(sortModel);
 
     connect(this, SIGNAL(clicked(QModelIndex)), SLOT(itemSelected(QModelIndex)));
@@ -313,7 +314,8 @@ void GameList::slotContextMenu(const QPoint& pos)
     {
         // Right click occured on a cell!
         menu.addAction(tr("Copy games..."), this, SLOT(slotCopyGame()));
-        menu.addAction(tr("Filter twins"), this, SLOT(slotFindDuplicate()));
+        menu.addAction(tr("Filter exact twins"), this, SLOT(slotFindDuplicate()));
+        menu.addAction(tr("Filter twins"), this, SLOT(slotFindIdentical()));
         QMenu* mergeMenu = menu.addMenu(tr("Merge into current game"));
         mergeMenu->addAction(tr("All Games"), this, SLOT(slotMergeAllGames()));
         mergeMenu->addAction(tr("Filter"), this, SLOT(slotMergeFilter()));
@@ -611,14 +613,20 @@ QList<GameId> GameList::selectedGames(bool skipDeletedGames)
 
 void GameList::slotCopyGame()
 {
-    QList<GameId> gameIndexList = selectedGames();
+    QList<GameId> gameIndexList = selectedGames(true);
     emit requestCopyGame(gameIndexList);
 }
 
 void GameList::slotFindDuplicate()
 {
-    QList<GameId> gameIndexList = selectedGames();
+    QList<GameId> gameIndexList = selectedGames(true);
     emit requestFindDuplicates(gameIndexList);
+}
+
+void GameList::slotFindIdentical()
+{
+    QList<GameId> gameIndexList = selectedGames(true);
+    emit requestFindIdenticals(gameIndexList);
 }
 
 void GameList::slotMergeAllGames()
@@ -633,7 +641,7 @@ void GameList::slotMergeFilter()
 
 void GameList::slotMergeSelectedGames()
 {
-    QList<GameId> gameIndexList = selectedGames();
+    QList<GameId> gameIndexList = selectedGames(true);
     emit requestMergeGame(gameIndexList);
 }
 
@@ -654,7 +662,7 @@ void GameList::slotHideGame()
 
 void GameList::slotHideDeletedGames()
 {
-    QList<GameId> gameIndexList = selectedGames();
+    QList<GameId> gameIndexList = selectedGames(false);
     if (!gameIndexList.isEmpty())
     {
         m_model->startUpdate();
@@ -676,7 +684,7 @@ void GameList::startDrag(Qt::DropActions supportedActions)
     GameMimeData *mimeData = new GameMimeData;
     Database* db = m_model->filter()->database();
     mimeData->source = db->filename();
-    mimeData->m_indexList = selectedGames();
+    mimeData->m_indexList = selectedGames(true);
 
     if (mimeData->m_indexList.count() < 1000) // Avoid excessive size of clipboard
     {

@@ -80,15 +80,15 @@ void DuplicateSearch::Prepare(volatile bool &breakFlag)
                 for (auto iter = m_hashToGames.find(hashval); iter != m_hashToGames.end() && iter.key() == hashval; ++iter)
                 {
                     GameId j = iter.value();
-                    if (index->isIndexItemEqual(i,j))
+                    if ((m_mode == DS_Game) || (m_mode == DS_Game_All) || index->isIndexItemEqual(i,j))
                     {
-                        if ((m_mode == DS_Both) || (m_mode == DS_Both_All))
+                        if ((m_mode == DS_Both) || (m_mode == DS_Both_All) || (m_mode == DS_Game) || (m_mode == DS_Game_All))
                         {
                             GameX gI, gJ;
                             m_database->loadGame(i, gI);
                             m_database->loadGame(j, gJ);
                             found = gI.isEqual(gJ);
-                            if ((m_mode == DS_Both_All) && found)
+                            if (((m_mode == DS_Both_All) || (m_mode == DS_Game_All)) && found)
                             {
                                m_matches[j] = 1;
                             }
@@ -111,7 +111,7 @@ void DuplicateSearch::Prepare(volatile bool &breakFlag)
                                 break;
                             }
                         }
-                        else // DS_Tags
+                        else if (m_mode == DS_Tags)//
                         {
                             found = true;
                         }

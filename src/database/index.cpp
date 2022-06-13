@@ -522,6 +522,11 @@ QSet<ValueIndex> IndexX::tagValueSet(const QString& tagName) const
 	return tagNameIndex;
 }
 
+QStringList IndexX::tagNames() const
+{
+    return m_tagNameIndex.keys();
+}
+
 QStringList IndexX::tagValues(const QString& tagName) const
 {
 	QStringList allTagNames;

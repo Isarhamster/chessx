@@ -179,7 +179,24 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
         GameId i = index.row();
         if (VALID_INDEX(i))
         {
-            if ((role == Qt::DisplayRole) || (role == Qt::EditRole))
+            if (role == Qt::UserRole)
+            {
+                if(index.column() == 0)
+                {
+                    return i + 1;
+                }
+                QString tag = m_filter->database()->tagValue(i, m_columnTagIndex[index.column()]);
+                if ((index.column()==2) || (index.column()==4) || (index.column()==11))
+                {
+                    return tag.toInt();
+                }
+                if(tag == "?")
+                {
+                    tag.clear();
+                }
+                return tag;
+            }
+            else if ((role == Qt::DisplayRole) || (role == Qt::EditRole))
             {
                 if(index.column() == 0)
                 {

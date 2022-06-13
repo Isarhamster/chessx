@@ -21,6 +21,7 @@
 #include "databaseinfo.h"
 #include "databaselist.h"
 #include "databaselistmodel.h"
+#include "databasetagdialog.h"
 #include "dlgsavebook.h"
 #include "downloadmanager.h"
 #include "duplicatesearch.h"
@@ -2202,6 +2203,23 @@ void MainWindow::slotDatabaseRemoveVariations()
     }
 }
 
+void MainWindow::slotDatabaseEditTag()
+{
+    QStringList list = database()->index()->tagNames();
+    if (!list.isEmpty())
+    {
+        DatabaseTagDialog dlg;
+        dlg.setTagNames(list);
+        if (dlg.exec() == QDialog::Accepted)
+        {
+            QString tag = dlg.currentTag();
+            QString current = dlg.current();
+            QString replacement = dlg.replacement();
+            slotRenameRequest(tag, replacement, current);
+        }
+    }
+}
+
 void MainWindow::slotGameSetComment(QString annotation)
 {
     QString s = game().textAnnotation();
@@ -3301,14 +3319,14 @@ void MainWindow::slotDatabaseDropped(QDropEvent *event)
 
 void MainWindow::slotDatabaseCopy(QList<GameId> gameIndexList)
 {
-    if (gameIndexList.isEmpty()) gameIndexList = m_gameList->selectedGames();
+    if (gameIndexList.isEmpty()) gameIndexList = m_gameList->selectedGames(true);
     copyFromDatabase(gameIndexList.count()>1?1:0, gameIndexList);
 }
 
 void MainWindow::filterDuplicates(int mode)
 {
     FilterOperator oper = FilterOperator::NullOperator;
-    if (mode == DuplicateSearch::DS_Both_All)
+    if ((mode == DuplicateSearch::DS_Both_All) || (mode == DuplicateSearch::DS_Game_All))
     {
         oper = FilterOperator::Or;
     }
@@ -3316,12 +3334,17 @@ void MainWindow::filterDuplicates(int mode)
     {
         mode = DuplicateSearch::DS_Tags_BestGame;
     }
-    Search* ds = (mode != DuplicateSearch::DS_Both_All) ?
+    Search* ds = ((mode != DuplicateSearch::DS_Both_All) && (mode != DuplicateSearch::DS_Game_All)) ?
             new DuplicateSearch (databaseInfo()->filter()->database(), DuplicateSearch::DSMode(mode)) :
             new DuplicateSearch (databaseInfo()->filter(), DuplicateSearch::DSMode(mode));
     m_openingTreeWidget->cancel();
     slotBoardSearchStarted();
     m_gameList->executeSearch(ds, oper);
+}
+
+void MainWindow::slotDatabaseFilterIdenticalGames()
+{
+    filterDuplicates(DuplicateSearch::DS_Game);
 }
 
 void MainWindow::slotDatabaseFilterDuplicateGames()
@@ -3452,6 +3475,16 @@ void MainWindow::slotDatabaseClearClipboard()
         emit databaseChanged(databaseInfo());
         emit databaseModified();
     }
+}
+
+void MainWindow::slotDatabaseFindIdenticals(QList<GameId> gameIndexList)
+{
+    databaseInfo()->filter()->setAll(0);
+    foreach(GameId i, gameIndexList)
+    {
+        databaseInfo()->filter()->set(i,1);
+    }
+    filterDuplicates(DuplicateSearch::DS_Game_All);
 }
 
 void MainWindow::slotDatabaseFindDuplicates(QList<GameId> gameIndexList)

@@ -21,12 +21,14 @@ public:
         DS_Tags,
         DS_Tags_BestGame,
         DS_Both,
-        DS_Both_All
+        DS_Both_All,
+        DS_Game,
+        DS_Game_All
     } DSMode;
 
     /** Standard constructor. */
-    DuplicateSearch(Database* db, DSMode mode=DS_Both);
-    DuplicateSearch(FilterX* filter, DSMode mode=DS_Both_All);
+    DuplicateSearch(Database* db, DSMode mode);
+    DuplicateSearch(FilterX* filter, DSMode mode);
     /** Return true if the game at index matches the search */
     virtual int matches(GameId index) const;
 

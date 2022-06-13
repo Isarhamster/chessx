@@ -225,6 +225,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameList, SIGNAL(gameSelected(GameId)), SLOT(slotFilterLoad(GameId)));
     connect(m_gameList, SIGNAL(requestCopyGame(QList<GameId>)), SLOT(slotDatabaseCopy(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestFindDuplicates(QList<GameId>)), SLOT(slotDatabaseFindDuplicates(QList<GameId>)));
+    connect(m_gameList, SIGNAL(requestFindIdenticals(QList<GameId>)), SLOT(slotDatabaseFindIdenticals(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestMergeGame(QList<GameId>)), SLOT(slotMergeActiveGameList(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestMergeAllGames()), SLOT(slotMergeAllGames()));
     connect(m_gameList, SIGNAL(requestMergeFilter()), SLOT(slotMergeFilter()));
@@ -1958,6 +1959,9 @@ void MainWindow::setupActions()
     QAction* duplicates = createAction(tr("Filter duplicate games"), SLOT(slotDatabaseFilterDuplicateGames()));
     search->addAction(duplicates);
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), duplicates, SLOT(setEnabled(bool)));
+    QAction* identicals = createAction(tr("Filter identical games"), SLOT(slotDatabaseFilterIdenticalGames()));
+    search->addAction(identicals);
+    connect(this, SIGNAL(signalCurrentDBhasGames(bool)), identicals, SLOT(setEnabled(bool)));
 
     duplicates = createAction(tr("Filter duplicate headers"), SLOT(slotDatabaseFilterDuplicateTags()));
     search->addAction(duplicates);
@@ -1985,6 +1989,7 @@ void MainWindow::setupActions()
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Remove Time"), SLOT(slotDatabaseRemoveTime())));
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Remove Variations"), SLOT(slotDatabaseRemoveVariations())));
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Prune null moves"), SLOT(slotDatabaseRemoveNullLines())));
+    refactorMenu2->addAction(createAction(refactorMenu2, tr("Edit tag"), SLOT(slotDatabaseEditTag())));
     menuDatabase->addSeparator();
     menuDatabase->addAction(createAction(tr("Clear clipboard"), SLOT(slotDatabaseClearClipboard())));
 

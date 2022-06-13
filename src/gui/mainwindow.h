@@ -372,12 +372,15 @@ protected:
     void slotDatabaseCopy(QList<GameId> gameIndexList=QList<GameId>());
     /** Filter out duplicate games from a complete database. */
     void slotDatabaseFilterDuplicateGames();
+    /** Find games which are the same independant of their header. */
+    void slotDatabaseFilterIdenticalGames();
     /** Filter out games with duoplicate headers from a complete database. */
     void slotDatabaseFilterDuplicateTags();
     /** Clear the clipboard database */
     void slotDatabaseClearClipboard();
     /** Set the list into the filter and add all duplicates */
     void slotDatabaseFindDuplicates(QList<GameId> listGames);
+    void slotDatabaseFindIdenticals(QList<GameId> listGames);
     /** Database was changed - change informations. */
     void slotDatabaseChanged();
     /** Delete current game. */
@@ -597,7 +600,7 @@ private slots:
     void slotHttpDone(QNetworkReply *reply);
     void slotVersionFound(int major, int minor, int build);
     void slotUpdateOpeningTreeWidget();
-
+    void slotDatabaseEditTag();
 private:
     /** Create single menu action. */
     QAction* createAction(QString name, const char* slot, const QKeySequence& key = QKeySequence(),

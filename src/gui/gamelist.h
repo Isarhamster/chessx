@@ -58,7 +58,7 @@ public:
     void keyPressEvent(QKeyEvent* event);
     void removeSelection();
     /** Set current database */
-    QList<GameId> selectedGames(bool skipDeletedGames=true);
+    QList<GameId> selectedGames(bool skipDeletedGames);
 
     void startUpdate(); // TODO Remove this hack
     void endUpdate(); // TODO Remove this hack
@@ -116,6 +116,7 @@ private slots:
     void slotCopyGame();
     /** Request finding duplicates for the games selected */
     void slotFindDuplicate();
+    void slotFindIdentical();
     /** Delete or undelete a game */
     void slotDeleteGame();
     /** Remove a game from a filter */
@@ -132,6 +133,7 @@ signals:
     void requestMergeFilter();
     void requestCopyGame(QList<GameId>);
     void requestFindDuplicates(QList<GameId>);
+    void requestFindIdenticals(QList<GameId>);
     void requestDeleteGame(QList<GameId>);
     void requestGameData(GameX&);
     void signalFirstGameLoaded(bool);
