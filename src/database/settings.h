@@ -97,6 +97,7 @@ public:
     QStringList getThemeList(QString path) const;
 
     QString getImagePath() const;
+    QPixmap getPixmap(QString name) const;
 
     QString getBoardPath(QString) const;
     QStringList getBoardList() const;
