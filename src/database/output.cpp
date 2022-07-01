@@ -950,6 +950,18 @@ void Output::output(const QString& filename, Database& database)
     f.close();
 }
 
+QString Output::output(Database* database)
+{
+    QString s;
+    QTextStream out(&s);
+    if((m_outputType == Html) || (m_outputType == NotationWidget))
+    {
+        SET_CODEC_UTF8(out);
+    }
+    output(out, *database);
+    return s;
+}
+
 bool Output::append(const QString& filename, GameX& game)
 {
     QFile f(filename);
