@@ -162,7 +162,7 @@ private:
 private slots:
 
 private:
-    FilterModel* m_model;
+    QPointer<FilterModel> m_model;
     QPointer<GameListSortModel> sortModel;
     QString oldTagText;
 };

@@ -66,7 +66,7 @@ GameList::GameList(FilterX* filter, QWidget* parent) : TableView(parent)
     connect(this, SIGNAL(clicked(QModelIndex)), SLOT(itemSelected(QModelIndex)));
     connect(this, SIGNAL(activated(QModelIndex)), SLOT(itemSelected(QModelIndex)));
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(slotContextMenu(QPoint)));
-    connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+    connect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(slotItemSelected(QModelIndex)));
 #if QT_VERSION < 0x050000
     horizontalHeader()->setClickable(true);
@@ -109,7 +109,7 @@ void GameList::endUpdate()
 
 void GameList::itemDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight)
 {
-    if (topLeft.column()==bottomRight.column())
+    if (m_model && topLeft.column()==bottomRight.column())
     {
         GameId n = topLeft.row();
         int column = topLeft.column();
@@ -178,12 +178,18 @@ void GameList::slotItemSelected(const QModelIndex& index)
 
 void GameList::filterInvert()
 {
-    m_model->invert();
+    if (m_model)
+    {
+        m_model->invert();
+    }
 }
 
 void GameList::filterSetAll(int value)
 {
-    m_model->setAll(value);
+    if (m_model)
+    {
+        m_model->setAll(value);
+    }
 }
 
 QModelIndex GameList::NewSortIndex(int row) const
