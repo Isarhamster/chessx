@@ -478,14 +478,19 @@ QString Settings::getImagePath() const
     return imgDir;
 }
 
-QPixmap Settings::getPixmap(QString name) const
+QString Settings::getImagePath(QString name) const
 {
     QString path = getImagePath() + QDir::separator() + name;
     if(!QFile::exists(path))
     {
         path = QString(":/images") + QDir::separator() + name;
     }
-    return QPixmap(path);
+    return path;
+}
+
+QPixmap Settings::getPixmap(QString name) const
+{
+    return getImagePath(name);
 }
 
 QStringList Settings::getTranslationPaths() const
