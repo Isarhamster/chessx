@@ -9,6 +9,7 @@
 
 #include "actiondialog.h"
 #include "analysiswidget.h"
+#include "annotationwidget.h"
 #include "arenabook.h"
 #include "board.h"
 #include "boardsearchdialog.h"
@@ -381,13 +382,7 @@ void MainWindow::UpdateAnnotationView()
     MoveId m = g.currentMove();
 
     QString annotation = game().textAnnotation(m, GameX::AfterMove, g.textFilter());
-    BoardViewEx* frame = BoardViewFrame(m_boardView);
-    if (frame)
-    {
-        frame->blockSignals(true);
-        frame->setComment(annotation);
-        frame->blockSignals(false);
-    }
+    annotationWidget->setComment(annotation);
 }
 
 void MainWindow::UpdateMaterialWidget()
@@ -1416,7 +1411,7 @@ void MainWindow::displayVariations()
     }
 
     // Update list of variations
-    BoardViewFrame(m_boardView)->showVariations(listVariations, textVariations);
+    annotationWidget->showVariations(listVariations, textVariations);
 
     // update boardview's variation list (to display variation arrows)
     m_boardView->setVariations(arrowMoves);
@@ -2222,10 +2217,13 @@ void MainWindow::slotDatabaseEditTag()
 
 void MainWindow::slotGameSetComment(QString annotation)
 {
-    QString s = game().textAnnotation();
-    if (s != annotation)
+    if (databaseInfo())
     {
-        game().editAnnotation(annotation);
+        QString s = game().textAnnotation();
+        if (s != annotation)
+        {
+            game().editAnnotation(annotation);
+        }
     }
 }
 
@@ -3234,7 +3232,7 @@ void MainWindow::copyDatabase(QString target, QString src)
                     GameX g;
                     if (abk.loadGame(i,g))
                     {
-                        g.setSourceTag(pSrcDB->name());
+                        g.setSourceTag(fiSrc.fileName());
                         pDestDB->appendGame(g);
                     }
                 }
@@ -3360,6 +3358,7 @@ void MainWindow::slotDatabaseFilterDuplicateTags()
 void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
 {
     QStringList db;
+    db << tr("System Clipboard");
     int cc = 1;
     QList<DatabaseInfo*> targets;
     const auto dbs = m_registry->databases();
@@ -3373,11 +3372,6 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
                   .arg(dbi->database()->count()));
         targets.append(dbi);
     }
-    if (db.isEmpty())
-    {
-        MessageDialog::error(tr("You need at least two open databases to copy games"));
-        return;
-    }
 
     QString players = game().tag(TagNameWhite)+"-"+game().tag(TagNameBlack);
 
@@ -3389,10 +3383,26 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
     {
         return;
     }
-    int targetIndex = dlg.getDatabase();
-    if (targetIndex<0) return;
-    DatabaseInfo* targetDb = targets.at(targetIndex);
-    if (!targetDb) return;
+    int targetIndex = dlg.getDatabase()-1;
+    if (targetIndex<-1) return;
+
+    DatabaseInfo* targetDb = 0;
+    if (targetIndex >= 0)
+    {
+        targetDb = targets.at(targetIndex);
+    }
+
+    Database* dest;
+    if (targetDb)
+    {
+        dest = targetDb->database();
+    }
+    else
+    {
+        dest = new MemoryDatabase();
+    }
+
+    if (!dest) return;
 
     int n = 0;
     switch(dlg.getMode())
@@ -3401,7 +3411,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
         {
             GameX g = game();
             g.setSourceTag(m_currentDatabase->database()->name());
-            targetDb->database()->appendGame(g);
+            dest->appendGame(g);
             n = 1;
             break;
         }
@@ -3413,7 +3423,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
             {
                 ++n;
                 g.setSourceTag(m_currentDatabase->database()->name());
-                targetDb->database()->appendGame(g);
+                dest->appendGame(g);
             }
         }
         break;
@@ -3425,7 +3435,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
             {
                 ++n;
                 g.setSourceTag(m_currentDatabase->database()->name());
-                targetDb->database()->appendGame(g);
+                dest->appendGame(g);
             }
         }
         break;
@@ -3437,16 +3447,28 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
             {
                 ++n;
                 g.setSourceTag(m_currentDatabase->database()->name());
-                targetDb->database()->appendGame(g);
+                dest->appendGame(g);
             }
         }
         break;
     default:
         break;
     }
-    targetDb->filter()->resize(targetDb->database()->count(), true);
-    QString msg = tr("Append %1 games from %2 to %3.").arg(n).arg(database()->name(), targetDb->database()->name());
-    slotStatusMessage(msg);
+    if (targetDb)
+    {
+        targetDb->filter()->resize(targetDb->database()->count(), true);
+        QString msg = tr("Append %1 games from %2 to %3.").arg(n).arg(database()->name(), targetDb->database()->name());
+        slotStatusMessage(msg);
+    }
+    else
+    {
+        Output out(Output::Pgn);
+        QString s = out.output(dest);
+        QApplication::clipboard()->setText(s);
+        QString msg = tr("Set %d games into system clipboard.").arg(n);
+        slotStatusMessage(msg);
+        delete dest;
+    }
 }
 
 void MainWindow::slotDatabaseClearClipboard()
@@ -3868,9 +3890,7 @@ BoardView* MainWindow::CreateBoardView()
         connect(boardView, SIGNAL(evalRequest(chessx::Square,chessx::Square)), SLOT(slotEvalRequest(chessx::Square,chessx::Square)));
         connect(boardView, SIGNAL(evalMove(chessx::Square,chessx::Square)), SLOT(slotEvalMove(chessx::Square,chessx::Square)));
         connect(boardView, SIGNAL(evalModeDone()), SLOT(slotResumeBoard()));
-        connect(boardViewEx, SIGNAL(signalNewAnnotation(QString)), SLOT(slotGameSetComment(QString)));
-        connect(boardViewEx, SIGNAL(enterVariation(int)), this, SLOT(slotGameVarEnter(int)));
-        connect(this, SIGNAL(signalGameIsEmpty(bool)), boardViewEx, SLOT(setAnnotationPlaceholder(bool)));
+        connect(this, SIGNAL(signalGameIsEmpty(bool)), annotationWidget, SLOT(setAnnotationPlaceholder(bool)));
         connect(boardView, SIGNAL(signalDropEvent(QDropEvent*)), this, SLOT(slotDatabaseDropped(QDropEvent*)));
         connect(boardView, SIGNAL(signalGamesDropped(QDropEvent*)), this, SLOT(slotGamesDropped(QDropEvent*)));
 

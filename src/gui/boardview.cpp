@@ -488,15 +488,6 @@ void BoardView::paintEvent(QPaintEvent* event)
 {    
     QWidget::paintEvent(event);
 
-    if (AppSettings->getValue("/Board/Background").toBool())
-    {
-        QPixmap bkgnd = AppSettings->getPixmap("background.jpg");
-        bkgnd = bkgnd.scaled(size(), Qt::IgnoreAspectRatio);
-
-        QPainter paint(this);
-        paint.drawPixmap(0, 0, bkgnd);
-    }
-
     drawSquares(event);
     drawCoordinates(event);
     drawAttacks(event);

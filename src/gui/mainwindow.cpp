@@ -9,6 +9,7 @@
 
 #include "actiondialog.h"
 #include "analysiswidget.h"
+#include "annotationwidget.h"
 #include "boardsetup.h"
 #include "boardview.h"
 #include "boardviewex.h"
@@ -220,6 +221,18 @@ MainWindow::MainWindow() : QMainWindow(),
     m_menuView->addAction(gameTextDock->toggleViewAction());
     gameTextDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_E);
 
+    DockWidgetEx* annotationTextDock = new DockWidgetEx(tr("Annotations"), this);
+    annotationTextDock->setObjectName("AnnotationTextDock");
+    annotationWidget = new AnnotationWidget(annotationTextDock);
+    annotationTextDock->setWidget(annotationWidget);
+    connect(this, SIGNAL(reconfigure()), annotationWidget, SLOT(slotReconfigure()));
+
+    addDockWidget(Qt::RightDockWidgetArea, annotationTextDock);
+
+    m_menuView->addAction(annotationTextDock->toggleViewAction());
+    connect(annotationWidget, SIGNAL(enterVariation(int)), this, SLOT(slotGameVarEnter(int)));
+    connect(annotationWidget, SIGNAL(signalNewAnnotation(QString)), SLOT(slotGameSetComment(QString)));
+
     /* Game List */
     m_gameList->setMinimumSize(150, 100);
     connect(m_gameList, SIGNAL(gameSelected(GameId)), SLOT(slotFilterLoad(GameId)));
@@ -375,6 +388,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     // Arrange Lower Rightside docks
     tabifyDockWidget(gameTextDock, gameListDock);
+    tabifyDockWidget(gameTextDock, annotationTextDock);
 
     /* Analysis Dock */
     DockWidgetEx* analysisDock = new DockWidgetEx(tr("Analysis 1"), this);
@@ -644,6 +658,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
         m_gameWindow->saveConfig();
         m_scratchPad->saveConfig();
         m_gameView->saveConfig();
+        annotationWidget->saveConfig();
         m_ficsConsole->saveConfig();
         m_mainAnalysis->saveConfig();
         m_secondaryAnalysis->saveConfig();
@@ -1003,7 +1018,7 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
         {
             slotStatusMessage(tr("Start loading database..."));
             connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
-            connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(loadReady(QUrl, QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
+            connect(downloadManager, SIGNAL(onDownloadFinished(QUrl,QString)), this, SLOT(loadReady(QUrl,QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
             downloadManager->doDownload(url);
         }
         else

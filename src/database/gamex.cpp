@@ -963,12 +963,8 @@ bool GameX::editAnnotation(QString annotation, MoveId moveId, Position position)
 {
     GameX state = *this;
     QString cleanAnnotation = GameX::cleanAnnotation(annotation, GameX::FilterAll);
-    QString specAnnotation = specAnnotations(annotation);
     QString spec = specAnnotations(moveId);
-    if (spec != specAnnotation)
-    {
-        annotation = cleanAnnotation.prepend(specAnnotation);
-    }
+    annotation = cleanAnnotation.prepend(spec);
 
     if (dbSetAnnotation(annotation, moveId, position))
     {
@@ -1270,11 +1266,9 @@ QString GameX::specAnnotations(QString s) const
     {
         QRegularExpression r(sr);
         QRegularExpressionMatch match;
-        int pos = 0;
-        while ((pos = s.indexOf(r, 0, &match) >=0))
+        if (s.indexOf(r,0,&match)>=0)
         {
             retval += match.captured(0);
-            pos += match.lastCapturedIndex();
         }
     }
     return retval;

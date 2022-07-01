@@ -28,6 +28,7 @@ using namespace chessx;
 
 class Analysis;
 class AnalysisWidget;
+class AnnotationWidget;
 class BoardView;
 class BoardViewEx;
 class Database;
@@ -697,6 +698,7 @@ private:
     GameWindow* m_gameWindow;
     GameToolBar* m_gameToolBar;
     QTabWidget* m_tabWidget;
+    AnnotationWidget* annotationWidget;
     /* Status */
     QLabel* m_statusFilter;
     HistoryLabel* m_statusApp;
