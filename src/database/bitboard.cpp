@@ -1699,11 +1699,14 @@ Move::List BitBoard::generateMoves() const
     while(movers)
     {
         from = getFirstBitAndClear64<Square>(movers);
-        moves = knightAttacksFrom(from) & ~m_occupied_co[m_stm];
-        while(moves)
+        if (from != 0xFF)
         {
-            to = getFirstBitAndClear64<Square>(moves);
-            append(p).genKnightMove(from, to, m_piece[to]);
+            moves = knightAttacksFrom(from) & ~m_occupied_co[m_stm];
+            while(moves)
+            {
+                to = getFirstBitAndClear64<Square>(moves);
+                append(p).genKnightMove(from, to, m_piece[to]);
+            }
         }
     }
     // bishop moves
@@ -1711,11 +1714,14 @@ Move::List BitBoard::generateMoves() const
     while(movers)
     {
         from = getFirstBitAndClear64<Square>(movers);
-        moves = bishopAttacksFrom(from) & ~m_occupied_co[m_stm];
-        while(moves)
+        if (from != 0xFF)
         {
-            to = getFirstBitAndClear64<Square>(moves);
-            append(p).genBishopMove(from, to, m_piece[to]);
+            moves = bishopAttacksFrom(from) & ~m_occupied_co[m_stm];
+            while(moves)
+            {
+                to = getFirstBitAndClear64<Square>(moves);
+                append(p).genBishopMove(from, to, m_piece[to]);
+            }
         }
     }
     // rook moves
@@ -1723,11 +1729,14 @@ Move::List BitBoard::generateMoves() const
     while(movers)
     {
         from = getFirstBitAndClear64<Square>(movers);
-        moves = rookAttacksFrom(from) & ~m_occupied_co[m_stm];
-        while(moves)
+        if (from != 0xFF)
         {
-            to = getFirstBitAndClear64<Square>(moves);
-            append(p).genRookMove(from, to, m_piece[to]);
+            moves = rookAttacksFrom(from) & ~m_occupied_co[m_stm];
+            while(moves)
+            {
+                to = getFirstBitAndClear64<Square>(moves);
+                append(p).genRookMove(from, to, m_piece[to]);
+            }
         }
     }
     // queen moves
@@ -1735,11 +1744,14 @@ Move::List BitBoard::generateMoves() const
     while(movers)
     {
         from = getFirstBitAndClear64<Square>(movers);
-        moves = queenAttacksFrom(from) & ~m_occupied_co[m_stm];
-        while(moves)
+        if (from != 0xFF)
         {
-            to = getFirstBitAndClear64<Square>(moves);
-            append(p).genQueenMove(from, to, m_piece[to]);
+            moves = queenAttacksFrom(from) & ~m_occupied_co[m_stm];
+            while(moves)
+            {
+                to = getFirstBitAndClear64<Square>(moves);
+                append(p).genQueenMove(from, to, m_piece[to]);
+            }
         }
     }
     // king moves
