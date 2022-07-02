@@ -69,7 +69,6 @@ public:
             if(isRank(c))
             {
                 chessx::Square fromSquare = chessx::Square((c - '1') * 8 + fromFile);
-                fromFile = -1;
                 c = *(s++);
                 // Destination square
                 if(isFile(c))
