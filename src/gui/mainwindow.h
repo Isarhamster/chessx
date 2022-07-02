@@ -16,6 +16,7 @@
 
 #include <QtGui>
 #include <QAction>
+#include <QElapsedTimer>
 #include <QMainWindow>
 #ifdef USE_SPEECH
 #include <QTextToSpeech>
@@ -27,6 +28,7 @@ using namespace chessx;
 
 class Analysis;
 class AnalysisWidget;
+class AnnotationWidget;
 class BoardView;
 class BoardViewEx;
 class Database;
@@ -264,10 +266,14 @@ protected:
     void slotDatabaseUncomment();
     /** Remove all time annotations from all games. */
     void slotDatabaseRemoveTime();
+    /** Remove all null moves */
+    void slotDatabaseRemoveNullLines();
     /** Remove all variations */
     void slotGameRemoveVariations();
     /** Remove all variations from all games. */
     void slotDatabaseRemoveVariations();
+    /** Remove all lines consisting only of a null move */
+    void slotGameRemoveNullLines();
     /** Set a annotation into the current game (w/o Undo) */
     void slotGameSetComment(QString);
     /** Start / Stop AutoPlay feature */
@@ -367,12 +373,15 @@ protected:
     void slotDatabaseCopy(QList<GameId> gameIndexList=QList<GameId>());
     /** Filter out duplicate games from a complete database. */
     void slotDatabaseFilterDuplicateGames();
+    /** Find games which are the same independant of their header. */
+    void slotDatabaseFilterIdenticalGames();
     /** Filter out games with duoplicate headers from a complete database. */
     void slotDatabaseFilterDuplicateTags();
     /** Clear the clipboard database */
     void slotDatabaseClearClipboard();
     /** Set the list into the filter and add all duplicates */
     void slotDatabaseFindDuplicates(QList<GameId> listGames);
+    void slotDatabaseFindIdenticals(QList<GameId> listGames);
     /** Database was changed - change informations. */
     void slotDatabaseChanged();
     /** Delete current game. */
@@ -592,7 +601,7 @@ private slots:
     void slotHttpDone(QNetworkReply *reply);
     void slotVersionFound(int major, int minor, int build);
     void slotUpdateOpeningTreeWidget();
-
+    void slotDatabaseEditTag();
 private:
     /** Create single menu action. */
     QAction* createAction(QString name, const char* slot, const QKeySequence& key = QKeySequence(),
@@ -689,6 +698,7 @@ private:
     GameWindow* m_gameWindow;
     GameToolBar* m_gameToolBar;
     QTabWidget* m_tabWidget;
+    AnnotationWidget* annotationWidget;
     /* Status */
     QLabel* m_statusFilter;
     HistoryLabel* m_statusApp;
@@ -704,7 +714,7 @@ private:
     
     QPointer<DatabaseInfo> m_currentDatabase;
     QString m_eco;
-    QTime m_operationTime;
+    QElapsedTimer m_operationTime;
     int m_operationFlag;
     /** Currently updated tree. May be NULL if no update in progress. */
     QString m_nagText;
@@ -749,7 +759,7 @@ private:
     QActionGroup* m_gameModeGroup;
     TextEdit* m_scratchPad;
     int m_matchTime[2];
-    QTime m_elapsedUserTime;
+    QElapsedTimer m_elapsedUserTime;
     bool m_elapsedUserTimeValid;
     EngineParameter m_matchParameter;
     bool m_bEvalRequested;

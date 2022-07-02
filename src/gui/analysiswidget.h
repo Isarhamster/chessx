@@ -14,6 +14,7 @@
 #include "movedata.h"
 #include "ui_analysiswidget.h"
 #include <QtGui>
+#include <QElapsedTimer>
 #include <QPointer>
 
 /** @ingroup GUI
@@ -144,7 +145,7 @@ private:
     int m_lastDepthAdded;
     bool m_onHold;
 
-    QTime m_lastEngineStart;
+    QElapsedTimer m_lastEngineStart;
     QPointer<Database> m_pBookDatabase;
     QList<MoveData> moveList;
     int games;

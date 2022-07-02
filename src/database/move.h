@@ -81,7 +81,7 @@ public:
                         chessx::Square toSquare = chessx::Square((c - '1') * 8 + f);
                         Move m(fromSquare, toSquare);
                         c = *(s++);
-                        if(c == '=' || c == '(' || QString("QRBN").indexOf(toupper(c))>=0)
+                        if(c == '=' || c == '(' || QString("QRBN").indexOf((char)toupper(c))>=0)
                         {
                             if(c == '=' || c == '(')
                             {

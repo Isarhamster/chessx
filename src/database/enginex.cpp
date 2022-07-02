@@ -8,6 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include <QProcess>
+
 #include "settings.h"
 #include "enginex.h"
 #include "wbengine.h"
@@ -151,7 +153,10 @@ void EngineX::activate()
         connect(m_process, SIGNAL(error(QProcess::ProcessError)), SLOT(processError(QProcess::ProcessError)));
         connect(m_process, SIGNAL(readyReadStandardOutput()), SLOT(pollProcess()));
         connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(processExited()));
-        m_process->start(m_command);
+        QStringList parameters = QProcess::splitCommand(m_command);
+        QString cmd = parameters.at(0);
+        parameters.pop_front();
+        m_process->start(cmd, parameters);
     }
 }
 
@@ -181,7 +186,7 @@ void EngineX::send(const QString& message)
 {
     if (s_allowEngineOutput && m_logStream)
     {
-        *m_logStream << "<-- " << message << endl;
+        *m_logStream << "<-- " << message << Qt::endl;
     }
 
     QString out(message);
@@ -256,7 +261,7 @@ void EngineX::pollProcess()
         message = m_process->readLine().simplified();
         if (s_allowEngineOutput && m_logStream)
         {
-            *m_logStream << "--> " << message << endl;
+            *m_logStream << "--> " << message << Qt::endl;
         }
         processMessage(message);
     }
@@ -302,7 +307,7 @@ void EngineX::logError(const QString& errMsg)
 {
     if (s_allowEngineOutput && m_logStream)
     {
-        *m_logStream << "### " << errMsg << endl;
+        *m_logStream << "### " << errMsg << Qt::endl;
     }
     qDebug() << errMsg;
 }

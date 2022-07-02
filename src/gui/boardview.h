@@ -39,7 +39,7 @@ class BoardView : public QWidget
 public:
     enum {WheelUp = Qt::LeftButton, WheelDown = Qt::RightButton};
     enum {Automatic = 0, Always = 1, Never = 2};
-    enum {IgnoreSideToMove = 1, SuppressGuessMove = 2, AllowCopyPiece = 4};
+    enum {IgnoreSideToMove = 1, SuppressGuessMove = 2, AllowCopyPiece = 4, AllowCustomBackground = 8};
     typedef enum {ActionStandard, ActionQuery, ActionReplace, ActionInsert, ActionAdd, ActionPen, ActionAskEngine, ActionEvalMove } BoardViewAction;
     /** Create board widget. */
     BoardView(QWidget* parent = nullptr, int flags = 0);
@@ -154,7 +154,11 @@ protected:
     virtual void wheelEvent(QWheelEvent* e);
     virtual void keyPressEvent(QKeyEvent *);
     virtual void keyReleaseEvent(QKeyEvent *);
-    virtual void enterEvent(QEvent *);
+#if QT_VERSION < 0x060000
+    virtual void enterEvent(QEvent *event);
+#else
+    virtual void enterEvent(QEnterEvent *event);
+#endif
     virtual void leaveEvent(QEvent *event);
     void handleMouseMoveEvent(QMouseEvent *event);
 

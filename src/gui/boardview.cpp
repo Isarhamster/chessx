@@ -485,7 +485,9 @@ void BoardView::drawPieces(QPaintEvent* event)
 }
 
 void BoardView::paintEvent(QPaintEvent* event)
-{
+{    
+    QWidget::paintEvent(event);
+
     drawSquares(event);
     drawCoordinates(event);
     drawAttacks(event);
@@ -805,7 +807,11 @@ void BoardView::keyReleaseEvent(QKeyEvent *event)
     QWidget::keyReleaseEvent(event);
 }
 
+#if QT_VERSION < 0x060000
 void BoardView::enterEvent(QEvent *event)
+#else
+void BoardView::enterEvent(QEnterEvent *event)
+#endif
 {
     setFocus();
     raise();
@@ -1095,7 +1101,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 
 void BoardView::wheelEvent(QWheelEvent* e)
 {
-    m_wheelCurrentDelta += e->delta();
+    m_wheelCurrentDelta += e->angleDelta().y();
     if(abs(m_wheelCurrentDelta) > m_minDeltaWheel)
     {
         int change = m_wheelCurrentDelta < 0 ? WheelDown : WheelUp;
@@ -1583,7 +1589,7 @@ void BoardView::renderImage(QImage &image, double scaling) const
     boardView.setBoard(board());
 
     QPalette Pal(palette());
-    Pal.setColor(QPalette::Background, Qt::transparent);
+    Pal.setColor(QPalette::Window, Qt::transparent);
     boardView.setAutoFillBackground(true);
     boardView.setPalette(Pal);
     QRect sourceRect = boardView.totalRect();

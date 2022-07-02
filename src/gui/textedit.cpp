@@ -834,8 +834,9 @@ PasteTextEdit::~PasteTextEdit()
 bool PasteTextEdit::eventFilter(QObject *obj, QEvent *event)
 {
     QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-    if(keyEvent && (keyEvent->key() == Qt::Key_Return ||
-                    keyEvent->key() == Qt::Key_Enter))
+    if((event->type() == QEvent::KeyRelease)
+        && (keyEvent->key() == Qt::Key_Return ||
+            keyEvent->key() == Qt::Key_Enter))
     {
         keyPressEvent(keyEvent);
         return true;
@@ -884,7 +885,7 @@ void PasteTextEdit::wheelEvent(QWheelEvent *e)
     // ZoomIn / Out with Control+Alt+Wheel
     if ((m & (Qt::ControlModifier | Qt::AltModifier)) == (Qt::ControlModifier | Qt::AltModifier))
     {
-        const int delta = e->delta();
+        const int delta = e->angleDelta().y();
         if (delta < 0)
             zoomOut();
         else if (delta > 0)

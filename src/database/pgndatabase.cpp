@@ -14,7 +14,7 @@
 #include <QStringList>
 #include <QtDebug>
 #include <QMutexLocker>
-
+#include <QRegularExpression>
 #include "board.h"
 #include "nag.h"
 
@@ -1028,7 +1028,7 @@ void PgnDatabase::parseComment(GameX* game)
 
     if(end >= 0)
     {
-        m_comment.append(m_currentLine.leftRef(end));
+        m_comment.append(m_currentLine.left(end));
         m_inComment = false;
         if(m_newVariation || game->plyCount() == 0)
         {
@@ -1143,7 +1143,7 @@ void PgnDatabase::skipMoves()
     else
     {
         // PERF Costs about 5s in 157s for the ref database (3.1%)
-        QRegExp gameNumber("\\s(\\d+)\\s*\\.");
+        QRegularExpression gameNumber("\\s(\\d+)\\s*\\.");
 
         QString gameText = " ";
 
@@ -1153,11 +1153,12 @@ void PgnDatabase::skipMoves()
             skipLine();
         }
 
-        gameText = gameText.remove(QRegExp("\\([^\\(\\)]*\\)"));
+        gameText = gameText.remove(QRegularExpression("\\([^\\(\\)]*\\)"));
 
-        if (gameNumber.lastIndexIn(gameText)>=0)
+        QRegularExpressionMatch match;
+        if (gameText.lastIndexOf(gameNumber, 0, &match) >= 0)
         {
-            m_index.setTag_nolock(TagNameLength, gameNumber.cap(1), m_count - 1);
+            m_index.setTag_nolock(TagNameLength, match.captured(1), m_count - 1);
         }
     }
 

@@ -5,9 +5,11 @@
 #include "chartwidget.h"
 
 #include <QColor>
+#include <QEnterEvent>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPalette>
+#include <QSharedPointer>
 #include <cmath>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -137,7 +139,11 @@ void ChartWidget::handleMouseEvent(QMouseEvent *event)
     }
 }
 
+#if QT_VERSION < 0x060000
 void ChartWidget::enterEvent(QEvent *event)
+#else
+void ChartWidget::enterEvent(QEnterEvent *event)
+#endif
 {
     setCursor(QCursor(Qt::SplitHCursor));
     QWidget::enterEvent(event);

@@ -34,6 +34,7 @@
 #include <QPushButton>
 #include <QSpinBox>
 #include <QStyleFactory>
+#include <QRegularExpression>
 #include <QTextStream>
 
 #ifdef USE_SPEECH
@@ -250,7 +251,7 @@ void PreferencesDialog::slotEngineUp()
     int index = ui.engineList->currentIndex().row();
     if(index > 0)
     {
-        engineList.swap(index, index - 1);
+        engineList.swapItemsAt(index, index - 1);
         QListWidgetItem* item = ui.engineList->takeItem(index - 1);
         ui.engineList->insertItem(index, item);
     }
@@ -261,7 +262,7 @@ void PreferencesDialog::slotEngineDown()
     int index = ui.engineList->currentIndex().row();
     if(index < ui.engineList->count() - 1)
     {
-        engineList.swap(index, index + 1);
+        engineList.swapItemsAt(index, index + 1);
         QListWidgetItem* item = ui.engineList->takeItem(index + 1);
         ui.engineList->insertItem(index, item);
     }
@@ -397,7 +398,7 @@ void PreferencesDialog::slotFileLoaded(QUrl, QString name)
 {
     if(name.endsWith(".qm", Qt::CaseInsensitive))
     {
-        name.remove(QRegExp("[^_]*_"));
+        name.remove(QRegularExpression("[^_]*_"));
         name.remove(".qm");
         ui.cbLanguage->addItem(name);
         ui.labelLoadStatus->setText(tr("Translation file loaded - select added language above!"));
@@ -515,6 +516,7 @@ void PreferencesDialog::restoreSettings()
     ui.btNoHints->setChecked(AppSettings->getValue("noHints").toBool());
     ui.alwaysScale->setChecked(AppSettings->getValue("AlwaysScale").toBool());
     ui.editPlayerTurnBoard->setText(AppSettings->getValue("PlayerTurnBoard").toString());
+    ui.cbBackground->setChecked(AppSettings->getValue("Background").toBool());
 
     QString pieceTheme = AppSettings->getValue("pieceTheme").toString();
     ui.pieceEffect->setCurrentIndex(AppSettings->getValue("pieceEffect").toInt());
@@ -550,7 +552,7 @@ void PreferencesDialog::restoreSettings()
     while(it1.hasNext())
     {
         QString trim(it1.next());
-        trim.remove(QRegExp("[^_]*_"));
+        trim.remove(QRegularExpression("[^_]*_"));
         trim.remove(".qm");
         ui.cbLanguage->addItem(trim);
     }
@@ -726,6 +728,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("AutoPromoteToQueen", QVariant(ui.cbPromoteToQueen->isChecked()));
     AppSettings->setValue("AlwaysScale", QVariant(ui.alwaysScale->isChecked()));
     AppSettings->setValue("PlayerTurnBoard", ui.editPlayerTurnBoard->text());
+    AppSettings->setValue("Background", ui.cbBackground->isChecked());
 
     if(ui.boardThemeCombo->currentIndex() != ui.boardThemeCombo->count() - 1)
     {

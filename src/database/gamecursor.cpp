@@ -470,6 +470,14 @@ MoveId GameCursor::addVariation(const Move& move)
     return node;
 }
 
+bool GameCursor::isRemoved(MoveId moveId) const
+{
+    moveId = makeNodeIndex(moveId);
+    if (moveId <= ROOT_NODE)
+        return false;
+    return m_nodes[moveId].Removed();
+}
+
 void GameCursor::remove(MoveId moveId, QList<MoveId>* removed)
 {
     auto node = makeNodeIndex(moveId);
@@ -605,7 +613,7 @@ bool GameCursor::moveVariationUp(MoveId moveId)
     auto possible = i > 0;
     if (possible)
     {
-        vars.swap(i, i - 1);
+        vars.swapItemsAt(i, i - 1);
     }
     return possible;
 }
@@ -623,7 +631,7 @@ bool GameCursor::moveVariationDown(MoveId moveId)
     auto possible = 0 <= i && i + 1 < vars.size();
     if (possible)
     {
-        vars.swap(i, i + 1);
+        vars.swapItemsAt(i, i + 1);
     }
     return possible;
 }
@@ -652,6 +660,53 @@ void GameCursor::removeVariations()
         while (!m_nodes[i].variations.empty())
         {
             removeVariation(m_nodes[i].variations.at(0));
+        }
+    }
+}
+
+void GameCursor::removeNullLines()
+{
+    auto iw = m_nodes.begin();
+    for (; iw != m_nodes.end(); ++iw)
+    {
+        auto& node = *iw;
+        if (node.Removed()) continue;
+        if (node.move.isNullMove())
+        {
+            if (node.nextNode == NO_MOVE)
+            {
+                int self = iw-m_nodes.begin();
+                if (node.parentNode == node.previousNode)
+                {
+                    // This is the first move of an empty variation
+                    MoveId parentNode = m_nodes[self].parentNode;
+                    remove(self);
+                    QList<MoveId> &vars = m_nodes[parentNode].variations;
+                    int n = vars.indexOf(self);
+                    vars.removeAt(n);
+                 }
+                else
+                {
+                    MoveId previousNode = m_nodes[self].previousNode;
+                    QList<MoveId> &vars = m_nodes[previousNode].variations;
+                    if (vars.isEmpty())
+                    {
+                        // This is an empty move at the end of a line
+                        m_nodes[previousNode].nextNode = NO_MOVE;
+                        node.remove();
+                    }
+                    else
+                    {
+                        // There are siblings - swap with first sibling and remove
+                        MoveId parentNode = m_nodes[self].parentNode;
+                        int variation = vars.at(0);
+                        reparentVariation(variation, parentNode);
+                        node.remove();
+                        m_nodes[previousNode].nextNode = variation;
+                        vars.removeAt(0);
+                    }
+                }
+            }
         }
     }
 }

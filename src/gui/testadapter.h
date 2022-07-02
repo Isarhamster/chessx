@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QCommandLineParser>
 
 class TestAdapter : public QObject
 {
@@ -11,7 +12,7 @@ public:
     explicit TestAdapter(QObject *parent = nullptr);
 
     bool dispatchTests();
-    void convertPgn(const QString& filename, const QString& outfile);
+    void convertPgn(const QString& filename, const QString& outfile, QCommandLineParser& parser);
 
     int getResult() const;
 

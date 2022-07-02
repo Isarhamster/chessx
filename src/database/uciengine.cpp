@@ -10,6 +10,7 @@
 
 #include "enginedata.h"
 #include "uciengine.h"
+#include <QRegularExpression>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -458,7 +459,7 @@ void UCIEngine::parseOptions(const QString& message)
                    } phase;
 
     phase = EXPECT_OPTION;
-    QStringList list = message.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+    QStringList list = message.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
 
     QStringList nameVals;
     QString defVal;

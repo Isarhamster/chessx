@@ -23,7 +23,9 @@ public:
     GameId getLastIndex(const QString& s) const;
     int stars(const QString& s) const;
 
-    void limitStars(int limit);
+    void limitStars(int limit);    
+    bool fileUtf8(const QString& s) const;
+
 public slots:
     void addFileOpen(const QString& s, bool utf8);
     void setFileFavorite(const QString& s, bool bFavorite, int index);
@@ -34,8 +36,6 @@ public slots:
     void update(const QString& s);
     void slotCurrentIndexChanged(const QModelIndex&);
     void slotDoubleClicked(const QModelIndex&);
-
-    bool fileUtf8(const QString& s) const;
 
 signals:
     void selected(int);

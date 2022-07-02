@@ -182,7 +182,8 @@ public:
     /** Remove nodes marked for removal */
     void clearDummyNodes();
     QMap<MoveId, MoveId> compact();
-
+    void removeNullLines();
+    bool isRemoved(MoveId moveId) const;
     /** Change parent of each move of a variation. */
     void reparentVariation(MoveId variation, MoveId parent);
 

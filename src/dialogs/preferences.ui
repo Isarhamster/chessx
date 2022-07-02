@@ -62,7 +62,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -1448,6 +1448,13 @@
            <widget class="QCheckBox" name="verticalTabs">
             <property name="text">
              <string>Use vertical Tabs</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="cbBackground">
+            <property name="text">
+             <string>Show background image</string>
             </property>
            </widget>
           </item>

@@ -11,6 +11,7 @@
 #include "settings.h"
 
 #include <QCoreApplication>
+#include <QPixmap>
 #include <QtCore>
 
 using namespace chessx;
@@ -46,7 +47,7 @@ QString Settings::dataPath()
 #if QT_VERSION < 0x050000
         m_dataPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 #else
-        m_dataPath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+        m_dataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
 #endif
 
         m_dataPath.append(QDir::separator());
@@ -313,6 +314,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/AlwaysScale", false);
     map.insert("/Board/PlayerTurnBoard", "");
     map.insert("/Board/ReadAhead", 4);
+    map.insert("/Board/Background", true);
 
     map.insert("/Match/Mode", 0);
     map.insert("/Match/TotalTime", 3000);
@@ -470,10 +472,25 @@ QString Settings::getImagePath() const
 
     if(!QFile::exists(imgDir))
     {
-        imgDir = QString(":/data/images");
+        imgDir = QString(":/images");
     }
 
     return imgDir;
+}
+
+QString Settings::getImagePath(QString name) const
+{
+    QString path = getImagePath() + QDir::separator() + name;
+    if(!QFile::exists(path))
+    {
+        path = QString(":/images") + QDir::separator() + name;
+    }
+    return path;
+}
+
+QPixmap Settings::getPixmap(QString name) const
+{
+    return getImagePath(name);
 }
 
 QStringList Settings::getTranslationPaths() const

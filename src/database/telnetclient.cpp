@@ -8,7 +8,7 @@
 #include <QFileInfo>
 #include <QHostAddress>
 #include <QProcess>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QStringList>
 #include <QTcpSocket>
 
@@ -51,15 +51,15 @@ void TelnetClient::DispatchReadData(QByteArray bytes)
     m_remainder.clear();
     data.append(QString::fromLatin1(bytes));
 
-    bool sendXON = data.contains(0x13);
-    data.remove(0x13);
-    data.remove(0x07);
+    bool sendXON = data.contains(QChar(0x13));
+    data.remove(QChar(0x13));
+    data.remove(QChar(0x07));
 
     switch (m_state)
     {
         case 0:
         {
-            QRegExp reLogin("[Ll]ogin:");
+            QRegularExpression reLogin("[Ll]ogin:");
             if (data.contains(reLogin))
             {
                 ++m_state;
@@ -69,7 +69,7 @@ void TelnetClient::DispatchReadData(QByteArray bytes)
         }
         case 1:
         {
-            QRegExp rePasswd("[Pp]assword:");
+            QRegularExpression rePasswd("[Pp]assword:");
             if (data.contains(rePasswd))
             {
                 guestName = m_name;
@@ -79,14 +79,15 @@ void TelnetClient::DispatchReadData(QByteArray bytes)
             }
             else
             {
-                QRegExp reEnter("Press return");
+                QRegularExpression reEnter("Press return");
                 if (data.contains(reEnter))
                 {
-                    QRegExp reGuestName("\"([^\"]*)\"");
-                    int pos = reGuestName.indexIn(data);
+                    QRegularExpression reGuestName("\"([^\"]*)\"");
+                    QRegularExpressionMatch match;
+                    int pos = data.indexOf(reGuestName, 0, &match);
                     if(pos >= 0)
                     {
-                        guestName = reGuestName.cap(1);
+                        guestName = match.captured(1);
                     }
                     ++m_state;
                     m_loggedInAsGuest = true;
@@ -97,7 +98,7 @@ void TelnetClient::DispatchReadData(QByteArray bytes)
         }
         case 2:
         {
-            QRegExp reLoggedIn("[Ss]ession");
+            QRegularExpression reLoggedIn("[Ss]ession");
             if (data.contains(reLoggedIn))
             {
                 ++m_state;
