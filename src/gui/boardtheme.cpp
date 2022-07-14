@@ -68,7 +68,7 @@ bool BoardTheme::isValid() const
     return !m_pieceFilename.isNull();
 }
 
-bool BoardTheme::loadPieces(const QString& pieces, int effect)
+bool BoardTheme::loadPieces(const QString& pieces, Effects effect)
 {
     QString effectPath;
     if(effect == Outline)
@@ -85,6 +85,7 @@ bool BoardTheme::loadPieces(const QString& pieces, int effect)
     QPixmap big;
     if(!big.load(themePath) || big.width() < 160)
     {
+        setError(tr("Could not load pieces pixmap from '%1'.").arg(themePath));
         return false;
     }
 
@@ -113,6 +114,7 @@ bool BoardTheme::loadPieces(const QString& pieces, int effect)
         realsize = big.height();
         if(realsize != big.width() / 12)
         {
+            setError(tr("Pieces file at '%1' has neither 6:2 nor 12:1 ratio.").arg(themePath));
             return false;
         }
         /* Cut big theme bitmap into separate pieces */
@@ -145,22 +147,18 @@ bool BoardTheme::loadPieces(const QString& pieces, int effect)
 
 bool BoardTheme::loadBoard(const QString& board)
 {
-    if(board.isEmpty())
-    {
-        m_boardFilename = board;
-        updateSquares();
-        return true;
-    }
     QString themePath = AppSettings->getBoardPath(board);
 
     QPixmap big;
     if(!big.load(themePath))
     {
+        setError(tr("Could not load board pixmap from '%1'.").arg(themePath));
         return false;
     }
     int realsize = big.height() / 2;
     if(realsize != big.width())
     {
+        setError(tr("The board pixmap at '%1' does not have 2:1 ratio.").arg(themePath));
         return false;
     }
 
@@ -172,7 +170,7 @@ bool BoardTheme::loadBoard(const QString& board)
     return true;
 }
 
-void BoardTheme::configure()
+void BoardTheme::configure(bool allowErrorMessage)
 {
     AppSettings->beginGroup("/Board/");
     setColor(BoardTheme::LightSquare, AppSettings->getValue("lightColor").value<QColor>());
@@ -194,23 +192,15 @@ void BoardTheme::configure()
     QString boardTheme = AppSettings->getValue("boardTheme").toString();
     AppSettings->endGroup();
 
-    if(!loadPieces(pieceTheme, pieceEffect))
+    if(!loadPieces(pieceTheme, (BoardTheme::Effects) pieceEffect))
     {
-        static bool errorShown = false;
-        if (!errorShown)
-        {
-            errorShown = true;
-            MessageDialog::error(tr("Cannot find piece data.\nPlease check your installation."));
-        }
+        if (allowErrorMessage) MessageDialog::error(error());
+        loadPieces(); // Assume this will always work
     }
     if (!loadBoard(boardTheme))
     {
-        static bool errorShown = false;
-        if (!errorShown)
-        {
-            errorShown = true;
-            MessageDialog::error(tr("Cannot find board data.\nPlease check your installation."));
-        }
+        if (allowErrorMessage) MessageDialog::error(error());
+        loadBoard(); // Assume this will always work
     }
 }
 
@@ -283,6 +273,16 @@ void BoardTheme::updateSquares()
 bool BoardTheme::isBoardPlain() const
 {
     return m_boardFilename.isEmpty();
+}
+
+const QString &BoardTheme::error() const
+{
+    return m_error;
+}
+
+void BoardTheme::setError(const QString &newError)
+{
+    m_error = newError;
 }
 
 void BoardTheme::setColor(ColorRole role, const QColor& value)

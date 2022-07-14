@@ -102,14 +102,17 @@ public:
     void setBestGuess(const Move &bestGuess);
     void setVariations(const QList<Move>& variations);
 
+    /** Reconfigure current theme. */
+    void configure(bool allowErrorMessage=false);
+
 public slots:
 
     /** Flips/unflips board. */
     void setFlipped(bool flipped);
+    /** Start a configure with error messages enabled */
+    void reconfigure();
     /** Flips/unflips board. */
     void flip();
-    /** Reconfigure current theme. */
-    void configure();
     /** Enable / Disable Board for move entry. */
     void setEnabled(bool enabled);
     /** Disable / Enable Board for move entry. */

@@ -1129,7 +1129,12 @@ bool BoardView::isFlipped() const
     return m_flipped;
 }
 
-void BoardView::configure()
+void BoardView::reconfigure()
+{
+    configure(true);
+}
+
+void BoardView::configure(bool allowErrorMessage)
 {
     AppSettings->beginGroup("/Board/");
     m_showFrame = AppSettings->getValue("showFrame").toBool();
@@ -1141,7 +1146,7 @@ void BoardView::configure()
     m_minDeltaWheel = AppSettings->getValue("minWheelCount").toInt();
     m_showMoveIndicatorMode = AppSettings->getValue("showMoveIndicator").toInt();
     AppSettings->endGroup();
-    m_theme.configure();
+    m_theme.configure(allowErrorMessage);
     m_theme.setEnabled(isEnabled());
     removeGuess();
     unselectSquare();

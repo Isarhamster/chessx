@@ -340,7 +340,6 @@ void MainWindow::slotConfigure(QString anchor)
     connect(&dlg, SIGNAL(reconfigure()), SLOT(slotReconfigure()));
     connect(&dlg, SIGNAL(iconsizeSliderSetting(int)), this, SLOT(resizeToolBarIcons(int)));
     dlg.exec();
-
 }
 
 void MainWindow::slotReconfigure()
@@ -3882,7 +3881,7 @@ BoardView* MainWindow::CreateBoardView()
         boardView->setBoard(BoardX::standardStartBoard);
         boardView->setDbIndex(m_currentDatabase);
 
-        connect(this, SIGNAL(reconfigure()), boardView, SLOT(configure()));
+        connect(this, SIGNAL(reconfigure()), boardView, SLOT(reconfigure()));
         connect(boardView, SIGNAL(moveMade(chessx::Square,chessx::Square,int)), SLOT(slotBoardMove(chessx::Square,chessx::Square,int)));
         connect(boardView, SIGNAL(clicked(chessx::Square,int,QPoint,chessx::Square)), SLOT(slotBoardClick(chessx::Square,int,QPoint,chessx::Square)));
         connect(boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
