@@ -13,23 +13,23 @@ jobs:
         os: [macos-latest]
     runs-on: ${{ matrix.os }}
     env:
-      QT_VERSION: '5.14.2'
+      QT_VERSION: '5.15.2'
   
     steps:
     - name: Look for cached Qt ${{ env.QT_VERSION }}
       id: cache-qt
-      uses: actions/cache@v1.2.0
+      uses: actions/cache@v3
       with:
         path: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
         key: ${{ runner.os }}-Qt${{ env.QT_VERSION }}
     - name: Install Qt ${{ env.QT_VERSION }}
-      uses: jurplel/install-qt-action@v2.11.1
+      uses: jurplel/install-qt-action@v3
       with:
         version: ${{ env.QT_VERSION }}
         dir: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
     - name: Checkout sources
-      uses: actions/checkout@v2.1.0
+      uses: actions/checkout@v3
     - name: configure
       run: qmake
     - name: make
@@ -43,7 +43,7 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest]
         arch: [x64, x86]
-        qt: ['5.14.2']
+        qt: ['5.15.2']
         exclude:
           - os: macos-latest
             arch: x86
@@ -79,19 +79,19 @@ jobs:
       run: brew install pulseaudio
     - name: Look for cached Qt ${{ matrix.qt }}
       id: cache-qt
-      uses: actions/cache@v1.2.0
+      uses: actions/cache@v3
       with:
         path: ${{ runner.workspace }}/Qt${{ matrix.qt }}-${{ matrix.arch }}
         key: Qt-${{ runner.os }}-${{ matrix.qt }}-${{ matrix.arch }}
     - name: Install Qt ${{ matrix.qt }}
-      uses: jurplel/install-qt-action@v2.11.1
+      uses: jurplel/install-qt-action@v3
       with:
         version: ${{ matrix.qt }}
         arch: ${{ matrix.qt_arch }}
         dir: ${{ runner.workspace }}/Qt${{ matrix.qt }}-${{ matrix.arch }}
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
     - name: Checkout sources
-      uses: actions/checkout@v2.1.0
+      uses: actions/checkout@v3
 
     # see example at https://github.com/lukka/CppBuildTasks-Validation/blob/master/.github/workflows/hosted-basic.yml
     - uses: lukka/get-cmake@latest
@@ -99,7 +99,7 @@ jobs:
     #- name: dir
     #  run: gci -recurse ${{ runner.workspace }}
     - name: Restore artifacts, or run vcpkg, build and cache artifacts
-      uses: lukka/run-vcpkg@v2
+      uses: lukka/run-vcpkg@v10
       id: runvcpkg
       with:
         vcpkgArguments: '${{ matrix.vcpkg_packages }}'
@@ -109,7 +109,7 @@ jobs:
     #- name: Prints outputs of run-vcpkg task
     #run: echo "'${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}' '${{  steps.runvcpkg.outputs.RUNVCPKG_VCPKG_TRIPLET_OUT }}' "
     - name: configure && make
-      uses: lukka/run-cmake@v2
+      uses: lukka/run-cmake@v10
       id: runcmake_cmd
       with:
         cmakeGenerator: Ninja
@@ -122,37 +122,37 @@ jobs:
       if: ${{ runner.os != 'Windows' }}
       run: cd '${{ runner.workspace }}/b/ninja' && ctest -V
 
-  build-min:
-    runs-on: ubuntu-16.04
-    env:
-      QT_VERSION: '5.7'
+  # build-min:
+  #   runs-on: ubuntu-16.04
+  #   env:
+  #     QT_VERSION: '5.7'
   
-    steps:
-    - name: Cache Qt ${{ env.QT_VERSION }}
-      id: cache-qt
-      uses: actions/cache@v1.2.0
-      with:
-        path: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
-        key: ${{ runner.os }}-Qt${{ env.QT_VERSION }}
+  #   steps:
+  #   - name: Cache Qt ${{ env.QT_VERSION }}
+  #     id: cache-qt
+  #     uses: actions/cache@v3
+  #     with:
+  #       path: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
+  #       key: ${{ runner.os }}-Qt${{ env.QT_VERSION }}
 
-    - name: Install Qt ${{ env.QT_VERSION }}
-      uses: jurplel/install-qt-action@v2.11.1
-      with:
-        version: ${{ env.QT_VERSION }}
-        dir: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
-        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+  #   - name: Install Qt ${{ env.QT_VERSION }}
+  #     uses: jurplel/install-qt-action@v3
+  #     with:
+  #       version: ${{ env.QT_VERSION }}
+  #       dir: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
+  #       cached: ${{ steps.cache-qt.outputs.cache-hit }}
 
-    - name: Checkout sources
-      uses: actions/checkout@v2.1.0
+  #   - name: Checkout sources
+  #     uses: actions/checkout@v3
 
-    - name: configure
-      run: >-
-        cmake -S . -B _build
-        -DENABLE_SOUNDS=OFF
-        -DENABLE_TTS=OFF
-        -DENABLE_SCID_SUPPORT=OFF
-    - name: make
-      run: cmake --build _build
-    - name: make test
-      run: cd _build && ctest -V
+  #   - name: configure
+  #     run: >-
+  #       cmake -S . -B _build
+  #       -DENABLE_SOUNDS=OFF
+  #       -DENABLE_TTS=OFF
+  #       -DENABLE_SCID_SUPPORT=OFF
+  #   - name: make
+  #     run: cmake --build _build
+  #   - name: make test
+  #     run: cd _build && ctest -V
 
