@@ -1,18 +1,25 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.19)
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13)
 
-project(chessx LANGUAGES CXX)
+project(chessx
+  VERSION "1.5.7"
+  DESCRIPTION "A free chess database"
+  HOMEPAGE_URL "https://chessx.sourceforge.io/"
+  LANGUAGES CXX
+)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-option(ENABLE_SOUNDS "Enable sounds (requires Qt5::Multimedia)" ON)
-option(ENABLE_TTS "Enable text-to-speech (requires Qt5::TextToSpeech)" ON)
+option(ENABLE_SOUNDS "Enable sounds (requires Qt::Multimedia)" ON)
+option(ENABLE_TTS "Enable text-to-speech (requires Qt::TextToSpeech)" ON)
 option(ENABLE_SCID_SUPPORT "Enable support for Scid database format (*.si4)" ON)
-
-add_subdirectory(dep)
 
 # common definitions to use with Qt
 add_library(qt_config INTERFACE)
@@ -20,10 +27,24 @@ target_compile_definitions(qt_config INTERFACE
   QT_DEPRECATED_WARNINGS
   QT_NO_CAST_TO_ASCII
   QT_USE_QSTRINGBUILDER
+
+  # TODO: enable warnings
+  # CONFIG += warn_on
 )
 
+# Find Qt
 set(REQUIRED_QT_COMPONENTS
-  Core Xml DBus Network OpenGL Svg PrintSupport Gui Widgets
+  LinguistTools
+  Core
+  Xml
+  Test
+  DBus
+  Network
+  OpenGL
+  Svg
+  PrintSupport
+  Gui
+  Widgets
 )
 
 if (ENABLE_SOUNDS)
@@ -34,20 +55,15 @@ if (ENABLE_TTS)
   list(APPEND REQUIRED_QT_COMPONENTS TextToSpeech)
 endif()
 
-find_package(Qt5 REQUIRED
-  LinguistTools
-  "${REQUIRED_QT_COMPONENTS}"
-  Test
-) 
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS "${REQUIRED_QT_COMPONENTS}")
 
-# TODO: enable warnings
-# CONFIG += warn_on
+add_subdirectory(dep)
+add_subdirectory(src)
 
-# put translations.rc alongside generated .qm files
-configure_file(translations.qrc ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+set(APP_NAME ${CMAKE_PROJECT_NAME})
 
-# list of .ts files to compile into .qm
-set(TRANSLATIONS_SRC_FILES
+set(TS_FILES
   # i18n/chessx_da.ts
   i18n/chessx_de.ts
   # i18n/chessx_fr.ts
@@ -56,18 +72,13 @@ set(TRANSLATIONS_SRC_FILES
   # i18n/chessx_ru.ts
 )
 
-set_source_files_properties(${TRANSLATIONS_SRC_FILES}
-  PROPERTIES
-  OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/i18n"
+set(APP_SOURCES
+  src/gui/main.cpp
+  resources.qrc
+  ${TS_FILES}
+
+  data/images/chessx.icns
 )
-
-qt5_add_translation(TRANSLATIONS_BIN_FILES ${TRANSLATIONS_SRC_FILES})
-
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-
-add_subdirectory(src)
 
 set(OTHER_FILES
   #[[
@@ -96,14 +107,20 @@ set(OTHER_FILES
   ]]
 )
 
-add_executable(chessx WIN32
-  src/gui/main.cpp
-  resources.qrc
-  ${CMAKE_CURRENT_BINARY_DIR}/translations.qrc
-  ${OTHER_FILES}
-)
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+  qt_add_executable(${APP_NAME}
+      MANUAL_FINALIZATION
+      ${APP_SOURCES}
+  )
+else()
+  add_executable(${APP_NAME}
+    ${APP_SOURCES}
+  )
+endif()
 
-target_link_libraries(chessx PRIVATE
+qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+
+target_link_libraries(${APP_NAME} PRIVATE
   qt_config
   quazip
   bitboard
@@ -112,31 +129,48 @@ target_link_libraries(chessx PRIVATE
   gui
 )
 
-if (CMAKE_HOST_APPLE)
-  # Make macOS bundle instead of bare executable
-  set_target_properties(chessx PROPERTIES
-    MACOSX_BUNDLE TRUE
-    # TODO: use variables in Info.plist template
-    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/mac_osx/Info.plist"
+set_target_properties(${APP_NAME} PROPERTIES
+  MACOSX_BUNDLE TRUE
+
+  # Custom template for Info.plist
+  MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/pack/Info.plist.in
+
+  # Configure content for Info.plist template
+  MACOSX_BUNDLE_INFO_STRING "ChessX for Mac OS 10.14"
+  MACOSX_BUNDLE_ICON_FILE chessx.icns
+  MACOSX_BUNDLE_GUI_IDENTIFIER net.sourceforge.chessx
+  MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+  MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+  MACOSX_BUNDLE_COPYRIGHT "(C) 2005-2022 ChessX developers"
+
+  # Bundle resources
+  RESOURCE data/images/chessx.icns
+
+  WIN32_EXECUTABLE TRUE
+)
+
+if (APPLE)
+  find_program(MACDEPLOYQT NAMES macdeployqt NO_SYSTEM_ENVIRONMENT_PATH)
+
+  add_custom_command(
+    TARGET ${APP_NAME}
+    POST_BUILD
+    COMMAND ${MACDEPLOYQT} ${APP_NAME}.app
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
   )
-
-  # embed required resources
-  target_sources(chessx PRIVATE
-    mac_osx/Info.plist
-    mac_osx/qt_menu.nib
-    data/images/chessx.icns
+  install(
+    TARGETS ${APP_NAME}
+    BUNDLE DESTINATION .
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   )
-
-  set_property(
-    TARGET chessx
-    APPEND PROPERTY
-    RESOURCE
-      mac_osx/qt_menu.nib
-      data/images/chessx.icns
+else()
+  install(TARGETS ${APP_NAME}
+    RUNTIME DESTINATION bin
   )
+endif()
 
-  # TODO: embed engines & timeseal
-
+if(QT_VERSION_MAJOR GREATER_EQUAL 6)
+  qt_finalize_executable(${APP_NAME})
 endif()
 
 set(CMAKE_AUTOMOC OFF)
@@ -149,3 +183,4 @@ if (ENABLE_TESTING)
   add_subdirectory(tests/unittests)
 endif()
 
+add_subdirectory(pack)

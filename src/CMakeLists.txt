@@ -24,7 +24,7 @@ target_link_libraries(bitboard
   PRIVATE
     qt_config
   PUBLIC
-    Qt5::Core
+    Qt::Core
 )
 
 if (cxx_std_11 IN_LIST CMAKE_CXX_COMPILE_FEATURES)
@@ -83,7 +83,7 @@ target_link_libraries(eco
     compat
   PUBLIC
     board
-    Qt5::Core
+    Qt::Core
 )
 
 add_library(database-core STATIC
@@ -245,12 +245,12 @@ target_link_libraries(database
   PRIVATE
     qt_config
     compat
-    Qt5::Widgets
+    Qt::Widgets
   PUBLIC
     database-core
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Network
+    Qt::Core
+    Qt::Gui
+    Qt::Network
 )
 
 if (ENABLE_SCID_SUPPORT)
@@ -467,12 +467,12 @@ target_link_libraries(gui
     compat
     eco
     quazip
-    Qt5::PrintSupport
-    Qt5::Svg
+    Qt::PrintSupport
+    Qt::Svg
   PUBLIC
     database
-    Qt5::Widgets
-    Qt5::Xml
+    Qt::Widgets
+    Qt::Xml
 )
 
 if (ENABLE_SOUNDS)
@@ -480,7 +480,7 @@ if (ENABLE_SOUNDS)
     PRIVATE
       USE_SOUND
   )
-  target_link_libraries(gui PRIVATE Qt5::Multimedia)
+  target_link_libraries(gui PRIVATE Qt::Multimedia)
   if (UNIX AND NOT APPLE)
     # on Linux QtMultimedia links to pulseaudio
     find_package(PulseAudio REQUIRED) 
@@ -497,6 +497,6 @@ if (ENABLE_TTS)
     PRIVATE
       USE_SPEECH
   )
-  target_link_libraries(gui PRIVATE Qt5::TextToSpeech)
+  target_link_libraries(gui PRIVATE Qt::TextToSpeech)
 endif()
 
