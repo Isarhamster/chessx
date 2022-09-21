@@ -8,7 +8,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleTypeIconFile</key>
-			<string>chessx.icns</string>
+			<string>chessx.ico</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>pgn</string>
@@ -20,7 +20,7 @@
 		</dict>
 	</array>
 	<key>CFBundleIconFile</key>
-	<string>chessx.icns</string>
+	<string>chessx.ico</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleGetInfoString</key>
