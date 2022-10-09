@@ -288,91 +288,94 @@ void BoardView::drawHiliteSquare(QPoint pos, BoardTheme::ColorRole role)
 
 void BoardView::drawHiliting(QPaintEvent* event)
 {
-    for (Square square=a1; square<NumSquares; ++square)
+    if (isEnabled())
     {
-        QRect rect = squareRect(square);
-        if(!event->region().intersects(rect))
+        for (Square square=a1; square<NumSquares; ++square)
         {
-            continue;
-        }
-
-        QPoint pos = posFromSquare(square);
-
-        if(square == m_storedFrom || square == m_storedTo)
-        {
-            drawHiliteSquare(pos, BoardTheme::StoredMove);
-        }
-
-        if(m_showCurrentMove==1)
-        {
-            if(square == m_currentFrom || square == m_currentTo)
+            QRect rect = squareRect(square);
+            if(!event->region().intersects(rect))
             {
-                drawHiliteSquare(pos, BoardTheme::CurrentMove);
+                continue;
+            }
+
+            QPoint pos = posFromSquare(square);
+
+            if(square == m_storedFrom || square == m_storedTo)
+            {
+                drawHiliteSquare(pos, BoardTheme::StoredMove);
+            }
+
+            if(m_showCurrentMove==1)
+            {
+                if(square == m_currentFrom || square == m_currentTo)
+                {
+                    drawHiliteSquare(pos, BoardTheme::CurrentMove);
+                }
+            }
+
+            if(square == m_selectedSquare || square == m_hiFrom || square == m_hiTo)
+            {
+                drawHiliteSquare(pos, BoardTheme::Highlight);
             }
         }
 
-        if(square == m_selectedSquare || square == m_hiFrom || square == m_hiTo)
+        if ((m_showCurrentMove==2) && m_currentFrom != InvalidSquare && m_currentTo != InvalidSquare)
         {
-            drawHiliteSquare(pos, BoardTheme::Highlight);
-        }
-    }
-
-    if ((m_showCurrentMove==2) && m_currentFrom != InvalidSquare && m_currentTo != InvalidSquare)
-    {
-        QRect rect1 = squareRect(m_currentFrom);
-        QRect rect2 = squareRect(m_currentTo);
-        QRect u = rect1.united(rect2);
-        if(event->region().intersects(u))
-        {
-            drawArrow(m_currentFrom, m_currentTo, m_theme.color(BoardTheme::CurrentMove));
-        }
-    }
-
-    Square threatFrom = m_threatGuess.getFrom();
-    Square threatTo = m_threatGuess.getTo();
-    if (threatFrom != InvalidSquare && threatTo != InvalidSquare)
-    {
-        QRect rect1 = squareRect(threatFrom);
-        QRect rect2 = squareRect(threatTo);
-        QRect u = rect1.united(rect2);
-        if(event->region().intersects(u))
-        {
-            drawArrow(threatFrom, threatTo, m_theme.color(BoardTheme::Threat));
-        }
-    }
-
-    if (!m_bestGuess.isNullMove() && m_showThreat)
-    {
-        Square guessFrom = m_bestGuess.from();
-        Square guessTo = m_bestGuess.to();
-        if (guessFrom != InvalidSquare && guessTo != InvalidSquare)
-        {
-            QRect rect1 = squareRect(guessFrom);
-            QRect rect2 = squareRect(guessTo);
+            QRect rect1 = squareRect(m_currentFrom);
+            QRect rect2 = squareRect(m_currentTo);
             QRect u = rect1.united(rect2);
             if(event->region().intersects(u))
             {
-                QColor c(m_theme.color(BoardTheme::Engine));
-                drawArrow(guessFrom, guessTo, c);
+                drawArrow(m_currentFrom, m_currentTo, m_theme.color(BoardTheme::CurrentMove));
             }
         }
-    }
 
-    // draw variation arrows (whether they are really displayed depends on the contents of m_variations)
-    int thin = 0;
-    foreach(Move move, m_variations)
-    {
-        Square moveFrom = move.from();
-        Square moveTo = move.to();
-        QRect rect1 = squareRect(moveFrom);
-        QRect rect2 = squareRect(moveTo);
-        QRect u = rect1.united(rect2);
-        if(event->region().intersects(u))
+        Square threatFrom = m_threatGuess.getFrom();
+        Square threatTo = m_threatGuess.getTo();
+        if (threatFrom != InvalidSquare && threatTo != InvalidSquare)
         {
-            QColor c(m_theme.color(BoardTheme::VariationMove));
-            drawArrow(moveFrom, moveTo, c, thin);
+            QRect rect1 = squareRect(threatFrom);
+            QRect rect2 = squareRect(threatTo);
+            QRect u = rect1.united(rect2);
+            if(event->region().intersects(u))
+            {
+                drawArrow(threatFrom, threatTo, m_theme.color(BoardTheme::Threat));
+            }
         }
-        thin++;    // all but the first variation are drawn as thin
+
+        if (!m_bestGuess.isNullMove() && m_showThreat)
+        {
+            Square guessFrom = m_bestGuess.from();
+            Square guessTo = m_bestGuess.to();
+            if (guessFrom != InvalidSquare && guessTo != InvalidSquare)
+            {
+                QRect rect1 = squareRect(guessFrom);
+                QRect rect2 = squareRect(guessTo);
+                QRect u = rect1.united(rect2);
+                if(event->region().intersects(u))
+                {
+                    QColor c(m_theme.color(BoardTheme::Engine));
+                    drawArrow(guessFrom, guessTo, c);
+                }
+            }
+        }
+
+        // draw variation arrows (whether they are really displayed depends on the contents of m_variations)
+        int thin = 0;
+        foreach(Move move, m_variations)
+        {
+            Square moveFrom = move.from();
+            Square moveTo = move.to();
+            QRect rect1 = squareRect(moveFrom);
+            QRect rect2 = squareRect(moveTo);
+            QRect u = rect1.united(rect2);
+            if(event->region().intersects(u))
+            {
+                QColor c(m_theme.color(BoardTheme::VariationMove));
+                drawArrow(moveFrom, moveTo, c, thin);
+            }
+            thin++;    // all but the first variation are drawn as thin
+        }
     }
 }
 
@@ -1302,17 +1305,20 @@ void BoardView::dropEvent(QDropEvent *event)
 
 void BoardView::drawSquareAnnotations(QPaintEvent* event)
 {
-    QString annotation = m_board.squareAnnotation();
-
-    if(!annotation.isEmpty() && !annotation.isNull())
+    if (isEnabled())
     {
-        QStringList list = annotation.split(",");
+        QString annotation = m_board.squareAnnotation();
 
-        for(QStringList::ConstIterator it = list.constBegin(); it != list.constEnd(); it++)
+        if(!annotation.isEmpty() && !annotation.isNull())
         {
-            if(*it != "")
+            QStringList list = annotation.split(",");
+
+            for(QStringList::ConstIterator it = list.constBegin(); it != list.constEnd(); it++)
             {
-                drawSquareAnnotation(event, *it);
+                if(*it != "")
+                {
+                    drawSquareAnnotation(event, *it);
+                }
             }
         }
     }
@@ -1320,17 +1326,20 @@ void BoardView::drawSquareAnnotations(QPaintEvent* event)
 
 void BoardView::drawArrowAnnotations(QPaintEvent* event)
 {
-    QString annotation = m_board.arrowAnnotation();
-
-    if(!annotation.isEmpty() && !annotation.isNull())
+    if (isEnabled())
     {
-        QStringList list = annotation.split(",");
+        QString annotation = m_board.arrowAnnotation();
 
-        for(QStringList::ConstIterator it = list.constBegin(); it != list.constEnd(); it++)
+        if(!annotation.isEmpty() && !annotation.isNull())
         {
-            if(*it != "")
+            QStringList list = annotation.split(",");
+
+            for(QStringList::ConstIterator it = list.constBegin(); it != list.constEnd(); it++)
             {
-                drawArrowAnnotation(event, *it);
+                if(*it != "")
+                {
+                    drawArrowAnnotation(event, *it);
+                }
             }
         }
     }

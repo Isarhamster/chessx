@@ -150,11 +150,8 @@ bool BoardTheme::loadBoard(const QString& board)
     QString themePath = AppSettings->getBoardPath(board);
 
     QPixmap big;
-    if(!big.load(themePath))
-    {
-        setError(tr("Could not load board pixmap from '%1'.").arg(themePath));
-        return false;
-    }
+    big.load(themePath); // This might fail - in this case, we will use a board with fixed colors
+
     int realsize = big.height() / 2;
     if(realsize != big.width())
     {

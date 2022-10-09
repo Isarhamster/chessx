@@ -459,6 +459,10 @@ QString Settings::getBoardPath(QString theme) const
             }
         }
     }
+    else
+    {
+        return theme;
+    }
     return getDefaultBoard();
 }
 
