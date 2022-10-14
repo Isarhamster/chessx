@@ -39,7 +39,7 @@ class BoardView : public QWidget
 public:
     enum {WheelUp = Qt::LeftButton, WheelDown = Qt::RightButton};
     enum {Automatic = 0, Always = 1, Never = 2};
-    enum {IgnoreSideToMove = 1, SuppressGuessMove = 2, AllowCopyPiece = 4, AllowCustomBackground = 8};
+    enum {IgnoreSideToMove = 1, SuppressGuessMove = 2, AllowCopyPiece = 4, AllowCustomBackground = 8 };
     typedef enum {ActionStandard, ActionQuery, ActionReplace, ActionInsert, ActionAdd, ActionPen, ActionAskEngine, ActionEvalMove } BoardViewAction;
     /** Create board widget. */
     BoardView(QWidget* parent = nullptr, int flags = 0);
@@ -102,14 +102,17 @@ public:
     void setBestGuess(const Move &bestGuess);
     void setVariations(const QList<Move>& variations);
 
+    /** Reconfigure current theme. */
+    void configure(bool allowErrorMessage=false);
+
 public slots:
 
     /** Flips/unflips board. */
     void setFlipped(bool flipped);
+    /** Start a configure with error messages enabled */
+    void reconfigure();
     /** Flips/unflips board. */
     void flip();
-    /** Reconfigure current theme. */
-    void configure();
     /** Enable / Disable Board for move entry. */
     void setEnabled(bool enabled);
     /** Disable / Enable Board for move entry. */

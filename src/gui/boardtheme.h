@@ -40,11 +40,11 @@ public:
     BoardTheme();
     ~BoardTheme();
     /** Reset piece and board selections based on config values */
-    void configure();
+    void configure(bool allowErrorMessage = false);
     /** Load piece graphics named by string + effect flag */
-    bool loadPieces(const QString& pieces, int effect);
+    bool loadPieces(const QString& pieces = QString(), Effects effect = Plain);
     /** Load board graphics named by string */
-    bool loadBoard(const QString& board);
+    bool loadBoard(const QString& board = QString());
     /** Sets one of the board colors. */
     void setColor(ColorRole role, const QColor& value);
     /** @return one of the board colors. */
@@ -75,6 +75,9 @@ public:
     void updateSquares();
     /** Set the theme according to the parents state */
     void setEnabled(bool enabled);
+    const QString &error() const;
+    void setError(const QString &newError);
+
 private:
     bool isBoardPlain() const;
     QPixmap m_originalPiece[ConstPieceTypes];
@@ -85,6 +88,7 @@ private:
     QColor m_colors[ColorRoleEndEntry];
     QString m_pieceFilename;
     QString m_boardFilename;
+    QString m_error;
 };
 
 #endif
