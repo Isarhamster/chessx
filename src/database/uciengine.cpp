@@ -224,7 +224,7 @@ void UCIEngine::processMessage(const QString& message)
 
             if(!m_bTestMode)
             {
-                OptionValueList::const_iterator i = m_mapOptionValues.constBegin();
+                OptionValueMap::const_iterator i = m_mapOptionValues.constBegin();
                 while(i != m_mapOptionValues.constEnd())
                 {
                     QString key = i.key();
@@ -238,7 +238,7 @@ void UCIEngine::processMessage(const QString& message)
                             case OPT_TYPE_BUTTON:
                                 if(value.toBool())
                                 {
-                                    send(QString("setoption name %1 value %2").arg(key));
+                                    send(QString("setoption name %1").arg(key));
                                 }
                                 break;
                             case OPT_TYPE_CHECK:
