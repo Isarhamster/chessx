@@ -1056,7 +1056,7 @@ void MainWindow::openLichess()
     QDate start(date.year(),date.month(),1);
 
     OnlineBase db;
-    db.setTournament("");
+// TODO Debug Tournament handles - they don't work reliably db.setTournament("");
 
     QAction* action = qobject_cast<QAction*>(sender());
     if (action)
