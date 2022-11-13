@@ -199,7 +199,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                 {
                     QList<Move> bestMoves;
                     bool first = true;
-                    int bestScore;
+                    int bestScore = 0;
                     foreach(QString tbMove, moveList)
                     {
                         QStringList fld = tbMove.split(' ',Qt::SkipEmptyParts);
