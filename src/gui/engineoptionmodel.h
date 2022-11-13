@@ -28,7 +28,7 @@ public:
     virtual QVariant headerData(int section, Qt::Orientation orientation,
                                 int role = Qt::DisplayRole) const;
 
-    OptionValueList* m_pValueMap;
+    OptionValueMap* m_pValueMap;
     const QList<EngineOptionData>* m_pOptionDataList;
     void resetModel();
     QStringList getSelections(const QModelIndex& index);

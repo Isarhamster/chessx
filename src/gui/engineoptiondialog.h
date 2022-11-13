@@ -25,7 +25,7 @@ class EngineOptionDialog : public QDialog
 public:
     explicit EngineOptionDialog(QWidget *parent, EngineList& engineList, int index);
     ~EngineOptionDialog();
-    OptionValueList GetResults() const;
+    OptionValueMap GetResults() const;
 
 public slots:
     void accept();

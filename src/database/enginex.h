@@ -79,10 +79,12 @@ public:
 
     /** Set number of lines. */
     virtual void setMpv(int mpv);
+    virtual int defaultMpv() const;
+
     /** Set new move time */
     virtual void setMoveTime(const EngineParameter &mt);
 
-    virtual bool providesMvp()
+    virtual bool providesMpv()
     {
         return false;
     }
@@ -151,7 +153,7 @@ private slots:
 
 public:
     QList<EngineOptionData> m_options;
-    OptionValueList m_mapOptionValues;
+    OptionValueMap m_mapOptionValues;
 
     bool hasOption(const QString &name) const;
     bool getOption(const QString &name, EngineOptionData &result);

@@ -196,7 +196,7 @@ QByteArray Settings::byteArray(const QString& key)
     return value(key, QByteArray()).toByteArray();
 }
 
-void Settings::setMap(const QString& key, const OptionValueList& map)
+void Settings::setMap(const QString& key, const OptionValueMap& map)
 {
     QByteArray data;
     QDataStream * stream = new QDataStream(&data, QIODevice::WriteOnly);
@@ -207,7 +207,7 @@ void Settings::setMap(const QString& key, const OptionValueList& map)
     setByteArray(key, data);
 }
 
-void Settings::getMap(const QString& key, OptionValueList& map)
+void Settings::getMap(const QString& key, OptionValueMap& map)
 {
     QByteArray data = byteArray(key);
     QDataStream * stream = new QDataStream(&data, QIODevice::ReadOnly);

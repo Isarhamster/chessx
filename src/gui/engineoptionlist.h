@@ -41,7 +41,7 @@ public:
     explicit EngineOptionList(QWidget *parent = nullptr);
 
     void setDB(const QList<EngineOptionData>& options,
-               OptionValueList& mapOptionValues);
+               OptionValueMap& mapOptionValues);
 
     void resetModel();
 
