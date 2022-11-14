@@ -33,10 +33,10 @@
 <h2><a name="Handbuch">ChessX Manual</a></h2>
 <h3><a name="Open"></a>Opening a database</h3>
 <p>You can open a database either from the File menu or drag a file from Explorer / Finder into the Databases view.</p>
-<p>You can make a database stay permanently in the database list by turning it into a "Favorite" (right-click the file).
+<p>You can make a database stay permanently in the database list by turning it into a &ldquo;Favorite&rdquo; (right-click the file).
 A database is reopened from there by clicking the asterisk or again by the context menu.</p>
 <p>You can also drag files from yor Internet Browser into the ChessX Database List, they are downloaded into
-the configured default path (see the Preferences-Advanced-Default Data Path entry). If they are compressed (zip),
+the configured default path (see the Preferences &rarr; Advanced &rarr; Default Data Path entry). If they are compressed (zip),
 the archive is stored at the Default Data Path and its content is extracted. Again, if there is something like PGN inside,
 the files are opened afterwards.</p>
 
@@ -44,9 +44,9 @@ the files are opened afterwards.</p>
 <p><img class="button" src=":/images/folder_web.png" width="42" align="left">For regularly loading a periodically updated
 database from the web, enter the target URL into the preference for Web Favorite, where $1 can
 be replaced by an incrementing counter. Let's say amonthincheckers.com
-hosts a monthly database update at <code>"http://amonthincheckers.com/zips/amic123g.zip"</code>
+hosts a monthly database update at <code>&ldquo;http://amonthincheckers.com/zips/amic123g.zip&rdquo;</code>
 where 123 is incremented every time an update is posted, enter
-<code>"http://amonthincheckers.com/zips/amic$1g.zip"</code> into the URL field and
+<code>&ldquo;http://amonthincheckers.com/zips/amic$1g.zip&rdquo;</code> into the URL field and
 set the starting number at the right of the URL. Each time the
 database is successfully loaded, $1 is incremented by one so you are
 all set for the next update.</p>
@@ -57,7 +57,7 @@ all set for the next update.</p>
 <ul>
 <li>Click on a piece and a target square (if move guesses are deactivated)
 <li>Click on a piece and accepting the move quess (in case of deactivated next guess on right click)
-<li>Right Click on a piece and then again until the correct target square is high-lighted, then press the
+<li>Right Click on a piece and then again until the correct target square is highlighted, then press the
 left mouse button to make the move (in case right click is used for next guess).
 </ul>
 </p>
@@ -86,7 +86,8 @@ pressing the Meta-Key while dragging the pawn to the eigth row.</p>
 on castling in Chess960.</p>
 
 <h3><a name="Replay"></a>Let ChessX replay the game</h3>
-<p><img src=":/images/replay.png" width="42" align="left">If you want ChessX to replay the game, select "Game->Auto Player".
+<p><img src=":/images/replay.png" width="42" align="left">If you want ChessX
+  to replay the game, select &ldquo;Game &rarr; Auto Player&rdquo;.
 You can change the move rate with the slider in the bottom right corner of the status bar.</p>
 
 <h3><a name="Enter"></a>Entering moves with the keyboard</h3>
@@ -94,16 +95,17 @@ You can change the move rate with the slider in the bottom right corner of the s
 <p>If the focus is somewhere on the board or the notation, you can enter moves simply by starting to type.
 A label in the status bar will indicate, what you have typed. Whenever ChessX recognizes a complete move, the move
 is executed and the buffer is cleared.</p>
-<p>You can enter anything that looks like (PGN-) notation, make sure, your move is unambiguos. For example,
-typing "e4" in the starting position is fine, whereas a subsequent "e2" could
-  either be Be2, Ne2, Ke2, Qe2 - or f1e2&hellip; 
+<p>You can enter anything that looks like PGN notation, make sure, your move is unambiguos. For example,
+typing &ldquo;e4&rdquo; in the starting position is fine, whereas a subsequent &ldquo;e2&rdquo; could
+  either be Be2, Ne2, Ke2, Qe2 &mdash;  or f1e2&hellip; 
 </p>
 <p>By pressing [Enter] you can force ChessX to accept an entry or discard it, if ChessX cannot make anything reasonable of your entry.</p>
-<p>You can enter castling moves with 00, 0-0, 0k, O-O or 000, 0-0-0, 0q, O-O-O respectively. '--' will generate a null move.</p>
+<p>You can enter castling moves with 00, 0-0, 0k, O-O or 000, 0-0-0, 0q, O-O-O respectively. &lsquo;--&rsquo; will generate a null move.</p>
 <h3><a name="Annotate"></a>Annotating moves</h3>
 <p>Move annotations can be done by activating the context menu in the games text browser or by simply pressing the corresponding key sequence,
-e.g. '!?','!!','??','!','?','=','+-','-+' and so on. You might have to press enter (e.g. for getting '!')</p>
-<p>Additionally 'n' will add the Nag for 'novelty' and '#' will enter a 'diagram'-tag.
+e.g. &lsquo;!?&rsquo;, &lsquo;!!&rsquo;, &lsquo;??&rsquo;, &lsquo;!&rsquo;,
+  &lsquo;?&rsquo;, &lsquo;=&rsquo;, &lsquo;+-&rsquo;, &lsquo;-+&rsquo; and so on. You might have to press enter (e.g. for getting &lsquo;!&rsquo;)</p>
+<p>Additionally &lsquo;n&rsquo; will add the Nag for &lsquo;novelty&rsquo; and &lsquo;#&rsquo; will enter a &lsquo;diagram&rsquo;-tag.
 <p>You can make special annotations like drawing an arrow or coloring squares by pressing SHIFT+Right-Mouse-Clicking (either select a single square
 or make a drawing gesture for drawing an arrow).</p>
 <p><img src=":/images/brush_green.png" width="42" align="left">Pressing a green, red or yellow pen enters paint mode. You cannot enter moves,
@@ -113,11 +115,11 @@ instead, you can paint squares and arrows without having to press SHIFT+Right-Mo
 <p>Saving games is slightly confusing! A game needs to be saved into the database (Press CTRL+S, Menu Game/Save). From there,
 the whole database needs to be saved to disk by pressing CTRL+SHIFT+S or Menu File/Save. This is somewhat inconvenient but on the other hand prevents
 you from mistakenly overwriting games or files.</p>
-<p>If you want to commit a database to harddisk immediately and automatically when saving a game, you can select Option "Commit Database
-after Saving Game" from the Database Pane in the Preferences Dialog.</p>
+<p>If you want to commit a database to harddisk immediately and automatically when saving a game, you can select Option &ldquo;Commit Database
+after Saving Game&rdquo; from the Database Pane in the Preferences Dialog.</p>
 <p>By default, a clipboard database is open, which does not have a backing file on disk. Anything that remains in the Clipboard is
 lost upon closing ChessX! So you need to open at least one other database for writing and transfer anything from the Clipboard
-into this database by either dragging the games to that database or using "Copy Games" from the Database menu.</p>
+into this database by either dragging the games to that database or using &ldquo;Copy Games&rdquo; from the Database menu.</p>
 
 <h3><a name="Switch"></a>Switching databases</h3>
 <p>Switching between open databases can be achieved by either the Database menu, pressing CTRL+SHIFT+Number 0&hellip; 9,
@@ -135,24 +137,24 @@ need to adapt the castling rights or the side to move to make your position lega
 <h3><a name="Engines"></a>Installing engines</h3>
 <p>First of all, you need to install the engine somewhere on your harddisk. Remember where the installer of the engine put its executable,
 this information is needed later on.</p>
-<p>Open the Preferences Dialog, select the tab "Engines". Press "Add&hellip; " and browse to the path wherever your engine was installed. Press "Open".
+<p>Open the Preferences Dialog, select the tab &ldquo;Engines&rdquo;. Press &ldquo;Add&hellip; &rdquo; and browse to the path wherever your engine was installed. Press &ldquo;Open&rdquo;.
 The executable will appear in the list of engines. In the lower half of the tab you will find some options.
-Most of the modern engines are UCI engines so leave "the "UCI" selected. But quite a few engines (notably lc0 and stockfish) like a particular way of
-transmitting a position so select "Send History" for stockfish, lc0 and possibly other engines.</p>
-<p>For fine-tuning you can open the "Options" Dialog. This will load engine specific tweaks. The most interesting option usually is the number of threads
+Most of the modern engines are UCI engines so leave the &ldquo;UCI&rdquo; selected. But quite a few engines (notably lc0 and stockfish) like a particular way of
+transmitting a position so select &ldquo;Send History&rdquo; for stockfish, lc0 and possibly other engines.</p>
+<p>For fine-tuning you can open the &ldquo;Options&rdquo; Dialog. This will load engine specific tweaks. The most interesting option usually is the number of threads
 the engine is allowed to use. Selecting a larger number will make the engine stronger but also use more power and your computer might heat up quickly.</p>
 <p><em>A note for OS X Users</em>: Try to open the Options Dialog even if you do not want to tweak the options. This is the easiest way to check if the engine is working.
 If you get an error message, try to start the engine from the terminal. If it's not running from the terminal, ChessX won't be able to use it either.
 Regarding Stockfish: do not use the official stockfish distribution, the
   engines usually do not work even with the latest OS X computers. The error messsage usually
-contains something like "Illegal instruction: 4". In this case, just fetch the source code and build stockfish yourself.</p>
+contains something like &ldquo;Illegal instruction: 4&rdquo;. In this case, just fetch the source code and build stockfish yourself.</p>
 
 <h3><a name="Analyse"></a>Analysing games</h3>
 <p>There are two analysis windows where two different engines can be configured to analyse the current board position.</p>
 <p>Engines must be configured before in the Preferences Dialog
   (see <a href="#Engines">Installing engines</a>).</p>
 <!-- 
-  I do not think this is true any longer ...
+  I do not think this is true any longer...
 
   A default engine (Stockfish) comes with this installation
   and will be configured as first engine, if no other entries exist.
@@ -168,11 +170,11 @@ The source code for Stockfish is also located on the homepage. Note that
 hard to implement for GUI developers.)</p>
 <p>You can change the move rate with the slider in the bottom right corner of the status bar. Draw the slider to the very left for infinite analysis or
 to the right to make the engine analyse from 1 to 10 secondes per move.</p>
-<p>If the number of lines is set to at least 2, the Guid/Bratko complexity is also calculated - see the reference on details.</p>
-<p>A hint for engine developers: You can log the communication from/to the engine with the "Log" checkbox in the engine settings.
-Logging will be sent to a file <code>'name.log'</code> where name is the "given" name in the engine settings. Logging directory is the <code>ProgramDataPath/log</code>. What the program data path resolves to can be found in the About box.</p>
+<p>If the number of lines is set to at least 2, the Guid/Bratko complexity is also calculated &mdash;  see the reference on details.</p>
+<p>A hint for engine developers: You can log the communication from/to the engine with the &ldquo;Log&rdquo; checkbox in the engine settings.
+Logging will be sent to a file <code>&lsquo;name.log&rsquo;</code> where name is the &ldquo;given&rdquo; name in the engine settings. Logging directory is the <code>ProgramDataPath/log</code>. What the program data path resolves to can be found in the About box.</p>
 <p>Some engines (e.g. lc0) have issues keeping a proper internal state across two position commands, therefore ChessX allows sending
-a complete game history instead of an updated position. This can be disabled via the "Send History" check box.</p>
+a complete game history instead of an updated position. This can be disabled via the &ldquo;Send History&rdquo; check box.</p>
 
 <h3><a name="Game"></a>Playing (out) games against an engine</h3>
 <p><img src=":/images/respond.png" width="42" align="left">You can play out a game after the final position by activating Auto Respond mode.
@@ -186,32 +188,35 @@ engine will make the best move found so far.</p>
   The integrated Stockfish is ready for Chess960. </p>  --> 
 
 <h3><a name="Auto-Annotate"></a>Automatically annotating games</h3>
-<p><img src=":/images/annotate.png" width="42" align="left">Activating menu "Game->Auto Analysis" will start to move through the
+<p><img src=":/images/annotate.png" width="42" align="left">Activating menu
+  &ldquo;Game &rarr; Auto Analysis&rdquo; will start to move through the
 current game, analysing each position for some time. After the alotted time is over, annotations will be inserted into the game
 text. Then ChessX will continue with the next move.</p>
 <p>There are a couple of options which have an influence on the behaviuor:</p>
 <ul>
 <li>The slider in the status bar will determine, how long the engine will ponder on each position
-<li>Preferences->Game->Automatically save and continue with next game: This allows analysing a complete database, select this option, start Engine 1,
+<li>Preferences &rarr; Game &rarr; Automatically save and continue with next game: This allows analysing a complete database, select this option, start Engine 1,
 open the first game from the database and select move 1.
-<li>Preferences->Database->Commit Database after saving Game: Recommended, commits your results to the harddisk after each game, especially if you
+<li>Preferences &rarr; Database &rarr; Commit Database after saving Game: Recommended, commits your results to the harddisk after each game, especially if you
 analyse a complete database, a loss of power will otherwise lose all results so far.
-<li>Preferences->Game->Blunder Check limit: Threshold in centipawns
-<li>Preferences->Game->Auto Analysis backwards: Backward analysis will enter variations only if the move's evaluation is above the limit described above
+<li>Preferences &rarr; Game &rarr; Blunder Check limit: Threshold in centipawns
+<li>Preferences &rarr; Game &rarr;Auto Analysis backwards: Backward analysis
+  will enter variations only if the move's evaluation is above the limit
+  described above 
 Forward analysis will only add a NAG (?, ??, !, !!) instead.
-<li>Preferences->Game->Add Annotation: The text given is added to inserted lines or NAGs so that the result of the analysis can be distinguished from already
+<li>Preferences &rarr; Game &rarr; Add Annotation: The text given is added to inserted lines or NAGs so that the result of the analysis can be distinguished from already
 existing lines and comments.
-<li>Preferences->Game->Mainline Only: This will prevent ChessX from diving into existing variations.
+<li>Preferences &rarr; Game &rarr; Mainline Only: This will prevent ChessX from diving into existing variations.
 </ul>
 If no limit is set, all variations will be added to the game text.
 
 <h3><a name="Engine-Books"></a>Using Books in engines</h3>
-<p>UCI engines may support books. Just set the OwnBook option to true, set the name of the "Book File" option and restart the engine.
-The engine will answer immediately with a book move when playing out games (see above), depending on "Best Book Move" option this may or
+<p>UCI engines may support books. Just set the OwnBook option to true, set the name of the &ldquo;Book File&rdquo; option and restart the engine.
+The engine will answer immediately with a book move when playing out games (see above), depending on &ldquo;Best Book Move&rdquo; option this may or
 may not be the best move from the book. In infinite analysis, the engine won't use information from opening books.</p>
 <p>If your engine does not support books (e.g. Stockfish does not support it anymore), the GUI can act as a
 frontend for the engine: Open a book as described below and select it from the book-selector in the Analysis pane.
-If you start a engine match or a game against an engine, you can use the option "Allow use of books" and select
+If you start a engine match or a game against an engine, you can use the option &ldquo;Allow use of books&rdquo; and select
 an algorithm, how the GUI shall select moves if several moves are available for a given position.
 <ul>
 <li>Best move will always take the preferred move
@@ -225,31 +230,31 @@ an algorithm, how the GUI shall select moves if several moves are available for 
 <p>The original Polyglot code was licensed under GNU GPL Version 2.0, the ctg-support largely inspired by the Daydreamer engine code.</p>
 <p>ChessX displays books like any other database in the Opening Tree Browser. Drag a Polyglot book
 an Arena Book or a Chessbase book to the Database List or open the book via menu. Once it is open, it becomes available as any other open database
-in the combo box "Source" beneath the opening tree.</p>
-<p><em>One note on Chessbase books:</em> Three files are required with externsion 'ctg', 'ctb' and 'cto'. They all need to have the same basename and reside
+in the combo box &ldquo;Source&rdquo; beneath the opening tree.</p>
+<p><em>One note on Chessbase books:</em> Three files are required with externsion &lsquo;ctg&rsquo;, &lsquo;ctb&rsquo; and &lsquo;cto&rsquo;. They all need to have the same basename and reside
 within the same directory.</p>
 <p><em>One note on Polyglot:</em> Books can be difficult to interpret: they are made for engines, as they give a hint on moves,
 the engine should play. Moves which did not succeed at all are usually not part of Polyglot books.</p>
-<p>So do not learn openings from Polyglot books - important moves might be missing!</p>
+<p>So do not learn openings from Polyglot books &mdash;  important moves might be missing!</p>
 <p><em>One note on Arena:</em> Unlike Polyglot or Chessbase, Arena books are a compressed set of games, so they are handled like read-only databases. You can drag games from Arena books
 like from any other database.<p>
 <h3><a name="Create-Book"></a>Creating your own book</h3>
-<p>You can create your own Polyglot book by selecting a open PGN or Arena database (right click with the mouse) and select "Make Polyglot book".</p>
+<p>You can create your own Polyglot book by selecting a open PGN or Arena database (right click with the mouse) and select &ldquo;Make Polyglot book&rdquo;.</p>
 <p>ChessX will query the following parameters and pass them for creating a book:</p>
 <ul>
 <li>The number of plies (half moves) to read for each game. E.g. if set to
-"20", only the first 10 full moves of each game will be scanned.
+&ldquo;20&rdquo;, only the first 10 full moves of each game will be scanned.
 <li>The number of times a move must have been played to be kept in the book. In other
 words, moves that were played too rarely will be left out. If you
-scan full games "2" seems a minimum, but if you selected lines
-manually "1" will make sense.
+scan full games &ldquo;2&rdquo; seems a minimum, but if you selected lines
+manually &ldquo;1&rdquo; will make sense.
 <li>You can overwrite the actual results of games by selecting the
 side for which you want to build a repertoire, assuming that all the games
 in a database contain lines that you want to play.
 <li>Before, you can filter out unwanted games.
 <li>By default, a probability is calculated by ChessX Polyglot for each move
 depending on how popular it is (how often it was playing in the
-provided PGN file) and how much it "scored". This option bypasses the
+provided PGN file) and how much it &ldquo;scored&rdquo;. This option bypasses the
 default mechanism and affects equal probability to all moves. This
 allows more variety of play.
 </ul>
@@ -298,7 +303,7 @@ copies in the filter can be marked for deletion.</p>
 <p>Filter for duplicate headers searches for identical tags. The games shown in the filter are
 games that have a brother game, that is not included in the list and in addition, the invisible
 brother has at least as many moves and comments as the games in the list.</p>
-<p>The context menu in the game list has a context menu entry "Filter twins" which for all selected
+<p>The context menu in the game list has a context menu entry &ldquo;Filter twins&rdquo; which for all selected
 games searches the whole database for exact duplicates. Both twins will appear in the filter list afterwards.</p>
 
 <h3><a name="Merge databases"></a>Merge complete databases</h3>
@@ -314,7 +319,9 @@ menu for either of the three refactoring methods.</p>
 <p><em>Note:</em> Refactoring a game can be undone, while there is no Undo for refactoring a complete database.</p>
 
 <h3><a name="Training"></a>Training Modes</h3>
-<p><img src=":/images/training.png" width="42" align="left">Selecting "Game/Training" starts the training mode. Moves starting from the current move are hidden on the game sheet. You can't modify a game
+<p><img src=":/images/training.png" width="42" align="left">Selecting
+  &ldquo;Game/Training&rdquo; starts the training mode. Moves starting from
+  the current move are hidden on the game sheet. You can't modify a game
 so you can make any move in a position. If the move is the right one (the one that was played or a existing variation) then the move is executed
 and the game is moved one step forward.
 The game notation is updated and variations on that move become visible. Ideal for use with a tactics database.</p>
@@ -330,14 +337,14 @@ See the chapter on Making Moves and the associated preferences to enable move gu
 the white or black pieces. E.g. you can visualize the net around a king or the way bishop and knight block all escape routes in the infamous endgame against the lone king.</p>
 <p><img src=":/images/threat_white.png" width="42" align="left">The threat indicators help visualizing underprotected pieces so that beginners learn that loose pieces drop off.</p>
 <p>More advanced is the option to let ChessX read out the next moves without making them on the board. Pupils are expected to visualize the upcoming position without actually seeing the moves on the board.
-After showing the moves on the board, ChessX will read out the next few moves again. See "Game/Read moves ahead" and the settings dialog ("App/Sound/Number of plies to read ahead").</p>
+After showing the moves on the board, ChessX will read out the next few moves again. See &ldquo;Game/Read moves ahead&rdquo; and the settings dialog (&ldquo;App/Sound/Number of plies to read ahead&rdquo;).</p>
 <h3><a name="Match"></a>Playing matches</h3>
 <p><img src=":/images/black_chess.png" width="42" align="left">Match allows two humans to play a game of chess. The match button makes sure, that ChessX does not give away hints on the position. This effectively disables
 engine output, tablebase output, moving back or forward in a game, changing databases etc.</p>
 <p><img src=":/images/game_engine.png" width="42" align="left">Play a game against an engine with time limit.</p>
 <br>
 <h3><a name="Engine-Match"></a>Matches between engines</h3>
-<p><img src=":/images/chip.png" width="42" align="left">With "Game/Engine Match" you can arrange a match between two engines. Analysis pane 1 will play the white pieces, pane 2 with the black pieces.
+<p><img src=":/images/chip.png" width="42" align="left">With &ldquo;Game/Engine Match&rdquo; you can arrange a match between two engines. Analysis pane 1 will play the white pieces, pane 2 with the black pieces.
 Starting an engine match brings up the match parameter dialog.
 If activated, the elapsed game time is annotated. You can play with Gong (each move will be made within a fixed time) or sudden death, where
 each engine gets a fixed amount of time for the whole game. ChessX will supervise the time and also adjudicate a draw in case of a three-fold repetition,
@@ -351,7 +358,7 @@ insufficient material or the 50 move rule.</p>
  chess server (FICS).</p>
 <p>If you have a FICS account, you can enter the credentials in the Preferences, otherwise, ChessX will login as guest.</p>
 <p>ChessX connects to FICS upon opening the virtual database FICS. A successful connection is indicated in the message pane of the FICS console.</p>
-<p>Selecting the tab "Games" will read in the list of games which are currently played on FICS. Double clicking a games will start monitoring this game.
+<p>Selecting the tab &ldquo;Games&rdquo; will read in the list of games which are currently played on FICS. Double clicking a games will start monitoring this game.
 Selecting Players will read in all players currently connected to
   FICS. Double-clicking a player will read in the players history (last 10
   games). Double clicking a game from the History pane will read in the game
@@ -363,7 +370,7 @@ Selecting Players will read in all players currently connected to
   used. The icon of the FICS button in the toolbar will show a timer if
   timeseal is used. Telnet will give you a
   disadvantage for faster games, so this protocol is not recommended. </p>
-<p>You can accept incoming match requests from other players pressing "Accept" or you can seek for an opponent in the seek pane.</p>
+<p>You can accept incoming match requests from other players pressing &ldquo;Accept&rdquo; or you can seek for an opponent in the seek pane.</p>
 <p>While waiting for your opponents move, you can already grab a piece and hover over a target square or you can enter a premove by
 dropping it somewhere, the premove piece and its target square a indicated. An active premove can be cancelled by clicking somewhere on the board
 or by selecting a new premove.</p>
