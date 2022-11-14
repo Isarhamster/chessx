@@ -286,6 +286,9 @@ add_library(gui STATIC
   dialogs/dlgsavebook.cpp
   dialogs/dlgsavebook.h
   dialogs/dlgsavebook.ui
+  dialogs/databasetagdialog.cpp
+  dialogs/databasetagdialog.h
+  dialogs/databasetagdialog.ui
   dialogs/matchparameterdlg.cpp
   dialogs/matchparameterdlg.h
   dialogs/matchparameterdlg.ui
@@ -316,6 +319,9 @@ add_library(gui STATIC
   gui/analysiswidget.ui
   gui/annotationtimeedit.cpp
   gui/annotationtimeedit.h
+  gui/annotationwidget.cpp
+  gui/annotationwidget.h
+  gui/annotationwidget.ui
   gui/boardsetup.cpp
   gui/boardsetup.h
   gui/boardsetup.ui

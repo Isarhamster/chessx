@@ -40,7 +40,7 @@ MoveList::MoveToFront(unsigned int index)
 void
 MoveList::SwapWithFirst(unsigned int index)
 {
-    swap(index,0);
+    swapItemsAt(index,0);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -137,7 +137,7 @@ MoveList::FindBest(unsigned int index)
     // Swap if necessary:
     if(index != bestIndex)
     {
-        swap(index,bestIndex);
+        swapItemsAt(index,bestIndex);
     }
 }
 
@@ -160,7 +160,7 @@ void MoveList::dumpMoves() const
         s.push_back(sm.toString());
         s.push_back(" ");
     }
-    qDebug() << s << endl;
+    qDebug() << s << Qt::endl;
 }
 //////////////////////////////////////////////////////////////////////
 //  EOF: movelist.cpp

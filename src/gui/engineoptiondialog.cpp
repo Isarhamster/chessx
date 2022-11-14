@@ -81,7 +81,7 @@ void EngineOptionDialog::engineActivated()
     ui->tableView->setDB(m_engine->m_options, m_engine->m_mapOptionValues);
 }
 
-OptionValueList EngineOptionDialog::GetResults() const
+OptionValueMap EngineOptionDialog::GetResults() const
 {
     return (m_engine ? m_engine->m_mapOptionValues :
             QMap<QString, QVariant>());

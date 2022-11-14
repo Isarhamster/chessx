@@ -23,6 +23,7 @@
 #include "settings.h"
 
 #include <QPushButton>
+#include <QRegularExpression>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -52,7 +53,7 @@ void RecipientAddressDialog::accept()
 {
     const QString email = ui->recipientEMail->text();
     const QString mailregex = "([0-9a-zA-Z]([+-_.\\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\\w]*[0-9a-zA-Z]\\.)+[a-zA-Z]{2,9})";
-    if(email.length() == 0 || (email.indexOf(QRegExp("^" + mailregex + "$")) == -1 && email.indexOf(QRegExp("<" + mailregex + ">")) == -1))
+    if(email.length() == 0 || (email.indexOf(QRegularExpression("^" + mailregex + "$")) == -1 && email.indexOf(QRegularExpression("<" + mailregex + ">")) == -1))
     {
         MessageDialog::warning(tr("This is no valid email address."));
         ui->recipientEMail->setFocus();

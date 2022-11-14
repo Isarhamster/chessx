@@ -5,9 +5,7 @@
 #include <QtWidgets>
 #include <QTimer>
 
-#ifdef USE_SOUND
-#include <QSound>
-#endif
+#include "qt6compat.h"
 
 #include "digitalclock.h"
 #include "settings.h"

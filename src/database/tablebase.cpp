@@ -19,7 +19,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QObject>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QStringList>
 #include <QTimer>
 #include <QUrl>
@@ -69,8 +69,8 @@ void OnlineTablebase::sendIt()
     QUrl url;
     QString prep(m_fen.simplified());
     QString count(prep.left(prep.indexOf(" ")));
-    int white = count.count(QRegExp("[A-Z]"));
-    int black = count.count(QRegExp("[a-z]"));
+    int white = count.count(QRegularExpression("[A-Z]"));
+    int black = count.count(QRegularExpression("[a-z]"));
 
     if(white + black > 7 || black < 1 || white < 1)
     {
@@ -122,53 +122,53 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                 {
                     QList<Move> bestMoves;
 
-                    QJsonValue wdl = doc.object().value("wdl");
-                    if (wdl.isNull())
-                    {
-                        return;
-                    }
-
-                    int result = wdl.toInt();
-
                     QJsonValue jdtm = doc.object().value("dtm");
-                    int dtm = jdtm.toInt();
                     QJsonValue jdtz = doc.object().value("dtz");
-                    int bestScore;
-                    if (result)
+                    int dtm = jdtm.toInt();
+                    int dtz = jdtz.toInt();
+                    int bestScore = 0;
+                    if (jdtm.isNull())
                     {
-                        bestScore = jdtm.isNull() ? 0 : dtm - ((dtm>0) ? 1:(-1));
+                        bestScore = jdtz.isNull() ? 0 : dtz;
                     }
                     else
                     {
-                        bestScore = jdtm.isNull() ? 0 : dtm;
+                        bestScore = dtm;
                     }
+                    int result = bestScore ? (bestScore > 0) ? 1:-1:0;
 
                     QJsonArray moves = doc.object().value("moves").toArray();
                     for (QJsonArray::const_iterator it = moves.constBegin(); it != moves.constEnd(); ++it)
                     {
-                        QJsonValue wdl = (*it).toObject().value("wdl");
-                        if (-wdl.toInt()!=result) break; // We are done with all moves leading to the best result
-
                         QJsonValue xjdtm = (*it).toObject().value("dtm");
+                        QJsonValue xjdtz = (*it).toObject().value("dtz");
                         int xdtm = xjdtm.toInt();
+                        int xdtz = xjdtz.toInt();
 
-                        if (bestScore)
+                        int xbestScore = 0;
+                        if (xjdtm.isNull())
                         {
-                            if (xdtm != -bestScore) break;
+                            xbestScore = xjdtz.isNull() ? 0 : xdtz;
                         }
+                        else
+                        {
+                            xbestScore = xdtm;
+                        }
+
+                        int nxresult = xbestScore ? (xbestScore > 0) ? -1:1:0;
+                        if (result != nxresult) break;
+
                         QJsonValue m = (*it).toObject().value("uci");
                         Move move = Move::fromUCI(m.toString().toLatin1());
                         bestMoves.append(move);
                     }
-                    if (s_allowEngineOutput && bestMoves.count())
+                    if (s_allowEngineOutput && (bestMoves.count() || bestScore))
                     {
-                        if (jdtm.isNull())
+                        if (dtm)
                         {
-                            dtm = 0;
-                            if (result > 0) dtm = 0x800;
-                            if (result < 0) dtm = -0x800;
+                            bestScore += result * 0x800;
                         }
-                        emit bestMove(bestMoves, dtm);
+                        emit bestMove(bestMoves, bestScore);
                     }
                 }
             }
@@ -181,16 +181,16 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
 
                 if(ret[5] == 'w')
                 {
-                    ret.remove(QRegExp("NEXTCOLOR.*\\n"));
+                    ret.remove(QRegularExpression("NEXTCOLOR.*\\n"));
                 }
                 else
                 {
-                    ret.remove(QRegExp(".*NEXTCOLOR\\n"));
+                    ret.remove(QRegularExpression(".*NEXTCOLOR\\n"));
                 }
                 ret.remove(0, ret.indexOf("\n") + 1);
                 ret.remove(":");
                 ret.remove("Win in ");
-                ret.replace(QRegExp("[-x]"), " ");
+                ret.replace(QRegularExpression("[-x]"), " ");
                 ret.replace("Draw", "0");
                 ret.replace("Lose in ", "-");
 
@@ -245,6 +245,8 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                     }
                     if (s_allowEngineOutput && !first)
                     {
+                        bestScore = bestScore*2; // Convert to half moves
+                        bestScore += ((bestScore>0)?1:-1) * 0x800;
                         emit bestMove(bestMoves, bestScore);
                     }
                 }

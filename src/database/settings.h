@@ -88,17 +88,19 @@ public:
     /// Shadow `QSettings::setValue()` to have a hook for updating global state
     void setValue(const QString& key, const QVariant& val);
 
-    void setMap(const QString& key, const OptionValueList& map);
-    void getMap(const QString& key, OptionValueList& map);
+    void setMap(const QString& key, const OptionValueMap& map);
+    void getMap(const QString& key, OptionValueMap& map);
 
     QString getTempPath() const;
 
-    QString getThemePath(QString effect, QString pieces) const;
+    QString getThemePath(QString effect = "", QString pieces = "") const;
     QStringList getThemeList(QString path) const;
 
     QString getImagePath() const;
+    QString getImagePath(QString name) const;
+    QPixmap getPixmap(QString name) const;
 
-    QString getBoardPath(QString) const;
+    QString getBoardPath(QString theme = "") const;
     QStringList getBoardList() const;
 
     QString getSoundPath(QString sound) const;
@@ -113,6 +115,8 @@ public:
 
     static QString portableIniPath();
 
+    QString getDefaultPieceSet() const;
+    QString getDefaultBoard() const;
 protected:
     virtual void initWidgetValues(QMap<QString, QVariant>&) const {};
 

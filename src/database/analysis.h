@@ -62,8 +62,6 @@ public:
     /** Moves to mate. */
     /** Convert analysis to formatted text. */
     QString toString(const BoardX& board) const;
-    /** Assignment operator */
-    Analysis& operator=(const Analysis& rhs);
     void setBestMove(bool bestMove);
     bool bestMove() const;
 

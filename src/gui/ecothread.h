@@ -22,6 +22,12 @@ public:
     EcoThread() {}
     void run()
     {
+        bool ok = loadAsync();
+        emit loaded(this, ok);
+    }
+
+    bool loadAsync()
+    {
         bool ok = true;
         QString eco = AppSettings->ecoPath();
         if (!EcoPositions::loadEcoFile(eco))
@@ -34,7 +40,7 @@ public:
             ok = false;
         }
         EcoPositions::m_ecoReady = true;
-        emit loaded(this, ok);
+        return ok;
     }
 
 signals:

@@ -16,6 +16,7 @@
 #include "tags.h"
 
 #include <QtGui>
+#include <QRegularExpression>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -84,7 +85,7 @@ void FilterModel::addColumns(const QStringList& tags)
 bool FilterModel::canEditItem(const QModelIndex& index) const
 {
     int col = index.column();
-    if ((col!= 0) && (col!=10) && (col!=11))
+    if ((col!= 0) && (col!=11))
     {
         return true;
     }
@@ -103,7 +104,7 @@ void FilterModel::cacheTags()
 QStringList FilterModel::additionalTags()
 {
     QString addTags = AppSettings->getValue("/GameList/AdditionalTags").toString();
-    QStringList tags = addTags.split(QRegExp("[^a-zA-Z]"), Qt::SkipEmptyParts);
+    QStringList tags = addTags.split(QRegularExpression("[^a-zA-Z]"), Qt::SkipEmptyParts);
     return tags;
 }
 
@@ -178,7 +179,24 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
         GameId i = index.row();
         if (VALID_INDEX(i))
         {
-            if ((role == Qt::DisplayRole) || (role == Qt::EditRole))
+            if (role == Qt::UserRole)
+            {
+                if(index.column() == 0)
+                {
+                    return i + 1;
+                }
+                QString tag = m_filter->database()->tagValue(i, m_columnTagIndex[index.column()]);
+                if ((index.column()==2) || (index.column()==4) || (index.column()==11))
+                {
+                    return tag.toInt();
+                }
+                if(tag == "?")
+                {
+                    tag.clear();
+                }
+                return tag;
+            }
+            else if ((role == Qt::DisplayRole) || (role == Qt::EditRole))
             {
                 if(index.column() == 0)
                 {

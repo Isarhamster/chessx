@@ -31,7 +31,7 @@ class PreferencesDialog : public QDialog
     Q_OBJECT
 public:
     /** Create ChessX Preferences dialog */
-    PreferencesDialog(QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
+    PreferencesDialog(QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
     /** Destroy the dialog */
     virtual ~PreferencesDialog();
 
@@ -116,6 +116,7 @@ private slots:
     void slotBtTextFontClicked();
     void SlotPieceEffectActivated(int index);
     void on_savePreferences_clicked();
+    void on_toolSearchWebDestination_clicked();
 };
 
 #endif

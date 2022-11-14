@@ -26,6 +26,11 @@ greaterThan(QT_MAJOR_VERSION, 4) {
   CONFIG += scid
 }
 
+greaterThan(QT_MAJOR_VERSION, 5) {
+    # Needed for QStringRef etc.
+    QT += core5compat
+}
+
 speech {
   DEFINES += USE_SPEECH
   QT += texttospeech
@@ -139,6 +144,7 @@ FORMS += \
   src/dialogs/boardsearchdialog.ui \
   src/dialogs/commentdialog.ui \
   src/dialogs/copydialog.ui \
+  src/dialogs/databasetagdialog.ui \
   src/dialogs/dlgsavebook.ui \
   src/dialogs/matchparameterdlg.ui \
   src/dialogs/onlinebase.ui \
@@ -150,6 +156,7 @@ FORMS += \
   src/dialogs/savedialog.ui \
   src/dialogs/tagdialog.ui \
   src/gui/analysiswidget.ui \
+  src/gui/annotationwidget.ui \
   src/gui/boardsetup.ui \
   src/gui/boardviewex.ui \
   src/gui/engineoptiondialog.ui \
@@ -244,6 +251,7 @@ HEADERS += src/database/board.h \
   src/dialogs/boardsearchdialog.h \
   src/dialogs/commentdialog.h \
   src/dialogs/copydialog.h \
+  src/dialogs/databasetagdialog.h \
   src/dialogs/dlgsavebook.h \
   src/dialogs/matchparameterdlg.h \
   src/dialogs/onlinebase.h \
@@ -271,6 +279,7 @@ HEADERS += src/database/board.h \
   src/gui/GameMimeData.h \
   src/gui/analysiswidget.h \
   src/gui/annotationtimeedit.h \
+  src/gui/annotationwidget.h \
   src/gui/boardsetup.h \
   src/gui/boardsetuptoolbutton.h \
   src/gui/boardtheme.h \
@@ -318,6 +327,7 @@ HEADERS += src/database/board.h \
   src/gui/plaintextedit.h \
   src/gui/playerlistwidget.h \
   src/gui/qled.h \
+  src/gui/qt6compat.h \
   src/gui/shellhelper.h \
   src/gui/simplelabel.h \
   src/gui/style.h \
@@ -417,6 +427,7 @@ SOURCES += \
   src/dialogs/boardsearchdialog.cpp \
   src/dialogs/commentdialog.cpp \
   src/dialogs/copydialog.cpp \
+  src/dialogs/databasetagdialog.cpp \
   src/dialogs/dlgsavebook.cpp \
   src/dialogs/matchparameterdlg.cpp \
   src/dialogs/onlinebase.cpp \
@@ -436,6 +447,7 @@ SOURCES += \
   src/guess/guess_recog.cpp \
   src/gui/analysiswidget.cpp \
   src/gui/annotationtimeedit.cpp \
+  src/gui/annotationwidget.cpp \
   src/gui/boardsetup.cpp \
   src/gui/boardsetuptoolbutton.cpp \
   src/gui/boardtheme.cpp \
@@ -599,8 +611,8 @@ OTHER_FILES += \
   data/templates/notation-default.template \
   data/templates/latex-default.template \
   data/templates/html-default.template \
-  ChangeLog \
-  COPYING \
+  ChangeLog.md \
+  COPYING.md \
   ChangeLog.txt \
   data/help/about.css \
   data/help/about-dark.css \
@@ -631,11 +643,11 @@ win32 {
 }
 
 DISTFILES += \
-  INSTALL \
-  TODO \
+  INSTALL.md \
+  TODO.md \
   Doxyfile \
   License.txt \
-  README.developers \
+  README.developers.md \
   unix/make_tarball \
   mac_osx/svnlist \
   mac_osx/fix_paths.sh \

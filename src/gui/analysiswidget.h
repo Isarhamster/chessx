@@ -14,6 +14,7 @@
 #include "movedata.h"
 #include "ui_analysiswidget.h"
 #include <QtGui>
+#include <QElapsedTimer>
 #include <QPointer>
 
 /** @ingroup GUI
@@ -48,6 +49,8 @@ public:
 
     QString engineName() const;
     void updateBookFile(Database*);
+
+    void clear();
 
 public slots:
     /** Sets new position. If analysis is active, the current content will be cleared and
@@ -142,7 +145,7 @@ private:
     int m_lastDepthAdded;
     bool m_onHold;
 
-    QTime m_lastEngineStart;
+    QElapsedTimer m_lastEngineStart;
     QPointer<Database> m_pBookDatabase;
     QList<MoveData> moveList;
     int games;

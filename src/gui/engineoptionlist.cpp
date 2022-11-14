@@ -104,7 +104,7 @@ EngineOptionList::EngineOptionList(QWidget *parent) :
 }
 
 void EngineOptionList::setDB(const QList<EngineOptionData>& options,
-                             OptionValueList& mapOptionValues)
+                             OptionValueMap& mapOptionValues)
 {
     m_model = new EngineOptionModel(this);
     m_model->m_pOptionDataList = &options;

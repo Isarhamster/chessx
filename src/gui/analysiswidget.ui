@@ -69,7 +69,7 @@
         <string notr="true"/>
        </property>
        <property name="icon">
-        <iconset resource="../../resources.qrc">
+        <iconset>
          <normaloff>:/images/pin.ico</normaloff>:/images/pin.ico</iconset>
        </property>
        <property name="checkable">
@@ -130,8 +130,6 @@
   <tabstop>analyzeButton</tabstop>
   <tabstop>variationText</tabstop>
  </tabstops>
- <resources>
-  <include location="../../resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

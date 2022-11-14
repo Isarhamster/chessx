@@ -182,6 +182,7 @@ void ChessBrowser::setupMenu()
     m_browserMenu->addAction((m_addNullMove2 = createAction(tr("Insert threat"), EditAction::AddNullMove)));
     m_browserMenu->addAction((m_copyHtml = createAction(tr("Copy Html"), EditAction::CopyHtml)));
     m_browserMenu->addAction((m_copyText = createAction(tr("Copy Text"), EditAction::CopyText)));
+    m_browserMenu->addAction((m_copyTextSelection = createAction(tr("Copy selected Text"), EditAction::CopyTextSelection)));
     m_browserMenu->addSeparator();
     QMenu* refactorMenu = m_browserMenu->addMenu(tr("Refactor"));
     refactorMenu->addAction((m_uncomment = createAction(tr("Uncomment"), EditAction::Uncomment)));
@@ -250,6 +251,7 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
         m_copyText->setVisible(!gameIsEmpty);
         m_uncomment->setVisible(!gameIsEmpty);
         m_remove->setVisible(!gameIsEmpty);
+        m_copyTextSelection->setVisible(!gameIsEmpty);
 
         m_browserMenu->exec(mapToGlobal(pos));
     }

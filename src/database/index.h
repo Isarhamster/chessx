@@ -83,6 +83,9 @@ public:
 
     /** Get the list of tagValues for a given @p tagName */
     QStringList tagValues(const QString& tagName) const;
+
+    /** Get the list of tags */
+    QStringList tagNames() const;
 	
 	QSet<ValueIndex> tagValueSet(const QString& tagName) const;
 

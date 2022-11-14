@@ -175,7 +175,7 @@ void MemoryDatabase::parseGame()
 
     if(AppSettings->getValue("/General/automaticECO").toBool())
     {
-        if(eco.isEmpty())
+        if(eco.isEmpty() || !AppSettings->getValue("/General/preserveECO").toBool())
         {
             eco = game->ecoClassify().left(3);
             if(!eco.isEmpty())

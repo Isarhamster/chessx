@@ -8,6 +8,8 @@
 #define ROOT_NODE 0
 #define NO_MOVE -1
 #define CURRENT_MOVE -2
+#define PREV_MOVE -3
+#define NEXT_MOVE -4
 
 typedef int MoveId;
 
@@ -180,7 +182,8 @@ public:
     /** Remove nodes marked for removal */
     void clearDummyNodes();
     QMap<MoveId, MoveId> compact();
-
+    void removeNullLines();
+    bool isRemoved(MoveId moveId) const;
     /** Change parent of each move of a variation. */
     void reparentVariation(MoveId variation, MoveId parent);
 

@@ -2,8 +2,8 @@
 *   Copyright (C) 2016 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
-#include "tagsearch.h"
 #include "database.h"
+#include "tagsearch.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
