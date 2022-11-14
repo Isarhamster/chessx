@@ -70,6 +70,7 @@ add_library(eco STATIC
   database/ecopositions.h
   guess/guess_compileeco.cpp
   guess/guess_compileeco.h
+  gui/qt6compat.h
 )
 
 target_link_libraries(eco
@@ -77,6 +78,7 @@ target_link_libraries(eco
     qt_config
   PUBLIC
     board
+    gui
     Qt5::Core
 )
 
