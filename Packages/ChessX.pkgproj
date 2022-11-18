@@ -625,7 +625,7 @@
 						<key>BACKGROUND_PATH</key>
 						<dict>
 							<key>PATH</key>
-							<string>/Users/ni/Documents/Projects/chessx/data/images/chessx.png</string>
+							<string>../data/images/chessx.png</string>
 							<key>PATH_TYPE</key>
 							<integer>0</integer>
 						</dict>
@@ -643,9 +643,9 @@
 						<key>BACKGROUND_PATH</key>
 						<dict>
 							<key>PATH</key>
-							<string>/Users/jens/Documents/Programmieren/Projects/chessx/data/images/chessx-64.png</string>
+							<string>../data/images/chessx-64.png</string>
 							<key>PATH_TYPE</key>
-							<integer>0</integer>
+							<integer>3</integer>
 						</dict>
 						<key>CUSTOM</key>
 						<true/>
@@ -658,9 +658,9 @@
 				<key>BACKGROUND_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>/Users/jens/Documents/Programmieren/Projects/chessx/data/images/chessx-64.png</string>
+					<string>../data/images/chessx-64.png</string>
 					<key>PATH_TYPE</key>
-					<integer>0</integer>
+					<integer>3</integer>
 				</dict>
 				<key>CUSTOM</key>
 				<true/>

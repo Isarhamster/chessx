@@ -761,6 +761,10 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 {
                     m_ficsClient->sendCommand("xtell relay next");
                 }
+		else
+		{
+		    ui->textIn->appendPlainText(s);
+		}
             }
             break;
         case FicsClient::BLKCMD_WHO:

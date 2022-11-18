@@ -51,3 +51,4 @@ void OnlineBase::setTournament(const QString &newTournament)
     ui->tournament->show();
     ui->tournament->setText(newTournament);
 }
+

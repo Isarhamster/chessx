@@ -100,7 +100,7 @@ prevHook = _CrtSetReportHook(customReportHook);
 
     QApplication app(argc, argv);
 
-    app.setFont(QMessageBox().font()); // Workaround for severe bug in Qt5
+    QApplication::setFont(QMessageBox().font()); // Workaround for severe bug in Qt5
 
     QDir dir(QApplication::applicationDirPath());
 

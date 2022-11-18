@@ -88,8 +88,8 @@ public:
     /// Shadow `QSettings::setValue()` to have a hook for updating global state
     void setValue(const QString& key, const QVariant& val);
 
-    void setMap(const QString& key, const OptionValueList& map);
-    void getMap(const QString& key, OptionValueList& map);
+    void setMap(const QString& key, const OptionValueMap& map);
+    void getMap(const QString& key, OptionValueMap& map);
 
     QString getTempPath() const;
 

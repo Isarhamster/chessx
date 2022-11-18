@@ -1056,7 +1056,7 @@ void MainWindow::openLichess()
     QDate start(date.year(),date.month(),1);
 
     OnlineBase db;
-    db.setTournament("");
+// TODO Debug Tournament handles - they don't work reliably db.setTournament("");
 
     QAction* action = qobject_cast<QAction*>(sender());
     if (action)
@@ -2331,11 +2331,11 @@ void MainWindow::QueryLoadDatabase()
     {
         if(dlg.largeDB())
         {
-            openDatabaseUrl("http://chessx.sourceforge.net/db/bundesliga2000.pgn.zip", false);
+            openDatabaseUrl("http://chessx.sourceforge.io/db/bundesliga2000.pgn.zip", false);
         }
         else
         {
-            openDatabaseUrl("http://chessx.sourceforge.net/db/SBL1213.pgn.zip", false);
+            openDatabaseUrl("http://chessx.sourceforge.io/db/SBL1213.pgn.zip", false);
         }
     }
     AppSettings->setValue("/General/BuiltinDbInstalled", QVariant(true));

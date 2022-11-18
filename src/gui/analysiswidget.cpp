@@ -72,9 +72,9 @@ void AnalysisWidget::startEngine()
         }
         ui.variationText->clear();
         m_engine = EngineX::newEngine(index);
-        ui.vpcount->setEnabled(m_engine->providesMvp());
-        ui.label->setEnabled(m_engine->providesMvp());
-        if(!m_engine->providesMvp())
+        ui.vpcount->setEnabled(m_engine->providesMpv());
+        ui.label->setEnabled(m_engine->providesMpv());
+        if(!m_engine->providesMpv())
         {
             ui.vpcount->setValue(1);
         }

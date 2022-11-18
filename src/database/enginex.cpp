@@ -242,6 +242,11 @@ bool EngineX::getSendHistory() const
     return m_sendHistory;
 }
 
+int EngineX::defaultMpv() const
+{
+    return m_mapOptionValues.value("MultiPV", "1").toInt();
+}
+
 void EngineX::setMpv(int mpv)
 {
     m_mpv = mpv;

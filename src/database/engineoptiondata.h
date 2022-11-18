@@ -18,7 +18,7 @@ enum OptionType
     OPT_TYPE_STRING
 };
 
-typedef QMap<QString, QVariant> OptionValueList;
+typedef QMap<QString, QVariant> OptionValueMap;
 
 class EngineOptionData
 {
