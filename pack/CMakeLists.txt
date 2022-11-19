@@ -7,6 +7,7 @@ set(CPACK_SOURCE_IGNORE_FILES
     \.github/
     \.bat$
     \.iss$
+    build
     data/engines/
     data/engines-mac/
     data/timeseal/
@@ -17,9 +18,11 @@ set(CPACK_SOURCE_IGNORE_FILES
     tools/
     src/chessx\.rc
     src/resource\.h
+    vcpkg
 )
 
 set(CPACK_PACKAGE_FILE_NAME        "${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}")
+set(CPACK_GENERATOR "DragNDrop")
 
 # Automatically escape CPACK_* variables
 set(CPACK_VERBATIM_VARIABLES YES)

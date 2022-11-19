@@ -118,7 +118,7 @@ else()
   )
 endif()
 
-qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/src ${TS_FILES})
 
 target_link_libraries(${APP_NAME} PRIVATE
   qt_config
@@ -150,19 +150,23 @@ set_target_properties(${APP_NAME} PROPERTIES
 )
 
 if (APPLE)
-  find_program(MACDEPLOYQT NAMES macdeployqt NO_SYSTEM_ENVIRONMENT_PATH)
-
-  add_custom_command(
-    TARGET ${APP_NAME}
-    POST_BUILD
-    COMMAND ${MACDEPLOYQT} ${APP_NAME}.app
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-  )
+  # Install the app
   install(
     TARGETS ${APP_NAME}
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   )
+  # Use macdeployqt on the installed app bundle
+  find_program(MACDEPLOYQT macdeployqt
+    PATHS ENV "Qt${QT_VERSION_MAJOR}_DIR"
+    PATH_SUFFIXES bin
+    REQUIRED
+    NO_SYSTEM_ENVIRONMENT_PATH
+  )
+  string(CONFIGURE [==[
+    execute_process(COMMAND @MACDEPLOYQT@ ${CMAKE_INSTALL_PREFIX}/@APP_NAME@.app)
+  ]==] DEPLOY_SCRIPT @ONLY)
+  install(CODE ${DEPLOY_SCRIPT})
 else()
   install(TARGETS ${APP_NAME}
     RUNTIME DESTINATION bin

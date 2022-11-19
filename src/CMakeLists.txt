@@ -481,15 +481,15 @@ if (ENABLE_SOUNDS)
       USE_SOUND
   )
   target_link_libraries(gui PRIVATE Qt::Multimedia)
-  if (UNIX AND NOT APPLE)
-    # on Linux QtMultimedia links to pulseaudio
-    find_package(PulseAudio REQUIRED) 
-    target_link_libraries(gui
-      PRIVATE
-        ${PULSEAUDIO_LIBRARY}
-        ${PULSEAUDIO_MAINLOOP_LIBRARY}
-    )
-  endif()
+  # if (UNIX AND NOT APPLE)
+  #   # on Linux QtMultimedia links to pulseaudio
+  #   find_package(PulseAudio REQUIRED) 
+  #   target_link_libraries(gui
+  #     PRIVATE
+  #       ${PULSEAUDIO_LIBRARY}
+  #       ${PULSEAUDIO_MAINLOOP_LIBRARY}
+  #   )
+  # endif()
 endif()
 
 if (ENABLE_TTS)

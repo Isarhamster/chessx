@@ -26,3 +26,6 @@ lib/chessx-pgn/moc_pgndatabase.cpp
 lib/chessx-pgn/moc_predefs.h
 lib/chessx-pgn/moc_search.cpp
 lib/chessx-pgn/moc_settings.cpp
+
+CMakeUserPresets.json
+
