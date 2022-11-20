@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-qmake:
-    name: Build using qmake on ${{ matrix.os }} with Qt-${{ matrix.qt }}
+    name: build / qmake / Qt-${{ matrix.qt }} / ${{ matrix.os }} 
     strategy:
       matrix:
         os: [macos-latest]
@@ -31,7 +31,7 @@ jobs:
       run: make
 
   build:
-    name: Build and test using CMake on ${{ matrix.os }} with Qt-${{ matrix.qt }}
+    name: build + test / CMake / Qt-${{ matrix.qt }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -42,8 +42,8 @@ jobs:
           - macos-10.15 # macOS Catalina 10.15 (deprecated)
           - ubuntu-22.04
           - ubuntu-20.04 # aka "ubuntu-latest"
-          # - windows-2022 # Windows Server 2022, aka "windows-latest"
-          # - windows-2019 # Windows Server 2019
+          - windows-2022 # Windows Server 2022, aka "windows-latest"
+          - windows-2019 # Windows Server 2019
         qt: ['5.15.2']
 
     steps:
