@@ -1,6 +1,7 @@
 #include <vector>
 
-#include "doctest.h"
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_floating_point.hpp>
 
 #include "movedata.h"
 
@@ -8,15 +9,15 @@ TEST_CASE("testing ResultsCounter")
 {
     const ResultsCounter unit;
 
-    SUBCASE("equality")
+    SECTION("equality")
     {
         ResultsCounter c1;
-        CHECK_EQ(c1 == unit, true);
+        CHECK(c1 == unit);
         c1.update(WhiteWin);
-        CHECK_EQ(c1 == unit, false);
+        CHECK_FALSE(c1 == unit);
 
         ResultsCounter c2 { WhiteWin };
-        CHECK_EQ(c2 == c1, true);
+        CHECK(c2 == c1);
 
         std::vector<ResultsCounter> counters {
             {},
@@ -28,176 +29,177 @@ TEST_CASE("testing ResultsCounter")
 
         for (const auto& cntr: counters)
         {
-            CHECK_EQ(cntr == cntr, true);
+            CHECK(cntr == cntr);
         }
 
         for (size_t i = 0; i < counters.size(); ++i)
         {
             for (auto j = i + 1; j < counters.size(); ++j)
             {
-                CHECK_EQ(counters[i] == counters[j], false);
-                CHECK_EQ(counters[j] == counters[i], false);
+                CHECK_FALSE(counters[i] == counters[j]);
+                CHECK_FALSE(counters[j] == counters[i]);
             }
         }
     }
 
-    SUBCASE("count()")
+    SECTION("count()")
     {
-        SUBCASE("unit")
+        SECTION("unit")
         {
-            CHECK_EQ(unit.count(), 0);
-            CHECK_EQ(unit.count(ResultUnknown), 0);
-            CHECK_EQ(unit.count(WhiteWin), 0);
-            CHECK_EQ(unit.count(Draw), 0);
-            CHECK_EQ(unit.count(BlackWin), 0);
+            CHECK(unit.count() == 0);
+            CHECK(unit.count(ResultUnknown) == 0);
+            CHECK(unit.count(WhiteWin) == 0);
+            CHECK(unit.count(Draw) == 0);
+            CHECK(unit.count(BlackWin) == 0);
         }
-        SUBCASE("+")
+        SECTION("+")
         {
             ResultsCounter c { WhiteWin };
-            CHECK_EQ(c.count(), 1);
-            CHECK_EQ(c.count(ResultUnknown), 0);
-            CHECK_EQ(c.count(WhiteWin), 1);
-            CHECK_EQ(c.count(Draw), 0);
-            CHECK_EQ(c.count(BlackWin), 0);
+            CHECK(c.count() == 1);
+            CHECK(c.count(ResultUnknown) == 0);
+            CHECK(c.count(WhiteWin) == 1);
+            CHECK(c.count(Draw) == 0);
+            CHECK(c.count(BlackWin) == 0);
         }
-        SUBCASE("=")
+        SECTION("=")
         {
             ResultsCounter c { Draw };
-            CHECK_EQ(c.count(), 1);
-            CHECK_EQ(c.count(ResultUnknown), 0);
-            CHECK_EQ(c.count(WhiteWin), 0);
-            CHECK_EQ(c.count(Draw), 1);
-            CHECK_EQ(c.count(BlackWin), 0);
+            CHECK(c.count() == 1);
+            CHECK(c.count(ResultUnknown) == 0);
+            CHECK(c.count(WhiteWin) == 0);
+            CHECK(c.count(Draw) == 1);
+            CHECK(c.count(BlackWin) == 0);
         }
-        SUBCASE("-")
+        SECTION("-")
         {
             ResultsCounter c { BlackWin };
-            CHECK_EQ(c.count(), 1);
-            CHECK_EQ(c.count(ResultUnknown), 0);
-            CHECK_EQ(c.count(WhiteWin), 0);
-            CHECK_EQ(c.count(Draw), 0);
-            CHECK_EQ(c.count(BlackWin), 1);
+            CHECK(c.count() == 1);
+            CHECK(c.count(ResultUnknown) == 0);
+            CHECK(c.count(WhiteWin) == 0);
+            CHECK(c.count(Draw) == 0);
+            CHECK(c.count(BlackWin) == 1);
         }
-        SUBCASE("*")
+        SECTION("*")
         {
             ResultsCounter c { ResultUnknown };
-            CHECK_EQ(c.count(), 1);
-            CHECK_EQ(c.count(ResultUnknown), 1);
-            CHECK_EQ(c.count(WhiteWin), 0);
-            CHECK_EQ(c.count(Draw), 0);
-            CHECK_EQ(c.count(BlackWin), 0);
+            CHECK(c.count() == 1);
+            CHECK(c.count(ResultUnknown) == 1);
+            CHECK(c.count(WhiteWin) == 0);
+            CHECK(c.count(Draw) == 0);
+            CHECK(c.count(BlackWin) == 0);
         }
-        SUBCASE("mixed")
+        SECTION("mixed")
         {
             ResultsCounter c { WhiteWin, Draw, BlackWin, Draw, ResultUnknown};
-            CHECK_EQ(c.count(), 5);
-            CHECK_EQ(c.count(ResultUnknown), 1);
-            CHECK_EQ(c.count(WhiteWin), 1);
-            CHECK_EQ(c.count(Draw), 2);
-            CHECK_EQ(c.count(BlackWin), 1);
+            CHECK(c.count() == 5);
+            CHECK(c.count(ResultUnknown) == 1);
+            CHECK(c.count(WhiteWin) == 1);
+            CHECK(c.count(Draw) == 2);
+            CHECK(c.count(BlackWin) == 1);
         }
     }
 
-    SUBCASE("scorePercentage()")
+    SECTION("scorePercentage()")
     {
-        SUBCASE("unit")
+        SECTION("unit")
         {
-            CHECK_EQ(unit.scorePercentage(), 0.0);
+            REQUIRE(unit.scorePercentage() == 0.0);
         }
-        SUBCASE("+")
+        SECTION("+")
         {
             ResultsCounter c { WhiteWin };
-            CHECK_EQ(c.scorePercentage(), 100.0);
+            REQUIRE(c.scorePercentage() == 100.0);
         }
-        SUBCASE("=")
+        SECTION("=")
         {
             ResultsCounter c { Draw };
-            CHECK_EQ(c.scorePercentage(), 50.0);
+            REQUIRE(c.scorePercentage() == 50.0);
         }
-        SUBCASE("*")
+        SECTION("*")
         {
             ResultsCounter c { ResultUnknown };
-            CHECK_EQ(c.scorePercentage(), 50.0);
+            REQUIRE(c.scorePercentage() == 50.0);
         }
-        SUBCASE("-")
+        SECTION("-")
         {
             ResultsCounter c { BlackWin };
-            CHECK_EQ(c.scorePercentage(), 0.0);
+            REQUIRE(c.scorePercentage() == 0.0);
         }
-        SUBCASE("mixed")
+        SECTION("mixed")
         {
             ResultsCounter c { WhiteWin, Draw, ResultUnknown };
-            CHECK_EQ(c.scorePercentage(), doctest::Approx(67).epsilon(0.01));
+            auto expected = 66.67;
+            REQUIRE_THAT(c.scorePercentage(), Catch::Matchers::WithinAbs(expected, 0.01));
         }
     }
 
-    SUBCASE("whiteWinPercentage()")
+    SECTION("whiteWinPercentage()")
     {
-        SUBCASE("unit")
+        SECTION("unit")
         {
-            CHECK_EQ(unit.whiteWinPercentage(), 0.0);
+            REQUIRE(unit.whiteWinPercentage() == 0.0);
         }
-        SUBCASE("+")
+        SECTION("+")
         {
             ResultsCounter c { WhiteWin };
-            CHECK_EQ(c.whiteWinPercentage(), 100.0);
+            REQUIRE(c.whiteWinPercentage() == 100.0);
         }
-        SUBCASE("=")
+        SECTION("=")
         {
             ResultsCounter c { Draw };
-            CHECK_EQ(c.whiteWinPercentage(), 0.0);
+            REQUIRE(c.whiteWinPercentage() == 0.0);
         }
-        SUBCASE("*")
+        SECTION("*")
         {
             ResultsCounter c { ResultUnknown };
-            CHECK_EQ(c.whiteWinPercentage(), 0.0);
+            REQUIRE(c.whiteWinPercentage() == 0.0);
         }
-        SUBCASE("-")
+        SECTION("-")
         {
             ResultsCounter c { BlackWin };
-            CHECK_EQ(c.whiteWinPercentage(), 0.0);
+            REQUIRE(c.whiteWinPercentage() == 0.0);
         }
-        SUBCASE("mixed")
+        SECTION("mixed")
         {
             ResultsCounter c { WhiteWin, Draw, ResultUnknown, BlackWin, WhiteWin };
-            CHECK_EQ(c.whiteWinPercentage(), 50.0);
+            REQUIRE(c.whiteWinPercentage() == 50.0);
         }
     }
 
-    SUBCASE("blackWinPercentage()")
+    SECTION("blackWinPercentage()")
     {
-        SUBCASE("unit")
+        SECTION("unit")
         {
-            CHECK_EQ(unit.blackWinPercentage(), 0.0);
+            REQUIRE(unit.blackWinPercentage() == 0.0);
         }
-        SUBCASE("+")
+        SECTION("+")
         {
             ResultsCounter c { WhiteWin };
-            CHECK_EQ(c.blackWinPercentage(), 0.0);
+            REQUIRE(c.blackWinPercentage() == 0.0);
         }
-        SUBCASE("=")
+        SECTION("=")
         {
             ResultsCounter c { Draw };
-            CHECK_EQ(c.blackWinPercentage(), 0.0);
+            REQUIRE(c.blackWinPercentage() == 0.0);
         }
-        SUBCASE("*")
+        SECTION("*")
         {
             ResultsCounter c { ResultUnknown };
-            CHECK_EQ(c.blackWinPercentage(), 0.0);
+            REQUIRE(c.blackWinPercentage() == 0.0);
         }
-        SUBCASE("-")
+        SECTION("-")
         {
             ResultsCounter c { BlackWin };
-            CHECK_EQ(c.blackWinPercentage(), 100.0);
+            REQUIRE(c.blackWinPercentage() == 100.0);
         }
-        SUBCASE("mixed")
+        SECTION("mixed")
         {
             ResultsCounter c { WhiteWin, Draw, ResultUnknown, BlackWin, WhiteWin };
-            CHECK_EQ(c.blackWinPercentage(), 25.0);
+            REQUIRE(c.blackWinPercentage() == 25.0);
         }
     }
 
-    SUBCASE("update()")
+    SECTION("update()")
     {
         // check `count` parameter
         ResultsCounter c;
@@ -206,11 +208,11 @@ TEST_CASE("testing ResultsCounter")
         c.update(Draw, 30);
         c.update(BlackWin, 40);
 
-        CHECK_EQ(c.count(ResultUnknown), 10);
-        CHECK_EQ(c.count(WhiteWin), 20);
-        CHECK_EQ(c.count(Draw), 30);
-        CHECK_EQ(c.count(BlackWin), 40);
-        CHECK_EQ(c.count(), 100);
+        REQUIRE(c.count(ResultUnknown) == 10);
+        REQUIRE(c.count(WhiteWin) == 20);
+        REQUIRE(c.count(Draw) == 30);
+        REQUIRE(c.count(BlackWin) == 40);
+        REQUIRE(c.count() == 100);
     }
 }
 

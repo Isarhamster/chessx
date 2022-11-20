@@ -11,7 +11,6 @@ set(CPACK_SOURCE_IGNORE_FILES
     data/engines/
     data/engines-mac/
     data/timeseal/
-    dep/doctest/
     mac_osx/
     Packages/
     tests/

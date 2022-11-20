@@ -1,5 +1,5 @@
 
-#include "doctest.h"
+#include <catch2/catch_test_macros.hpp>
 #include "resourcepath.h"
 
 #include "tags.h"
@@ -39,28 +39,28 @@ TEST_CASE("testing Index class")
     index.setTag("WhiteTeamCountry", "YUG", 1);
     index.setTag("BlackTeamCountry", "SUI", 1);
 
-    CHECK_EQ(index.tagValue(TagNameEvent, 0) , QString("Ch World (match)"));
-    CHECK_EQ(index.tagValue(TagNameSite, 0) , QString("Buenos Aires ARG"));
-    CHECK_EQ(index.tagValue(TagNameDate, 0) , QString("1927.??.??"));
-    CHECK_EQ(index.tagValue(TagNameRound, 0) , QString("12"));
-    CHECK_EQ(index.tagValue(TagNameWhite, 0) , QString("Alekhine, Alexander A"));
-    CHECK_EQ(index.tagValue(TagNameBlack, 0) , QString("Capablanca, Jose Raul"));
-    CHECK_EQ(index.tagValue(TagNameResult, 0) , QString("1-0"));
-    CHECK_EQ(index.tagValue(TagNameECO, 0) , QString("D64"));
-    CHECK_EQ(index.tagValue(TagNameEventDate, 0) , QString("1927.??.??"));
-    CHECK_EQ(index.tagValue(TagNamePlyCount, 0) , QString("81"));
-    CHECK_EQ(index.tagValue(TagNameSource, 0) , QString("Chessbase"));
-    CHECK_EQ(index.tagValue(TagNameEvent, 1) , QString("Ch World (match)"));
-    CHECK_EQ(index.tagValue(TagNameSite, 1) , QString("Buenos Aires ARG"));
-    CHECK_EQ(index.tagValue(TagNameDate, 1) , QString("1927.??.??"));
-    CHECK_EQ(index.tagValue(TagNameRound, 1) , QString("20"));
-    CHECK_EQ(index.tagValue(TagNameWhite, 1) , QString("Alekhine, Alexander A"));
-    CHECK_EQ(index.tagValue(TagNameBlack, 1) , QString("Capablanca, Jose Raul"));
-    CHECK_EQ(index.tagValue(TagNameResult, 1) , QString("1/2-1/2"));
-    CHECK_EQ(index.tagValue(TagNameECO, 1) , QString("D67"));
-    CHECK_EQ(index.tagValue(TagNameEventDate, 1) , QString("1927.??.??"));
-    CHECK_EQ(index.tagValue(TagNamePlyCount, 1) , QString("86"));
-    CHECK_EQ(index.tagValue(TagNameSource, 1) , QString("Chessbase"));
+    CHECK(index.tagValue(TagNameEvent, 0) == QString("Ch World (match)"));
+    CHECK(index.tagValue(TagNameSite, 0) == QString("Buenos Aires ARG"));
+    CHECK(index.tagValue(TagNameDate, 0) == QString("1927.??.??"));
+    CHECK(index.tagValue(TagNameRound, 0) == QString("12"));
+    CHECK(index.tagValue(TagNameWhite, 0) == QString("Alekhine, Alexander A"));
+    CHECK(index.tagValue(TagNameBlack, 0) == QString("Capablanca, Jose Raul"));
+    CHECK(index.tagValue(TagNameResult, 0) == QString("1-0"));
+    CHECK(index.tagValue(TagNameECO, 0) == QString("D64"));
+    CHECK(index.tagValue(TagNameEventDate, 0) == QString("1927.??.??"));
+    CHECK(index.tagValue(TagNamePlyCount, 0) == QString("81"));
+    CHECK(index.tagValue(TagNameSource, 0) == QString("Chessbase"));
+    CHECK(index.tagValue(TagNameEvent, 1) == QString("Ch World (match)"));
+    CHECK(index.tagValue(TagNameSite, 1) == QString("Buenos Aires ARG"));
+    CHECK(index.tagValue(TagNameDate, 1) == QString("1927.??.??"));
+    CHECK(index.tagValue(TagNameRound, 1) == QString("20"));
+    CHECK(index.tagValue(TagNameWhite, 1) == QString("Alekhine, Alexander A"));
+    CHECK(index.tagValue(TagNameBlack, 1) == QString("Capablanca, Jose Raul"));
+    CHECK(index.tagValue(TagNameResult, 1) == QString("1/2-1/2"));
+    CHECK(index.tagValue(TagNameECO, 1) == QString("D67"));
+    CHECK(index.tagValue(TagNameEventDate, 1) == QString("1927.??.??"));
+    CHECK(index.tagValue(TagNamePlyCount, 1) == QString("86"));
+    CHECK(index.tagValue(TagNameSource, 1) == QString("Chessbase"));
 
 }
 
@@ -74,26 +74,26 @@ TEST_CASE("testing Index read from PGN database")
     db.open(RESOURCE_PATH "game1.pgn", false);
     db.parseFile();
 
-    CHECK_EQ(db.index()->tagValue(TagNameEvent, 0) , QString("Ch World (match)"));
-    CHECK_EQ(db.index()->tagValue(TagNameSite, 0) , QString("Buenos Aires ARG"));
-    CHECK_EQ(db.index()->tagValue(TagNameDate, 0) , QString("1927.??.??"));
-    CHECK_EQ(db.index()->tagValue(TagNameRound, 0) , QString("12"));
-    CHECK_EQ(db.index()->tagValue(TagNameWhite, 0) , QString("Alekhine, Alexander A"));
-    CHECK_EQ(db.index()->tagValue(TagNameBlack, 0) , QString("Capablanca, Jose Raul"));
-    CHECK_EQ(db.index()->tagValue(TagNameResult, 0) , QString("1-0"));
-    CHECK_EQ(db.index()->tagValue(TagNameECO, 0) , QString("D64"));
-    CHECK_EQ(db.index()->tagValue(TagNameEventDate, 0) , QString("1927.??.??"));
-    CHECK_EQ(db.index()->tagValue(TagNamePlyCount, 0) , QString("81"));
-    CHECK_EQ(db.index()->tagValue(TagNameEvent, 1) , QString("Ch World (match)"));
-    CHECK_EQ(db.index()->tagValue(TagNameSite, 1) , QString("Buenos Aires ARG"));
-    CHECK_EQ(db.index()->tagValue(TagNameDate, 1) , QString("1927.??.??"));
-    CHECK_EQ(db.index()->tagValue(TagNameRound, 1) , QString("20"));
-    CHECK_EQ(db.index()->tagValue(TagNameWhite, 1) , QString("Alekhine, Alexander A"));
-    CHECK_EQ(db.index()->tagValue(TagNameBlack, 1) , QString("Capablanca, Jose Raul"));
-    CHECK_EQ(db.index()->tagValue(TagNameResult, 1) , QString("1/2-1/2"));
-    CHECK_EQ(db.index()->tagValue(TagNameECO, 1) , QString("D67"));
-    CHECK_EQ(db.index()->tagValue(TagNameEventDate, 1) , QString("1927.??.??"));
-    CHECK_EQ(db.index()->tagValue(TagNamePlyCount, 1) , QString("86"));
+    CHECK(db.index()->tagValue(TagNameEvent, 0) == QString("Ch World (match)"));
+    CHECK(db.index()->tagValue(TagNameSite, 0) == QString("Buenos Aires ARG"));
+    CHECK(db.index()->tagValue(TagNameDate, 0) == QString("1927.??.??"));
+    CHECK(db.index()->tagValue(TagNameRound, 0) == QString("12"));
+    CHECK(db.index()->tagValue(TagNameWhite, 0) == QString("Alekhine, Alexander A"));
+    CHECK(db.index()->tagValue(TagNameBlack, 0) == QString("Capablanca, Jose Raul"));
+    CHECK(db.index()->tagValue(TagNameResult, 0) == QString("1-0"));
+    CHECK(db.index()->tagValue(TagNameECO, 0) == QString("D64"));
+    CHECK(db.index()->tagValue(TagNameEventDate, 0) == QString("1927.??.??"));
+    CHECK(db.index()->tagValue(TagNamePlyCount, 0) == QString("81"));
+    CHECK(db.index()->tagValue(TagNameEvent, 1) == QString("Ch World (match)"));
+    CHECK(db.index()->tagValue(TagNameSite, 1) == QString("Buenos Aires ARG"));
+    CHECK(db.index()->tagValue(TagNameDate, 1) == QString("1927.??.??"));
+    CHECK(db.index()->tagValue(TagNameRound, 1) == QString("20"));
+    CHECK(db.index()->tagValue(TagNameWhite, 1) == QString("Alekhine, Alexander A"));
+    CHECK(db.index()->tagValue(TagNameBlack, 1) == QString("Capablanca, Jose Raul"));
+    CHECK(db.index()->tagValue(TagNameResult, 1) == QString("1/2-1/2"));
+    CHECK(db.index()->tagValue(TagNameECO, 1) == QString("D67"));
+    CHECK(db.index()->tagValue(TagNameEventDate, 1) == QString("1927.??.??"));
+    CHECK(db.index()->tagValue(TagNamePlyCount, 1) == QString("86"));
 
     AppSettings = nullptr;
 }
