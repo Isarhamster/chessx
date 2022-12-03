@@ -720,6 +720,8 @@ BoardView::BoardViewAction BoardView::moveActionFromModifier(Qt::KeyboardModifie
         return ActionAskEngine;
     case (unsigned int)ShiftModifier | (unsigned int)AltModifier:
         return ActionEvalMove;
+    case (unsigned int)MetaModifier:
+        return ActionQuery;
     default:
         return ActionStandard;
     }
