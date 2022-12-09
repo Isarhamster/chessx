@@ -2,15 +2,22 @@ set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSIO
 set(CPACK_SOURCE_GENERATOR "TGZ")
 set(CPACK_SOURCE_IGNORE_FILES
     \.git/
+    \.gitignore
+    \.gitmodules
     \.DS_Store
     \.cmake/
     \.github/
     \.bat$
     \.iss$
+    \.user$
     build
     data/engines/
     data/engines-mac/
     data/timeseal/
+    lib/chessx-board/
+    lib/chessx-eco/
+    lib/chessx-pgn/
+    lib/pgn-convert/
     mac_osx/
     Packages/
     tests/
