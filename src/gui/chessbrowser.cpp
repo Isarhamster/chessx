@@ -119,7 +119,7 @@ QStringList ChessBrowser::getAnchors(const QStringList& hrefs)
 void ChessBrowser::setupMenu()
 {
     m_gameMenu = new QMenu("Notation",this);
-    m_browserMenu = new QMenu("Notation Area",this);
+    m_browserMenu = new QMenu("Text",this);
     connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
     connect(m_browserMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
 
@@ -188,6 +188,8 @@ void ChessBrowser::setupMenu()
     refactorMenu->addAction((m_uncomment = createAction(tr("Uncomment"), EditAction::Uncomment)));
     refactorMenu->addAction((m_remove = createAction(tr("Remove Variations"), EditAction::RemoveVariations)));
 
+    m_gameMenu->addMenu(m_browserMenu);
+
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(slotContextMenu(QPoint)));
 }
 
@@ -212,6 +214,17 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
     bool gameIsEmpty = game->isEmpty();
 
     QString link = anchorAt(pos);
+
+    bool hasGameComment = !game->annotation(0).isEmpty();
+
+    m_gameComment2->setVisible(gameIsEmpty && !hasGameComment);
+    m_addNullMove2->setVisible(gameIsEmpty);
+    m_copyHtml->setVisible(!gameIsEmpty);
+    m_copyText->setVisible(!gameIsEmpty);
+    m_uncomment->setVisible(!gameIsEmpty);
+    m_remove->setVisible(!gameIsEmpty);
+    m_copyTextSelection->setVisible(!gameIsEmpty);
+
     if(!link.isEmpty())
     {
         m_currentMove = link.section(':', 1).toInt();
@@ -243,16 +256,6 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
     }
     else
     {
-        bool hasGameComment = !game->annotation(0).isEmpty();
-
-        m_gameComment2->setVisible(gameIsEmpty && !hasGameComment);
-        m_addNullMove2->setVisible(gameIsEmpty);
-        m_copyHtml->setVisible(!gameIsEmpty);
-        m_copyText->setVisible(!gameIsEmpty);
-        m_uncomment->setVisible(!gameIsEmpty);
-        m_remove->setVisible(!gameIsEmpty);
-        m_copyTextSelection->setVisible(!gameIsEmpty);
-
         m_browserMenu->exec(mapToGlobal(pos));
     }
 }
