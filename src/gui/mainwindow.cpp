@@ -2046,7 +2046,7 @@ void MainWindow::setupActions()
     help->addSeparator();
     help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()), QString(), nullptr, QString(), QString(), QAction::AboutRole));
 
-#ifdef QT_DEBUG
+#ifdef _DEBUG
     QMenu* debug = help->addMenu("Debug");
     debug->addAction(createAction("Copy HTML", SLOT(slotGameViewSource())));
     debug->addAction(createAction("Dump Movenodes", SLOT(slotGameDumpMoveNodes())));

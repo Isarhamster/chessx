@@ -1492,18 +1492,28 @@ void MainWindow::slotGameVarEnter()
 
 void MainWindow::slotGameVarUp()
 {
-    if(!game().isMainline())
+    MoveId currentVar = game().currentMove();
+    MoveId lastVar = NO_MOVE;
+    while (!game().variationCount())
     {
-        while(!game().atLineStart())
-        {
-            game().backward();
-        }
-        MoveId currentVar = game().currentMove();
+        lastVar = game().currentMove();
         game().backward();
-        int n = game().variations().indexOf(currentVar) - 1;
+    }
+    if (lastVar == NO_MOVE)
+    {
+        // Repair - there is no variation
+        game().moveToId(currentVar);
+    }
+    else
+    {
+        int n = game().variations().indexOf(lastVar) - 1;
         if(n >= 0)
         {
             game().moveToId(game().variations().at(n));
+        }
+        else if(n == -2)
+        {
+            game().moveToId(game().variations().last());
         }
         else
         {
@@ -1514,30 +1524,25 @@ void MainWindow::slotGameVarUp()
             }
         }
     }
-    else
-    {
-        if(!game().atLineStart() && !m_training2->isChecked())
-        {
-            if (game().variationCount(PREV_MOVE))
-            {
-                game().backward();
-                game().moveToId(game().variations().last());
-            }
-        }
-    }
 }
 
 void MainWindow::slotGameVarDown()
 {
-    if(!game().isMainline())
+    MoveId currentVar = game().currentMove();
+    MoveId lastVar = NO_MOVE;
+    while (!game().variationCount())
     {
-        while(!game().atLineStart())
-        {
-            game().backward();
-        }
-        MoveId currentVar = game().currentMove();
+        lastVar = game().currentMove();
         game().backward();
-        int n = game().variations().indexOf(currentVar) + 1;
+    }
+    if (lastVar == NO_MOVE)
+    {
+        // Repair - there is no variation
+        game().moveToId(currentVar);
+    }
+    else
+    {
+        int n = game().variations().indexOf(lastVar) + 1;
         if(n < game().variations().count())
         {
             game().moveToId(game().variations().at(n));
@@ -1548,17 +1553,6 @@ void MainWindow::slotGameVarDown()
             {
                 // Do not show next move in training 2 mode
                 game().forward();
-            }
-        }
-    }
-    else
-    {
-        if(!game().atLineStart() && !m_training2->isChecked())
-        {
-            if (game().variationCount(PREV_MOVE))
-            {
-                game().backward();
-                game().moveToId(game().variations().first());
             }
         }
     }
