@@ -9,6 +9,7 @@
 
 #include "actiondialog.h"
 #include "analysiswidget.h"
+#include "annotationwidget.h"
 #include "boardsetup.h"
 #include "boardview.h"
 #include "boardviewex.h"
@@ -73,10 +74,8 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QProgressBar>
+#include <QRegularExpression>
 #include <QSizePolicy>
-#ifdef USE_SOUND
-#include <QSound>
-#endif
 #include <QSplitter>
 #include <QStatusBar>
 #include <QTabBar>
@@ -85,6 +84,7 @@
 #endif
 #include <QTimer>
 #include <QToolBar>
+#include "qt6compat.h"
 
 template< typename T, std::size_t N >
 inline constexpr std::size_t sizeofArray( const T(&)[N] ) noexcept { return N; }
@@ -221,11 +221,24 @@ MainWindow::MainWindow() : QMainWindow(),
     m_menuView->addAction(gameTextDock->toggleViewAction());
     gameTextDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_E);
 
+    DockWidgetEx* annotationTextDock = new DockWidgetEx(tr("Annotations"), this);
+    annotationTextDock->setObjectName("AnnotationTextDock");
+    annotationWidget = new AnnotationWidget(annotationTextDock);
+    annotationTextDock->setWidget(annotationWidget);
+    connect(this, SIGNAL(reconfigure()), annotationWidget, SLOT(slotReconfigure()));
+
+    addDockWidget(Qt::RightDockWidgetArea, annotationTextDock);
+
+    m_menuView->addAction(annotationTextDock->toggleViewAction());
+    connect(annotationWidget, SIGNAL(enterVariation(int)), this, SLOT(slotGameVarEnter(int)));
+    connect(annotationWidget, SIGNAL(signalNewAnnotation(QString)), SLOT(slotGameSetComment(QString)));
+
     /* Game List */
     m_gameList->setMinimumSize(150, 100);
     connect(m_gameList, SIGNAL(gameSelected(GameId)), SLOT(slotFilterLoad(GameId)));
     connect(m_gameList, SIGNAL(requestCopyGame(QList<GameId>)), SLOT(slotDatabaseCopy(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestFindDuplicates(QList<GameId>)), SLOT(slotDatabaseFindDuplicates(QList<GameId>)));
+    connect(m_gameList, SIGNAL(requestFindIdenticals(QList<GameId>)), SLOT(slotDatabaseFindIdenticals(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestMergeGame(QList<GameId>)), SLOT(slotMergeActiveGameList(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestMergeAllGames()), SLOT(slotMergeAllGames()));
     connect(m_gameList, SIGNAL(requestMergeFilter()), SLOT(slotMergeFilter()));
@@ -248,7 +261,7 @@ MainWindow::MainWindow() : QMainWindow(),
     playerListDock->setWidget(m_playerList);
     // addDockWidget(Qt::RightDockWidgetArea, playerListDock);
     m_menuView->addAction(playerListDock->toggleViewAction());
-    playerListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
+    playerListDock->toggleViewAction()->setShortcut(Qt::CTRL | Qt::ALT | Qt::Key_P);
     connect(m_playerList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByPlayer(QString)));
     connect(m_playerList, SIGNAL(renameRequest(QString)), SLOT(slotRenamePlayer(QString)));
     connect(m_playerList, SIGNAL(filterEcoPlayerRequest(QString,QString,QString,QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString,QString,QString,QString)));
@@ -375,6 +388,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     // Arrange Lower Rightside docks
     tabifyDockWidget(gameTextDock, gameListDock);
+    tabifyDockWidget(gameTextDock, annotationTextDock);
 
     /* Analysis Dock */
     DockWidgetEx* analysisDock = new DockWidgetEx(tr("Analysis 1"), this);
@@ -526,6 +540,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(ecothread, SIGNAL(loaded(QObject*,bool)), this, SLOT(ecoLoaded(QObject*,bool)));
     ecothread->start();
     StartCheckUpdate();
+
 #ifdef USE_SPEECH
     qRegisterMetaType<QTextToSpeech::State>("State");
     if (QTextToSpeech::availableEngines().count())
@@ -643,6 +658,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
         m_gameWindow->saveConfig();
         m_scratchPad->saveConfig();
         m_gameView->saveConfig();
+        annotationWidget->saveConfig();
         m_ficsConsole->saveConfig();
         m_mainAnalysis->saveConfig();
         m_secondaryAnalysis->saveConfig();
@@ -865,7 +881,7 @@ void MainWindow::gameLoad(GameId index)
                     QString name = AppSettings->getValue("/Board/PlayerTurnBoard").toString();
                     if (!name.isEmpty())
                     {
-                        QRegExp re(name);
+                        QRegularExpression re(name);
                         QString nameWhite = game().tag(TagNameWhite);
                         QString nameBlack = game().tag(TagNameBlack);
                         if (nameBlack.indexOf(re) >= 0)
@@ -990,6 +1006,7 @@ QString MainWindow::ficsPath() const
 void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
     QUrl url = QUrl::fromUserInput(fname);
+    if (fname.startsWith("http")) url.setScheme("http");
     if (fname == "Clipboard")
     {
         ActivateDatabase("Clipboard");
@@ -1001,7 +1018,7 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
         {
             slotStatusMessage(tr("Start loading database..."));
             connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
-            connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(loadReady(QUrl, QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
+            connect(downloadManager, SIGNAL(onDownloadFinished(QUrl,QString)), this, SLOT(loadReady(QUrl,QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
             downloadManager->doDownload(url);
         }
         else
@@ -1024,7 +1041,7 @@ void MainWindow::openWebFavorite()
     QString url = favoriteUrl();
     if (!url.isEmpty())
     {
-        openDatabaseUrl(favoriteUrl(), false);
+        openDatabaseUrl(url, false);
     }
     else
     {
@@ -1039,6 +1056,7 @@ void MainWindow::openLichess()
     QDate start(date.year(),date.month(),1);
 
     OnlineBase db;
+// TODO Debug Tournament handles - they don't work reliably db.setTournament("");
 
     QAction* action = qobject_cast<QAction*>(sender());
     if (action)
@@ -1051,18 +1069,35 @@ void MainWindow::openLichess()
     db.setStartDate(start);
     if (db.exec() == QDialog::Accepted)
     {
+        QString tournament = db.getTournament();
         account = db.getHandle();
         start = db.getStartDate();
 
-        if (!account.isEmpty())
+        if (tournament.isEmpty())
         {
-            quint64 since= QDateTime(start).toMSecsSinceEpoch(); // Better: start.startOfDay().toMSecsSinceEpoch(); but that is Qt5
-            QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
-            openDatabaseUrl(url, false);
+            if (!account.isEmpty())
+            {
+                quint64 since= start.startOfDay().toMSecsSinceEpoch();
+                QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
+                openDatabaseUrl(url, false);
+            }
+            else
+            {
+                slotConfigure("lichess");
+            }
         }
         else
         {
-            slotConfigure("lichess");
+            QString url;
+            if (account.isEmpty())
+            {
+                url = QString("https://lichess.org/api/tournament/%1/games").arg(tournament);
+            }
+            else
+            {
+                url = QString("https://lichess.org/api/tournament/%1/games?player=%2").arg(tournament).arg(account);
+            }
+            openDatabaseUrl(url, false);
         }
     }
 }
@@ -1082,6 +1117,7 @@ void MainWindow::openChesscom()
     }
     db.setHandle(account);
     db.setStartDate(start);
+    db.setDateFormat("MM/yyyy");
     if (db.exec() == QDialog::Accepted)
     {
         account = db.getHandle();
@@ -1102,6 +1138,58 @@ void MainWindow::openChesscom()
 void MainWindow::openFICS()
 {
     openDatabaseFile(ficsPath(), false);
+}
+
+void MainWindow::copyDatabaseArchive(QString fname, QString destination)
+{
+    if(DatabaseInfo::IsLocalDatabase(fname))
+    {
+        copyDatabase(destination, fname);
+    }
+    else
+    {
+        QFileInfo fi = QFileInfo(fname);
+        QString dir = AppSettings->commonDataPath();
+
+        fname = fi.canonicalFilePath();
+
+        if(!fname.isEmpty())
+        {
+            QuaZip zip(fname);
+            if(zip.open(QuaZip::mdUnzip))
+            {
+                // first, we need some information about archive itself
+                // QString comment = zip.getComment();
+                // and now we are going to access files inside it
+                QuaZipFile file(&zip);
+                for(bool more = zip.goToFirstFile(); more; more = zip.goToNextFile())
+                {
+                    file.open(QIODevice::ReadOnly);
+                    QString outName = dir + QDir::separator() + file.getActualFileName();
+                    QDir pathOut;
+                    outName = pathOut.absoluteFilePath(outName);
+                    if(!QFile::exists(outName))
+                    {
+                        QDir().mkpath(dir);
+
+                        QFile out(outName);
+                        if(out.open(QIODevice::WriteOnly))
+                        {
+                            out.write(file.readAll());
+                            out.close();
+                            copyDatabase(destination, outName);
+                        }
+                        else
+                        {
+                            qDebug() << "File Error: " << out.error();
+                        }
+                    }
+                    file.close();
+                }
+                zip.close();
+            }
+        }
+    }
 }
 
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
@@ -1259,6 +1347,16 @@ void MainWindow::loadReady(QUrl url, QString fileName)
         int n = AppSettings->getValue("Web/AutoNumber1").toInt();
         ++n;
         AppSettings->setValue("Web/AutoNumber1",n);
+    }
+    if (url == fav)
+    {
+        QString target = AppSettings->getValue("Web/Destination1").toString();
+        if (!target.isEmpty())
+        {
+            // Instead of opening database, append it to a target database
+            copyDatabaseArchive(fileName, target);
+            return;
+        }
     }
     openDatabaseArchive(fileName, false);
 }
@@ -1856,6 +1954,7 @@ void MainWindow::setupActions()
     refactorMenu->addAction(createAction(refactorMenu, tr("Uncomment"), SLOT(slotGameUncomment())));
     refactorMenu->addAction(createAction(refactorMenu, tr("Remove Time"), SLOT(slotGameRemoveTime())));
     refactorMenu->addAction(createAction(refactorMenu, tr("Remove Variations"), SLOT(slotGameRemoveVariations())));
+    refactorMenu->addAction(createAction(refactorMenu, tr("Prune null moves"), SLOT(slotGameRemoveNullLines())));
 
     /* Search menu */
     QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
@@ -1875,6 +1974,9 @@ void MainWindow::setupActions()
     QAction* duplicates = createAction(tr("Filter duplicate games"), SLOT(slotDatabaseFilterDuplicateGames()));
     search->addAction(duplicates);
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), duplicates, SLOT(setEnabled(bool)));
+    QAction* identicals = createAction(tr("Filter identical games"), SLOT(slotDatabaseFilterIdenticalGames()));
+    search->addAction(identicals);
+    connect(this, SIGNAL(signalCurrentDBhasGames(bool)), identicals, SLOT(setEnabled(bool)));
 
     duplicates = createAction(tr("Filter duplicate headers"), SLOT(slotDatabaseFilterDuplicateTags()));
     search->addAction(duplicates);
@@ -1901,6 +2003,8 @@ void MainWindow::setupActions()
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Uncomment"), SLOT(slotDatabaseUncomment())));
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Remove Time"), SLOT(slotDatabaseRemoveTime())));
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Remove Variations"), SLOT(slotDatabaseRemoveVariations())));
+    refactorMenu2->addAction(createAction(refactorMenu2, tr("Prune null moves"), SLOT(slotDatabaseRemoveNullLines())));
+    refactorMenu2->addAction(createAction(refactorMenu2, tr("Edit tag"), SLOT(slotDatabaseEditTag())));
     menuDatabase->addSeparator();
     menuDatabase->addAction(createAction(tr("Clear clipboard"), SLOT(slotDatabaseClearClipboard())));
 
@@ -1942,12 +2046,12 @@ void MainWindow::setupActions()
     help->addSeparator();
     help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()), QString(), nullptr, QString(), QString(), QAction::AboutRole));
 
-#ifdef QT_DEBUG
+#ifdef _DEBUG
     QMenu* debug = help->addMenu("Debug");
     debug->addAction(createAction("Copy HTML", SLOT(slotGameViewSource())));
     debug->addAction(createAction("Dump Movenodes", SLOT(slotGameDumpMoveNodes())));
     debug->addAction(createAction("Dump Board", SLOT(slotGameDumpBoard())));
-    debug->addAction(createAction("Make Screenshot", SLOT(slotScreenShot()), Qt::CTRL + Qt::Key_F12));
+    debug->addAction(createAction("Make Screenshot", SLOT(slotScreenShot()), Qt::CTRL | Qt::Key_F12));
     debug->addAction(createAction("Compile ECO", SLOT(slotCompileECO())));
 #endif
 
@@ -2139,10 +2243,11 @@ void MainWindow::restoreRecentFiles()
         m_databaseList->setFileFavorite(s, true, *it1++);
         bool bUtf8 = (attribute.contains("utf8"));
         m_databaseList->setFileUtf8(s, bUtf8);
-        QRegExp regExp("stars([0-9])");
-        if (regExp.indexIn(attribute) >= 0)
+        QRegularExpression regExp("stars([0-9])");
+        QRegularExpressionMatch match;
+        if (attribute.indexOf(regExp, 0, &match) >= 0)
         {
-           QString d = regExp.cap(1);
+           QString d = match.captured(1);
            m_databaseList->setStars(s, d.toInt());
         }
     }
@@ -2162,10 +2267,11 @@ void MainWindow::loadFileFavorites()
         {
             QString attribute = it != attributes.cend() ? *it++ : "";
             bool bUtf8 = (attribute.contains("utf8"));
-            QRegExp regExp("stars([0-9])");
-            if (regExp.indexIn(attribute) >= 0)
+            QRegularExpression regExp("stars([0-9])");
+            QRegularExpressionMatch match;
+            if (attribute.indexOf(regExp, 0, &match) >= 0)
             {
-               QString d = regExp.cap(1);
+               QString d = match.captured(1);
                if (d.toInt() == stars)
                {
                    openDatabaseFile(s, bUtf8);
@@ -2199,13 +2305,18 @@ void MainWindow::slotHttpDone(QNetworkReply *reply)
         if(!reply->error())
         {
             QString answer(reply->readAll());
-            QRegExp rx("(\\d\\d?)\\.(\\d\\d?)\\.(\\d\\d?)");
-            if(answer.indexOf(rx) > -1)
+            QRegularExpression rx("(\\d\\d?)\\.(\\d\\d?)\\.(\\d\\d?)");
+            QRegularExpressionMatch match;
+            if(answer.indexOf(rx, 0, &match) >= 0)
             {
-                int major = rx.capturedTexts().at(1).toInt();
-                int minor = rx.capturedTexts().at(2).toInt();
-                int build = rx.capturedTexts().at(3).toInt();
-                emit signalVersionFound(major, minor, build);
+                QStringList list = match.capturedTexts();
+                if (list.length() >= 3)
+                {
+                    int major = list.at(1).toInt();
+                    int minor = list.at(2).toInt();
+                    int build = list.at(3).toInt();
+                    emit signalVersionFound(major, minor, build);
+                }
             }
         }
         reply->deleteLater();
@@ -2220,11 +2331,11 @@ void MainWindow::QueryLoadDatabase()
     {
         if(dlg.largeDB())
         {
-            openDatabaseUrl("http://chessx.sourceforge.net/db/bundesliga2000.pgn.zip", false);
+            openDatabaseUrl("http://chessx.sourceforge.io/db/bundesliga2000.pgn.zip", false);
         }
         else
         {
-            openDatabaseUrl("http://chessx.sourceforge.net/db/SBL1213.pgn.zip", false);
+            openDatabaseUrl("http://chessx.sourceforge.io/db/SBL1213.pgn.zip", false);
         }
     }
     AppSettings->setValue("/General/BuiltinDbInstalled", QVariant(true));

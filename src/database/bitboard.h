@@ -289,7 +289,6 @@ private:
     unsigned char m_castle;                // flags for castle legality  (these can be merged)
     unsigned short m_halfMoves;            // Number of moves since last pawn move or capture
     unsigned int m_moveNumber;             // Move number in game (incremented after each black move)
-    unsigned char m_pawnCount[2];          // Number of pawns for each side
     unsigned char m_pieceCount[2];         // Number of pieces INCLUDING pawns for each side
     unsigned char m_chess960;              // 0 = standard, 1 = Chess960
 };

@@ -28,7 +28,7 @@ public:
     bool    logging;
     bool    sendHistory;
     EngineProtocol protocol;
-    OptionValueList m_optionValues;
+    OptionValueMap m_optionValues;
     static QString commandToName(const QString& command);
 };
 

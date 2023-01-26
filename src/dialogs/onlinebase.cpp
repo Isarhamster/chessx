@@ -6,6 +6,8 @@ OnlineBase::OnlineBase(QWidget *parent) :
     ui(new Ui::OnlineBase)
 {
     ui->setupUi(this);
+    ui->tournament->hide();
+    ui->lb_Tournament->hide();
 }
 
 OnlineBase::~OnlineBase()
@@ -16,6 +18,11 @@ OnlineBase::~OnlineBase()
 QDate OnlineBase::getStartDate() const
 {
     return ui->startDate->date();
+}
+
+void OnlineBase::setDateFormat(const QString& format)
+{
+    ui->startDate->setDisplayFormat(format);
 }
 
 void OnlineBase::setStartDate(const QDate &value)
@@ -32,3 +39,16 @@ void OnlineBase::setHandle(const QString &value)
 {
     ui->userName->setText(value);
 }
+
+const QString OnlineBase::getTournament() const
+{
+    return ui->tournament->text();
+}
+
+void OnlineBase::setTournament(const QString &newTournament)
+{
+    ui->lb_Tournament->show();
+    ui->tournament->show();
+    ui->tournament->setText(newTournament);
+}
+

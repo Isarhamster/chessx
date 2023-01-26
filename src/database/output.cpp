@@ -10,12 +10,15 @@
 
 #include <algorithm>
 #include <QMap>
-
+#include <QRegularExpression>
+#include <QTextStream>
 #include "board.h"
 #include "output.h"
 #include "settings.h"
 #include "tags.h"
 #include "partialdate.h"
+#include "qt6compat.h"
+
 
 const char* TEMPLATE_DIR = "templates";
 const char* DEFAULT_HTML_TEMPLATE = "html-default.template";
@@ -98,7 +101,7 @@ void Output::readTemplateFile(const QString& path)
         {
             line = stream.readLine(); // line of text excluding '\n'
             i++;
-            if((line.indexOf(QRegExp("^\\s*$")) != -1) || (line.indexOf(QRegExp("^\\s*#")) != -1))
+            if((line.indexOf(QRegularExpression("^\\s*$")) != -1) || (line.indexOf(QRegularExpression("^\\s*#")) != -1))
             {
                 // Skip blank lines and comments (#)
                 continue;
@@ -797,11 +800,15 @@ QString Output::outputGame(const GameX* g, bool upToCurrentMove)
 
 void Output::postProcessOutput(QString& text) const
 {
-    QRegExp var("@(\\w+)@");
-    while(var.indexIn(text) != -1)
+    QRegularExpression var("@(\\w+)@");
+    QRegularExpressionMatch match;
+    while(text.indexOf(var, 0, &match)>=0)
     {
-        QStringList cap = var.capturedTexts();
-        text.replace("@" + cap[1] + "@", m_options.getOptionAsString(cap[1]));
+        QStringList cap = match.capturedTexts();
+        if (cap.length()>1)
+        {
+            text.replace("@" + cap[1] + "@", m_options.getOptionAsString(cap[1]));
+        }
     }
 
     // Chop it up, if TextWidth option is not equal to 0
@@ -859,11 +866,7 @@ void Output::output(QTextStream& out, Database& database)
 {
     if(!database.isUtf8() && (m_outputType == Pgn))
     {
-        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
-        if(textCodec)
-        {
-            out.setCodec(textCodec);
-        }
+        SET_CODEC_LATIN1(out);
     }
 
     QString header = m_header;
@@ -909,7 +912,7 @@ void Output::output(const QString& filename, const GameX& game)
     QTextStream out(&f);
     if((m_outputType == Html) || (m_outputType == NotationWidget))
     {
-        out.setCodec(QTextCodec::codecForName("utf8"));
+        SET_CODEC_UTF8(out);
     }
     out << output(&game);
     f.close();
@@ -925,7 +928,7 @@ void Output::output(const QString& filename, FilterX& filter)
     QTextStream out(&f);
     if((m_outputType == Html) || (m_outputType == NotationWidget))
     {
-        out.setCodec(QTextCodec::codecForName("utf8"));
+        SET_CODEC_UTF8(out);
     }
     output(out, filter);
     f.close();
@@ -941,10 +944,22 @@ void Output::output(const QString& filename, Database& database)
     QTextStream out(&f);
     if((m_outputType == Html) || (m_outputType == NotationWidget))
     {
-        out.setCodec(QTextCodec::codecForName("utf8"));
+        SET_CODEC_UTF8(out);
     }
     output(out, database);
     f.close();
+}
+
+QString Output::output(Database* database)
+{
+    QString s;
+    QTextStream out(&s);
+    if((m_outputType == Html) || (m_outputType == NotationWidget))
+    {
+        SET_CODEC_UTF8(out);
+    }
+    output(out, *database);
+    return s;
 }
 
 bool Output::append(const QString& filename, GameX& game)
@@ -957,17 +972,13 @@ bool Output::append(const QString& filename, GameX& game)
     QTextStream out(&f);
     if((m_outputType == Html) || (m_outputType == NotationWidget))
     {
-        out.setCodec(QTextCodec::codecForName("utf8"));
+        SET_CODEC_UTF8(out);
     }
     else
     {
-        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
-        if(textCodec)
-        {
-            out.setCodec(textCodec);
-        }
+        SET_CODEC_LATIN1(out);
     }
-    out << endl;
+    out << Qt::endl;
     out << output(&game);
     f.close();
     return true;
@@ -983,9 +994,9 @@ void Output::append(const QString& filename, Database& database)
     QTextStream out(&f);
     if((m_outputType == Html) || (m_outputType == NotationWidget))
     {
-        out.setCodec(QTextCodec::codecForName("utf8"));
+        SET_CODEC_UTF8(out);
     }
-    out << endl;
+    out << Qt::endl;
     output(out, database);
     f.close();
 }

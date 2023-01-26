@@ -119,7 +119,7 @@ QStringList ChessBrowser::getAnchors(const QStringList& hrefs)
 void ChessBrowser::setupMenu()
 {
     m_gameMenu = new QMenu("Notation",this);
-    m_browserMenu = new QMenu("Notation Area",this);
+    m_browserMenu = new QMenu("Text",this);
     connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
     connect(m_browserMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
 
@@ -182,10 +182,13 @@ void ChessBrowser::setupMenu()
     m_browserMenu->addAction((m_addNullMove2 = createAction(tr("Insert threat"), EditAction::AddNullMove)));
     m_browserMenu->addAction((m_copyHtml = createAction(tr("Copy Html"), EditAction::CopyHtml)));
     m_browserMenu->addAction((m_copyText = createAction(tr("Copy Text"), EditAction::CopyText)));
+    m_browserMenu->addAction((m_copyTextSelection = createAction(tr("Copy selected Text"), EditAction::CopyTextSelection)));
     m_browserMenu->addSeparator();
     QMenu* refactorMenu = m_browserMenu->addMenu(tr("Refactor"));
     refactorMenu->addAction((m_uncomment = createAction(tr("Uncomment"), EditAction::Uncomment)));
     refactorMenu->addAction((m_remove = createAction(tr("Remove Variations"), EditAction::RemoveVariations)));
+
+    m_gameMenu->addMenu(m_browserMenu);
 
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(slotContextMenu(QPoint)));
 }
@@ -211,6 +214,17 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
     bool gameIsEmpty = game->isEmpty();
 
     QString link = anchorAt(pos);
+
+    bool hasGameComment = !game->annotation(0).isEmpty();
+
+    m_gameComment2->setVisible(gameIsEmpty && !hasGameComment);
+    m_addNullMove2->setVisible(gameIsEmpty);
+    m_copyHtml->setVisible(!gameIsEmpty);
+    m_copyText->setVisible(!gameIsEmpty);
+    m_uncomment->setVisible(!gameIsEmpty);
+    m_remove->setVisible(!gameIsEmpty);
+    m_copyTextSelection->setVisible(!gameIsEmpty);
+
     if(!link.isEmpty())
     {
         m_currentMove = link.section(':', 1).toInt();
@@ -242,15 +256,6 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
     }
     else
     {
-        bool hasGameComment = !game->annotation(0).isEmpty();
-
-        m_gameComment2->setVisible(gameIsEmpty && !hasGameComment);
-        m_addNullMove2->setVisible(gameIsEmpty);
-        m_copyHtml->setVisible(!gameIsEmpty);
-        m_copyText->setVisible(!gameIsEmpty);
-        m_uncomment->setVisible(!gameIsEmpty);
-        m_remove->setVisible(!gameIsEmpty);
-
         m_browserMenu->exec(mapToGlobal(pos));
     }
 }

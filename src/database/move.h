@@ -69,7 +69,6 @@ public:
             if(isRank(c))
             {
                 chessx::Square fromSquare = chessx::Square((c - '1') * 8 + fromFile);
-                fromFile = -1;
                 c = *(s++);
                 // Destination square
                 if(isFile(c))
@@ -81,7 +80,7 @@ public:
                         chessx::Square toSquare = chessx::Square((c - '1') * 8 + f);
                         Move m(fromSquare, toSquare);
                         c = *(s++);
-                        if(c == '=' || c == '(' || QString("QRBN").indexOf(toupper(c))>=0)
+                        if(c == '=' || c == '(' || QString("QRBN").indexOf((char)toupper(c))>=0)
                         {
                             if(c == '=' || c == '(')
                             {

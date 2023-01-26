@@ -8,8 +8,9 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include "uciengine.h"
 #include "enginedata.h"
+#include "uciengine.h"
+#include <QRegularExpression>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -223,7 +224,7 @@ void UCIEngine::processMessage(const QString& message)
 
             if(!m_bTestMode)
             {
-                OptionValueList::const_iterator i = m_mapOptionValues.constBegin();
+                OptionValueMap::const_iterator i = m_mapOptionValues.constBegin();
                 while(i != m_mapOptionValues.constEnd())
                 {
                     QString key = i.key();
@@ -237,7 +238,7 @@ void UCIEngine::processMessage(const QString& message)
                             case OPT_TYPE_BUTTON:
                                 if(value.toBool())
                                 {
-                                    send(QString("setoption name %1 value %2").arg(key));
+                                    send(QString("setoption name %1").arg(key));
                                 }
                                 break;
                             case OPT_TYPE_CHECK:
@@ -458,7 +459,7 @@ void UCIEngine::parseOptions(const QString& message)
                    } phase;
 
     phase = EXPECT_OPTION;
-    QStringList list = message.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+    QStringList list = message.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
 
     QStringList nameVals;
     QString defVal;

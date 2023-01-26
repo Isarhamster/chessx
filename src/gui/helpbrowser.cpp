@@ -6,6 +6,7 @@
 #include "settings.h"
 #include <QUrl>
 #include <QFile>
+#include <QRegularExpression>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -58,11 +59,12 @@ void HelpBrowser::slotSourceChanged(const QUrl& url)
             str = f.readLine();
             if (str.contains("<h3>"))
             {
-                QRegExp regCmd("<a name=\"([^\"]*)\"></a>([^<]*)</h3>");
-                if (regCmd.indexIn(str) >= 0)
+                QRegularExpression regCmd("<a name=\"([^\"]*)\"></a>([^<]*)</h3>");
+                QRegularExpressionMatch match;
+                if (str.indexOf(regCmd, 0, &match) >= 0)
                 {
-                    links.append(regCmd.cap(1).prepend(path+"/#"));
-                    texts.append(regCmd.cap(2));
+                    links.append(match.captured(1).prepend(path+"/#"));
+                    texts.append(match.captured(2));
                 }
             }
         }

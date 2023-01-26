@@ -14,11 +14,11 @@
 #include "gamex.h"
 #include "gameid.h"
 
-#include <QString>
+#include <QMetaType>
 #include <QObject>
 #include <QUndoCommand>
 #include <QPointer>
-#include <QMetaType>
+#include <QString>
 
 class Database;
 class FilterX;

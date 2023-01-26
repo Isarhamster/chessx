@@ -16,6 +16,7 @@
 #include <QMultiHash>
 #include <QWriteLocker>
 #include <QReadLocker>
+#include <QRegularExpression>
 #include <QVector>
 
 #include "index.h"
@@ -335,8 +336,8 @@ QBitArray IndexX::listPartialValue(const QString& tagName, QString value) const
     value.replace("(","\\("); // Avoid () to become regex
     value.replace(")","\\)");
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
-    QRegExp re(value);
-    re.setCaseSensitivity(Qt::CaseInsensitive);
+    QRegularExpression re(value);
+    re.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
     QBitArray list(count(), false);
     for(int i = 0; i < count(); ++i)
     {
@@ -519,6 +520,11 @@ QSet<ValueIndex> IndexX::tagValueSet(const QString& tagName) const
 		}
 	}
 	return tagNameIndex;
+}
+
+QStringList IndexX::tagNames() const
+{
+    return m_tagNameIndex.keys();
 }
 
 QStringList IndexX::tagValues(const QString& tagName) const

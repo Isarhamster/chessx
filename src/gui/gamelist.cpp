@@ -60,12 +60,13 @@ GameList::GameList(FilterX* filter, QWidget* parent) : TableView(parent)
     sortModel->setFilter(filter);
     sortModel->setSourceModel(m_model);
     sortModel->setDynamicSortFilter(true);
+    sortModel->setSortRole(Qt::UserRole);
     setModel(sortModel);
 
     connect(this, SIGNAL(clicked(QModelIndex)), SLOT(itemSelected(QModelIndex)));
     connect(this, SIGNAL(activated(QModelIndex)), SLOT(itemSelected(QModelIndex)));
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(slotContextMenu(QPoint)));
-    connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+    connect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(slotItemSelected(QModelIndex)));
 #if QT_VERSION < 0x050000
     horizontalHeader()->setClickable(true);
@@ -108,7 +109,7 @@ void GameList::endUpdate()
 
 void GameList::itemDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight)
 {
-    if (topLeft.column()==bottomRight.column())
+    if (m_model && topLeft.column()==bottomRight.column())
     {
         GameId n = topLeft.row();
         int column = topLeft.column();
@@ -177,12 +178,18 @@ void GameList::slotItemSelected(const QModelIndex& index)
 
 void GameList::filterInvert()
 {
-    m_model->invert();
+    if (m_model)
+    {
+        m_model->invert();
+    }
 }
 
 void GameList::filterSetAll(int value)
 {
-    m_model->setAll(value);
+    if (m_model)
+    {
+        m_model->setAll(value);
+    }
 }
 
 QModelIndex GameList::NewSortIndex(int row) const
@@ -313,7 +320,8 @@ void GameList::slotContextMenu(const QPoint& pos)
     {
         // Right click occured on a cell!
         menu.addAction(tr("Copy games..."), this, SLOT(slotCopyGame()));
-        menu.addAction(tr("Filter twins"), this, SLOT(slotFindDuplicate()));
+        menu.addAction(tr("Filter exact twins"), this, SLOT(slotFindDuplicate()));
+        menu.addAction(tr("Filter twins"), this, SLOT(slotFindIdentical()));
         QMenu* mergeMenu = menu.addMenu(tr("Merge into current game"));
         mergeMenu->addAction(tr("All Games"), this, SLOT(slotMergeAllGames()));
         mergeMenu->addAction(tr("Filter"), this, SLOT(slotMergeFilter()));
@@ -611,14 +619,20 @@ QList<GameId> GameList::selectedGames(bool skipDeletedGames)
 
 void GameList::slotCopyGame()
 {
-    QList<GameId> gameIndexList = selectedGames();
+    QList<GameId> gameIndexList = selectedGames(true);
     emit requestCopyGame(gameIndexList);
 }
 
 void GameList::slotFindDuplicate()
 {
-    QList<GameId> gameIndexList = selectedGames();
+    QList<GameId> gameIndexList = selectedGames(true);
     emit requestFindDuplicates(gameIndexList);
+}
+
+void GameList::slotFindIdentical()
+{
+    QList<GameId> gameIndexList = selectedGames(true);
+    emit requestFindIdenticals(gameIndexList);
 }
 
 void GameList::slotMergeAllGames()
@@ -633,7 +647,7 @@ void GameList::slotMergeFilter()
 
 void GameList::slotMergeSelectedGames()
 {
-    QList<GameId> gameIndexList = selectedGames();
+    QList<GameId> gameIndexList = selectedGames(true);
     emit requestMergeGame(gameIndexList);
 }
 
@@ -654,7 +668,7 @@ void GameList::slotHideGame()
 
 void GameList::slotHideDeletedGames()
 {
-    QList<GameId> gameIndexList = selectedGames();
+    QList<GameId> gameIndexList = selectedGames(false);
     if (!gameIndexList.isEmpty())
     {
         m_model->startUpdate();
@@ -676,7 +690,7 @@ void GameList::startDrag(Qt::DropActions supportedActions)
     GameMimeData *mimeData = new GameMimeData;
     Database* db = m_model->filter()->database();
     mimeData->source = db->filename();
-    mimeData->m_indexList = selectedGames();
+    mimeData->m_indexList = selectedGames(true);
 
     if (mimeData->m_indexList.count() < 1000) // Avoid excessive size of clipboard
     {

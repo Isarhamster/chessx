@@ -115,6 +115,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case 3: return QPixmap(":/images/folder_favorite3.png");
             case 4: return QPixmap(":/images/startup.png");
             case 5: return QPixmap(":/images/active.png");
+            default: return QPixmap();
             }
         }
         case DBLV_OPEN:
@@ -417,7 +418,6 @@ void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite, int in
             e.m_lastGameIndex = index;
             QModelIndex m = createIndex(m_databases.indexOf(e), DBLV_FAVORITE, (void*)  nullptr);
             emit QAbstractItemModel::dataChanged(m, m);
-            emit OnSelectIndex(m);
         }
         return;
     }

@@ -10,8 +10,8 @@
 class SimpleLabel : public QLabel
 {
 public:
-    explicit SimpleLabel(QWidget *parent=nullptr, Qt::WindowFlags f=nullptr);
-    explicit SimpleLabel(const QString &text, QWidget *parent=nullptr, Qt::WindowFlags f=nullptr);
+    explicit SimpleLabel(QWidget *parent=nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+    explicit SimpleLabel(const QString &text, QWidget *parent=nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 public:
     void setBackgroundColor(QColor c);
     void resetBackgroundColor();

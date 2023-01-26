@@ -32,7 +32,7 @@ class SaveDialog : public QDialog
 public:
     static const int Discard = 2;
 
-    SaveDialog(QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
+    SaveDialog(QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
     virtual ~SaveDialog();
     virtual int save(Database* database, GameX& game);
 

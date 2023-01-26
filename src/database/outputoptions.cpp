@@ -10,7 +10,7 @@
 #include "outputoptions.h"
 #include "settings.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -246,7 +246,7 @@ bool OutputOptions::validateValue(const QString& optionName, const QString& valu
         allowColors.append("white");
         allowColors.append("green");
         allowColors.append("purple");
-        if((allowColors.contains(value)) || (value.contains(QRegExp("^#[0-9a-fA-F]{6}"))))
+        if((allowColors.contains(value)) || (value.contains(QRegularExpression("^#[0-9a-fA-F]{6}"))))
         {
             return true;
         }

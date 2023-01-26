@@ -25,7 +25,7 @@ class QuickSearchDialog : public QDialog
     Q_OBJECT
 public:
     /** Create Quick search dialog */
-    QuickSearchDialog(QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
+    QuickSearchDialog(QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
     /** Destroy the dialog */
     virtual ~QuickSearchDialog();
     /** Set default tag */

@@ -49,18 +49,18 @@ void ExtTool::RunExtTool1(QString pathIn)
         m_extToolProcess->setReadChannel(QProcess::StandardError);
         m_extToolProcess->setWorkingDirectory(fiPathIn.absolutePath());
         connect(m_extToolProcess, SIGNAL(readyReadStandardOutput()), SLOT(extToolReadOutput()));
-        QStringList options;
 
-        options << fiExtTool.absoluteFilePath();
-        QString parameter = AppSettings->getValue("Tools/CommandLine1").toString();
-        parameter.replace("$(InputPath)",fiPathIn.absoluteFilePath());
-        parameter.replace("$(InputFile)",fiPathIn.fileName());
-        parameter.replace("$(InputDir)",fiPathIn.absolutePath());
-        parameter.replace("$(InputName)",fiPathIn.baseName());
+        QString cmd = fiExtTool.absoluteFilePath();
 
-        options << parameter;
-        QString command = options.join(" ");
-        m_extToolProcess->start(command);
+        QString cmdLine = AppSettings->getValue("Tools/CommandLine1").toString();
+        cmdLine.replace("$(InputPath)",fiPathIn.absoluteFilePath());
+        cmdLine.replace("$(InputFile)",fiPathIn.fileName());
+        cmdLine.replace("$(InputDir)",fiPathIn.absolutePath());
+        cmdLine.replace("$(InputName)",fiPathIn.baseName());
+
+        QStringList parameters = QProcess::splitCommand(cmdLine);
+        m_extToolProcess->start(cmd, parameters);
+
         if (!m_extToolProcess->waitForFinished())
         {
             MessageDialog::warning(fiExtTool.baseName() + ": " + m_extToolProcess->errorString());

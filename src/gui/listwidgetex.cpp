@@ -43,7 +43,7 @@ void ListWidgetEx::myWheelEvent(QWheelEvent* e)
     if (button == (Qt::ControlModifier|Qt::AltModifier))
     {
         QFont f = font();
-        int n = e->delta()>0 ? 1 : -1;
+        int n = e->angleDelta().y()>0 ? 1 : -1;
         int fontSize = f.pointSize() + n;
         setFontSize(fontSize);
     }

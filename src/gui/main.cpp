@@ -16,6 +16,7 @@
 
 #include <QApplication>
 #include <QLocale>
+#include <QMessageBox>
 #include <QTranslator>
 #include "mainwindow.h"
 #include "chessxsettings.h"
@@ -98,6 +99,8 @@ prevHook = _CrtSetReportHook(customReportHook);
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);  // Windows Surface Book
 
     QApplication app(argc, argv);
+
+    QApplication::setFont(QMessageBox().font()); // Workaround for severe bug in Qt5
 
     QDir dir(QApplication::applicationDirPath());
 

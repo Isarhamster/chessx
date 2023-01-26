@@ -12,6 +12,7 @@
 #define GAME_H_INCLUDED
 
 #include <QObject>
+#include <QRegularExpression>
 #include "board.h"
 #include "gamecursor.h"
 #include "gameid.h"
@@ -127,7 +128,7 @@ public :
     /** @return arrowAnnotation at move at node @p moveId. */
     QString arrowAnnotation(MoveId moveId = CURRENT_MOVE) const;
     /** @return annotation at move at node @p moveId. */
-    QString specAnnotation(const QRegExp &r, MoveId moveId = CURRENT_MOVE) const;
+    QString specAnnotation(const QRegularExpression &r, MoveId moveId = CURRENT_MOVE) const;
     /** @return time annotation (either egt or clock) at move at node @p moveId. */
     QString timeAnnotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
     void setTimeAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE);
@@ -149,6 +150,7 @@ public :
     bool dbPrependAnnotation(QString a, char delimiter=' ', MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Sets the comment associated with move at node @p moveId */
     bool setAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
+    bool prependAnnotation(QString a, char delimiter=' ', MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Edits the comment associated with move at node @p moveId */
     bool editAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Append to existing annotations associated with move at node @p moveId */
@@ -305,6 +307,8 @@ public :
     /** Remove all variations */
     void removeVariations();
     void removeVariationsDb();
+    void removeNullLines();
+    void removeNullLinesDb();
     /** Remove all Comments */
     void removeComments();
     /** Remove all time Comments */
@@ -322,6 +326,8 @@ public :
     const TagMap &tags() const;
     /** Sets the value of the given tag */
     void setTag(const QString& tag, const QString& value);
+    /** Sets the value of the configured source tag */
+    void setSourceTag(const QString& value);
     /** Query existance of tag */
     bool hasTag(const QString& tag) const;
     /** Removes a tag */

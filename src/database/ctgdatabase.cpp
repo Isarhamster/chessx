@@ -291,14 +291,14 @@ bool CtgDatabase::ctg_lookup_entry(int page_index,
  */
 void CtgDatabase::dump_signature(ctg_signature_t* sig) const
 {
-    qDebug() << "Signature length: " << sig->buf_len << endl;
+    qDebug() << "Signature length: " << sig->buf_len << Qt::endl;
 
     // Print as chars.
     for (int i=0; i<sig->buf_len; ++i) {
-        if (i % 8 == 0) qDebug() << endl;
+        if (i % 8 == 0) qDebug() << Qt::endl;
         qDebug() << sig->buf[i] << " ";
     }
-    qDebug() << endl;
+    qDebug() << Qt::endl;
 }
 
 // ---------------------------------------------------------
@@ -628,7 +628,7 @@ bool CtgDatabase::findMove(quint64 /*key*/, MoveData& /*m*/)
 
 unsigned int CtgDatabase::getMoveMapForBoard(const BoardX &pos, QMap<Move, MoveData>& moveList)
 {
-    ctg_entry_t entry;
+    ctg_entry_t entry = { 0 };
     if (!ctg_get_entry(pos, &entry)) return 0;
 
     // Position is here, output the moves associated with it

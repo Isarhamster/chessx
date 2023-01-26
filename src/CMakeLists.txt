@@ -70,6 +70,7 @@ add_library(eco STATIC
   database/ecopositions.h
   guess/guess_compileeco.cpp
   guess/guess_compileeco.h
+  gui/qt6compat.h
 )
 
 target_link_libraries(eco
@@ -77,6 +78,7 @@ target_link_libraries(eco
     qt_config
   PUBLIC
     board
+    gui
     Qt5::Core
 )
 
@@ -286,9 +288,15 @@ add_library(gui STATIC
   dialogs/dlgsavebook.cpp
   dialogs/dlgsavebook.h
   dialogs/dlgsavebook.ui
+  dialogs/databasetagdialog.cpp
+  dialogs/databasetagdialog.h
+  dialogs/databasetagdialog.ui
   dialogs/matchparameterdlg.cpp
   dialogs/matchparameterdlg.h
   dialogs/matchparameterdlg.ui
+  dialogs/onlinebase.cpp
+  dialogs/onlinebase.h
+  dialogs/onlinebase.ui
   dialogs/preferences.cpp
   dialogs/preferences.h
   dialogs/preferences.ui
@@ -316,6 +324,9 @@ add_library(gui STATIC
   gui/analysiswidget.ui
   gui/annotationtimeedit.cpp
   gui/annotationtimeedit.h
+  gui/annotationwidget.cpp
+  gui/annotationwidget.h
+  gui/annotationwidget.ui
   gui/boardsetup.cpp
   gui/boardsetup.h
   gui/boardsetup.ui
@@ -332,6 +343,8 @@ add_library(gui STATIC
   gui/chartwidget.h
   gui/chessbrowser.cpp
   gui/chessbrowser.h
+  gui/chessxsettings.cpp
+  gui/chessxsettings.h
   gui/colorlist.cpp
   gui/colorlist.h
   gui/databaselist.cpp
@@ -426,6 +439,8 @@ add_library(gui STATIC
   gui/tableview.cpp
   gui/tableview.h
   gui/tagdetailwidget.ui
+  gui/testadapter.cpp
+  gui/testadapter.h
   gui/textbrowserex.h
   gui/textedit.cpp
   gui/textedit.h

@@ -12,6 +12,9 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QList>
+#include <QRegularExpression>
+
+#include "qt6compat.h"
 
 using namespace chessx;
 
@@ -99,12 +102,12 @@ bool parseAsciiEcoData(const QString& ecoFile)
         return false;
     }
     QTextStream ecoStream(&file);
-    ecoStream.setCodec("ISO-8859-1");
+    SET_CODEC_LATIN1(ecoStream);
 
     QString line;
     BoardX board;
     QString ecoCode;
-    QRegExp ecoRegExp("[A-Z]\\d{2}[a-z]?");
+    QRegularExpression ecoRegExp("[A-Z]\\d{2}[a-z]?");
     QStringList tokenList;
     QString token;
     Move move;

@@ -18,6 +18,7 @@
 #include <QString>
 #include <QStringList>
 #include <QStringListModel>
+#include <QRegularExpression>
 
 using namespace chessx;
 
@@ -302,7 +303,7 @@ void FicsConsole::HandleHistoryRequest(QTableWidgetItem* item)
     if (!item->column()) return;
 
     QString player = item->text();
-    player.remove(QRegExp("\\([^\\)]*\\)"));
+    player.remove(QRegularExpression("\\([^\\)]*\\)"));
     if (!player.isEmpty())
     {
         m_lastHistoryPlayer = player;
@@ -319,10 +320,11 @@ void FicsConsole::HandleSeekRequest(QListWidgetItem* item)
     if (!m_ficsClient) return;
 
     QString s = item->text();
-    QRegExp play("\\\"(play [^\\\"]*)");
-    if (play.indexIn(s) >= 0)
+    QRegularExpression play("\\\"(play [^\\\"]*)");
+    QRegularExpressionMatch match;
+    if (s.indexOf(play, 0, &match) >= 0)
     {
-        QString seek = play.cap(1);
+        QString seek = match.captured(1);
         SlotSendUnexamine();
         m_ficsClient->sendCommand("unobserve");
         m_ficsClient->sendCommand(seek);
@@ -566,7 +568,7 @@ void FicsConsole::SetPlayerListItemsFromLine(QString s)
     if (s.contains("players displayed"))
         return;
 
-    QRegExp sep("(\\s+|\\^|~|:|&|#|\\.)");
+    QRegularExpression sep("(\\s+|\\^|~|:|&|#|\\.)");
     QStringList l = s.split(sep);
     ui->listPlayers->setSortingEnabled(false);
     for (int i=0; i<l.count()-1; i+=2)
@@ -699,16 +701,17 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 }
                 else
                 {
-                    QRegExp wReg("White Clock :([^\\.]*)");
-                    if (wReg.indexIn(s) >= 0)
+                    QRegularExpression wReg("White Clock :([^\\.]*)");
+                    QRegularExpressionMatch match;
+                    if (s.indexOf(wReg, 0, &match) >= 0)
                     {
-                        QString w = wReg.cap(1).trimmed();
+                        QString w = match.captured(1).trimmed();
                         emit FicsShowTime(White, w);
                     }
-                    QRegExp bReg("Black Clock :([^\\.]*)");
-                    if (bReg.indexIn(s) >= 0)
+                    QRegularExpression bReg("Black Clock :([^\\.]*)");
+                    if (s.indexOf(bReg, 0, &match) >= 0)
                     {
-                        QString b = bReg.cap(1).trimmed();
+                        QString b = match.captured(1).trimmed();
                         emit FicsShowTime(Black, b);
                     }
                 }
@@ -716,11 +719,12 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             }
         case FicsClient::BLKCMD_HISTORY:
             {
-                QRegExp typeOfGame("\\[([^\\]]+)\\]");
-                int pos = typeOfGame.indexIn(s);
+                QRegularExpression typeOfGame("\\[([^\\]]+)\\]");
+                QRegularExpressionMatch match;
+                int pos = s.indexOf(typeOfGame, 0, &match);
                 if(pos >= 0)
                 {
-                    QString segt = typeOfGame.cap(1).trimmed();
+                    QString segt = match.captured(1).trimmed();
                     if (segt.startsWith('b') || segt.startsWith('l') || segt.startsWith('s') || segt.startsWith('u'))
                     {
                         ui->listHistory->addItem(s);
@@ -757,6 +761,10 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 {
                     m_ficsClient->sendCommand("xtell relay next");
                 }
+		else
+		{
+		    ui->textIn->appendPlainText(s);
+		}
             }
             break;
         case FicsClient::BLKCMD_WHO:
@@ -868,7 +876,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             }
             break;
         case FicsClient::BLKCMD_SAY:
-            s.remove(QRegExp("[^:]*:"));
+            s.remove(QRegularExpression("[^:]*:"));
             ui->textIn->appendHtml(QString("<b>%1</b>").arg(s));
             ui->tabWidget->setCurrentIndex(TabMessage);
             break;
@@ -893,7 +901,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_INTERNAL_PUZZLEBOT:
             if (s.contains("kibitzes"))
             {
-                s.remove(QRegExp("puzzlebot[^:]*kibitzes:"));
+                s.remove(QRegularExpression("puzzlebot[^:]*kibitzes:"));
                 s = s.trimmed();
                 if (!s.contains("tell puzzlebot"))
                 {
