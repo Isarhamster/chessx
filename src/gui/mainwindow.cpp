@@ -46,8 +46,6 @@
 #include "openingtreewidget.h"
 #include "output.h"
 #include "playerlistwidget.h"
-#include "quazip.h"
-#include "quazipfile.h"
 #include "savedialog.h"
 #include "settings.h"
 #include "studyselectiondialog.h"
@@ -56,6 +54,14 @@
 #include "tournamentselectiondialog.h"
 #include "translatingslider.h"
 #include "version.h"
+
+#ifdef QUAZIP_STATIC
+#include "quazip.h"
+#include "quazipfile.h"
+#else
+#include <quazip/quazip.h>
+#include <quazip/quazipfile.h>
+#endif
 
 #include <QtWidgets/qmainwindow.h>
 #include <time.h>
