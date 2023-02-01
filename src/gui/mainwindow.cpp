@@ -45,8 +45,6 @@
 #include "openingtreewidget.h"
 #include "output.h"
 #include "playerlistwidget.h"
-#include "quazip.h"
-#include "quazipfile.h"
 #include "savedialog.h"
 #include "settings.h"
 #include "tags.h"
@@ -54,6 +52,14 @@
 #include "toolmainwindow.h"
 #include "translatingslider.h"
 #include "version.h"
+
+#ifdef QUAZIP_STATIC
+#include "quazip.h"
+#include "quazipfile.h"
+#else
+#include <quazip/quazip.h>
+#include <quazip/quazipfile.h>
+#endif
 
 #include <time.h>
 
