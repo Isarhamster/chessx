@@ -55,17 +55,19 @@ unix|!macx {
     BINDIR = $$PREFIX/bin
     DATADIR = $$PREFIX/share
 
-    INSTALLS += appdata desktop icons binfiles
+    INSTALLS += appdata desktop icons256 icons64 icons32 binfiles
 
     appdata.files = unix/io.sourceforge.ChessX.metainfo.xml
     appdata.path = $$DATADIR/metainfo
     desktop.files = unix/chessx.desktop
     desktop.path = $$DATADIR/applications
 
-    icons.path = $$DATADIR/icons/hicolor
-    icons.commands = install -Dm644 data/images/chessx.png    $${icons.path}/128x128/apps/chessx.png; \
-                     install -Dm644 data/images/chessx-32.png $${icons.path}/32x32/apps/chessx.png; \
-                     install -Dm644 data/images/chessx-64.png $${icons.path}/64x64/apps/chessx.png;
+    icons256.path = $$DATADIR/icons/hicolor/256x256/apps
+    icons256.files = data/images/icons-256/chessx.png
+    icons64.path = $$DATADIR/icons/hicolor/64x64/apps
+    icons64.files = data/images/icons-64/chessx.png
+    icons32.path = $$DATADIR/icons/hicolor/32x32/apps
+    icons32.files = data/images/icons-32/chessx.png
 
     binfiles.files = release/chessx
     binfiles.path = $$BINDIR
