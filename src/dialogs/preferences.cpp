@@ -532,6 +532,7 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.boardColorsList, tr("Dark squares"), "darkColor");
     restoreColorItem(ui.boardColorsList, tr("Highlighted squares"), "highlightColor");
     restoreColorItem(ui.boardColorsList, tr("Frame"), "frameColor");
+    restoreColorItem(ui.boardColorsList, tr("Coordinates"), "coordColor");
     restoreColorItem(ui.boardColorsList, tr("Current move"), "currentMoveColor");
     restoreColorItem(ui.boardColorsList, tr("Stored move"), "storedMoveColor");
     restoreColorItem(ui.boardColorsList, tr("Variation move"), "variationMoveColor");
@@ -740,7 +741,7 @@ void PreferencesDialog::saveSettings()
     }
     QStringList colorNames;
     colorNames << "lightColor" << "darkColor" << "highlightColor"
-               << "frameColor" << "currentMoveColor" << "storedMoveColor" << "variationMoveColor" << "threatColor"
+               << "frameColor" << "coordColor" << "currentMoveColor" << "storedMoveColor" << "variationMoveColor" << "threatColor"
                << "targetColor" << "checkColor" << "wallColor" << "underprotectedColor" << "engineColor" ;
     saveColorList(ui.boardColorsList, colorNames);
     AppSettings->endGroup();

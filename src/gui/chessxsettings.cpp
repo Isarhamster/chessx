@@ -234,6 +234,7 @@ void ChessXSettings::initWidgetValues(QMap<QString, QVariant>& map) const
     map.insert("/Board/darkColor", QColor(Qt::darkGray));
     map.insert("/Board/highlightColor", QColor(Qt::yellow));
     map.insert("/Board/frameColor", QColor(Qt::black));
+    map.insert("/Board/coordColor", QColor(Qt::black));
     map.insert("/Board/currentMoveColor", QColor(Qt::blue));
     map.insert("/Board/storedMoveColor", QColor(Qt::magenta));
     map.insert("/Board/variationMoveColor", QColor(Qt::darkMagenta));
