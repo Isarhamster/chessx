@@ -9,7 +9,7 @@
 
 const char* const TagNameFEN         = "FEN";
 const char* const TagNameECO         = "ECO";
-const char* const TagNameSetUp       = "Setup";
+const char* const TagNameSetUp       = "SetUp";
 const char* const TagNameSource      = "Source";
 const char* const TagNameResult      = "Result";
 const char* const TagNameWhite       = "White";
