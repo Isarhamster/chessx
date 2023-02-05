@@ -32,6 +32,8 @@ const char* const TagNameVariant     = "Variant";
 
 const char* const StandardTags[7] = {"Event", "Site", "Date", "Round", "White", "Black", "Result"};
 
+const char* const TagNameSetupDeprecate = "Setup";
+
 bool isStandardTag(QString tag);
 
 #endif // TAGS_H
