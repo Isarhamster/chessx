@@ -124,11 +124,10 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
     }
 
     ProcessUnblockedMessage(s.normalized(QString::NormalizationForm_D).trimmed());
-
     if (end >= 0)
-    {
-        m_cmd = BLKCMD_NULL;
-    }
+      {
+	m_cmd = BLKCMD_NULL;
+      }
 }
 
 void FicsClient::ProcessUnblockedMessage(QString s)
@@ -138,7 +137,6 @@ void FicsClient::ProcessUnblockedMessage(QString s)
         if (s.startsWith("<12>"))
         {
             s.remove("<12>");
-            // qDebug() << s;
             emit receivedBoard(m_cmd, s.trimmed());
         }
         else if (s.startsWith('{'))
@@ -184,11 +182,11 @@ void FicsClient::ProcessUnblockedMessage(QString s)
         }
         else if (m_cmd != BLKCMD_NULL)
         {
-            emit receivedMessage(m_cmd,s);
+	  emit receivedMessage(m_cmd,s);
         }
         else
         {
-            qDebug() << "Cmd " << m_cmd << ": ignoring message: " << s;
+	  qDebug() << "Cmd " << m_cmd << ": ignoring message: " << s;
         }
     }
 }

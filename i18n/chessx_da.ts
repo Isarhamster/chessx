@@ -4419,7 +4419,7 @@ Skal jeg downloade en database?</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1280"/>
-        <source>Try to use Timeseal</source>
+        <source>Use timeseal</source>
         <translation>Forsøg at bruge Timeseal</translation>
     </message>
     <message>

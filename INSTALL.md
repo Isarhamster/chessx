@@ -63,6 +63,16 @@ If compilation finishes successfully, the executable will be found as:
 
      release/chessx
 
+## 4.2 Compilation of timeseal in Linux x64 systems
+
+In order to compile timeseal, to be used in Linux x64, prepare with
+
+    qmake-qt5 timeseal.pro
+
+then compile with
+ 
+    make
+
 # 5. Problems
 
 

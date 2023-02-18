@@ -1666,7 +1666,7 @@
           <item row="1" column="0">
            <widget class="QCheckBox" name="btUseTimeseal">
             <property name="text">
-             <string>Try to use Timeseal</string>
+             <string>Use timeseal</string>
             </property>
            </widget>
           </item>

@@ -4347,7 +4347,7 @@ Devo caricare un database?</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1280"/>
-        <source>Try to use Timeseal</source>
+        <source>Use timeseal</source>
         <translatorcomment>Teamseal was not translated.</translatorcomment>
         <translation>Prova a usare Timeseal</translation>
     </message>

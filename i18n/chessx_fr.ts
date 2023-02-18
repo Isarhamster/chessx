@@ -4106,7 +4106,7 @@ Dois-je télécharger une base ?</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1280"/>
-        <source>Try to use Timeseal</source>
+        <source>Use timeseal</source>
         <translation>Essayer d&apos;utiliser Timeseal</translation>
     </message>
     <message>

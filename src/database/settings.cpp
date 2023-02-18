@@ -130,8 +130,8 @@ QString Settings::timesealFilePath()
 #elif defined Q_OS_MAC
     QString path(AppSettings->programDataPath());
     return (path + QDir::separator() + "timeseal" + QDir::separator() + "mac" + QDir::separator() + "timeseal");
-#else
-    return "";
+#elif defined Q_OS_UNIX
+    return (QCoreApplication::applicationDirPath() + QDir::separator() + "timeseal");
 #endif
 }
 
