@@ -9,6 +9,7 @@
 #include "version.h"
 
 #include "ui_aboutdlg.h"
+#include <QSslSocket>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -77,6 +78,10 @@ AboutDlg::AboutDlg(QWidget *parent) :
     ui->labelSettingsPath->setTextInteractionFlags(Qt::TextBrowserInteraction | Qt::TextSelectableByKeyboard);
     ui->labelHomepage->setTextInteractionFlags(Qt::TextBrowserInteraction);
     ui->labelMailingList->setTextInteractionFlags(Qt::TextBrowserInteraction);
+
+    ui->lbSslQt->setText(QSslSocket::sslLibraryBuildVersionString());
+    ui->lbSslSupport->setText(QSslSocket::supportsSsl()?tr("Yes"):tr("No"));
+    ui->lbSslLibrary->setText(QSslSocket::sslLibraryVersionString());
 }
 
 void AboutDlg::restoreLayout()
