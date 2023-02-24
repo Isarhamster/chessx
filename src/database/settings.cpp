@@ -44,12 +44,7 @@ QString Settings::dataPath()
 {
     if(m_dataPath.isNull())
     {
-#if QT_VERSION < 0x050000
-        m_dataPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-#else
         m_dataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-#endif
-
         m_dataPath.append(QDir::separator());
         m_dataPath.append("data");
     }
@@ -137,11 +132,7 @@ QString Settings::timesealFilePath()
 
 QString Settings::commonDataPath()
 {
-#if QT_VERSION < 0x050000
-    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() + "chessdata";
-#else
     QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QDir::separator() + "chessdata";
-#endif
     QString dir = value("/General/DefaultDataPath", dataPath).toString();
     return dir;
 }
@@ -544,11 +535,7 @@ QStringList Settings::getTranslations() const
 
 QString Settings::getTempPath() const
 {
-#if QT_VERSION < 0x050000
-    QString path = QDesktopServices::storageLocation(QDesktopServices::TempLocation);
-#else
     QString path = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
-#endif
     return path;
 }
 

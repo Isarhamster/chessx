@@ -17,7 +17,6 @@
 #include "boardview.h"
 #include "boardviewex.h"
 #include "copydialog.h"
-#include "clipboarddatabase.h"
 #include "guess_compileeco.h"
 #include "databaseinfo.h"
 #include "databaselist.h"
@@ -1213,7 +1212,7 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
                 SQAction('Y',menu->addAction(QIcon(":/images/square_yellow.png"), tr("Yellow Square"), this, SLOT(slotYellowSquare())));
                 SQAction('G',menu->addAction(QIcon(":/images/square_green.png"), tr("Green Square"),  this, SLOT(slotGreenSquare())));
                 menu->addSeparator();
-                SQAction(0,menu->addAction(QIcon(":/images/square_none.png"),  tr("Remove Color"),  this, SLOT(slotNoColorSquare())));
+                SQAction('\0',menu->addAction(QIcon(":/images/square_none.png"),  tr("Remove Color"),  this, SLOT(slotNoColorSquare())));
             }
             else
             {
@@ -1221,7 +1220,7 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
                 SQAction('Y',menu->addAction(QIcon(":/images/arrow_yellow.png"), tr("Yellow Arrow to here"), this, SLOT(slotYellowArrowHere())));
                 SQAction('G',menu->addAction(QIcon(":/images/arrow_green.png"), tr("Green Arrow to here"),  this, SLOT(slotGreenArrowHere())));
                 menu->addSeparator();
-                SQAction(0,menu->addAction(QIcon(":/images/arrow_none.png"),  tr("Remove Arrow to here"), this, SLOT(slotNoArrowHere())));
+                SQAction('\0',menu->addAction(QIcon(":/images/arrow_none.png"),  tr("Remove Arrow to here"), this, SLOT(slotNoArrowHere())));
             }
             menu->exec(pos);
         }
@@ -3547,8 +3546,9 @@ void MainWindow::updateLastGameList()
     m_recentGames->clear();
     if (index)
     {
-        foreach(GameId n, gameList)
+        for(auto i = gameList.cbegin(); i!= gameList.cend(); i++)
         {
+            GameId n = *i;
             QString white = index->tagValue(TagNameWhite,n);
             QString black = index->tagValue(TagNameBlack,n);
             QAction* action = m_recentGames->addAction(QString::number(n+1)+" : "+white+"-"+black, this, SLOT(slotLoadRecentGame()));
@@ -3816,8 +3816,8 @@ bool MainWindow::slotGameMoveNext()
 
 void MainWindow::slotNoColorSquare()
 {
-    m_lastColor = 0;
-    game().appendSquareAnnotation(m_annotationSquare, 0);
+    m_lastColor = '\0';
+    game().appendSquareAnnotation(m_annotationSquare, '\0');
 }
 
 void MainWindow::slotGreenSquare()
@@ -3840,8 +3840,8 @@ void MainWindow::slotRedSquare()
 
 void MainWindow::slotNoArrowHere()
 {
-    m_lastColor = 0;
-    game().appendArrowAnnotation(m_annotationSquare, m_annotationSquareFrom, 0);
+    m_lastColor = '\0';
+    game().appendArrowAnnotation(m_annotationSquare, m_annotationSquareFrom, '\0');
 }
 
 void MainWindow::slotGreenArrowHere()

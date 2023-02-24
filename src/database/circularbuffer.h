@@ -22,8 +22,8 @@ public:
 public:
     using QQueue<T>::clear;
     using typename QQueue<T>::const_iterator;
-    using QQueue<T>::begin;
-    using QQueue<T>::end;
+    using QQueue<T>::cbegin;
+    using QQueue<T>::cend;
 
 private:
     inline void deleteExcess() { while (QQueue<T>::count() > (int) maxSize) QQueue<T>::pop_front(); }

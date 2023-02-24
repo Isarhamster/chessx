@@ -123,12 +123,7 @@ void ChartWidget::handleMouseEvent(QMouseEvent *event)
 {
     if (width() && m_values.size() && (m_values[0].count()>1))
     {
-    #if QT_VERSION < 0x050000
-        QPointF p = event->posF();
-    #else
-        QPointF p = event->localPos();
-    #endif
-
+        QPointF p = event->pos();
         double multiplierW = ((double)width()) / (m_values[0].count()-1);
         double x = 0.5 + (p.x() / multiplierW);
         if (m_lastSentIndicator!=(int)x)

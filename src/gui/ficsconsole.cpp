@@ -51,7 +51,7 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     btgSeek->addButton(ui->btLightning);
     btgSeek->addButton(ui->btBlitz);
     btgSeek->addButton(ui->btStandard);
-    connect(btgSeek, SIGNAL(buttonClicked(int)), SLOT(SlotSeekTimeChanged(int)));
+    connect(btgSeek, SIGNAL(idClicked(int)), SLOT(SlotSeekTimeChanged(int)));
 
     connect(ui->textOut, SIGNAL(editingFinished()), SLOT(SendCommand()));
     connect(m_ficsClient, SIGNAL(receivedMessage(int,QString)), SLOT(HandleMessage(int,QString)), Qt::QueuedConnection);

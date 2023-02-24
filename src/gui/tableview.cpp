@@ -34,11 +34,7 @@ TableView::TableView(QWidget *parent)
     verticalHeader()->hide();
     horizontalHeader()->setHighlightSections(false);
     horizontalHeader()->setStretchLastSection(true);
-#if QT_VERSION < 0x050000
-    horizontalHeader()->setMovable(true);
-#else
     horizontalHeader()->setSectionsMovable(true);
-#endif
     setTabKeyNavigation(false);
     setContextMenuPolicy(Qt::CustomContextMenu);
     horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -68,7 +64,12 @@ void TableView::wheelEvent(QWheelEvent* e)
 
 QStyleOptionViewItem TableView::viewOptions() const
 {
-    QStyleOptionViewItem option = QTableView::viewOptions();
+    QStyleOptionViewItem option;
+#if QT_VERSION < 0x060000 // Change w/o any notice or documentation - make a guess
+    option = QTableView::viewOptions();
+#else
+    initViewItemOption(&option);
+#endif
     option.decorationAlignment = m_alignDecoration;
     option.decorationPosition = m_posDecoration;
     return option;
@@ -119,11 +120,7 @@ void TableView::setFontSize(int fontSize)
     int rowHeight = std::max(minRowHeight(), fm.height()+2);
 
     QHeaderView *vh = verticalHeader();
-#if QT_VERSION < 0x050000
-    vh->setResizeMode(QHeaderView::Fixed);
-#else
     vh->sectionResizeMode(QHeaderView::Fixed);
-#endif
     vh->setDefaultSectionSize(rowHeight);
 }
 

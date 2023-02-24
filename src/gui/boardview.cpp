@@ -905,7 +905,15 @@ void BoardView::handleMouseMoveEvent(QMouseEvent *event)
 void BoardView::mouseMoveEvent(QMouseEvent *event)
 {
     delete lastMoveEvent;
+
+#if QT_VERSION < 0x060000 // QT6 really is a pile of rubbish
     lastMoveEvent = new QMouseEvent(*event);
+#else
+    lastMoveEvent = new QMouseEvent(event->type(),
+                                    event->position(), event->globalPosition(),
+                                    event->button(), event->buttons(),
+                                    event->modifiers(), event->pointingDevice());
+#endif
 
     handleMouseMoveEvent(event);
     QWidget::mouseMoveEvent(event);
@@ -965,7 +973,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 {
     delete lastMoveEvent;
     lastMoveEvent = nullptr;
-    int button = event->button() + event->modifiers();
+    unsigned int button = (unsigned int)event->button() + (unsigned int)event->modifiers();
     Square s = squareAt(event->pos());
     m_clickUsed = false;
     Square from = squareAt(m_dragStart);
@@ -1110,7 +1118,7 @@ void BoardView::wheelEvent(QWheelEvent* e)
     if(abs(m_wheelCurrentDelta) > m_minDeltaWheel)
     {
         int change = m_wheelCurrentDelta < 0 ? WheelDown : WheelUp;
-        emit wheelScrolled(change + e->modifiers());
+        emit wheelScrolled(change + (int)e->modifiers());
         m_wheelCurrentDelta = 0;
     }
     QWidget::wheelEvent(e);

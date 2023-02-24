@@ -123,7 +123,7 @@ bool ChessXSettings::layout(QWidget* w)
             if(m)
             {
                 QByteArray docks = value("Docks", QByteArray()).toByteArray();
-                if(docks.count())
+                if(docks.size())
                 {
                     m->restoreState(docks, 0);
                 }
