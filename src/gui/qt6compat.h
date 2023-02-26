@@ -42,4 +42,10 @@ public:
 #define SET_CODEC_LATIN1(s) s.setEncoding(QStringConverter::Latin1);
 #endif
 
+#if QT_VERSION < 0x060000
+#define EVENT_POSITION(event) (event)->pos()
+#else
+#define EVENT_POSITION(event) (event)->position().toPoint()
+#endif
+
 #endif // QT6COMPAT_H

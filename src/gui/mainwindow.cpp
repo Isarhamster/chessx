@@ -2351,11 +2351,7 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 
 void MainWindow::dragMoveEvent(QDragMoveEvent *event)
 {
-#if QT_VERSION < 0x060000
-    QPoint lpos = event->pos();
-#else
-    QPoint lpos = event->position().toPoint();
-#endif
+    QPoint lpos = EVENT_POSITION(event);
 
     QTabBar* pTabBar = qobject_cast<QTabBar*>(childAt(lpos));
 

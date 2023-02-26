@@ -19,6 +19,7 @@
 #include "settings.h"
 #include "guess.h"
 #include "move.h"
+#include "qt6compat.h"
 
 #include <QApplication>
 #include <QSizePolicy>
@@ -574,7 +575,7 @@ Square BoardView::squareAt(const QPoint& p) const
 
 void BoardView::mousePressEvent(QMouseEvent* event)
 {
-    m_dragStart = event->pos();
+    m_dragStart = EVENT_POSITION(event);
     setStoredMove(InvalidSquare,InvalidSquare);
 }
 
@@ -842,7 +843,7 @@ void BoardView::handleMouseMoveEvent(QMouseEvent *event)
         {
             if(!(mdf & Qt::ShiftModifier))
             {
-                showGuess(squareAt(event->pos()));
+                showGuess(squareAt(EVENT_POSITION(event)));
             }
             else
             {
@@ -854,11 +855,11 @@ void BoardView::handleMouseMoveEvent(QMouseEvent *event)
 
     if (m_brushMode && (b & Qt::LeftButton) && (mdf & Qt::AltModifier))
     {
-        Square s = squareAt(event->pos());
+        Square s = squareAt(EVENT_POSITION(event));
         if ((m_dragStartSquare == InvalidSquare) || (m_dragStartSquare != s))
         {
-            emit clicked(s, b, mapToGlobal(event->pos()), s);
-            m_dragStart = event->pos();
+            emit clicked(s, b, mapToGlobal(EVENT_POSITION(event)), s);
+            m_dragStart = EVENT_POSITION(event);
             m_dragStartSquare = s;
             return;
         }
@@ -867,16 +868,16 @@ void BoardView::handleMouseMoveEvent(QMouseEvent *event)
     if(m_dragged != Empty)
     {
         QRect old = QRect(m_dragPoint, m_theme.size());
-        m_dragPoint = event->pos() - m_theme.pieceCenter();
+        m_dragPoint = EVENT_POSITION(event) - m_theme.pieceCenter();
         update(old);
         update(QRect(m_dragPoint, m_theme.size()));
         if (moveActionFromModifier(mdf) == ActionAskEngine)
         {
-            emit evalRequest(m_dragStartSquare, squareAt(event->pos()));
+            emit evalRequest(m_dragStartSquare, squareAt(EVENT_POSITION(event)));
         }
         else if (moveActionFromModifier(mdf) == ActionEvalMove)
         {
-            emit evalMove(m_dragStartSquare, squareAt(event->pos()));
+            emit evalMove(m_dragStartSquare, squareAt(EVENT_POSITION(event)));
         }
         return;
     }
@@ -886,7 +887,7 @@ void BoardView::handleMouseMoveEvent(QMouseEvent *event)
         return;
     }
 
-    if((event->pos() - m_dragStart).manhattanLength()
+    if((EVENT_POSITION(event) - m_dragStart).manhattanLength()
             < QApplication::startDragDistance())
     {
         // Click and move - start dragging
@@ -923,7 +924,7 @@ void BoardView::startToDrag(QMouseEvent *event, Square s)
 {
     removeGuess();
     if (!m_brushMode) m_dragged = m_board.pieceAt(s);
-    m_dragPoint = event->pos() - m_theme.pieceCenter();
+    m_dragPoint = EVENT_POSITION(event) - m_theme.pieceCenter();
     m_dragStartSquare = s;
     update(squareRect(s));
     update(QRect(m_dragPoint, m_theme.size()));
@@ -974,7 +975,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
     delete lastMoveEvent;
     lastMoveEvent = nullptr;
     unsigned int button = (unsigned int)event->button() + (unsigned int)event->modifiers();
-    Square s = squareAt(event->pos());
+    Square s = squareAt(EVENT_POSITION(event));
     m_clickUsed = false;
     Square from = squareAt(m_dragStart);
 
@@ -1000,7 +1001,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
         }
         if(s != InvalidSquare)
         {
-            emit clicked(s, button, mapToGlobal(event->pos()), from);
+            emit clicked(s, button, mapToGlobal(EVENT_POSITION(event)), from);
         }
         else
         {
@@ -1026,7 +1027,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
         {
             if(s != InvalidSquare)
             {
-                emit clicked(s, button, mapToGlobal(event->pos()), from);
+                emit clicked(s, button, mapToGlobal(EVENT_POSITION(event)), from);
             }
             if (m_dragged != Empty)
             {
@@ -1044,7 +1045,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
         m_dragStartSquare = InvalidSquare;
         if ((s != InvalidSquare) && !(event->modifiers() & Qt::AltModifier))
         {
-            emit clicked(s, button, mapToGlobal(event->pos()), from);
+            emit clicked(s, button, mapToGlobal(EVENT_POSITION(event)), from);
             m_dragged = Empty;
         }
     }
@@ -1101,7 +1102,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
     {
         if(s != InvalidSquare)
         {
-            emit clicked(s, button, mapToGlobal(event->pos()), InvalidSquare);
+            emit clicked(s, button, mapToGlobal(EVENT_POSITION(event)), InvalidSquare);
             if(!m_clickUsed && m_board.isMovable(s))
             {
                 selectSquare(s);
@@ -1296,7 +1297,7 @@ void BoardView::dropEvent(QDropEvent *event)
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
     if(bvMimeData)
     {
-        Square s = squareAt(event->pos());
+        Square s = squareAt(EVENT_POSITION(event));
         if (s != InvalidSquare)
         {
             emit pieceDropped(s, bvMimeData->m_piece);
