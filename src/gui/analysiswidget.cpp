@@ -301,7 +301,7 @@ void AnalysisWidget::showAnalysis(Analysis analysis)
     updateComplexity();
     updateAnalysis();
     Analysis c = analysis;
-    if (bestMove && analysis.variation().count())
+    if (bestMove && analysis.variation().count()) // Some weird engines send a move twice - find the first (usually longer) line
     {
         foreach (Analysis a, m_analyses)
         {
@@ -317,21 +317,27 @@ void AnalysisWidget::showAnalysis(Analysis analysis)
         }
     }
 
-    c.setTb(m_tb);
-    c.setScoreTb(m_score_tb);
     if (bestMove)
     {
         analysis.setElapsedTimeMS(elapsed);
         emit receivedBestMove(c);
-        emit currentBestMove(c);
     }
-    else if (c.getEndOfGame())
+
+    if (m_tb.isNullMove())
     {
-        emit receivedBestMove(c);
-    }
-    if (c.variation().count() && (m!=c.variation().at(0)))
-    {
-        emit currentBestMove(c);
+        if (!bestMove && !c.getEndOfGame())
+        {
+            if (m_analyses.count()) // First line mostly is the best line
+            {
+                c = m_analyses.at(0);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        emit currentBestMove(c); // Do not overwrite TB move
     }
 }
 
@@ -606,6 +612,10 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
             m_tablebaseEvaluation.append(QString(" === %1").arg(also.join(" ")));
         }
         updateAnalysis();
+        Analysis tbAnalysis;
+        tbAnalysis.setTb(m_tb);
+        tbAnalysis.setScoreTb(m_score_tb);
+        emit currentBestMove(tbAnalysis);
     }
 }
 

@@ -2599,9 +2599,16 @@ void MainWindow::addAutoNag(Color toMove, int score, int lastScore, int threasho
 
 void MainWindow::slotEngineCurrentBest(const Analysis& analysis)
 {
-    if (analysis.variation().count())
+    if (analysis.getTb().isNullMove())
     {
-        m_boardView->setBestGuess(analysis.variation().at(0));
+        if (analysis.variation().count())
+        {
+            m_boardView->setBestGuess(analysis.variation().at(0));
+        }
+    }
+    else
+    {
+        m_boardView->setBestGuess(analysis.getTb());
     }
 }
 
