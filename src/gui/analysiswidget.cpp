@@ -7,6 +7,7 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "database.h"
 #include "settings.h"
 #include "analysis.h"
 #include "analysiswidget.h"
@@ -17,7 +18,6 @@
 #include "move.h"
 #include "movedata.h"
 #include "tablebase.h"
-#include "polyglotdatabase.h"
 
 #include <QMutexLocker>
 #include <algorithm>

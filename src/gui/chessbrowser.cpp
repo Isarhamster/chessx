@@ -25,7 +25,7 @@ ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p), m_gameMenu(nullptr), m
     setObjectName("ChessBrowser");
     setContextMenuPolicy(Qt::CustomContextMenu);
     setupMenu();
-
+    setTextInteractionFlags(textInteractionFlags() | Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
     setAcceptDrops(true);
 }
 
