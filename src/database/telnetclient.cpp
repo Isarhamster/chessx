@@ -32,7 +32,11 @@ TelnetClient::TelnetClient(QObject *parent)
     m_extToolProcess = new QProcess(this);
     connect(m_extToolProcess, SIGNAL(readyRead()), SLOT(SlotReadTimesealData()));
     connect(m_extToolProcess, SIGNAL(readyReadStandardOutput()), SLOT(SlotReadTimesealData()));
+#if QT_VERSION < 0x060000
+    connect(m_extToolProcess, SIGNAL(error(QProcess::ProcessError)), SLOT(SlotTimesealError()));
+#else
     connect(m_extToolProcess, SIGNAL(errorOccurred(QProcess::ProcessError)), SLOT(SlotTimesealError()));
+#endif
 }
 
 TelnetClient::~TelnetClient()
