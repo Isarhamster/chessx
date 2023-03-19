@@ -109,6 +109,10 @@ void GameCursor::clear(const QString& fen, bool chess960)
 
 MoveId GameCursor::makeNodeIndex(MoveId moveId) const
 {
+    if (moveId == NO_MOVE)
+    {
+        return NO_MOVE;
+    }
     if (moveId == CURRENT_MOVE)
     {
         moveId = m_currentNode;
@@ -309,29 +313,40 @@ MoveId GameCursor::variationNumber(MoveId moveId) const
     return node;
 }
 
-bool GameCursor::variationHasSiblings(MoveId variation) const
+MoveId GameCursor::variationBranchPoint(MoveId variation) const
 {
     variation = makeNodeIndex(variation);
     if(variation == NO_MOVE)
     {
-        return false;
+        return NO_MOVE;
     }
-    if(isMainline(variation))
+
+    MoveId branch = m_nodes[variation].parentNode;
+    if (branch == NO_MOVE)
     {
-        MoveId prevNode = m_nodes[variation].previousNode;
-        prevNode = makeNodeIndex(prevNode);
-        if(prevNode == NO_MOVE)
+        branch = m_nodes[variation].previousNode; // Iterate back to last branchpoint is also thinkable, but probably confusing
+        branch = makeNodeIndex(branch);
+    }
+    else
+    {
+        MoveId prevNode = variation;
+        while ((prevNode = m_nodes[prevNode].previousNode) != NO_MOVE)
         {
-            return false;
+            if (m_nodes[prevNode].variations.size())
+            {
+                branch = prevNode;
+                break;
+            }
         }
-        return (variationCount(prevNode) > 0);
     }
-    while(!atLineStart(variation))
-    {
-        variation = m_nodes[variation].previousNode;
-    }
-    MoveId parent = m_nodes[variation].parentNode;
-    return (variationCount(parent) > 0);
+
+    return (variationCount(branch)) ? branch : NO_MOVE;
+}
+
+bool GameCursor::variationHasSiblings(MoveId variation) const
+{
+    variation = makeNodeIndex(variation);
+    return (variationBranchPoint(variation) != NO_MOVE);
 }
 
 bool GameCursor::moveToId(MoveId moveId, QString* algebraicMoveList)

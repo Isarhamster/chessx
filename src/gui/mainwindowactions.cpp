@@ -1492,35 +1492,21 @@ void MainWindow::slotGameVarEnter()
 void MainWindow::slotGameVarUp()
 {
     MoveId currentVar = game().currentMove();
-    MoveId lastVar = NO_MOVE;
-    while (!game().variationCount())
+    MoveId branch = game().cursor().variationBranchPoint();
+    if (branch != NO_MOVE)
     {
-        lastVar = game().currentMove();
-        game().backward();
-    }
-    if (lastVar == NO_MOVE)
-    {
-        // Repair - there is no variation
-        game().moveToId(currentVar);
-    }
-    else
-    {
-        int n = game().variations().indexOf(lastVar) - 1;
-        if(n >= 0)
+        game().moveToId(branch);
+
+        QList<MoveId> listVariations = game().cursor().variations();
+        if (listVariations.size() && !game().atLineEnd())
         {
-            game().moveToId(game().variations().at(n));
-        }
-        else if(n == -2)
-        {
-            game().moveToId(game().variations().last());
-        }
-        else
-        {
-            if(!m_training2->isChecked())
-            {
-                // Do not show next move in training 2 mode
-                game().forward();
-            }
+            MoveId mainPoint = game().cursor().nextMove();
+            listVariations.push_front(mainPoint);
+
+            int idx = listVariations.indexOf(currentVar, 0) - 1;
+            if (idx < 0) idx = listVariations.count() - 1;
+
+            game().moveToId(listVariations.at(idx));
         }
     }
 }
@@ -1528,31 +1514,21 @@ void MainWindow::slotGameVarUp()
 void MainWindow::slotGameVarDown()
 {
     MoveId currentVar = game().currentMove();
-    MoveId lastVar = NO_MOVE;
-    while (!game().variationCount())
+    MoveId branch = game().cursor().variationBranchPoint();
+    if (branch != NO_MOVE)
     {
-        lastVar = game().currentMove();
-        game().backward();
-    }
-    if (lastVar == NO_MOVE)
-    {
-        // Repair - there is no variation
-        game().moveToId(currentVar);
-    }
-    else
-    {
-        int n = game().variations().indexOf(lastVar) + 1;
-        if(n < game().variations().count())
+        game().moveToId(branch);
+
+        QList<MoveId> listVariations = game().cursor().variations();
+        if (listVariations.size() && !game().atLineEnd())
         {
-            game().moveToId(game().variations().at(n));
-        }
-        else
-        {
-            if(!m_training2->isChecked())
-            {
-                // Do not show next move in training 2 mode
-                game().forward();
-            }
+            MoveId mainPoint = game().cursor().nextMove();
+            listVariations.push_front(mainPoint);
+
+            int idx = listVariations.indexOf(currentVar, 0) + 1;
+            if (idx >= listVariations.count()) idx = 0;
+
+            game().moveToId(listVariations.at(idx));
         }
     }
 }
