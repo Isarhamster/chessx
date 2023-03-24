@@ -179,14 +179,19 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                     return;
                 }
 
+                qDebug() << ret << Qt::endl << Qt::flush;
+
                 if(ret[5] == 'w')
                 {
-                    ret.remove(QRegularExpression("NEXTCOLOR.*\\n"));
+                    ret.remove(QRegularExpression("NEXTCOLOR.*\\n", QRegularExpression::DotMatchesEverythingOption));
                 }
                 else
                 {
-                    ret.remove(QRegularExpression(".*NEXTCOLOR\\n"));
+                    ret.remove(QRegularExpression(".*NEXTCOLOR\\n", QRegularExpression::DotMatchesEverythingOption));
                 }
+
+                qDebug() << ret << Qt::endl << Qt::flush;
+
                 ret.remove(0, ret.indexOf("\n") + 1);
                 ret.remove(":");
                 ret.remove("Win in ");
