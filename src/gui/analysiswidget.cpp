@@ -54,7 +54,6 @@ AnalysisWidget::AnalysisWidget(QWidget *parent)
 
     ui.variationText->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui.variationText,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
-
 }
 
 AnalysisWidget::~AnalysisWidget()
@@ -72,6 +71,7 @@ bool AnalysisWidget::hideLines() const
 void AnalysisWidget::setHideLines(bool newHideLines)
 {
     m_hideLines = newHideLines;
+    updateAnalysis();
 }
 
 void AnalysisWidget::showContextMenu(const QPoint &pt)
@@ -158,7 +158,6 @@ bool AnalysisWidget::isEngineConfigured() const
 void AnalysisWidget::engineActivated()
 {
     ui.analyzeButton->setChecked(true);
-    ui.analyzeButton->setText(tr("Stop"));
     m_analyses.clear();
     updateBookMoves(); // Delay this to here so that engine process is up
     if (!sendBookMove())
@@ -181,7 +180,6 @@ void AnalysisWidget::engineError(QProcess::ProcessError e)
 void AnalysisWidget::engineDeactivated()
 {
     ui.analyzeButton->setChecked(false);
-    ui.analyzeButton->setText(tr("Analyze"));
 }
 
 void AnalysisWidget::toggleAnalysis()
