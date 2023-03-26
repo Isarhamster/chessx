@@ -7,6 +7,7 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "QtWidgets/qmenu.h"
 #include "database.h"
 #include "settings.h"
 #include "analysis.h"
@@ -34,7 +35,8 @@ AnalysisWidget::AnalysisWidget(QWidget *parent)
       m_moveTime(0),
       m_bUciNewGame(true),
       m_onHold(false),
-      m_gameMode(false)
+      m_gameMode(false),
+      m_hideLines(false)
 {
     ui.setupUi(this);
     connect(ui.engineList, SIGNAL(activated(int)), SLOT(toggleAnalysis()));
@@ -49,12 +51,40 @@ AnalysisWidget::AnalysisWidget(QWidget *parent)
 
     m_tablebase = new OnlineTablebase;
     connect(m_tablebase, SIGNAL(bestMove(QList<Move>,int)), this, SLOT(showTablebaseMove(QList<Move>,int)), Qt::QueuedConnection);
+
+    ui.variationText->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui.variationText,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
+
 }
 
 AnalysisWidget::~AnalysisWidget()
 {
     stopEngine();
     delete m_tablebase;
+}
+
+
+bool AnalysisWidget::hideLines() const
+{
+    return m_hideLines;
+}
+
+void AnalysisWidget::setHideLines(bool newHideLines)
+{
+    m_hideLines = newHideLines;
+}
+
+void AnalysisWidget::showContextMenu(const QPoint &pt)
+{
+    QMenu* menu = ui.variationText->createStandardContextMenu(pt);
+    QAction* action = new QAction(tr("Hide lines"));
+    action->setVisible(true);
+    action->setCheckable(true);
+    action->setChecked(m_hideLines);
+    connect(action, SIGNAL(triggered(bool)),this,SLOT(setHideLines(bool)));
+    menu->addAction(action);
+    menu->exec(ui.variationText->mapToGlobal(pt));
+    delete menu;
 }
 
 void AnalysisWidget::startEngine()
@@ -577,16 +607,23 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                     }
                 }
                 Move move1 = m_board.prepareMove(move.from(), move.to());
-                if(move.isPromotion())
+                if (!m_hideLines)
                 {
-                    move1.setPromoted(pieceType(move.promotedPiece()));
+                     if(move.isPromotion())
+                    {
+                        move1.setPromoted(pieceType(move.promotedPiece()));
+                    }
+                    m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1,true), result);
                 }
-                m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1,true), result);
+                else
+                {
+                    m_tablebaseEvaluation = result;
+                }
                 m_tablebaseMove = m_board.moveToFullSan(move1);
                 m_tb = move1;
                 m_lastDepthAdded = 0;
             }
-            else
+            else if (!m_hideLines)
             {
                 Move move1 = m_board.prepareMove(move.from(), move.to());
                 if(move.isPromotion())
@@ -638,7 +675,7 @@ void AnalysisWidget::updateAnalysis()
     }
     foreach(Analysis a, m_analyses)
     {
-        QString s = a.toString(m_board);
+        QString s = a.toString(m_board, m_hideLines);
         if (!s.isEmpty()) text.append(s + "<br>");
     }
     if(!m_tablebaseEvaluation.isEmpty())

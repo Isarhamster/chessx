@@ -99,6 +99,8 @@ private slots:
     void showTablebaseMove(QList<Move> move, int score);
     /** The pin button was pressed or released */
     void slotPinChanged(bool);
+    bool hideLines() const;
+    void setHideLines(bool newHideLines);
 
 signals:
     void addVariation(const Analysis& analysis, const QString&);
@@ -112,6 +114,7 @@ protected slots:
     void bookActivated(int);
     void sendBookMoveTimeout();
 
+    void showContextMenu(const QPoint &pt);
 private:
     /** Should analysis be running. */
     bool isAnalysisEnabled() const;
@@ -151,6 +154,7 @@ private:
     int games;
 
     bool m_gameMode;
+    bool m_hideLines;
  };
 
 #endif // ANALYSIS_WIDGET_H_INCLUDED

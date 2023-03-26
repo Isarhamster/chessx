@@ -61,7 +61,7 @@ public:
     void setMovesToMate(int mate);
     /** Moves to mate. */
     /** Convert analysis to formatted text. */
-    QString toString(const BoardX& board) const;
+    QString toString(const BoardX& board, bool hiddenLine=false) const;
     void setBestMove(bool bestMove);
     bool bestMove() const;
 
