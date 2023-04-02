@@ -174,6 +174,9 @@ void ChessXSettings::configureSpeech(QTextToSpeech* speech)
         if (name == voice.name())
         {
             speech->setVoice(voice);
+
+            double volume = (double)AppSettings->getValue("/Sound/Volume").toInt();
+            speech->setVolume(volume/100.0);
             break;
         }
     }

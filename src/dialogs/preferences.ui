@@ -1977,13 +1977,30 @@
           <string>Sound</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_7">
-          <item row="2" column="0">
+          <item row="4" column="0">
            <widget class="QLabel" name="labelPlyReadAhead">
             <property name="text">
              <string>Number of plies to read ahead</string>
             </property>
             <property name="buddy">
              <cstring>plyReadAhead</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="plyReadAhead">
+            <property name="value">
+             <number>6</number>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QSpinBox" name="delayReadAhead">
+            <property name="maximum">
+             <number>5000</number>
+            </property>
+            <property name="singleStep">
+             <number>100</number>
             </property>
            </widget>
           </item>
@@ -2006,37 +2023,13 @@
             </item>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="5" column="0">
            <widget class="QLabel" name="labelDelayReadAhead">
             <property name="text">
              <string>Delay between moves [ms]</string>
             </property>
             <property name="buddy">
              <cstring>delayReadAhead</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QSpinBox" name="delayReadAhead">
-            <property name="maximum">
-             <number>5000</number>
-            </property>
-            <property name="singleStep">
-             <number>100</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QSpinBox" name="plyReadAhead">
-            <property name="value">
-             <number>6</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="cbScreenReader">
-            <property name="text">
-             <string>Sound while moving through games</string>
             </property>
            </widget>
           </item>
@@ -2047,8 +2040,32 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="cbScreenReader">
+            <property name="text">
+             <string>Sound while moving through games</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="1">
            <widget class="QComboBox" name="cbVoice"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_29">
+            <property name="text">
+             <string>Volume</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSlider" name="volume">
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

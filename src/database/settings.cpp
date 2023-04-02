@@ -320,6 +320,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/PlayerListWidget/FilterEditCompleter", QStringList());
 
     map.insert("/Sound/Move", 1);
+    map.insert("/Sound/Volume", 50);
     map.insert("/Sound/ScreenReader", true);
     map.insert("/Sound/PlyReadAhead", 6);
     map.insert("/Sound/DelayReadAhead", 1000);

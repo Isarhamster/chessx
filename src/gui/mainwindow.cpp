@@ -69,6 +69,7 @@
 #include <QProgressBar>
 #include <QRegularExpression>
 #include <QSizePolicy>
+#include <QSoundEffect>
 #include <QSplitter>
 #include <QStatusBar>
 #include <QTabBar>
@@ -501,6 +502,7 @@ MainWindow::MainWindow() : QMainWindow(),
         connect(speech, SIGNAL(stateChanged(QTextToSpeech::State)), SLOT(speechStateChanged(QTextToSpeech::State)), Qt::QueuedConnection);
     }
 #endif
+    effect = new QSoundEffect(this);
 
     /* Setup the dimensions of all widgets and the main board */
     slotReconfigure();
@@ -2543,7 +2545,12 @@ void MainWindow::playSound(QString s, QString hint)
             hint.truncate(s.length()-1);
             path = AppSettings->getSoundPath(s);
         }
-        QSound::play(path);
+
+        effect->setSource(QUrl::fromLocalFile(path));
+        double volume = (double)AppSettings->getValue("/Sound/Volume").toInt();
+        qDebug() << volume;
+        effect->setVolume(volume/100.0);
+        effect->play();
     }
 #endif
 }

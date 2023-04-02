@@ -21,8 +21,9 @@
 #ifdef USE_SPEECH
 #include <QTextToSpeech>
 #endif
-#include <QUndoGroup>
+#include <QSoundEffect>
 #include <QToolBar>
+#include <QUndoGroup>
 
 using namespace chessx;
 
@@ -774,6 +775,7 @@ private:
 #endif
     int m_readAhead;
     Move m_readNextMove;
+    QPointer<QSoundEffect> effect;
 };
 
 #endif

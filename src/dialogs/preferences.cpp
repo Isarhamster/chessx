@@ -671,9 +671,8 @@ void PreferencesDialog::restoreSettings()
     QStringList voiceNames = ChessXSettings::availableVoices(lang);
     ui.cbVoice->addItems(voiceNames);
 
-    QString selectedVoice = AppSettings->getValue("Voice").toString();
-    ui.cbVoice->setCurrentText(selectedVoice);
-
+    ui.cbVoice->setCurrentText(AppSettings->getValue("Voice").toString());
+    ui.volume->setValue(AppSettings->getValue("Volume").toInt());
     ui.cbScreenReader->setChecked(AppSettings->getValue("ScreenReader").toBool());
     ui.cbMoveSound->setChecked(AppSettings->getValue("MoveSound").toBool());
     ui.plyReadAhead->setValue(AppSettings->getValue("PlyReadAhead").toInt());
@@ -825,6 +824,7 @@ void PreferencesDialog::saveSettings()
 
     AppSettings->beginGroup("Sound");
     AppSettings->setValue("Move", ui.cbSoundOn->currentIndex());
+    AppSettings->setValue("Volume", ui.volume->value());
     AppSettings->setValue("Voice", ui.cbVoice->currentText());
     AppSettings->setValue("MoveSound", ui.cbMoveSound->isChecked());
     AppSettings->setValue("ScreenReader", ui.cbScreenReader->isChecked());

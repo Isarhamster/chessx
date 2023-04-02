@@ -1,6 +1,6 @@
 # Main application
 DEFINES += QT_DEPRECATED_WARNINGS
-CONFIG += uic warn_on
+CONFIG += uic warn_on sdk_no_version_check
 QT += network svg
 
 TEMPLATE = app
