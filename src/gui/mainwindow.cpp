@@ -12,6 +12,7 @@
 #include "annotationwidget.h"
 #include "boardview.h"
 #include "boardviewex.h"
+#include "chessxsettings.h"
 #include "clipboarddatabase.h"
 #include "commentdialog.h"
 #include "databaseinfo.h"
@@ -491,6 +492,16 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(this, SIGNAL(databaseModified()), SLOT(slotDatabaseModified()));
     CreateBoardView();
 
+#ifdef USE_SPEECH
+    qRegisterMetaType<QTextToSpeech::State>("State");
+    if (QTextToSpeech::availableEngines().count())
+    {
+        speech = new QTextToSpeech(this);
+        ChessXSettings::configureSpeech(speech);
+        connect(speech, SIGNAL(stateChanged(QTextToSpeech::State)), SLOT(speechStateChanged(QTextToSpeech::State)), Qt::QueuedConnection);
+    }
+#endif
+
     /* Setup the dimensions of all widgets and the main board */
     slotReconfigure();
 
@@ -532,21 +543,6 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(ecothread, SIGNAL(loaded(QObject*,bool)), this, SLOT(ecoLoaded(QObject*,bool)));
     ecothread->start();
     StartCheckUpdate();
-
-#ifdef USE_SPEECH
-    qRegisterMetaType<QTextToSpeech::State>("State");
-    if (QTextToSpeech::availableEngines().count())
-    {
-        speech = new QTextToSpeech(this);
-        const QVector<QLocale> locales = speech->availableLocales();
-        QLocale cxLocale(AppSettings->getValue("/General/language").toString());
-        if (locales.contains(cxLocale))
-        {
-            speech->setLocale(cxLocale);
-        }
-        connect(speech, SIGNAL(stateChanged(QTextToSpeech::State)), SLOT(speechStateChanged(QTextToSpeech::State)), Qt::QueuedConnection);
-    }
-#endif
 
     if (isMinimized())
     {
@@ -2511,13 +2507,50 @@ bool MainWindow::announceMove(Move m)
     return false;
 }
 
-void MainWindow::playSound(QString s)
+QString MainWindow::soundHint(Move m) const
+{
+    QString s = BitBoard::PieceNames::english().get(pieceType(m.pieceMoved()));
+
+    if (s.isEmpty()) s = "P";
+
+    if (m.isCapture())
+    {
+        s.append("x");
+    }
+    else if (m.isMate())
+    {
+        s.append("m");
+    }
+    else if (m.isCheck())
+    {
+        s.append("c");
+    }
+    else if (m.isPromotion())
+    {
+        s.append("p");
+    }
+    return s;
+}
+
+void MainWindow::playSound(QString s, QString hint)
 {
 #ifdef USE_SOUND
     if (AppSettings->getValue("/Sound/Move").toInt()==1)
     {
-        QString path = AppSettings->getSoundPath(s);
+        QString path = AppSettings->getSoundPath(s+hint);
+        while (!hint.isEmpty() && !QFile::exists(path))
+        {
+            hint.truncate(s.length()-1);
+            path = AppSettings->getSoundPath(s);
+        }
         QSound::play(path);
     }
+#endif
+}
+
+void MainWindow::playSound(QString s, Move m)
+{
+#ifdef USE_SOUND
+    playSound(s, soundHint(m));
 #endif
 }

@@ -62,7 +62,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>7</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -1977,20 +1977,13 @@
           <string>Sound</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_7">
-          <item row="1" column="0">
+          <item row="2" column="0">
            <widget class="QLabel" name="labelPlyReadAhead">
             <property name="text">
              <string>Number of plies to read ahead</string>
             </property>
             <property name="buddy">
              <cstring>plyReadAhead</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="cbScreenReader">
-            <property name="text">
-             <string>Sound while moving through games</string>
             </property>
            </widget>
           </item>
@@ -2013,14 +2006,7 @@
             </item>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="plyReadAhead">
-            <property name="value">
-             <number>6</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
+          <item row="3" column="0">
            <widget class="QLabel" name="labelDelayReadAhead">
             <property name="text">
              <string>Delay between moves [ms]</string>
@@ -2030,7 +2016,7 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="3" column="1">
            <widget class="QSpinBox" name="delayReadAhead">
             <property name="maximum">
              <number>5000</number>
@@ -2039,6 +2025,30 @@
              <number>100</number>
             </property>
            </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="plyReadAhead">
+            <property name="value">
+             <number>6</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="cbScreenReader">
+            <property name="text">
+             <string>Sound while moving through games</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="cbMoveSound">
+            <property name="text">
+             <string>Sound making moves</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="cbVoice"/>
           </item>
          </layout>
         </widget>

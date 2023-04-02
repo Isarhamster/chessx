@@ -16,6 +16,7 @@
 #include "boardsetup.h"
 #include "boardview.h"
 #include "boardviewex.h"
+#include "chessxsettings.h"
 #include "copydialog.h"
 #include "guess_compileeco.h"
 #include "databaseinfo.h"
@@ -367,6 +368,9 @@ void MainWindow::slotReconfigure()
     emit reconfigure(); 	// Re-emit for children
     UpdateGameText();
     UpdateAnnotationView();
+#ifdef USE_SPEECH
+    ChessXSettings::configureSpeech(speech);
+#endif
 }
 
 void MainWindow::UpdateGameText()
@@ -656,7 +660,7 @@ bool MainWindow::addRemoteMoveFrom64Char(QString s)
             moveChanged();
             if (!announceMove(m))
             {
-                playSound("move");
+                playSound("move",m);
             }
         }
         return true;
@@ -817,7 +821,7 @@ void MainWindow::triggerBoardMove()
         moveChanged(); // The move's currents where set after forward(), thus repair effects
         if (!announceMove(m))
         {
-            playSound("move");
+            playSound("move",m);
         }
     }
     else
@@ -1095,6 +1099,10 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                     }
 
                     game().addMove(m, annot);
+                    if (true)
+                    {
+                        playSound("move", m);
+                    }
                     if (qobject_cast<FicsDatabase*>(database()))
                     {
                         m_ficsConsole->SendMove(m.toAlgebraic());
@@ -2501,7 +2509,7 @@ bool MainWindow::doEngineMove(Move m, EngineParameter matchParameter)
     {
         if (!announceMove(m))
         {
-            playSound("move");
+            playSound("move",m);
         }
     }
     return true;
@@ -3789,7 +3797,7 @@ bool MainWindow::slotGameMoveNext()
     {
         if (!announceMove(m))
         {
-            playSound("move");
+            playSound("move",m);
         }
     }
     m_currentFrom = m.from();

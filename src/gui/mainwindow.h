@@ -544,7 +544,10 @@ protected:
     QString ficsPath() const;
     bool ActivateFICSDatabase();
     void setupAnalysisWidget(DockWidgetEx *analysisDock, AnalysisWidget *analysis);
-    void playSound(QString s);
+    /** Get a sound hint "[PQKRBN][xmcp]" where x=capture, m=mate, c=check, p=romote */
+    QString soundHint(Move m) const;
+    void playSound(QString s, QString hint = "");
+    void playSound(QString s, Move m);
     QString PieceToSpeech(PieceType pt);
     QString MoveToSpeech(Move m);
     bool announceMove(Move m);
