@@ -376,8 +376,7 @@ bool DatabaseInfo::IsUtf8() const
 
 QString DatabaseInfo::ficsPath()
 {
-    QString dir = AppSettings->commonDataPath();
-    return (dir + QDir::separator() + "FICS.pgn");
+    return AppSettings->commonDataFilePath("FICS.pgn");
 }
 
 bool DatabaseInfo::isNative() const

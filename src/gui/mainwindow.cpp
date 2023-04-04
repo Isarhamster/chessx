@@ -130,7 +130,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(pClipDB,SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
     connect(pClipDB, SIGNAL(dirtyChanged(bool)), SLOT(slotDatabaseDirty(bool)));
-    m_registry->m_databases.append(pClipDB);
+    m_registry->append(pClipDB);
     m_currentDatabase = pClipDB;
 
     /* Game List */
@@ -330,7 +330,7 @@ MainWindow::MainWindow() : QMainWindow(),
     lichessBase->open("Lichess Master", false);
     DatabaseInfo* pLichessDB = new DatabaseInfo(&m_undoGroup, lichessBase);
     pLichessDB->open(false);
-    m_registry->m_databases.append(pLichessDB);
+    m_registry->append(pLichessDB);
     m_databaseList->addFileOpen(lichessBase->filename(), false);
 
 #if 0 // TODO: This causes a more or less subtle multithreading issue
@@ -993,6 +993,16 @@ QString MainWindow::ficsPath() const
     return DatabaseInfo::ficsPath();
 }
 
+void MainWindow::appendDatabaseUrl(QString fname, bool utf8, QString target)
+{
+    if (!target.isEmpty())
+    {
+        QUrl url = QUrl::fromUserInput(fname);
+        copyFileNames.insert(url.toString(QUrl::RemoveScheme),target);
+    }
+    openDatabaseUrl(fname, utf8);
+}
+
 void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
     QUrl url = QUrl::fromUserInput(fname);
@@ -1031,7 +1041,7 @@ void MainWindow::openWebFavorite()
     QString url = favoriteUrl();
     if (!url.isEmpty())
     {
-        openDatabaseUrl(url, false);
+        appendDatabaseUrl(url, false, AppSettings->getValue("Web/Destination1").toString());
     }
     else
     {
@@ -1044,6 +1054,7 @@ void MainWindow::openLichess()
     QString account = AppSettings->getValue("/Lichess/userName").toString();
     QDate date = QDate::currentDate();
     QDate start(date.year(),date.month(),1);
+    QDate end(date.year(),date.month(),1);
 
     OnlineBase db;
 // TODO Debug Tournament handles - they don't work reliably db.setTournament("");
@@ -1057,18 +1068,21 @@ void MainWindow::openLichess()
 
     db.setHandle(account);
     db.setStartDate(start);
+    db.setEndDate(end);
     if (db.exec() == QDialog::Accepted)
     {
         QString tournament = db.getTournament();
         account = db.getHandle();
         start = db.getStartDate();
+        end = db.getEndDate();
 
         if (tournament.isEmpty())
         {
             if (!account.isEmpty())
             {
                 quint64 since= start.startOfDay().toMSecsSinceEpoch();
-                QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
+                quint64 until= end.endOfDay().toMSecsSinceEpoch();
+                QString url = QString("https://lichess.org/api/games/user/%1?since=%2&until=%3").arg(account).arg(since).arg(until);
                 openDatabaseUrl(url, false);
             }
             else
@@ -1097,6 +1111,7 @@ void MainWindow::openChesscom()
     QString account = AppSettings->getValue("/Chesscom/userName").toString();
     QDate date = QDate::currentDate();
     QDate start(date.year(),date.month(),1);
+    QDate end(date.year(),date.month(),1);
 
     OnlineBase db;
     QAction* action = qobject_cast<QAction*>(sender());
@@ -1107,16 +1122,25 @@ void MainWindow::openChesscom()
     }
     db.setHandle(account);
     db.setStartDate(start);
+    db.setEndDate(end);
     db.setDateFormat("MM/yyyy");
     if (db.exec() == QDialog::Accepted)
     {
         account = db.getHandle();
         start = db.getStartDate();
+        end = db.getEndDate();
+        QString s = QString("ChessCom_%1_%2-%3.pgn").arg(account).arg(start.toString("yyyyMM")).arg(end.toString("yyyyMM"));
+        QString target = AppSettings->commonDataFilePath(s);
         if (!account.isEmpty())
         {
-            QString s = start.toString("yyyy/MM");
-            QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account).arg(s);
-            openDatabaseUrl(url, true);
+            QDate fetchMonth = start;
+            while (fetchMonth <= end)
+            {
+                QString s = fetchMonth.toString("yyyy/MM");
+                QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account).arg(s);
+                appendDatabaseUrl(url, true, target);
+                fetchMonth = fetchMonth.addMonths(1);
+            }
         }
         else
         {
@@ -1318,18 +1342,21 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     }
     else
     {
-        m_registry->m_databases.append(db);
+        m_registry->append(db);
     }
 }
 
 void MainWindow::loadError(QUrl url)
 {
+    copyFileNames.remove(url);
     QFileInfo fi = QFileInfo(url.toString());
     slotStatusMessage(tr("Database %1 cannot be accessed at the moment (%2).").arg(fi.fileName(), url.errorString()));
 }
 
 void MainWindow::loadReady(QUrl url, QString fileName)
 {
+    QString target = copyFileNames.take(url.toString(QUrl::RemoveScheme));
+
     QString fav = favoriteUrl();
     QString favurl = AppSettings->getValue("Web/Favorite1").toString();
     if ((url == fav) && favurl.contains("$1"))
@@ -1338,17 +1365,21 @@ void MainWindow::loadReady(QUrl url, QString fileName)
         ++n;
         AppSettings->setValue("Web/AutoNumber1",n);
     }
-    if (url == fav)
+
+    if (!target.isEmpty())
     {
-        QString target = AppSettings->getValue("Web/Destination1").toString();
-        if (!target.isEmpty())
+        // Instead of opening database, append it to a target database
+        copyDatabaseArchive(fileName, target);
+        QFileInfo fi(target);
+        if (fi.exists())
         {
-            // Instead of opening database, append it to a target database
-            copyDatabaseArchive(fileName, target);
-            return;
+            setFavoriteDatabase(target);
         }
     }
-    openDatabaseArchive(fileName, false);
+    else
+    {
+        openDatabaseArchive(fileName, false);
+    }
 }
 
 void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
@@ -1356,7 +1387,7 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
     if(!db->IsLoaded())
     {
         cancelOperation(tr("Cannot open file"));
-        m_registry->m_databases.removeOne(db);
+        m_registry->remove(db);
         delete db;
         return;
     }
@@ -2540,10 +2571,23 @@ void MainWindow::playSound(QString s, QString hint)
     if (AppSettings->getValue("/Sound/Move").toInt()==1)
     {
         QString path = AppSettings->getSoundPath(s+hint);
+        QString orig = hint;
+        // Reduce from back
         while (!hint.isEmpty() && !QFile::exists(path))
         {
-            hint.truncate(s.length()-1);
-            path = AppSettings->getSoundPath(s);
+            hint.truncate(hint.length()-1);
+            path = AppSettings->getSoundPath(s+hint);
+        }
+        if (hint.isEmpty())
+        {
+            // Reduce from front
+            hint = orig;
+            path = AppSettings->getSoundPath(s+hint);
+            while (!hint.isEmpty() && !QFile::exists(path))
+            {
+                hint.remove(0,1);
+                path = AppSettings->getSoundPath(s+hint);
+            }
         }
 
         effect->setSource(QUrl::fromLocalFile(path));

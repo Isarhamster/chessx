@@ -130,6 +130,12 @@ QString Settings::timesealFilePath()
 #endif
 }
 
+QString Settings::commonDataFilePath(QString filename)
+{
+    QString dir = commonDataPath();
+    return (dir + QDir::separator() + filename);
+}
+
 QString Settings::commonDataPath()
 {
     QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QDir::separator() + "chessdata";

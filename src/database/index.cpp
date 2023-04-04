@@ -195,14 +195,11 @@ bool IndexX::write(QDataStream &out) const
 void IndexX::reserve(quint32 estimation)
 {
     m_tagValues.reserve(estimation+16);
-    qDebug() << "Index space " << m_tagValues.capacity();
 }
 
 void IndexX::squeeze()
 {
-    qDebug() << "Index space " << m_tagValues.capacity();
     m_tagValues.squeeze();
-    qDebug() << "Index space " << m_tagValues.capacity();
 }
 
 bool IndexX::read(QDataStream &in, volatile bool *breakFlag, short version)

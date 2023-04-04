@@ -122,6 +122,7 @@
         <file alias="sounds/ding1.wav">data/sounds/ding1.wav</file>
         <file alias="sounds/fanfare.wav">data/sounds/fanfare_x.wav</file>
         <file alias="sounds/move.wav">data/sounds/move.wav</file>
+        <file alias="sounds/movex.wav">data/sounds/movex.wav</file>
         <file alias="sounds/woodthunk.wav">data/sounds/woodthunk.wav</file>
         <file alias="styles/checkbox.png">data/styles/checkbox.png</file>
         <file alias="styles/down_arrow.png">data/styles/down_arrow.png</file>

@@ -69,6 +69,19 @@
           </property>
          </widget>
         </item>
+        <item row="3" column="1">
+         <widget class="QDateEdit" name="endDate"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="lb_EndDate">
+          <property name="text">
+           <string>to</string>
+          </property>
+          <property name="buddy">
+           <cstring>endDate</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>

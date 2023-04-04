@@ -148,6 +148,7 @@ protected:
     void openDatabase(QString fname);
     /** Open database from URL*/
     void openDatabaseUrl(QString fname, bool utf8);
+    void appendDatabaseUrl(QString fname, bool utf8, QString target);
     /** Open a list of databases from a ZIP archive */
     void openDatabaseArchive(QString fname, bool utf8);
     void copyDatabaseArchive(QString fname, QString destination);
@@ -776,6 +777,7 @@ private:
     int m_readAhead;
     Move m_readNextMove;
     QPointer<QSoundEffect> effect;
+    QMap<QUrl, QString> copyFileNames;
 };
 
 #endif

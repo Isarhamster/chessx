@@ -3142,9 +3142,9 @@ void MainWindow::copyDatabase(QString target, QString src)
         {
             // Both databases are closed or the target is closed and the source unmodified (so that file can be used)
             QFile fSrc(src);
-            QFile fDest(target);
+            QFile fDest(target); // If it does not exist, it will be created here
 
-            if(fiDest.exists() && fiDest.suffix().toLower()=="pgn"
+            if(fiDest.suffix().toLower()=="pgn"
                     && fiSrc.exists() && fiSrc.suffix().toLower()=="pgn"
                     && fSrc.open(QIODevice::ReadOnly) &&
                     fDest.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
