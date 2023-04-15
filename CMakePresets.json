@@ -1,0 +1,55 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+      "major": 3,
+      "minor": 19,
+      "patch": 0
+    },
+    "configurePresets": [
+      {
+        "name": "ci",
+        "displayName": "CI",
+        "description": "Configuration for CI with vcpkg toolchain and multi-config Ninja project files",
+        "binaryDir": "${sourceDir}/builds/${presetName}",
+        "generator": "Ninja Multi-Config",
+        "cacheVariables": {
+          "CMAKE_TOOLCHAIN_FILE": {
+            "type": "FILEPATH",
+            "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+          },
+          "ENABLE_TESTING": {
+            "type": "BOOL",
+            "value": "ON"
+          }
+        }
+      }
+    ],
+    "buildPresets": [
+      {
+        "name": "ci-debug",
+        "configurePreset": "ci",
+        "displayName": "Build ci-debug",
+        "description": "Build ci Debug configuration",
+        "configuration": "Debug"
+      },
+      {
+        "name": "ci-release",
+        "configurePreset": "ci",
+        "displayName": "Build ci-release",
+        "description": "Build ci Release configuration",
+        "configuration": "RelWithDebInfo"
+      }
+    ],
+    "testPresets": [
+      {
+        "name": "ci-debug",
+        "configurePreset": "ci",
+        "configuration": "Debug"
+      },
+      {
+        "name": "ci-release",
+        "configurePreset": "ci",
+        "configuration": "RelWithDebInfo"
+      }
+    ]
+  }

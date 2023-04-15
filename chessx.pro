@@ -168,7 +168,8 @@ FORMS += \
   src/gui/tagdetailwidget.ui
 
 
-HEADERS += src/database/board.h \
+HEADERS += src/compat/qt6compat.h \
+  src/database/board.h \
   src/database/abk.h \
   src/database/analysis.h \
   src/database/annotation.h \
@@ -327,7 +328,6 @@ HEADERS += src/database/board.h \
   src/gui/plaintextedit.h \
   src/gui/playerlistwidget.h \
   src/gui/qled.h \
-  src/gui/qt6compat.h \
   src/gui/shellhelper.h \
   src/gui/simplelabel.h \
   src/gui/style.h \
@@ -519,6 +519,7 @@ SOURCES += \
   src/quazip/zip.cpp
 
 TEMPLATE = app
+INCLUDEPATH += src/compat
 INCLUDEPATH += src/database
 INCLUDEPATH += src/guess
 INCLUDEPATH += src/gui

@@ -400,18 +400,20 @@ bool Spellchecker::importSection(QTextStream& stream, const QString& section,
 QString Spellchecker::standardise(const QString& string,
                                   SpellingType spellingType) const
 {
-    //remove exterraneous characters
-    QString standardised = string;
-    standardised.remove(QRegularExpression("[.,\\s-_()]"));
+    auto result = string;
+
+    //remove extraneous characters
+    static QRegularExpression extraneousCharacters(R"([.,\s\-_()])");
+    result.remove(extraneousCharacters);
 
     if(spellingType == Player)
     {
         //capitalise first letter
-        standardised.replace(0, 1, string.at(0).toUpper());
+        result.replace(0, 1, string.at(0).toUpper());
 
         //standardise captilisation of names beginning with "Van de"
-        standardised.replace("van de", "Van de", Qt::CaseInsensitive);
+        result.replace("van de", "Van de", Qt::CaseInsensitive);
     }
 
-    return standardised;
+    return result;
 }

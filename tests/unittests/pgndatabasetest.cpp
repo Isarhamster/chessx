@@ -44,7 +44,7 @@ void PgnDatabaseTest::testCreateDatabase()
 {
     QTemporaryDir tmpDir;
 
-    PgnDatabase* db = new PgnDatabase(false);
+    PgnDatabase* db = new PgnDatabase();
 //    QVERIFY(db->open(tmpDir.path() + "pgndatabase_new1.pgn", false));
     QVERIFY(db->count() == 0);
     delete db;
@@ -54,7 +54,7 @@ void PgnDatabaseTest::testLoad()
 {
     const QString path(RESOURCE_PATH "game1.pgn");
 
-    PgnDatabase* db = new PgnDatabase(false);
+    PgnDatabase* db = new PgnDatabase();
     QVERIFY(db->open(path, false));
 
     QCOMPARE(db->filename(), path);
@@ -71,7 +71,7 @@ void PgnDatabaseTest::testLoad()
 
 void PgnDatabaseTest::testCopyGameIntoNewDB()
 {
-    auto src = new PgnDatabase(false);
+    auto src = new PgnDatabase();
     QVERIFY(src->open(RESOURCE_PATH "game1.pgn", false));
     QVERIFY(src->parseFile());
 

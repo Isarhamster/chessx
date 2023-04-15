@@ -1,158 +1,128 @@
 name: CI
 
 on:
-#  push:
-#    branches: [ master, ci-sandbox ]
-#  pull_request:
-#    branches: [ master ]
+  push:
+    branches: [ master, ci-sandbox ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build-qmake:
+    name: build / qmake / Qt-${{ matrix.qt }} / ${{ matrix.os }} 
     strategy:
       matrix:
         os: [macos-latest]
+        qt: ['5.15.2']
     runs-on: ${{ matrix.os }}
-    env:
-      QT_VERSION: '5.14.2'
   
     steps:
-    - name: Look for cached Qt ${{ env.QT_VERSION }}
-      id: cache-qt
-      uses: actions/cache@v1.2.0
+    - name: Install Qt ${{ matrix.qt }}
+      uses: jurplel/install-qt-action@v3
       with:
-        path: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
-        key: ${{ runner.os }}-Qt${{ env.QT_VERSION }}
-    - name: Install Qt ${{ env.QT_VERSION }}
-      uses: jurplel/install-qt-action@v2.11.1
-      with:
-        version: ${{ env.QT_VERSION }}
-        dir: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
-        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        version: ${{ matrix.qt }}
+        dir: ${{ runner.workspace }}/Qt-${{ matrix.qt }}
+        cache: true
+        cache-key-prefix: Qt-${{ matrix.os }}-${{ matrix.qt }}
     - name: Checkout sources
-      uses: actions/checkout@v2.1.0
+      uses: actions/checkout@v3
     - name: configure
       run: qmake
     - name: make
       run: make
 
   build:
-    # name: build ${{ matrix.os }}
+    name: build + test / CMake / Qt-${{ matrix.qt }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest]
-        arch: [x64, x86]
-        qt: ['5.14.2']
-        exclude:
-          - os: macos-latest
-            arch: x86
-          - os: ubuntu-latest
-            arch: x86
-#          - os: windows-latest
-#            arch: x86
-        include:
-          - os: macos-latest
-            triplet: x64-osx
-            vcpkg_packages: 'zlib'
-          - os: ubuntu-latest
-            arch: x64
-            triplet: x64-linux
-            vcpkg_packages: 'zlib'
-#          - os: windows-latest
-#            arch: x64
-#            triplet: x64-windows
-#            qt_arch: win64_msvc2017_64
-#            vcpkg_packages: 'zlib'
-#          - os: windows-latest
-#            arch: x86
-#            triplet: x86-windows
-#            qt_arch: win32_msvc2017
-#            vcpkg_packages: 'zlib'
-
-    env:
-      VCPKG_COMMIT_ID: 'c7ab9d3110813979a873b2dbac630a9ab79850dc' # tag 2020.04
+        os:
+          - macos-12 # macOS Monterey 12
+          - macos-11 # macOS Big Sur 11, aka "macos-latest"
+          - macos-10.15 # macOS Catalina 10.15 (deprecated)
+          - ubuntu-22.04
+          - ubuntu-20.04 # aka "ubuntu-latest"
+          - windows-2022 # Windows Server 2022, aka "windows-latest"
+          - windows-2019 # Windows Server 2019
+        qt: ['5.15.2']
 
     steps:
-    - name: Install pulseaudio
-      if: ${{ runner.os == 'Linux' }}
-      run: brew install pulseaudio
-    - name: Look for cached Qt ${{ matrix.qt }}
-      id: cache-qt
-      uses: actions/cache@v1.2.0
-      with:
-        path: ${{ runner.workspace }}/Qt${{ matrix.qt }}-${{ matrix.arch }}
-        key: Qt-${{ runner.os }}-${{ matrix.qt }}-${{ matrix.arch }}
     - name: Install Qt ${{ matrix.qt }}
-      uses: jurplel/install-qt-action@v2.11.1
+      uses: jurplel/install-qt-action@v3
       with:
         version: ${{ matrix.qt }}
-        arch: ${{ matrix.qt_arch }}
-        dir: ${{ runner.workspace }}/Qt${{ matrix.qt }}-${{ matrix.arch }}
-        cached: ${{ steps.cache-qt.outputs.cache-hit }}
-    - name: Checkout sources
-      uses: actions/checkout@v2.1.0
+        dir: ${{ runner.workspace }}/Qt-${{ matrix.qt }}
+        cache: true
+        cache-key-prefix: Qt-${{ matrix.os }}-${{ matrix.qt }}
 
-    # see example at https://github.com/lukka/CppBuildTasks-Validation/blob/master/.github/workflows/hosted-basic.yml
+    - name: Checkout sources
+      uses: actions/checkout@v3
+      with:
+        submodules: true
+
+    # Install latest CMake
     - uses: lukka/get-cmake@latest
 
-    #- name: dir
-    #  run: gci -recurse ${{ runner.workspace }}
-    - name: Restore artifacts, or run vcpkg, build and cache artifacts
-      uses: lukka/run-vcpkg@v2
-      id: runvcpkg
+    # Restore from cache the previously built ports.
+    # If a "cache miss" occurs, then vcpkg is bootstrapped.
+    # Since a the vcpkg.json is being used later on to install the packages when `run-cmake` runs,
+    # no packages are installed at this time.
+    - name: Restore artifacts, or setup vcpkg (do not install any package)
+      uses: lukka/run-vcpkg@v10
       with:
-        vcpkgArguments: '${{ matrix.vcpkg_packages }}'
-        vcpkgTriplet: ${{ matrix.triplet }}
-        vcpkgDirectory: ${{ runner.workspace }}/b/vcpkg
-        vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
-    #- name: Prints outputs of run-vcpkg task
-    #run: echo "'${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}' '${{  steps.runvcpkg.outputs.RUNVCPKG_VCPKG_TRIPLET_OUT }}' "
-    - name: configure && make
-      uses: lukka/run-cmake@v2
-      id: runcmake_cmd
-      with:
-        cmakeGenerator: Ninja
-        cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
-        useVcpkgToolchainFile: true
-        cmakeAppendedArgs: ${{ matrix.cmakeConfigureArgs }}
-        vcpkgTriplet: ${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_TRIPLET_OUT }}
-        buildDirectory: '${{ runner.workspace }}/b/ninja/'
-    - name: make test
-      if: ${{ runner.os != 'Windows' }}
-      run: cd '${{ runner.workspace }}/b/ninja' && ctest -V
+        vcpkgJsonGlob: 'vcpkg.json'
+        # runVcpkgInstall: true
 
-  build-min:
-    runs-on: ubuntu-16.04
-    env:
-      QT_VERSION: '5.7'
+    - name: Build + Test (Debug)
+      uses: lukka/run-cmake@v10
+      with:
+        configurePreset: 'ci'
+        buildPreset: 'ci-debug'
+        testPreset: 'ci-debug'
+
+    # - name: Create source package
+    #   if: ${{ runner.os == 'Linux' }}
+    #   run: cmake --build --preset ci-release --target package_source
+    # - name: Create macOS installer
+    #   if: ${{ runner.os == 'macOS' }}
+    #   run: cmake --build --preset ci-release --target package
+
+    #env:
+    #  VCPKG_DEFAULT_TRIPLET: ${{ matrix.triplet }} # [OPTIONAL] Define the vcpkg's triplet 
+    # you want to enforce, otherwise the default one for the hosting system will be 
+    # automatically choosen (x64 is the default on all platforms,  e.g. x64-osx).
+
+  # build-min:
+  #   runs-on: ubuntu-16.04
+  #   env:
+  #     QT_VERSION: '5.7'
   
-    steps:
-    - name: Cache Qt ${{ env.QT_VERSION }}
-      id: cache-qt
-      uses: actions/cache@v1.2.0
-      with:
-        path: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
-        key: ${{ runner.os }}-Qt${{ env.QT_VERSION }}
+  #   steps:
+  #   - name: Cache Qt ${{ env.QT_VERSION }}
+  #     id: cache-qt
+  #     uses: actions/cache@v3
+  #     with:
+  #       path: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
+  #       key: ${{ runner.os }}-Qt${{ env.QT_VERSION }}
 
-    - name: Install Qt ${{ env.QT_VERSION }}
-      uses: jurplel/install-qt-action@v2.11.1
-      with:
-        version: ${{ env.QT_VERSION }}
-        dir: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
-        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+  #   - name: Install Qt ${{ env.QT_VERSION }}
+  #     uses: jurplel/install-qt-action@v3
+  #     with:
+  #       version: ${{ env.QT_VERSION }}
+  #       dir: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
+  #       cached: ${{ steps.cache-qt.outputs.cache-hit }}
 
-    - name: Checkout sources
-      uses: actions/checkout@v2.1.0
+  #   - name: Checkout sources
+  #     uses: actions/checkout@v3
 
-    - name: configure
-      run: >-
-        cmake -S . -B _build
-        -DENABLE_SOUNDS=OFF
-        -DENABLE_TTS=OFF
-        -DENABLE_SCID_SUPPORT=OFF
-    - name: make
-      run: cmake --build _build
-    - name: make test
-      run: cd _build && ctest -V
+  #   - name: configure
+  #     run: >-
+  #       cmake -S . -B _build
+  #       -DENABLE_SOUNDS=OFF
+  #       -DENABLE_TTS=OFF
+  #       -DENABLE_SCID_SUPPORT=OFF
+  #   - name: make
+  #     run: cmake --build _build
+  #   - name: make test
+  #     run: cd _build && ctest -V
 

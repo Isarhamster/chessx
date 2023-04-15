@@ -1,0 +1,7 @@
+{
+    "name": "chessx",
+    "version-string": "latest",
+    "dependencies": [
+        "zlib"
+    ]
+}

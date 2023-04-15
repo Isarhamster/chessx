@@ -1,5 +1,10 @@
 add_subdirectory(quazip)
 
+add_library(compat INTERFACE)
+target_include_directories(compat INTERFACE
+  compat
+)
+
 add_library(bitboard STATIC
   database/bitboard.cpp
   database/bitboard.h
@@ -19,7 +24,7 @@ target_link_libraries(bitboard
   PRIVATE
     qt_config
   PUBLIC
-    Qt5::Core
+    Qt::Core
 )
 
 if (cxx_std_11 IN_LIST CMAKE_CXX_COMPILE_FEATURES)
@@ -70,16 +75,15 @@ add_library(eco STATIC
   database/ecopositions.h
   guess/guess_compileeco.cpp
   guess/guess_compileeco.h
-  gui/qt6compat.h
 )
 
 target_link_libraries(eco
   PRIVATE
     qt_config
+    compat
   PUBLIC
     board
-    gui
-    Qt5::Core
+    Qt::Core
 )
 
 add_library(database-core STATIC
@@ -240,12 +244,13 @@ target_include_directories(database
 target_link_libraries(database
   PRIVATE
     qt_config
-    Qt5::Widgets
+    compat
+    Qt::Widgets
   PUBLIC
     database-core
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Network
+    Qt::Core
+    Qt::Gui
+    Qt::Network
 )
 
 if (ENABLE_SCID_SUPPORT)
@@ -459,14 +464,15 @@ target_include_directories(gui
 target_link_libraries(gui
   PRIVATE
     qt_config
+    compat
     eco
     quazip
-    Qt5::PrintSupport
-    Qt5::Svg
+    Qt::PrintSupport
+    Qt::Svg
   PUBLIC
     database
-    Qt5::Widgets
-    Qt5::Xml
+    Qt::Widgets
+    Qt::Xml
 )
 
 if (ENABLE_SOUNDS)
@@ -474,16 +480,16 @@ if (ENABLE_SOUNDS)
     PRIVATE
       USE_SOUND
   )
-  target_link_libraries(gui PRIVATE Qt5::Multimedia)
-  if (UNIX AND NOT APPLE)
-    # on Linux QtMultimedia links to pulseaudio
-    find_package(PulseAudio REQUIRED) 
-    target_link_libraries(gui
-      PRIVATE
-        ${PULSEAUDIO_LIBRARY}
-        ${PULSEAUDIO_MAINLOOP_LIBRARY}
-    )
-  endif()
+  target_link_libraries(gui PRIVATE Qt::Multimedia)
+  # if (UNIX AND NOT APPLE)
+  #   # on Linux QtMultimedia links to pulseaudio
+  #   find_package(PulseAudio REQUIRED) 
+  #   target_link_libraries(gui
+  #     PRIVATE
+  #       ${PULSEAUDIO_LIBRARY}
+  #       ${PULSEAUDIO_MAINLOOP_LIBRARY}
+  #   )
+  # endif()
 endif()
 
 if (ENABLE_TTS)
@@ -491,6 +497,6 @@ if (ENABLE_TTS)
     PRIVATE
       USE_SPEECH
   )
-  target_link_libraries(gui PRIVATE Qt5::TextToSpeech)
+  target_link_libraries(gui PRIVATE Qt::TextToSpeech)
 endif()
 

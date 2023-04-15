@@ -22,14 +22,6 @@ using namespace  chessx;
 
 #define MAX_COUNT 16384
 
-struct key_compare : std::binary_function< const book_entry&, const book_entry&, bool >
-{
-    bool operator()( const book_entry& a, const book_entry& b ) const
-    {
-        return a<b;
-    }
-};
-
 // ---------------------------------------------------------
 // construction
 // ---------------------------------------------------------
@@ -727,7 +719,7 @@ void PolyglotDatabase::update_entry(book_entry& entry, int result)
 
 void PolyglotDatabase::book_sort()
 {
-    std::sort(m_book.begin(),m_book.end(),key_compare());
+    std::sort(m_book.begin(), m_book.end());
 }
 
 void PolyglotDatabase::book_filter()
