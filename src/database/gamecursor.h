@@ -131,6 +131,8 @@ public:
     MoveId variationNumber(MoveId moveId = CURRENT_MOVE) const;
     /** @return true if the referenced variation has siblings */
     bool variationHasSiblings(MoveId variation = CURRENT_MOVE) const;
+    /** @return Find the next Node back where the variation branches off  */
+    MoveId variationBranchPoint(MoveId variation = CURRENT_MOVE) const;
 
     /** Moves to the position corresponding to the given move id */
     bool moveToId(MoveId moveId, QString* algebraicMoveList=nullptr);

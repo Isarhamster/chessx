@@ -14,6 +14,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "chessxsettings.h"
 #include "colorlist.h"
 #include "preferences.h"
 #include "settings.h"
@@ -532,6 +533,7 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.boardColorsList, tr("Dark squares"), "darkColor");
     restoreColorItem(ui.boardColorsList, tr("Highlighted squares"), "highlightColor");
     restoreColorItem(ui.boardColorsList, tr("Frame"), "frameColor");
+    restoreColorItem(ui.boardColorsList, tr("Coordinates"), "coordColor");
     restoreColorItem(ui.boardColorsList, tr("Current move"), "currentMoveColor");
     restoreColorItem(ui.boardColorsList, tr("Stored move"), "storedMoveColor");
     restoreColorItem(ui.boardColorsList, tr("Variation move"), "variationMoveColor");
@@ -665,7 +667,14 @@ void PreferencesDialog::restoreSettings()
 
 #if defined(USE_SOUND) || defined(USE_SPEECH)
     ui.cbSoundOn->setCurrentIndex(AppSettings->getValue("Move").toInt());
+
+    QStringList voiceNames = ChessXSettings::availableVoices(lang);
+    ui.cbVoice->addItems(voiceNames);
+
+    ui.cbVoice->setCurrentText(AppSettings->getValue("Voice").toString());
+    ui.volume->setValue(AppSettings->getValue("Volume").toInt());
     ui.cbScreenReader->setChecked(AppSettings->getValue("ScreenReader").toBool());
+    ui.cbMoveSound->setChecked(AppSettings->getValue("MoveSound").toBool());
     ui.plyReadAhead->setValue(AppSettings->getValue("PlyReadAhead").toInt());
     ui.delayReadAhead->setValue(AppSettings->getValue("DelayReadAhead").toInt());
 
@@ -673,7 +682,6 @@ void PreferencesDialog::restoreSettings()
     if (!QTextToSpeech::availableEngines().count())
     {
         ui.cbScreenReader->setChecked(false);
-        ui.cbScreenReader->setEnabled(false);
         ui.plyReadAhead->setEnabled(false);
         ui.delayReadAhead->setEnabled(false);
     }
@@ -682,6 +690,9 @@ void PreferencesDialog::restoreSettings()
 #else
     ui.cbSoundOn->setCurrentIndex(0);
     ui.cbSoundOn->setEnabled(false);
+    ui.cbVoice->setEnabled(false);
+    ui.cbMoveSound->setEnabled(false);
+    ui.cbMoveSound->setChecked(false);
     ui.cbScreenReader->setChecked(false);
     ui.cbScreenReader->setEnabled(false);
     ui.plyReadAhead->setEnabled(false);
@@ -740,7 +751,7 @@ void PreferencesDialog::saveSettings()
     }
     QStringList colorNames;
     colorNames << "lightColor" << "darkColor" << "highlightColor"
-               << "frameColor" << "currentMoveColor" << "storedMoveColor" << "variationMoveColor" << "threatColor"
+               << "frameColor" << "coordColor" << "currentMoveColor" << "storedMoveColor" << "variationMoveColor" << "threatColor"
                << "targetColor" << "checkColor" << "wallColor" << "underprotectedColor" << "engineColor" ;
     saveColorList(ui.boardColorsList, colorNames);
     AppSettings->endGroup();
@@ -813,6 +824,9 @@ void PreferencesDialog::saveSettings()
 
     AppSettings->beginGroup("Sound");
     AppSettings->setValue("Move", ui.cbSoundOn->currentIndex());
+    AppSettings->setValue("Volume", ui.volume->value());
+    AppSettings->setValue("Voice", ui.cbVoice->currentText());
+    AppSettings->setValue("MoveSound", ui.cbMoveSound->isChecked());
     AppSettings->setValue("ScreenReader", ui.cbScreenReader->isChecked());
     AppSettings->setValue("PlyReadAhead", ui.plyReadAhead->value());
     AppSettings->setValue("DelayReadAhead", ui.delayReadAhead->value());

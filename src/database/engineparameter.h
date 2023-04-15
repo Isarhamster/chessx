@@ -23,7 +23,7 @@ public:
         allowBook    = false;
         bookMove     = 0;
         engineStarts = false;
-        searchDepth        = -1;
+        searchDepth  = -1;
         analysisMode = false;
     }
 
@@ -40,8 +40,8 @@ public:
         allowBook    = false;
         bookMove     = 0;
         engineStarts = false;
-        searchDepth        = -1;
-        analysisMode = false;
+        searchDepth  = -1;
+        analysisMode = true;
     }
 
     QString timeAsString() const

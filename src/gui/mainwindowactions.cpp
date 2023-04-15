@@ -16,8 +16,8 @@
 #include "boardsetup.h"
 #include "boardview.h"
 #include "boardviewex.h"
+#include "chessxsettings.h"
 #include "copydialog.h"
-#include "clipboarddatabase.h"
 #include "guess_compileeco.h"
 #include "databaseinfo.h"
 #include "databaselist.h"
@@ -368,6 +368,9 @@ void MainWindow::slotReconfigure()
     emit reconfigure(); 	// Re-emit for children
     UpdateGameText();
     UpdateAnnotationView();
+#ifdef USE_SPEECH
+    ChessXSettings::configureSpeech(speech);
+#endif
 }
 
 void MainWindow::UpdateGameText()
@@ -657,7 +660,7 @@ bool MainWindow::addRemoteMoveFrom64Char(QString s)
             moveChanged();
             if (!announceMove(m))
             {
-                playSound("move");
+                playSound("move",m);
             }
         }
         return true;
@@ -818,7 +821,7 @@ void MainWindow::triggerBoardMove()
         moveChanged(); // The move's currents where set after forward(), thus repair effects
         if (!announceMove(m))
         {
-            playSound("move");
+            playSound("move",m);
         }
     }
     else
@@ -1096,6 +1099,10 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                     }
 
                     game().addMove(m, annot);
+                    if (true)
+                    {
+                        playSound("move", m);
+                    }
                     if (qobject_cast<FicsDatabase*>(database()))
                     {
                         m_ficsConsole->SendMove(m.toAlgebraic());
@@ -1213,7 +1220,7 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
                 SQAction('Y',menu->addAction(QIcon(":/images/square_yellow.png"), tr("Yellow Square"), this, SLOT(slotYellowSquare())));
                 SQAction('G',menu->addAction(QIcon(":/images/square_green.png"), tr("Green Square"),  this, SLOT(slotGreenSquare())));
                 menu->addSeparator();
-                SQAction(0,menu->addAction(QIcon(":/images/square_none.png"),  tr("Remove Color"),  this, SLOT(slotNoColorSquare())));
+                SQAction('\0',menu->addAction(QIcon(":/images/square_none.png"),  tr("Remove Color"),  this, SLOT(slotNoColorSquare())));
             }
             else
             {
@@ -1221,7 +1228,7 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
                 SQAction('Y',menu->addAction(QIcon(":/images/arrow_yellow.png"), tr("Yellow Arrow to here"), this, SLOT(slotYellowArrowHere())));
                 SQAction('G',menu->addAction(QIcon(":/images/arrow_green.png"), tr("Green Arrow to here"),  this, SLOT(slotGreenArrowHere())));
                 menu->addSeparator();
-                SQAction(0,menu->addAction(QIcon(":/images/arrow_none.png"),  tr("Remove Arrow to here"), this, SLOT(slotNoArrowHere())));
+                SQAction('\0',menu->addAction(QIcon(":/images/arrow_none.png"),  tr("Remove Arrow to here"), this, SLOT(slotNoArrowHere())));
             }
             menu->exec(pos);
         }
@@ -1492,74 +1499,44 @@ void MainWindow::slotGameVarEnter()
 
 void MainWindow::slotGameVarUp()
 {
-    if(!game().isMainline())
+    MoveId currentVar = game().currentMove();
+    MoveId branch = game().cursor().variationBranchPoint();
+    if (branch != NO_MOVE)
     {
-        while(!game().atLineStart())
+        game().moveToId(branch);
+
+        QList<MoveId> listVariations = game().cursor().variations();
+        if (listVariations.size() && !game().atLineEnd())
         {
-            game().backward();
-        }
-        MoveId currentVar = game().currentMove();
-        game().backward();
-        int n = game().variations().indexOf(currentVar) - 1;
-        if(n >= 0)
-        {
-            game().moveToId(game().variations().at(n));
-        }
-        else
-        {
-            if(!m_training2->isChecked())
-            {
-                // Do not show next move in training 2 mode
-                game().forward();
-            }
-        }
-    }
-    else
-    {
-        if(!game().atLineStart() && !m_training2->isChecked())
-        {
-            if (game().variationCount(PREV_MOVE))
-            {
-                game().backward();
-                game().moveToId(game().variations().last());
-            }
+            MoveId mainPoint = game().cursor().nextMove();
+            listVariations.push_front(mainPoint);
+
+            int idx = listVariations.indexOf(currentVar, 0) - 1;
+            if (idx < 0) idx = listVariations.count() - 1;
+
+            game().moveToId(listVariations.at(idx));
         }
     }
 }
 
 void MainWindow::slotGameVarDown()
 {
-    if(!game().isMainline())
+    MoveId currentVar = game().currentMove();
+    MoveId branch = game().cursor().variationBranchPoint();
+    if (branch != NO_MOVE)
     {
-        while(!game().atLineStart())
+        game().moveToId(branch);
+
+        QList<MoveId> listVariations = game().cursor().variations();
+        if (listVariations.size() && !game().atLineEnd())
         {
-            game().backward();
-        }
-        MoveId currentVar = game().currentMove();
-        game().backward();
-        int n = game().variations().indexOf(currentVar) + 1;
-        if(n < game().variations().count())
-        {
-            game().moveToId(game().variations().at(n));
-        }
-        else
-        {
-            if(!m_training2->isChecked())
-            {
-                // Do not show next move in training 2 mode
-                game().forward();
-            }
-        }
-    }
-    else
-    {
-        if(!game().atLineStart() && !m_training2->isChecked())
-        {
-            if (game().variationCount(PREV_MOVE))
-            {
-                game().backward();
-                game().moveToId(game().variations().first());
-            }
+            MoveId mainPoint = game().cursor().nextMove();
+            listVariations.push_front(mainPoint);
+
+            int idx = listVariations.indexOf(currentVar, 0) + 1;
+            if (idx >= listVariations.count()) idx = 0;
+
+            game().moveToId(listVariations.at(idx));
         }
     }
 }
@@ -2532,7 +2509,7 @@ bool MainWindow::doEngineMove(Move m, EngineParameter matchParameter)
     {
         if (!announceMove(m))
         {
-            playSound("move");
+            playSound("move",m);
         }
     }
     return true;
@@ -2606,9 +2583,16 @@ void MainWindow::addAutoNag(Color toMove, int score, int lastScore, int threasho
 
 void MainWindow::slotEngineCurrentBest(const Analysis& analysis)
 {
-    if (analysis.variation().count())
+    if (analysis.getTb().isNullMove())
     {
-        m_boardView->setBestGuess(analysis.variation().at(0));
+        if (analysis.variation().count())
+        {
+            m_boardView->setBestGuess(analysis.variation().at(0));
+        }
+    }
+    else
+    {
+        m_boardView->setBestGuess(analysis.getTb());
     }
 }
 
@@ -3158,9 +3142,9 @@ void MainWindow::copyDatabase(QString target, QString src)
         {
             // Both databases are closed or the target is closed and the source unmodified (so that file can be used)
             QFile fSrc(src);
-            QFile fDest(target);
+            QFile fDest(target); // If it does not exist, it will be created here
 
-            if(fiDest.exists() && fiDest.suffix().toLower()=="pgn"
+            if(fiDest.suffix().toLower()=="pgn"
                     && fiSrc.exists() && fiSrc.suffix().toLower()=="pgn"
                     && fSrc.open(QIODevice::ReadOnly) &&
                     fDest.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
@@ -3553,8 +3537,9 @@ void MainWindow::updateLastGameList()
     m_recentGames->clear();
     if (index)
     {
-        foreach(GameId n, gameList)
+        for(auto i = gameList.cbegin(); i!= gameList.cend(); i++)
         {
+            GameId n = *i;
             QString white = index->tagValue(TagNameWhite,n);
             QString black = index->tagValue(TagNameBlack,n);
             QAction* action = m_recentGames->addAction(QString::number(n+1)+" : "+white+"-"+black, this, SLOT(slotLoadRecentGame()));
@@ -3812,7 +3797,7 @@ bool MainWindow::slotGameMoveNext()
     {
         if (!announceMove(m))
         {
-            playSound("move");
+            playSound("move",m);
         }
     }
     m_currentFrom = m.from();
@@ -3822,8 +3807,8 @@ bool MainWindow::slotGameMoveNext()
 
 void MainWindow::slotNoColorSquare()
 {
-    m_lastColor = 0;
-    game().appendSquareAnnotation(m_annotationSquare, 0);
+    m_lastColor = '\0';
+    game().appendSquareAnnotation(m_annotationSquare, '\0');
 }
 
 void MainWindow::slotGreenSquare()
@@ -3846,8 +3831,8 @@ void MainWindow::slotRedSquare()
 
 void MainWindow::slotNoArrowHere()
 {
-    m_lastColor = 0;
-    game().appendArrowAnnotation(m_annotationSquare, m_annotationSquareFrom, 0);
+    m_lastColor = '\0';
+    game().appendArrowAnnotation(m_annotationSquare, m_annotationSquareFrom, '\0');
 }
 
 void MainWindow::slotGreenArrowHere()

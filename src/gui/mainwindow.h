@@ -21,8 +21,9 @@
 #ifdef USE_SPEECH
 #include <QTextToSpeech>
 #endif
-#include <QUndoGroup>
+#include <QSoundEffect>
 #include <QToolBar>
+#include <QUndoGroup>
 
 using namespace chessx;
 
@@ -147,6 +148,7 @@ protected:
     void openDatabase(QString fname);
     /** Open database from URL*/
     void openDatabaseUrl(QString fname, bool utf8);
+    void appendDatabaseUrl(QString fname, bool utf8, QString target);
     /** Open a list of databases from a ZIP archive */
     void openDatabaseArchive(QString fname, bool utf8);
     void copyDatabaseArchive(QString fname, QString destination);
@@ -544,7 +546,10 @@ protected:
     QString ficsPath() const;
     bool ActivateFICSDatabase();
     void setupAnalysisWidget(DockWidgetEx *analysisDock, AnalysisWidget *analysis);
-    void playSound(QString s);
+    /** Get a sound hint "[PQKRBN][xmcp]" where x=capture, m=mate, c=check, p=romote */
+    QString soundHint(Move m) const;
+    void playSound(QString s, QString hint = "");
+    void playSound(QString s, Move m);
     QString PieceToSpeech(PieceType pt);
     QString MoveToSpeech(Move m);
     bool announceMove(Move m);
@@ -771,6 +776,8 @@ private:
 #endif
     int m_readAhead;
     Move m_readNextMove;
+    QPointer<QSoundEffect> effect;
+    QMap<QUrl, QString> copyFileNames;
 };
 
 #endif

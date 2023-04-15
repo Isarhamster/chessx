@@ -12,6 +12,8 @@
 #include <QSharedPointer>
 #include <cmath>
 
+#include "qt6compat.h"
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -123,12 +125,7 @@ void ChartWidget::handleMouseEvent(QMouseEvent *event)
 {
     if (width() && m_values.size() && (m_values[0].count()>1))
     {
-    #if QT_VERSION < 0x050000
-        QPointF p = event->posF();
-    #else
-        QPointF p = event->localPos();
-    #endif
-
+        QPointF p = EVENT_POSITION(event);
         double multiplierW = ((double)width()) / (m_values[0].count()-1);
         double x = 0.5 + (p.x() / multiplierW);
         if (m_lastSentIndicator!=(int)x)

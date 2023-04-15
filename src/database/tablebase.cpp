@@ -181,12 +181,13 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
 
                 if(ret[5] == 'w')
                 {
-                    ret.remove(QRegularExpression("NEXTCOLOR.*\\n"));
+                    ret.remove(QRegularExpression("NEXTCOLOR.*\\n", QRegularExpression::DotMatchesEverythingOption));
                 }
                 else
                 {
-                    ret.remove(QRegularExpression(".*NEXTCOLOR\\n"));
+                    ret.remove(QRegularExpression(".*NEXTCOLOR\\n", QRegularExpression::DotMatchesEverythingOption));
                 }
+
                 ret.remove(0, ret.indexOf("\n") + 1);
                 ret.remove(":");
                 ret.remove("Win in ");
@@ -199,7 +200,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                 {
                     QList<Move> bestMoves;
                     bool first = true;
-                    int bestScore;
+                    int bestScore = 0;
                     foreach(QString tbMove, moveList)
                     {
                         QStringList fld = tbMove.split(' ',Qt::SkipEmptyParts);

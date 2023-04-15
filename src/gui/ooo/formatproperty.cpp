@@ -127,7 +127,7 @@ void TextFormatProperty::apply( QTextCharFormat *format ) const
 
     if ( m_FontWeight != -1 ) {
         QFont font = format->font();
-        font.setWeight( m_FontWeight );
+        font.setWeight( (QFont::Weight) m_FontWeight );
         format->setFont( font );
     }
 

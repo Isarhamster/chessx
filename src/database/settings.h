@@ -64,6 +64,8 @@ public:
     QString winboardPath();
     /** @return directory where common chess data are stored. */
     QString commonDataPath();
+    /** @return path of a file in the commonData directory. */
+    QString commonDataFilePath(QString filename);
     /** @return directory where preinstalled timeseal is stored. */
     QString timesealFilePath();
     /** @return directory where logging is sent to */

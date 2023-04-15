@@ -7,6 +7,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "QtWidgets/qmenu.h"
+#include "database.h"
 #include "settings.h"
 #include "analysis.h"
 #include "analysiswidget.h"
@@ -17,7 +19,6 @@
 #include "move.h"
 #include "movedata.h"
 #include "tablebase.h"
-#include "polyglotdatabase.h"
 
 #include <QMutexLocker>
 #include <algorithm>
@@ -34,7 +35,8 @@ AnalysisWidget::AnalysisWidget(QWidget *parent)
       m_moveTime(0),
       m_bUciNewGame(true),
       m_onHold(false),
-      m_gameMode(false)
+      m_gameMode(false),
+      m_hideLines(false)
 {
     ui.setupUi(this);
     connect(ui.engineList, SIGNAL(activated(int)), SLOT(toggleAnalysis()));
@@ -49,12 +51,40 @@ AnalysisWidget::AnalysisWidget(QWidget *parent)
 
     m_tablebase = new OnlineTablebase;
     connect(m_tablebase, SIGNAL(bestMove(QList<Move>,int)), this, SLOT(showTablebaseMove(QList<Move>,int)), Qt::QueuedConnection);
+
+    ui.variationText->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui.variationText,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
 }
 
 AnalysisWidget::~AnalysisWidget()
 {
     stopEngine();
     delete m_tablebase;
+}
+
+
+bool AnalysisWidget::hideLines() const
+{
+    return m_hideLines;
+}
+
+void AnalysisWidget::setHideLines(bool newHideLines)
+{
+    m_hideLines = newHideLines;
+    updateAnalysis();
+}
+
+void AnalysisWidget::showContextMenu(const QPoint &pt)
+{
+    QMenu* menu = ui.variationText->createStandardContextMenu(pt);
+    QAction* action = new QAction(tr("Hide lines"));
+    action->setVisible(true);
+    action->setCheckable(true);
+    action->setChecked(m_hideLines);
+    connect(action, SIGNAL(triggered(bool)),this,SLOT(setHideLines(bool)));
+    menu->addAction(action);
+    menu->exec(ui.variationText->mapToGlobal(pt));
+    delete menu;
 }
 
 void AnalysisWidget::startEngine()
@@ -80,7 +110,11 @@ void AnalysisWidget::startEngine()
         }
 
         connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
+#if QT_VERSION < 0x060000
         connect(m_engine, SIGNAL(error(QProcess::ProcessError)), SLOT(engineError(QProcess::ProcessError)));
+#else
+        connect(m_engine, SIGNAL(errorOccurred(QProcess::ProcessError)), SLOT(engineError(QProcess::ProcessError)));
+#endif
         connect(m_engine, SIGNAL(deactivated()), SLOT(engineDeactivated()));
         connect(m_engine, SIGNAL(analysisUpdated(Analysis)),
                 SLOT(showAnalysis(Analysis)));
@@ -124,7 +158,6 @@ bool AnalysisWidget::isEngineConfigured() const
 void AnalysisWidget::engineActivated()
 {
     ui.analyzeButton->setChecked(true);
-    ui.analyzeButton->setText(tr("Stop"));
     m_analyses.clear();
     updateBookMoves(); // Delay this to here so that engine process is up
     if (!sendBookMove())
@@ -147,7 +180,6 @@ void AnalysisWidget::engineError(QProcess::ProcessError e)
 void AnalysisWidget::engineDeactivated()
 {
     ui.analyzeButton->setChecked(false);
-    ui.analyzeButton->setText(tr("Analyze"));
 }
 
 void AnalysisWidget::toggleAnalysis()
@@ -301,7 +333,7 @@ void AnalysisWidget::showAnalysis(Analysis analysis)
     updateComplexity();
     updateAnalysis();
     Analysis c = analysis;
-    if (bestMove && analysis.variation().count())
+    if (bestMove && analysis.variation().count()) // Some weird engines send a move twice - find the first (usually longer) line
     {
         foreach (Analysis a, m_analyses)
         {
@@ -317,21 +349,27 @@ void AnalysisWidget::showAnalysis(Analysis analysis)
         }
     }
 
-    c.setTb(m_tb);
-    c.setScoreTb(m_score_tb);
     if (bestMove)
     {
         analysis.setElapsedTimeMS(elapsed);
         emit receivedBestMove(c);
-        emit currentBestMove(c);
     }
-    else if (c.getEndOfGame())
+
+    if (m_tb.isNullMove())
     {
-        emit receivedBestMove(c);
-    }
-    if (c.variation().count() && (m!=c.variation().at(0)))
-    {
-        emit currentBestMove(c);
+        if (!bestMove && !c.getEndOfGame())
+        {
+            if (m_analyses.count()) // First line mostly is the best line
+            {
+                c = m_analyses.at(0);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        emit currentBestMove(c); // Do not overwrite TB move
     }
 }
 
@@ -567,16 +605,23 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                     }
                 }
                 Move move1 = m_board.prepareMove(move.from(), move.to());
-                if(move.isPromotion())
+                if (!m_hideLines)
                 {
-                    move1.setPromoted(pieceType(move.promotedPiece()));
+                     if(move.isPromotion())
+                    {
+                        move1.setPromoted(pieceType(move.promotedPiece()));
+                    }
+                    m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1,true), result);
                 }
-                m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1,true), result);
+                else
+                {
+                    m_tablebaseEvaluation = result;
+                }
                 m_tablebaseMove = m_board.moveToFullSan(move1);
                 m_tb = move1;
                 m_lastDepthAdded = 0;
             }
-            else
+            else if (!m_hideLines)
             {
                 Move move1 = m_board.prepareMove(move.from(), move.to());
                 if(move.isPromotion())
@@ -606,6 +651,10 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
             m_tablebaseEvaluation.append(QString(" === %1").arg(also.join(" ")));
         }
         updateAnalysis();
+        Analysis tbAnalysis;
+        tbAnalysis.setTb(m_tb);
+        tbAnalysis.setScoreTb(m_score_tb);
+        emit currentBestMove(tbAnalysis);
     }
 }
 
@@ -624,7 +673,7 @@ void AnalysisWidget::updateAnalysis()
     }
     foreach(Analysis a, m_analyses)
     {
-        QString s = a.toString(m_board);
+        QString s = a.toString(m_board, m_hideLines);
         if (!s.isEmpty()) text.append(s + "<br>");
     }
     if(!m_tablebaseEvaluation.isEmpty())

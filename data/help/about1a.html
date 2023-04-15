@@ -87,6 +87,15 @@ The Preferences dialog will show available themes &mdash;  most of them should w
 <p>OS X: If ChessX is started on a dark desktop, ChessX will autmatically switch into dark mode.</p>
 <p>Changing the active theme or selecting a different localization requires a restart of ChessX.</p>
 
+<h3><a name="Sounds"></a>Custom Sounds</h3>
+<p>There are a few events at which ChessX will issue a sound effect. These sound effects are
+'fanfare' (played at end of game), 'ding1' (FICS start of game), 'woodthunk' (Clock warning) and 'move'.</p>
+<p>Move effects can have suffixes: "[PQKRBN][xmcp]" where x=capture, m=mate, c=check, p=romote.</p>
+<p>Example: The sound file for a pawn capturing something is 'movePx.wav', if this does not exist 'moveP.wav' and 'movex' is searched and
+finally 'move.wav' is used in case none of the mentioned files exists.</p>
+<p>Sound effect files belong into the 'sounds'-directory inside the Program Data Path. Again, follow the link in the About box.</p>
+<p>Internally ChessX supports 'move' and 'movex' sound, but you can put your own sounds into the sounds directory.</p>
+<p>(If you have the impression, the internal sounds sound like lichess - well, you are right!)</p>
 </div>
 </div>
 

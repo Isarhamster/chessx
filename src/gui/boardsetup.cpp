@@ -27,6 +27,7 @@
 #include <QRegularExpression>
 #include <QSpacerItem>
 #include <QSizePolicy>
+#include "qt6compat.h"
 
 // Dummy change
 using namespace chessx;
@@ -677,7 +678,7 @@ void BoardSetupDialog::startDrag(QWidget* w, QMouseEvent* event)
     }
     Piece p = child->piece();
 
-    QPoint hotSpot = event->pos();
+    QPoint hotSpot = EVENT_POSITION(event);
 
     BoardViewMimeData *mimeData = new BoardViewMimeData;
     mimeData->m_piece = p;

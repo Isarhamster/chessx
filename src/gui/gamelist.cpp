@@ -68,11 +68,7 @@ GameList::GameList(FilterX* filter, QWidget* parent) : TableView(parent)
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(slotContextMenu(QPoint)));
     connect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(slotItemSelected(QModelIndex)));
-#if QT_VERSION < 0x050000
-    horizontalHeader()->setClickable(true);
-#else
     horizontalHeader()->setSectionsClickable(true);
-#endif
 
     horizontalHeader()->setSortIndicatorShown(true);
     setSortingEnabled(true);

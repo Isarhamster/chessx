@@ -20,14 +20,25 @@ QDate OnlineBase::getStartDate() const
     return ui->startDate->date();
 }
 
+QDate OnlineBase::getEndDate() const
+{
+    return ui->endDate->date();
+}
+
 void OnlineBase::setDateFormat(const QString& format)
 {
     ui->startDate->setDisplayFormat(format);
+    ui->endDate->setDisplayFormat(format);
 }
 
 void OnlineBase::setStartDate(const QDate &value)
 {
     ui->startDate->setDate(value);
+}
+
+void OnlineBase::setEndDate(const QDate &value)
+{
+    ui->endDate->setDate(value);
 }
 
 QString OnlineBase::getHandle() const

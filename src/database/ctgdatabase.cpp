@@ -628,7 +628,7 @@ bool CtgDatabase::findMove(quint64 /*key*/, MoveData& /*m*/)
 
 unsigned int CtgDatabase::getMoveMapForBoard(const BoardX &pos, QMap<Move, MoveData>& moveList)
 {
-    ctg_entry_t entry = { 0 };
+    ctg_entry_t entry = { };
     if (!ctg_get_entry(pos, &entry)) return 0;
 
     // Position is here, output the moves associated with it

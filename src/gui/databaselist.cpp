@@ -16,6 +16,8 @@
 #include <QMenu>
 #include <QtGui>
 
+#include "qt6compat.h"
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -390,7 +392,7 @@ void DatabaseList::dragMoveEvent(QDragMoveEvent *event)
     if(gameMimeData)
     {
         event->setDropAction(Qt::CopyAction);
-        QModelIndex index = indexAt(event->pos());
+        QModelIndex index = indexAt(EVENT_POSITION(event));
         if(index.isValid())
         {
             QString path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
@@ -403,7 +405,7 @@ void DatabaseList::dragMoveEvent(QDragMoveEvent *event)
     else if(dbMimeData && dbMimeData->hasUrls())
     {
         event->setDropAction(Qt::CopyAction);
-        QModelIndex index = indexAt(event->pos());
+        QModelIndex index = indexAt(EVENT_POSITION(event));
         if(index.isValid())
         {
             QString path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
@@ -454,7 +456,7 @@ void DatabaseList::dropEvent(QDropEvent *event)
         const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
         if(gameMimeData)
         {
-            QModelIndex index = indexAt(event->pos());
+            QModelIndex index = indexAt(EVENT_POSITION(event));
             appendGameToDataBase(index, gameMimeData->m_indexList, gameMimeData->source);
         }
         else if(dbMimeData && dbMimeData->hasUrls())
@@ -463,7 +465,7 @@ void DatabaseList::dropEvent(QDropEvent *event)
             foreach(QUrl url, urlList)
             {
                 QString s = url.toString();
-                appendDataBaseToDataBase(event->pos(), s);
+                appendDataBaseToDataBase(EVENT_POSITION(event), s);
             }
         }
         else if(mimeData && mimeData->hasUrls())
