@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.19)
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13)
 
 project(chessx
-  VERSION "1.5.7"
+  VERSION "1.5.8"
   DESCRIPTION "A free chess database"
   HOMEPAGE_URL "https://chessx.sourceforge.io/"
   LANGUAGES CXX
