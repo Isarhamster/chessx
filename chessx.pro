@@ -576,7 +576,8 @@ macx {
 RESOURCES = \
   resources.qrc translations.qrc
 
-TRANSLATIONS = i18n/chessx_de.ts
+TRANSLATIONS = i18n/chessx_de.ts \
+               i18n/chessx_es.ts
 
 #        i18n/chessx_fr.ts \
 #        i18n/chessx_da.ts \
@@ -584,8 +585,6 @@ TRANSLATIONS = i18n/chessx_de.ts
 #        i18n/chessx_it.ts \
 #        i18n/chessx_cz.ts \
 #        i18n/chessx_ru.ts \
-#        i18n/chessx_es.ts
-
 #   i18n/chessx_nl.ts \
 #   i18n/chessx_pl.ts \
 #   i18n/chessx_pt_BR.ts \
@@ -623,6 +622,13 @@ OTHER_FILES += \
   data/help/about3.html \
   data/help/about4.html \
   data/help/about5.html \
+  data/help/ES/about0.html \
+  data/help/ES/about1.html \
+  data/help/ES/about1a.html \
+  data/help/ES/about2.html \
+  data/help/ES/about3.html \
+  data/help/ES/about4.html \
+  data/help/ES/about5.html \
   setup7-64.iss \
   setup7-32.iss \
   setupXP.iss \
