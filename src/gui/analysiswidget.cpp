@@ -639,10 +639,14 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                 result = tr("White wins");
                 m_score_tb = 1;
             }
-            else
+            else if (score>0)
             {
                 result = tr("Black wins");
                 m_score_tb = -1;
+            }
+            else
+            {
+                result = tr("Draw");
             }
             m_tablebaseEvaluation = result;
         }

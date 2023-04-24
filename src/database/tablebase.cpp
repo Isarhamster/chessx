@@ -247,7 +247,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                     if (s_allowEngineOutput && !first)
                     {
                         bestScore = bestScore*2; // Convert to half moves
-                        bestScore += ((bestScore>0)?1:-1) * 0x800;
+                        if (bestScore) bestScore += ((bestScore>0)?1:-1) * 0x800;
                         emit bestMove(bestMoves, bestScore);
                     }
                 }
