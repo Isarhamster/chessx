@@ -42,6 +42,13 @@ public:
 #define SET_CODEC_LATIN1(s) s.setEncoding(QStringConverter::Latin1);
 #endif
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+#include <QtCore/QString>
+constexpr auto SkipEmptyParts = QString::SkipEmptyParts;
+#else
+using Qt::SkipEmptyParts;
+#endif
+
 #if QT_VERSION < 0x060000
 #define EVENT_POSITION(event) (event)->pos()
 #else

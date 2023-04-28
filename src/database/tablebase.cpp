@@ -9,6 +9,7 @@
  ***************************************************************************/
 
 #include "networkhelper.h"
+#include "qt6compat.h"
 #include "settings.h"
 #include "tablebase.h"
 #include "version.h"
@@ -195,7 +196,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                 ret.replace("Draw", "0");
                 ret.replace("Lose in ", "-");
 
-                QStringList moveList = ret.split('\n',Qt::SkipEmptyParts);
+                QStringList moveList = ret.split('\n',SkipEmptyParts);
                 if (moveList.size() >= 1)
                 {
                     QList<Move> bestMoves;
@@ -203,7 +204,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                     int bestScore = 0;
                     foreach(QString tbMove, moveList)
                     {
-                        QStringList fld = tbMove.split(' ',Qt::SkipEmptyParts);
+                        QStringList fld = tbMove.split(' ',SkipEmptyParts);
                         if(fld.size() < 3)
                         {
                             break;

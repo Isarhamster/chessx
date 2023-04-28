@@ -6,6 +6,7 @@
 #include "ficsconsole.h"
 #include "ficsclient.h"
 #include "partialdate.h"
+#include "qt6compat.h"
 #include "settings.h"
 #include "tags.h"
 
@@ -685,7 +686,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             {
                 if (s.startsWith("Game"))
                 {
-                    QStringList l = s.split(" ",Qt::SkipEmptyParts);
+                    QStringList l = s.split(" ",SkipEmptyParts);
                     if (l.size()>=6)
                     {
                         QString nameWhite = l[2];
@@ -745,7 +746,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_XTELL:
             if (!s.startsWith("(") && s.length() > 1)
             {
-                QStringList l = s.split(" ", Qt::SkipEmptyParts);
+                QStringList l = s.split(" ", SkipEmptyParts);
                 if (l.length() == 5)
                 {
                     // todo: Convert List to table widget
@@ -792,7 +793,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             break;
         case FicsClient::BLKCMD_SOUGHT:
             {
-                QStringList l = s.split(" ",Qt::SkipEmptyParts);
+                QStringList l = s.split(" ",SkipEmptyParts);
                 if (l.size() >= 8)
                 {
                     QString sought = btgSeek->checkedButton()->objectName().remove(0,2).toLower();
@@ -868,7 +869,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_SHOWLIST:
             if (!s.contains("--"))
             {
-                QStringList l = s.split(" ", Qt::SkipEmptyParts);
+                QStringList l = s.split(" ", SkipEmptyParts);
                 foreach(QString name, l)
                 {
                     ui->listNoPlay->addItem(name);

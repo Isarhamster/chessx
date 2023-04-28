@@ -21,6 +21,7 @@
 #include "gamelistsortmodel.h"
 #include "GameMimeData.h"
 #include "numbersearch.h"
+#include "qt6compat.h"
 #include "quicksearch.h"
 #include "settings.h"
 #include "tags.h"
@@ -417,7 +418,7 @@ void GameList::simpleSearch(int tagid)
     }
     else
     {
-        QStringList list = value.split("-", Qt::SkipEmptyParts);
+        QStringList list = value.split("-", SkipEmptyParts);
         if ((list.size() > 1) && (dlg.tag() != 9)) // Tag 9 is the Result
         {
             // Filter a range

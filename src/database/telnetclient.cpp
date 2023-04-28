@@ -2,6 +2,7 @@
 *   Copyright (C) 2014 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
+#include "qt6compat.h"
 #include "settings.h"
 #include "telnetclient.h"
 
@@ -117,7 +118,7 @@ void TelnetClient::DispatchReadData(QByteArray bytes)
         default:
         {
             bool endsWithCR = data.endsWith("\n");
-            QStringList lines = data.split("\n", Qt::SkipEmptyParts);
+            QStringList lines = data.split("\n", SkipEmptyParts);
             if (lines.count() && !endsWithCR)
             {
                 m_remainder = lines.back();
