@@ -52,8 +52,8 @@ macx {
   QMAKE_CXXFLAGS_RELEASE -= -O2
   QMAKE_CXXFLAGS_RELEASE *= -m64 -Ofast
 
-  QMAKE_LFLAGS_DEBUG += -m64 -O0 --coverage
-  QMAKE_CXXFLAGS_DEBUG *= -m64 -O0 --coverage
+  QMAKE_LFLAGS_DEBUG += -m64 -O0
+  QMAKE_CXXFLAGS_DEBUG *= -m64 -O0
 }
 
 
