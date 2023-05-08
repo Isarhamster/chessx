@@ -1,3 +1,18 @@
+## May 2023: Version 1.6.0
+
+- Bugfix: CR #336 Nalimov TB gives wrong evaluation
+- Bugfix: Jumping through sibling variations
+- Bugfix: CR #334 Pressing 'Pin engine' resets the analysis
+- Bugfix: Move indicator shows wrong line in case of Multi-PV, prefer TB
+- Bugfix: CR #320 (PGN Setup->SetUp tag)
+- New feature: Load range of games from online bases
+- New feature: Allows piece specific sounds
+- New feature: Add a volume slider for sounds
+- New feature: CR #209 Hide lines in Analysiswidget
+- New feature: Give coordinates a color setting of their own
+- New feature: Configurable Text to Speech 
+- Changed: AnalysisWidget toolbutton
+
 ## January 2023: Version 1.5.8
 
 - New feature: Allow preserving existing ECO codes 

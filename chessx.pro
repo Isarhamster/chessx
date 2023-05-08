@@ -624,8 +624,6 @@ OTHER_FILES += \
   data/help/about4.html \
   data/help/about5.html \
   setup7-64.iss \
-  setup7-32.iss \
-  setupXP.iss \
   data/styles/orange.css \
   unix/chessx.desktop
 

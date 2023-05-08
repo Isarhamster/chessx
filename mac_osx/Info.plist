@@ -32,11 +32,11 @@
 	<key>CFBundleIdentifier</key>
         <string>net.sourceforge.chessx</string>
 	<key>CFBundleVersion</key>
-        <string>1.5.8</string>
+        <string>1.6.0</string>
 	<key>CFBundleShortVersionString</key>
-        <string>1.5.8</string>
+        <string>1.6.0</string>
 	<key>NSHumanReadableCopyright</key>
-        <string>(C) 2005-2020 ChessX developers</string>
+        <string>(C) 2005-2023 ChessX developers</string>
         <key>NSPrincipalClass</key>
         <string>NSApplication</string>
         <key>NSHighResolutionCapable</key>
