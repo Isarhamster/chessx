@@ -19,7 +19,9 @@
 #include <QWidget>
 #include <QMainWindow>
 #include <QSplitter>
+#ifdef USE_SPEECH
 #include <QTextToSpeech>
+#endif
 #include <QLayout>
 
 using namespace chessx;
