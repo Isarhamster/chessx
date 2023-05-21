@@ -31,10 +31,10 @@ public:
 #if QT_VERSION < 0x060000
 #include <QTextCodec>
 #define SET_CODEC_UTF8(s) \
-    QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1"); \
+    QTextCodec* textCodec = QTextCodec::codecForName("utf8"); \
     if(textCodec) s.setCodec(textCodec);
 #define SET_CODEC_LATIN1(s) \
-    QTextCodec* textCodec = QTextCodec::codecForName("utf8"); \
+    QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1"); \
     if(textCodec) s.setCodec(textCodec);
 #else
 #include <QStringConverter>
