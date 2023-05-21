@@ -193,5 +193,7 @@
         <file alias="images/rename.png">data/images/rename.png</file>
         <file alias="images/readAhead.png">data/images/readAhead.png</file>
         <file alias="images/background.jpg">data/images/background.jpg</file>
+        <file alias="images/FlagCzech.png">data/images/FlagCzech.png</file>
+        <file alias="images/FlagItaly.png">data/images/FlagItaly.png</file>
     </qresource>
 </RCC>

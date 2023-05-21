@@ -62,7 +62,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>7</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -742,7 +742,7 @@
             <item>
              <widget class="QToolButton" name="tbUK">
               <property name="text">
-               <string>...</string>
+               <string notr="true"> KQRBN</string>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
@@ -753,7 +753,7 @@
             <item>
              <widget class="QToolButton" name="tbGermany">
               <property name="text">
-               <string>...</string>
+               <string notr="true"> KDTLS</string>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
@@ -764,7 +764,7 @@
             <item>
              <widget class="QToolButton" name="tbFrance">
               <property name="text">
-               <string>...</string>
+               <string notr="true"> RDTFC</string>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
@@ -775,7 +775,7 @@
             <item>
              <widget class="QToolButton" name="tbPoland">
               <property name="text">
-               <string>...</string>
+               <string notr="true"> KHWGS</string>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
@@ -784,9 +784,31 @@
              </widget>
             </item>
             <item>
+             <widget class="QToolButton" name="tbItaly">
+              <property name="text">
+               <string notr="true"> RDTAC</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../resources.qrc">
+                <normaloff>:/images/FlagItaly.png</normaloff>:/images/FlagItaly.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="tbCzech">
+              <property name="text">
+               <string notr="true"> KDVSJ</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../resources.qrc">
+                <normaloff>:/images/FlagCzech.png</normaloff>:/images/FlagCzech.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QToolButton" name="tbSymbolic">
               <property name="text">
-               <string/>
+               <string notr="true"/>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">

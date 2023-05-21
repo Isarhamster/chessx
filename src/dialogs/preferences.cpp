@@ -79,6 +79,8 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     connect(ui.tbGermany, SIGNAL(clicked()), SLOT(slotChangePieceString()));
     connect(ui.tbFrance, SIGNAL(clicked()), SLOT(slotChangePieceString()));
     connect(ui.tbPoland, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbItaly, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbCzech, SIGNAL(clicked()), SLOT(slotChangePieceString()));
     connect(ui.tbSymbolic, SIGNAL(clicked()), SLOT(slotChangePieceString()));
 
     connect(ui.btLoadLang, SIGNAL(clicked()), SLOT(slotLoadLanguageFile()));
@@ -346,31 +348,7 @@ void PreferencesDialog::slotShowOptionDialog()
 
 void PreferencesDialog::slotChangePieceString()
 {
-    QString pieceString;
-    if((QToolButton*)sender() == ui.tbUK)
-    {
-        pieceString = " KQRBN";
-    }
-    else if((QToolButton*)sender() == ui.tbGermany)
-    {
-        pieceString = " KDTLS";
-    }
-    else if((QToolButton*)sender() == ui.tbFrance)
-    {
-        pieceString = " RDTFC";
-    }
-    else if((QToolButton*)sender() == ui.tbPoland)
-    {
-        pieceString = " KHWGS";
-    }
-    else if((QToolButton*)sender() == ui.tbSymbolic)
-    {
-        pieceString.clear();
-    }
-    else
-    {
-        pieceString = " KQRBN";
-    }
+    QString pieceString = ((QToolButton*)sender())->text();
     ui.pieceString->setText(pieceString);
 }
 
