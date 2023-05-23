@@ -2994,7 +2994,7 @@ bool BitBoard::insufficientMaterial() const
             {
                 return false;
             }
-            if (m_pieceCount[White]+m_pieceCount[Black] == 3)
+            if (m_pieceCount[White]+m_pieceCount[Black] <= 3)
             {
                 return true;
             }
