@@ -645,11 +645,6 @@ void PreferencesDialog::restoreSettings()
 
 #if defined(USE_SOUND) || defined(USE_SPEECH)
     ui.cbSoundOn->setCurrentIndex(AppSettings->getValue("Move").toInt());
-
-    QStringList voiceNames = ChessXSettings::availableVoices(lang);
-    ui.cbVoice->addItems(voiceNames);
-
-    ui.cbVoice->setCurrentText(AppSettings->getValue("Voice").toString());
     ui.volume->setValue(AppSettings->getValue("Volume").toInt());
     ui.cbScreenReader->setChecked(AppSettings->getValue("ScreenReader").toBool());
     ui.cbMoveSound->setChecked(AppSettings->getValue("MoveSound").toBool());
@@ -657,11 +652,16 @@ void PreferencesDialog::restoreSettings()
     ui.delayReadAhead->setValue(AppSettings->getValue("DelayReadAhead").toInt());
 
 #ifdef USE_SPEECH
+    QStringList voiceNames = ChessXSettings::availableVoices(lang);
+    ui.cbVoice->addItems(voiceNames);
+    ui.cbVoice->setCurrentText(AppSettings->getValue("Voice").toString());
     if (!QTextToSpeech::availableEngines().count())
     {
+        ui.cbVoice->setEnabled(false);
         ui.cbScreenReader->setChecked(false);
         ui.plyReadAhead->setEnabled(false);
         ui.delayReadAhead->setEnabled(false);
+        ui.cbScreenReader->setEnabled(false);
     }
 #endif
 

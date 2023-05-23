@@ -19,7 +19,9 @@
 #include <QWidget>
 #include <QMainWindow>
 #include <QSplitter>
+#ifdef USE_SPEECH
 #include <QTextToSpeech>
+#endif
 #include <QLayout>
 
 using namespace chessx;
@@ -161,9 +163,9 @@ bool ChessXSettings::layout(QWidget* w)
     return valid;
 }
 
+#ifdef USE_SPEECH
 void ChessXSettings::configureSpeech(QTextToSpeech* speech)
 {
-#ifdef USE_SPEECH
     speech->setLocale(ChessXSettings::locale());
 
     QVector<QVoice> voices = speech->availableVoices();
@@ -180,8 +182,8 @@ void ChessXSettings::configureSpeech(QTextToSpeech* speech)
             break;
         }
     }
-#endif
 }
+#endif
 
 QLocale ChessXSettings::locale()
 {
@@ -190,10 +192,11 @@ QLocale ChessXSettings::locale()
     return cxLocale;
 }
 
+#ifdef USE_SPEECH
 QStringList ChessXSettings::availableVoices(QString lang)
 {
     QStringList list;
-#ifdef USE_SPEECH
+
     QLocale cxLocale(lang);
 
     QTextToSpeech* speech = new QTextToSpeech();
@@ -204,9 +207,10 @@ QStringList ChessXSettings::availableVoices(QString lang)
     for (const QVoice &voice : qAsConst(voices)) {
         list << voice.name();
     }
-#endif
+
     return list;
 }
+#endif
 
 void ChessXSettings::setLayout(const QWidget* w)
 {

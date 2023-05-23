@@ -5,7 +5,10 @@
 #include <QStringList>
 #include <QLocale>
 
+#ifdef USE_SPEECH
 class QTextToSpeech;
+#endif
+
 class Widget;
 
 class ChessXSettings : public Settings
