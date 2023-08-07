@@ -623,7 +623,7 @@
 						<key>BACKGROUND_PATH</key>
 						<dict>
 							<key>PATH</key>
-							<string>../data/images/chessx.png</string>
+							<string>../data/images/icons-256/chessx.png</string>
 							<key>PATH_TYPE</key>
 							<integer>0</integer>
 						</dict>
@@ -641,7 +641,7 @@
 						<key>BACKGROUND_PATH</key>
 						<dict>
 							<key>PATH</key>
-							<string>../data/images/chessx-64.png</string>
+							<string>../data/images/icons-64/chessx.png</string>
 							<key>PATH_TYPE</key>
 							<integer>3</integer>
 						</dict>
@@ -656,7 +656,7 @@
 				<key>BACKGROUND_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>../data/images/chessx-64.png</string>
+					<string>../data/images/icons-64/chessx.png</string>
 					<key>PATH_TYPE</key>
 					<integer>3</integer>
 				</dict>
