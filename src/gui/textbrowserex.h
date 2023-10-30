@@ -15,6 +15,15 @@ class TextBrowserEx : public QTextBrowser
 public:
     explicit TextBrowserEx(QWidget* parent = nullptr) : QTextBrowser(parent) {}
 
+    virtual void doSetSource(const QUrl &name, QTextDocument::ResourceType type = QTextDocument::UnknownResource)
+    {
+        if(name.scheme().isEmpty())
+        {
+#if QT_VERSION >= 0x060000
+            QTextBrowser::doSetSource(name, type);
+#endif
+        }
+    }
     void setSource(const QUrl& name)
     {
         if(name.scheme().isEmpty())

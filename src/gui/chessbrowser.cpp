@@ -7,9 +7,7 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include "chartwidget.h"
 #include "chessbrowser.h"
-#include "settings.h"
 #include "gamex.h"
 #include "GameMimeData.h"
 
@@ -27,6 +25,10 @@ ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p), m_gameMenu(nullptr), m
     setupMenu();
     setTextInteractionFlags(textInteractionFlags() | Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
     setAcceptDrops(true);
+}
+
+void ChessBrowser::doSetSource(const QUrl & /*name*/, QTextDocument::ResourceType /*type*/)
+{
 }
 
 void ChessBrowser::setSource(const QUrl&)

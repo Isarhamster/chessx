@@ -18,7 +18,7 @@ ShellHelper::ShellHelper()
 void ShellHelper::sendFileWithMail(QString path, QString recipient)
 {
     QFileInfo fi(path);
-#ifdef Q_OS_MACX
+#ifdef Q_OS_MACOS
     // Mac OS can actually suck: the mailto URL does not support attachments as it once did in Leopard.
     // Workaround uses osascript, but this is not expected if user is not using Mail as mail client
     QString osaTemplate =
@@ -58,7 +58,7 @@ void ShellHelper::showInFinder(const QString& path)
     }
     param += QDir::toNativeSeparators(path);
     QProcess::startDetached("explorer.exe", QStringList(param));
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_MACOS)
     QStringList scriptArgs;
     scriptArgs << QLatin1String("-e")
                << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"")
