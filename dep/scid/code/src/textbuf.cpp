@@ -232,7 +232,7 @@ errorT
 TextBuffer::PrintInt (uint i, const char * str)
 {
     char temp[255];
-    sprintf(temp, "%d%s", i, str);
+    snprintf(temp, 255, "%d%s", i, str);
     return PrintWord(temp);
 }
 
