@@ -1035,13 +1035,19 @@ void PgnDatabase::parseComment(GameX* game)
             if (game->plyCount()==0 && m_inPreComment)
             {
                 game->dbSetAnnotation(m_precomment, 0);
-                m_inPreComment = false;
+                m_inPreComment = false; // TODO - what is this? Will be overwritten next ??
             }
             m_precomment = m_comment.trimmed();
             m_inPreComment = true;
         }
         else
         {
+            QString currentComment = game->annotation();
+            if (!currentComment.isEmpty())
+            {
+                currentComment.append("\n");
+                m_comment.prepend(currentComment);
+            }
             game->dbSetAnnotation(m_comment.trimmed());
         }
         m_currentLine = m_currentLine.right((m_currentLine.length() - end) - 1);
@@ -1053,13 +1059,15 @@ void PgnDatabase::parseComment(GameX* game)
     }
 }
 
-inline bool onlyWhite(const QByteArray& b)
+inline bool onlyWhitespace(const QByteArray& b)
 {
     for(int i = 0; i < b.length(); ++i)
+    {
         if(!isspace(b[i]))
         {
             return false;
         }
+    }
     return true;
 }
 
@@ -1115,7 +1123,7 @@ void PgnDatabase::skipTags()
     }
 
     //swallow trailing whitespace
-    while(onlyWhite(m_lineBuffer) && !m_file->atEnd())
+    while(onlyWhitespace(m_lineBuffer) && !m_file->atEnd())
     {
         skipLine();
     }
@@ -1132,7 +1140,7 @@ void PgnDatabase::skipMoves()
     }
     if(!tag.isEmpty())
     {
-        while(!onlyWhite(m_lineBuffer) && !m_file->atEnd())
+        while(!onlyWhitespace(m_lineBuffer) && !m_file->atEnd())
         {
             skipLine();
         }
@@ -1147,7 +1155,7 @@ void PgnDatabase::skipMoves()
 
         QString gameText = " ";
 
-        while(!onlyWhite(m_lineBuffer) && !m_file->atEnd())
+        while(!onlyWhitespace(m_lineBuffer) && !m_file->atEnd())
         {
             gameText += QString(m_lineBuffer) + " ";
             skipLine();
@@ -1163,7 +1171,7 @@ void PgnDatabase::skipMoves()
     }
 
     //swallow trailing whitespace
-    while(onlyWhite(m_lineBuffer) && !m_file->atEnd())
+    while(onlyWhitespace(m_lineBuffer) && !m_file->atEnd())
     {
         skipLine();
     }

@@ -17,7 +17,7 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 <html>
 <head>
 <title>ChessX Output</title>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=utf-8">
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
 <style type="text/css">
   p             {margin-top: 0; margin-bottom: 0}\n
   p.var1        {margin-left: 20px}\n
@@ -29,8 +29,8 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
   p.var7        {margin-left: 140px}\n
   p.var8        {margin-left: 160px}\n
   p.var9        {margin-left: 180px}\n
-  p.comment     {margin-left: 20px}\n
-  p.precomment  {margin-left: 0}\n
+  p.comment     {margin-left: 20px; margin-right: 10px}\n
+  p.precomment  {margin-right: 10px}\n
   a             {text-decoration: none}\n
   a.main        {font-family:"@FontBrowserMove@";color: @MainLineMoveColor@; font-weight: bold}\n
   a.var         {font-family:"@FontBrowserMove@";color: @VariationColor@}\n
@@ -71,7 +71,7 @@ MarkupMainLineMove=<a class="main" href="move:%1">,</a>
 MarkupVariationMove=<a class="var" href="move:%1">,</a>
 MarkupMainLine=,
 MarkupVariationInline=<span class="var">(,)</span>
-MarkupVariationIndent1=( ,)\n
+MarkupVariationIndent1=(,)\n
 MarkupVariationIndent=(,)\n
 MarkupVariationResume1=<p class="var1">,</p>\n
 MarkupVariationResume2=<p class="var2">,</p>\n

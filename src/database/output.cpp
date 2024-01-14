@@ -343,11 +343,11 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         }
         if(c == White)
         {
-            text += QString::number(m_game.moveNumber(moveId)) + ". ";
+            text += QString::number(m_game.moveNumber(moveId)) + ".";
         }
         else if(m_dirtyBlack)
         {
-            text += QString::number(m_game.moveNumber(moveId)) + "... ";
+            text += QString::number(m_game.moveNumber(moveId)) + "...";
             if((m_options.getOptionAsBool("ColumnStyle")) &&
                     (m_currentVariationLevel == 0))
             {
@@ -406,12 +406,14 @@ QString Output::writeMove(MoveToWrite moveToWrite)
             (c == White))
     {
         text += m_endTagMap[MarkupColumnStyleMove];
-        m_game.forward();
-        if(m_game.atGameEnd())
+        if (m_game.forward())
         {
-            text += m_endTagMap[MarkupColumnStyleRow];
+            if(m_game.atGameEnd())
+            {
+                text += m_endTagMap[MarkupColumnStyleRow];
+            }
+            m_game.backward();
         }
-        m_game.backward();
     }
 
     if((m_options.getOptionAsBool("ColumnStyle")) &&
@@ -427,10 +429,29 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         m_dirtyBlack = true;
     }
 
-    text += writeComment(commentString, mvno, Comment);
-    if (m_game.hasNextMove())
+    if (m_outputType != Latex)
     {
-        text += " ";
+        QStringList l = commentString.split('\n', Qt::SkipEmptyParts);
+        foreach(QString s, l)
+        {
+            text += writeComment(s, mvno, Comment);
+        }
+    }
+    else
+    {
+        text += writeComment(commentString, mvno, Comment);
+    }
+
+    if (imageString.isEmpty() && commentString.isEmpty() && !san.isEmpty())
+    {
+        if((!((m_options.getOptionAsBool("ColumnStyle")) &&
+               (m_currentVariationLevel == 0))) || (m_outputType == Pgn))
+        {
+            if (m_game.hasNextMove())
+            {
+                text += " "; // Separate Move Tags from each other
+            }
+        }
     }
     return text;
 }
@@ -573,7 +594,7 @@ QString Output::writeTag(const QString& tagName, const QString& tagValue) const
     QString text = m_startTagMap[MarkupHeaderLine] +
                    m_startTagMap[MarkupHeaderTagName] +
                    tagName + m_endTagMap[MarkupHeaderTagName] +
-                   " " +
+                   " " + // e.g. Event "EventName"
                    m_startTagMap[MarkupHeaderTagValue] +
                    tagValue +
                    m_endTagMap[MarkupHeaderTagValue] +
@@ -607,7 +628,6 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
     {
         text += m_startTagMap[markup];
     }
-    text += " ";
     if (!m_options.getOptionAsBool("HTMLComments") &&
         ((m_outputType == Html) || (m_outputType == NotationWidget)))
     {
@@ -623,13 +643,14 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
         text += m_startTagMap[MarkupColumnStyleMainline];
     }
     m_dirtyBlack = true;
+    text = text.trimmed();
     return text;
 }
 
 QString Output::writeGameComment(QString comment) const
 {
     QString text;
-    comment = comment.trimmed();
+
     if(comment.isEmpty())
     {
         return text;

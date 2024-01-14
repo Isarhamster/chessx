@@ -1039,7 +1039,7 @@ bool GameX::dbSetAnnotation(QString annotation, MoveId moveId, Position position
         }
         else
         {
-            if(annotation.isEmpty() && (node > 1)) // Do not remove empty comment
+            if(annotation.isEmpty() && (node > 1)) // Do not remove empty precomment before move 1 as this would convert game comment to pre comment
             {
                 m_variationStartAnnotations.remove(node);
             }
