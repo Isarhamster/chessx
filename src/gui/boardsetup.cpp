@@ -24,6 +24,7 @@
 #include <QtGui>
 #include <QPixmap>
 #include <QPushButton>
+#include <QRandomGenerator>
 #include <QRegularExpression>
 #include <QSpacerItem>
 #include <QSizePolicy>
@@ -148,7 +149,7 @@ void BoardSetupDialog::chess960posChanged(int value)
 
 void BoardSetupDialog::chess960randomPos()
 {
-    int randomPos = rand() % 960;
+    int randomPos = QRandomGenerator::global()->bounded(0,959);
     ui.chess960pos->setValue(randomPos);
 }
 

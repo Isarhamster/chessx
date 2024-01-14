@@ -36,6 +36,7 @@
 #include <QHeaderView>
 #include <QMenu>
 #include <QPixmap>
+#include <QRandomGenerator>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -262,7 +263,7 @@ void GameList::selectRandomGame()
     {
         QModelIndex sortIndex = currentIndex();
         int oldRow = sortIndex.row();
-        int randomSortRow = rand() % (m_model->filter()->count()-1); // The last game is represented by current game
+        int randomSortRow = QRandomGenerator::global()->bounded(0,m_model->filter()->count()-2); // The last game is represented by current game
         if (oldRow == randomSortRow)
         {
             randomSortRow = m_model->filter()->count()-1;

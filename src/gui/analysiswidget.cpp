@@ -21,6 +21,8 @@
 #include "tablebase.h"
 
 #include <QMutexLocker>
+#include <QRandomGenerator>
+
 #include <algorithm>
 
 using namespace chessx;
@@ -443,12 +445,12 @@ void AnalysisWidget::sendBookMoveTimeout()
         int index = 0;
         if (m_moveTime.bookMove == 1)
         {
-            index = rand() % moveList.count();
+            index = QRandomGenerator::global()->bounded(0,moveList.count()-1);
         }
         else if (m_moveTime.bookMove == 2)
         {
             index = moveList.count() - 1;
-            int randomPos = rand() % games;
+            int randomPos = QRandomGenerator::global()->bounded(0,games-1);
             for (int i=0; i<moveList.count();++i)
             {
                 randomPos -= moveList.at(i).results.count();
