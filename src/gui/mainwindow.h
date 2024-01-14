@@ -548,6 +548,8 @@ protected:
     void setupAnalysisWidget(DockWidgetEx *analysisDock, AnalysisWidget *analysis);
     /** Get a sound hint "[PQKRBN][xmcp]" where x=capture, m=mate, c=check, p=romote */
     QString soundHint(Move m) const;
+    void playNextMoveSound(QString s, Move m);
+    void playMoveSound(QString s, Move m);
     void playSound(QString s, QString hint = "");
     void playSound(QString s, Move m);
     QString PieceToSpeech(PieceType pt);

@@ -658,10 +658,7 @@ bool MainWindow::addRemoteMoveFrom64Char(QString s)
             m_currentFrom = m.from();
             m_currentTo = m.to();
             moveChanged();
-            if (!announceMove(m))
-            {
-                playSound("move",m);
-            }
+            playMoveSound("move",m);
         }
         return true;
     }
@@ -819,10 +816,7 @@ void MainWindow::triggerBoardMove()
         m_currentFrom = m.from();
         m_currentTo = m.to();
         moveChanged(); // The move's currents where set after forward(), thus repair effects
-        if (!announceMove(m))
-        {
-            playSound("move",m);
-        }
+        playMoveSound("move",m);
     }
     else
     {
@@ -1099,10 +1093,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                     }
 
                     game().addMove(m, annot);
-                    if (true)
-                    {
-                        playSound("move", m);
-                    }
+                    playMoveSound("move", m);
                     if (qobject_cast<FicsDatabase*>(database()))
                     {
                         m_ficsConsole->SendMove(m.toAlgebraic());
@@ -1153,6 +1144,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                         game().addVariation(m);
                     }
                     game().forward();
+                    playMoveSound("move", m);
                 }
             }
 
@@ -2507,10 +2499,7 @@ bool MainWindow::doEngineMove(Move m, EngineParameter matchParameter)
     }
     else
     {
-        if (!announceMove(m))
-        {
-            playSound("move",m);
-        }
+        playMoveSound("move",m);
     }
     return true;
 }
@@ -3793,13 +3782,7 @@ void MainWindow::slotGetGameData(GameX& g)
 bool MainWindow::slotGameMoveNext()
 {
     Move m = game().move(game().nextMove());
-    if (AppSettings->getValue("/Sound/ScreenReader").toBool())
-    {
-        if (!announceMove(m))
-        {
-            playSound("move",m);
-        }
-    }
+    playNextMoveSound("move",m);
     m_currentFrom = m.from();
     m_currentTo = m.to();
     return gameMoveBy(1);

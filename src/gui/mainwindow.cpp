@@ -402,7 +402,7 @@ MainWindow::MainWindow() : QMainWindow(),
     setupAnalysisWidget(analysisDock2, m_secondaryAnalysis);
     addDockWidget(Qt::LeftDockWidgetArea, analysisDock2);
 
-    /* Randomize */
+    /* Randomize for legacy code (SCID, zip) - this does not work reliably depending on OS due to multithreading */
     srand(time(nullptr));
 
     /* Append the FICS console to the view menu */
@@ -2592,7 +2592,6 @@ void MainWindow::playSound(QString s, QString hint)
 
         effect->setSource(QUrl::fromLocalFile(path));
         double volume = (double)AppSettings->getValue("/Sound/Volume").toInt();
-        qDebug() << volume;
         effect->setVolume(volume/100.0);
         effect->play();
     }
@@ -2603,5 +2602,31 @@ void MainWindow::playSound(QString s, Move m)
 {
 #ifdef USE_SOUND
     playSound(s, soundHint(m));
+#endif
+}
+
+void MainWindow::playNextMoveSound(QString s, Move m)
+{
+#ifdef USE_SOUND
+    if (AppSettings->getValue("/Sound/ScreenReader").toBool())
+    {
+        if (!announceMove(m))
+        {
+            playSound("move",m);
+        }
+    }
+#endif
+}
+
+void MainWindow::playMoveSound(QString s, Move m)
+{
+#ifdef USE_SOUND
+    if (AppSettings->getValue("/Sound/MoveSound").toBool())
+    {
+        if (!announceMove(m))
+        {
+            playSound("move",m);
+        }
+    }
 #endif
 }
