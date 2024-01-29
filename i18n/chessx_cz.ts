@@ -4311,7 +4311,7 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1280"/>
-        <source>Try to use Timeseal</source>
+        <source>Use timeseal</source>
         <translation>Zkusit použít Timeseal</translation>
     </message>
     <message>

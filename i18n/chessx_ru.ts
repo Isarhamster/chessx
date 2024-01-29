@@ -4306,7 +4306,7 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1280"/>
-        <source>Try to use Timeseal</source>
+        <source>Use timeseal</source>
         <translation>Попробовать использовать задержку времени</translation>
     </message>
     <message>

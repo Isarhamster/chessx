@@ -39,7 +39,12 @@
         <file alias="images/edit_cut.png">data/images/edit_cut.png</file>
         <file alias="images/edit_mail.png">data/images/edit_mail.png</file>
         <file alias="images/edit_paste.png">data/images/edit_paste.png</file>
-        <file alias="images/fics.png">data/images/fics.png</file>
+        <file alias="images/fics_online.png">data/images/fics_online.png</file>
+        <file alias="images/fics_online_timeseal.png">data/images/fics_online_timeseal.png</file>
+        <file alias="images/fics_offline.png">data/images/fics_offline.png</file>
+        <file alias="images/fics_fetch.png">data/images/fics_fetch.png</file>
+        <file alias="images/lichess_fetch.png">data/images/lichess_fetch.png</file>
+        <file alias="images/chesscom_fetch.png">data/images/chesscom_fetch.png</file>
         <file alias="images/fileopen.png">data/images/fileopen.png</file>
         <file alias="images/filter_reset.png">data/images/filter_reset.png</file>
         <file alias="images/filter_rev.png">data/images/filter_rev.png</file>
@@ -77,8 +82,6 @@
         <file alias="images/insert_move.png">data/images/insert_move.png</file>
         <file alias="images/internet.png">data/images/internet.png</file>
         <file alias="images/last.png">data/images/button_last.png</file>
-        <file alias="images/lichess.png">data/images/lichess.png</file>
-        <file alias="images/chesscom.png">data/images/chesscom.png</file>
         <file alias="images/list_add.png">data/images/list_add.png</file>
         <file alias="images/match.png">data/images/match.png</file>
         <file alias="images/new_board.png">data/images/new_board.png</file>
