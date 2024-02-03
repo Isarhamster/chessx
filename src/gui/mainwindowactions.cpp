@@ -1934,7 +1934,7 @@ void MainWindow::slotGameViewLinkUrl(const QUrl& url)
     {
         game().moveToId(url.path().toInt());
         Output::CommentType type = url.scheme() == "cmt" ? Output::Comment : Output::Precomment;
-        gameEditComment(type);
+        gameEditComment(type, true);
     }
     else if(url.scheme() == "egtb")
     {

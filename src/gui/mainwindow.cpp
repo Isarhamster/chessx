@@ -51,7 +51,6 @@
 #include "settings.h"
 #include "tags.h"
 #include "textedit.h"
-#include "toolmainwindow.h"
 #include "translatingslider.h"
 #include "version.h"
 
@@ -1468,7 +1467,7 @@ QString MainWindow::exportFileName(int& format)
     return fd.selectedFiles().constFirst();
 }
 
-bool MainWindow::gameEditComment(Output::CommentType type)
+void MainWindow::gameEditComment(Output::CommentType type, bool checkModifier)
 {
     QString annotation;
     int moves;
@@ -1484,11 +1483,31 @@ bool MainWindow::gameEditComment(Output::CommentType type)
     {
         annotation = game().annotation();
     }
+
+    if (checkModifier && (QGuiApplication::keyboardModifiers() & Qt::ShiftModifier))
+    {
+        // Not elegant, taking the first URL, but it's a start
+        if (annotation.contains("https://") || annotation.contains("http://"))
+        {
+            QRegularExpression rx("((?:https?|ftp)://\\S+)");
+            QRegularExpressionMatch match;
+            if (annotation.indexOf(rx, 0, &match) >= 0)
+            {
+                QString cap = match.captured(1);
+                cap = cap.left(cap.indexOf('\''));
+                if (QDesktopServices::openUrl(cap))
+                {
+                    return;
+                }
+            }
+        }
+    }
+
     CommentDialog dlg(this);
     dlg.setText(annotation);
     if(!dlg.exec())
     {
-        return false;
+        return;
     }
 
     if((type == Output::Precomment) || (moves <= 0))
@@ -1512,7 +1531,6 @@ bool MainWindow::gameEditComment(Output::CommentType type)
         spec = GameX::cleanAnnotation(spec, GameX::AnnotationFilter(GameX::FilterEval | GameX::FilterTan));
         game().setAnnotation(dlg.text()+spec);
     }
-    return true;
 }
 
 QAction* MainWindow::createAction(QObject* parent, QString name, const char* slot, const QKeySequence& key, QToolBar* pToolBar, QString image,
@@ -2612,7 +2630,7 @@ void MainWindow::playNextMoveSound(QString s, Move m)
     {
         if (!announceMove(m))
         {
-            playSound("move",m);
+            playSound(s,m);
         }
     }
 #endif
@@ -2625,7 +2643,7 @@ void MainWindow::playMoveSound(QString s, Move m)
     {
         if (!announceMove(m))
         {
-            playSound("move",m);
+            playSound(s,m);
         }
     }
 #endif

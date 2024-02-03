@@ -63,7 +63,6 @@ class TextEdit;
 class QTimer;
 class QToolBar;
 class SaveDialog;
-class ToolMainWindow;
 class TranslatingSlider;
 class PolyglotWriter;
 
@@ -111,7 +110,7 @@ protected:
     /** @return index of active game */
     GameId gameIndex() const;
     /** Edit comment */
-    bool gameEditComment(Output::CommentType type);
+    void gameEditComment(Output::CommentType type, bool checkModifier = false);
     /** Get export filename*/
     QString exportFileName(int& format);
     /** Load game @p index. If @p force is false, does nothing for incorrect @p index .
