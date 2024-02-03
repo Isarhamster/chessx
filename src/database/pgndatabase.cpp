@@ -757,6 +757,8 @@ void PgnDatabase::splitTokenList(QVector<QStringRef>& list)
                 list.push_back(QStringRef(&m_currentLine, start+n-1, 1));
                 start += n;
                 n = 0;
+                dots = 0;
+                inNag = false;
             }
             break;
 
@@ -902,7 +904,7 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
         }
         game->dbMoveToId(move);
         game->forward();
-        m_newVariation    = false;
+        m_newVariation = false;
         m_variation = 0;
         break;
     case '{':
