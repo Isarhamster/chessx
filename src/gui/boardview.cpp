@@ -34,6 +34,7 @@ using namespace chessx;
 
 const int CoordinateSize = 16;
 const int MoveIndicatorSize = 12;
+static const QMap<QChar, QColor> color_map{{'Y', Qt::yellow}, {'G', Qt::green}, {'B', Qt::blue}};
 
 BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_flipped(false), m_showFrame(false), m_showCurrentMove(2),
@@ -320,61 +321,23 @@ void BoardView::drawHiliting(QPaintEvent* event)
             }
         }
 
-        if ((m_showCurrentMove==2) && m_currentFrom != InvalidSquare && m_currentTo != InvalidSquare)
+        if (m_showCurrentMove==2)
         {
-            QRect rect1 = squareRect(m_currentFrom);
-            QRect rect2 = squareRect(m_currentTo);
-            QRect u = rect1.united(rect2);
-            if(event->region().intersects(u))
-            {
-                drawArrow(m_currentFrom, m_currentTo, m_theme.color(BoardTheme::CurrentMove));
-            }
+            drawArrow(event, m_currentFrom, m_currentTo, m_theme.color(BoardTheme::CurrentMove));
         }
 
-        Square threatFrom = m_threatGuess.getFrom();
-        Square threatTo = m_threatGuess.getTo();
-        if (threatFrom != InvalidSquare && threatTo != InvalidSquare)
-        {
-            QRect rect1 = squareRect(threatFrom);
-            QRect rect2 = squareRect(threatTo);
-            QRect u = rect1.united(rect2);
-            if(event->region().intersects(u))
-            {
-                drawArrow(threatFrom, threatTo, m_theme.color(BoardTheme::Threat));
-            }
-        }
+        drawArrow(event, m_threatGuess.getFrom(), m_threatGuess.getTo(), m_theme.color(BoardTheme::Threat));
 
         if (!m_bestGuess.isNullMove() && m_showThreat)
         {
-            Square guessFrom = m_bestGuess.from();
-            Square guessTo = m_bestGuess.to();
-            if (guessFrom != InvalidSquare && guessTo != InvalidSquare)
-            {
-                QRect rect1 = squareRect(guessFrom);
-                QRect rect2 = squareRect(guessTo);
-                QRect u = rect1.united(rect2);
-                if(event->region().intersects(u))
-                {
-                    QColor c(m_theme.color(BoardTheme::Engine));
-                    drawArrow(guessFrom, guessTo, c);
-                }
-            }
+            drawArrow(event, m_bestGuess.from(), m_bestGuess.to(), m_theme.color(BoardTheme::Engine));
         }
 
         // draw variation arrows (whether they are really displayed depends on the contents of m_variations)
         int thin = 0;
         foreach(Move move, m_variations)
         {
-            Square moveFrom = move.from();
-            Square moveTo = move.to();
-            QRect rect1 = squareRect(moveFrom);
-            QRect rect2 = squareRect(moveTo);
-            QRect u = rect1.united(rect2);
-            if(event->region().intersects(u))
-            {
-                QColor c(m_theme.color(BoardTheme::VariationMove));
-                drawArrow(moveFrom, moveTo, c, thin);
-            }
+            drawArrow(event, move.from(), move.to(), m_theme.color(BoardTheme::VariationMove), thin);
             thin++;    // all but the first variation are drawn as thin
         }
     }
@@ -1319,18 +1282,11 @@ void BoardView::drawSquareAnnotations(QPaintEvent* event)
     if (isEnabled())
     {
         QString annotation = m_board.squareAnnotation();
+        QStringList list = annotation.split(",");
 
-        if(!annotation.isEmpty() && !annotation.isNull())
+        for(QStringList::ConstIterator it = list.constBegin(); it != list.constEnd(); it++)
         {
-            QStringList list = annotation.split(",");
-
-            for(QStringList::ConstIterator it = list.constBegin(); it != list.constEnd(); it++)
-            {
-                if(*it != "")
-                {
-                    drawSquareAnnotation(event, *it);
-                }
-            }
+            drawSquareAnnotation(event, *it);
         }
     }
 }
@@ -1340,18 +1296,11 @@ void BoardView::drawArrowAnnotations(QPaintEvent* event)
     if (isEnabled())
     {
         QString annotation = m_board.arrowAnnotation();
+        QStringList list = annotation.split(",");
 
-        if(!annotation.isEmpty() && !annotation.isNull())
+        for(QStringList::ConstIterator it = list.constBegin(); it != list.constEnd(); it++)
         {
-            QStringList list = annotation.split(",");
-
-            for(QStringList::ConstIterator it = list.constBegin(); it != list.constEnd(); it++)
-            {
-                if(*it != "")
-                {
-                    drawArrowAnnotation(event, *it);
-                }
-            }
+            drawArrowAnnotation(event, *it);
         }
     }
 }
@@ -1399,133 +1348,25 @@ void BoardView::drawColorRect(QPaintEvent* event, Square square, QColor color, b
 void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
 {
     QString trimmed = annotation.simplified();
-    QChar colorChar = trimmed[0];
-    QChar fileChar = trimmed[1];
-    QChar rankChar = trimmed[2];
-    QString files = "abcdefgh";
-    QString ranks = "12345678";
-    unsigned char file = files.indexOf(fileChar);
-    int rank = ranks.indexOf(rankChar);
+    if (trimmed.length()<3) return;
 
-    QColor color = Qt::red;
-    if(colorChar == 'Y')
-    {
-        color = Qt::yellow;
-    }
-    else if(colorChar == 'G')
-    {
-        color = Qt::green;
-    }
-    else if(colorChar == 'B')
-    {
-        color = Qt::blue;
-    }
+    QChar colorChar    = trimmed[0];
+    unsigned char file = trimmed[1].toLatin1()-'a';
+    int rank           = trimmed[2].toLatin1()-'1';
+
+    QColor color = color_map.value(colorChar, Qt::red);
 
     Square square = SquareFromRankAndFile(rank, file);
+    if (square>=64) return;
     drawColorRect(event, square, color);
 }
 
-void BoardView::drawArrow(int square1, int square2, QColor color, int thin)
+void BoardView::drawArrow(QPaintEvent* event, Square square1, Square square2, QColor color, int thin)
 {
-    if (square1 != square2)
-    {
-        QPainter p(this);
-        thin = std::min(thin,3);
-        if (thin) thin++;
-
-        float x1 = isFlipped() ? 7 - square1 % 8 : square1 % 8;
-        float y1 = isFlipped() ? square1 / 8 : 7 - square1 / 8;
-        float x2 = isFlipped() ? 7 - square2 % 8 : square2 % 8;
-        float y2 = isFlipped() ? square2 / 8 : 7 - square2 / 8;
-        float w = m_theme.size().width();
-        float h = m_theme.size().height();
-        float coord =  m_coordinates ? CoordinateSize : 0;
-        QPointF pos1(coord + (x1 * w) + (w / 2), (y1 * h) + (h / 2));
-        QPointF pos2(coord + (x2 * w) + (w / 2), (y2 * h) + (h / 2));
-
-        // Now to Draw Arrow Head
-        qreal headWidth = m_theme.size().width() / 4;
-        qreal headLength = headWidth;
-        qreal headIndent = headWidth / 4;
-        qreal netIndent = headLength - headIndent;
-
-        qreal halfHead = headWidth / 2;
-        float px1 = pos1.x();
-        float px2 = pos2.x();
-        float py1 = pos1.y();
-        float py2 = pos2.y();
-        float dX = px2 - px1;
-        float dY = py2 - py1;
-
-        qreal  arrowLength = qSqrt(dX * dX + dY * dY);
-
-        QPointF arrowPts[7];
-
-        // we will shorten the line somewhat to avoid arrows all colliding in the center of the square
-        float adjust = ((w + h) / 8);
-
-        px1 = px1 + ((adjust * dX) / arrowLength);
-        px2 = px2 - ((adjust * dX) / arrowLength);
-        py1 = py1 + ((adjust * dY) / arrowLength);
-        py2 = py2 - ((adjust * dY) / arrowLength);
-
-        // calculate the points that form the arrow
-        arrowPts[0].setX(px2 - ((netIndent * dX) / arrowLength));
-        arrowPts[0].setY(py2 - ((netIndent * dY) / arrowLength));
-        arrowPts[4].setX(px2 - ((headLength * dX) / arrowLength));
-        arrowPts[4].setY(py2 - ((headLength * dY) / arrowLength));
-        arrowPts[1].setX(arrowPts[4].x() - ((halfHead * (dY)) / arrowLength));
-        arrowPts[1].setY(arrowPts[4].y() - ((halfHead * (-dX)) / arrowLength));
-        arrowPts[3].setX(arrowPts[4].x() + ((halfHead * (dY)) / arrowLength));
-        arrowPts[3].setY(arrowPts[4].y() + ((halfHead * (-dX)) / arrowLength));
-        arrowPts[2].setX(px2);
-        arrowPts[2].setY(py2);
-
-        QPointF pos3(px1, py1);
-        QPointF pos4(px2- ((adjust * dX) / arrowLength), py2- ((adjust * dY) / arrowLength));
-
-        p.save();
-        p.setRenderHint(QPainter::SmoothPixmapTransform);
-
-        color.setAlpha(176-28*thin);
-        int penWidth = std::max(2, (int)(headWidth / 3));
-        QPen pen(color, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-        p.setPen(pen);
-        p.drawLine(pos3, pos4);
-
-        QBrush brush(color);
-        p.setBrush(brush);
-        pen.setWidth(2);
-        p.setPen(pen);
-        p.drawPolygon(arrowPts, 4);
-
-        p.restore();
-    }
-}
-
-void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
-{
-    static const QString letters = "abcdefgh";
-    static const QString numbers = "12345678";
-
-    QString trimmed = annotation.simplified();
-
-    QChar colorChar = trimmed[0];
-    QChar fileChar1 = trimmed[1];
-    QChar rankChar1 = trimmed[2];
-    QChar fileChar2 = trimmed[3];
-    QChar rankChar2 = trimmed[4];
-    unsigned char file1 = letters.indexOf(fileChar1);
-    int rank1 = numbers.indexOf(rankChar1);
-    unsigned char file2 = letters.indexOf(fileChar2);
-    int rank2 = numbers.indexOf(rankChar2);
-
-    if(file1 > sizeof(letters) || file2 > sizeof(letters) || rank1 < 0 || rank2 < 0)
+    if (square1 == InvalidSquare || square2 == InvalidSquare || square1 == square2)
     {
         return;
     }
-    Square square1 = SquareFromRankAndFile(rank1, file1);
-    Square square2 = SquareFromRankAndFile(rank2, file2);
 
     QRect rect1 = squareRect(square1);
     QRect rect2 = squareRect(square2);
@@ -1535,21 +1376,98 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
         return;
     }
 
-    QColor color = Qt::red;
-    if(colorChar == 'Y')
-    {
-        color = Qt::yellow;
-    }
-    else if(colorChar == 'G')
-    {
-        color = Qt::green;
-    }
-    else if(colorChar == 'B')
-    {
-        color = Qt::blue;
-    }
+    QPainter p(this);
+    thin = std::min(thin,3);
+    if (thin) thin++;
 
-    drawArrow(square1, square2, color);
+    float x1 = isFlipped() ? 7 - square1 % 8 : square1 % 8;
+    float y1 = isFlipped() ? square1 / 8 : 7 - square1 / 8;
+    float x2 = isFlipped() ? 7 - square2 % 8 : square2 % 8;
+    float y2 = isFlipped() ? square2 / 8 : 7 - square2 / 8;
+    float w = m_theme.size().width();
+    float h = m_theme.size().height();
+    float coord =  m_coordinates ? CoordinateSize : 0;
+    QPointF pos1(coord + (x1 * w) + (w / 2), (y1 * h) + (h / 2));
+    QPointF pos2(coord + (x2 * w) + (w / 2), (y2 * h) + (h / 2));
+
+    // Now to Draw Arrow Head
+    qreal headWidth = m_theme.size().width() / 4;
+    qreal headLength = headWidth;
+    qreal headIndent = headWidth / 4;
+    qreal netIndent = headLength - headIndent;
+
+    qreal halfHead = headWidth / 2;
+    float px1 = pos1.x();
+    float px2 = pos2.x();
+    float py1 = pos1.y();
+    float py2 = pos2.y();
+    float dX = px2 - px1;
+    float dY = py2 - py1;
+
+    qreal  arrowLength = qSqrt(dX * dX + dY * dY);
+
+    QPointF arrowPts[7];
+
+    // we will shorten the line somewhat to avoid arrows all colliding in the center of the square
+    float adjust = ((w + h) / 8);
+
+    px1 = px1 + ((adjust * dX) / arrowLength);
+    px2 = px2 - ((adjust * dX) / arrowLength);
+    py1 = py1 + ((adjust * dY) / arrowLength);
+    py2 = py2 - ((adjust * dY) / arrowLength);
+
+    // calculate the points that form the arrow
+    arrowPts[0].setX(px2 - ((netIndent * dX) / arrowLength));
+    arrowPts[0].setY(py2 - ((netIndent * dY) / arrowLength));
+    arrowPts[4].setX(px2 - ((headLength * dX) / arrowLength));
+    arrowPts[4].setY(py2 - ((headLength * dY) / arrowLength));
+    arrowPts[1].setX(arrowPts[4].x() - ((halfHead * (dY)) / arrowLength));
+    arrowPts[1].setY(arrowPts[4].y() - ((halfHead * (-dX)) / arrowLength));
+    arrowPts[3].setX(arrowPts[4].x() + ((halfHead * (dY)) / arrowLength));
+    arrowPts[3].setY(arrowPts[4].y() + ((halfHead * (-dX)) / arrowLength));
+    arrowPts[2].setX(px2);
+    arrowPts[2].setY(py2);
+
+    QPointF pos3(px1, py1);
+    QPointF pos4(px2- ((adjust * dX) / arrowLength), py2- ((adjust * dY) / arrowLength));
+
+    p.save();
+    p.setRenderHint(QPainter::SmoothPixmapTransform);
+
+    color.setAlpha(176-28*thin);
+    int penWidth = std::max(2, (int)(headWidth / 3));
+    QPen pen(color, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    p.setPen(pen);
+    p.drawLine(pos3, pos4);
+
+    QBrush brush(color);
+    p.setBrush(brush);
+    pen.setWidth(2);
+    p.setPen(pen);
+    p.drawPolygon(arrowPts, 4);
+
+    p.restore();
+}
+
+void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
+{
+    QString trimmed = annotation.simplified();
+    if (trimmed.length()<5) return;
+
+    QChar colorChar      = trimmed[0];
+    unsigned char file1  = trimmed[1].toLatin1()-'a';
+    int rank1            = trimmed[2].toLatin1()-'1';
+    unsigned char file2  = trimmed[3].toLatin1()-'a';
+    int rank2            = trimmed[4].toLatin1()-'1';
+
+    Square square1 = SquareFromRankAndFile(rank1, file1);
+    Square square2 = SquareFromRankAndFile(rank2, file2);
+
+    if ((square1>=64) || (square2>=64)) return;
+
+    QColor color = color_map.value(colorChar, Qt::red);
+
+    drawArrow(event, square1, square2, color);
 }
 
 Piece BoardView::dragged() const

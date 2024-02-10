@@ -204,7 +204,7 @@ private:
     /** Catch mouse events */
     bool eventFilter(QObject *obj, QEvent *ev);
 
-    void drawArrow(int square1, int square2, QColor color, int thin = 0);
+    void drawArrow(QPaintEvent* event, Square square1, Square square2, QColor color, int thin = 0);
     void drawHiliteSquare(QPoint pos, BoardTheme::ColorRole role);
 
     QPoint posFromSquare(int square) const;
