@@ -880,10 +880,7 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
     case 0:
         {
             Nag nag = NagSet::fromString(token.at(0));
-            if (nag != NullNag)
-            {
-                game->dbAddNag(nag);
-            }
+            game->dbAddNag(nag);
         }
         break;
     case '(':
@@ -1011,10 +1008,7 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
         if (c<0)
         {
             Nag nag = NagSet::fromString(token.at(0));
-            if (nag != NullNag)
-            {
-                game->dbAddNag(nag);
-            }
+            game->dbAddNag(nag);
         }
         else
         {

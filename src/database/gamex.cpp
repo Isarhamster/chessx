@@ -1313,15 +1313,16 @@ bool GameX::canHaveStartAnnotation(MoveId moveId) const
     return atLineStart(moveId) || atGameStart(m_moves.prevMove(node));
 }
 
-bool GameX::dbAddNag(Nag nag, MoveId moveId)
+void GameX::dbAddNag(Nag nag, MoveId moveId)
 {
-    MoveId node = m_moves.makeNodeIndex(moveId);
-    if ((node != NO_MOVE) && (nag != NullNag))
+    if (nag != NullNag)
     {
-        m_nags[node].addNag(nag);
-        return true;
+        MoveId node = m_moves.makeNodeIndex(moveId);
+        if (node != NO_MOVE)
+        {
+            m_nags[node].addNag(nag);
+        }
     }
-    return false;
 }
 
 bool GameX::addNag(Nag nag, MoveId moveId)

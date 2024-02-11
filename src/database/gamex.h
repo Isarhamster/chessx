@@ -175,7 +175,7 @@ public :
     void evaluation(double& d) const;
 
     /** Adds a nag to move at node @p moveId */
-    bool dbAddNag(Nag nag, MoveId moveId = CURRENT_MOVE);
+    void dbAddNag(Nag nag, MoveId moveId = CURRENT_MOVE);
     bool addNag(Nag nag, MoveId moveId = CURRENT_MOVE);
     /** Sets nags for move at node @p moveId */
     bool setNags(NagSet nags, MoveId moveId = CURRENT_MOVE);
