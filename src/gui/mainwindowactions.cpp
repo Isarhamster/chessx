@@ -9,6 +9,7 @@
 
 #include "actiondialog.h"
 #include "analysiswidget.h"
+#include "annotation.h"
 #include "annotationwidget.h"
 #include "arenabook.h"
 #include "board.h"
@@ -47,7 +48,6 @@
 #include "memorydatabase.h"
 #include "openingtreewidget.h"
 #include "output.h"
-#include "pgndatabase.h"
 #include "playerlistwidget.h"
 #include "polyglotwriter.h"
 #include "positionsearch.h"
@@ -63,8 +63,6 @@
 #include "tags.h"
 #include "translatingslider.h"
 #include "version.h"
-
-#include <time.h>
 
 #include <QtGui>
 #include <QAction>
@@ -1071,8 +1069,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                         {
                             if (par.annotateEgt && par.tm != EngineParameter::TIME_GONG)
                             {
-                                QString clk = "[%clk %1]";
-                                annot = clk.arg(sTime);
+                                 annot = ClockAnnotation(sTime).asAnnotation();
                             }
 
                             if (m_match->isChecked())
@@ -1998,12 +1995,13 @@ QString MainWindow::scoreText(const Analysis& analysis)
     if (analysis.isMate())
     {
         int n = analysis.movesToMate();
-        s = QString("[%eval #%1]").arg(abs(n));
-    }
+        QString toMate = QString("#%1").arg(abs(n));
+        s = EvalAnnotation(toMate).asAnnotation();
+     }
     else
     {
         QString f = QString::number(analysis.fscore(), 'f', 2);
-        s = QString("[%eval %1]").arg(f);
+        s = EvalAnnotation(f).asAnnotation();
     }
     return s;
 }
@@ -2484,8 +2482,7 @@ bool MainWindow::doEngineMove(Move m, EngineParameter matchParameter)
     QString annot;
     if (matchParameter.annotateEgt && matchParameter.tm != EngineParameter::TIME_GONG)
     {
-        QString clk = "[%clk %1]";
-        annot = clk.arg(sTime);
+        annot = ClockAnnotation(sTime).asAnnotation();
     }
 
     game().addMove(m,annot);
@@ -4318,8 +4315,8 @@ void MainWindow::slotToggleBrush()
             const QAction* a = brushGroup->checkedAction();
             if (a && (a->data().toChar() == QChar(0)))
             {
-                game().setArrowAnnotation("");
-                game().setSquareAnnotation("");
+                game().setSpecAnnotation(ArrowAnnotation());
+                game().setSpecAnnotation(SquareAnnotation());
                 brushGroup->untrigger();
                 m_boardView->setBrushMode(false);
             }

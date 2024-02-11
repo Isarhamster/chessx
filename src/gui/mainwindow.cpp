@@ -9,6 +9,7 @@
 
 #include "actiondialog.h"
 #include "analysiswidget.h"
+#include "annotation.h"
 #include "annotationwidget.h"
 #include "boardview.h"
 #include "boardviewex.h"
@@ -740,8 +741,7 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
             {
                 QTime t = QTime::fromString(m_nagText, "H:mm:ss");
                 QString ts = t.toString("H:mm:ss");
-                QString clk = "[%clk %1]";
-                QString annot = clk.arg(ts);
+                QString annot = ClockAnnotation(ts).asAnnotation();
                 game().setTimeAnnotation(annot);
             }
         }

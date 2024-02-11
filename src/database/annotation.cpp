@@ -1,14 +1,41 @@
-/****************************************************************************
+    /****************************************************************************
 *   Copyright (C) 2019 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
 #include "annotation.h"
 
-const char* s_tan = "\\[%(egt|emt|clk)\\s*(\\d?\\d:\\d?\\d:\\d\\d(\\.\\d)?)\\]";
-const char* s_emt = "\\[%(emt)\\s*(\\d?\\d:\\d?\\d:\\d\\d(\\.\\d)?)\\]"; // Move time
-const char* s_clk = "\\[%(clk)\\s*(\\d?\\d:\\d?\\d:\\d\\d(\\.\\d)?)\\]"; // Clock
-const char* s_egt = "\\[%(egt)\\s*(\\d?\\d:\\d?\\d:\\d\\d(\\.\\d)?)\\]"; // Elapsed game time
-const char* s_can = "\\[%(csl|cal)\\s*([^\\]]*)\\]";
-const char* s_csl = "\\[%(csl)\\s*([^\\]]*)\\]"; // Square
-const char* s_cal = "\\[%(cal)\\s*([^\\]]*)\\]"; // Arrow
-const char* s_eval = "\\[%(eval)\\s*((-?\\d?\\d(\\.\\d\\d?)?)|#\\d\\d?)\\]"; // Computer evaluation
+Annotation::Annotation(QString a)
+{
+    QStringList l = a.trimmed().split(',', Qt::SkipEmptyParts );
+    l.removeDuplicates();
+    annotation = l.join(',');
+}
+
+void Annotation::toggle(const QString& e)
+{
+    QStringList l = annotation.split(',');
+    int n = l.indexOf(e);
+    if (n>=0)
+    {
+        l.remove(n);
+    }
+    else
+    {
+        l << e.trimmed();
+    }
+    annotation = l.join(',');
+}
+
+void Annotation::removeOne(const QRegularExpression& re)
+{
+    QStringList l = annotation.split(',');
+    int n = l.indexOf(re);
+    if (n>=0)
+    {
+        l.remove(n);
+    }
+    annotation = l.join(',');
+}
+
+
+

@@ -7,6 +7,7 @@
 #include "nag.h"
 #include "editaction.h"
 #include "gamex.h"
+#include "gameid.h"
 
 class ChessBrowser;
 class Output;

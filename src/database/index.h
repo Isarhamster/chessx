@@ -21,6 +21,7 @@
 
 #include "indexitem.h"
 #include "gamex.h"
+#include "gameid.h"
 
 #define VERSION_INDEX_1_2 0x0001
 #define VERSION_INDEX_1_3 0x0002

@@ -13,9 +13,9 @@
 
 #include <QObject>
 #include <QRegularExpression>
+#include "annotation.h"
 #include "board.h"
 #include "gamecursor.h"
-#include "gameid.h"
 #include "move.h"
 #include "nag.h"
 #include "result.h"
@@ -87,7 +87,7 @@ public :
         FilterAll  = (FilterTan | FilterCan | FilterEval),
     };
 
-    static const QStringList s_specList;
+    static const QList<QRegularExpression> s_specList;
 
     GameX();
     GameX(const GameX& game);
@@ -155,8 +155,6 @@ public :
     bool editAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Append to existing annotations associated with move at node @p moveId */
     bool appendAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
-    /** Sets the squareAnnotation associated with move at node @p moveId */
-    bool setSquareAnnotation(QString squareAnnotation);
 
     /** Append a square to the existing lists of square annotations, if there is none, create one */
     bool appendSquareAnnotation(chessx::Square s, QChar colorCode);
@@ -164,8 +162,8 @@ public :
     /** Append an arrow to the existing lists of arrows, if there is none, create one */
     bool appendArrowAnnotation(chessx::Square dest, chessx::Square src, QChar colorCode);
 
-    /** Sets the arrowAnnotation associated with current move */
-    bool setArrowAnnotation(QString arrowAnnotation);
+    /** Sets a special annotation associated with current move */
+    bool setSpecAnnotation(const Annotation& a);
 
     /** Get a string with all special annotations including square brackets etc. */
     QString specAnnotations(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;

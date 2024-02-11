@@ -21,6 +21,7 @@
 #include <QtGui>
 #include <QTextBrowser>
 #include "editaction.h"
+#include "gameid.h"
 
 class DatabaseInfo;
 

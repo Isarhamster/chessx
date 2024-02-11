@@ -7,6 +7,7 @@
 
 #include <QDialog>
 #include "gamex.h"
+#include "gameid.h"
 
 class IndexX;
 

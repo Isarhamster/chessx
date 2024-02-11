@@ -11,12 +11,12 @@ class CommentDialog : public QDialog
 {
     Q_OBJECT
 public:
-    enum TimeMode { Egt, Emt, Clk};
+    enum TimeMode { Egt, Emt, Clk, None};
 
     CommentDialog(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
     void setText(QString text);
     QString text() const;
-
+    CommentDialog::TimeMode timeMode() const;
 protected slots:
     void clearTimeSlot();
     void clearTextSlot();
