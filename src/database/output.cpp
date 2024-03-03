@@ -9,6 +9,7 @@
  ***************************************************************************/
 
 #include <algorithm>
+#include <QDataStream>
 #include <QMap>
 #include <QRegularExpression>
 #include <QTextStream>
@@ -851,7 +852,7 @@ void Output::postProcessOutput(QString& text) const
     }
 }
 
-void Output::output(QTextStream& out, FilterX& filter)
+void Output::outputUtf8(QTextStream& out, FilterX& filter)
 {
     int percentDone = 0;
     GameX game;
@@ -883,12 +884,45 @@ void Output::output(QTextStream& out, FilterX& filter)
     out << footer;
 }
 
-void Output::output(QTextStream& out, Database& database)
+void Output::outputLatin1(QDataStream& out, FilterX& filter)
 {
-    if(!database.isUtf8() && (m_outputType == Pgn))
+    int percentDone = 0;
+    GameX game;
+    QString header = m_header;
+    postProcessOutput(header);
+    QByteArray b = header.toLatin1();
+    out.writeRawData(b, b.length());
+
+    for(int i = 0; i < filter.count(); ++i)
     {
-        SET_CODEC_LATIN1(out);
+        if(filter.database()->loadGame(i, game))
+        {
+            QString tagText = outputTags(&game);
+            b = tagText.toLatin1();
+            out.writeRawData(b, b.length());
+
+            QString outText = outputGame(&game, false);
+            postProcessOutput(outText);
+            outText.append("\n\n");
+            b = outText.toLatin1();
+            out.writeRawData(b, b.length());
+        }
+        int percentDone2 = (i + 1) * 100 / filter.count();
+        if(percentDone2 > percentDone)
+        {
+            emit progress((percentDone = percentDone2));
+        }
     }
+
+    QString footer = m_footer;
+    postProcessOutput(footer);
+    b = footer.toLatin1();
+    out.writeRawData(b, b.length());
+}
+
+void Output::outputUtf8(QTextStream& out, Database& database)
+{
+    SET_CODEC_UTF8(out);
 
     QString header = m_header;
     postProcessOutput(header);
@@ -915,10 +949,47 @@ void Output::output(QTextStream& out, Database& database)
         }
     }
 
-
     QString footer = m_footer;
     postProcessOutput(footer);
     out << footer;
+
+    database.setModified(false);
+}
+
+void Output::outputLatin1(QDataStream& out, Database& database)
+{
+    QString header = m_header;
+    postProcessOutput(header);
+    QByteArray b = header.toLatin1();
+    out.writeRawData(b, b.length());
+
+    int percentDone = 0;
+    GameX game;
+    for(int i = 0; i < (int)database.count(); ++i)
+    {
+        if(database.loadGame(i, game))
+        {
+            QString tagText = outputTags(&game);
+            b = tagText.toLatin1();
+            out.writeRawData(b, b.length());
+
+            QString outText = outputGame(&game, false);
+            postProcessOutput(outText);
+            outText.append("\n\n");
+            b = outText.toLatin1();
+            out.writeRawData(b, b.length());
+        }
+        int percentDone2 = (i + 1) * 100 / database.count();
+        if(percentDone2 > percentDone)
+        {
+            emit progress((percentDone = percentDone2));
+        }
+    }
+
+    QString footer = m_footer;
+    postProcessOutput(footer);
+    b = footer.toLatin1();
+    out.writeRawData(b, b.length());
 
     database.setModified(false);
 }
@@ -930,28 +1001,37 @@ void Output::output(const QString& filename, const GameX& game)
     {
         return;
     }
-    QTextStream out(&f);
     if((m_outputType == Html) || (m_outputType == NotationWidget))
     {
-        SET_CODEC_UTF8(out);
+        QTextStream out(&f);
+        out << output(&game);
     }
-    out << output(&game);
+    else
+    {
+        QDataStream out(&f);
+        QByteArray b = output(&game).toLatin1();
+        out.writeRawData(b, b.length());
+    }
     f.close();
 }
 
-void Output::output(const QString& filename, FilterX& filter)
+void Output::output(const QString& filename, FilterX& filter, bool utf8)
 {
     QFile f(filename);
     if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         return;
     }
-    QTextStream out(&f);
-    if((m_outputType == Html) || (m_outputType == NotationWidget))
+    if (utf8)
     {
-        SET_CODEC_UTF8(out);
+        QTextStream out(&f);
+        outputUtf8(out, filter);
     }
-    output(out, filter);
+    else
+    {
+        QDataStream out(&f);
+        outputLatin1(out, filter);
+    }
     f.close();
 }
 
@@ -962,12 +1042,30 @@ void Output::output(const QString& filename, Database& database)
     {
         return;
     }
-    QTextStream out(&f);
-    if((m_outputType == Html) || (m_outputType == NotationWidget))
+    if((m_outputType == Html) || (m_outputType == NotationWidget) ||
+       (m_outputType == Pgn && database.isUtf8()))
     {
-        SET_CODEC_UTF8(out);
+        QTextStream out(&f);
+        outputUtf8(out, database);
     }
-    output(out, database);
+    else
+    {
+        QDataStream out(&f);
+        outputLatin1(out, database);
+    }
+
+    f.close();
+}
+
+void Output::outputLatin1(const QString& filename, Database& database)
+{
+    QFile f(filename);
+    if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        return;
+    }
+    QDataStream out(&f);
+    outputLatin1(out, database);
     f.close();
 }
 
@@ -975,11 +1073,7 @@ QString Output::output(Database* database)
 {
     QString s;
     QTextStream out(&s);
-    if((m_outputType == Html) || (m_outputType == NotationWidget))
-    {
-        SET_CODEC_UTF8(out);
-    }
-    output(out, *database);
+    outputUtf8(out, *database);
     return s;
 }
 
@@ -1018,7 +1112,7 @@ void Output::append(const QString& filename, Database& database)
         SET_CODEC_UTF8(out);
     }
     out << Qt::endl;
-    output(out, database);
+    outputUtf8(out, database);
     f.close();
 }
 

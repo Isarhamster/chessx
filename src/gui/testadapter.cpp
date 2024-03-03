@@ -123,7 +123,7 @@ void TestAdapter::convertPgn(const QString& filename, const QString& outfile, QC
         }
 
         Output output(Output::Pgn);
-        output.output(outfile, db);
+        output.outputLatin1(outfile, db);
     }
 }
 

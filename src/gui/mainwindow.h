@@ -146,7 +146,7 @@ protected:
     /** Open database */
     void openDatabase(QString fname);
     /** Open database from URL*/
-    void openDatabaseUrl(QString fname, bool utf8);
+    void openDatabaseUrl(QString fname, bool utf8=false);
     void appendDatabaseUrl(QString fname, bool utf8, QString target);
     /** Open a list of databases from a ZIP archive */
     void openDatabaseArchive(QString fname, bool utf8);
@@ -492,6 +492,7 @@ protected slots:
     void FicsConnected();
     void HandleFicsRequestRemoveMove();
     void openLichess();
+    void openLichessBroadcast();
     void openChesscom();
     void openFICS();
     void openWebFavorite();

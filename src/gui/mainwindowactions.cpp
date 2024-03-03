@@ -130,7 +130,7 @@ void MainWindow::slotFileOpen()
     {
         if(!file.isEmpty())
         {
-            openDatabaseUrl(file, false);
+            openDatabaseUrl(file);
         }
     }
 }
@@ -169,7 +169,7 @@ void MainWindow::saveDatabase(DatabaseInfo* dbInfo)
         startOperation(tr("Saving %1...").arg(db->name()));
         Output output(Output::Pgn, &BoardView::renderImageForBoard);
         connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
-        output.output(db->filename(), *db);
+        output.outputLatin1(db->filename(), *db);
         finishOperation(tr("%1 saved").arg(db->name()));
     }
 }
@@ -311,7 +311,8 @@ void MainWindow::slotFileExportFilter()
     if(!filename.isEmpty())
     {
         Output output(static_cast<Output::OutputType>(format), &BoardView::renderImageForBoard);
-        output.output(filename, *(databaseInfo()->filter()));
+        bool utf8 = ((format == Output::Html) || (format == Output::NotationWidget));
+        output.output(filename, *(databaseInfo()->filter()), utf8);
     }
 }
 
@@ -3434,7 +3435,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
         Output out(Output::Pgn);
         QString s = out.output(dest);
         QApplication::clipboard()->setText(s);
-        QString msg = tr("Set %d games into system clipboard.").arg(n);
+        QString msg = tr("Set %1 games into system clipboard.").arg(n);
         slotStatusMessage(msg);
         delete dest;
     }

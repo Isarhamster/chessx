@@ -127,12 +127,13 @@ public:
      * @param filename The filename that the output will be written to.
      * @param filter A Filter object. All games in the filter will be output, one
      *               after the other, using the output(GameX* game) method */
-    void output(const QString& filename, FilterX& filter);
+    void output(const QString& filename, FilterX& filter, bool utf8);
     /** Create the output for the given database
      * @param filename The filename that the output will be written to.
      * @param database A pointer to a database object. All games in the database will be output, one
      *               after the other, using the output(GameX* game) method */
     void output(const QString& filename, Database& database);
+    void outputLatin1(const QString& filename, Database& database);
     /** Create the output for the given database
      * @param database A pointer to a database object. All games in the database will be output, one
      *               after the other, using the output(GameX* game) method */
@@ -227,12 +228,14 @@ private:
      * @param out A textstream that will be used to write the results to
      * @param filter A Filter object. All games in the filter will be output, one
      *               after the other, using the output(GameX* game) method */
-    void output(QTextStream& out, FilterX& filter);
+    void outputUtf8(QTextStream& out, FilterX& filter);
+    void outputLatin1(QDataStream& out, FilterX& filter);
     /** Create the output for the given database
      * @param out A textstream that will be used to write the results to
      * @param database A pointer to a database object. All games in the database will be output, one
      *               after the other, using the output(GameX* game) method */
-    void output(QTextStream& out, Database& database);
+    void outputUtf8(QTextStream& out, Database& database);
+    void outputLatin1(QDataStream& out, Database& database);
 
     /** Output of a single game - requires postProcessing */
     QString outputGame(const GameX *g, bool upToCurrentMove);

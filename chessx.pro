@@ -155,6 +155,7 @@ FORMS += \
   src/dialogs/renametagdialog.ui \
   src/dialogs/savedialog.ui \
   src/dialogs/tagdialog.ui \
+  src/dialogs/tournamentselectiondialog.ui \
   src/gui/analysiswidget.ui \
   src/gui/annotationwidget.ui \
   src/gui/boardsetup.ui \
@@ -211,6 +212,7 @@ HEADERS += src/database/board.h \
   src/database/indexitem.h \
   src/database/lichessopening.h \
   src/database/lichessopeningdatabase.h \
+  src/database/lichesstransfer.h \
   src/database/memorydatabase.h \
   src/database/move.h \
   src/database/movedata.h \
@@ -262,6 +264,7 @@ HEADERS += src/database/board.h \
   src/dialogs/renametagdialog.h \
   src/dialogs/savedialog.h \
   src/dialogs/tagdialog.h \
+  src/dialogs/tournamentselectiondialog.h \
   src/guess/guess.h \
   src/guess/guess_attacks.h \
   src/guess/guess_common.h \
@@ -390,6 +393,7 @@ SOURCES += \
   src/database/indexitem.cpp \
   src/database/lichessopening.cpp \
   src/database/lichessopeningdatabase.cpp \
+  src/database/lichesstransfer.cpp \
   src/database/memorydatabase.cpp \
   src/database/movedata.cpp \
   src/database/nag.cpp \
@@ -438,6 +442,7 @@ SOURCES += \
   src/dialogs/renametagdialog.cpp \
   src/dialogs/savedialog.cpp \
   src/dialogs/tagdialog.cpp \
+  src/dialogs/tournamentselectiondialog.cpp \
   src/guess/guess.cpp \
   src/guess/guess_compileeco.cpp \
   src/guess/guess_guessengine.cpp \
@@ -518,7 +523,6 @@ SOURCES += \
   src/quazip/unzip.cpp \
   src/quazip/zip.cpp
 
-TEMPLATE = app
 INCLUDEPATH += src/database
 INCLUDEPATH += src/guess
 INCLUDEPATH += src/gui

@@ -52,6 +52,7 @@
 #include "settings.h"
 #include "tags.h"
 #include "textedit.h"
+#include "tournamentselectiondialog.h"
 #include "translatingslider.h"
 #include "version.h"
 
@@ -984,7 +985,7 @@ void MainWindow::slotGameMovePreviousN()
 
 void MainWindow::openDatabase(QString fname)
 {
-    openDatabaseUrl(fname, false);
+    openDatabaseUrl(fname);
 }
 
 QString MainWindow::ficsPath() const
@@ -1048,6 +1049,19 @@ void MainWindow::openWebFavorite()
     }
 }
 
+void MainWindow::openLichessBroadcast()
+{
+    TournamentSelectionDialog dlg;
+    dlg.run();
+    QStringList l = dlg.getTournaments();
+    foreach (QString s, l)
+    {
+        s += ".pgn";
+        s.prepend("https://lichess.org/api/broadcast/");
+        openDatabaseUrl(s);
+    }
+}
+
 void MainWindow::openLichess()
 {
     QString account = AppSettings->getValue("/Lichess/userName").toString();
@@ -1082,7 +1096,7 @@ void MainWindow::openLichess()
                 quint64 since= start.startOfDay().toMSecsSinceEpoch();
                 quint64 until= end.endOfDay().toMSecsSinceEpoch();
                 QString url = QString("https://lichess.org/api/games/user/%1?since=%2&until=%3").arg(account).arg(since).arg(until);
-                openDatabaseUrl(url, false);
+                openDatabaseUrl(url);
             }
             else
             {
@@ -1100,7 +1114,7 @@ void MainWindow::openLichess()
             {
                 url = QString("https://lichess.org/api/tournament/%1/games?player=%2").arg(tournament).arg(account);
             }
-            openDatabaseUrl(url, false);
+            openDatabaseUrl(url);
         }
     }
 }
@@ -1617,6 +1631,7 @@ void MainWindow::setupActions()
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
     file->addAction(createAction(tr("Open FICS"), SLOT(openFICS()), QKeySequence(), fileToolBar, ":/images/fics.png"));
     file->addAction(createAction(tr("Open Lichess"), SLOT(openLichess()), QKeySequence(), fileToolBar, ":/images/lichess.png"));
+    file->addAction(createAction(tr("Open Lichess Broadcast"), SLOT(openLichessBroadcast()), QKeySequence(), fileToolBar, ":/images/lichessbroadcast.png"));
     file->addAction(createAction(tr("Open chess.com"), SLOT(openChesscom()), QKeySequence(), fileToolBar, ":/images/chesscom.png"));
     file->addAction(createAction(tr("Web Favorite"), SLOT(openWebFavorite()), QKeySequence(), fileToolBar, ":/images/folder_web.png"));
 
@@ -2134,7 +2149,7 @@ bool MainWindow::confirmQuit()
             {
                 if (dbi->database()->isModified())
                 {
-                    output.output(dbi->database()->filename(), *(dbi->database()));
+                    output.outputLatin1(dbi->database()->filename(), *(dbi->database()));
                 }
             }
         }
