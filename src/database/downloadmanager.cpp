@@ -99,9 +99,12 @@ void DownloadManager::doDownloadToPath(const QUrl &url, const QString& filename)
 QString DownloadManager::saveFileName(const QUrl &url)
 {
     QString path = url.path();
-
-    if (DatabaseInfo::IsLocalDatabase(path) ||
-        DatabaseInfo::IsLocalArchive(path))
+    if (DatabaseInfo::IsLocalDatabase(path))
+    {
+        QFileInfo fi = QFileInfo(path);
+        return AppSettings->commonDataFilePath(fi.fileName());
+    }
+    else if (DatabaseInfo::IsLocalArchive(path))
     {
         QFileInfo fi = QFileInfo(path);
         return AppSettings->commonDataFilePath(fi.baseName());
@@ -109,7 +112,6 @@ QString DownloadManager::saveFileName(const QUrl &url)
     else
     {
         return AppSettings->commonDataPath(); // Name will be determined after download
-
     }
 }
 

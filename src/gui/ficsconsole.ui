@@ -35,7 +35,7 @@
       <string/>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabMessages">
       <attribute name="title">
@@ -83,7 +83,7 @@
           </layout>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="layout_message_12">
+          <layout class="QVBoxLayout" name="layout_message">
            <item>
             <widget class="QDialogButtonBox" name="btBoxMessage">
              <property name="orientation">

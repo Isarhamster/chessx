@@ -78,6 +78,7 @@
         <file alias="images/internet.png">data/images/internet.png</file>
         <file alias="images/last.png">data/images/button_last.png</file>
         <file alias="images/lichess.png">data/images/lichess.png</file>
+        <file alias="images/lichessbroadcast.png">data/images/lichessbroadcast.png</file>
         <file alias="images/chesscom.png">data/images/chesscom.png</file>
         <file alias="images/list_add.png">data/images/list_add.png</file>
         <file alias="images/match.png">data/images/match.png</file>

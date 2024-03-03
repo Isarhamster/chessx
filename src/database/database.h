@@ -20,7 +20,6 @@
 
 #include <QMutex>
 #include <QString>
-#include <QTextStream>
 
 
 /** @defgroup Database Database - classes to manipulate chess game files*/
