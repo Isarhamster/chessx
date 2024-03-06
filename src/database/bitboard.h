@@ -214,6 +214,7 @@ public:
     Move::List generateMoves() const;
     /** Calculate a material evaluation */
     int score() const;
+    bool compare(const BitBoard& b) const; //!< Return true if same pieces and castling rights, false otherwise
 protected:
     unsigned int countSetBits(quint64 n) const;
 private:

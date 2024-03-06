@@ -1779,6 +1779,12 @@ int BitBoard::score() const
     return sum;
 }
 
+bool BitBoard::compare(const BitBoard& b) const
+{
+    if (m_castle != b.m_castle) return false;
+    return (std::memcmp(m_piece, b.m_piece, sizeof(m_piece))==0);
+}
+
 bool BitBoard::isIntoCheck(const Move& move) const
 {
     BitBoard peek(*this);

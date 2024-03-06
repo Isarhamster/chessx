@@ -398,10 +398,15 @@ bool GameX::positionRepetition(const BoardX& b)
     int repCount = 1;
     while(backward())
     {
-        if (board() == b)
+        if (board().compare(b))
         {
             repCount++;
             if (repCount >= 3) break;
+        }
+        Move m = m_moves.move();
+        if (m.isCapture() || m.isCastling())
+        {
+            break;
         }
     }
     return repCount >= 3;
