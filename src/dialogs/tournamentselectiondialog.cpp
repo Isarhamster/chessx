@@ -5,6 +5,7 @@
 #include <QUrl>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QTableWidgetItem>
 #include <QCloseEvent>
 #include <QDesktopServices>
@@ -37,8 +38,16 @@ void TournamentSelectionDialog::fill()
             QString name = tour.value("name").toString();
             QString id = tour.value("id").toString();
             QString url = tour.value("url").toString();
+
+            QJsonArray rounds = it.value("rounds").toArray();
+            QDateTime now = QDateTime::currentDateTime();
+            qint64 startsAt = now.toMSecsSinceEpoch() + 1;
+            foreach(QJsonValue round, rounds)
+            {
+                startsAt = std::min(round.toObject().value("startsAt").toInteger(), startsAt);
+            }
             QTableWidget* w = ui->tournements;
-            if (!name.isEmpty() && !id.isEmpty())
+            if ((startsAt <= now.toMSecsSinceEpoch()) && !name.isEmpty() && !id.isEmpty())
             {
                 int n = w->rowCount();
                 w->insertRow(n);
