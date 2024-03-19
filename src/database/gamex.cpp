@@ -1719,15 +1719,20 @@ QString GameX::ecoClassify() const
     }
     g.m_moves.moveToEnd();
 
-    //search backwards for the first eco position
-    while(g.m_moves.backward())
+    // Because we now only move backward() after the loop, we must ensure there are some moves
+    if (g.m_moves.countMoves() == 0) {
+        return QString();
+    }
+
+    // Search backwards for the first eco position
+    do
     {
         QString eco;
         if (EcoPositions::isEcoPosition(g.board(),eco))
         {
             return eco;
         }
-    }
+    } while(g.m_moves.backward());
 
     return QString();
 }
