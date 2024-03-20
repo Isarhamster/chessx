@@ -13,6 +13,7 @@
 #include "square.h"
 #include "bitfind.h"
 #include <string.h>
+#include <cstring>
 
 #ifdef _MSC_VER
 #include <intrin.h>
