@@ -1091,9 +1091,9 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                     }
 
                     game().addMove(m, annot);
-                    playMoveSound("move", m);
                     if (qobject_cast<FicsDatabase*>(database()))
                     {
+                        playMoveSound("move", m);
                         m_ficsConsole->SendMove(m.toAlgebraic());
                     }
                     else
@@ -1114,6 +1114,10 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                                 }
                                 setResultForCurrentPosition();
                             }
+                            else
+                            {
+                                playMoveSound("move", m);
+                            }
                         }
                         else
                         {
@@ -1123,6 +1127,10 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                             {
                                 playSound("fanfare");
                                 slotStatusMessage(s);
+                            }
+                            else
+                            {
+                                playMoveSound("move", m);
                             }
                         }
                     }
