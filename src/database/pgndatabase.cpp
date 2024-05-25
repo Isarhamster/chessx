@@ -307,6 +307,8 @@ bool PgnDatabase::parseFileIntern()
                 {
                     parseTagsIntoIndex(); // This will parse the tags into memory
                     parseGame();
+                    if (!m_index.hasTag(TagNameLength, m_count - 1)) m_index.setTag_nolock(TagNameLength, "0", m_count - 1);
+                    if (!m_index.hasTag(TagNameResult, m_count - 1)) m_index.setTag_nolock(TagNameResult, "*", m_count - 1);
                 }
 
                 if(!m_file->atEnd())
@@ -506,8 +508,6 @@ void PgnDatabase::parseTagIntoIndex(const QString& tag, QString value)
 
 void PgnDatabase::parseTagsIntoIndex()
 {
-    m_index.setTag_nolock(TagNameLength, "0", m_count - 1);
-    m_index.setTag_nolock(TagNameResult, "*", m_count - 1);
     while(m_currentLine.startsWith(QString("[")))
     {
         int pos = 0;

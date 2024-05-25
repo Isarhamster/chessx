@@ -29,6 +29,7 @@ typedef quint32 TagIndex;
 typedef quint32 ValueIndex;
 
 #define TagNoIndex 0xFFFFFFFF
+#define ValueNoIndex 0xFFFFFFFF
 
 typedef QHash<TagIndex, ValueIndex> MapTagToValue;
 

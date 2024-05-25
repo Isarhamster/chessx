@@ -119,6 +119,20 @@ void IndexX::removeTag(const QString& tagName, GameId gameId)
     }
 }
 
+bool IndexX::hasTag(const QString& tagName, GameId gameId) const
+{
+    QReadLocker m(&m_mutex);
+    if(m_tagNameIndex.contains(tagName))
+    {
+        TagIndex tagIndex = m_tagNameIndex.value(tagName);
+        if((int)gameId < m_indexItems.count())
+        {
+            return m_indexItems[gameId].hasTagIndex(tagIndex);
+        }
+    }
+    return false;
+}
+
 void IndexX::setValidFlag(GameId gameId, bool value)
 {
     if (!value)
@@ -348,6 +362,7 @@ QString IndexX::tagValue_byIndex(TagIndex tagIndex, GameId gameId) const
 {
     QReadLocker m(&m_mutex);
 
+    if (m_indexItems.length() <= gameId) return QString();
     ValueIndex valueIndex = m_indexItems[gameId].valueIndex(tagIndex);
 
     return tagValueName(valueIndex);
@@ -355,6 +370,7 @@ QString IndexX::tagValue_byIndex(TagIndex tagIndex, GameId gameId) const
 
 QString IndexX::tagValue(TagIndex tagIndex, GameId gameId) const
 {
+    if (m_indexItems.length() <= gameId) return QString();
     ValueIndex valueIndex = m_indexItems[gameId].valueIndex(tagIndex);
 
     return tagValueName(valueIndex);
@@ -387,11 +403,13 @@ ValueIndex IndexX::valueIndexFromTag(const QString& tagName, GameId gameId) cons
 
 bool IndexX::indexItemHasTag(TagIndex tagIndex, GameId gameId) const
 {
+    if (m_indexItems.length() <= gameId) return false;
     return m_indexItems[gameId].hasTagIndex(tagIndex);
 }
 
 inline ValueIndex IndexX::valueIndexFromIndex(TagIndex tagIndex, GameId gameId) const
 {
+    if (m_indexItems.length() <= gameId) return ValueNoIndex;
     return m_indexItems[gameId].valueIndex(tagIndex);
 }
 

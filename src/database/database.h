@@ -121,6 +121,7 @@ public:
     virtual bool IsClipboard() const { return false; }
     /** Get a map of MoveData from a given board position */
     virtual unsigned int getMoveMapForBoard(const BoardX& , QMap<Move, MoveData> &) { return 0; }
+    void setMissingTagsToIndex(const GameX& game, GameId id);
 protected:
     /** Copies all tags from @p game to the Index */
     void setTagsToIndex(const GameX& game, GameId id);

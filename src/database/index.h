@@ -148,6 +148,9 @@ public:
     /** Remove a tag from the index, do not care for the value */
     void removeTag(const QString &tagName, GameId gameId);
 
+    /** Returns true if the Index already hosts a tag of name @tagName */
+    bool hasTag(const QString &tagName, GameId gameId) const;
+
     /** Calculate hash for a game header */
     unsigned int hashIndexItem(GameId gameId) const;
 
