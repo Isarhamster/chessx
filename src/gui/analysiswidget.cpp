@@ -112,11 +112,7 @@ void AnalysisWidget::startEngine()
         }
 
         connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
-#if QT_VERSION < 0x060000
         connect(m_engine, SIGNAL(error(QProcess::ProcessError)), SLOT(engineError(QProcess::ProcessError)));
-#else
-        connect(m_engine, SIGNAL(errorOccurred(QProcess::ProcessError)), SLOT(engineError(QProcess::ProcessError)));
-#endif
         connect(m_engine, SIGNAL(deactivated()), SLOT(engineDeactivated()));
         connect(m_engine, SIGNAL(analysisUpdated(Analysis)),
                 SLOT(showAnalysis(Analysis)));
