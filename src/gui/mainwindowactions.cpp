@@ -573,6 +573,7 @@ bool MainWindow::slotEditPastePGN()
 void MainWindow::slotEditPaste()
 {
     QString fen = QApplication::clipboard()->text().simplified();
+    fen.replace(QChar(0x2013),QChar('-'));
     QString dummy;
     if(!pasteFen(dummy, fen, true))
     {
@@ -585,6 +586,7 @@ void MainWindow::slotEditMergePGN()
     if (game().isEmpty())
     {
         QString fen = QApplication::clipboard()->text().simplified();
+        fen.replace(QChar(0x2013),QChar('-'));
         QString dummy;
         if(pasteFen(dummy, fen))
         {
@@ -594,7 +596,7 @@ void MainWindow::slotEditMergePGN()
     QString pgn = QApplication::clipboard()->text().trimmed();
     if(!pgn.isEmpty())
     {
-        pgn.append("\n*\n");
+        pgn.replace(QChar(0x2013),QChar('-'));
         if (pgn.startsWith("[") || (pgn.indexOf(QRegularExpression("\\d+\\."),0)==0)) // looks like something containing tags or starting with 1.xxx
         {
             MemoryDatabase pgnDatabase;
