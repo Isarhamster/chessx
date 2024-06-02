@@ -3,10 +3,11 @@
 ****************************************************************************/
 
 #include "annotation.h"
+#include "qt6compat.h"
 
 Annotation::Annotation(QString a)
 {
-    QStringList l = a.trimmed().split(',', Qt::SkipEmptyParts );
+    QStringList l = a.trimmed().split(',', SkipEmptyParts );
     l.removeDuplicates();
     annotation = l.join(',');
 }

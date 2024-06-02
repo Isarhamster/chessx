@@ -432,7 +432,7 @@ QString Output::writeMove(MoveToWrite moveToWrite)
 
     if (m_outputType != Latex)
     {
-        QStringList l = commentString.split('\n', Qt::SkipEmptyParts);
+        QStringList l = commentString.split('\n', SkipEmptyParts);
         foreach(QString s, l)
         {
             text += writeComment(s, mvno, Comment);
