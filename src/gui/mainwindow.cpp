@@ -1387,6 +1387,7 @@ void MainWindow::loadReady(QUrl url, QString fileName)
         if (fi.exists())
         {
             setFavoriteDatabase(target);
+            openDatabaseArchive(target, false);
         }
     }
     else
