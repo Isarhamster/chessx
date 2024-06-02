@@ -396,12 +396,32 @@ void GameX::mergeWithGame(const GameX& g)
 bool GameX::positionRepetition(const BoardX& b)
 {
     int repCount = 1;
+    again:
     while(backward())
     {
         if (board().compare(b))
         {
             repCount++;
-            if (repCount >= 3) break;
+            if (repCount >= 3)
+            {
+                // Final special case - en-passant actually possible on the first occasion
+                // if (backward())
+                {
+                    if (board().enPassantSquare() != InvalidSquare)
+                    {
+                        Move::List ml = board().generateMoves();
+                        foreach (Move mx, ml)
+                        {
+                            if (mx.isEnPassant())
+                            {
+                                repCount--;
+                                goto again;
+                            }
+                        }
+                    }
+                    return true;
+                }
+            }
         }
         Move m = m_moves.move();
         if (m.isCapture() || m.isCastling())

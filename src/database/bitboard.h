@@ -284,7 +284,7 @@ private:
     // Extra state data
     unsigned char m_piece[64];             // type of piece on this square
     unsigned char m_stm;                   // side to move
-    chessx::Square        m_ksq[2];                // square of the m_kings
+    chessx::Square m_ksq[2];               // square of the m_kings
     unsigned char m_epFile;                // file of a possible ep capture
     unsigned char m_epSquare;              // This is requested by hash routine enough that we keep it pre calculated
     unsigned char m_castle;                // flags for castle legality  (these can be merged)
