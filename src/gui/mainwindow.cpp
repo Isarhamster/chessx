@@ -1461,7 +1461,8 @@ QString MainWindow::exportFileName(int& format)
     QStringList filters;
     filters << tr("PGN file (*.pgn)")
             << tr("HTML page (*.html)")
-            << tr("LaTeX document (*.tex)");
+            << tr("LaTeX document (*.tex)")
+            << tr("Localized PGN (*.txt)");
     fd.setNameFilters(filters);
     if(fd.exec() != QDialog::Accepted)
     {
@@ -1474,6 +1475,10 @@ QString MainWindow::exportFileName(int& format)
     else if(fd.selectedNameFilter().contains("*.html"))
     {
         format = Output::Html;
+    }
+    else if(fd.selectedNameFilter().contains("*.txt"))
+    {
+       format = Output::LocalPgn;
     }
     else
     {

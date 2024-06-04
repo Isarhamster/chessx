@@ -88,8 +88,12 @@ public:
         Html, /**< Exports the game in Html format */
         Pgn, /**< Exports the game in PGN format */
         Latex, /**< Exports the game in Latex format */
-        NotationWidget /**< Exports the game in format appropriate for the notation widget */
+        NotationWidget, /**< Exports the game in format appropriate for the notation widget */
+        LocalPgn
     };
+    inline bool isPgnType(OutputType o) const { return ((o==Pgn) || (o==LocalPgn)); }
+    inline bool isLocalized(OutputType o) const { return ((o==NotationWidget) || (o==LocalPgn)); }
+
     enum MoveToWrite
     {
         PreviousMove,

@@ -43,6 +43,7 @@ Output::Output(OutputType output, BoardRenderingFunc renderer, const QString& pa
     case Html:
         m_options.createDefaultOptions("");
         break;
+    case LocalPgn:
     case Pgn:
         m_options.createDefaultOptions("");
         break;
@@ -66,7 +67,7 @@ Output::~Output()
 
 void Output::initialize()
 {
-    if(m_outputType == Pgn)
+    if(isPgnType(m_outputType))
     {
         m_newlineChar = "\n";
     }
@@ -233,9 +234,10 @@ QMap<Output::OutputType, QString>& Output::getFormats()
 {
     m_outputMap.clear();
     m_outputMap[Html] = "Html Output";
-    m_outputMap[Pgn] = "Pgn Output";
+    m_outputMap[Pgn] = "PGN Output";
     m_outputMap[Latex] = "Latex Output";
     m_outputMap[NotationWidget] = "Notation Widget Output";
+    m_outputMap[LocalPgn] = "Local PGN Output";
     return m_outputMap;
 }
 
@@ -299,10 +301,10 @@ QString Output::writeMove(MoveToWrite moveToWrite)
     }
     // Read comments
     if(m_game.canHaveStartAnnotation(moveId))
-        precommentString = (m_outputType == Pgn) ? m_game.annotation(moveId, GameX::BeforeMove) :
+        precommentString = isPgnType(m_outputType) ? m_game.annotation(moveId, GameX::BeforeMove) :
                            m_game.textAnnotation(moveId, GameX::BeforeMove, m_game.textFilter2());
 
-    QString commentString = (m_outputType == Pgn) ? m_game.annotation(moveId) :
+    QString commentString = isPgnType(m_outputType) ? m_game.annotation(moveId) :
                                                     m_game.textAnnotation(moveId, GameX::AfterMove, m_game.textFilter2());
 
     // Write precomment if any
@@ -325,7 +327,7 @@ QString Output::writeMove(MoveToWrite moveToWrite)
 
     // *** Determine actual san
     QString san;
-    GameX::MoveStringFlags flags = (m_outputType == NotationWidget) ? GameX::TranslatePiece : GameX::MoveOnly;
+    GameX::MoveStringFlags flags = isLocalized(m_outputType) ? GameX::TranslatePiece : GameX::MoveOnly;
     if(moveToWrite == NextMove)
     {
         san = m_game.moveToSan(flags);
@@ -446,7 +448,7 @@ QString Output::writeMove(MoveToWrite moveToWrite)
     if (imageString.isEmpty() && commentString.isEmpty() && !san.isEmpty())
     {
         if((!((m_options.getOptionAsBool("ColumnStyle")) &&
-               (m_currentVariationLevel == 0))) || (m_outputType == Pgn))
+               (m_currentVariationLevel == 0))) || isPgnType(m_outputType))
         {
             if (m_game.hasNextMove())
             {
@@ -803,7 +805,7 @@ QString Output::outputGame(const GameX* g, bool upToCurrentMove)
         text += m_startTagMap[MarkupColumnStyleMainline];
     }
 
-    QString gameComment = (m_outputType == Pgn) ? m_game.annotation(0) : m_game.textAnnotation(0, GameX::AfterMove, m_game.textFilter2());
+    QString gameComment = isPgnType(m_outputType) ? m_game.annotation(0) : m_game.textAnnotation(0, GameX::AfterMove, m_game.textFilter2());
     text += writeGameComment(gameComment);
 
     text += writeMainLine(mainId);
@@ -1043,7 +1045,7 @@ void Output::output(const QString& filename, Database& database)
         return;
     }
     if((m_outputType == Html) || (m_outputType == NotationWidget) ||
-       (m_outputType == Pgn && database.isUtf8()))
+       (isPgnType(m_outputType) && database.isUtf8()))
     {
         QTextStream out(&f);
         outputUtf8(out, database);
@@ -1132,6 +1134,7 @@ void Output::setTemplateFile(QString filename)
             filename = DEFAULT_NOTATION_TEMPLATE;
             break;
         case Pgn:
+        case LocalPgn:
             filename = DEFAULT_PGN_TEMPLATE;
             break;
         default :
