@@ -227,6 +227,10 @@ void AnalysisWidget::slotReconfigure()
         oldEngineName = AppSettings->getValue(key).toString();
     }
 
+    QString key = QString("/") + objectName() + "/mpv";
+    int mpv = AppSettings->value(key, 1).toInt();
+    ui.vpcount->setValue(mpv);
+
     EngineList enginesList;
     enginesList.restore();
     QStringList names = enginesList.names();
@@ -528,6 +532,8 @@ void AnalysisWidget::slotMpvChanged(int mpv)
         }
         m_engine->setMpv(mpv);
     }
+    QString key = QString("/") + objectName() + "/mpv";
+    AppSettings->setValue(key, mpv);
 }
 
 bool AnalysisWidget::isAnalysisEnabled() const
