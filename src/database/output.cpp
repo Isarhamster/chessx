@@ -646,7 +646,6 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
         text += m_startTagMap[MarkupColumnStyleMainline];
     }
     m_dirtyBlack = true;
-    text = text.trimmed();
     return text;
 }
 
