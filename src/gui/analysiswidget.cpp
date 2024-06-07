@@ -41,7 +41,7 @@ AnalysisWidget::AnalysisWidget(QWidget *parent)
       m_hideLines(false)
 {
     ui.setupUi(this);
-    connect(ui.engineList, SIGNAL(activated(int)), SLOT(toggleAnalysis()));
+    connect(ui.engineList, SIGNAL(activated(int)), SLOT(slotSelectEngine()));
     connect(ui.bookList, SIGNAL(currentIndexChanged(int)), SLOT(bookActivated(int)));
     connect(ui.analyzeButton, SIGNAL(clicked(bool)), SLOT(toggleAnalysis()));
 
@@ -180,6 +180,18 @@ void AnalysisWidget::engineDeactivated()
     ui.analyzeButton->setChecked(false);
 }
 
+void AnalysisWidget::slotSelectEngine()
+{
+    EngineX* ex = EngineX::newEngine(ui.engineList->currentIndex());
+    if (ex)
+    {
+        int empv = ex->m_mapOptionValues.value("MultiPV",1).toInt();
+        if(empv>1) ui.vpcount->setValue(empv);
+    }
+    delete ex;
+    toggleAnalysis();
+}
+
 void AnalysisWidget::toggleAnalysis()
 {
     if(!isAnalysisEnabled())
@@ -227,10 +239,6 @@ void AnalysisWidget::slotReconfigure()
         oldEngineName = AppSettings->getValue(key).toString();
     }
 
-    QString key = QString("/") + objectName() + "/mpv";
-    int mpv = AppSettings->value(key, 1).toInt();
-    ui.vpcount->setValue(mpv);
-
     EngineList enginesList;
     enginesList.restore();
     QStringList names = enginesList.names();
@@ -246,6 +254,20 @@ void AnalysisWidget::slotReconfigure()
         ui.engineList->setCurrentIndex(0);
         stopEngine();
     }
+
+    // Choose MPV from GUI
+    QString key = QString("/") + objectName() + "/mpv";
+    int mpv = AppSettings->value(key, 1).toInt();
+
+    // Look into engine settings if mpv != 1
+    EngineX* ex = EngineX::newEngine(index);
+    if (ex)
+    {
+        int empv = ex->m_mapOptionValues.value("MultiPV",1).toInt();
+        if (empv > 1) mpv = empv;
+    }
+    delete ex;
+    ui.vpcount->setValue(mpv);
 
     int fontSize = AppSettings->getValue("/General/ListFontSize").toInt();
     fontSize = std::max(fontSize, 8);

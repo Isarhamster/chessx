@@ -83,6 +83,7 @@ public slots:
 private slots:
     /** Stop if analysis is no longer visible. */
     void toggleAnalysis();
+    void slotSelectEngine();
     /** Displays given analysis received from an engine. */
     void showAnalysis(Analysis analysis);
     /** The engine is now ready, as requested */
