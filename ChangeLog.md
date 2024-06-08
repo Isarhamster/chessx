@@ -1,10 +1,19 @@
 ## May 2023: Version 1.6.0
 
+- Bugfix: Three fold repetition if ep was possible
+- Bugfix: Openings Summary in Player Info
+- Bugfix: Random number selection issues on some OS
+- Bugfix: #341 ChessX Draw Game by Insufficient Material
 - Bugfix: CR #336 Nalimov TB gives wrong evaluation
 - Bugfix: Jumping through sibling variations
 - Bugfix: CR #334 Pressing 'Pin engine' resets the analysis
 - Bugfix: Move indicator shows wrong line in case of Multi-PV, prefer TB
 - Bugfix: CR #320 (PGN Setup->SetUp tag)
+- New feature: Lichess Broadcasts
+- New feature: Repainting same arrow or square removes special annotation
+- New feature: Shift+Click opens first link in comment
+- New feature: Export as localized text
+- New feature: Workaround Chessable's tokenizer by adding space bf comment
 - New feature: Load range of games from online bases
 - New feature: Allows piece specific sounds
 - New feature: Add a volume slider for sounds
