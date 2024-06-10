@@ -121,19 +121,22 @@ void ChartWidget::resizeEvent(QResizeEvent*)
     updatePolygons();
 }
 
-void ChartWidget::handleMouseEvent(QMouseEvent *event)
+void ChartWidget::handleMouseEvent(QMouseEvent *event, bool deduplicate)
 {
-    if (width() && m_values.size() && (m_values[0].count()>1))
+    if (!width() || !m_values.size() || (m_values[0].count()<2))
     {
-        QPointF p = EVENT_POSITION(event);
-        double multiplierW = ((double)width()) / (m_values[0].count()-1);
-        double x = 0.5 + (p.x() / multiplierW);
-        if (m_lastSentIndicator!=(int)x)
-        {
-            emit halfMoveRequested((int)x);
-            m_lastSentIndicator = (int)x;
-        }
+        return;
     }
+    QPointF p = EVENT_POSITION(event);
+    double multiplierW = ((double)width()) / (m_values[0].count()-1);
+    double x = 0.5 + (p.x() / multiplierW);
+    int move_index = static_cast<int>(x);
+    if (deduplicate && m_lastSentIndicator==move_index)
+    {
+        return;
+    }
+    emit halfMoveRequested(move_index);
+    m_lastSentIndicator = move_index;
 }
 
 #if QT_VERSION < 0x060000
@@ -155,7 +158,7 @@ void ChartWidget::leaveEvent(QEvent *event)
 
 void ChartWidget::mousePressEvent(QMouseEvent *event)
 {
-    handleMouseEvent(event);
+    handleMouseEvent(event, false);
     QWidget::mousePressEvent(event);
 }
 
@@ -163,12 +166,6 @@ void ChartWidget::mouseMoveEvent(QMouseEvent *event)
 {
     handleMouseEvent(event);
     QWidget::mouseMoveEvent(event);
-}
-
-void ChartWidget::mouseReleaseEvent(QMouseEvent *event)
-{
-    handleMouseEvent(event);
-    QWidget::mouseReleaseEvent(event);
 }
 
 void ChartWidget::updatePly()
