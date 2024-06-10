@@ -24,12 +24,11 @@ signals:
     void halfMoveRequested(int);
 
 protected:
-    void handleMouseEvent(QMouseEvent *event);
+    void handleMouseEvent(QMouseEvent *event, bool deduplicate = true);
     virtual void paintEvent(QPaintEvent* event);
     virtual void resizeEvent(QResizeEvent* event);
     virtual void mousePressEvent(QMouseEvent* event);
     virtual void mouseMoveEvent(QMouseEvent* event);
-    virtual void mouseReleaseEvent(QMouseEvent* event);
 #if QT_VERSION < 0x060000
     virtual void enterEvent(QEvent *event);
 #else
