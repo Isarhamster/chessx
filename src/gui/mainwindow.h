@@ -47,7 +47,7 @@ class FicsClient;
 class FicsConsole;
 class GameList;
 class GameNotationWidget;
-class GameToolBar;
+class CentipawnGraph;
 class GameWindow;
 class HistoryLabel;
 class OpeningTreeWidget;
@@ -609,6 +609,8 @@ private slots:
     void slotVersionFound(int major, int minor, int build);
     void slotUpdateOpeningTreeWidget();
     void slotDatabaseEditTag();
+    void slotStartAnalysisRequested();
+
 private:
     /** Create single menu action. */
     QAction* createAction(QString name, const char* slot, const QKeySequence& key = QKeySequence(),
@@ -703,7 +705,7 @@ private:
     QLabel* m_sliderText;
     QPointer<QComboBox> m_comboEngine;
     GameWindow* m_gameWindow;
-    GameToolBar* m_gameToolBar;
+    CentipawnGraph* m_centipawnGraph;
     QTabWidget* m_tabWidget;
     AnnotationWidget* annotationWidget;
     /* Status */

@@ -95,6 +95,8 @@ add_library(database-core STATIC
   database/gameid.h
   database/gamecursor.cpp
   database/gamecursor.h
+  database/gameevaluation.cpp
+  database/gameevaluation.h
   database/gamex.cpp
   database/gamex.h
   database/index.cpp
@@ -339,6 +341,8 @@ add_library(gui STATIC
   gui/boardviewex.cpp
   gui/boardviewex.h
   gui/boardviewex.ui
+  gui/centipawngraph.cpp
+  gui/centipawngraph.h
   gui/chartwidget.cpp
   gui/chartwidget.h
   gui/chessbrowser.cpp
@@ -380,8 +384,6 @@ add_library(gui STATIC
   gui/gamelistsortmodel.h
   gui/gamenotationwidget.cpp
   gui/gamenotationwidget.h
-  gui/gametoolbar.cpp
-  gui/gametoolbar.h
   gui/gamewindow.cpp
   gui/gamewindow.h
   gui/gamewindow.ui

@@ -62,6 +62,8 @@ public:
     /** Moves to mate. */
     /** Convert analysis to formatted text. */
     QString toString(const BoardX& board, bool hiddenLine=false) const;
+    /** If bestMove is true, then only the bestMove, and variation members
+     * are valid. */
     void setBestMove(bool bestMove);
     bool bestMove() const;
 
