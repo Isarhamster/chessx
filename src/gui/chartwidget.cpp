@@ -29,10 +29,6 @@ ChartWidget::ChartWidget(QWidget *parent) :
     setUpdatesEnabled(true);
 }
 
-ChartWidget::~ChartWidget()
-{
-}
-
 void ChartWidget::setValues(int line, const QList<double>& values)
 {
     if (line >= m_values.size())

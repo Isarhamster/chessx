@@ -15,7 +15,6 @@ class ChartWidget : public QWidget
     Q_OBJECT
 public:
     explicit ChartWidget(QWidget *parent = nullptr);
-    virtual ~ChartWidget();
 
     void setValues(int line, const QList<double> &values);
     void setPly(int ply);
