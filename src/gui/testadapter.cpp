@@ -46,6 +46,7 @@ bool TestAdapter::dispatchTests()
     QCommandLineOption lcOption(QStringList() << "lc" << "locale",
                                    QCoreApplication::translate("TestAdapter", "Output Locale."),
                                    QCoreApplication::translate("TestAdapter", "Locale"));
+    parser.addOption(lcOption);
 
     // Do not start the GUI after processing the files
     QCommandLineOption exitOption(QStringList() << "x" << "exit",
