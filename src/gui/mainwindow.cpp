@@ -1053,12 +1053,17 @@ void MainWindow::openLichessBroadcast()
 {
     TournamentSelectionDialog dlg;
     dlg.run();
-    QStringList l = dlg.getTournaments();
-    foreach (QString s, l)
+    QList<QPair<QString, QString>> l = dlg.getTournaments();
+    QPair<QString, QString> p;
+    foreach (p, l)
     {
+        QString s = p.first;
         s += ".pgn";
         s.prepend("https://lichess.org/api/broadcast/");
-        openDatabaseUrl(s);
+        QString name = p.second;
+        name.append(".pgn");
+        QString target = AppSettings->commonDataFilePath(name);
+        appendDatabaseUrl(s, false, target);
     }
 }
 

@@ -61,7 +61,7 @@ void TournamentSelectionDialog::fill()
     }
 }
 
-QStringList TournamentSelectionDialog::getTournaments() const
+QList<QPair<QString, QString> > TournamentSelectionDialog::getTournaments() const
 {
     return tournaments;
 }
@@ -78,7 +78,8 @@ void TournamentSelectionDialog::closeEvent(QCloseEvent *e)
             if (item->isSelected())
             {
                 QString id = item->data(Qt::UserRole).toString();
-                tournaments<<id;
+                QString name = item->text();
+                tournaments<< QPair<QString,QString>(id,name);
             }
         }
     }
@@ -103,7 +104,8 @@ void TournamentSelectionDialog::accept()
             if (item->isSelected())
             {
                 QString id = item->data(Qt::UserRole).toString();
-                tournaments<<id;
+                QString name = item->text();
+                tournaments<< QPair<QString,QString>(id,name);
             }
         }
     }
@@ -121,7 +123,8 @@ void TournamentSelectionDialog::on_tournements_itemDoubleClicked(QTableWidgetIte
         else
         {
             QString id = item->data(Qt::UserRole).toString();
-            tournaments << id;
+            QString name = item->text();
+            tournaments<< QPair<QString,QString>(id,name);
             accept();
         }
     }

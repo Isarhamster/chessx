@@ -16,7 +16,7 @@ public:
     explicit TournamentSelectionDialog(QWidget *parent = nullptr);
     void run();
     ~TournamentSelectionDialog();
-    QStringList getTournaments() const;
+    QList<QPair<QString, QString>> getTournaments() const;
 
 protected:
     virtual void closeEvent(QCloseEvent *);
@@ -27,7 +27,7 @@ private slots:
 
 private:
     void fill();
-    QStringList tournaments;
+    QList<QPair<QString, QString>> tournaments;
 
 private:
     Ui::TournamentSelectionDialog *ui;
