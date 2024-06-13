@@ -214,19 +214,13 @@ void AnalysisWidget::bookActivated(int index)
 
 void AnalysisWidget::slotPinChanged(bool pinned)
 {
-    if (!pinned && isAnalysisEnabled())
+    if (pinned && isEngineRunning())
     {
-        if (m_board != m_NextBoard)
-        {
-            setPosition(m_NextBoard, m_NextLine);
-        }
+        m_engine->setMoveTime(0);
     }
-    else
+    if (m_board != m_NextBoard)
     {
-        if(isEngineRunning())
-        {
-            m_engine->setMoveTime(0);
-        }
+        setPosition(m_NextBoard, m_NextLine);
     }
 }
 
