@@ -169,7 +169,7 @@ void MainWindow::saveDatabase(DatabaseInfo* dbInfo)
         startOperation(tr("Saving %1...").arg(db->name()));
         Output output(Output::Pgn, &BoardView::renderImageForBoard);
         connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
-        output.outputLatin1(db->filename(), *db);
+        output.output(db->filename(), *db);
         finishOperation(tr("%1 saved").arg(db->name()));
     }
 }
@@ -3443,7 +3443,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
     else
     {
         Output out(Output::Pgn);
-        QString s = out.output(dest);
+        QString s = out.outputUtf8(dest);
         QApplication::clipboard()->setText(s);
         QString msg = tr("Set %1 games into system clipboard.").arg(n);
         slotStatusMessage(msg);

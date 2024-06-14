@@ -2160,7 +2160,7 @@ bool MainWindow::confirmQuit()
             {
                 if (dbi->database()->isModified())
                 {
-                    output.outputLatin1(dbi->database()->filename(), *(dbi->database()));
+                    output.output(dbi->database()->filename(), *(dbi->database()));
                 }
             }
         }

@@ -1070,7 +1070,7 @@ void Output::outputLatin1(const QString& filename, Database& database)
     f.close();
 }
 
-QString Output::output(Database* database)
+QString Output::outputUtf8(Database* database)
 {
     QString s;
     QTextStream out(&s);

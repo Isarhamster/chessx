@@ -141,7 +141,7 @@ public:
     /** Create the output for the given database
      * @param database A pointer to a database object. All games in the database will be output, one
      *               after the other, using the output(GameX* game) method */
-    QString output(Database* database);
+    QString outputUtf8(Database* database);
 
     /** Append output to a closed file */
     bool append(const QString& filename, GameX& game);
