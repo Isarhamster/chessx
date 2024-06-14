@@ -1,5 +1,7 @@
-## May 2023: Version 1.6.0
+## June 2024: Version 1.6.0
 
+- Bugfix:#333 Accented letters in annotations in UTF8
+- Bugfix: #349 Incorrect Pinned Move in Analysis Window
 - Bugfix: Three fold repetition if ep was possible
 - Bugfix: Openings Summary in Player Info
 - Bugfix: Random number selection issues on some OS
