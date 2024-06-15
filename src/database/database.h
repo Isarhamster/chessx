@@ -122,6 +122,9 @@ public:
     /** Get a map of MoveData from a given board position */
     virtual unsigned int getMoveMapForBoard(const BoardX& , QMap<Move, MoveData> &) { return 0; }
     void setMissingTagsToIndex(const GameX& game, GameId id);
+    bool hadBOM() const;
+    void setHadBOM(bool newHadBOM);
+
 protected:
     /** Copies all tags from @p game to the Index */
     void setTagsToIndex(const GameX& game, GameId id);
@@ -134,6 +137,7 @@ signals:
 protected:
     IndexX m_index;
     bool m_utf8;
+    bool m_hadBOM;
     QMutex m_mutex;
 };
 

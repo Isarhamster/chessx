@@ -215,6 +215,16 @@ void Database::setTagsToIndex(const GameX& game, GameId id)
     }
 }
 
+bool Database::hadBOM() const
+{
+    return m_hadBOM;
+}
+
+void Database::setHadBOM(bool newHadBOM)
+{
+    m_hadBOM = newHadBOM;
+}
+
 void Database::setMissingTagsToIndex(const GameX& game, GameId id)
 {
     const TagMap& tags = game.tags();

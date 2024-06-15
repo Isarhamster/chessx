@@ -21,7 +21,7 @@ public:
     void remove(DatabaseInfo* dbi);
     void append(DatabaseInfo* dbi);
 
-private: // TODO: make private
+private:
     QList<DatabaseInfo*> m_databases;
 };
 

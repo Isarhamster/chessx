@@ -450,7 +450,6 @@ void DatabaseList::dropEvent(QDropEvent *event)
     TableView::dropEvent(event);
     if (event->dropAction())
     {
-        // TODO - test where the files come from in case of gameMimeData !!!!!!!!! -> crash
         const QMimeData *mimeData = event->mimeData();
         const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
         const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);

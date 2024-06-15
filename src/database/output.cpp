@@ -15,6 +15,7 @@
 #include <QTextStream>
 #include "board.h"
 #include "output.h"
+#include "memorydatabase.h"
 #include "settings.h"
 #include "tags.h"
 #include "partialdate.h"
@@ -924,7 +925,7 @@ void Output::outputLatin1(QDataStream& out, FilterX& filter)
 void Output::outputUtf8(QTextStream& out, Database& database)
 {
     SET_CODEC_UTF8(out);
-
+    out.setGenerateByteOrderMark(database.hadBOM());
     QString header = m_header;
     postProcessOutput(header);
     out << header;
@@ -995,27 +996,6 @@ void Output::outputLatin1(QDataStream& out, Database& database)
     database.setModified(false);
 }
 
-void Output::output(const QString& filename, const GameX& game)
-{
-    QFile f(filename);
-    if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        return;
-    }
-    if((m_outputType == Html) || (m_outputType == NotationWidget))
-    {
-        QTextStream out(&f);
-        out << output(&game);
-    }
-    else
-    {
-        QDataStream out(&f);
-        QByteArray b = output(&game).toLatin1();
-        out.writeRawData(b, b.length());
-    }
-    f.close();
-}
-
 void Output::output(const QString& filename, FilterX& filter, bool utf8)
 {
     QFile f(filename);
@@ -1036,15 +1016,18 @@ void Output::output(const QString& filename, FilterX& filter, bool utf8)
     f.close();
 }
 
-void Output::output(const QString& filename, Database& database)
+bool Output::output(const QString& targetFilename, Database& database, bool utf8, bool append)
 {
-    QFile f(filename);
-    if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
+    QFile f(targetFilename);
+    QFile::OpenMode mode = QIODevice::WriteOnly | QIODevice::Text;
+    if (append) mode |= QIODevice::Append;
+    if(!f.open(mode))
     {
-        return;
+        return false;
     }
+    if (append) f.write("\n");
     if((m_outputType == Html) || (m_outputType == NotationWidget) ||
-       (isPgnType(m_outputType) && database.isUtf8()))
+       (isPgnType(m_outputType) && utf8))
     {
         QTextStream out(&f);
         outputUtf8(out, database);
@@ -1056,6 +1039,12 @@ void Output::output(const QString& filename, Database& database)
     }
 
     f.close();
+    return true;
+}
+
+bool Output::output(const QString& targetFilename, Database& database, bool append)
+{
+    output(targetFilename, database, database.isUtf8(), append);
 }
 
 void Output::outputLatin1(const QString& filename, Database& database)
@@ -1078,43 +1067,17 @@ QString Output::outputUtf8(Database* database)
     return s;
 }
 
-bool Output::append(const QString& filename, GameX& game)
+bool Output::append(const QString& filename, GameX& game, bool utf8)
 {
-    QFile f(filename);
-    if(!f.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
-    {
-        return false;
-    }
-    QTextStream out(&f);
-    if((m_outputType == Html) || (m_outputType == NotationWidget))
-    {
-        SET_CODEC_UTF8(out);
-    }
-    else
-    {
-        SET_CODEC_LATIN1(out);
-    }
-    out << Qt::endl;
-    out << output(&game);
-    f.close();
-    return true;
+    MemoryDatabase mdb;
+    mdb.setUtf8(utf8);
+    mdb.appendGame(game);
+    return append(filename, mdb, utf8);
 }
 
-void Output::append(const QString& filename, Database& database)
+bool Output::append(const QString& filename, Database& database, bool utf8)
 {
-    QFile f(filename);
-    if(!f.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
-    {
-        return;
-    }
-    QTextStream out(&f);
-    if((m_outputType == Html) || (m_outputType == NotationWidget))
-    {
-        SET_CODEC_UTF8(out);
-    }
-    out << Qt::endl;
-    outputUtf8(out, database);
-    f.close();
+    return output(filename, database, utf8, true);
 }
 
 void Output::setTemplateFile(QString filename)

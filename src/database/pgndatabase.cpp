@@ -1031,10 +1031,13 @@ void PgnDatabase::parseComment(GameX* game)
             if (game->plyCount()==0 && m_inPreComment)
             {
                 game->dbSetAnnotation(m_precomment, 0);
-                m_inPreComment = false; // TODO - what is this? Will be overwritten next ??
+                m_inPreComment = false;
             }
-            m_precomment = m_comment.trimmed();
-            m_inPreComment = true;
+            else
+            {
+                m_precomment = m_comment.trimmed();
+                m_inPreComment = true;
+            }
         }
         else
         {

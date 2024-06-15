@@ -300,7 +300,10 @@ void MainWindow::slotFileExportGame()
     if(!filename.isEmpty())
     {
         Output output(static_cast<Output::OutputType>(format), &BoardView::renderImageForBoard);
-        output.output(filename, game());
+        MemoryDatabase mdb;
+        mdb.setUtf8(false);
+        mdb.appendGame(game());
+        output.output(filename, mdb);
     }
 }
 
@@ -3071,7 +3074,7 @@ void MainWindow::copyGames(QString destination, QList<GameId> indexes, QString s
         {
             m_gameList->startUpdate();
         }
-        // TODO: Das Filtermodel muss vorher verst�ndigt werden
+        // TODO: Das Filtermodel muss vorher verstaendigt werden
         pDestDBInfo->filter()->resize(pDestDBInfo->database()->count() + static_cast<quint64>(indexes.count()), true);
         foreach (GameId index, indexes)
         {
@@ -3094,7 +3097,7 @@ void MainWindow::copyGames(QString destination, QList<GameId> indexes, QString s
     {
         if(pSrcDBInfo->database()->loadGame(index, g))
         {
-            success = writer.append(destination, g);
+            success = writer.append(destination, g, pDestDBInfo ? pDestDBInfo->IsUtf8() : false);
             m_databaseList->update(destination);
             if (!success) break;
         }
@@ -3135,53 +3138,61 @@ void MainWindow::copyDatabase(QString target, QString src)
 
             pDestDBInfo->filter()->resize(pDestDB->count(), true);
         }
-        else if((!pSrcDB || (pSrcDBInfo && !pSrcDBInfo->IsBook() && !pSrcDBInfo->modified())) && !pDestDB)
+        else if(!pSrcDB && !pDestDB)
         {
-            // Both databases are closed or the target is closed and the source unmodified (so that file can be used)
-            QFile fSrc(src);
-            QFile fDest(target); // If it does not exist, it will be created here
-
-            if(fiDest.suffix().toLower()=="pgn"
-                    && fiSrc.exists() && fiSrc.suffix().toLower()=="pgn"
-                    && fSrc.open(QIODevice::ReadOnly) &&
-                    fDest.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+            // Both databases are closed
+            bool utf8Src = m_databaseList->fileUtf8(src);
+            bool utf8Dest = m_databaseList->fileUtf8(target);
+            if (utf8Src == utf8Dest)
             {
-                done = true;
-                QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName(), fiDest.fileName());
-                slotStatusMessage(msg);
-                fDest.write("\r\n");
-                while(!fSrc.atEnd())
+                QFile fSrc(src);
+                QFile fDest(target); // If it does not exist, it will be created here
+
+                if(fiDest.suffix().toLower()=="pgn"
+                        && fiSrc.exists() && fiSrc.suffix().toLower()=="pgn"
+                        && fSrc.open(QIODevice::ReadOnly) &&
+                        fDest.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
                 {
-                    QByteArray line = fSrc.readLine();
-                    fDest.write(line);
+                    done = true;
+                    QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName(), fiDest.fileName());
+                    slotStatusMessage(msg);
+                    fDest.write("\r\n");
+                    while(!fSrc.atEnd())
+                    {
+                        QByteArray line = fSrc.readLine();
+                        fDest.write(line);
+                    }
+                    fSrc.close();
+                    fDest.close();
+                    m_databaseList->update(target);
                 }
-                fSrc.close();
-                fDest.close();
-                m_databaseList->update(target);
+            }
+            else
+            {
+                QString msg = tr("Appending games failed (UTF8 mismatch %1 to %2)").arg(fiSrc.fileName(), fiDest.fileName());
+                slotStatusMessage(msg);
             }
         }
-        else if (pSrcDB && pSrcDBInfo && !pSrcDBInfo->IsBook() && pSrcDBInfo->modified() && !pDestDB && fiDest.exists() && fiDest.suffix().toLower()=="pgn")
+        else if (pSrcDB && pSrcDBInfo && !pSrcDBInfo->IsBook() && !pDestDB && fiDest.exists() && fiDest.suffix().toLower()=="pgn")
         {
-            // Src is open and modified, target is closed
+            // Src is open and not a book, target is closed
             QFile fDest(target);
+            done = true;
+            bool utf8 = m_databaseList->fileUtf8(target);
+            Output output(Output::Pgn, &BoardView::renderImageForBoard);
+            output.append(target, *pSrcDB, utf8);
 
-            if(fDest.isWritable())
-            {
-                done = true;
-                Output output(Output::Pgn, &BoardView::renderImageForBoard);
-                output.append(target, *pSrcDB);
-
-                QString msg = tr("Append games from %1 to %2.").arg(pSrcDB->name(), fiDest.fileName());
-                slotStatusMessage(msg);
-                m_databaseList->update(target);
-            }
+            QString msg = tr("Append games from %1 to %2.").arg(pSrcDB->name(), fiDest.fileName());
+            slotStatusMessage(msg);
+            m_databaseList->update(target);
         }
         else if (!pSrcDB && fiSrc.exists() && fiSrc.suffix().toLower()=="pgn" && pDestDB)
         {
-            // Source is closed, target is open
+            // Source is closed and a pgn file, target is open
             StreamDatabase streamDb;
             streamDb.set64bit(true);
-            if (streamDb.open(src, pDestDB->isUtf8()))
+            bool utf8 = m_databaseList->fileUtf8(src);
+            if (streamDb.open(src, utf8))
             {
                 GameX g;
                 while (streamDb.loadNextGame(g))
@@ -3200,7 +3211,7 @@ void MainWindow::copyDatabase(QString target, QString src)
         }
         else if (!pSrcDB && fiSrc.exists() && fiSrc.suffix().toLower()=="abk" && pDestDB)
         {
-            // Source is closed, target is open
+            // Source is closed and an arena book, target is open
             ArenaBook abk;
             if (abk.open(src, false) && abk.parseFile())
             {
