@@ -1044,7 +1044,7 @@ bool Output::output(const QString& targetFilename, Database& database, bool utf8
 
 bool Output::output(const QString& targetFilename, Database& database, bool append)
 {
-    output(targetFilename, database, database.isUtf8(), append);
+    return output(targetFilename, database, database.isUtf8(), append);
 }
 
 void Output::outputLatin1(const QString& filename, Database& database)

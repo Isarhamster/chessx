@@ -1,5 +1,4 @@
 #include "tournamentselectiondialog.h"
-#include "QtWidgets/qlistwidget.h"
 #include "ui_tournamentselectiondialog.h"
 #include "lichesstransfer.h"
 #include <QUrl>
@@ -42,7 +41,7 @@ void TournamentSelectionDialog::fill()
             QJsonArray rounds = it.value("rounds").toArray();
             QDateTime now = QDateTime::currentDateTime();
             qint64 startsAt = now.toMSecsSinceEpoch() + 1;
-            foreach(QJsonValue round, rounds)
+            for (const auto &round : rounds)
             {
                 QString v = round.toObject().value("startsAt").toString();
                 qint64 vv = v.toLongLong();
