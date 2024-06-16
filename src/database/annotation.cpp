@@ -18,7 +18,7 @@ void Annotation::toggle(const QString& e)
     int n = l.indexOf(e);
     if (n>=0)
     {
-        l.remove(n);
+        l.removeAt(n);
     }
     else
     {
@@ -33,7 +33,7 @@ void Annotation::removeOne(const QRegularExpression& re)
     int n = l.indexOf(re);
     if (n>=0)
     {
-        l.remove(n);
+        l.removeAt(n);
     }
     annotation = l.join(',');
 }

@@ -44,7 +44,9 @@ void TournamentSelectionDialog::fill()
             qint64 startsAt = now.toMSecsSinceEpoch() + 1;
             foreach(QJsonValue round, rounds)
             {
-                startsAt = std::min(round.toObject().value("startsAt").toInteger(), startsAt);
+                QString v = round.toObject().value("startsAt").toString();
+                qint64 vv = v.toLongLong();
+                startsAt = std::min(vv, startsAt);
             }
             QTableWidget* w = ui->tournements;
             if ((startsAt <= now.toMSecsSinceEpoch()) && !name.isEmpty() && !id.isEmpty())
