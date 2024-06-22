@@ -369,7 +369,7 @@ void AnalysisWidget::showAnalysis(Analysis analysis)
 
     if (bestMove)
     {
-        analysis.setElapsedTimeMS(elapsed);
+        c.setElapsedTimeMS(elapsed);
         emit receivedBestMove(c);
     }
 
