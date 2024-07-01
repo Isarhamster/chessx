@@ -531,9 +531,8 @@ INCLUDEPATH += src/quazip
 INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib
 
 win32 {
-  # DEFINES += ZLIB_WINAPI
-  # LIBS += -lz
-  INCLUDEPATH += $$[QT_INSTALL_HEADERS]/QtZlib
+  DEFINES += ZLIB_WINAPI
+  LIBS += -lz
   win32-g++:LIBS += -lz
 }
 
