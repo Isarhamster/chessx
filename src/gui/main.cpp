@@ -100,6 +100,11 @@ prevHook = _CrtSetReportHook(customReportHook);
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);  // Windows Surface Book
 #endif
 
+#if defined Q_OS_UNIX && !defined Q_OS_MAC
+    // Workaround native dialog issues with Linux
+    QCoreApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
+#endif
+
     QApplication app(argc, argv);
 
     QApplication::setFont(QMessageBox().font()); // Workaround for severe bug in Qt5
