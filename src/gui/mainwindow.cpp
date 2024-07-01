@@ -9,13 +9,13 @@
 
 #include "actiondialog.h"
 #include "analysiswidget.h"
-#include "boardsetup.h"
+#include "annotation.h"
+#include "annotationwidget.h"
 #include "boardview.h"
 #include "boardviewex.h"
-#include "chartwidget.h"
+#include "chessxsettings.h"
 #include "clipboarddatabase.h"
 #include "commentdialog.h"
-#include "copydialog.h"
 #include "databaseinfo.h"
 #include "databaselist.h"
 #include "databaselistmodel.h"
@@ -34,7 +34,6 @@
 #include "gamewindow.h"
 #include "gametoolbar.h"
 #include "gamenotationwidget.h"
-#include "helpbrowser.h"
 #include "helpbrowsershell.h"
 #include "historylabel.h"
 #include "kbaction.h"
@@ -42,22 +41,18 @@
 #include "loadquery.h"
 #include "mainwindow.h"
 #include "messagedialog.h"
-#include "memorydatabase.h"
 #include "networkhelper.h"
 #include "onlinebase.h"
 #include "openingtreewidget.h"
 #include "output.h"
-#include "pgndatabase.h"
 #include "playerlistwidget.h"
 #include "quazip.h"
 #include "quazipfile.h"
 #include "savedialog.h"
 #include "settings.h"
-#include "style.h"
-#include "tagdialog.h"
 #include "tags.h"
 #include "textedit.h"
-#include "toolmainwindow.h"
+#include "tournamentselectiondialog.h"
 #include "translatingslider.h"
 #include "version.h"
 
@@ -73,10 +68,9 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QProgressBar>
+#include <QRegularExpression>
 #include <QSizePolicy>
-#ifdef USE_SOUND
-#include <QSound>
-#endif
+#include <QSoundEffect>
 #include <QSplitter>
 #include <QStatusBar>
 #include <QTabBar>
@@ -85,6 +79,7 @@
 #endif
 #include <QTimer>
 #include <QToolBar>
+#include "qt6compat.h"
 
 template< typename T, std::size_t N >
 inline constexpr std::size_t sizeofArray( const T(&)[N] ) noexcept { return N; }
@@ -136,7 +131,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(pClipDB,SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
     connect(pClipDB, SIGNAL(dirtyChanged(bool)), SLOT(slotDatabaseDirty(bool)));
-    m_registry->m_databases.append(pClipDB);
+    m_registry->append(pClipDB);
     m_currentDatabase = pClipDB;
 
     /* Game List */
@@ -219,13 +214,26 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameWindow, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
 
     m_menuView->addAction(gameTextDock->toggleViewAction());
-    gameTextDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_E);
+    gameTextDock->toggleViewAction()->setShortcut(Qt::CTRL | Qt::Key_E);
+
+    DockWidgetEx* annotationTextDock = new DockWidgetEx(tr("Annotations"), this);
+    annotationTextDock->setObjectName("AnnotationTextDock");
+    annotationWidget = new AnnotationWidget(annotationTextDock);
+    annotationTextDock->setWidget(annotationWidget);
+    connect(this, SIGNAL(reconfigure()), annotationWidget, SLOT(slotReconfigure()));
+
+    addDockWidget(Qt::RightDockWidgetArea, annotationTextDock);
+
+    m_menuView->addAction(annotationTextDock->toggleViewAction());
+    connect(annotationWidget, SIGNAL(enterVariation(int)), this, SLOT(slotGameVarEnter(int)));
+    connect(annotationWidget, SIGNAL(signalNewAnnotation(QString)), SLOT(slotGameSetComment(QString)));
 
     /* Game List */
     m_gameList->setMinimumSize(150, 100);
     connect(m_gameList, SIGNAL(gameSelected(GameId)), SLOT(slotFilterLoad(GameId)));
     connect(m_gameList, SIGNAL(requestCopyGame(QList<GameId>)), SLOT(slotDatabaseCopy(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestFindDuplicates(QList<GameId>)), SLOT(slotDatabaseFindDuplicates(QList<GameId>)));
+    connect(m_gameList, SIGNAL(requestFindIdenticals(QList<GameId>)), SLOT(slotDatabaseFindIdenticals(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestMergeGame(QList<GameId>)), SLOT(slotMergeActiveGameList(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestMergeAllGames()), SLOT(slotMergeAllGames()));
     connect(m_gameList, SIGNAL(requestMergeFilter()), SLOT(slotMergeFilter()));
@@ -237,7 +245,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(this, SIGNAL(reconfigure()), m_gameList, SLOT(slotReconfigure()));
     gameListDock->setWidget(m_gameList);
     m_menuView->addAction(gameListDock->toggleViewAction());
-    gameListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_L);
+    gameListDock->toggleViewAction()->setShortcut(Qt::CTRL | Qt::Key_L);
     connect(m_gameList, SIGNAL(raiseRequest()), gameListDock, SLOT(raise()));
 
     // Player List
@@ -248,7 +256,7 @@ MainWindow::MainWindow() : QMainWindow(),
     playerListDock->setWidget(m_playerList);
     // addDockWidget(Qt::RightDockWidgetArea, playerListDock);
     m_menuView->addAction(playerListDock->toggleViewAction());
-    playerListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
+    playerListDock->toggleViewAction()->setShortcut(Qt::CTRL | Qt::ALT | Qt::Key_P);
     connect(m_playerList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByPlayer(QString)));
     connect(m_playerList, SIGNAL(renameRequest(QString)), SLOT(slotRenamePlayer(QString)));
     connect(m_playerList, SIGNAL(filterEcoPlayerRequest(QString,QString,QString,QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString,QString,QString,QString)));
@@ -263,7 +271,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_eventList->setMinimumSize(150, 100);
     eventListDock->setWidget(m_eventList);
     m_menuView->addAction(eventListDock->toggleViewAction());
-    eventListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_P);
+    eventListDock->toggleViewAction()->setShortcut(Qt::CTRL | Qt::SHIFT | Qt::Key_P);
     connect(m_eventList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByEvent(QString)));
     connect(m_eventList, SIGNAL(renameRequest(QString)), SLOT(slotRenameEvent(QString)));
     connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString,QString)), m_gameList, SLOT(slotFilterListByEventPlayer(QString,QString)));
@@ -279,7 +287,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_ecoList->setMinimumSize(150, 100);
     ecoListDock->setWidget(m_ecoList);
     m_menuView->addAction(ecoListDock->toggleViewAction());
-    ecoListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_E);
+    ecoListDock->toggleViewAction()->setShortcut(Qt::CTRL | Qt::ALT | Qt::Key_E);
     connect(m_ecoList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByEco(QString)));
     connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString,QString,QString,QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString,QString,QString,QString)));
     connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString,QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
@@ -295,7 +303,7 @@ MainWindow::MainWindow() : QMainWindow(),
     dbListDock->setWidget(m_databaseList);
     // addDockWidget(Qt::RightDockWidgetArea, dbListDock);
     m_menuView->addAction(dbListDock->toggleViewAction());
-    dbListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_D);
+    dbListDock->toggleViewAction()->setShortcut(Qt::CTRL | Qt::Key_D);
     connect(m_databaseList, SIGNAL(requestOpenDatabase(QString,bool)),
             this, SLOT(openDatabaseUrl(QString,bool)));
     connect(m_databaseList, SIGNAL(requestCloseDatabase(QString)),
@@ -323,7 +331,7 @@ MainWindow::MainWindow() : QMainWindow(),
     lichessBase->open("Lichess Master", false);
     DatabaseInfo* pLichessDB = new DatabaseInfo(&m_undoGroup, lichessBase);
     pLichessDB->open(false);
-    m_registry->m_databases.append(pLichessDB);
+    m_registry->append(pLichessDB);
     m_databaseList->addFileOpen(lichessBase->filename(), false);
 
 #if 0 // TODO: This causes a more or less subtle multithreading issue
@@ -360,7 +368,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_openingTreeWidget, SIGNAL(requestGameFilterUpdate(int,int)), this, SLOT(slotGameFilterUpdate(int,int)));
 
     connect(this, SIGNAL(reconfigure()), m_openingTreeWidget, SLOT(slotReconfigure()));
-    openingDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);
+    openingDock->toggleViewAction()->setShortcut(Qt::CTRL | Qt::Key_T);
     openingDock->hide();
     connect(this, SIGNAL(signalDatabaseOpenClose()), this, SLOT(slotUpdateOpeningTreeWidget()));
     connect(this, SIGNAL(signalGameModeChanged(bool)), m_openingTreeWidget, SLOT(setDisabled(bool)));
@@ -375,11 +383,12 @@ MainWindow::MainWindow() : QMainWindow(),
 
     // Arrange Lower Rightside docks
     tabifyDockWidget(gameTextDock, gameListDock);
+    tabifyDockWidget(gameTextDock, annotationTextDock);
 
     /* Analysis Dock */
     DockWidgetEx* analysisDock = new DockWidgetEx(tr("Analysis 1"), this);
     analysisDock->setObjectName("AnalysisDock1");   
-    analysisDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F2);
+    analysisDock->toggleViewAction()->setShortcut(Qt::CTRL | Qt::Key_F2);
     m_mainAnalysis = new AnalysisWidget(this);
     m_mainAnalysis->setObjectName("Analysis");
     setupAnalysisWidget(analysisDock, m_mainAnalysis);
@@ -388,13 +397,13 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Analysis Dock 2 */
     DockWidgetEx* analysisDock2 = new DockWidgetEx(tr("Analysis 2"), this);
     analysisDock2->setObjectName("AnalysisDock2");
-    analysisDock2->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F3);
+    analysisDock2->toggleViewAction()->setShortcut(Qt::CTRL | Qt::Key_F3);
     m_secondaryAnalysis = new AnalysisWidget(this);
     m_secondaryAnalysis->setObjectName("Analysis2");
     setupAnalysisWidget(analysisDock2, m_secondaryAnalysis);
     addDockWidget(Qt::LeftDockWidgetArea, analysisDock2);
 
-    /* Randomize */
+    /* Randomize for legacy code (SCID, zip) - this does not work reliably depending on OS due to multithreading */
     srand(time(nullptr));
 
     /* Append the FICS console to the view menu */
@@ -485,6 +494,17 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(this, SIGNAL(databaseModified()), SLOT(slotDatabaseModified()));
     CreateBoardView();
 
+#ifdef USE_SPEECH
+    qRegisterMetaType<QTextToSpeech::State>("State");
+    if (QTextToSpeech::availableEngines().count())
+    {
+        speech = new QTextToSpeech(this);
+        ChessXSettings::configureSpeech(speech);
+        connect(speech, SIGNAL(stateChanged(QTextToSpeech::State)), SLOT(speechStateChanged(QTextToSpeech::State)), Qt::QueuedConnection);
+    }
+#endif
+    effect = new QSoundEffect(this);
+
     /* Setup the dimensions of all widgets and the main board */
     slotReconfigure();
 
@@ -526,20 +546,6 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(ecothread, SIGNAL(loaded(QObject*,bool)), this, SLOT(ecoLoaded(QObject*,bool)));
     ecothread->start();
     StartCheckUpdate();
-#ifdef USE_SPEECH
-    qRegisterMetaType<QTextToSpeech::State>("State");
-    if (QTextToSpeech::availableEngines().count())
-    {
-        speech = new QTextToSpeech(this);
-        const QVector<QLocale> locales = speech->availableLocales();
-        QLocale cxLocale(AppSettings->getValue("/General/language").toString());
-        if (locales.contains(cxLocale))
-        {
-            speech->setLocale(cxLocale);
-        }
-        connect(speech, SIGNAL(stateChanged(QTextToSpeech::State)), SLOT(speechStateChanged(QTextToSpeech::State)), Qt::QueuedConnection);
-    }
-#endif
 
     if (isMinimized())
     {
@@ -643,6 +649,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
         m_gameWindow->saveConfig();
         m_scratchPad->saveConfig();
         m_gameView->saveConfig();
+        annotationWidget->saveConfig();
         m_ficsConsole->saveConfig();
         m_mainAnalysis->saveConfig();
         m_secondaryAnalysis->saveConfig();
@@ -676,9 +683,9 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
         return;
     }
 
-    if ((e->key() == Qt::Key_Backspace) && m_nagText.count())
+    if ((e->key() == Qt::Key_Backspace) && m_nagText.size())
     {
-        m_nagText = m_nagText.left(m_nagText.count()-1);
+        m_nagText = m_nagText.left(m_nagText.size()-1);
         return;
     }
 
@@ -735,8 +742,7 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
             {
                 QTime t = QTime::fromString(m_nagText, "H:mm:ss");
                 QString ts = t.toString("H:mm:ss");
-                QString clk = "[%clk %1]";
-                QString annot = clk.arg(ts);
+                QString annot = ClockAnnotation(ts).asAnnotation();
                 game().setTimeAnnotation(annot);
             }
         }
@@ -865,7 +871,7 @@ void MainWindow::gameLoad(GameId index)
                     QString name = AppSettings->getValue("/Board/PlayerTurnBoard").toString();
                     if (!name.isEmpty())
                     {
-                        QRegExp re(name);
+                        QRegularExpression re(name);
                         QString nameWhite = game().tag(TagNameWhite);
                         QString nameBlack = game().tag(TagNameBlack);
                         if (nameBlack.indexOf(re) >= 0)
@@ -979,7 +985,7 @@ void MainWindow::slotGameMovePreviousN()
 
 void MainWindow::openDatabase(QString fname)
 {
-    openDatabaseUrl(fname, false);
+    openDatabaseUrl(fname);
 }
 
 QString MainWindow::ficsPath() const
@@ -987,9 +993,20 @@ QString MainWindow::ficsPath() const
     return DatabaseInfo::ficsPath();
 }
 
+void MainWindow::appendDatabaseUrl(QString fname, bool utf8, QString target)
+{
+    if (!target.isEmpty())
+    {
+        QUrl url = QUrl::fromUserInput(fname);
+        copyFileNames.insert(url.toString(QUrl::RemoveScheme),target);
+    }
+    openDatabaseUrl(fname, utf8);
+}
+
 void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
     QUrl url = QUrl::fromUserInput(fname);
+    if (fname.startsWith("http")) url.setScheme("http");
     if (fname == "Clipboard")
     {
         ActivateDatabase("Clipboard");
@@ -1001,7 +1018,7 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
         {
             slotStatusMessage(tr("Start loading database..."));
             connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
-            connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(loadReady(QUrl, QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
+            connect(downloadManager, SIGNAL(onDownloadFinished(QUrl,QString)), this, SLOT(loadReady(QUrl,QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
             downloadManager->doDownload(url);
         }
         else
@@ -1024,11 +1041,29 @@ void MainWindow::openWebFavorite()
     QString url = favoriteUrl();
     if (!url.isEmpty())
     {
-        openDatabaseUrl(favoriteUrl(), false);
+        appendDatabaseUrl(url, false, AppSettings->getValue("Web/Destination1").toString());
     }
     else
     {
         slotConfigure("webfavorite");
+    }
+}
+
+void MainWindow::openLichessBroadcast()
+{
+    TournamentSelectionDialog dlg;
+    dlg.run();
+    QList<QPair<QString, QString>> l = dlg.getTournaments();
+    QPair<QString, QString> p;
+    foreach (p, l)
+    {
+        QString s = p.first;
+        s += ".pgn";
+        s.prepend("https://lichess.org/api/broadcast/");
+        QString name = p.second;
+        name.append(".pgn");
+        QString target = AppSettings->commonDataFilePath(name);
+        appendDatabaseUrl(s, false, target);
     }
 }
 
@@ -1037,8 +1072,10 @@ void MainWindow::openLichess()
     QString account = AppSettings->getValue("/Lichess/userName").toString();
     QDate date = QDate::currentDate();
     QDate start(date.year(),date.month(),1);
+    QDate end(date.year(),date.month(),1);
 
     OnlineBase db;
+// TODO Debug Tournament handles - they don't work reliably db.setTournament("");
 
     QAction* action = qobject_cast<QAction*>(sender());
     if (action)
@@ -1049,20 +1086,40 @@ void MainWindow::openLichess()
 
     db.setHandle(account);
     db.setStartDate(start);
+    db.setEndDate(end);
     if (db.exec() == QDialog::Accepted)
     {
+        QString tournament = db.getTournament();
         account = db.getHandle();
         start = db.getStartDate();
+        end = db.getEndDate();
 
-        if (!account.isEmpty())
+        if (tournament.isEmpty())
         {
-            quint64 since= QDateTime(start).toMSecsSinceEpoch(); // Better: start.startOfDay().toMSecsSinceEpoch(); but that is Qt5
-            QString url = QString("https://lichess.org/api/games/user/%1?since=%2").arg(account).arg(since);
-            openDatabaseUrl(url, false);
+            if (!account.isEmpty())
+            {
+                quint64 since= start.startOfDay().toMSecsSinceEpoch();
+                quint64 until= end.endOfDay().toMSecsSinceEpoch();
+                QString url = QString("https://lichess.org/api/games/user/%1?since=%2&until=%3").arg(account).arg(since).arg(until);
+                openDatabaseUrl(url);
+            }
+            else
+            {
+                slotConfigure("lichess");
+            }
         }
         else
         {
-            slotConfigure("lichess");
+            QString url;
+            if (account.isEmpty())
+            {
+                url = QString("https://lichess.org/api/tournament/%1/games").arg(tournament);
+            }
+            else
+            {
+                url = QString("https://lichess.org/api/tournament/%1/games?player=%2").arg(tournament).arg(account);
+            }
+            openDatabaseUrl(url);
         }
     }
 }
@@ -1072,6 +1129,7 @@ void MainWindow::openChesscom()
     QString account = AppSettings->getValue("/Chesscom/userName").toString();
     QDate date = QDate::currentDate();
     QDate start(date.year(),date.month(),1);
+    QDate end(date.year(),date.month(),1);
 
     OnlineBase db;
     QAction* action = qobject_cast<QAction*>(sender());
@@ -1082,15 +1140,25 @@ void MainWindow::openChesscom()
     }
     db.setHandle(account);
     db.setStartDate(start);
+    db.setEndDate(end);
+    db.setDateFormat("MM/yyyy");
     if (db.exec() == QDialog::Accepted)
     {
         account = db.getHandle();
         start = db.getStartDate();
+        end = db.getEndDate();
+        QString s = QString("ChessCom_%1_%2-%3.pgn").arg(account).arg(start.toString("yyyyMM")).arg(end.toString("yyyyMM"));
+        QString target = AppSettings->commonDataFilePath(s);
         if (!account.isEmpty())
         {
-            QString s = start.toString("yyyy/MM");
-            QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account).arg(s);
-            openDatabaseUrl(url, true);
+            QDate fetchMonth = start;
+            while (fetchMonth <= end)
+            {
+                QString s = fetchMonth.toString("yyyy/MM");
+                QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account).arg(s);
+                appendDatabaseUrl(url, true, target);
+                fetchMonth = fetchMonth.addMonths(1);
+            }
         }
         else
         {
@@ -1102,6 +1170,58 @@ void MainWindow::openChesscom()
 void MainWindow::openFICS()
 {
     openDatabaseFile(ficsPath(), false);
+}
+
+void MainWindow::copyDatabaseArchive(QString fname, QString destination)
+{
+    if(DatabaseInfo::IsLocalDatabase(fname))
+    {
+        copyDatabase(destination, fname);
+    }
+    else
+    {
+        QFileInfo fi = QFileInfo(fname);
+        QString dir = AppSettings->commonDataPath();
+
+        fname = fi.canonicalFilePath();
+
+        if(!fname.isEmpty())
+        {
+            QuaZip zip(fname);
+            if(zip.open(QuaZip::mdUnzip))
+            {
+                // first, we need some information about archive itself
+                // QString comment = zip.getComment();
+                // and now we are going to access files inside it
+                QuaZipFile file(&zip);
+                for(bool more = zip.goToFirstFile(); more; more = zip.goToNextFile())
+                {
+                    file.open(QIODevice::ReadOnly);
+                    QString outName = dir + QDir::separator() + file.getActualFileName();
+                    QDir pathOut;
+                    outName = pathOut.absoluteFilePath(outName);
+                    if(!QFile::exists(outName))
+                    {
+                        QDir().mkpath(dir);
+
+                        QFile out(outName);
+                        if(out.open(QIODevice::WriteOnly))
+                        {
+                            out.write(file.readAll());
+                            out.close();
+                            copyDatabase(destination, outName);
+                        }
+                        else
+                        {
+                            qDebug() << "File Error: " << out.error();
+                        }
+                    }
+                    file.close();
+                }
+                zip.close();
+            }
+        }
+    }
 }
 
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
@@ -1240,18 +1360,21 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     }
     else
     {
-        m_registry->m_databases.append(db);
+        m_registry->append(db);
     }
 }
 
 void MainWindow::loadError(QUrl url)
 {
+    copyFileNames.remove(url);
     QFileInfo fi = QFileInfo(url.toString());
     slotStatusMessage(tr("Database %1 cannot be accessed at the moment (%2).").arg(fi.fileName(), url.errorString()));
 }
 
 void MainWindow::loadReady(QUrl url, QString fileName)
 {
+    QString target = copyFileNames.take(url.toString(QUrl::RemoveScheme));
+
     QString fav = favoriteUrl();
     QString favurl = AppSettings->getValue("Web/Favorite1").toString();
     if ((url == fav) && favurl.contains("$1"))
@@ -1260,7 +1383,22 @@ void MainWindow::loadReady(QUrl url, QString fileName)
         ++n;
         AppSettings->setValue("Web/AutoNumber1",n);
     }
-    openDatabaseArchive(fileName, false);
+
+    if (!target.isEmpty())
+    {
+        // Instead of opening database, append it to a target database
+        copyDatabaseArchive(fileName, target);
+        QFileInfo fi(target);
+        if (fi.exists())
+        {
+            setFavoriteDatabase(target);
+            openDatabaseArchive(target, false);
+        }
+    }
+    else
+    {
+        openDatabaseArchive(fileName, false);
+    }
 }
 
 void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
@@ -1268,7 +1406,7 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
     if(!db->IsLoaded())
     {
         cancelOperation(tr("Cannot open file"));
-        m_registry->m_databases.removeOne(db);
+        m_registry->remove(db);
         delete db;
         return;
     }
@@ -1328,26 +1466,13 @@ QString MainWindow::exportFileName(int& format)
     QStringList filters;
     filters << tr("PGN file (*.pgn)")
             << tr("HTML page (*.html)")
-            << tr("LaTeX document (*.tex)");
-#if QT_VERSION < 0x050000
-    fd.setFilters(filters);
-#else
+            << tr("LaTeX document (*.tex)")
+            << tr("Localized PGN (*.txt)");
     fd.setNameFilters(filters);
-#endif
     if(fd.exec() != QDialog::Accepted)
     {
         return QString();
     }
-#if QT_VERSION < 0x050000
-    if(fd.selectedFilter().contains("*.tex"))
-    {
-        format = Output::Latex;
-    }
-    else if(fd.selectedFilter().contains("*.html"))
-    {
-        format = Output::Html;
-    }
-#else
     if(fd.selectedNameFilter().contains("*.tex"))
     {
         format = Output::Latex;
@@ -1356,7 +1481,10 @@ QString MainWindow::exportFileName(int& format)
     {
         format = Output::Html;
     }
-#endif
+    else if(fd.selectedNameFilter().contains("*.txt"))
+    {
+       format = Output::LocalPgn;
+    }
     else
     {
         format = Output::Pgn;
@@ -1364,7 +1492,7 @@ QString MainWindow::exportFileName(int& format)
     return fd.selectedFiles().constFirst();
 }
 
-bool MainWindow::gameEditComment(Output::CommentType type)
+void MainWindow::gameEditComment(Output::CommentType type, bool checkModifier)
 {
     QString annotation;
     int moves;
@@ -1380,11 +1508,31 @@ bool MainWindow::gameEditComment(Output::CommentType type)
     {
         annotation = game().annotation();
     }
+
+    if (checkModifier && (QGuiApplication::keyboardModifiers() & Qt::ShiftModifier))
+    {
+        // Not elegant, taking the first URL, but it's a start
+        if (annotation.contains("https://") || annotation.contains("http://"))
+        {
+            QRegularExpression rx("((?:https?|ftp)://\\S+)");
+            QRegularExpressionMatch match;
+            if (annotation.indexOf(rx, 0, &match) >= 0)
+            {
+                QString cap = match.captured(1);
+                cap = cap.left(cap.indexOf('\''));
+                if (QDesktopServices::openUrl(cap))
+                {
+                    return;
+                }
+            }
+        }
+    }
+
     CommentDialog dlg(this);
     dlg.setText(annotation);
     if(!dlg.exec())
     {
-        return false;
+        return;
     }
 
     if((type == Output::Precomment) || (moves <= 0))
@@ -1408,7 +1556,6 @@ bool MainWindow::gameEditComment(Output::CommentType type)
         spec = GameX::cleanAnnotation(spec, GameX::AnnotationFilter(GameX::FilterEval | GameX::FilterTan));
         game().setAnnotation(dlg.text()+spec);
     }
-    return true;
 }
 
 QAction* MainWindow::createAction(QObject* parent, QString name, const char* slot, const QKeySequence& key, QToolBar* pToolBar, QString image,
@@ -1490,11 +1637,12 @@ void MainWindow::setupActions()
     fileToolBar = addToolBar(tr("File"));
     fileToolBar->setObjectName("FileToolBar");
     
-    file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), Qt::CTRL + Qt::SHIFT + Qt::Key_N, fileToolBar, ":/images/new.png"));
+    file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), Qt::CTRL | Qt::SHIFT | Qt::Key_N, fileToolBar, ":/images/new.png"));
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
     file->addAction(createAction(tr("Open FICS"), SLOT(openFICS()), QKeySequence(), fileToolBar, ":/images/fics.png"));
     file->addAction(createAction(tr("Open Lichess"), SLOT(openLichess()), QKeySequence(), fileToolBar, ":/images/lichess.png"));
+    file->addAction(createAction(tr("Open Lichess Broadcast"), SLOT(openLichessBroadcast()), QKeySequence(), fileToolBar, ":/images/lichessbroadcast.png"));
     file->addAction(createAction(tr("Open chess.com"), SLOT(openChesscom()), QKeySequence(), fileToolBar, ":/images/chesscom.png"));
     file->addAction(createAction(tr("Web Favorite"), SLOT(openWebFavorite()), QKeySequence(), fileToolBar, ":/images/folder_web.png"));
 
@@ -1502,7 +1650,7 @@ void MainWindow::setupActions()
     connect(menuRecent, SIGNAL( aboutToShow()), this, SLOT(updateMenuRecent()));
     file->addSeparator();
 
-    QAction* commitAction = createAction(tr("Save Database"), SLOT(slotFileSave()), Qt::CTRL + Qt::SHIFT + Qt::Key_S, fileToolBar, ":/images/save.png");
+    QAction* commitAction = createAction(tr("Save Database"), SLOT(slotFileSave()), Qt::CTRL | Qt::SHIFT | Qt::Key_S, fileToolBar, ":/images/save.png");
 #ifndef QT_NO_TOOLTIP
     commitAction->setToolTip(tr("Commit Database to disk"));
 #endif // QT_NO_TOOLTIP
@@ -1534,8 +1682,8 @@ void MainWindow::setupActions()
     
     QAction *undoAction = m_undoGroup.createUndoAction(this, tr("Undo"));
     QAction *redoAction = m_undoGroup.createRedoAction(this, tr("Redo"));
-    undoAction->setShortcut(Qt::CTRL + Qt::Key_Z);
-    redoAction->setShortcuts({Qt::CTRL + Qt::Key_Y, Qt::CTRL + Qt::SHIFT + Qt::Key_Z});
+    undoAction->setShortcut(Qt::CTRL | Qt::Key_Z);
+    redoAction->setShortcuts({Qt::CTRL | Qt::Key_Y, Qt::CTRL | Qt::SHIFT | Qt::Key_Z});
     undoAction->setIcon(QIcon(":/images/undo.png"));
     redoAction->setIcon(QIcon(":/images/redo.png"));
 
@@ -1548,17 +1696,17 @@ void MainWindow::setupActions()
     edit->addSeparator();
 
     QAction* commentAfter = createAction(tr("Comment"), SLOT(slotEditComment()),
-                                         Qt::CTRL + Qt::Key_A, editToolBar, ":/images/edit_after.png");
+                                         Qt::CTRL | Qt::Key_A, editToolBar, ":/images/edit_after.png");
     connect(this, SIGNAL(signalGameIsEmpty(bool)), commentAfter, SLOT(setDisabled(bool)));
     edit->addAction(commentAfter);
     QAction* commentBefore = createAction(tr("Comment Before"), SLOT(slotEditCommentBefore()),
-                                          Qt::CTRL + Qt::ALT + Qt::Key_A);
+                                          Qt::CTRL | Qt::ALT | Qt::Key_A);
     connect(this, SIGNAL(signalGameAtLineStart(bool)), commentBefore, SLOT(setEnabled(bool)));
     edit->addAction(commentBefore);
 
     QMenu* editVariation = edit->addMenu(tr("Variation"));
 
-    QAction* promoteAction = createAction(editVariation, tr("Promote"), SLOT(slotEditVarPromote()), Qt::CTRL + Qt::Key_J, editToolBar, ":/images/format_indent_less.png");
+    QAction* promoteAction = createAction(editVariation, tr("Promote"), SLOT(slotEditVarPromote()), Qt::CTRL | Qt::Key_J, editToolBar, ":/images/format_indent_less.png");
 #ifndef QT_NO_TOOLTIP
     promoteAction->setToolTip(tr("Promote Variation"));
 #endif // QT_NO_TOOLTIP
@@ -1566,7 +1714,7 @@ void MainWindow::setupActions()
     editVariation->addAction(promoteAction);
 
     QAction* removeVariationAction = createAction(editVariation, tr("Remove"), SLOT(slotEditVarRemove()),
-                                     Qt::CTRL + Qt::Key_Delete, editToolBar, ":/images/edit_cut.png");
+                                     Qt::CTRL | Qt::Key_Delete, editToolBar, ":/images/edit_cut.png");
 #ifndef QT_NO_TOOLTIP
     removeVariationAction->setToolTip(tr("Remove Variation"));
 #endif // QT_NO_TOOLTIP
@@ -1577,43 +1725,43 @@ void MainWindow::setupActions()
     editremove->addAction(createAction(editremove, tr("Moves from the beginning"),
                                        SLOT(slotEditTruncateStart()), QKeySequence()));
     editremove->addAction(createAction(editremove, tr("Moves to the end"), SLOT(slotEditTruncateEnd()),
-                                       Qt::SHIFT + Qt::Key_Delete));
+                                       Qt::SHIFT | Qt::Key_Delete));
     edit->addSeparator();
     QAction* setupBoard = createAction(tr("Setup &position..."),
-                                       SLOT(slotEditBoard()), Qt::SHIFT + Qt::CTRL + Qt::Key_E,
+                                       SLOT(slotEditBoard()), Qt::SHIFT | Qt::CTRL | Qt::Key_E,
                                        editToolBar, ":/images/setup_board.png");
 
     edit->addAction(setupBoard);
     edit->addSeparator();
-    edit->addAction(createAction(tr("Copy PGN"), SLOT(slotEditCopyPGN()), Qt::CTRL + Qt::Key_C, editToolBar, ":/images/edit_copy.png"));
-    edit->addAction(createAction(tr("Copy FEN"), SLOT(slotEditCopyFEN()), Qt::CTRL + Qt::SHIFT + Qt::Key_C));
+    edit->addAction(createAction(tr("Copy PGN"), SLOT(slotEditCopyPGN()), Qt::CTRL | Qt::Key_C, editToolBar, ":/images/edit_copy.png"));
+    edit->addAction(createAction(tr("Copy FEN"), SLOT(slotEditCopyFEN()), Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     edit->addAction(createAction(tr("Copy Position"), SLOT(slotEditCopyHumanFEN())));
     edit->addAction(createAction(tr("Copy Image"), SLOT(slotEditCopyImage()),
-                                 Qt::CTRL + Qt::ALT + Qt::Key_C, editToolBar, ":/images/camera.png"));
+                                 Qt::CTRL | Qt::ALT | Qt::Key_C, editToolBar, ":/images/camera.png"));
     edit->addSeparator();
     edit->addAction(createAction(tr("Paste into new game"), SLOT(slotEditPaste()),
-                                 Qt::CTRL + Qt::SHIFT + Qt::Key_V));
+                                 Qt::CTRL | Qt::SHIFT | Qt::Key_V));
     edit->addAction(createAction(tr("Paste"), SLOT(slotEditMergePGN()),
-                                 Qt::CTRL + Qt::Key_V, editToolBar, ":/images/edit_paste.png"));
+                                 Qt::CTRL | Qt::Key_V, editToolBar, ":/images/edit_paste.png"));
     edit->addSeparator();
     brushGroup = new ExclusiveActionGroup(this);
     QMenu* brush = edit->addMenu(tr("Brush"));
-    QAction* brushAction = createAction(tr("Green"), SLOT(slotToggleBrush()), Qt::META + Qt::Key_1, editToolBar, ":/images/brush_green.png");
+    QAction* brushAction = createAction(tr("Green"), SLOT(slotToggleBrush()), Qt::META | Qt::Key_1, editToolBar, ":/images/brush_green.png");
     brushAction->setCheckable(true);
     brushAction->setData(QChar('G'));
     brush->addAction(brushAction);
     brushGroup->addAction(brushAction);
-    brushAction = createAction(tr("Yellow"), SLOT(slotToggleBrush()), Qt::META + Qt::Key_2, editToolBar, ":/images/brush_yellow.png");
+    brushAction = createAction(tr("Yellow"), SLOT(slotToggleBrush()), Qt::META | Qt::Key_2, editToolBar, ":/images/brush_yellow.png");
     brushAction->setCheckable(true);
     brushAction->setData(QChar('Y'));
     brush->addAction(brushAction);
     brushGroup->addAction(brushAction);
-    brushAction = createAction(tr("Red"), SLOT(slotToggleBrush()), Qt::META + Qt::Key_3, editToolBar, ":/images/brush_red.png");
+    brushAction = createAction(tr("Red"), SLOT(slotToggleBrush()), Qt::META | Qt::Key_3, editToolBar, ":/images/brush_red.png");
     brushAction->setCheckable(true);
     brushAction->setData(QChar('R'));
     brush->addAction(brushAction);
     brushGroup->addAction(brushAction);
-    brushAction = createAction(tr("Erase"), SLOT(slotToggleBrush()), Qt::META + Qt::Key_4, editToolBar, ":/images/brush_erase.png");
+    brushAction = createAction(tr("Erase"), SLOT(slotToggleBrush()), Qt::META | Qt::Key_4, editToolBar, ":/images/brush_erase.png");
     brushAction->setCheckable(true);
     brushAction->setData(QChar(0));
     brush->addAction(brushAction);
@@ -1639,7 +1787,7 @@ void MainWindow::setupActions()
     AppSettings->setValue("/MainWindow/StayOnTop", false);
 #endif
 
-    m_menuView->addAction(createAction(tr("Close current board"), SLOT(slotCloseTabWidget()), Qt::CTRL + Qt::SHIFT + Qt::Key_W,
+    m_menuView->addAction(createAction(tr("Close current board"), SLOT(slotCloseTabWidget()), Qt::CTRL | Qt::SHIFT | Qt::Key_W,
                                        nullptr, style()->standardIcon(QStyle::SP_TitleBarCloseButton)));
     m_menuView->addSeparator();
 
@@ -1719,8 +1867,8 @@ void MainWindow::setupActions()
                                         dbToolBar, ":/images/game_up.png");
     QAction * nextAction = createAction(tr("&Next"), SLOT(slotGameLoadNext()), Qt::Key_F4,
                                         dbToolBar, ":/images/game_down.png");
-    QAction * goAction = createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G);
-    QAction * rndAction = createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question,
+    QAction * goAction = createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL | Qt::Key_G);
+    QAction * rndAction = createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL | Qt::Key_Question,
                                      dbToolBar, ":/images/rnd_game.png");
     connect(this, SIGNAL(signalFilterEmpty(bool)), goAction, SLOT(setDisabled(bool)));
     connect(this, SIGNAL(signalFilterEmpty(bool)), rndAction, SLOT(setDisabled(bool)));
@@ -1743,14 +1891,14 @@ void MainWindow::setupActions()
 
     gameMenu->addSeparator();
 
-    QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B, gameToolBar, ":/images/flip_board.png");
+    QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL | Qt::Key_B, gameToolBar, ":/images/flip_board.png");
     flip->setCheckable(true);
     connect(m_ficsConsole, SIGNAL(SignalPlayerIsBlack(bool,bool)), flip, SLOT(setChecked(bool)));
     gameToolBar->addSeparator();
 
     autoGroup = new ExclusiveActionGroup(this);
 
-    m_match = createAction(tr("Match"), SLOT(slotToggleGameMode()), Qt::CTRL + Qt::Key_M, gameToolBar, ":/images/black_chess.png");
+    m_match = createAction(tr("Match"), SLOT(slotToggleGameMode()), Qt::CTRL | Qt::Key_M, gameToolBar, ":/images/black_chess.png");
     m_match->setCheckable(true);
 
     autoGroup->addAction(m_match);
@@ -1759,40 +1907,40 @@ void MainWindow::setupActions()
     connect(m_match, SIGNAL(changed()), SLOT(slotToggleGameMode()));
 
 #ifdef USE_SPEECH
-    gameMenu->addAction(createAction(tr("Read moves ahead"), SLOT(slotReadAhead()), Qt::CTRL + Qt::Key_Period, gameToolBar, ":/images/readAhead.png"));
+    gameMenu->addAction(createAction(tr("Read moves ahead"), SLOT(slotReadAhead()), Qt::CTRL | Qt::Key_Period, gameToolBar, ":/images/readAhead.png"));
 #endif
 
-    m_training = createAction(tr("Training"), SLOT(slotToggleTraining()), Qt::CTRL + Qt::Key_R, gameToolBar, ":/images/training.png");
+    m_training = createAction(tr("Training"), SLOT(slotToggleTraining()), Qt::CTRL | Qt::Key_R, gameToolBar, ":/images/training.png");
     m_training->setCheckable(true);
     autoGroup->addAction(m_training);
     gameMenu->addAction(m_training);
 
-    m_training2 = createAction(tr("Train both sides"), SLOT(slotToggleTraining()), Qt::CTRL + Qt::META + Qt::Key_R, gameToolBar, ":/images/training_both.png");
+    m_training2 = createAction(tr("Train both sides"), SLOT(slotToggleTraining()), Qt::CTRL | Qt::META | Qt::Key_R, gameToolBar, ":/images/training_both.png");
     m_training2->setCheckable(true);
     autoGroup->addAction(m_training2);
     gameMenu->addAction(m_training2);
 
-    m_autoPlay = createAction(tr("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_R, gameToolBar, ":/images/replay.png");
+    m_autoPlay = createAction(tr("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL | Qt::SHIFT | Qt::Key_R, gameToolBar, ":/images/replay.png");
     gameMenu->addAction(m_autoPlay);
     autoGroup->addAction(m_autoPlay);
     m_autoPlay->setCheckable(true);
 
-    m_autoAnalysis = createAction(tr("Auto Analysis"), SLOT(slotToggleAutoAnalysis()), Qt::CTRL + Qt::ALT + Qt::Key_R, gameToolBar, ":/images/annotate.png");
+    m_autoAnalysis = createAction(tr("Auto Analysis"), SLOT(slotToggleAutoAnalysis()), Qt::CTRL | Qt::ALT | Qt::Key_R, gameToolBar, ":/images/annotate.png");
     gameMenu->addAction(m_autoAnalysis);
     autoGroup->addAction(m_autoAnalysis);
     m_autoAnalysis->setCheckable(true);
 
-    m_autoGame = createAction(tr("Play engine"), SLOT(slotToggleGamePlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_G, gameToolBar, ":/images/respond.png");
+    m_autoGame = createAction(tr("Play engine"), SLOT(slotToggleGamePlayer()), Qt::CTRL | Qt::SHIFT | Qt::Key_G, gameToolBar, ":/images/respond.png");
     gameMenu->addAction(m_autoGame);
     autoGroup->addAction(m_autoGame);
     m_autoGame->setCheckable(true);
 
-    m_autoRespond = createAction(tr("Match against engine"), SLOT(slotToggleAutoRespond()), Qt::META + Qt::SHIFT + Qt::Key_G, gameToolBar, ":/images/game_engine.png");
+    m_autoRespond = createAction(tr("Match against engine"), SLOT(slotToggleAutoRespond()), Qt::META | Qt::SHIFT | Qt::Key_G, gameToolBar, ":/images/game_engine.png");
     gameMenu->addAction(m_autoRespond);
     autoGroup->addAction(m_autoRespond);
     m_autoRespond->setCheckable(true);
 
-    m_engineMatch = createAction(tr("Engine Match"), SLOT(slotToggleEngineMatch()), Qt::CTRL + Qt::ALT + Qt::Key_M, gameToolBar, ":/images/chip.png");
+    m_engineMatch = createAction(tr("Engine Match"), SLOT(slotToggleEngineMatch()), Qt::CTRL | Qt::ALT | Qt::Key_M, gameToolBar, ":/images/chip.png");
     gameMenu->addAction(m_engineMatch);
     autoGroup->addAction(m_engineMatch);
     m_engineMatch->setCheckable(true);
@@ -1834,19 +1982,19 @@ void MainWindow::setupActions()
     connect(this, SIGNAL(signalMoveHasPreviousMove(bool)), fiveMovesPrev, SLOT(setEnabled(bool)));
     goMenu->addAction(fiveMovesPrev);
 
-    QAction* enterVariation = createAction(goMenu, tr("Enter Variation"), SLOT(slotGameVarEnter()), Qt::CTRL + Qt::Key_Right, gameToolBar, ":/images/go_in.png");
+    QAction* enterVariation = createAction(goMenu, tr("Enter Variation"), SLOT(slotGameVarEnter()), Qt::CTRL | Qt::Key_Right, gameToolBar, ":/images/go_in.png");
     connect(this, SIGNAL(signalMoveHasVariation(bool)), enterVariation, SLOT(setEnabled(bool)));
     goMenu->addAction(enterVariation);
 
-    QAction* prevVariation = createAction(goMenu, tr("Previous Variation"), SLOT(slotGameVarUp()), Qt::CTRL + Qt::Key_Up, gameToolBar, ":/images/go_up.png");
+    QAction* prevVariation = createAction(goMenu, tr("Previous Variation"), SLOT(slotGameVarUp()), Qt::CTRL | Qt::Key_Up, gameToolBar, ":/images/go_up.png");
     connect(this, SIGNAL(signalVariationHasSibling(bool)), prevVariation, SLOT(setEnabled(bool)));
     goMenu->addAction(prevVariation);
 
-    QAction* nextVariation = createAction(goMenu, tr("Next Variation"), SLOT(slotGameVarDown()), Qt::CTRL + Qt::Key_Down, gameToolBar, ":/images/go_down.png");
+    QAction* nextVariation = createAction(goMenu, tr("Next Variation"), SLOT(slotGameVarDown()), Qt::CTRL | Qt::Key_Down, gameToolBar, ":/images/go_down.png");
     connect(this, SIGNAL(signalVariationHasSibling(bool)), nextVariation, SLOT(setEnabled(bool)));
     goMenu->addAction(nextVariation);
 
-    QAction* backToMainLine = createAction(goMenu, tr("Back to main line"), SLOT(slotGameVarExit()), Qt::CTRL + Qt::Key_Left, gameToolBar, ":/images/go_out.png");
+    QAction* backToMainLine = createAction(goMenu, tr("Back to main line"), SLOT(slotGameVarExit()), Qt::CTRL | Qt::Key_Left, gameToolBar, ":/images/go_out.png");
     connect(this, SIGNAL(signalMoveHasParent(bool)), backToMainLine, SLOT(setEnabled(bool)));
     goMenu->addAction(backToMainLine);
 
@@ -1856,17 +2004,18 @@ void MainWindow::setupActions()
     refactorMenu->addAction(createAction(refactorMenu, tr("Uncomment"), SLOT(slotGameUncomment())));
     refactorMenu->addAction(createAction(refactorMenu, tr("Remove Time"), SLOT(slotGameRemoveTime())));
     refactorMenu->addAction(createAction(refactorMenu, tr("Remove Variations"), SLOT(slotGameRemoveVariations())));
+    refactorMenu->addAction(createAction(refactorMenu, tr("Prune null moves"), SLOT(slotGameRemoveNullLines())));
 
     /* Search menu */
     QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
     searchToolBar = addToolBar(tr("Search"));
     searchToolBar->setObjectName("SearchToolBar");
 
-    QAction* actionFindTag = createAction(tr("Find tag..."), SLOT(slotSearchTag()), Qt::CTRL + Qt::SHIFT + Qt::Key_T, searchToolBar, ":/images/find_tag.png");
+    QAction* actionFindTag = createAction(tr("Find tag..."), SLOT(slotSearchTag()), Qt::CTRL | Qt::SHIFT | Qt::Key_T, searchToolBar, ":/images/find_tag.png");
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), actionFindTag, SLOT(setEnabled(bool)));
     search->addAction(actionFindTag);
 
-    QAction* actionFindBoard = createAction(tr("Find position..."), SLOT(slotSearchBoard()), Qt::CTRL + Qt::SHIFT + Qt::Key_B, searchToolBar, ":/images/find_pos.png");
+    QAction* actionFindBoard = createAction(tr("Find position..."), SLOT(slotSearchBoard()), Qt::CTRL | Qt::SHIFT | Qt::Key_B, searchToolBar, ":/images/find_pos.png");
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), actionFindBoard, SLOT(setEnabled(bool)));
     search->addAction(actionFindBoard);
 
@@ -1875,6 +2024,9 @@ void MainWindow::setupActions()
     QAction* duplicates = createAction(tr("Filter duplicate games"), SLOT(slotDatabaseFilterDuplicateGames()));
     search->addAction(duplicates);
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), duplicates, SLOT(setEnabled(bool)));
+    QAction* identicals = createAction(tr("Filter identical games"), SLOT(slotDatabaseFilterIdenticalGames()));
+    search->addAction(identicals);
+    connect(this, SIGNAL(signalCurrentDBhasGames(bool)), identicals, SLOT(setEnabled(bool)));
 
     duplicates = createAction(tr("Filter duplicate headers"), SLOT(slotDatabaseFilterDuplicateTags()));
     search->addAction(duplicates);
@@ -1882,11 +2034,11 @@ void MainWindow::setupActions()
 
     search->addSeparator();
 
-    QAction* filterReset = createAction(tr("Reset filter"), SLOT(slotSearchReset()), Qt::CTRL + Qt::Key_F, searchToolBar, ":/images/filter_reset.png");
+    QAction* filterReset = createAction(tr("Reset filter"), SLOT(slotSearchReset()), Qt::CTRL | Qt::Key_F, searchToolBar, ":/images/filter_reset.png");
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), filterReset, SLOT(setEnabled(bool)));
     search->addAction(filterReset);
 
-    QAction* reverseFilter = createAction(tr("Reverse filter"), SLOT(slotSearchReverse()), Qt::CTRL + Qt::SHIFT + Qt::Key_F, searchToolBar, ":/images/filter_rev.png");
+    QAction* reverseFilter = createAction(tr("Reverse filter"), SLOT(slotSearchReverse()), Qt::CTRL | Qt::SHIFT | Qt::Key_F, searchToolBar, ":/images/filter_rev.png");
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), reverseFilter, SLOT(setEnabled(bool)));
     search->addAction(reverseFilter);
 
@@ -1901,6 +2053,8 @@ void MainWindow::setupActions()
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Uncomment"), SLOT(slotDatabaseUncomment())));
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Remove Time"), SLOT(slotDatabaseRemoveTime())));
     refactorMenu2->addAction(createAction(refactorMenu2, tr("Remove Variations"), SLOT(slotDatabaseRemoveVariations())));
+    refactorMenu2->addAction(createAction(refactorMenu2, tr("Prune null moves"), SLOT(slotDatabaseRemoveNullLines())));
+    refactorMenu2->addAction(createAction(refactorMenu2, tr("Edit tag"), SLOT(slotDatabaseEditTag())));
     menuDatabase->addSeparator();
     menuDatabase->addAction(createAction(tr("Clear clipboard"), SLOT(slotDatabaseClearClipboard())));
 
@@ -1942,12 +2096,12 @@ void MainWindow::setupActions()
     help->addSeparator();
     help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()), QString(), nullptr, QString(), QString(), QAction::AboutRole));
 
-#ifdef QT_DEBUG
+#ifdef _DEBUG
     QMenu* debug = help->addMenu("Debug");
     debug->addAction(createAction("Copy HTML", SLOT(slotGameViewSource())));
     debug->addAction(createAction("Dump Movenodes", SLOT(slotGameDumpMoveNodes())));
     debug->addAction(createAction("Dump Board", SLOT(slotGameDumpBoard())));
-    debug->addAction(createAction("Make Screenshot", SLOT(slotScreenShot()), Qt::CTRL + Qt::Key_F12));
+    debug->addAction(createAction("Make Screenshot", SLOT(slotScreenShot()), Qt::CTRL | Qt::Key_F12));
     debug->addAction(createAction("Compile ECO", SLOT(slotCompileECO())));
 #endif
 
@@ -2139,10 +2293,11 @@ void MainWindow::restoreRecentFiles()
         m_databaseList->setFileFavorite(s, true, *it1++);
         bool bUtf8 = (attribute.contains("utf8"));
         m_databaseList->setFileUtf8(s, bUtf8);
-        QRegExp regExp("stars([0-9])");
-        if (regExp.indexIn(attribute) >= 0)
+        QRegularExpression regExp("stars([0-9])");
+        QRegularExpressionMatch match;
+        if (attribute.indexOf(regExp, 0, &match) >= 0)
         {
-           QString d = regExp.cap(1);
+           QString d = match.captured(1);
            m_databaseList->setStars(s, d.toInt());
         }
     }
@@ -2162,10 +2317,11 @@ void MainWindow::loadFileFavorites()
         {
             QString attribute = it != attributes.cend() ? *it++ : "";
             bool bUtf8 = (attribute.contains("utf8"));
-            QRegExp regExp("stars([0-9])");
-            if (regExp.indexIn(attribute) >= 0)
+            QRegularExpression regExp("stars([0-9])");
+            QRegularExpressionMatch match;
+            if (attribute.indexOf(regExp, 0, &match) >= 0)
             {
-               QString d = regExp.cap(1);
+               QString d = match.captured(1);
                if (d.toInt() == stars)
                {
                    openDatabaseFile(s, bUtf8);
@@ -2199,13 +2355,18 @@ void MainWindow::slotHttpDone(QNetworkReply *reply)
         if(!reply->error())
         {
             QString answer(reply->readAll());
-            QRegExp rx("(\\d\\d?)\\.(\\d\\d?)\\.(\\d\\d?)");
-            if(answer.indexOf(rx) > -1)
+            QRegularExpression rx("(\\d\\d?)\\.(\\d\\d?)\\.(\\d\\d?)");
+            QRegularExpressionMatch match;
+            if(answer.indexOf(rx, 0, &match) >= 0)
             {
-                int major = rx.capturedTexts().at(1).toInt();
-                int minor = rx.capturedTexts().at(2).toInt();
-                int build = rx.capturedTexts().at(3).toInt();
-                emit signalVersionFound(major, minor, build);
+                QStringList list = match.capturedTexts();
+                if (list.length() >= 3)
+                {
+                    int major = list.at(1).toInt();
+                    int minor = list.at(2).toInt();
+                    int build = list.at(3).toInt();
+                    emit signalVersionFound(major, minor, build);
+                }
             }
         }
         reply->deleteLater();
@@ -2220,11 +2381,11 @@ void MainWindow::QueryLoadDatabase()
     {
         if(dlg.largeDB())
         {
-            openDatabaseUrl("http://chessx.sourceforge.net/db/bundesliga2000.pgn.zip", false);
+            openDatabaseUrl("http://chessx.sourceforge.io/db/bundesliga2000.pgn.zip", false);
         }
         else
         {
-            openDatabaseUrl("http://chessx.sourceforge.net/db/SBL1213.pgn.zip", false);
+            openDatabaseUrl("http://chessx.sourceforge.io/db/SBL1213.pgn.zip", false);
         }
     }
     AppSettings->setValue("/General/BuiltinDbInstalled", QVariant(true));
@@ -2263,35 +2424,36 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 
 void MainWindow::dragMoveEvent(QDragMoveEvent *event)
 {
-    QTabBar* pTabBar = qobject_cast<QTabBar*>(childAt(event->pos()));
+    QPoint lpos = EVENT_POSITION(event);
 
-    if (pTabBar != nullptr && pTabBar->parent() == this)
+    QTabBar* pTabBar = qobject_cast<QTabBar*>(childAt(lpos));
+
+    if (pTabBar != nullptr)
     {
-        QPoint globalPos = mapToGlobal(event->pos());
+        QPoint globalPos = mapToGlobal(lpos);
         QPoint widgetPos = pTabBar->mapFromGlobal(globalPos);
-
         int tabIndex = pTabBar->tabAt(widgetPos);
-        if (tabIndex != m_tabDragIndex && pTabBar != m_pDragTabBar)
+
+        if (pTabBar->parent() == this)
         {
-            m_dragTimer->stop();
-            m_tabDragIndex = tabIndex;
+            if (tabIndex != m_tabDragIndex && pTabBar != m_pDragTabBar)
+            {
+                m_dragTimer->stop();
+                m_tabDragIndex = tabIndex;
+                m_pDragTabBar = pTabBar;
+                m_dragTimer->start(200);
+            }
+            event->ignore();
+            // TODO - figure out, if this tab really accepts the dragged type!
+            return;
+        }
+        else if (pTabBar->parent() == m_tabWidget)
+        {
             m_pDragTabBar = pTabBar;
+            m_tabDragIndex = tabIndex;
+            m_dragTimer->stop();
             m_dragTimer->start(200);
         }
-        event->ignore();
-        // TODO - figure out, if this tab really accepts the dragged type!
-        return;
-    }
-    else if ((pTabBar != nullptr) && (pTabBar->parent() == m_tabWidget))
-    {
-        QPoint globalPos = mapToGlobal(event->pos());
-        QPoint widgetPos = pTabBar->mapFromGlobal(globalPos);
-
-        int tabIndex = pTabBar->tabAt(widgetPos);
-        m_pDragTabBar = pTabBar;
-        m_tabDragIndex = tabIndex;
-        m_dragTimer->stop();
-        m_dragTimer->start(200);
     }
 
     event->ignore();
@@ -2422,13 +2584,93 @@ bool MainWindow::announceMove(Move m)
     return false;
 }
 
-void MainWindow::playSound(QString s)
+QString MainWindow::soundHint(Move m) const
+{
+    QString s = BitBoard::PieceNames::english().get(pieceType(m.pieceMoved()));
+
+    if (s.isEmpty()) s = "P";
+
+    if (m.isCapture())
+    {
+        s.append("x");
+    }
+    else if (m.isMate())
+    {
+        s.append("m");
+    }
+    else if (m.isCheck())
+    {
+        s.append("c");
+    }
+    else if (m.isPromotion())
+    {
+        s.append("p");
+    }
+    return s;
+}
+
+void MainWindow::playSound(QString s, QString hint)
 {
 #ifdef USE_SOUND
     if (AppSettings->getValue("/Sound/Move").toInt()==1)
     {
-        QString path = AppSettings->getSoundPath(s);
-        QSound::play(path);
+        QString path = AppSettings->getSoundPath(s+hint);
+        QString orig = hint;
+        // Reduce from back
+        while (!hint.isEmpty() && !QFile::exists(path))
+        {
+            hint.truncate(hint.length()-1);
+            path = AppSettings->getSoundPath(s+hint);
+        }
+        if (hint.isEmpty())
+        {
+            // Reduce from front
+            hint = orig;
+            path = AppSettings->getSoundPath(s+hint);
+            while (!hint.isEmpty() && !QFile::exists(path))
+            {
+                hint.remove(0,1);
+                path = AppSettings->getSoundPath(s+hint);
+            }
+        }
+
+        effect->setSource(QUrl::fromLocalFile(path));
+        double volume = (double)AppSettings->getValue("/Sound/Volume").toInt();
+        effect->setVolume(volume/100.0);
+        effect->play();
+    }
+#endif
+}
+
+void MainWindow::playSound(QString s, Move m)
+{
+#ifdef USE_SOUND
+    playSound(s, soundHint(m));
+#endif
+}
+
+void MainWindow::playNextMoveSound(QString s, Move m)
+{
+#ifdef USE_SOUND
+    if (AppSettings->getValue("/Sound/ScreenReader").toBool())
+    {
+        if (!announceMove(m))
+        {
+            playSound(s,m);
+        }
+    }
+#endif
+}
+
+void MainWindow::playMoveSound(QString s, Move m)
+{
+#ifdef USE_SOUND
+    if (AppSettings->getValue("/Sound/MoveSound").toBool())
+    {
+        if (!announceMove(m))
+        {
+            playSound(s,m);
+        }
     }
 #endif
 }

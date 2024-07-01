@@ -214,6 +214,7 @@ public:
     Move::List generateMoves() const;
     /** Calculate a material evaluation */
     int score() const;
+    bool compare(const BitBoard& b) const; //!< Return true if same pieces and castling rights, false otherwise
 protected:
     unsigned int countSetBits(quint64 n) const;
 private:
@@ -283,13 +284,12 @@ private:
     // Extra state data
     unsigned char m_piece[64];             // type of piece on this square
     unsigned char m_stm;                   // side to move
-    chessx::Square        m_ksq[2];                // square of the m_kings
+    chessx::Square m_ksq[2];               // square of the m_kings
     unsigned char m_epFile;                // file of a possible ep capture
     unsigned char m_epSquare;              // This is requested by hash routine enough that we keep it pre calculated
     unsigned char m_castle;                // flags for castle legality  (these can be merged)
     unsigned short m_halfMoves;            // Number of moves since last pawn move or capture
     unsigned int m_moveNumber;             // Move number in game (incremented after each black move)
-    unsigned char m_pawnCount[2];          // Number of pawns for each side
     unsigned char m_pieceCount[2];         // Number of pieces INCLUDING pawns for each side
     unsigned char m_chess960;              // 0 = standard, 1 = Chess960
 };

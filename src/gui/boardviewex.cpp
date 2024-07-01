@@ -4,7 +4,7 @@
 
 #include "boardviewex.h"
 #include "ui_boardviewex.h"
-#include "htmlitemdelegate.h"
+
 #include "settings.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -17,14 +17,11 @@ BoardViewEx::BoardViewEx(QWidget *parent) :
     ui(new Ui::BoardViewEx)
 {
     ui->setupUi(this);
+    ui->boardView->setFlags(ui->boardView->flags() | BoardView::AllowCustomBackground);
+
     connect(boardView(), SIGNAL(signalFlipped(bool,bool)), SLOT(boardIsFlipped(bool,bool)));
     setMouseTracking(true);
     showTime(false);
-
-    connect(ui->listVariations, SIGNAL(clicked(QModelIndex)),
-            this, SLOT(variationClicked(QModelIndex)));
-    HTMLItemDelegate* htmlItemDelegate = new HTMLItemDelegate(this);
-    ui->listVariations->setItemDelegate(htmlItemDelegate);
 }
 
 BoardViewEx::~BoardViewEx()
@@ -34,9 +31,33 @@ BoardViewEx::~BoardViewEx()
     delete ui;
 }
 
-void BoardViewEx::variationClicked(QModelIndex index)
+void BoardViewEx::paintEvent(QPaintEvent *pe)
 {
-    emit enterVariation(index.row());
+    QPainter paint(this);
+    if (AppSettings->getValue("/Board/Background").toBool())
+    {
+        QPixmap bkgnd = AppSettings->getPixmap("background.jpg");
+        QPainter painter(this);
+
+        auto winSize = size();
+        auto pixmapRatio = (float)bkgnd.width() / bkgnd.height();
+        auto windowRatio = (float)winSize.width() / winSize.height();
+
+        if(pixmapRatio > windowRatio)
+        {
+          auto newWidth = (int)(winSize.height() * pixmapRatio);
+          auto offset = (newWidth - winSize.width()) / -2;
+          painter.drawPixmap(offset, 0, newWidth, winSize.height(), bkgnd);
+        }
+        else
+        {
+          auto newHeight = (int)(winSize.width() / pixmapRatio);
+          auto offset = (newHeight - winSize.height()) / -2;
+          painter.drawPixmap(0, offset, winSize.width(), newHeight, bkgnd);
+        }
+    }
+    QWidget::paintEvent(pe);
+
 }
 
 BoardView* BoardViewEx::boardView()
@@ -104,19 +125,6 @@ void BoardViewEx::boardIsFlipped(bool oldState, bool newState)
     }
 }
 
-QString BoardViewEx::getComment() const
-{
-    return ui->editComment->toPlainText();
-}
-
-void BoardViewEx::setComment(const QString &value)
-{
-    if (value != ui->editComment->toPlainText())
-    {
-        ui->editComment->setPlainText(value);
-    }
-}
-
 void BoardViewEx::slotReconfigure()
 {
     AppSettings->layout(this);
@@ -129,25 +137,3 @@ void BoardViewEx::saveConfig()
     AppSettings->setLayout(ui->annotationSplitter);
 }
 
-void BoardViewEx::on_editComment_textChanged()
-{
-    emit signalNewAnnotation(ui->editComment->toPlainText());
-}
-
-void BoardViewEx::setAnnotationPlaceholder(bool enable)
-{
-    if (enable)
-    {
-        ui->editComment->setPlaceholderText(tr("Enter comments and annotations here."));
-    }
-    else
-    {
-        ui->editComment->setPlaceholderText("");
-    }
-}
-
-void BoardViewEx::showVariations(QList<MoveId> /* listVariations */, QStringList textVariations)
-{
-    ui->listVariations->clear();
-    ui->listVariations->addItems(textVariations);
-}

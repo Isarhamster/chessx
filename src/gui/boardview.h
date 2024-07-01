@@ -39,7 +39,7 @@ class BoardView : public QWidget
 public:
     enum {WheelUp = Qt::LeftButton, WheelDown = Qt::RightButton};
     enum {Automatic = 0, Always = 1, Never = 2};
-    enum {IgnoreSideToMove = 1, SuppressGuessMove = 2, AllowCopyPiece = 4};
+    enum {IgnoreSideToMove = 1, SuppressGuessMove = 2, AllowCopyPiece = 4, AllowCustomBackground = 8 };
     typedef enum {ActionStandard, ActionQuery, ActionReplace, ActionInsert, ActionAdd, ActionPen, ActionAskEngine, ActionEvalMove } BoardViewAction;
     /** Create board widget. */
     BoardView(QWidget* parent = nullptr, int flags = 0);
@@ -102,14 +102,17 @@ public:
     void setBestGuess(const Move &bestGuess);
     void setVariations(const QList<Move>& variations);
 
+    /** Reconfigure current theme. */
+    void configure(bool allowErrorMessage=false);
+
 public slots:
 
     /** Flips/unflips board. */
     void setFlipped(bool flipped);
+    /** Start a configure with error messages enabled */
+    void reconfigure();
     /** Flips/unflips board. */
     void flip();
-    /** Reconfigure current theme. */
-    void configure();
     /** Enable / Disable Board for move entry. */
     void setEnabled(bool enabled);
     /** Disable / Enable Board for move entry. */
@@ -154,7 +157,11 @@ protected:
     virtual void wheelEvent(QWheelEvent* e);
     virtual void keyPressEvent(QKeyEvent *);
     virtual void keyReleaseEvent(QKeyEvent *);
-    virtual void enterEvent(QEvent *);
+#if QT_VERSION < 0x060000
+    virtual void enterEvent(QEvent *event);
+#else
+    virtual void enterEvent(QEnterEvent *event);
+#endif
     virtual void leaveEvent(QEvent *event);
     void handleMouseMoveEvent(QMouseEvent *event);
 
@@ -197,7 +204,7 @@ private:
     /** Catch mouse events */
     bool eventFilter(QObject *obj, QEvent *ev);
 
-    void drawArrow(int square1, int square2, QColor color, int thin = 0);
+    void drawArrow(QPaintEvent* event, Square square1, Square square2, QColor color, int thin = 0);
     void drawHiliteSquare(QPoint pos, BoardTheme::ColorRole role);
 
     QPoint posFromSquare(int square) const;

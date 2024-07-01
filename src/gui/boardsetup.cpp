@@ -24,8 +24,11 @@
 #include <QtGui>
 #include <QPixmap>
 #include <QPushButton>
+#include <QRandomGenerator>
+#include <QRegularExpression>
 #include <QSpacerItem>
 #include <QSizePolicy>
+#include "qt6compat.h"
 
 // Dummy change
 using namespace chessx;
@@ -146,7 +149,7 @@ void BoardSetupDialog::chess960posChanged(int value)
 
 void BoardSetupDialog::chess960randomPos()
 {
-    int randomPos = rand() % 960;
+    int randomPos = QRandomGenerator::global()->bounded(0,959);
     ui.chess960pos->setValue(randomPos);
 }
 
@@ -372,7 +375,7 @@ void BoardSetupDialog::slotClear()
 
 void BoardSetupDialog::slotSelected(Square square, int button)
 {
-    Piece piece = (button & Qt::MidButton) ? Empty : m_selectedPiece;
+    Piece piece = (button & Qt::MiddleButton) ? Empty : m_selectedPiece;
     if(button & Qt::RightButton)
     {
         if(piece >= BlackKing)
@@ -469,7 +472,7 @@ void BoardSetupDialog::slotInvalidMove(Square from)
 
 void BoardSetupDialog::wheelEvent(QWheelEvent* e)
 {
-    m_wheelCurrentDelta += e->delta();
+    m_wheelCurrentDelta += e->angleDelta().y();
     if(abs(m_wheelCurrentDelta) > m_minDeltaWheel)
     {
         slotChangePiece(m_wheelCurrentDelta < 0 ? BoardView::WheelDown : BoardView::WheelUp);
@@ -556,7 +559,7 @@ void BoardSetupDialog::slotPasteFen()
     }
 
     // Another go at Fens copied from Wikis: [FEN]***[/FEN] is reduced to ***
-    fen.remove(QRegExp("\\[[^\\]]*\\]"));
+    fen.remove(QRegularExpression("\\[[^\\]]*\\]"));
 
     // Now parse the hopefully naked Fen
     BoardX b;
@@ -571,19 +574,19 @@ void BoardSetupDialog::slotPasteFen()
     {
         if (b.canCastleShort(White))
         {
-            ui.castleFile00->setCurrentText(QString('a'+File(b.CastlingRook(1))));
+            ui.castleFile00->setCurrentText(QString(QChar('a'+File(b.CastlingRook(1)))));
         }
         else if (b.canCastleShort(Black))
         {
-            ui.castleFile00->setCurrentText(QString('a'+File(b.CastlingRook(3))));
+            ui.castleFile00->setCurrentText(QString(QChar('a'+File(b.CastlingRook(3)))));
         }
         if (b.canCastleLong(White))
         {
-            ui.castleFile000->setCurrentText(QString('a'+File(b.CastlingRook(0))));
+            ui.castleFile000->setCurrentText(QString(QChar('a'+File(b.CastlingRook(0)))));
         }
         else if (b.canCastleLong(Black))
         {
-            ui.castleFile000->setCurrentText(QString('a'+File(b.CastlingRook(2))));
+            ui.castleFile000->setCurrentText(QString(QChar('a'+File(b.CastlingRook(2)))));
         }
         setBoard(b);
     }
@@ -676,7 +679,7 @@ void BoardSetupDialog::startDrag(QWidget* w, QMouseEvent* event)
     }
     Piece p = child->piece();
 
-    QPoint hotSpot = event->pos();
+    QPoint hotSpot = EVENT_POSITION(event);
 
     BoardViewMimeData *mimeData = new BoardViewMimeData;
     mimeData->m_piece = p;

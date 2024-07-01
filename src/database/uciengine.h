@@ -44,7 +44,7 @@ public:
     virtual void setMpv(int mpv);
     virtual void setMoveTime(const EngineParameter &mt);
 
-    virtual bool providesMvp()
+    virtual bool providesMpv()
     {
         return true;
     }

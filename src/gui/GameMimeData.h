@@ -7,7 +7,7 @@
 
 #include <QMimeData>
 #include <QModelIndex>
-#include "gamex.h"
+#include "gameid.h"
 
 class GameMimeData : public QMimeData
 {

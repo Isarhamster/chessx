@@ -33,6 +33,7 @@ static QString formatFileSize(qint64 size)
 DatabaseRegistry::~DatabaseRegistry()
 {
     qDeleteAll(m_databases.begin(), m_databases.end());
+    m_databases.clear();
 }
 
 DatabaseInfo* DatabaseRegistry::findDisplayName(QString path) const
@@ -47,9 +48,14 @@ DatabaseInfo* DatabaseRegistry::findDisplayName(QString path) const
     return nullptr;
 }
 
+void DatabaseRegistry::append(DatabaseInfo* dbi)
+{
+    m_databases.append(dbi);
+}
+
 void DatabaseRegistry::remove(DatabaseInfo* dbi)
 {
-    m_databases.removeAt(m_databases.indexOf(dbi));
+    m_databases.removeOne(dbi);
 }
 
 DatabaseListModel::DatabaseListModel(DatabaseRegistry* registry, QObject* parent)
@@ -115,6 +121,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case 3: return QPixmap(":/images/folder_favorite3.png");
             case 4: return QPixmap(":/images/startup.png");
             case 5: return QPixmap(":/images/active.png");
+            default: return QPixmap();
             }
         }
         case DBLV_OPEN:
@@ -323,6 +330,17 @@ DatabaseListEntry* DatabaseListModel::FindEntry(QString s)
     return nullptr;
 }
 
+const DatabaseListEntry* DatabaseListModel::FindEntry(QString s) const
+{
+    QList<DatabaseListEntry>::ConstIterator it = m_databases.constBegin();
+    for ( ; it != m_databases.constEnd(); ++it )
+    {
+        const DatabaseListEntry& i = *it;
+        if (i.m_path == s) return &i;
+    }
+    return nullptr;
+}
+
 void DatabaseListModel::addEntry(DatabaseListEntry& d, const QString& s)
 {
     beginInsertRows(QModelIndex(), m_databases.count(), m_databases.count());
@@ -334,17 +352,8 @@ void DatabaseListModel::addEntry(DatabaseListEntry& d, const QString& s)
 
 int DatabaseListModel::getLastIndex(const QString& s) const
 {
-    QListIterator<DatabaseListEntry> i(m_databases);
-    DatabaseListEntry d;
-    d.m_path = s;
-
-    if(i.findNext(d))
-    {
-        const DatabaseListEntry& e = i.previous();
-        return e.m_lastGameIndex;
-    }
-
-    return 0;
+    const DatabaseListEntry* e = FindEntry(s);
+    return e ? e->m_lastGameIndex : 0;
 }
 
 void DatabaseListModel::limitStars(int limit)
@@ -364,17 +373,14 @@ void DatabaseListModel::limitStars(int limit)
 
 int DatabaseListModel::stars(const QString &s) const
 {
-    QListIterator<DatabaseListEntry> i(m_databases);
-    DatabaseListEntry d;
-    d.m_path = s;
+    const DatabaseListEntry* e = FindEntry(s);
+    return e ? e->m_stars : 0;
+}
 
-    if(i.findNext(d))
-    {
-        const DatabaseListEntry& e = i.previous();
-        return e.m_stars;
-    }
-
-    return 0;
+bool DatabaseListModel::exists(const QString &s) const
+{
+    const DatabaseListEntry* e = FindEntry(s);
+    return !!e ? e->m_stars : 0;
 }
 
 void DatabaseListModel::addFileOpen(const QString& s, bool utf8)
@@ -417,7 +423,6 @@ void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite, int in
             e.m_lastGameIndex = index;
             QModelIndex m = createIndex(m_databases.indexOf(e), DBLV_FAVORITE, (void*)  nullptr);
             emit QAbstractItemModel::dataChanged(m, m);
-            emit OnSelectIndex(m);
         }
         return;
     }

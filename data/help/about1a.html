@@ -46,21 +46,27 @@ the same on all computers).</p>
 <p>All lists and widgets can be docked at any place or can be grouped together in a tab view.</p>
 <p>If a widget is hidden, you can show it by selecting the View Menu from the menu bar.</p>
 
+<h3><a name="Custom-Lists"></a>Font Sizes</h3>
+<p>All lists and text fields support adaption of the font size. Press CTRL+'+' or CTRL+'-' or press CTRL+ALT when scrolling with the mouse wheel.
+This will change the font size for the selected widget (text field or list box). Note that this change is not persistent.</p>
+
 <h3><a name="Custom-Lists"></a>Customizing Listviews</h3>
 <p>All views can have their font-size set in the Preferences Dialog. In addtion, all list header support resizing,
 moving and hiding of columns. Columns are hidden / shown by right-clicking the list header element. All changes are persistent.</p>
 
 <h3><a name="Custom-Gamelist"></a>Customizing the game list</h3>
-<p>The game list shows the most common PGN tags in its columns. You can add columns by putting PGN tags into the Preference/Appearance/Additional PGN tags,
-e.g. "Setup FEN" will add two columns with the tags Setup and FEN respectively.</p>
-<p>There is a special tag call "Medal". If this tag is given a color's name, the game's list entry will use this color as background.</p>
+<p>The game list shows the most common PGN tags in its columns. You can add
+  columns by putting PGN tags into the Preferences &rarr; Appearance &rarr; Additional PGN tags,
+e.g. &ldquo;Setup FEN&rdquo; will add two columns with the tags Setup and FEN respectively.</p>
+<p>There is a special tag call &ldquo;Medal&rdquo;. If this tag is given a color's name, the game's list entry will use this color as background.</p>
 
 <h3><a name="Custom-Board"></a>Customizing Board and Notation</h3>
 <p>You can customize board and notation easily in the Preferences Dialog. Especially the notation can be changed to reflect your
-local standard. E.g., in Germany, the "Queen" is called "Dame" and thus represented by a "D" rather than a "Q". Change the piece letters
+local standard. E.g., in Germany, the &ldquo;Queen&rdquo; is called &ldquo;Dame&rdquo; and thus represented by a &ldquo;D&rdquo; rather than a &ldquo;Q&rdquo;. Change the piece letters
 in the Appearance tab of the Preferences. You can also change to a symblic representation of the pieces, provided you
-OS supplies the character sets used. That is the case with Mac OS X and Windows 7, untested with Linux. The PGN remains unchanged,
-it is defined with KQRBN.</p>
+OS supplies the character sets used. The PGN remains unchanged,
+  it is defined with KQRBN.</p>
+<!--I tested on linux and symbolic works fine -->
 
 <h3><a name="Custom-KB"></a>Customizing Keyboard shortcuts</h3>
 <p>Keyboard shortcuts are customized with the corresponding dialog from the Help menu.
@@ -69,16 +75,27 @@ Please be careful, there is no checking for syntax errors or invalid entries, ye
 keyboard scheme with different languages.</p>
 
 <h3><a name="Custom-Icons"></a>Customize icons in menus</h3>
-<p>Icons in menus can be enabled or disabled in the Preference dialog. Having icons in menus may help to get comforable with
+<p>Icons in menus can be enabled or disabled in the Preferences dialog. Having icons in menus may help to get comforable with
 ChessX initially, lateron, you will probably do not want to have them in the menus.</p>
 
 <h3><a name="Themes"></a>Themes and Languages</h3>
-<p>ChessX has a built-in dark more which can be activated via the Settings/Appearance.
-You can make the dark theme look better by changing the Settings/Game/Colors/MainLine to White.
-The settings dialog will show available themes - most of them should work in dark and light mode.</p>
-<p>Mac OS: If ChessX is started on a dark desktop, ChessX will autmatically switch into dark mode.</p>
+<p>ChessX has a built-in dark more which can be activated via Preferences
+  &rarr; Appearance.
+You can make the dark theme look better by changing Preferences &rarr; Game
+  &rarr; Colors &rarr; MainLine to White.
+The Preferences dialog will show available themes &mdash;  most of them should work in dark and light mode.</p>
+<p>OS X: If ChessX is started on a dark desktop, ChessX will autmatically switch into dark mode.</p>
 <p>Changing the active theme or selecting a different localization requires a restart of ChessX.</p>
 
+<h3><a name="Sounds"></a>Custom Sounds</h3>
+<p>There are a few events at which ChessX will issue a sound effect. These sound effects are
+'fanfare' (played at end of game), 'ding1' (FICS start of game), 'woodthunk' (Clock warning) and 'move'.</p>
+<p>Move effects can have suffixes: "[PQKRBN][xmcp]" where x=capture, m=mate, c=check, p=romote.</p>
+<p>Example: The sound file for a pawn capturing something is 'movePx.wav', if this does not exist 'moveP.wav' and 'movex' is searched and
+finally 'move.wav' is used in case none of the mentioned files exists.</p>
+<p>Sound effect files belong into the 'sounds'-directory inside the Program Data Path. Again, follow the link in the About box.</p>
+<p>Internally ChessX supports 'move' and 'movex' sound, but you can put your own sounds into the sounds directory.</p>
+<p>(If you have the impression, the internal sounds sound like lichess - well, you are right!)</p>
 </div>
 </div>
 

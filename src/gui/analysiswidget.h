@@ -14,6 +14,7 @@
 #include "movedata.h"
 #include "ui_analysiswidget.h"
 #include <QtGui>
+#include <QElapsedTimer>
 #include <QPointer>
 
 /** @ingroup GUI
@@ -49,6 +50,8 @@ public:
     QString engineName() const;
     void updateBookFile(Database*);
 
+    void clear();
+
 public slots:
     /** Sets new position. If analysis is active, the current content will be cleared and
     new analysis will be performed. */
@@ -80,6 +83,7 @@ public slots:
 private slots:
     /** Stop if analysis is no longer visible. */
     void toggleAnalysis();
+    void slotSelectEngine();
     /** Displays given analysis received from an engine. */
     void showAnalysis(Analysis analysis);
     /** The engine is now ready, as requested */
@@ -96,6 +100,8 @@ private slots:
     void showTablebaseMove(QList<Move> move, int score);
     /** The pin button was pressed or released */
     void slotPinChanged(bool);
+    bool hideLines() const;
+    void setHideLines(bool newHideLines);
 
 signals:
     void addVariation(const Analysis& analysis, const QString&);
@@ -109,6 +115,7 @@ protected slots:
     void bookActivated(int);
     void sendBookMoveTimeout();
 
+    void showContextMenu(const QPoint &pt);
 private:
     /** Should analysis be running. */
     bool isAnalysisEnabled() const;
@@ -142,12 +149,13 @@ private:
     int m_lastDepthAdded;
     bool m_onHold;
 
-    QTime m_lastEngineStart;
+    QElapsedTimer m_lastEngineStart;
     QPointer<Database> m_pBookDatabase;
     QList<MoveData> moveList;
     int games;
 
     bool m_gameMode;
+    bool m_hideLines;
  };
 
 #endif // ANALYSIS_WIDGET_H_INCLUDED

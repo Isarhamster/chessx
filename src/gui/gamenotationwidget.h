@@ -7,6 +7,7 @@
 #include "nag.h"
 #include "editaction.h"
 #include "gamex.h"
+#include "gameid.h"
 
 class ChessBrowser;
 class Output;
@@ -22,6 +23,7 @@ public:
 
     QString getHtml() const;
     QString getText() const;
+    QString getTextSelection() const;
 
     QString generateText(const GameX& game, bool trainingMode);
     void reload(const GameX& game, bool trainingMode);

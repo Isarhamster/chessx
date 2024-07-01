@@ -1,4 +1,5 @@
 #include "quazipdir.h"
+#include "qt6compat.h"
 #include <algorithm>
 #include <QSet>
 #include <QSharedData>
@@ -98,7 +99,7 @@ bool QuaZipDir::cd(const QString &directoryName)
                 return false;
             }
         }
-        QStringList path = dirName.split('/', Qt::SkipEmptyParts);
+        QStringList path = dirName.split('/', SkipEmptyParts);
         for(QStringList::const_iterator i = path.constBegin();
                 i != path.constEnd();
                 ++i)

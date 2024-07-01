@@ -1,6 +1,6 @@
 # Main application
 DEFINES += QT_DEPRECATED_WARNINGS
-CONFIG += uic warn_on
+CONFIG += uic warn_on sdk_no_version_check
 QT += network svg
 
 TEMPLATE = app
@@ -26,6 +26,11 @@ greaterThan(QT_MAJOR_VERSION, 4) {
   CONFIG += scid
 }
 
+greaterThan(QT_MAJOR_VERSION, 5) {
+    # Needed for QStringRef etc.
+    QT += core5compat
+}
+
 speech {
   DEFINES += USE_SPEECH
   QT += texttospeech
@@ -47,8 +52,8 @@ macx {
   QMAKE_CXXFLAGS_RELEASE -= -O2
   QMAKE_CXXFLAGS_RELEASE *= -m64 -Ofast
 
-  QMAKE_LFLAGS_DEBUG += -m64 -O0 --coverage
-  QMAKE_CXXFLAGS_DEBUG *= -m64 -O0 --coverage
+  QMAKE_LFLAGS_DEBUG += -m64 -O0
+  QMAKE_CXXFLAGS_DEBUG *= -m64 -O0
 }
 
 
@@ -139,6 +144,7 @@ FORMS += \
   src/dialogs/boardsearchdialog.ui \
   src/dialogs/commentdialog.ui \
   src/dialogs/copydialog.ui \
+  src/dialogs/databasetagdialog.ui \
   src/dialogs/dlgsavebook.ui \
   src/dialogs/matchparameterdlg.ui \
   src/dialogs/onlinebase.ui \
@@ -149,7 +155,9 @@ FORMS += \
   src/dialogs/renametagdialog.ui \
   src/dialogs/savedialog.ui \
   src/dialogs/tagdialog.ui \
+  src/dialogs/tournamentselectiondialog.ui \
   src/gui/analysiswidget.ui \
+  src/gui/annotationwidget.ui \
   src/gui/boardsetup.ui \
   src/gui/boardviewex.ui \
   src/gui/engineoptiondialog.ui \
@@ -204,6 +212,7 @@ HEADERS += src/database/board.h \
   src/database/indexitem.h \
   src/database/lichessopening.h \
   src/database/lichessopeningdatabase.h \
+  src/database/lichesstransfer.h \
   src/database/memorydatabase.h \
   src/database/move.h \
   src/database/movedata.h \
@@ -244,6 +253,7 @@ HEADERS += src/database/board.h \
   src/dialogs/boardsearchdialog.h \
   src/dialogs/commentdialog.h \
   src/dialogs/copydialog.h \
+  src/dialogs/databasetagdialog.h \
   src/dialogs/dlgsavebook.h \
   src/dialogs/matchparameterdlg.h \
   src/dialogs/onlinebase.h \
@@ -254,6 +264,7 @@ HEADERS += src/database/board.h \
   src/dialogs/renametagdialog.h \
   src/dialogs/savedialog.h \
   src/dialogs/tagdialog.h \
+  src/dialogs/tournamentselectiondialog.h \
   src/guess/guess.h \
   src/guess/guess_attacks.h \
   src/guess/guess_common.h \
@@ -271,6 +282,7 @@ HEADERS += src/database/board.h \
   src/gui/GameMimeData.h \
   src/gui/analysiswidget.h \
   src/gui/annotationtimeedit.h \
+  src/gui/annotationwidget.h \
   src/gui/boardsetup.h \
   src/gui/boardsetuptoolbutton.h \
   src/gui/boardtheme.h \
@@ -318,6 +330,7 @@ HEADERS += src/database/board.h \
   src/gui/plaintextedit.h \
   src/gui/playerlistwidget.h \
   src/gui/qled.h \
+  src/gui/qt6compat.h \
   src/gui/shellhelper.h \
   src/gui/simplelabel.h \
   src/gui/style.h \
@@ -380,6 +393,7 @@ SOURCES += \
   src/database/indexitem.cpp \
   src/database/lichessopening.cpp \
   src/database/lichessopeningdatabase.cpp \
+  src/database/lichesstransfer.cpp \
   src/database/memorydatabase.cpp \
   src/database/movedata.cpp \
   src/database/nag.cpp \
@@ -417,6 +431,7 @@ SOURCES += \
   src/dialogs/boardsearchdialog.cpp \
   src/dialogs/commentdialog.cpp \
   src/dialogs/copydialog.cpp \
+  src/dialogs/databasetagdialog.cpp \
   src/dialogs/dlgsavebook.cpp \
   src/dialogs/matchparameterdlg.cpp \
   src/dialogs/onlinebase.cpp \
@@ -427,6 +442,7 @@ SOURCES += \
   src/dialogs/renametagdialog.cpp \
   src/dialogs/savedialog.cpp \
   src/dialogs/tagdialog.cpp \
+  src/dialogs/tournamentselectiondialog.cpp \
   src/guess/guess.cpp \
   src/guess/guess_compileeco.cpp \
   src/guess/guess_guessengine.cpp \
@@ -436,6 +452,7 @@ SOURCES += \
   src/guess/guess_recog.cpp \
   src/gui/analysiswidget.cpp \
   src/gui/annotationtimeedit.cpp \
+  src/gui/annotationwidget.cpp \
   src/gui/boardsetup.cpp \
   src/gui/boardsetuptoolbutton.cpp \
   src/gui/boardtheme.cpp \
@@ -506,7 +523,6 @@ SOURCES += \
   src/quazip/unzip.cpp \
   src/quazip/zip.cpp
 
-TEMPLATE = app
 INCLUDEPATH += src/database
 INCLUDEPATH += src/guess
 INCLUDEPATH += src/gui
@@ -599,8 +615,8 @@ OTHER_FILES += \
   data/templates/notation-default.template \
   data/templates/latex-default.template \
   data/templates/html-default.template \
-  ChangeLog \
-  COPYING \
+  ChangeLog.md \
+  COPYING.md \
   ChangeLog.txt \
   data/help/about.css \
   data/help/about-dark.css \
@@ -611,10 +627,7 @@ OTHER_FILES += \
   data/help/about3.html \
   data/help/about4.html \
   data/help/about5.html \
-  data/help/about6.html \
   setup7-64.iss \
-  setup7-32.iss \
-  setupXP.iss \
   data/styles/orange.css \
   unix/chessx.desktop
 
@@ -632,11 +645,11 @@ win32 {
 }
 
 DISTFILES += \
-  INSTALL \
-  TODO \
+  INSTALL.md \
+  TODO.md \
   Doxyfile \
   License.txt \
-  README.developers \
+  README.developers.md \
   unix/make_tarball \
   mac_osx/svnlist \
   mac_osx/fix_paths.sh \

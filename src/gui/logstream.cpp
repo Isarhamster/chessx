@@ -19,11 +19,7 @@ void
 #ifdef MSC_VER
 _cdecl
 #endif
-#if QT_VERSION < 0x050000
-SimpleLoggingHandler(QtMsgType type, const char *txt)
-#else
 SimpleLoggingHandler(QtMsgType type, const QMessageLogContext &, const QString &txt)
-#endif
 {
     QString msg = txt;
 
@@ -48,7 +44,7 @@ SimpleLoggingHandler(QtMsgType type, const QMessageLogContext &, const QString &
          LogStream::s_logStream <<  " Fatal: ";
         break;
     }
-    LogStream::s_logStream << msg.toLatin1().data() << endl;
+    LogStream::s_logStream << msg.toLatin1().data() << Qt::endl;
 }
 
 LogStream::LogStream()
@@ -72,11 +68,7 @@ void LogStream::startFileLog()
     if (m_logFile.open(QIODevice::WriteOnly))
     {
         s_logStream.setDevice(&m_logFile);
-#if QT_VERSION < 0x050000
-        qInstallMsgHandler(SimpleLoggingHandler);
-#else
         qInstallMessageHandler(SimpleLoggingHandler);
-#endif
     }
 }
 

@@ -18,9 +18,15 @@ public:
 
     QDate getStartDate() const;
     void setStartDate(const QDate &value);
+    QDate getEndDate() const;
+    void setEndDate(const QDate &value);
+    void setDateFormat(const QString& format);
 
     QString getHandle() const;
     void setHandle(const QString &value);
+
+    const QString getTournament() const;
+    void setTournament(const QString &newTournament);
 
 private:
     Ui::OnlineBase *ui;

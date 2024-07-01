@@ -16,6 +16,7 @@
 
 #include <QApplication>
 #include <QLocale>
+#include <QMessageBox>
 #include <QTranslator>
 #include "mainwindow.h"
 #include "chessxsettings.h"
@@ -94,10 +95,19 @@ prevHook = _CrtSetReportHook(customReportHook);
 // _CrtSetBreakAlloc(157); // Use this line to break at the nth memory allocation
 #endif
 
+#if QT_VERSION < 0x060000
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);     // HiDPI support
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);  // Windows Surface Book
+#endif
+
+#if defined Q_OS_UNIX && !defined Q_OS_MAC
+    // Workaround native dialog issues with Linux
+    QCoreApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
+#endif
 
     QApplication app(argc, argv);
+
+    QApplication::setFont(QMessageBox().font()); // Workaround for severe bug in Qt5
 
     QDir dir(QApplication::applicationDirPath());
 

@@ -21,6 +21,7 @@
 #include <QtGui>
 #include <QTextBrowser>
 #include "editaction.h"
+#include "gameid.h"
 
 class DatabaseInfo;
 
@@ -51,6 +52,7 @@ signals:
 
 protected:
     virtual bool selectAnchor(const QString& href);
+    virtual void doSetSource(const QUrl &name, QTextDocument::ResourceType type = QTextDocument::UnknownResource);
     virtual void setSource(const QUrl& url);
     void setupMenu();
     QAction* createAction(const QString& name, EditAction::Type type);
@@ -85,6 +87,7 @@ private:
     QAction* m_removeNags;
     QAction* m_enumerateVariations1;
     QAction* m_enumerateVariations2;
+    QAction* m_copyTextSelection;
     QMenu* m_gameMenu;
     QMenu* m_browserMenu;
     QMenu* m_mainMenu;

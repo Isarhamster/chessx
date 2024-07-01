@@ -8,6 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include <QProcess>
+
 #include "settings.h"
 #include "enginex.h"
 #include "wbengine.h"
@@ -148,10 +150,17 @@ void EngineX::activate()
             m_process->setWorkingDirectory(m_directory);
         }
         connect(m_process, SIGNAL(started()), SLOT(protocolStart()));
+#if QT_VERSION < 0x060000
         connect(m_process, SIGNAL(error(QProcess::ProcessError)), SLOT(processError(QProcess::ProcessError)));
+#else
+        connect(m_process, SIGNAL(errorOccurred(QProcess::ProcessError)), SLOT(processError(QProcess::ProcessError)));
+#endif
         connect(m_process, SIGNAL(readyReadStandardOutput()), SLOT(pollProcess()));
         connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(processExited()));
-        m_process->start(m_command);
+        QStringList parameters = QProcess::splitCommand(m_command);
+        QString cmd = parameters.at(0);
+        parameters.pop_front();
+        m_process->start(cmd, parameters);
     }
 }
 
@@ -181,7 +190,7 @@ void EngineX::send(const QString& message)
 {
     if (s_allowEngineOutput && m_logStream)
     {
-        *m_logStream << "<-- " << message << endl;
+        *m_logStream << "<-- " << message << Qt::endl;
     }
 
     QString out(message);
@@ -237,6 +246,11 @@ bool EngineX::getSendHistory() const
     return m_sendHistory;
 }
 
+int EngineX::defaultMpv() const
+{
+    return m_mapOptionValues.value("MultiPV", "1").toInt();
+}
+
 void EngineX::setMpv(int mpv)
 {
     m_mpv = mpv;
@@ -256,7 +270,7 @@ void EngineX::pollProcess()
         message = m_process->readLine().simplified();
         if (s_allowEngineOutput && m_logStream)
         {
-            *m_logStream << "--> " << message << endl;
+            *m_logStream << "--> " << message << Qt::endl;
         }
         processMessage(message);
     }
@@ -302,7 +316,7 @@ void EngineX::logError(const QString& errMsg)
 {
     if (s_allowEngineOutput && m_logStream)
     {
-        *m_logStream << "### " << errMsg << endl;
+        *m_logStream << "### " << errMsg << Qt::endl;
     }
     qDebug() << errMsg;
 }

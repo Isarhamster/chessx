@@ -32,13 +32,13 @@ public:
 
 	void AppendUint(uint i) {
 		char s[16];
-		sprintf(s, "%u", i);
+        snprintf(s, 16, "%u", i);
 		s_.append(s);
 	}
 
 	void AppendInt(int i) {
 		char s[16];
-		sprintf(s, "%d", i);
+        snprintf(s, 16, "%d", i);
 		s_.append(s);
 	}
 

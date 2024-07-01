@@ -15,6 +15,7 @@
 
 #include <QFile>
 #include <QByteArray>
+#include <QStringRef>
 #include <QVector>
 
 #include "database.h"

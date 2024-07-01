@@ -16,6 +16,7 @@
 #include <QMultiHash>
 #include <QWriteLocker>
 #include <QReadLocker>
+#include <QRegularExpression>
 #include <QVector>
 
 #include "index.h"
@@ -118,6 +119,20 @@ void IndexX::removeTag(const QString& tagName, GameId gameId)
     }
 }
 
+bool IndexX::hasTag(const QString& tagName, GameId gameId) const
+{
+    QReadLocker m(&m_mutex);
+    if(m_tagNameIndex.contains(tagName))
+    {
+        TagIndex tagIndex = m_tagNameIndex.value(tagName);
+        if((int)gameId < m_indexItems.count())
+        {
+            return m_indexItems[gameId].hasTagIndex(tagIndex);
+        }
+    }
+    return false;
+}
+
 void IndexX::setValidFlag(GameId gameId, bool value)
 {
     if (!value)
@@ -194,14 +209,11 @@ bool IndexX::write(QDataStream &out) const
 void IndexX::reserve(quint32 estimation)
 {
     m_tagValues.reserve(estimation+16);
-    qDebug() << "Index space " << m_tagValues.capacity();
 }
 
 void IndexX::squeeze()
 {
-    qDebug() << "Index space " << m_tagValues.capacity();
     m_tagValues.squeeze();
-    qDebug() << "Index space " << m_tagValues.capacity();
 }
 
 bool IndexX::read(QDataStream &in, volatile bool *breakFlag, short version)
@@ -335,8 +347,8 @@ QBitArray IndexX::listPartialValue(const QString& tagName, QString value) const
     value.replace("(","\\("); // Avoid () to become regex
     value.replace(")","\\)");
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
-    QRegExp re(value);
-    re.setCaseSensitivity(Qt::CaseInsensitive);
+    QRegularExpression re(value);
+    re.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
     QBitArray list(count(), false);
     for(int i = 0; i < count(); ++i)
     {
@@ -350,6 +362,7 @@ QString IndexX::tagValue_byIndex(TagIndex tagIndex, GameId gameId) const
 {
     QReadLocker m(&m_mutex);
 
+    if (m_indexItems.length() <= gameId) return QString();
     ValueIndex valueIndex = m_indexItems[gameId].valueIndex(tagIndex);
 
     return tagValueName(valueIndex);
@@ -357,6 +370,7 @@ QString IndexX::tagValue_byIndex(TagIndex tagIndex, GameId gameId) const
 
 QString IndexX::tagValue(TagIndex tagIndex, GameId gameId) const
 {
+    if (m_indexItems.length() <= gameId) return QString();
     ValueIndex valueIndex = m_indexItems[gameId].valueIndex(tagIndex);
 
     return tagValueName(valueIndex);
@@ -389,11 +403,13 @@ ValueIndex IndexX::valueIndexFromTag(const QString& tagName, GameId gameId) cons
 
 bool IndexX::indexItemHasTag(TagIndex tagIndex, GameId gameId) const
 {
+    if (m_indexItems.length() <= gameId) return false;
     return m_indexItems[gameId].hasTagIndex(tagIndex);
 }
 
 inline ValueIndex IndexX::valueIndexFromIndex(TagIndex tagIndex, GameId gameId) const
 {
+    if (m_indexItems.length() <= gameId) return ValueNoIndex;
     return m_indexItems[gameId].valueIndex(tagIndex);
 }
 
@@ -519,6 +535,11 @@ QSet<ValueIndex> IndexX::tagValueSet(const QString& tagName) const
 		}
 	}
 	return tagNameIndex;
+}
+
+QStringList IndexX::tagNames() const
+{
+    return m_tagNameIndex.keys();
 }
 
 QStringList IndexX::tagValues(const QString& tagName) const

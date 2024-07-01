@@ -14,6 +14,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "chessxsettings.h"
 #include "colorlist.h"
 #include "preferences.h"
 #include "settings.h"
@@ -34,6 +35,7 @@
 #include <QPushButton>
 #include <QSpinBox>
 #include <QStyleFactory>
+#include <QRegularExpression>
 #include <QTextStream>
 
 #ifdef USE_SPEECH
@@ -77,6 +79,8 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     connect(ui.tbGermany, SIGNAL(clicked()), SLOT(slotChangePieceString()));
     connect(ui.tbFrance, SIGNAL(clicked()), SLOT(slotChangePieceString()));
     connect(ui.tbPoland, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbItaly, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbCzech, SIGNAL(clicked()), SLOT(slotChangePieceString()));
     connect(ui.tbSymbolic, SIGNAL(clicked()), SLOT(slotChangePieceString()));
 
     connect(ui.btLoadLang, SIGNAL(clicked()), SLOT(slotLoadLanguageFile()));
@@ -250,7 +254,7 @@ void PreferencesDialog::slotEngineUp()
     int index = ui.engineList->currentIndex().row();
     if(index > 0)
     {
-        engineList.swap(index, index - 1);
+        engineList.swapItemsAt(index, index - 1);
         QListWidgetItem* item = ui.engineList->takeItem(index - 1);
         ui.engineList->insertItem(index, item);
     }
@@ -261,7 +265,7 @@ void PreferencesDialog::slotEngineDown()
     int index = ui.engineList->currentIndex().row();
     if(index < ui.engineList->count() - 1)
     {
-        engineList.swap(index, index + 1);
+        engineList.swapItemsAt(index, index + 1);
         QListWidgetItem* item = ui.engineList->takeItem(index + 1);
         ui.engineList->insertItem(index, item);
     }
@@ -344,31 +348,7 @@ void PreferencesDialog::slotShowOptionDialog()
 
 void PreferencesDialog::slotChangePieceString()
 {
-    QString pieceString;
-    if((QToolButton*)sender() == ui.tbUK)
-    {
-        pieceString = " KQRBN";
-    }
-    else if((QToolButton*)sender() == ui.tbGermany)
-    {
-        pieceString = " KDTLS";
-    }
-    else if((QToolButton*)sender() == ui.tbFrance)
-    {
-        pieceString = " RDTFC";
-    }
-    else if((QToolButton*)sender() == ui.tbPoland)
-    {
-        pieceString = " KHWGS";
-    }
-    else if((QToolButton*)sender() == ui.tbSymbolic)
-    {
-        pieceString.clear();
-    }
-    else
-    {
-        pieceString = " KQRBN";
-    }
+    QString pieceString = ((QToolButton*)sender())->text();
     ui.pieceString->setText(pieceString);
 }
 
@@ -397,7 +377,7 @@ void PreferencesDialog::slotFileLoaded(QUrl, QString name)
 {
     if(name.endsWith(".qm", Qt::CaseInsensitive))
     {
-        name.remove(QRegExp("[^_]*_"));
+        name.remove(QRegularExpression("[^_]*_"));
         name.remove(".qm");
         ui.cbLanguage->addItem(name);
         ui.labelLoadStatus->setText(tr("Translation file loaded - select added language above!"));
@@ -485,8 +465,11 @@ void PreferencesDialog::restoreSettings()
     ui.tablebaseSelect->setCurrentIndex(AppSettings->getValue("tablebaseSource").toInt());
     ui.versionCheck->setChecked(AppSettings->getValue("onlineVersionCheck").toBool());
     ui.automaticECO->setChecked(AppSettings->getValue("automaticECO").toBool());
+    ui.preserveECO->setChecked(AppSettings->getValue("preserveECO").toBool());
     ui.useIndexFile->setChecked(AppSettings->getValue("useIndexFile").toBool());
     ui.cbAutoCommitDB->setChecked(AppSettings->getValue("autoCommitDB").toBool());
+    ui.mergeAddSource->setChecked(AppSettings->getValue("mergeAddSource").toBool());
+    ui.mergeAddTag->setText(AppSettings->getValue("mergeAddTag").toString());
     QString lang = AppSettings->getValue("language").toString();
     AppSettings->endGroup();
     AppSettings->beginGroup("/Board/");
@@ -512,16 +495,23 @@ void PreferencesDialog::restoreSettings()
     ui.btNoHints->setChecked(AppSettings->getValue("noHints").toBool());
     ui.alwaysScale->setChecked(AppSettings->getValue("AlwaysScale").toBool());
     ui.editPlayerTurnBoard->setText(AppSettings->getValue("PlayerTurnBoard").toString());
+    ui.cbBackground->setChecked(AppSettings->getValue("Background").toBool());
 
     QString pieceTheme = AppSettings->getValue("pieceTheme").toString();
     ui.pieceEffect->setCurrentIndex(AppSettings->getValue("pieceEffect").toInt());
     QString boardTheme = AppSettings->getValue("boardTheme").toString();
+    QString defaultTheme = tr("[plain colors]");
+    if (boardTheme.isEmpty())
+    {
+        boardTheme = defaultTheme;
+    }
 
     ui.boardColorsList->clear();
     restoreColorItem(ui.boardColorsList, tr("Light squares"), "lightColor");
     restoreColorItem(ui.boardColorsList, tr("Dark squares"), "darkColor");
     restoreColorItem(ui.boardColorsList, tr("Highlighted squares"), "highlightColor");
     restoreColorItem(ui.boardColorsList, tr("Frame"), "frameColor");
+    restoreColorItem(ui.boardColorsList, tr("Coordinates"), "coordColor");
     restoreColorItem(ui.boardColorsList, tr("Current move"), "currentMoveColor");
     restoreColorItem(ui.boardColorsList, tr("Stored move"), "storedMoveColor");
     restoreColorItem(ui.boardColorsList, tr("Variation move"), "variationMoveColor");
@@ -542,7 +532,7 @@ void PreferencesDialog::restoreSettings()
     while(it1.hasNext())
     {
         QString trim(it1.next());
-        trim.remove(QRegExp("[^_]*_"));
+        trim.remove(QRegularExpression("[^_]*_"));
         trim.remove(".qm");
         ui.cbLanguage->addItem(trim);
     }
@@ -554,7 +544,7 @@ void PreferencesDialog::restoreSettings()
         QString trim(it.next());
         ui.boardThemeCombo->addItem(trim.left(trim.length() - 4));
     }
-    ui.boardThemeCombo->addItem(tr("[plain colors]"));
+    ui.boardThemeCombo->addItem(defaultTheme);
 
     selectInCombo(ui.cbLanguage, lang);
     selectInCombo(ui.pieceThemeCombo, pieceTheme);
@@ -630,6 +620,7 @@ void PreferencesDialog::restoreSettings()
     AppSettings->beginGroup("Web");
     ui.webFavorite->setText(AppSettings->getValue("Favorite1").toString());
     ui.autoNumber->setValue(AppSettings->getValue("AutoNumber1").toInt());
+    ui.editWebDestination->setText(AppSettings->getValue("Destination1").toString());
     AppSettings->endGroup();
 
     AppSettings->beginGroup("FICS");
@@ -654,23 +645,32 @@ void PreferencesDialog::restoreSettings()
 
 #if defined(USE_SOUND) || defined(USE_SPEECH)
     ui.cbSoundOn->setCurrentIndex(AppSettings->getValue("Move").toInt());
+    ui.volume->setValue(AppSettings->getValue("Volume").toInt());
     ui.cbScreenReader->setChecked(AppSettings->getValue("ScreenReader").toBool());
+    ui.cbMoveSound->setChecked(AppSettings->getValue("MoveSound").toBool());
     ui.plyReadAhead->setValue(AppSettings->getValue("PlyReadAhead").toInt());
     ui.delayReadAhead->setValue(AppSettings->getValue("DelayReadAhead").toInt());
 
 #ifdef USE_SPEECH
+    QStringList voiceNames = ChessXSettings::availableVoices(lang);
+    ui.cbVoice->addItems(voiceNames);
+    ui.cbVoice->setCurrentText(AppSettings->getValue("Voice").toString());
     if (!QTextToSpeech::availableEngines().count())
     {
+        ui.cbVoice->setEnabled(false);
         ui.cbScreenReader->setChecked(false);
-        ui.cbScreenReader->setEnabled(false);
         ui.plyReadAhead->setEnabled(false);
         ui.delayReadAhead->setEnabled(false);
+        ui.cbScreenReader->setEnabled(false);
     }
 #endif
 
 #else
     ui.cbSoundOn->setCurrentIndex(0);
     ui.cbSoundOn->setEnabled(false);
+    ui.cbVoice->setEnabled(false);
+    ui.cbMoveSound->setEnabled(false);
+    ui.cbMoveSound->setChecked(false);
     ui.cbScreenReader->setChecked(false);
     ui.cbScreenReader->setEnabled(false);
     ui.plyReadAhead->setEnabled(false);
@@ -687,9 +687,12 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("tablebaseSource", QVariant(ui.tablebaseSelect->currentIndex()));
     AppSettings->setValue("onlineVersionCheck", QVariant(ui.versionCheck->isChecked()));
     AppSettings->setValue("automaticECO", QVariant(ui.automaticECO->isChecked()));
+    AppSettings->setValue("preserveECO", QVariant(ui.preserveECO->isChecked()));
     AppSettings->setValue("useIndexFile", QVariant(ui.useIndexFile->isChecked()));
     AppSettings->setValue("autoCommitDB", QVariant(ui.cbAutoCommitDB->isChecked()));
     AppSettings->setValue("language", QVariant(ui.cbLanguage->currentText()));
+    AppSettings->setValue("mergeAddSource", QVariant(ui.mergeAddSource->isChecked()));
+    AppSettings->setValue("mergeAddTag", QVariant(ui.mergeAddTag->text()));
     AppSettings->endGroup();
     AppSettings->beginGroup("/Board/");
     AppSettings->setValue("showFrame", QVariant(ui.boardFrameCheck->isChecked()));
@@ -714,6 +717,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("AutoPromoteToQueen", QVariant(ui.cbPromoteToQueen->isChecked()));
     AppSettings->setValue("AlwaysScale", QVariant(ui.alwaysScale->isChecked()));
     AppSettings->setValue("PlayerTurnBoard", ui.editPlayerTurnBoard->text());
+    AppSettings->setValue("Background", ui.cbBackground->isChecked());
 
     if(ui.boardThemeCombo->currentIndex() != ui.boardThemeCombo->count() - 1)
     {
@@ -725,7 +729,7 @@ void PreferencesDialog::saveSettings()
     }
     QStringList colorNames;
     colorNames << "lightColor" << "darkColor" << "highlightColor"
-               << "frameColor" << "currentMoveColor" << "storedMoveColor" << "variationMoveColor" << "threatColor"
+               << "frameColor" << "coordColor" << "currentMoveColor" << "storedMoveColor" << "variationMoveColor" << "threatColor"
                << "targetColor" << "checkColor" << "wallColor" << "underprotectedColor" << "engineColor" ;
     saveColorList(ui.boardColorsList, colorNames);
     AppSettings->endGroup();
@@ -775,6 +779,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->beginGroup("Web");
     AppSettings->setValue("Favorite1", ui.webFavorite->text());
     AppSettings->setValue("AutoNumber1", ui.autoNumber->value());
+    AppSettings->setValue("Destination1", ui.editWebDestination->text());
     AppSettings->endGroup();
 
     AppSettings->beginGroup("FICS");
@@ -797,6 +802,9 @@ void PreferencesDialog::saveSettings()
 
     AppSettings->beginGroup("Sound");
     AppSettings->setValue("Move", ui.cbSoundOn->currentIndex());
+    AppSettings->setValue("Volume", ui.volume->value());
+    AppSettings->setValue("Voice", ui.cbVoice->currentText());
+    AppSettings->setValue("MoveSound", ui.cbMoveSound->isChecked());
     AppSettings->setValue("ScreenReader", ui.cbScreenReader->isChecked());
     AppSettings->setValue("PlyReadAhead", ui.plyReadAhead->value());
     AppSettings->setValue("DelayReadAhead", ui.delayReadAhead->value());
@@ -923,4 +931,15 @@ void PreferencesDialog::on_savePreferences_clicked()
 void PreferencesDialog::sliderNewValue(int newValue)
 {
     emit iconsizeSliderSetting(newValue);
+}
+
+void PreferencesDialog::on_toolSearchWebDestination_clicked()
+{
+    QString file = QFileDialog::getOpenFileName(this, tr("New database"),
+                   AppSettings->value("/General/DefaultDataPath").toString(),
+                   tr("PGN database (*.pgn)"));
+    if(!file.isEmpty())
+    {
+        ui.editWebDestination->setText(file);
+    }
 }

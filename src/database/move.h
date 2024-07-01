@@ -69,7 +69,6 @@ public:
             if(isRank(c))
             {
                 chessx::Square fromSquare = chessx::Square((c - '1') * 8 + fromFile);
-                fromFile = -1;
                 c = *(s++);
                 // Destination square
                 if(isFile(c))
@@ -81,7 +80,7 @@ public:
                         chessx::Square toSquare = chessx::Square((c - '1') * 8 + f);
                         Move m(fromSquare, toSquare);
                         c = *(s++);
-                        if(c == '=' || c == '(' || QString("QRBN").indexOf(toupper(c))>=0)
+                        if(c == '=' || c == '(' || QString("QRBN").indexOf((char)toupper(c))>=0)
                         {
                             if(c == '=' || c == '(')
                             {
@@ -157,6 +156,8 @@ public:
     bool isPromotion() const;
     /** Check whether move is a castling */
     bool isCastling() const;
+    /** Check whether move is a capture */
+    bool isCapture() const;
     /** Determine if this castling is short (to the kingside) */
     bool isCastlingShort() const;
     /** Check whether the move is a pawn double advance */
@@ -211,11 +212,12 @@ private:
     static const quint64 CASTLINGBIT =  1uL << 15;
     static const quint64 TWOFORWARDBIT = 1uL << 16;
     static const quint64 PROMOTEBIT = 1uL << 17;
+    static const quint64 CAPTURE = (7uL << 18);
     static const quint64 ENPASSANTBIT = 1uL << 21;
     static const quint64 LEGALITYBIT =  1uL << 31;
     static const quint64 SPECIALBITS = CASTLINGBIT | TWOFORWARDBIT | PROMOTEBIT | ENPASSANTBIT;
     static const quint64 PTCLEAR = ~(7uL << 12);
-    static const quint64 CAPCLEAR = ~(7uL << 18);
+    static const quint64 CAPCLEAR = ~CAPTURE;
     static const quint64 PROCLEAR = ~((7uL << 22) | PROMOTEBIT);
     static const quint64 BLACKTM = 1uL << 26;
 
@@ -461,6 +463,12 @@ inline bool Move::isCastling() const
 {
     return m & CASTLINGBIT;
 }
+
+inline bool Move::isCapture() const
+{
+    return m & CAPTURE;
+}
+
 
 #define CW_00 (4 | (6 << 6) | (King << 12) | CASTLINGBIT)
 #define CB_00 (60 | (62 << 6) | (King << 12) | CASTLINGBIT)

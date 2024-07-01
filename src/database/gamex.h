@@ -12,9 +12,10 @@
 #define GAME_H_INCLUDED
 
 #include <QObject>
+#include <QRegularExpression>
+#include "annotation.h"
 #include "board.h"
 #include "gamecursor.h"
-#include "gameid.h"
 #include "move.h"
 #include "nag.h"
 #include "result.h"
@@ -86,7 +87,7 @@ public :
         FilterAll  = (FilterTan | FilterCan | FilterEval),
     };
 
-    static const QStringList s_specList;
+    static const QList<QRegularExpression> s_specList;
 
     GameX();
     GameX(const GameX& game);
@@ -127,7 +128,7 @@ public :
     /** @return arrowAnnotation at move at node @p moveId. */
     QString arrowAnnotation(MoveId moveId = CURRENT_MOVE) const;
     /** @return annotation at move at node @p moveId. */
-    QString specAnnotation(const QRegExp &r, MoveId moveId = CURRENT_MOVE) const;
+    QString specAnnotation(const QRegularExpression &r, MoveId moveId = CURRENT_MOVE) const;
     /** @return time annotation (either egt or clock) at move at node @p moveId. */
     QString timeAnnotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
     void setTimeAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE);
@@ -149,12 +150,11 @@ public :
     bool dbPrependAnnotation(QString a, char delimiter=' ', MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Sets the comment associated with move at node @p moveId */
     bool setAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
+    bool prependAnnotation(QString a, char delimiter=' ', MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Edits the comment associated with move at node @p moveId */
     bool editAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Append to existing annotations associated with move at node @p moveId */
     bool appendAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
-    /** Sets the squareAnnotation associated with move at node @p moveId */
-    bool setSquareAnnotation(QString squareAnnotation);
 
     /** Append a square to the existing lists of square annotations, if there is none, create one */
     bool appendSquareAnnotation(chessx::Square s, QChar colorCode);
@@ -162,8 +162,8 @@ public :
     /** Append an arrow to the existing lists of arrows, if there is none, create one */
     bool appendArrowAnnotation(chessx::Square dest, chessx::Square src, QChar colorCode);
 
-    /** Sets the arrowAnnotation associated with current move */
-    bool setArrowAnnotation(QString arrowAnnotation);
+    /** Sets a special annotation associated with current move */
+    bool setSpecAnnotation(const Annotation& a);
 
     /** Get a string with all special annotations including square brackets etc. */
     QString specAnnotations(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
@@ -173,7 +173,7 @@ public :
     void evaluation(double& d) const;
 
     /** Adds a nag to move at node @p moveId */
-    bool dbAddNag(Nag nag, MoveId moveId = CURRENT_MOVE);
+    void dbAddNag(Nag nag, MoveId moveId = CURRENT_MOVE);
     bool addNag(Nag nag, MoveId moveId = CURRENT_MOVE);
     /** Sets nags for move at node @p moveId */
     bool setNags(NagSet nags, MoveId moveId = CURRENT_MOVE);
@@ -305,6 +305,8 @@ public :
     /** Remove all variations */
     void removeVariations();
     void removeVariationsDb();
+    void removeNullLines();
+    void removeNullLinesDb();
     /** Remove all Comments */
     void removeComments();
     /** Remove all time Comments */
@@ -322,6 +324,8 @@ public :
     const TagMap &tags() const;
     /** Sets the value of the given tag */
     void setTag(const QString& tag, const QString& value);
+    /** Sets the value of the configured source tag */
+    void setSourceTag(const QString& value);
     /** Query existance of tag */
     bool hasTag(const QString& tag) const;
     /** Removes a tag */

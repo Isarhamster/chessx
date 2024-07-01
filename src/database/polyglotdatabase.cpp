@@ -22,7 +22,7 @@ using namespace  chessx;
 
 #define MAX_COUNT 16384
 
-struct key_compare : std::binary_function< const book_entry&, const book_entry&, bool >
+struct key_compare
 {
     bool operator()( const book_entry& a, const book_entry& b ) const
     {
@@ -888,7 +888,14 @@ void PolyglotDatabase::add_database(Database& db, volatile bool& breakFlag)
     for (int i=0; i<maxThreads; ++i)
     {
         int end = std::min(start + chunk, n);
+
+        // This is ridiculous - why change a interface like this?
+#if QT_VERSION < 0x060000
         QFuture<void> future = QtConcurrent::run(this, &PolyglotDatabase::add_database_chunk, &db, start, end, &breakFlag);
+#else
+        QFuture<void> future = QtConcurrent::run(&PolyglotDatabase::add_database_chunk, this, &db, start, end, &breakFlag);
+#endif
+
         synchronizer.addFuture(future);
         start += chunk;
     }

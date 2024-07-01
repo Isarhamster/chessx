@@ -2,8 +2,9 @@
 *   Copyright (C) 2016 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
-#include "tagsearch.h"
 #include "database.h"
+#include "qt6compat.h"
+#include "tagsearch.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -16,7 +17,7 @@ TagSearch::TagSearch(Database* database, const QString& tag, const QString& valu
 {
     if (value.contains('|'))
     {
-        QStringList l = value.split('|', Qt::SkipEmptyParts);
+        QStringList l = value.split('|', SkipEmptyParts);
         QSet<QString> set;
         foreach (QString s, l)
         {

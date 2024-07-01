@@ -9,13 +9,18 @@
  ***************************************************************************/
 
 #include <algorithm>
+#include <QDataStream>
 #include <QMap>
-
+#include <QRegularExpression>
+#include <QTextStream>
 #include "board.h"
 #include "output.h"
+#include "memorydatabase.h"
 #include "settings.h"
 #include "tags.h"
 #include "partialdate.h"
+#include "qt6compat.h"
+
 
 const char* TEMPLATE_DIR = "templates";
 const char* DEFAULT_HTML_TEMPLATE = "html-default.template";
@@ -39,6 +44,7 @@ Output::Output(OutputType output, BoardRenderingFunc renderer, const QString& pa
     case Html:
         m_options.createDefaultOptions("");
         break;
+    case LocalPgn:
     case Pgn:
         m_options.createDefaultOptions("");
         break;
@@ -62,7 +68,7 @@ Output::~Output()
 
 void Output::initialize()
 {
-    if(m_outputType == Pgn)
+    if(isPgnType(m_outputType))
     {
         m_newlineChar = "\n";
     }
@@ -98,7 +104,7 @@ void Output::readTemplateFile(const QString& path)
         {
             line = stream.readLine(); // line of text excluding '\n'
             i++;
-            if((line.indexOf(QRegExp("^\\s*$")) != -1) || (line.indexOf(QRegExp("^\\s*#")) != -1))
+            if((line.indexOf(QRegularExpression("^\\s*$")) != -1) || (line.indexOf(QRegularExpression("^\\s*#")) != -1))
             {
                 // Skip blank lines and comments (#)
                 continue;
@@ -229,9 +235,10 @@ QMap<Output::OutputType, QString>& Output::getFormats()
 {
     m_outputMap.clear();
     m_outputMap[Html] = "Html Output";
-    m_outputMap[Pgn] = "Pgn Output";
+    m_outputMap[Pgn] = "PGN Output";
     m_outputMap[Latex] = "Latex Output";
     m_outputMap[NotationWidget] = "Notation Widget Output";
+    m_outputMap[LocalPgn] = "Local PGN Output";
     return m_outputMap;
 }
 
@@ -295,10 +302,10 @@ QString Output::writeMove(MoveToWrite moveToWrite)
     }
     // Read comments
     if(m_game.canHaveStartAnnotation(moveId))
-        precommentString = (m_outputType == Pgn) ? m_game.annotation(moveId, GameX::BeforeMove) :
+        precommentString = isPgnType(m_outputType) ? m_game.annotation(moveId, GameX::BeforeMove) :
                            m_game.textAnnotation(moveId, GameX::BeforeMove, m_game.textFilter2());
 
-    QString commentString = (m_outputType == Pgn) ? m_game.annotation(moveId) :
+    QString commentString = isPgnType(m_outputType) ? m_game.annotation(moveId) :
                                                     m_game.textAnnotation(moveId, GameX::AfterMove, m_game.textFilter2());
 
     // Write precomment if any
@@ -321,7 +328,7 @@ QString Output::writeMove(MoveToWrite moveToWrite)
 
     // *** Determine actual san
     QString san;
-    GameX::MoveStringFlags flags = (m_outputType == NotationWidget) ? GameX::TranslatePiece : GameX::MoveOnly;
+    GameX::MoveStringFlags flags = isLocalized(m_outputType) ? GameX::TranslatePiece : GameX::MoveOnly;
     if(moveToWrite == NextMove)
     {
         san = m_game.moveToSan(flags);
@@ -340,11 +347,11 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         }
         if(c == White)
         {
-            text += QString::number(m_game.moveNumber(moveId)) + ". ";
+            text += QString::number(m_game.moveNumber(moveId)) + ".";
         }
         else if(m_dirtyBlack)
         {
-            text += QString::number(m_game.moveNumber(moveId)) + "... ";
+            text += QString::number(m_game.moveNumber(moveId)) + "...";
             if((m_options.getOptionAsBool("ColumnStyle")) &&
                     (m_currentVariationLevel == 0))
             {
@@ -403,12 +410,14 @@ QString Output::writeMove(MoveToWrite moveToWrite)
             (c == White))
     {
         text += m_endTagMap[MarkupColumnStyleMove];
-        m_game.forward();
-        if(m_game.atGameEnd())
+        if (m_game.forward())
         {
-            text += m_endTagMap[MarkupColumnStyleRow];
+            if(m_game.atGameEnd())
+            {
+                text += m_endTagMap[MarkupColumnStyleRow];
+            }
+            m_game.backward();
         }
-        m_game.backward();
     }
 
     if((m_options.getOptionAsBool("ColumnStyle")) &&
@@ -424,10 +433,29 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         m_dirtyBlack = true;
     }
 
-    text += writeComment(commentString, mvno, Comment);
-    if (m_game.hasNextMove())
+    if (m_outputType != Latex)
     {
-        text += " ";
+        QStringList l = commentString.split('\n', SkipEmptyParts);
+        foreach(QString s, l)
+        {
+            text += writeComment(s, mvno, Comment);
+        }
+    }
+    else
+    {
+        text += writeComment(commentString, mvno, Comment);
+    }
+
+    if (imageString.isEmpty() && commentString.isEmpty() && !san.isEmpty())
+    {
+        if((!((m_options.getOptionAsBool("ColumnStyle")) &&
+               (m_currentVariationLevel == 0))) || isPgnType(m_outputType))
+        {
+            if (m_game.hasNextMove())
+            {
+                text += " "; // Separate Move Tags from each other
+            }
+        }
     }
     return text;
 }
@@ -570,7 +598,7 @@ QString Output::writeTag(const QString& tagName, const QString& tagValue) const
     QString text = m_startTagMap[MarkupHeaderLine] +
                    m_startTagMap[MarkupHeaderTagName] +
                    tagName + m_endTagMap[MarkupHeaderTagName] +
-                   " " +
+                   " " + // e.g. Event "EventName"
                    m_startTagMap[MarkupHeaderTagValue] +
                    tagValue +
                    m_endTagMap[MarkupHeaderTagValue] +
@@ -604,7 +632,6 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
     {
         text += m_startTagMap[markup];
     }
-    text += " ";
     if (!m_options.getOptionAsBool("HTMLComments") &&
         ((m_outputType == Html) || (m_outputType == NotationWidget)))
     {
@@ -626,7 +653,7 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
 QString Output::writeGameComment(QString comment) const
 {
     QString text;
-    comment = comment.trimmed();
+
     if(comment.isEmpty())
     {
         return text;
@@ -778,7 +805,7 @@ QString Output::outputGame(const GameX* g, bool upToCurrentMove)
         text += m_startTagMap[MarkupColumnStyleMainline];
     }
 
-    QString gameComment = (m_outputType == Pgn) ? m_game.annotation(0) : m_game.textAnnotation(0, GameX::AfterMove, m_game.textFilter2());
+    QString gameComment = isPgnType(m_outputType) ? m_game.annotation(0) : m_game.textAnnotation(0, GameX::AfterMove, m_game.textFilter2());
     text += writeGameComment(gameComment);
 
     text += writeMainLine(mainId);
@@ -797,11 +824,15 @@ QString Output::outputGame(const GameX* g, bool upToCurrentMove)
 
 void Output::postProcessOutput(QString& text) const
 {
-    QRegExp var("@(\\w+)@");
-    while(var.indexIn(text) != -1)
+    QRegularExpression var("@(\\w+)@");
+    QRegularExpressionMatch match;
+    while(text.indexOf(var, 0, &match)>=0)
     {
-        QStringList cap = var.capturedTexts();
-        text.replace("@" + cap[1] + "@", m_options.getOptionAsString(cap[1]));
+        QStringList cap = match.capturedTexts();
+        if (cap.length()>1)
+        {
+            text.replace("@" + cap[1] + "@", m_options.getOptionAsString(cap[1]));
+        }
     }
 
     // Chop it up, if TextWidth option is not equal to 0
@@ -823,7 +854,7 @@ void Output::postProcessOutput(QString& text) const
     }
 }
 
-void Output::output(QTextStream& out, FilterX& filter)
+void Output::outputUtf8(QTextStream& out, FilterX& filter)
 {
     int percentDone = 0;
     GameX game;
@@ -855,17 +886,46 @@ void Output::output(QTextStream& out, FilterX& filter)
     out << footer;
 }
 
-void Output::output(QTextStream& out, Database& database)
+void Output::outputLatin1(QDataStream& out, FilterX& filter)
 {
-    if(!database.isUtf8() && (m_outputType == Pgn))
+    int percentDone = 0;
+    GameX game;
+    QString header = m_header;
+    postProcessOutput(header);
+    QByteArray b = header.toLatin1();
+    out.writeRawData(b, b.length());
+
+    for(int i = 0; i < filter.count(); ++i)
     {
-        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
-        if(textCodec)
+        if(filter.database()->loadGame(i, game))
         {
-            out.setCodec(textCodec);
+            QString tagText = outputTags(&game);
+            b = tagText.toLatin1();
+            out.writeRawData(b, b.length());
+
+            QString outText = outputGame(&game, false);
+            postProcessOutput(outText);
+            outText.append("\n\n");
+            b = outText.toLatin1();
+            out.writeRawData(b, b.length());
+        }
+        int percentDone2 = (i + 1) * 100 / filter.count();
+        if(percentDone2 > percentDone)
+        {
+            emit progress((percentDone = percentDone2));
         }
     }
 
+    QString footer = m_footer;
+    postProcessOutput(footer);
+    b = footer.toLatin1();
+    out.writeRawData(b, b.length());
+}
+
+void Output::outputUtf8(QTextStream& out, Database& database)
+{
+    SET_CODEC_UTF8(out);
+    out.setGenerateByteOrderMark(database.hadBOM());
     QString header = m_header;
     postProcessOutput(header);
     out << header;
@@ -891,7 +951,6 @@ void Output::output(QTextStream& out, Database& database)
         }
     }
 
-
     QString footer = m_footer;
     postProcessOutput(footer);
     out << footer;
@@ -899,95 +958,126 @@ void Output::output(QTextStream& out, Database& database)
     database.setModified(false);
 }
 
-void Output::output(const QString& filename, const GameX& game)
+void Output::outputLatin1(QDataStream& out, Database& database)
+{
+    QString header = m_header;
+    postProcessOutput(header);
+    QByteArray b = header.toLatin1();
+    out.writeRawData(b, b.length());
+
+    int percentDone = 0;
+    GameX game;
+    for(int i = 0; i < (int)database.count(); ++i)
+    {
+        if(database.loadGame(i, game))
+        {
+            QString tagText = outputTags(&game);
+            b = tagText.toLatin1();
+            out.writeRawData(b, b.length());
+
+            QString outText = outputGame(&game, false);
+            postProcessOutput(outText);
+            outText.append("\n\n");
+            b = outText.toLatin1();
+            out.writeRawData(b, b.length());
+        }
+        int percentDone2 = (i + 1) * 100 / database.count();
+        if(percentDone2 > percentDone)
+        {
+            emit progress((percentDone = percentDone2));
+        }
+    }
+
+    QString footer = m_footer;
+    postProcessOutput(footer);
+    b = footer.toLatin1();
+    out.writeRawData(b, b.length());
+
+    database.setModified(false);
+}
+
+void Output::output(const QString& filename, FilterX& filter, bool utf8)
 {
     QFile f(filename);
     if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         return;
     }
-    QTextStream out(&f);
-    if((m_outputType == Html) || (m_outputType == NotationWidget))
+    if (utf8)
     {
-        out.setCodec(QTextCodec::codecForName("utf8"));
-    }
-    out << output(&game);
-    f.close();
-}
-
-void Output::output(const QString& filename, FilterX& filter)
-{
-    QFile f(filename);
-    if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        return;
-    }
-    QTextStream out(&f);
-    if((m_outputType == Html) || (m_outputType == NotationWidget))
-    {
-        out.setCodec(QTextCodec::codecForName("utf8"));
-    }
-    output(out, filter);
-    f.close();
-}
-
-void Output::output(const QString& filename, Database& database)
-{
-    QFile f(filename);
-    if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        return;
-    }
-    QTextStream out(&f);
-    if((m_outputType == Html) || (m_outputType == NotationWidget))
-    {
-        out.setCodec(QTextCodec::codecForName("utf8"));
-    }
-    output(out, database);
-    f.close();
-}
-
-bool Output::append(const QString& filename, GameX& game)
-{
-    QFile f(filename);
-    if(!f.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
-    {
-        return false;
-    }
-    QTextStream out(&f);
-    if((m_outputType == Html) || (m_outputType == NotationWidget))
-    {
-        out.setCodec(QTextCodec::codecForName("utf8"));
+        QTextStream out(&f);
+        outputUtf8(out, filter);
     }
     else
     {
-        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
-        if(textCodec)
-        {
-            out.setCodec(textCodec);
-        }
+        QDataStream out(&f);
+        outputLatin1(out, filter);
     }
-    out << endl;
-    out << output(&game);
+    f.close();
+}
+
+bool Output::output(const QString& targetFilename, Database& database, bool utf8, bool append)
+{
+    QFile f(targetFilename);
+    QFile::OpenMode mode = QIODevice::WriteOnly | QIODevice::Text;
+    if (append) mode |= QIODevice::Append;
+    if(!f.open(mode))
+    {
+        return false;
+    }
+    if (append) f.write("\n");
+    if((m_outputType == Html) || (m_outputType == NotationWidget) ||
+       (isPgnType(m_outputType) && utf8))
+    {
+        QTextStream out(&f);
+        outputUtf8(out, database);
+    }
+    else
+    {
+        QDataStream out(&f);
+        outputLatin1(out, database);
+    }
+
     f.close();
     return true;
 }
 
-void Output::append(const QString& filename, Database& database)
+bool Output::output(const QString& targetFilename, Database& database, bool append)
+{
+    return output(targetFilename, database, database.isUtf8(), append);
+}
+
+void Output::outputLatin1(const QString& filename, Database& database)
 {
     QFile f(filename);
-    if(!f.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+    if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         return;
     }
-    QTextStream out(&f);
-    if((m_outputType == Html) || (m_outputType == NotationWidget))
-    {
-        out.setCodec(QTextCodec::codecForName("utf8"));
-    }
-    out << endl;
-    output(out, database);
+    QDataStream out(&f);
+    outputLatin1(out, database);
     f.close();
+}
+
+QString Output::outputUtf8(Database* database)
+{
+    QString s;
+    QTextStream out(&s);
+    outputUtf8(out, *database);
+    return s;
+}
+
+bool Output::append(const QString& filename, GameX& game, bool utf8)
+{
+    MemoryDatabase mdb;
+    mdb.setUtf8(utf8);
+    mdb.appendGame(game);
+    return append(filename, mdb, utf8);
+}
+
+bool Output::append(const QString& filename, Database& database, bool utf8)
+{
+    return output(filename, database, utf8, true);
 }
 
 void Output::setTemplateFile(QString filename)
@@ -1006,6 +1096,7 @@ void Output::setTemplateFile(QString filename)
             filename = DEFAULT_NOTATION_TEMPLATE;
             break;
         case Pgn:
+        case LocalPgn:
             filename = DEFAULT_PGN_TEMPLATE;
             break;
         default :

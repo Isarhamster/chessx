@@ -11,6 +11,7 @@
 #include "settings.h"
 
 #include <QCoreApplication>
+#include <QPixmap>
 #include <QtCore>
 
 using namespace chessx;
@@ -43,12 +44,7 @@ QString Settings::dataPath()
 {
     if(m_dataPath.isNull())
     {
-#if QT_VERSION < 0x050000
-        m_dataPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-#else
-        m_dataPath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-#endif
-
+        m_dataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
         m_dataPath.append(QDir::separator());
         m_dataPath.append("data");
     }
@@ -134,13 +130,15 @@ QString Settings::timesealFilePath()
 #endif
 }
 
+QString Settings::commonDataFilePath(QString filename)
+{
+    QString dir = commonDataPath();
+    return (dir + QDir::separator() + filename);
+}
+
 QString Settings::commonDataPath()
 {
-#if QT_VERSION < 0x050000
-    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() + "chessdata";
-#else
     QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QDir::separator() + "chessdata";
-#endif
     QString dir = value("/General/DefaultDataPath", dataPath).toString();
     return dir;
 }
@@ -195,7 +193,7 @@ QByteArray Settings::byteArray(const QString& key)
     return value(key, QByteArray()).toByteArray();
 }
 
-void Settings::setMap(const QString& key, const OptionValueList& map)
+void Settings::setMap(const QString& key, const OptionValueMap& map)
 {
     QByteArray data;
     QDataStream * stream = new QDataStream(&data, QIODevice::WriteOnly);
@@ -206,7 +204,7 @@ void Settings::setMap(const QString& key, const OptionValueList& map)
     setByteArray(key, data);
 }
 
-void Settings::getMap(const QString& key, OptionValueList& map)
+void Settings::getMap(const QString& key, OptionValueMap& map)
 {
     QByteArray data = byteArray(key);
     QDataStream * stream = new QDataStream(&data, QIODevice::ReadOnly);
@@ -221,6 +219,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
 
     map.insert("/General/EditLimit", 10);
     map.insert("/General/automaticECO", true);
+    map.insert("/General/preserveECO", true);
     map.insert("/General/useIndexFile", true);
     map.insert("/General/ListFontSize", DEFAULT_LISTFONTSIZE);
     map.insert("/General/onlineTablebases", true);
@@ -229,6 +228,8 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/General/autoCommitDB", false);
     map.insert("/General/language", "Default");
     map.insert("/General/BuiltinDbInstalled", false);
+    map.insert("/General/mergeAddSource", false);
+    map.insert("/General/mergeAddTag", "Source");
 
     map.insert("/GameText/FontSize", DEFAULT_FONTSIZE);
     map.insert("/GameText/ColumnStyle", false);
@@ -310,6 +311,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/AlwaysScale", false);
     map.insert("/Board/PlayerTurnBoard", "");
     map.insert("/Board/ReadAhead", 4);
+    map.insert("/Board/Background", true);
 
     map.insert("/Match/Mode", 0);
     map.insert("/Match/TotalTime", 3000);
@@ -324,6 +326,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/PlayerListWidget/FilterEditCompleter", QStringList());
 
     map.insert("/Sound/Move", 1);
+    map.insert("/Sound/Volume", 50);
     map.insert("/Sound/ScreenReader", true);
     map.insert("/Sound/PlyReadAhead", 6);
     map.insert("/Sound/DelayReadAhead", 1000);
@@ -364,28 +367,38 @@ void Settings::setValue(const QString &key, const QVariant& val)
     }
 }
 
-QString Settings::getThemePath(QString effect, QString pieces) const
+QString Settings::getDefaultPieceSet() const
 {
-    if (!effect.isEmpty()) effect.append(QDir::separator());
-    pieces.append(".png");
-
-    QString themeDir(AppSettings->dataPath() + QDir::separator() + "themes" + QDir::separator() + effect + pieces);
-    QString internalThemeDir = QString(":/themes/" + effect + pieces);
-    QStringList path;
-    path << themeDir;
-    path << internalThemeDir;
-
-    foreach (QString s, path)
-    {
-        if (QFile::exists(s))
-        {
-            return s;
-        }
-    }
-
     QString result = QDir(":/themes").entryList(QStringList("*.png")).constFirst();
     result.prepend(":/themes/");
     return result;
+}
+
+QString Settings::getThemePath(QString effect, QString pieces) const
+{
+    if (!pieces.isEmpty())
+    {
+        if (!effect.isEmpty())
+        {
+            effect.append(QDir::separator());
+        }
+        pieces.append(".png");
+
+        QString themeDir(AppSettings->dataPath() + QDir::separator() + "themes" + QDir::separator() + effect + pieces);
+        QString internalThemeDir = QString(":/themes/" + effect + pieces);
+        QStringList path;
+        path << themeDir;
+        path << internalThemeDir;
+
+        foreach (QString s, path)
+        {
+            if (QFile::exists(s))
+            {
+                return s;
+            }
+        }
+    }
+    return getDefaultPieceSet();
 }
 
 QStringList Settings::getImageList(QString userPath, QString internalPath) const
@@ -418,26 +431,37 @@ QStringList Settings::getThemeList(QString path) const
     return getImageList(themeDir, internalThemeDir);
 }
 
-QString Settings::getBoardPath(QString theme) const
+QString Settings::getDefaultBoard() const
 {
-    QString boardDir(AppSettings->dataPath() + QDir::separator() + "themes" + QDir::separator() + "boards");
-    theme.append(".png");
-
-    QStringList test;
-    test << boardDir + QDir::separator() + theme;
-    test << QString(":/themes/boards") + QDir::separator() + theme;
-
-    foreach (QString s, test)
-    {
-        if (QFile::exists(s))
-        {
-            return s;
-        }
-    }
-
     QString result = QDir(":/themes/boards").entryList(QStringList("*.png")).constFirst();
     result.prepend(":/themes/boards/");
     return result;
+}
+
+QString Settings::getBoardPath(QString theme) const
+{
+    if (!theme.isEmpty())
+    {
+        QString boardDir(AppSettings->dataPath() + QDir::separator() + "themes" + QDir::separator() + "boards");
+        theme.append(".png");
+
+        QStringList test;
+        test << boardDir + QDir::separator() + theme;
+        test << QString(":/themes/boards") + QDir::separator() + theme;
+
+        foreach (QString s, test)
+        {
+            if (QFile::exists(s))
+            {
+                return s;
+            }
+        }
+    }
+    else
+    {
+        return theme;
+    }
+    return getDefaultBoard();
 }
 
 QStringList Settings::getBoardList() const
@@ -467,10 +491,25 @@ QString Settings::getImagePath() const
 
     if(!QFile::exists(imgDir))
     {
-        imgDir = QString(":/data/images");
+        imgDir = QString(":/images");
     }
 
     return imgDir;
+}
+
+QString Settings::getImagePath(QString name) const
+{
+    QString path = getImagePath() + QDir::separator() + name;
+    if(!QFile::exists(path))
+    {
+        path = QString(":/images") + QDir::separator() + name;
+    }
+    return path;
+}
+
+QPixmap Settings::getPixmap(QString name) const
+{
+    return getImagePath(name);
 }
 
 QStringList Settings::getTranslationPaths() const
@@ -503,11 +542,7 @@ QStringList Settings::getTranslations() const
 
 QString Settings::getTempPath() const
 {
-#if QT_VERSION < 0x050000
-    QString path = QDesktopServices::storageLocation(QDesktopServices::TempLocation);
-#else
     QString path = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
-#endif
     return path;
 }
 

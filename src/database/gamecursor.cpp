@@ -109,9 +109,21 @@ void GameCursor::clear(const QString& fen, bool chess960)
 
 MoveId GameCursor::makeNodeIndex(MoveId moveId) const
 {
+    if (moveId == NO_MOVE)
+    {
+        return NO_MOVE;
+    }
     if (moveId == CURRENT_MOVE)
     {
         moveId = m_currentNode;
+    }
+    else if (moveId == PREV_MOVE)
+    {
+        moveId = m_nodes[m_currentNode].previousNode;
+    }
+    else if (moveId == NEXT_MOVE)
+    {
+        moveId = m_nodes[m_currentNode].nextNode;
     }
     bool rangeOk = 0 <= moveId && moveId < m_nodes.size();
     if (!rangeOk || m_nodes[moveId].Removed())
@@ -301,23 +313,40 @@ MoveId GameCursor::variationNumber(MoveId moveId) const
     return node;
 }
 
-bool GameCursor::variationHasSiblings(MoveId variation) const
+MoveId GameCursor::variationBranchPoint(MoveId variation) const
 {
     variation = makeNodeIndex(variation);
     if(variation == NO_MOVE)
     {
-        return false;
+        return NO_MOVE;
     }
-    if(isMainline(variation))
+
+    MoveId branch = m_nodes[variation].parentNode;
+    if (branch == NO_MOVE)
     {
-        return false;
+        branch = m_nodes[variation].previousNode; // Iterate back to last branchpoint is also thinkable, but probably confusing
+        branch = makeNodeIndex(branch);
     }
-    while(!atLineStart(variation))
+    else
     {
-        variation = m_nodes[variation].previousNode;
+        MoveId prevNode = variation;
+        while ((prevNode = m_nodes[prevNode].previousNode) != NO_MOVE)
+        {
+            if (m_nodes[prevNode].variations.size())
+            {
+                branch = prevNode;
+                break;
+            }
+        }
     }
-    MoveId parent = m_nodes[variation].parentNode;
-    return (variationCount(parent) > 1);
+
+    return (variationCount(branch)) ? branch : NO_MOVE;
+}
+
+bool GameCursor::variationHasSiblings(MoveId variation) const
+{
+    variation = makeNodeIndex(variation);
+    return (variationBranchPoint(variation) != NO_MOVE);
 }
 
 bool GameCursor::moveToId(MoveId moveId, QString* algebraicMoveList)
@@ -456,6 +485,14 @@ MoveId GameCursor::addVariation(const Move& move)
     return node;
 }
 
+bool GameCursor::isRemoved(MoveId moveId) const
+{
+    moveId = makeNodeIndex(moveId);
+    if (moveId <= ROOT_NODE)
+        return false;
+    return m_nodes[moveId].Removed();
+}
+
 void GameCursor::remove(MoveId moveId, QList<MoveId>* removed)
 {
     auto node = makeNodeIndex(moveId);
@@ -497,7 +534,7 @@ void GameCursor::truncateFrom(MoveId moveId, QList<MoveId>* removed)
 void GameCursor::truncateUpto(MoveId moveId, QList<MoveId>* removed)
 {
     Q_UNUSED(removed);
-    // TODO: figure why truncated modes are not marked (mistake?)
+    // TODO: figure why truncated nodes are not marked (mistake?)
     auto node = makeNodeIndex(moveId);
     if (node <= ROOT_NODE)
         return;
@@ -591,7 +628,7 @@ bool GameCursor::moveVariationUp(MoveId moveId)
     auto possible = i > 0;
     if (possible)
     {
-        vars.swap(i, i - 1);
+        vars.swapItemsAt(i, i - 1);
     }
     return possible;
 }
@@ -609,7 +646,7 @@ bool GameCursor::moveVariationDown(MoveId moveId)
     auto possible = 0 <= i && i + 1 < vars.size();
     if (possible)
     {
-        vars.swap(i, i + 1);
+        vars.swapItemsAt(i, i + 1);
     }
     return possible;
 }
@@ -638,6 +675,53 @@ void GameCursor::removeVariations()
         while (!m_nodes[i].variations.empty())
         {
             removeVariation(m_nodes[i].variations.at(0));
+        }
+    }
+}
+
+void GameCursor::removeNullLines()
+{
+    auto iw = m_nodes.begin();
+    for (; iw != m_nodes.end(); ++iw)
+    {
+        auto& node = *iw;
+        if (node.Removed()) continue;
+        if (node.move.isNullMove())
+        {
+            if (node.nextNode == NO_MOVE)
+            {
+                int self = iw-m_nodes.begin();
+                if (node.parentNode == node.previousNode)
+                {
+                    // This is the first move of an empty variation
+                    MoveId parentNode = m_nodes[self].parentNode;
+                    remove(self);
+                    QList<MoveId> &vars = m_nodes[parentNode].variations;
+                    int n = vars.indexOf(self);
+                    vars.removeAt(n);
+                 }
+                else
+                {
+                    MoveId previousNode = m_nodes[self].previousNode;
+                    QList<MoveId> &vars = m_nodes[previousNode].variations;
+                    if (vars.isEmpty())
+                    {
+                        // This is an empty move at the end of a line
+                        m_nodes[previousNode].nextNode = NO_MOVE;
+                        node.remove();
+                    }
+                    else
+                    {
+                        // There are siblings - swap with first sibling and remove
+                        MoveId parentNode = m_nodes[self].parentNode;
+                        int variation = vars.at(0);
+                        reparentVariation(variation, parentNode);
+                        node.remove();
+                        m_nodes[previousNode].nextNode = variation;
+                        vars.removeAt(0);
+                    }
+                }
+            }
         }
     }
 }

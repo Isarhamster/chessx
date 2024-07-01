@@ -52,6 +52,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QRegularExpression>
 #include <QStringList>
 #include <QUrl>
 
@@ -97,17 +98,21 @@ void DownloadManager::doDownloadToPath(const QUrl &url, const QString& filename)
 
 QString DownloadManager::saveFileName(const QUrl &url)
 {
-    QString dir = AppSettings->commonDataPath();
-    QDir().mkpath(dir);
     QString path = url.path();
-
-    if (DatabaseInfo::IsLocalDatabase(path) ||
-        DatabaseInfo::IsLocalArchive(path))
+    if (DatabaseInfo::IsLocalDatabase(path))
     {
-        QFileInfo fi = QFileInfo(url.path());
-        return dir + QDir::separator() + fi.baseName();
+        QFileInfo fi = QFileInfo(path);
+        return AppSettings->commonDataFilePath(fi.fileName());
     }
-    return dir; // Name will be determined after download
+    else if (DatabaseInfo::IsLocalArchive(path))
+    {
+        QFileInfo fi = QFileInfo(path);
+        return AppSettings->commonDataFilePath(fi.baseName());
+    }
+    else
+    {
+        return AppSettings->commonDataPath(); // Name will be determined after download
+    }
 }
 
 bool DownloadManager::saveToDisk(const QString &filename, QIODevice *data)
@@ -165,10 +170,11 @@ void DownloadManager::downloadFinished()
                 {
                     // Create a temporary file
                     QString s = reply->rawHeader("Content-Disposition").constData();
-                    QRegExp re("filename=(.*)");
-                    if (s.contains(re))
+                    QRegularExpression re("filename=(.*)");
+                    QRegularExpressionMatch match;
+                    if (s.contains(re, &match))
                     {
-                        s = re.cap(1);
+                        s = match.captured(1);
                         s.remove("'");
                         s.remove("\"");
                         s = s.trimmed();

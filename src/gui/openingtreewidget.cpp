@@ -29,6 +29,7 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     ui->setupUi(this);
 
     qRegisterMetaType<QList<MoveData> >("QList<MoveData>");
+    qRegisterMetaType<QList<Move> >("QList<Move>");
 
     m_openingTree = new OpeningTree(ui->OpeningTreeView);
 

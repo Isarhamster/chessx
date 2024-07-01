@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ChessX"
-#define MyAppVersion "1.5.6"
+#define MyAppVersion "1.6.0"
 #define MyAppPublisher "chessx.sourceforge.net"
 #define MyAppURL "http://chessx.sourceforge.net"
 #define MyAppExeName "chessx.exe"
@@ -11,7 +11,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{8EB04E4D-9D75-4663-AAB2-ED6F742BEA58}}
+AppId={{8EB04E4D-9D75-4663-AAB2-ED6F742BEA60}}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -23,8 +23,8 @@ DefaultDirName={commonpf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 DisableWelcomePage=no
 AllowNoIcons=yes
-LicenseFile=.\COPYING
-InfoAfterFile=.\ChangeLog.txt
+LicenseFile=.\COPYING.md
+InfoAfterFile=.\ChangeLog.md
 OutputBaseFilename=setup-chessx7-64
 SetupIconFile=.\src\chessx.ico
 Compression=lzma
@@ -44,8 +44,8 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 Source: "release\chessx.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "release\*.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "release\chessx.exe.local"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\COPYING"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\ChangeLog"; DestDir: "{app}"
+Source: ".\COPYING.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ChangeLog.md"; DestDir: "{app}"
 Source: ".\data\engines\uci\stockfish_10_x64.exe"; DestDir: "{app}\data\engines\uci\"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".\data\timeseal\windows\*.exe"; DestDir: "{app}\data\timeseal\windows\"; Flags: ignoreversion recursesubdirs createallsubdirs
 

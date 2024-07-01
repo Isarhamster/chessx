@@ -5,6 +5,7 @@
 
 #include "annotation.h"
 #include "commentdialog.h"
+#include <QRegularExpression>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -21,33 +22,39 @@ CommentDialog::CommentDialog(QWidget* parent, Qt::WindowFlags f) :
     connect(ui.clearText, SIGNAL(clicked()), this, SLOT(clearTextSlot()));
 }
 
+CommentDialog::TimeMode CommentDialog::timeMode() const
+{
+    if (ui.egtTime->isChecked()) return CommentDialog::Egt;
+    if (ui.clkTime->isChecked()) return CommentDialog::Clk;
+    if (ui.emtTime->isChecked()) return CommentDialog::Emt;
+    return CommentDialog::None;
+}
+
 QString CommentDialog::text() const
 {
     QString s;
     if(ui.timeEdit->time() != QTime(0, 0, 0))
     {
-        QString format = "[%emt %1]";
-        if (ui.egtTime->isChecked()) format = "[%egt %1]";
-        else if (ui.clkTime->isChecked()) format = "[%clk %1]";
         QString t = ui.timeEdit->time().toString("H:mm:ss");
-        if(!t.isEmpty())
+        CommentDialog::TimeMode TM = timeMode();
+        switch (TM)
         {
-            s = format.arg(t);
-            if (ui.egtTime->isChecked()) lastTimeMode = Egt;
-            else if (ui.clkTime->isChecked()) lastTimeMode = Clk;
-            else if (ui.emtTime->isChecked()) lastTimeMode = Emt;
+            case CommentDialog::Egt: s = ElapsedGameTimeAnnotation(t).asAnnotation(); break;
+            case CommentDialog::Clk: s = ClockAnnotation(t).asAnnotation();           break;
+            case CommentDialog::Emt: s = ElapsedMoveTimeAnnotation(t).asAnnotation(); break;
+            case CommentDialog::None: t.clear(); break;
         }
+        lastTimeMode = TM;
     }
 
     QString eval = ui.eval->text().trimmed();
     if (!eval.isEmpty())
     {
-        QString format = "[%eval %1]";
         if(!s.isEmpty())
         {
             s.append(" ");
         }
-        s.append(format.arg(eval));
+        s.append(EvalAnnotation(eval).asAnnotation());
     }
 
     QString s1 = ui.textEdit->toPlainText().trimmed();
@@ -61,13 +68,15 @@ QString CommentDialog::text() const
 
 void CommentDialog::setText(QString text)
 {
-    text.remove(QRegExp(s_can));
-    QRegExp tan(s_tan);
-    int pos = tan.indexIn(text);
+    text.remove(VisualAnnotation().filter());
+    QRegularExpression tan = TimeAnnotation().filter();
+    QRegularExpressionMatch match;
+    int pos = text.indexOf(tan, 0, &match);
+    ui.timeEdit->setTime(QTime(0, 0, 0));
     if(pos >= 0)
     {
-        QString w = tan.cap(1);
-        QString t = tan.cap(2);
+        QString w = match.captured(1);
+        QString t = match.captured(2);
         text = text.remove(tan);
         QString format = (t.contains(".")) ? "H:mm:ss.z" : "H:mm:ss";
         ui.timeEdit->setDisplayFormat(format);
@@ -96,15 +105,16 @@ void CommentDialog::setText(QString text)
         case Egt: ui.egtTime->setChecked(true); break;
         case Clk: ui.clkTime->setChecked(true); break;
         case Emt: ui.emtTime->setChecked(true); break;
+        case None: break;
         }
     }
 
-    QRegExp eval(s_eval);
-    pos = eval.indexIn(text);
+    QRegularExpression eval = EvalAnnotation().filter();
+    pos = text.indexOf(eval, 0, &match);
     if(pos >= 0)
     {
-        QString w = eval.cap(2);
-        text.remove(QRegExp(s_eval));
+        QString w = match.captured(2);
+        text.remove(EvalAnnotation().filter());
         ui.eval->setText(w);
     }
     ui.textEdit->setPlainText(text);

@@ -19,7 +19,7 @@ class RenameTagDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit RenameTagDialog(QWidget *parent, QString ts, QString tagName, Qt::WindowFlags f = nullptr);
+    explicit RenameTagDialog(QWidget *parent, QString ts, QString tagName, Qt::WindowFlags f = Qt::WindowFlags());
     ~RenameTagDialog();
 
 signals:

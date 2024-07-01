@@ -10,6 +10,11 @@
     <height>726</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>.AppleSystemUIFont</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Preferences</string>
   </property>
@@ -17,6 +22,45 @@
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="buttonLayout">
+     <property name="leftMargin">
+      <number>4</number>
+     </property>
+     <property name="topMargin">
+      <number>4</number>
+     </property>
+     <property name="rightMargin">
+      <number>4</number>
+     </property>
+     <property name="bottomMargin">
+      <number>4</number>
+     </property>
+     <item>
+      <spacer name="spacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>121</width>
+         <height>29</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::Reset</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="autoFillBackground">
@@ -686,7 +730,6 @@
              <widget class="QLineEdit" name="pieceString">
               <property name="font">
                <font>
-                <family>Courier New</family>
                 <pointsize>14</pointsize>
                </font>
               </property>
@@ -704,7 +747,7 @@
             <item>
              <widget class="QToolButton" name="tbUK">
               <property name="text">
-               <string>...</string>
+               <string notr="true"> KQRBN</string>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
@@ -715,7 +758,7 @@
             <item>
              <widget class="QToolButton" name="tbGermany">
               <property name="text">
-               <string>...</string>
+               <string notr="true"> KDTLS</string>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
@@ -726,7 +769,7 @@
             <item>
              <widget class="QToolButton" name="tbFrance">
               <property name="text">
-               <string>...</string>
+               <string notr="true"> RDTFC</string>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
@@ -737,7 +780,7 @@
             <item>
              <widget class="QToolButton" name="tbPoland">
               <property name="text">
-               <string>...</string>
+               <string notr="true"> KHWGS</string>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
@@ -746,9 +789,31 @@
              </widget>
             </item>
             <item>
+             <widget class="QToolButton" name="tbItaly">
+              <property name="text">
+               <string notr="true"> RDTAC</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../resources.qrc">
+                <normaloff>:/images/FlagItaly.png</normaloff>:/images/FlagItaly.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="tbCzech">
+              <property name="text">
+               <string notr="true"> KDVSJ</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../resources.qrc">
+                <normaloff>:/images/FlagCzech.png</normaloff>:/images/FlagCzech.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QToolButton" name="tbSymbolic">
               <property name="text">
-               <string/>
+               <string notr="true"/>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
@@ -1017,159 +1082,237 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_10">
        <item>
-        <widget class="QCheckBox" name="automaticECO">
-         <property name="text">
-          <string>Automatic classification with ECO Codes</string>
+        <widget class="QGroupBox" name="groupLocal">
+         <property name="title">
+          <string>Local Databases</string>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayout_14">
+          <item>
+           <widget class="QCheckBox" name="automaticECO">
+            <property name="text">
+             <string>Automatic classification with ECO Codes</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="preserveECO">
+            <property name="text">
+             <string>Preserve existing ECO Codes</string>
+            </property>
+            <property name="tristate">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="useIndexFile">
+            <property name="text">
+             <string>Build index file</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="cbAutoCommitDB">
+            <property name="text">
+             <string>Commit Database after saving Game</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="mergeAddSource">
+            <property name="text">
+             <string>Add source tag when merging files</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="gridLayout4">
+            <item row="4" column="1">
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QLineEdit" name="defaultDataBasePath">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="placeholderText">
+                 <string>Default path for storing files</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="browsePathButton">
+                <property name="text">
+                 <string notr="true">...</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="lbRecentFiles">
+              <property name="text">
+               <string>Number of recent files:</string>
+              </property>
+              <property name="buddy">
+               <cstring>spinBoxRecentFiles</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QSpinBox" name="limitSpin">
+              <property name="suffix">
+               <string> MB</string>
+              </property>
+              <property name="minimum">
+               <number>0</number>
+              </property>
+              <property name="maximum">
+               <number>3000</number>
+              </property>
+              <property name="value">
+               <number>10</number>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QSpinBox" name="spinBoxRecentFiles">
+              <property name="maximum">
+               <number>10</number>
+              </property>
+              <property name="value">
+               <number>4</number>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="lbDataBasePath">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Default Database Path:</string>
+              </property>
+              <property name="buddy">
+               <cstring>defaultDataBasePath</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="lbLimitSpin">
+              <property name="text">
+               <string>&amp;Edit PGN files smaller than:</string>
+              </property>
+              <property name="buddy">
+               <cstring>limitSpin</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_24">
+              <property name="text">
+               <string>Source tag name</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="mergeAddTag">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="useIndexFile">
-         <property name="text">
-          <string>Build index file</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="cbAutoCommitDB">
-         <property name="text">
-          <string>Commit Database after saving Game</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout4">
-         <item row="3" column="1">
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
-           <item>
-            <widget class="QLineEdit" name="defaultDataBasePath">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="placeholderText">
-              <string>Default path for storing files</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="browsePathButton">
-             <property name="text">
-              <string notr="true">...</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="lbDataBasePath">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Default Database Path:</string>
-           </property>
-           <property name="buddy">
-            <cstring>defaultDataBasePath</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QSpinBox" name="spinBoxRecentFiles">
-           <property name="maximum">
-            <number>10</number>
-           </property>
-           <property name="value">
-            <number>4</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="lbRecentFiles">
-           <property name="text">
-            <string>Number of recent files:</string>
-           </property>
-           <property name="buddy">
-            <cstring>spinBoxRecentFiles</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="lbLimitSpin">
-           <property name="text">
-            <string>&amp;Edit PGN files smaller than:</string>
-           </property>
-           <property name="buddy">
-            <cstring>limitSpin</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QSpinBox" name="limitSpin">
-           <property name="suffix">
-            <string> MB</string>
-           </property>
-           <property name="minimum">
-            <number>0</number>
-           </property>
-           <property name="maximum">
-            <number>3000</number>
-           </property>
-           <property name="value">
-            <number>10</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </item>
        <item>
         <widget class="QGroupBox" name="anchor_webfavorite">
          <property name="title">
           <string>Web Favorite</string>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <layout class="QVBoxLayout" name="verticalLayout_15">
           <item>
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string notr="true">URL</string>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_27">
+            <item>
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string notr="true">URL</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="webFavorite">
+              <property name="toolTip">
+               <string>URL, use $1 for auto-incrementing number</string>
+              </property>
+              <property name="placeholderText">
+               <string>Use $1 for auto-incrementing number</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_15">
+              <property name="text">
+               <string notr="true">$1</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="autoNumber">
+              <property name="maximum">
+               <number>9999</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="QLineEdit" name="webFavorite">
-            <property name="toolTip">
-             <string>URL, use $1 for auto-incrementing number</string>
-            </property>
-            <property name="placeholderText">
-             <string>Use $1 for auto-incrementing number</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_15">
-            <property name="text">
-             <string notr="true">$1</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QSpinBox" name="autoNumber">
-            <property name="maximum">
-             <number>9999</number>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_23">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <item>
+             <widget class="QLabel" name="label_23">
+              <property name="text">
+               <string>Append to file</string>
+              </property>
+              <property name="buddy">
+               <cstring>editWebDestination</cstring>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="editWebDestination">
+              <property name="inputMethodHints">
+               <set>Qt::ImhUrlCharactersOnly</set>
+              </property>
+              <property name="text">
+               <string notr="true"/>
+              </property>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="toolSearchWebDestination">
+              <property name="text">
+               <string>...</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../resources.qrc">
+                <normaloff>:/images/find_pos.png</normaloff>:/images/find_pos.png</iconset>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
@@ -1276,35 +1419,35 @@
            </layout>
           </item>
           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="1,2">
-              <item>
-		<widget class="QLabel" name="labelGameTextFontSize">
-		  <property name="text">
-		    <string>Font Size</string>
-		  </property>
-		  <property name="buddy">
-		    <cstring>gameTextFontSizeSpin</cstring>
-		  </property>
-		</widget>
-              </item>
-              <item>
-		<widget class="QSpinBox" name="gameTextFontSizeSpin">
-		  <property name="minimum">
-		    <number>5</number>
-		  </property>
-		  <property name="maximum">
-		    <number>30</number>
-		  </property>
-		  <property name="value">
-		    <number>11</number>
-		  </property>
-		</widget>
-              </item>
-	    </layout>
-	  </item>
-	 </layout>
-      </widget>
-    </item>
+           <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="1,2">
+            <item>
+             <widget class="QLabel" name="labelGameTextFontSize">
+              <property name="text">
+               <string>Font Size</string>
+              </property>
+              <property name="buddy">
+               <cstring>gameTextFontSizeSpin</cstring>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="gameTextFontSizeSpin">
+              <property name="minimum">
+               <number>5</number>
+              </property>
+              <property name="maximum">
+               <number>30</number>
+              </property>
+              <property name="value">
+               <number>11</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
        <item>
         <widget class="QGroupBox" name="groupBox_7">
          <property name="title">
@@ -1332,6 +1475,13 @@
            <widget class="QCheckBox" name="verticalTabs">
             <property name="text">
              <string>Use vertical Tabs</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="cbBackground">
+            <property name="text">
+             <string>Show background image</string>
             </property>
            </widget>
           </item>
@@ -1387,73 +1537,73 @@
            </layout>
           </item>
           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_19b">
-              <item>
-		<widget class="QLabel" name="labelToolbarIconSize">
-		  <property name="text">
-		    <string>Icon Size</string>
-		  </property>
-		  <property name="buddy">
-		    <cstring>IconSizeSlider</cstring>
-		  </property>
-		</widget>
-              </item>
-	      <item>
-		<spacer name="horizontalSpacer_1">
-		  <property name="orientation">
-		    <enum>Qt::Horizontal</enum>
-		  </property>
-		  <property name="sizeHint_1" stdset="0">
-		    <size>
-                      <width>40</width>
-                      <height>20</height>
-		    </size>
-		  </property>
-		</spacer>
-              </item>
-              <item>
-		<widget class="QLabel" name="labelSmall">
-		  <property name="text">
-		    <string>Tiny</string>
-		  </property>
-		</widget>
-              </item>
-              <item>
-		<widget class="QSlider" name="IconSizeSlider">
-		  <property name="maximum">
-		    <number>6</number>
-		  </property>
-		  <property name="singleStep">
-		    <number>1</number>
-		  </property>
-		  <property name="pageStep">
-		    <number>1</number>
-		  </property>
-		  <property name="orientation">
-		    <enum>Qt::Horizontal</enum>
-		  </property>
-		  <property name="invertedAppearance">
-		    <bool>false</bool>
-		  </property>
-		  <property name="tickPosition">
-		    <enum>QSlider::TicksBothSides</enum>
-		  </property>
-		  <property name="tickInterval">
-		    <number>1</number>
-		  </property>
-		</widget>
-              </item>
-              <item>
-		<widget class="QLabel" name="labelHuge">
-		  <property name="text">
-		    <string>Huge</string>
-		  </property>
-		</widget>
-              </item>
-            </layout>
+           <layout class="QHBoxLayout" name="horizontalLayout_19b">
+            <item>
+             <widget class="QLabel" name="labelToolbarIconSize">
+              <property name="text">
+               <string>Icon Size</string>
+              </property>
+              <property name="buddy">
+               <cstring>IconSizeSlider</cstring>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_1">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelSmall">
+              <property name="text">
+               <string>Tiny</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="IconSizeSlider">
+              <property name="maximum">
+               <number>6</number>
+              </property>
+              <property name="singleStep">
+               <number>1</number>
+              </property>
+              <property name="pageStep">
+               <number>1</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="invertedAppearance">
+               <bool>false</bool>
+              </property>
+              <property name="tickPosition">
+               <enum>QSlider::TicksBothSides</enum>
+              </property>
+              <property name="tickInterval">
+               <number>1</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelHuge">
+              <property name="text">
+               <string>Huge</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
-        </layout>
-      </widget>
+         </layout>
+        </widget>
        </item>
        <item>
         <widget class="QGroupBox" name="groupBox_9">
@@ -1854,7 +2004,7 @@
           <string>Sound</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_7">
-          <item row="1" column="0">
+          <item row="4" column="0">
            <widget class="QLabel" name="labelPlyReadAhead">
             <property name="text">
              <string>Number of plies to read ahead</string>
@@ -1864,10 +2014,20 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="cbScreenReader">
-            <property name="text">
-             <string>Sound while moving through games</string>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="plyReadAhead">
+            <property name="value">
+             <number>6</number>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QSpinBox" name="delayReadAhead">
+            <property name="maximum">
+             <number>5000</number>
+            </property>
+            <property name="singleStep">
+             <number>100</number>
             </property>
            </widget>
           </item>
@@ -1890,14 +2050,7 @@
             </item>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="plyReadAhead">
-            <property name="value">
-             <number>6</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
+          <item row="5" column="0">
            <widget class="QLabel" name="labelDelayReadAhead">
             <property name="text">
              <string>Delay between moves [ms]</string>
@@ -1907,13 +2060,37 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QSpinBox" name="delayReadAhead">
-            <property name="maximum">
-             <number>5000</number>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="cbMoveSound">
+            <property name="text">
+             <string>Sound making moves</string>
             </property>
-            <property name="singleStep">
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="cbScreenReader">
+            <property name="text">
+             <string>Sound while moving through games</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="cbVoice"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_29">
+            <property name="text">
+             <string>Volume</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSlider" name="volume">
+            <property name="maximum">
              <number>100</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
@@ -1965,45 +2142,6 @@
       </layout>
      </widget>
     </widget>
-   </item>
-   <item row="1" column="0">
-    <layout class="QHBoxLayout" name="buttonLayout">
-     <property name="leftMargin">
-      <number>4</number>
-     </property>
-     <property name="topMargin">
-      <number>4</number>
-     </property>
-     <property name="rightMargin">
-      <number>4</number>
-     </property>
-     <property name="bottomMargin">
-      <number>4</number>
-     </property>
-     <item>
-      <spacer name="spacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>121</width>
-         <height>29</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QDialogButtonBox" name="buttonBox">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::Reset</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>

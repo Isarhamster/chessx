@@ -86,7 +86,8 @@ int PlayerInfo::toResult(const QString& res) const
 void PlayerInfo::update()
 {
     QHash<QString, EcoFrequencyInfo> openings[2];
-    QHash<QString, int> openingsX[2];
+    QList<QString> openingsX[2];
+    QHash<QString, int> openingsXX[2];
     const IndexX* index = m_database->index();
 
     // Determine matching tag values
@@ -134,7 +135,12 @@ void PlayerInfo::update()
         QString ecoX = index->tagValue(TagNameECO, i).left(4);
         if(ecoX.length() >= 3)
         {
-            openingsX[c][ecoX]++;
+            QString opening = EcoPositions::findEcoName(ecoX);
+            if (!opening.isEmpty())
+            {
+                openingsX[c].append(ecoX);
+                openingsXX[c][opening]++;
+            }
         }
     }
 
@@ -149,14 +155,15 @@ void PlayerInfo::update()
 
     for(int i = 0; i < 2; ++i)
     {
-        auto& counts = m_opening[i];
         for (auto it = openingsX[i].cbegin(); it != openingsX[i].cend(); ++it)
         {
-            const auto& eco = it.key();
-            counts.append(OpeningCountItem(eco, it.value()));
-
-            QString opening = EcoPositions::findEcoName(eco);
-            m_MapOpeningToECOCodes[i][opening].append(eco);
+            QString opening = EcoPositions::findEcoName(*it);
+            m_MapOpeningToECOCodes[i][opening].append(*it);
+        }
+        auto& counts = m_opening[i];
+        for (auto it = openingsXX[i].cbegin(); it != openingsXX[i].cend(); ++it)
+        {
+            counts.append(OpeningCountItem(it.key(), it.value()));
         }
         // comparison function for sorting m_opening[c]
         auto cmp = [](const OpeningCountItem& lhs, const OpeningCountItem& rhs) {

@@ -30,7 +30,11 @@ protected:
     virtual void mousePressEvent(QMouseEvent* event);
     virtual void mouseMoveEvent(QMouseEvent* event);
     virtual void mouseReleaseEvent(QMouseEvent* event);
+#if QT_VERSION < 0x060000
     virtual void enterEvent(QEvent *event);
+#else
+    virtual void enterEvent(QEnterEvent *event);
+#endif
     virtual void leaveEvent(QEvent *event);
 
     void updatePolygon(int line);

@@ -64,6 +64,10 @@
 #include <QPrintPreviewDialog>
 #endif
 
+#if QT_VERSION >= 0x060000
+#include <QtGui/qactiongroup.h>
+#endif
+
 #include "GameMimeData.h"
 #include "settings.h"
 #include "textedit.h"
@@ -390,18 +394,17 @@ void TextEdit::setupStyleActions()
 
     comboFont = new QFontComboBox(tb);
     tb->addWidget(comboFont);
-    connect(comboFont, SIGNAL(activated(QString)), this, SLOT(textFamily(QString)));
+    connect(comboFont, SIGNAL(textActivated(QString)), this, SLOT(textFamily(QString)));
 
     comboSize = new QComboBox(tb);
     comboSize->setObjectName("comboSize");
     tb->addWidget(comboSize);
     comboSize->setEditable(true);
 
-    QFontDatabase db;
-    foreach(int size, db.standardSizes())
+    foreach(int size, QFontDatabase::standardSizes())
         comboSize->addItem(QString::number(size));
 
-    connect(comboSize, SIGNAL(activated(QString)), this, SLOT(textSize(QString)));
+    connect(comboSize, SIGNAL(textActivated(QString)), this, SLOT(textSize(QString)));
     comboSize->setCurrentIndex(comboSize->findText(QString::number(QApplication::font().pointSize())));
 }
 
@@ -553,7 +556,11 @@ void TextEdit::filePrint()
     QPointer<QPrintDialog> dlg = new QPrintDialog(&printer, this);
     if (textEdit->textCursor().hasSelection())
     {
+#if QT_VERSION < 0x060000
         dlg->addEnabledOption(QAbstractPrintDialog::PrintSelection);
+#else
+        dlg->setOption(QAbstractPrintDialog::PrintSelection, true);
+#endif
     }
     dlg->setWindowTitle(tr("Print Document"));
     if (dlg->exec() == QDialog::Accepted)
@@ -627,7 +634,7 @@ void TextEdit::textItalic()
 void TextEdit::textFamily(const QString &f)
 {
     QTextCharFormat fmt;
-    fmt.setFontFamily(f);
+    fmt.setFontFamilies(QStringList()<<f);
     fmt.setBackground(Qt::white);
     mergeFormatOnWordOrSelection(fmt);
 }
@@ -834,8 +841,9 @@ PasteTextEdit::~PasteTextEdit()
 bool PasteTextEdit::eventFilter(QObject *obj, QEvent *event)
 {
     QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-    if(keyEvent && (keyEvent->key() == Qt::Key_Return ||
-                    keyEvent->key() == Qt::Key_Enter))
+    if((event->type() == QEvent::KeyRelease)
+        && (keyEvent->key() == Qt::Key_Return ||
+            keyEvent->key() == Qt::Key_Enter))
     {
         keyPressEvent(keyEvent);
         return true;
@@ -884,7 +892,7 @@ void PasteTextEdit::wheelEvent(QWheelEvent *e)
     // ZoomIn / Out with Control+Alt+Wheel
     if ((m & (Qt::ControlModifier | Qt::AltModifier)) == (Qt::ControlModifier | Qt::AltModifier))
     {
-        const int delta = e->delta();
+        const int delta = e->angleDelta().y();
         if (delta < 0)
             zoomOut();
         else if (delta > 0)

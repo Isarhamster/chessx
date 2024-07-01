@@ -8,6 +8,8 @@
 #define ROOT_NODE 0
 #define NO_MOVE -1
 #define CURRENT_MOVE -2
+#define PREV_MOVE -3
+#define NEXT_MOVE -4
 
 typedef int MoveId;
 
@@ -129,6 +131,8 @@ public:
     MoveId variationNumber(MoveId moveId = CURRENT_MOVE) const;
     /** @return true if the referenced variation has siblings */
     bool variationHasSiblings(MoveId variation = CURRENT_MOVE) const;
+    /** @return Find the next Node back where the variation branches off  */
+    MoveId variationBranchPoint(MoveId variation = CURRENT_MOVE) const;
 
     /** Moves to the position corresponding to the given move id */
     bool moveToId(MoveId moveId, QString* algebraicMoveList=nullptr);
@@ -180,7 +184,8 @@ public:
     /** Remove nodes marked for removal */
     void clearDummyNodes();
     QMap<MoveId, MoveId> compact();
-
+    void removeNullLines();
+    bool isRemoved(MoveId moveId) const;
     /** Change parent of each move of a variation. */
     void reparentVariation(MoveId variation, MoveId parent);
 

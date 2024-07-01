@@ -14,7 +14,7 @@
 #include <QStringList>
 #include <QtDebug>
 #include <QMutexLocker>
-
+#include <QRegularExpression>
 #include "board.h"
 #include "nag.h"
 
@@ -307,6 +307,8 @@ bool PgnDatabase::parseFileIntern()
                 {
                     parseTagsIntoIndex(); // This will parse the tags into memory
                     parseGame();
+                    if (!m_index.hasTag(TagNameLength, m_count - 1)) m_index.setTag_nolock(TagNameLength, "0", m_count - 1);
+                    if (!m_index.hasTag(TagNameResult, m_count - 1)) m_index.setTag_nolock(TagNameResult, "*", m_count - 1);
                 }
 
                 if(!m_file->atEnd())
@@ -506,8 +508,6 @@ void PgnDatabase::parseTagIntoIndex(const QString& tag, QString value)
 
 void PgnDatabase::parseTagsIntoIndex()
 {
-    m_index.setTag_nolock(TagNameLength, "0", m_count - 1);
-    m_index.setTag_nolock(TagNameResult, "*", m_count - 1);
     while(m_currentLine.startsWith(QString("[")))
     {
         int pos = 0;
@@ -757,6 +757,8 @@ void PgnDatabase::splitTokenList(QVector<QStringRef>& list)
                 list.push_back(QStringRef(&m_currentLine, start+n-1, 1));
                 start += n;
                 n = 0;
+                dots = 0;
+                inNag = false;
             }
             break;
 
@@ -878,10 +880,7 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
     case 0:
         {
             Nag nag = NagSet::fromString(token.at(0));
-            if (nag != NullNag)
-            {
-                game->dbAddNag(nag);
-            }
+            game->dbAddNag(nag);
         }
         break;
     case '(':
@@ -902,7 +901,7 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
         }
         game->dbMoveToId(move);
         game->forward();
-        m_newVariation    = false;
+        m_newVariation = false;
         m_variation = 0;
         break;
     case '{':
@@ -1009,10 +1008,7 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
         if (c<0)
         {
             Nag nag = NagSet::fromString(token.at(0));
-            if (nag != NullNag)
-            {
-                game->dbAddNag(nag);
-            }
+            game->dbAddNag(nag);
         }
         else
         {
@@ -1028,7 +1024,7 @@ void PgnDatabase::parseComment(GameX* game)
 
     if(end >= 0)
     {
-        m_comment.append(m_currentLine.leftRef(end));
+        m_comment.append(m_currentLine.left(end));
         m_inComment = false;
         if(m_newVariation || game->plyCount() == 0)
         {
@@ -1037,11 +1033,20 @@ void PgnDatabase::parseComment(GameX* game)
                 game->dbSetAnnotation(m_precomment, 0);
                 m_inPreComment = false;
             }
-            m_precomment = m_comment.trimmed();
-            m_inPreComment = true;
+            else
+            {
+                m_precomment = m_comment.trimmed();
+                m_inPreComment = true;
+            }
         }
         else
         {
+            QString currentComment = game->annotation();
+            if (!currentComment.isEmpty())
+            {
+                currentComment.append("\n");
+                m_comment.prepend(currentComment);
+            }
             game->dbSetAnnotation(m_comment.trimmed());
         }
         m_currentLine = m_currentLine.right((m_currentLine.length() - end) - 1);
@@ -1053,13 +1058,15 @@ void PgnDatabase::parseComment(GameX* game)
     }
 }
 
-inline bool onlyWhite(const QByteArray& b)
+inline bool onlyWhitespace(const QByteArray& b)
 {
     for(int i = 0; i < b.length(); ++i)
+    {
         if(!isspace(b[i]))
         {
             return false;
         }
+    }
     return true;
 }
 
@@ -1115,7 +1122,7 @@ void PgnDatabase::skipTags()
     }
 
     //swallow trailing whitespace
-    while(onlyWhite(m_lineBuffer) && !m_file->atEnd())
+    while(onlyWhitespace(m_lineBuffer) && !m_file->atEnd())
     {
         skipLine();
     }
@@ -1132,7 +1139,7 @@ void PgnDatabase::skipMoves()
     }
     if(!tag.isEmpty())
     {
-        while(!onlyWhite(m_lineBuffer) && !m_file->atEnd())
+        while(!onlyWhitespace(m_lineBuffer) && !m_file->atEnd())
         {
             skipLine();
         }
@@ -1143,26 +1150,27 @@ void PgnDatabase::skipMoves()
     else
     {
         // PERF Costs about 5s in 157s for the ref database (3.1%)
-        QRegExp gameNumber("\\s(\\d+)\\s*\\.");
+        QRegularExpression gameNumber("\\s(\\d+)\\s*\\.");
 
         QString gameText = " ";
 
-        while(!onlyWhite(m_lineBuffer) && !m_file->atEnd())
+        while(!onlyWhitespace(m_lineBuffer) && !m_file->atEnd())
         {
             gameText += QString(m_lineBuffer) + " ";
             skipLine();
         }
 
-        gameText = gameText.remove(QRegExp("\\([^\\(\\)]*\\)"));
+        gameText = gameText.remove(QRegularExpression("\\([^\\(\\)]*\\)"));
 
-        if (gameNumber.lastIndexIn(gameText)>=0)
+        QRegularExpressionMatch match;
+        if (gameText.lastIndexOf(gameNumber, 0, &match) >= 0)
         {
-            m_index.setTag_nolock(TagNameLength, gameNumber.cap(1), m_count - 1);
+            m_index.setTag_nolock(TagNameLength, match.captured(1), m_count - 1);
         }
     }
 
     //swallow trailing whitespace
-    while(onlyWhite(m_lineBuffer) && !m_file->atEnd())
+    while(onlyWhitespace(m_lineBuffer) && !m_file->atEnd())
     {
         skipLine();
     }

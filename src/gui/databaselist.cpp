@@ -16,6 +16,8 @@
 #include <QMenu>
 #include <QtGui>
 
+#include "qt6compat.h"
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -164,56 +166,66 @@ void DatabaseList::itemSelected(const QModelIndex& index)
     }
 }
 
-void DatabaseList::dbOpen()
+QStringList DatabaseList::selectionList(int item)
 {
     QModelIndexList list = selectionModel()->selectedRows();
+    QStringList l;
     foreach(QModelIndex index, list)
     {
-        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
-        QString utf8 = m_filterModel->data(m_filterModel->index(index.row(), DBLV_UTF8)).toString();
-        bool bUtf8 = (utf8.compare("UTF8") == 0);
+        l << m_filterModel->data(m_filterModel->index(index.row(), item)).toString();
+    }
+    return l;
+}
+
+void DatabaseList::dbOpen()
+{
+    QStringList l1 = selectionList(DBLV_PATH);
+    QStringList l2 = selectionList(DBLV_UTF8);
+    foreach(QString s, l1)
+    {
+        if (l2.isEmpty()) break;
+        bool bUtf8 = (l2.front().compare("UTF8") == 0);
+        l2.pop_front();
         emit requestOpenDatabase(s, bUtf8);
     }
 }
 
 void DatabaseList::dbToggleUTF8()
 {
-    QModelIndexList list = selectionModel()->selectedRows();
-    foreach(QModelIndex index, list)
+    QStringList l1 = selectionList(DBLV_PATH);
+    QStringList l2 = selectionList(DBLV_UTF8);
+    foreach(QString s, l1)
     {
-        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
-        QString utf8 = m_filterModel->data(m_filterModel->index(index.row(), DBLV_UTF8)).toString();
-        bool bUtf8 = (utf8.compare("UTF8") == 0);
+        if (l2.isEmpty()) break;
+        bool bUtf8 = (l2.front().compare("UTF8") == 0);
+        l2.pop_front();
         setFileUtf8(s, !bUtf8);
     }
 }
 
 void DatabaseList::slotSetDirty()
 {
-    QModelIndexList list = selectionModel()->selectedRows();
-    foreach(QModelIndex index, list)
+    QStringList l1 = selectionList(DBLV_PATH);
+    foreach(QString s, l1)
     {
-        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
         emit requestDirty(s);
     }
 }
 
 void DatabaseList::dbClose()
 {
-    QModelIndexList list = selectionModel()->selectedRows();
-    foreach(QModelIndex index, list)
+    QStringList l1 = selectionList(DBLV_PATH);
+    foreach(QString s, l1)
     {
-        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
         emit requestCloseDatabase(s);
     }
 }
 
 void DatabaseList::dbSetStarsForSelection(int stars)
 {
-    QModelIndexList list = selectionModel()->selectedRows();
-    foreach(QModelIndex index, list)
+    QStringList l1 = selectionList(DBLV_PATH);
+    foreach(QString s, l1)
     {
-        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
         setFileFavorite(s, true, 0);
         setStars(s,stars);
     }
@@ -380,7 +392,7 @@ void DatabaseList::dragMoveEvent(QDragMoveEvent *event)
     if(gameMimeData)
     {
         event->setDropAction(Qt::CopyAction);
-        QModelIndex index = indexAt(event->pos());
+        QModelIndex index = indexAt(EVENT_POSITION(event));
         if(index.isValid())
         {
             QString path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
@@ -393,7 +405,7 @@ void DatabaseList::dragMoveEvent(QDragMoveEvent *event)
     else if(dbMimeData && dbMimeData->hasUrls())
     {
         event->setDropAction(Qt::CopyAction);
-        QModelIndex index = indexAt(event->pos());
+        QModelIndex index = indexAt(EVENT_POSITION(event));
         if(index.isValid())
         {
             QString path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
@@ -438,13 +450,12 @@ void DatabaseList::dropEvent(QDropEvent *event)
     TableView::dropEvent(event);
     if (event->dropAction())
     {
-        // TODO - test where the files come from in case of gameMimeData !!!!!!!!! -> crash
         const QMimeData *mimeData = event->mimeData();
         const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
         const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
         if(gameMimeData)
         {
-            QModelIndex index = indexAt(event->pos());
+            QModelIndex index = indexAt(EVENT_POSITION(event));
             appendGameToDataBase(index, gameMimeData->m_indexList, gameMimeData->source);
         }
         else if(dbMimeData && dbMimeData->hasUrls())
@@ -453,7 +464,7 @@ void DatabaseList::dropEvent(QDropEvent *event)
             foreach(QUrl url, urlList)
             {
                 QString s = url.toString();
-                appendDataBaseToDataBase(event->pos(), s);
+                appendDataBaseToDataBase(EVENT_POSITION(event), s);
             }
         }
         else if(mimeData && mimeData->hasUrls())
@@ -503,10 +514,9 @@ void DatabaseList::startToDrag()
 {
     DbMimeData *mimeData = new DbMimeData;
     QList<QUrl> urlList;
-    QModelIndexList list = selectionModel()->selectedRows();
-    foreach(QModelIndex index, list)
+    QStringList l1 = selectionList(DBLV_PATH);
+    foreach(QString s, l1)
     {
-        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
         urlList << QUrl(s);
     }
     mimeData->setUrls(urlList);

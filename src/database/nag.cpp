@@ -690,6 +690,13 @@ Nag NagSet::uniqueMatch(const QString &nag)
     {
         return s_ExtraNags[nag];
     }
+    foreach(QString nagString, s_ExtraNags.keys())
+    {
+        if (nagString.startsWith(nag))
+        {
+            return Nag::NullNag;
+        }
+    }
     Nag n = Nag::NullNag;
     for(int i = 1; i < NagCount; ++i)
     {

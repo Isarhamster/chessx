@@ -20,27 +20,6 @@ Analysis::Analysis()
     clear();
 }
 
-Analysis& Analysis::operator=(const Analysis& rhs)
-{
-    if(this != &rhs)
-    {
-        m_score     = rhs.m_score;
-        m_msec      = rhs.m_msec;
-        m_depth     = rhs.m_depth;
-        m_mateIn    = rhs.m_mateIn;
-        m_nodes     = rhs.m_nodes;
-        m_numpv     = rhs.m_numpv;
-        m_bestMove  = rhs.m_bestMove;
-        m_endOfGame = rhs.m_endOfGame;
-        m_variation = rhs.m_variation;
-        m_bookMove  = rhs.m_bookMove;
-        m_tb        = rhs.m_tb;
-        m_scoreTb   = rhs.m_scoreTb;
-        m_elapsedTimeMS = rhs.m_elapsedTimeMS;
-    }
-    return *this;
-}
-
 void Analysis::clear()
 {
     m_mateIn = 99999;
@@ -207,7 +186,7 @@ void Analysis::setMovesToMate(int mate)
     m_mateIn = mate;
 }
 
-QString Analysis::toString(const BoardX& board) const
+QString Analysis::toString(const BoardX& board, bool hideLines) const
 {
     BoardX testBoard = board;
     QString out;
@@ -252,20 +231,23 @@ QString Analysis::toString(const BoardX& board) const
     int moveNo = testBoard.moveNumber();
 
     QString moveText;
-    foreach(Move move, variation())
+    if(!hideLines)
     {
-        if(whiteToMove)
+        foreach(Move move, variation())
         {
-            moveText += QString::number(moveNo++) + ". ";
+            if(whiteToMove)
+            {
+                moveText += QString::number(moveNo++) + ". ";
+            }
+            else  if(moveText.isEmpty())
+            {
+                moveText += QString::number(moveNo++) + "... ";
+            }
+            moveText += testBoard.moveToSan(move, true);
+            moveText += " ";
+            testBoard.doMove(move);
+            whiteToMove = !whiteToMove;
         }
-        else  if(moveText.isEmpty())
-        {
-            moveText += QString::number(moveNo++) + "... ";
-        }
-        moveText += testBoard.moveToSan(move, true);
-        moveText += " ";
-        testBoard.doMove(move);
-        whiteToMove = !whiteToMove;
     }
     if (!moveText.isEmpty())
     {

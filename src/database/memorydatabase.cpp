@@ -161,30 +161,34 @@ void MemoryDatabase::parseGame()
     {
         game->dbSetStartingBoard(fen, chess960);
     }
-    m_index.setValidFlag(m_count - 1, parseMoves(game));
+
+    bool ok = parseMoves(game);
+
+    m_index.setValidFlag(m_count - 1, ok);
 
     QString valLength = QString::number((game->plyCount() + 1) / 2);
-    m_index.setTag(TagNameLength, valLength, m_count - 1);
     game->setTag(TagNameLength, valLength);
 
     QString eco = game->tag(TagNameECO).left(3);
     if(eco == "?")
     {
         eco.clear();
+        game->setTag(TagNameECO, "");
     }
 
     if(AppSettings->getValue("/General/automaticECO").toBool())
     {
-        if(eco.isEmpty())
+        if(eco.isEmpty() || !AppSettings->getValue("/General/preserveECO").toBool())
         {
             eco = game->ecoClassify().left(3);
             if(!eco.isEmpty())
             {
                 game->setTag(TagNameECO, eco);
-                m_index.setTag(TagNameECO, eco, m_count - 1);
             }
         }
     }
+
+    setMissingTagsToIndex(*game, m_count-1);
 
     game->unmountBoard();
     m_games.append(game);

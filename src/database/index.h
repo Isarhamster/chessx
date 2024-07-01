@@ -21,6 +21,7 @@
 
 #include "indexitem.h"
 #include "gamex.h"
+#include "gameid.h"
 
 #define VERSION_INDEX_1_2 0x0001
 #define VERSION_INDEX_1_3 0x0002
@@ -83,6 +84,9 @@ public:
 
     /** Get the list of tagValues for a given @p tagName */
     QStringList tagValues(const QString& tagName) const;
+
+    /** Get the list of tags */
+    QStringList tagNames() const;
 	
 	QSet<ValueIndex> tagValueSet(const QString& tagName) const;
 
@@ -143,6 +147,9 @@ public:
 
     /** Remove a tag from the index, do not care for the value */
     void removeTag(const QString &tagName, GameId gameId);
+
+    /** Returns true if the Index already hosts a tag of name @tagName */
+    bool hasTag(const QString &tagName, GameId gameId) const;
 
     /** Calculate hash for a game header */
     unsigned int hashIndexItem(GameId gameId) const;

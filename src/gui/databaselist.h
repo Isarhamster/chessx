@@ -23,10 +23,12 @@ public:
     GameId getLastIndex(const QString& s) const;
     int stars(const QString& s) const;
 
-    void limitStars(int limit);
+    void limitStars(int limit);    
+    bool fileUtf8(const QString& s) const;
+
 public slots:
     void addFileOpen(const QString& s, bool utf8);
-    void setFileFavorite(const QString& s, bool bFavorite, int index);
+    void setFileFavorite(const QString& s, bool bFavorite = false, int index = 0);
     void setStars(const QString& s, int stars);
     void setFileUtf8(const QString&, bool);
     void setFileClose(const QString& s, GameId lastIndex);
@@ -34,8 +36,6 @@ public slots:
     void update(const QString& s);
     void slotCurrentIndexChanged(const QModelIndex&);
     void slotDoubleClicked(const QModelIndex&);
-
-    bool fileUtf8(const QString& s) const;
 
 signals:
     void selected(int);
@@ -79,7 +79,8 @@ private slots:
     void slotSetDirty();
     void dbClose();
     void dbSetStarsForSelection(int stars);
-
+private:
+    QStringList selectionList(int item);
 private:
     DatabaseListModel* m_model;
     QSortFilterProxyModel* m_filterModel;

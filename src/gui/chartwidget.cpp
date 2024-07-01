@@ -5,10 +5,14 @@
 #include "chartwidget.h"
 
 #include <QColor>
+#include <QEnterEvent>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPalette>
+#include <QSharedPointer>
 #include <cmath>
+
+#include "qt6compat.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -33,7 +37,8 @@ void ChartWidget::setValues(int line, const QList<double>& values)
 {
     if (line >= m_values.size())
     {
-        m_values.insert(line, *new QList<double>());
+        QList<double> l;
+        m_values.insert(line, l);
     }
     m_values[line].clear();
     foreach(double d,values)
@@ -120,12 +125,7 @@ void ChartWidget::handleMouseEvent(QMouseEvent *event)
 {
     if (width() && m_values.size() && (m_values[0].count()>1))
     {
-    #if QT_VERSION < 0x050000
-        QPointF p = event->posF();
-    #else
-        QPointF p = event->localPos();
-    #endif
-
+        QPointF p = EVENT_POSITION(event);
         double multiplierW = ((double)width()) / (m_values[0].count()-1);
         double x = 0.5 + (p.x() / multiplierW);
         if (m_lastSentIndicator!=(int)x)
@@ -136,7 +136,11 @@ void ChartWidget::handleMouseEvent(QMouseEvent *event)
     }
 }
 
+#if QT_VERSION < 0x060000
 void ChartWidget::enterEvent(QEvent *event)
+#else
+void ChartWidget::enterEvent(QEnterEvent *event)
+#endif
 {
     setCursor(QCursor(Qt::SplitHCursor));
     QWidget::enterEvent(event);

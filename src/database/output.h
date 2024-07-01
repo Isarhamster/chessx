@@ -88,8 +88,12 @@ public:
         Html, /**< Exports the game in Html format */
         Pgn, /**< Exports the game in PGN format */
         Latex, /**< Exports the game in Latex format */
-        NotationWidget /**< Exports the game in format appropriate for the notation widget */
+        NotationWidget, /**< Exports the game in format appropriate for the notation widget */
+        LocalPgn
     };
+    inline bool isPgnType(OutputType o) const { return ((o==Pgn) || (o==LocalPgn)); }
+    inline bool isLocalized(OutputType o) const { return ((o==NotationWidget) || (o==LocalPgn)); }
+
     enum MoveToWrite
     {
         PreviousMove,
@@ -119,25 +123,27 @@ public:
      * @return A string containing the game in the specified format
      * @param game A pointer to the game object being output */
     QString output(const GameX* game, bool upToCurrentMove = false);
-    /** Create the output for the given game
-     * @param filename The filename that the output will be written to.
-     * @param filter A GameX object. Exported, using the output(GameX* game) method */
-    void output(const QString& filename, const GameX& game);
     /** Create the output for the given filter
      * @param filename The filename that the output will be written to.
      * @param filter A Filter object. All games in the filter will be output, one
      *               after the other, using the output(GameX* game) method */
-    void output(const QString& filename, FilterX& filter);
+    void output(const QString& filename, FilterX& filter, bool utf8);
     /** Create the output for the given database
      * @param filename The filename that the output will be written to.
+     * @param database A pointer to a database object. All games in the database will be output.
+     * @note The source database also determines the UTF8 settings! */
+    bool output(const QString& filename, Database& database, bool append=false);
+    bool output(const QString& targetFilename, Database& database, bool utf8, bool append);
+    void outputLatin1(const QString& filename, Database& database);
+    /** Create the output for the given database
      * @param database A pointer to a database object. All games in the database will be output, one
      *               after the other, using the output(GameX* game) method */
-    void output(const QString& filename, Database& database);
+    QString outputUtf8(Database* database);
 
     /** Append output to a closed file */
-    bool append(const QString& filename, GameX& game);
+    bool append(const QString& filename, GameX& game, bool utf8);
     /** Append a database to a closed file */
-    void append(const QString& filename, Database& database);
+    bool append(const QString& filename, Database& database, bool utf8);
 
     /** User definable settings.
      * Sets the filename of the file that contains the template that will be used
@@ -223,12 +229,14 @@ private:
      * @param out A textstream that will be used to write the results to
      * @param filter A Filter object. All games in the filter will be output, one
      *               after the other, using the output(GameX* game) method */
-    void output(QTextStream& out, FilterX& filter);
+    void outputUtf8(QTextStream& out, FilterX& filter);
+    void outputLatin1(QDataStream& out, FilterX& filter);
     /** Create the output for the given database
      * @param out A textstream that will be used to write the results to
      * @param database A pointer to a database object. All games in the database will be output, one
      *               after the other, using the output(GameX* game) method */
-    void output(QTextStream& out, Database& database);
+    void outputUtf8(QTextStream& out, Database& database);
+    void outputLatin1(QDataStream& out, Database& database);
 
     /** Output of a single game - requires postProcessing */
     QString outputGame(const GameX *g, bool upToCurrentMove);

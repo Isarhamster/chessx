@@ -16,17 +16,20 @@
 
 #include <QtGui>
 #include <QAction>
+#include <QElapsedTimer>
 #include <QMainWindow>
 #ifdef USE_SPEECH
 #include <QTextToSpeech>
 #endif
-#include <QUndoGroup>
+#include <QSoundEffect>
 #include <QToolBar>
+#include <QUndoGroup>
 
 using namespace chessx;
 
 class Analysis;
 class AnalysisWidget;
+class AnnotationWidget;
 class BoardView;
 class BoardViewEx;
 class Database;
@@ -60,7 +63,6 @@ class TextEdit;
 class QTimer;
 class QToolBar;
 class SaveDialog;
-class ToolMainWindow;
 class TranslatingSlider;
 class PolyglotWriter;
 
@@ -108,7 +110,7 @@ protected:
     /** @return index of active game */
     GameId gameIndex() const;
     /** Edit comment */
-    bool gameEditComment(Output::CommentType type);
+    void gameEditComment(Output::CommentType type, bool checkModifier = false);
     /** Get export filename*/
     QString exportFileName(int& format);
     /** Load game @p index. If @p force is false, does nothing for incorrect @p index .
@@ -131,6 +133,9 @@ protected:
     /* Sets size for icons in the toolbar */
     QToolBar * fileToolBar, * editToolBar, * viewToolBar, * gameToolBar, * dbToolBar, * searchToolBar;
   public slots:
+    /** Changes window title in response to boardview flipping**/
+    void updateWindowTitleFlipped(bool, bool);
+    /** resizes icons in the toolbar **/
     void resizeToolBarIcons(int scale);
     /** Enter gaming mode */
     void slotToggleGameMode();
@@ -141,9 +146,11 @@ protected:
     /** Open database */
     void openDatabase(QString fname);
     /** Open database from URL*/
-    void openDatabaseUrl(QString fname, bool utf8);
+    void openDatabaseUrl(QString fname, bool utf8=false);
+    void appendDatabaseUrl(QString fname, bool utf8, QString target);
     /** Open a list of databases from a ZIP archive */
     void openDatabaseArchive(QString fname, bool utf8);
+    void copyDatabaseArchive(QString fname, QString destination);
     /** Open database from a local File */
     void openDatabaseFile(QString fname, bool utf8);
     /** Add favorite status to a database */
@@ -260,10 +267,14 @@ protected:
     void slotDatabaseUncomment();
     /** Remove all time annotations from all games. */
     void slotDatabaseRemoveTime();
+    /** Remove all null moves */
+    void slotDatabaseRemoveNullLines();
     /** Remove all variations */
     void slotGameRemoveVariations();
     /** Remove all variations from all games. */
     void slotDatabaseRemoveVariations();
+    /** Remove all lines consisting only of a null move */
+    void slotGameRemoveNullLines();
     /** Set a annotation into the current game (w/o Undo) */
     void slotGameSetComment(QString);
     /** Start / Stop AutoPlay feature */
@@ -363,12 +374,15 @@ protected:
     void slotDatabaseCopy(QList<GameId> gameIndexList=QList<GameId>());
     /** Filter out duplicate games from a complete database. */
     void slotDatabaseFilterDuplicateGames();
+    /** Find games which are the same independant of their header. */
+    void slotDatabaseFilterIdenticalGames();
     /** Filter out games with duoplicate headers from a complete database. */
     void slotDatabaseFilterDuplicateTags();
     /** Clear the clipboard database */
     void slotDatabaseClearClipboard();
     /** Set the list into the filter and add all duplicates */
     void slotDatabaseFindDuplicates(QList<GameId> listGames);
+    void slotDatabaseFindIdenticals(QList<GameId> listGames);
     /** Database was changed - change informations. */
     void slotDatabaseChanged();
     /** Delete current game. */
@@ -478,6 +492,7 @@ protected slots:
     void FicsConnected();
     void HandleFicsRequestRemoveMove();
     void openLichess();
+    void openLichessBroadcast();
     void openChesscom();
     void openFICS();
     void openWebFavorite();
@@ -523,7 +538,7 @@ protected:
     void activateBoardViewForDbIndex(void *dbIndex);
     void closeBoardViewForDbIndex(void *dbIndex);
     int findBoardView(void *dbIndex) const;
-    void UpdateMaterial();
+    void UpdateMaterialWidget();
     bool ActivateDatabase(QString fname);
     bool addRemoteMoveFrom64Char(QString s);
     void newGame();
@@ -531,7 +546,12 @@ protected:
     QString ficsPath() const;
     bool ActivateFICSDatabase();
     void setupAnalysisWidget(DockWidgetEx *analysisDock, AnalysisWidget *analysis);
-    void playSound(QString s);
+    /** Get a sound hint "[PQKRBN][xmcp]" where x=capture, m=mate, c=check, p=romote */
+    QString soundHint(Move m) const;
+    void playNextMoveSound(QString s, Move m);
+    void playMoveSound(QString s, Move m);
+    void playSound(QString s, QString hint = "");
+    void playSound(QString s, Move m);
     QString PieceToSpeech(PieceType pt);
     QString MoveToSpeech(Move m);
     bool announceMove(Move m);
@@ -588,7 +608,7 @@ private slots:
     void slotHttpDone(QNetworkReply *reply);
     void slotVersionFound(int major, int minor, int build);
     void slotUpdateOpeningTreeWidget();
-
+    void slotDatabaseEditTag();
 private:
     /** Create single menu action. */
     QAction* createAction(QString name, const char* slot, const QKeySequence& key = QKeySequence(),
@@ -685,6 +705,7 @@ private:
     GameWindow* m_gameWindow;
     GameToolBar* m_gameToolBar;
     QTabWidget* m_tabWidget;
+    AnnotationWidget* annotationWidget;
     /* Status */
     QLabel* m_statusFilter;
     HistoryLabel* m_statusApp;
@@ -700,7 +721,7 @@ private:
     
     QPointer<DatabaseInfo> m_currentDatabase;
     QString m_eco;
-    QTime m_operationTime;
+    QElapsedTimer m_operationTime;
     int m_operationFlag;
     /** Currently updated tree. May be NULL if no update in progress. */
     QString m_nagText;
@@ -745,7 +766,7 @@ private:
     QActionGroup* m_gameModeGroup;
     TextEdit* m_scratchPad;
     int m_matchTime[2];
-    QTime m_elapsedUserTime;
+    QElapsedTimer m_elapsedUserTime;
     bool m_elapsedUserTimeValid;
     EngineParameter m_matchParameter;
     bool m_bEvalRequested;
@@ -757,6 +778,8 @@ private:
 #endif
     int m_readAhead;
     Move m_readNextMove;
+    QPointer<QSoundEffect> effect;
+    QMap<QUrl, QString> copyFileNames;
 };
 
 #endif

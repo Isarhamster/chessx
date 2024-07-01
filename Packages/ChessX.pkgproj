@@ -25,8 +25,6 @@
 									<false/>
 									<key>BUNDLE_POSTINSTALL_PATH</key>
 									<dict>
-										<key>PATH</key>
-										<string>symlink_tuning.sh</string>
 										<key>PATH_TYPE</key>
 										<integer>1</integer>
 									</dict>
@@ -583,7 +581,7 @@
 				<key>USE_HFS+_COMPRESSION</key>
 				<false/>
 				<key>VERSION</key>
-				<string>1.5.6</string>
+				<string>1.6.0</string>
 			</dict>
 			<key>TYPE</key>
 			<integer>0</integer>
@@ -625,7 +623,7 @@
 						<key>BACKGROUND_PATH</key>
 						<dict>
 							<key>PATH</key>
-							<string>/Users/ni/Documents/Projects/chessx/data/images/chessx.png</string>
+							<string>../data/images/chessx.png</string>
 							<key>PATH_TYPE</key>
 							<integer>0</integer>
 						</dict>
@@ -643,9 +641,9 @@
 						<key>BACKGROUND_PATH</key>
 						<dict>
 							<key>PATH</key>
-							<string>/Users/jens/Documents/Programmieren/Projects/chessx/data/images/chessx-64.png</string>
+							<string>../data/images/chessx-64.png</string>
 							<key>PATH_TYPE</key>
-							<integer>0</integer>
+							<integer>3</integer>
 						</dict>
 						<key>CUSTOM</key>
 						<true/>
@@ -658,9 +656,9 @@
 				<key>BACKGROUND_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>/Users/jens/Documents/Programmieren/Projects/chessx/data/images/chessx-64.png</string>
+					<string>../data/images/chessx-64.png</string>
 					<key>PATH_TYPE</key>
-					<integer>0</integer>
+					<integer>3</integer>
 				</dict>
 				<key>CUSTOM</key>
 				<true/>
@@ -782,7 +780,7 @@
 						<key>VALUE</key>
 						<dict>
 							<key>PATH</key>
-							<string>../License.txt</string>
+							<string>../COPYING.md</string>
 							<key>PATH_TYPE</key>
 							<integer>1</integer>
 						</dict>
@@ -801,7 +799,7 @@
 						<key>VALUE</key>
 						<dict>
 							<key>PATH</key>
-							<string>../ChangeLog.txt</string>
+							<string>../ChangeLog.md</string>
 							<key>PATH_TYPE</key>
 							<integer>1</integer>
 						</dict>

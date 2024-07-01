@@ -17,7 +17,7 @@ GameNotationWidget::GameNotationWidget(QWidget* parent)
     // setup layout
     auto layout = new QHBoxLayout();
     layout->addWidget(m_browser);
-    layout->setMargin(0);
+    layout->setContentsMargins(0,0,0,0);
     setLayout(layout);
 
     configureFont();
@@ -41,6 +41,11 @@ QString GameNotationWidget::getHtml() const
 QString GameNotationWidget::getText() const
 {
     return m_browser->toPlainText();
+}
+
+QString GameNotationWidget::getTextSelection() const
+{
+    return m_browser->textCursor().selection().toPlainText();
 }
 
 QString GameNotationWidget::generateText(const GameX &game, bool trainingMode)

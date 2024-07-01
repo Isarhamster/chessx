@@ -1608,7 +1608,7 @@ Game::GetPartialMoveList (DString * outStr, uint plyCount)
         }
         if (i != 0) { outStr->Append (" "); }
         if (i == 0  ||  CurrentPos->GetToMove() == WHITE) {
-            sprintf (temp, "%d%s", CurrentPos->GetFullMoveCount(),
+            snprintf (temp, 80, "%d%s", CurrentPos->GetFullMoveCount(),
                      (CurrentPos->GetToMove() == WHITE ? "." : "..."));
             outStr->Append (temp);
         }
@@ -1908,7 +1908,7 @@ errorT Game::WriteMoveList(TextBuffer* tb, moveT* oldCurrentMove,
             if ((PgnStyle & PGN_STYLE_COLUMN)  &&  VarDepth == 0) {
                 tb->PrintString (startColumn);
                 char temp [10];
-                sprintf (temp, "%4u.", CurrentPos->GetFullMoveCount());
+                snprintf (temp, 10, "%4u.", CurrentPos->GetFullMoveCount());
                 tb->PrintString (temp);
                 if (CurrentPos->GetToMove() == BLACK) {
                     tb->PauseTranslations();
@@ -2169,7 +2169,7 @@ errorT Game::WriteMoveList(TextBuffer* tb, moveT* oldCurrentMove,
                     if (IsColorFormat()) {
                         if (VarDepth < 19) {
                             char tmp_str[16];
-                            sprintf(tmp_str, "<ip%u>", VarDepth + 1);
+                            snprintf(tmp_str, 16, "<ip%u>", VarDepth + 1);
                             tb->PrintString(tmp_str);
                         }
                     } else {
@@ -2220,7 +2220,7 @@ errorT Game::WriteMoveList(TextBuffer* tb, moveT* oldCurrentMove,
                     if (IsColorFormat()) {
                         if (VarDepth < 19) {
                             char tmp_str[16];
-                            sprintf(tmp_str, "</ip%u><br>", VarDepth + 1);
+                            snprintf(tmp_str, 16, "</ip%u><br>", VarDepth + 1);
                             tb->PrintString(tmp_str);
                         }
                     } else {
@@ -2323,7 +2323,7 @@ errorT Game::WritePGN(TextBuffer* tb) {
         if (PgnFormat==PGN_FORMAT_Color) {tb->PrintString ("<tag>"); }
         tb->PrintString (GetWhiteStr());
         if (WhiteElo > 0) {
-            sprintf (temp, "  (%u)", WhiteElo);
+            snprintf (temp, 256, "  (%u)", WhiteElo);
             tb->PrintString (temp);
         }
         switch (PgnFormat) {
@@ -2340,7 +2340,7 @@ errorT Game::WritePGN(TextBuffer* tb) {
         }
         tb->PrintString (GetBlackStr());
         if (BlackElo > 0) {
-            sprintf (temp, "  (%u)", BlackElo);
+            snprintf (temp, 256, "  (%u)", BlackElo);
             tb->PrintString (temp);
         }
         //if (IsHtmlFormat()) { tb->PrintString ("</font>"); }
@@ -2377,7 +2377,7 @@ errorT Game::WritePGN(TextBuffer* tb) {
         }
         auto annotator = FindExtraTag("Annotator");
         if (annotator != NULL) {
-            sprintf(temp, " (%s)", annotator);
+            snprintf(temp, 256, " (%s)", annotator);
             tb->PrintString(temp);
         }
 
@@ -2410,54 +2410,54 @@ errorT Game::WritePGN(TextBuffer* tb) {
         uint wrapColumn = tb->GetWrapColumn();
         tb->SetWrapColumn (99999);
         if (IsColorFormat()) { tb->PrintString ("<tag>"); }
-        sprintf (temp, "[Event \"%s\"]%s", GetEventStr(), newline);
+        snprintf (temp, 256, "[Event \"%s\"]%s", GetEventStr(), newline);
         tb->PrintString (temp);
-        sprintf (temp, "[Site \"%s\"]%s", GetSiteStr(), newline);
+        snprintf (temp, 256, "[Site \"%s\"]%s", GetSiteStr(), newline);
         tb->PrintString (temp);
-        sprintf (temp, "[Date \"%s\"]%s", dateStr, newline);
+        snprintf (temp, 256, "[Date \"%s\"]%s", dateStr, newline);
         tb->PrintString (temp);
-        sprintf (temp, "[Round \"%s\"]%s", GetRoundStr(), newline);
+        snprintf (temp, 256, "[Round \"%s\"]%s", GetRoundStr(), newline);
         tb->PrintString (temp);
-        sprintf (temp, "[White \"%s\"]%s", GetWhiteStr(), newline);
+        snprintf (temp, 256, "[White \"%s\"]%s", GetWhiteStr(), newline);
         tb->PrintString (temp);
-        sprintf (temp, "[Black \"%s\"]%s", GetBlackStr(), newline);
+        snprintf (temp, 256, "[Black \"%s\"]%s", GetBlackStr(), newline);
         tb->PrintString (temp);
-        sprintf (temp, "[Result \"%s\"]%s", RESULT_LONGSTR[Result], newline);
+        snprintf (temp, 256, "[Result \"%s\"]%s", RESULT_LONGSTR[Result], newline);
         tb->PrintString (temp);
 
         // Print all tags, not just the standard seven, if applicable:
         if (PgnStyle & PGN_STYLE_TAGS) {
             if (WhiteElo > 0) {
-                sprintf (temp, "[White%s \"%u\"]%s",
+                snprintf (temp, 256, "[White%s \"%u\"]%s",
                          ratingTypeNames [WhiteRatingType], WhiteElo, newline);
                 tb->PrintString (temp);
             }
             if (BlackElo > 0) {
-                sprintf (temp, "[Black%s \"%u\"]%s",
+                snprintf (temp, 256, "[Black%s \"%u\"]%s",
                          ratingTypeNames [BlackRatingType], BlackElo, newline);
                 tb->PrintString (temp);
             }
             if (EcoCode != 0) {
                 ecoStringT ecoStr;
                 eco_ToExtendedString (EcoCode, ecoStr);
-                sprintf (temp, "[ECO \"%s\"]%s", ecoStr, newline);
+                snprintf (temp, 256, "[ECO \"%s\"]%s", ecoStr, newline);
                 tb->PrintString (temp);
             }
             if (EventDate != ZERO_DATE) {
                 char edateStr [20];
                 date_DecodeToString (EventDate, edateStr);
-                sprintf (temp, "[EventDate \"%s\"]%s", edateStr, newline);
+                snprintf (temp, 256, "[EventDate \"%s\"]%s", edateStr, newline);
                 tb->PrintString (temp);
             }
 
             if (PgnStyle & PGN_STYLE_SCIDFLAGS  &&  *ScidFlags != 0) {
-                sprintf (temp, "[ScidFlags \"%s\"]%s", ScidFlags, newline);
+                snprintf (temp, 256, "[ScidFlags \"%s\"]%s", ScidFlags, newline);
                 tb->PrintString (temp);
             }
 
             // Now print other tags
             for (auto& e : extraTags_) {
-                sprintf(temp, "[%s \"%s\"]%s", e.first.c_str(),
+                snprintf(temp, 256, "[%s \"%s\"]%s", e.first.c_str(),
                         e.second.c_str(), newline);
                 tb->PrintString(temp);
             }

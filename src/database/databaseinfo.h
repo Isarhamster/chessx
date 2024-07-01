@@ -14,11 +14,11 @@
 #include "gamex.h"
 #include "gameid.h"
 
-#include <QString>
+#include <QMetaType>
 #include <QObject>
 #include <QUndoCommand>
 #include <QPointer>
-#include <QMetaType>
+#include <QString>
 
 class Database;
 class FilterX;
@@ -160,6 +160,8 @@ private:
     CircularBuffer<GameId> m_lastGames;
     bool m_bLoaded;
     bool m_utf8;
+    bool m_hadBOM;
+    bool testBOM();
 };
 
 #endif

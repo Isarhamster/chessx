@@ -6,6 +6,7 @@
 #include "ficsconsole.h"
 #include "ficsclient.h"
 #include "partialdate.h"
+#include "qt6compat.h"
 #include "settings.h"
 #include "tags.h"
 
@@ -18,6 +19,7 @@
 #include <QString>
 #include <QStringList>
 #include <QStringListModel>
+#include <QRegularExpression>
 
 using namespace chessx;
 
@@ -29,13 +31,13 @@ using namespace chessx;
 FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     QWidget(parent),
     ui(new Ui::FicsConsole),
-    m_ficsClient(ficsClient),
     gameMode(false),
     puzzleMode(false),
     m_bWhiteToMove(true),
     m_prevTab(TabMessage)
 {
     setObjectName("FicsConsole");
+    m_ficsClient = ficsClient;
 
     ui->setupUi(this);
     ui->tabWidget->setCurrentIndex(TabMessage);
@@ -50,7 +52,7 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     btgSeek->addButton(ui->btLightning);
     btgSeek->addButton(ui->btBlitz);
     btgSeek->addButton(ui->btStandard);
-    connect(btgSeek, SIGNAL(buttonClicked(int)), SLOT(SlotSeekTimeChanged(int)));
+    connect(btgSeek, SIGNAL(idClicked(int)), SLOT(SlotSeekTimeChanged(int)));
 
     connect(ui->textOut, SIGNAL(editingFinished()), SLOT(SendCommand()));
     connect(m_ficsClient, SIGNAL(receivedMessage(int,QString)), SLOT(HandleMessage(int,QString)), Qt::QueuedConnection);
@@ -213,7 +215,7 @@ void FicsConsole::HandleBoard(int cmd, QString s)
 
     if (cmd == FicsClient::BLKCMD_EXAMINE || cmd == FicsClient::BLKCMD_FORWARD)
     {
-        m_ficsClient->sendCommand("forward");
+        if (m_ficsClient) m_ficsClient->sendCommand("forward");
     }
     if (handleBoard && gameMode)
     {
@@ -302,7 +304,7 @@ void FicsConsole::HandleHistoryRequest(QTableWidgetItem* item)
     if (!item->column()) return;
 
     QString player = item->text();
-    player.remove(QRegExp("\\([^\\)]*\\)"));
+    player.remove(QRegularExpression("\\([^\\)]*\\)"));
     if (!player.isEmpty())
     {
         m_lastHistoryPlayer = player;
@@ -319,10 +321,11 @@ void FicsConsole::HandleSeekRequest(QListWidgetItem* item)
     if (!m_ficsClient) return;
 
     QString s = item->text();
-    QRegExp play("\\\"(play [^\\\"]*)");
-    if (play.indexIn(s) >= 0)
+    QRegularExpression play("\\\"(play [^\\\"]*)");
+    QRegularExpressionMatch match;
+    if (s.indexOf(play, 0, &match) >= 0)
     {
-        QString seek = play.cap(1);
+        QString seek = match.captured(1);
         SlotSendUnexamine();
         m_ficsClient->sendCommand("unobserve");
         m_ficsClient->sendCommand(seek);
@@ -340,7 +343,7 @@ void FicsConsole::SendMove(QString m)
 void FicsConsole::SlotSeekTimeChanged(int)
 {
     ui->listSeeks->clear();
-    m_ficsClient->sendCommand("sought");
+    if (m_ficsClient) m_ficsClient->sendCommand("sought");
 }
 
 QString FicsConsole::DecrementTime(QString s) const
@@ -374,32 +377,32 @@ QString FicsConsole::DecrementTime(QString s) const
 
 void FicsConsole::SlotSendAccept()
 {
-   m_ficsClient->sendCommand("accept");
+   if (m_ficsClient) m_ficsClient->sendCommand("accept");
 }
 
 void FicsConsole::SlotSendDraw()
 {
-   m_ficsClient->sendCommand("draw");
+   if (m_ficsClient) m_ficsClient->sendCommand("draw");
 }
 
 void FicsConsole::SlotSendDecline()
 {
-    m_ficsClient->sendCommand("decline");
+    if (m_ficsClient) m_ficsClient->sendCommand("decline");
 }
 
 void FicsConsole::SlotSendAbort()
 {
-    m_ficsClient->sendCommand("abort");
+    if (m_ficsClient) m_ficsClient->sendCommand("abort");
 }
 
 void FicsConsole::SlotSendResign()
 {
-    m_ficsClient->sendCommand("resign");
+    if (m_ficsClient) m_ficsClient->sendCommand("resign");
 }
 
 void FicsConsole::SlotSendHint()
 {
-    m_ficsClient->sendCommand("tell puzzlebot hint");
+    if (m_ficsClient) m_ficsClient->sendCommand("tell puzzlebot hint");
 }
 
 void FicsConsole::SlotSendUnexamine()
@@ -408,14 +411,14 @@ void FicsConsole::SlotSendUnexamine()
     {
         emit RequestGameMode(false);
     }
-    m_ficsClient->sendCommand("unexamine");
+    if (m_ficsClient) m_ficsClient->sendCommand("unexamine");
 }
 
 void FicsConsole::SlotSendRematch()
 {
     if (!gameMode)
     {
-        m_ficsClient->sendCommand("rematch");
+        if (m_ficsClient) m_ficsClient->sendCommand("rematch");
     }
 }
 
@@ -445,14 +448,14 @@ void FicsConsole::SlotSendSeek()
         QListWidgetItem* item = new QListWidgetItem(seek);
         item->setForeground(QBrush(Qt::gray));
         ui->listSeeks->addItem(item);
-        m_ficsClient->sendCommand(seek);
+        if (m_ficsClient) m_ficsClient->sendCommand(seek);
     }
 }
 
 void FicsConsole::SlotSayMessage()
 {
     QString msg = ui->sayMessage->text();
-    m_ficsClient->sendCommand(QString("say %1").arg(msg));
+    if (m_ficsClient) m_ficsClient->sendCommand(QString("say %1").arg(msg));
     ui->sayMessage->clear();
     ui->textIn->appendHtml(QString("<i>%1</i>").arg(msg));
     UpdateSayCompleter(msg);
@@ -483,10 +486,10 @@ Color FicsConsole::playerColor() const
 void FicsConsole::SlotAddNoPlay()
 {
     QString msg = ui->editNoPlay->text();
-    m_ficsClient->sendCommand(QString("+noplay %1").arg(msg));
+    if (m_ficsClient) m_ficsClient->sendCommand(QString("+noplay %1").arg(msg));
     ui->editNoPlay->clear();
     ui->listNoPlay->clear();
-    m_ficsClient->sendCommand("=noplay");
+    if (m_ficsClient) m_ficsClient->sendCommand("=noplay");
 }
 
 void FicsConsole::SlotNoPlayChanged(const QString& s)
@@ -566,7 +569,7 @@ void FicsConsole::SetPlayerListItemsFromLine(QString s)
     if (s.contains("players displayed"))
         return;
 
-    QRegExp sep("(\\s+|\\^|~|:|&|#|\\.)");
+    QRegularExpression sep("(\\s+|\\^|~|:|&|#|\\.)");
     QStringList l = s.split(sep);
     ui->listPlayers->setSortingEnabled(false);
     for (int i=0; i<l.count()-1; i+=2)
@@ -683,7 +686,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             {
                 if (s.startsWith("Game"))
                 {
-                    QStringList l = s.split(" ",Qt::SkipEmptyParts);
+                    QStringList l = s.split(" ",SkipEmptyParts);
                     if (l.size()>=6)
                     {
                         QString nameWhite = l[2];
@@ -699,16 +702,17 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 }
                 else
                 {
-                    QRegExp wReg("White Clock :([^\\.]*)");
-                    if (wReg.indexIn(s) >= 0)
+                    QRegularExpression wReg("White Clock :([^\\.]*)");
+                    QRegularExpressionMatch match;
+                    if (s.indexOf(wReg, 0, &match) >= 0)
                     {
-                        QString w = wReg.cap(1).trimmed();
+                        QString w = match.captured(1).trimmed();
                         emit FicsShowTime(White, w);
                     }
-                    QRegExp bReg("Black Clock :([^\\.]*)");
-                    if (bReg.indexIn(s) >= 0)
+                    QRegularExpression bReg("Black Clock :([^\\.]*)");
+                    if (s.indexOf(bReg, 0, &match) >= 0)
                     {
-                        QString b = bReg.cap(1).trimmed();
+                        QString b = match.captured(1).trimmed();
                         emit FicsShowTime(Black, b);
                     }
                 }
@@ -716,11 +720,12 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             }
         case FicsClient::BLKCMD_HISTORY:
             {
-                QRegExp typeOfGame("\\[([^\\]]+)\\]");
-                int pos = typeOfGame.indexIn(s);
+                QRegularExpression typeOfGame("\\[([^\\]]+)\\]");
+                QRegularExpressionMatch match;
+                int pos = s.indexOf(typeOfGame, 0, &match);
                 if(pos >= 0)
                 {
-                    QString segt = typeOfGame.cap(1).trimmed();
+                    QString segt = match.captured(1).trimmed();
                     if (segt.startsWith('b') || segt.startsWith('l') || segt.startsWith('s') || segt.startsWith('u'))
                     {
                         ui->listHistory->addItem(s);
@@ -741,7 +746,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_XTELL:
             if (!s.startsWith("(") && s.length() > 1)
             {
-                QStringList l = s.split(" ", Qt::SkipEmptyParts);
+                QStringList l = s.split(" ", SkipEmptyParts);
                 if (l.length() == 5)
                 {
                     // todo: Convert List to table widget
@@ -755,8 +760,12 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 }
                 else if (s.contains("tell relay next"))
                 {
-                    m_ficsClient->sendCommand("xtell relay next");
+                    if (m_ficsClient) m_ficsClient->sendCommand("xtell relay next");
                 }
+		else
+		{
+		    ui->textIn->appendPlainText(s);
+		}
             }
             break;
         case FicsClient::BLKCMD_WHO:
@@ -784,7 +793,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             break;
         case FicsClient::BLKCMD_SOUGHT:
             {
-                QStringList l = s.split(" ",Qt::SkipEmptyParts);
+                QStringList l = s.split(" ",SkipEmptyParts);
                 if (l.size() >= 8)
                 {
                     QString sought = btgSeek->checkedButton()->objectName().remove(0,2).toLower();
@@ -816,7 +825,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             {
                 gameMode = true;
                 puzzleMode = false; // Better safe than sorry -> puzzleMode breaks a lot of things
-                m_ficsClient->sendCommand("time");
+                if (m_ficsClient) m_ficsClient->sendCommand("time");
                 m_lastRelation = C64_REL_ISOLATED; // Anything invalid in this context
                 emit FicsShowTimer(true);
                 m_bWhiteToMove = true;
@@ -829,7 +838,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 if (l.length() > 2)
                 {
                     QString w = l[2].remove('(');
-                    m_bPlayerIsBlack = w != m_ficsClient->getGuestName();
+                    if (m_ficsClient) m_bPlayerIsBlack = w != m_ficsClient->getGuestName();
                     emit SignalPlayerIsBlack(m_bPlayerIsBlack, true);
                 }
             }
@@ -860,7 +869,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_SHOWLIST:
             if (!s.contains("--"))
             {
-                QStringList l = s.split(" ", Qt::SkipEmptyParts);
+                QStringList l = s.split(" ", SkipEmptyParts);
                 foreach(QString name, l)
                 {
                     ui->listNoPlay->addItem(name);
@@ -868,7 +877,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             }
             break;
         case FicsClient::BLKCMD_SAY:
-            s.remove(QRegExp("[^:]*:"));
+            s.remove(QRegularExpression("[^:]*:"));
             ui->textIn->appendHtml(QString("<b>%1</b>").arg(s));
             ui->tabWidget->setCurrentIndex(TabMessage);
             break;
@@ -876,7 +885,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             emit raiseRequest();
             ui->textIn->appendPlainText(s);
             ui->textIn->ensureCursorVisible();
-            if (m_ficsClient->loggedInAsGuest())
+            if (m_ficsClient && m_ficsClient->loggedInAsGuest())
             {
                 ui->cbRated->setCurrentIndex(1);
                 ui->cbRated->setEnabled(false);
@@ -893,7 +902,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_INTERNAL_PUZZLEBOT:
             if (s.contains("kibitzes"))
             {
-                s.remove(QRegExp("puzzlebot[^:]*kibitzes:"));
+                s.remove(QRegularExpression("puzzlebot[^:]*kibitzes:"));
                 s = s.trimmed();
                 if (!s.contains("tell puzzlebot"))
                 {
