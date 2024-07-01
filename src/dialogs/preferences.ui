@@ -730,24 +730,25 @@
              <widget class="QLineEdit" name="pieceString">
               <property name="font">
                <font>
+                <family>.AppleSystemUIFont</family>
                 <pointsize>14</pointsize>
                </font>
               </property>
               <property name="toolTip">
-               <string>Put the initials of the pieces here, mind the initial space.</string>
+               <string>Put the initials of the pieces here.</string>
               </property>
               <property name="text">
                <string/>
               </property>
               <property name="placeholderText">
-               <string> KQRBN - Mind the initial space!</string>
+               <string>KQRBN</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QToolButton" name="tbUK">
               <property name="text">
-               <string notr="true"> KQRBN</string>
+               <string notr="true">KQRBN</string>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
@@ -758,7 +759,7 @@
             <item>
              <widget class="QToolButton" name="tbGermany">
               <property name="text">
-               <string notr="true"> KDTLS</string>
+               <string notr="true">KDTLS</string>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
@@ -769,7 +770,7 @@
             <item>
              <widget class="QToolButton" name="tbFrance">
               <property name="text">
-               <string notr="true"> RDTFC</string>
+               <string notr="true">RDTFC</string>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
@@ -780,7 +781,7 @@
             <item>
              <widget class="QToolButton" name="tbPoland">
               <property name="text">
-               <string notr="true"> KHWGS</string>
+               <string notr="true">KHWGS</string>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
@@ -791,7 +792,7 @@
             <item>
              <widget class="QToolButton" name="tbItaly">
               <property name="text">
-               <string notr="true"> RDTAC</string>
+               <string notr="true">RDTAC</string>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">
@@ -802,7 +803,7 @@
             <item>
              <widget class="QToolButton" name="tbCzech">
               <property name="text">
-               <string notr="true"> KDVSJ</string>
+               <string notr="true">KDVSJ</string>
               </property>
               <property name="icon">
                <iconset resource="../../resources.qrc">

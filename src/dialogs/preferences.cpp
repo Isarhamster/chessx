@@ -758,7 +758,9 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("ColumnStyle", ui.cbColumnStyle->isChecked());
     AppSettings->setValue("VariationIndentLevel", ui.variationIndentLevel->value());
     AppSettings->setValue("DiagramSize", ui.diagramSize->value());
-    AppSettings->setValue("PieceString", ui.pieceString->text());
+    QString ps = ui.pieceString->text();
+    if (!ps.isEmpty() && !ps.startsWith(" ")) ps.prepend(" ");
+    AppSettings->setValue("PieceString", ps);
     AppSettings->setValue("CommentIndent", ui.cbIndentComments->currentData().toString());
     AppSettings->setValue("FontBrowserText", ui.fontText->text());
     AppSettings->setValue("FontBrowserMove", ui.fontMove->text());
