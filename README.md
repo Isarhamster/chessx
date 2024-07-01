@@ -1,4 +1,4 @@
-# ![Icon](data/icons/64x64/apps/chessx.png)ChessX
+# ![Icon](data/images/chessx-64.png)ChessX
 
 ![CI](https://github.com/erysaj/chessx/workflows/CI/badge.svg?branch=ci-sandbox)
 
