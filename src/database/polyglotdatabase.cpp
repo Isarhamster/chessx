@@ -22,7 +22,7 @@ using namespace  chessx;
 
 #define MAX_COUNT 16384
 
-struct key_compare : std::function< bool(const book_entry&, const book_entry&) >
+struct key_compare
 {
     bool operator()( const book_entry& a, const book_entry& b ) const
     {
