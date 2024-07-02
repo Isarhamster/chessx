@@ -24,16 +24,18 @@ A free and open source chess database application for Linux, Mac OS X and Window
 ## Project Samples
 
 [//]: # "This project samples migth be a bit dated, and could be replaced with
-screenshots of a newer version?"
+screenshots of a newer version?."
+[//]: # "The project samples are now remastered to better represent the current visual status of the project. 
+Attempts to reproduce the chess positions on the previous samples had been done."
 
-<img src="https://a.fsdn.com/con/app/proj/chessx/screenshots/shot-Sa.%20Okt%205%2014%3A08%3A08%202013-001.jpg"
-width="400" alt="Project sample 1"> 
+<img src="./data/project-samples/chessx-sample1-remastered.png"
+width="1024" alt="Project sample 1"> 
 
-<img src="https://a.fsdn.com/con/app/proj/chessx/screenshots/333325.jpg"
-width="400" alt="Project sample 2">
+<img src="./data/project-samples/chessx-sample2-remastered.png"
+width="1024" alt="Project sample 2">
 
-<img src="https://a.fsdn.com/con/app/proj/chessx/screenshots/287715.jpg"
-width="400" alt="Project sample 3"> 
+<img src="./data/project-samples/chessx-sample3-remastered.png"
+width="1024" alt="Project sample 3"> 
 
 ## Categories
 
@@ -41,7 +43,7 @@ Database, board games, turn based strategy
 
 ##  [License](COPYING.md)
 
-:copyright: 2021-2005, ChessX authors
+:copyright: 2024-2005, ChessX authors
 
 This program is free software; you can redistribute it and/or modify  it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 
