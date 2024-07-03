@@ -2029,7 +2029,7 @@ bool MainWindow::gameAddAnalysis(const Analysis& analysis, QString annotation, b
         annotation += scoreText(analysis);
         if (AppSettings->getValue("/Board/AnnotateScore").toBool())
         {
-            game().dbPrependAnnotation(scoreText(analysis));
+            game().dbPrependAnnotation(scoreText(analysis), 0);
             UpdateGameText();
         }
         if (game().atLineEnd())
@@ -2649,7 +2649,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                             {
                                 if (AppSettings->getValue("/Board/AnnotateScore").toBool())
                                 {
-                                    game().prependAnnotation(scoreText(a));
+                                    game().prependAnnotation(scoreText(a), 0);
                                     UpdateGameText();
                                 }
                             }
@@ -2661,14 +2661,14 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                             addAutoNag(m.color(), score, lastScore, threashold, lastNode);
                             if (AppSettings->getValue("/Board/AnnotateScore").toBool())
                             {
-                                game().prependAnnotation(scoreText(a));
+                                game().prependAnnotation(scoreText(a), 0);
                             }
                             UpdateGameText();
                         }
                     }
                     else if (AppSettings->getValue("/Board/AnnotateScore").toBool())
                     {
-                        game().prependAnnotation(scoreText(a));
+                        game().prependAnnotation(scoreText(a), 0);
                         UpdateGameText();
                     }
                     lastScore = score;
@@ -2895,6 +2895,7 @@ void MainWindow::AutoMoveAtEndOfGame()
         {
             QString engineAnnotation = tr("Engine %1").arg(m_mainAnalysis->displayName());
             game().dbSetAnnotation(engineAnnotation, game().lastMove());
+            UpdateGameText();
 
             if (AppSettings->getValue("/Board/AutoSaveAndContinue").toBool())
             {

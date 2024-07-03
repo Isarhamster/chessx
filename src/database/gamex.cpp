@@ -51,7 +51,11 @@ static const char strSquareNames[64][3] =
     "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"
 };
 
-const QList<QRegularExpression> GameX::s_specList = QList<QRegularExpression>() << SquareAnnotation().filter() << ArrowAnnotation().filter() << EvalAnnotation().filter();
+const QList<QRegularExpression> GameX::s_specList = QList<QRegularExpression>()
+                                                    << SquareAnnotation().filter()
+                                                    << ArrowAnnotation().filter()
+                                                    << EvalAnnotation().filter()
+                                                    << TimeAnnotation().filter();
 
 GameX::GameX()
     : QObject()
@@ -1021,7 +1025,7 @@ bool GameX::dbAppendAnnotation(QString a, MoveId moveId, Position position)
 bool GameX::dbPrependAnnotation(QString a, char delimiter, MoveId moveId, Position position)
 {
     QString s = annotation();
-    if (s.length())
+    if (s.length() && delimiter)
     {
         a.append(delimiter);
     }
