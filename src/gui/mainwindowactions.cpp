@@ -9,6 +9,7 @@
 
 #include "actiondialog.h"
 #include "analysiswidget.h"
+#include "annotation.h"
 #include "annotationwidget.h"
 #include "arenabook.h"
 #include "board.h"
@@ -16,8 +17,8 @@
 #include "boardsetup.h"
 #include "boardview.h"
 #include "boardviewex.h"
+#include "chessxsettings.h"
 #include "copydialog.h"
-#include "clipboarddatabase.h"
 #include "guess_compileeco.h"
 #include "databaseinfo.h"
 #include "databaselist.h"
@@ -47,7 +48,6 @@
 #include "memorydatabase.h"
 #include "openingtreewidget.h"
 #include "output.h"
-#include "pgndatabase.h"
 #include "playerlistwidget.h"
 #include "polyglotwriter.h"
 #include "positionsearch.h"
@@ -63,8 +63,6 @@
 #include "tags.h"
 #include "translatingslider.h"
 #include "version.h"
-
-#include <time.h>
 
 #include <QtGui>
 #include <QAction>
@@ -132,7 +130,7 @@ void MainWindow::slotFileOpen()
     {
         if(!file.isEmpty())
         {
-            openDatabaseUrl(file, false);
+            openDatabaseUrl(file);
         }
     }
 }
@@ -302,7 +300,10 @@ void MainWindow::slotFileExportGame()
     if(!filename.isEmpty())
     {
         Output output(static_cast<Output::OutputType>(format), &BoardView::renderImageForBoard);
-        output.output(filename, game());
+        MemoryDatabase mdb;
+        mdb.setUtf8(false);
+        mdb.appendGame(game());
+        output.output(filename, mdb);
     }
 }
 
@@ -313,7 +314,8 @@ void MainWindow::slotFileExportFilter()
     if(!filename.isEmpty())
     {
         Output output(static_cast<Output::OutputType>(format), &BoardView::renderImageForBoard);
-        output.output(filename, *(databaseInfo()->filter()));
+        bool utf8 = ((format == Output::Html) || (format == Output::NotationWidget));
+        output.output(filename, *(databaseInfo()->filter()), utf8);
     }
 }
 
@@ -368,6 +370,9 @@ void MainWindow::slotReconfigure()
     emit reconfigure(); 	// Re-emit for children
     UpdateGameText();
     UpdateAnnotationView();
+#ifdef USE_SPEECH
+    ChessXSettings::configureSpeech(speech);
+#endif
 }
 
 void MainWindow::UpdateGameText()
@@ -571,6 +576,7 @@ bool MainWindow::slotEditPastePGN()
 void MainWindow::slotEditPaste()
 {
     QString fen = QApplication::clipboard()->text().simplified();
+    fen.replace(QChar(0x2013),QChar('-'));
     QString dummy;
     if(!pasteFen(dummy, fen, true))
     {
@@ -583,6 +589,7 @@ void MainWindow::slotEditMergePGN()
     if (game().isEmpty())
     {
         QString fen = QApplication::clipboard()->text().simplified();
+        fen.replace(QChar(0x2013),QChar('-'));
         QString dummy;
         if(pasteFen(dummy, fen))
         {
@@ -592,7 +599,7 @@ void MainWindow::slotEditMergePGN()
     QString pgn = QApplication::clipboard()->text().trimmed();
     if(!pgn.isEmpty())
     {
-        pgn.append("\n*\n");
+        pgn.replace(QChar(0x2013),QChar('-'));
         if (pgn.startsWith("[") || (pgn.indexOf(QRegularExpression("\\d+\\."),0)==0)) // looks like something containing tags or starting with 1.xxx
         {
             MemoryDatabase pgnDatabase;
@@ -655,10 +662,7 @@ bool MainWindow::addRemoteMoveFrom64Char(QString s)
             m_currentFrom = m.from();
             m_currentTo = m.to();
             moveChanged();
-            if (!announceMove(m))
-            {
-                playSound("move");
-            }
+            playMoveSound("move",m);
         }
         return true;
     }
@@ -816,10 +820,7 @@ void MainWindow::triggerBoardMove()
         m_currentFrom = m.from();
         m_currentTo = m.to();
         moveChanged(); // The move's currents where set after forward(), thus repair effects
-        if (!announceMove(m))
-        {
-            playSound("move");
-        }
+        playMoveSound("move",m);
     }
     else
     {
@@ -1074,8 +1075,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                         {
                             if (par.annotateEgt && par.tm != EngineParameter::TIME_GONG)
                             {
-                                QString clk = "[%clk %1]";
-                                annot = clk.arg(sTime);
+                                 annot = ClockAnnotation(sTime).asAnnotation();
                             }
 
                             if (m_match->isChecked())
@@ -1098,6 +1098,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                     game().addMove(m, annot);
                     if (qobject_cast<FicsDatabase*>(database()))
                     {
+                        playMoveSound("move", m);
                         m_ficsConsole->SendMove(m.toAlgebraic());
                     }
                     else
@@ -1118,6 +1119,10 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                                 }
                                 setResultForCurrentPosition();
                             }
+                            else
+                            {
+                                playMoveSound("move", m);
+                            }
                         }
                         else
                         {
@@ -1127,6 +1132,10 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                             {
                                 playSound("fanfare");
                                 slotStatusMessage(s);
+                            }
+                            else
+                            {
+                                playMoveSound("move", m);
                             }
                         }
                     }
@@ -1146,6 +1155,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                         game().addVariation(m);
                     }
                     game().forward();
+                    playMoveSound("move", m);
                 }
             }
 
@@ -1213,7 +1223,7 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
                 SQAction('Y',menu->addAction(QIcon(":/images/square_yellow.png"), tr("Yellow Square"), this, SLOT(slotYellowSquare())));
                 SQAction('G',menu->addAction(QIcon(":/images/square_green.png"), tr("Green Square"),  this, SLOT(slotGreenSquare())));
                 menu->addSeparator();
-                SQAction(0,menu->addAction(QIcon(":/images/square_none.png"),  tr("Remove Color"),  this, SLOT(slotNoColorSquare())));
+                SQAction('\0',menu->addAction(QIcon(":/images/square_none.png"),  tr("Remove Color"),  this, SLOT(slotNoColorSquare())));
             }
             else
             {
@@ -1221,7 +1231,7 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
                 SQAction('Y',menu->addAction(QIcon(":/images/arrow_yellow.png"), tr("Yellow Arrow to here"), this, SLOT(slotYellowArrowHere())));
                 SQAction('G',menu->addAction(QIcon(":/images/arrow_green.png"), tr("Green Arrow to here"),  this, SLOT(slotGreenArrowHere())));
                 menu->addSeparator();
-                SQAction(0,menu->addAction(QIcon(":/images/arrow_none.png"),  tr("Remove Arrow to here"), this, SLOT(slotNoArrowHere())));
+                SQAction('\0',menu->addAction(QIcon(":/images/arrow_none.png"),  tr("Remove Arrow to here"), this, SLOT(slotNoArrowHere())));
             }
             menu->exec(pos);
         }
@@ -1493,35 +1503,21 @@ void MainWindow::slotGameVarEnter()
 void MainWindow::slotGameVarUp()
 {
     MoveId currentVar = game().currentMove();
-    MoveId lastVar = NO_MOVE;
-    while (!game().variationCount())
+    MoveId branch = game().cursor().variationBranchPoint();
+    if (branch != NO_MOVE)
     {
-        lastVar = game().currentMove();
-        game().backward();
-    }
-    if (lastVar == NO_MOVE)
-    {
-        // Repair - there is no variation
-        game().moveToId(currentVar);
-    }
-    else
-    {
-        int n = game().variations().indexOf(lastVar) - 1;
-        if(n >= 0)
+        game().moveToId(branch);
+
+        QList<MoveId> listVariations = game().cursor().variations();
+        if (listVariations.size() && !game().atLineEnd())
         {
-            game().moveToId(game().variations().at(n));
-        }
-        else if(n == -2)
-        {
-            game().moveToId(game().variations().last());
-        }
-        else
-        {
-            if(!m_training2->isChecked())
-            {
-                // Do not show next move in training 2 mode
-                game().forward();
-            }
+            MoveId mainPoint = game().cursor().nextMove();
+            listVariations.push_front(mainPoint);
+
+            int idx = listVariations.indexOf(currentVar, 0) - 1;
+            if (idx < 0) idx = listVariations.count() - 1;
+
+            game().moveToId(listVariations.at(idx));
         }
     }
 }
@@ -1529,31 +1525,21 @@ void MainWindow::slotGameVarUp()
 void MainWindow::slotGameVarDown()
 {
     MoveId currentVar = game().currentMove();
-    MoveId lastVar = NO_MOVE;
-    while (!game().variationCount())
+    MoveId branch = game().cursor().variationBranchPoint();
+    if (branch != NO_MOVE)
     {
-        lastVar = game().currentMove();
-        game().backward();
-    }
-    if (lastVar == NO_MOVE)
-    {
-        // Repair - there is no variation
-        game().moveToId(currentVar);
-    }
-    else
-    {
-        int n = game().variations().indexOf(lastVar) + 1;
-        if(n < game().variations().count())
+        game().moveToId(branch);
+
+        QList<MoveId> listVariations = game().cursor().variations();
+        if (listVariations.size() && !game().atLineEnd())
         {
-            game().moveToId(game().variations().at(n));
-        }
-        else
-        {
-            if(!m_training2->isChecked())
-            {
-                // Do not show next move in training 2 mode
-                game().forward();
-            }
+            MoveId mainPoint = game().cursor().nextMove();
+            listVariations.push_front(mainPoint);
+
+            int idx = listVariations.indexOf(currentVar, 0) + 1;
+            if (idx >= listVariations.count()) idx = 0;
+
+            game().moveToId(listVariations.at(idx));
         }
     }
 }
@@ -1959,7 +1945,7 @@ void MainWindow::slotGameViewLinkUrl(const QUrl& url)
     {
         game().moveToId(url.path().toInt());
         Output::CommentType type = url.scheme() == "cmt" ? Output::Comment : Output::Precomment;
-        gameEditComment(type);
+        gameEditComment(type, true);
     }
     else if(url.scheme() == "egtb")
     {
@@ -2023,12 +2009,13 @@ QString MainWindow::scoreText(const Analysis& analysis)
     if (analysis.isMate())
     {
         int n = analysis.movesToMate();
-        s = QString("[%eval #%1]").arg(abs(n));
-    }
+        QString toMate = QString("#%1").arg(abs(n));
+        s = EvalAnnotation(toMate).asAnnotation();
+     }
     else
     {
         QString f = QString::number(analysis.fscore(), 'f', 2);
-        s = QString("[%eval %1]").arg(f);
+        s = EvalAnnotation(f).asAnnotation();
     }
     return s;
 }
@@ -2042,7 +2029,7 @@ bool MainWindow::gameAddAnalysis(const Analysis& analysis, QString annotation, b
         annotation += scoreText(analysis);
         if (AppSettings->getValue("/Board/AnnotateScore").toBool())
         {
-            game().dbPrependAnnotation(scoreText(analysis));
+            game().dbPrependAnnotation(scoreText(analysis), 0);
             UpdateGameText();
         }
         if (game().atLineEnd())
@@ -2509,8 +2496,7 @@ bool MainWindow::doEngineMove(Move m, EngineParameter matchParameter)
     QString annot;
     if (matchParameter.annotateEgt && matchParameter.tm != EngineParameter::TIME_GONG)
     {
-        QString clk = "[%clk %1]";
-        annot = clk.arg(sTime);
+        annot = ClockAnnotation(sTime).asAnnotation();
     }
 
     game().addMove(m,annot);
@@ -2524,10 +2510,7 @@ bool MainWindow::doEngineMove(Move m, EngineParameter matchParameter)
     }
     else
     {
-        if (!announceMove(m))
-        {
-            playSound("move");
-        }
+        playMoveSound("move",m);
     }
     return true;
 }
@@ -2600,9 +2583,16 @@ void MainWindow::addAutoNag(Color toMove, int score, int lastScore, int threasho
 
 void MainWindow::slotEngineCurrentBest(const Analysis& analysis)
 {
-    if (analysis.variation().count())
+    if (analysis.getTb().isNullMove())
     {
-        m_boardView->setBestGuess(analysis.variation().at(0));
+        if (analysis.variation().count())
+        {
+            m_boardView->setBestGuess(analysis.variation().at(0));
+        }
+    }
+    else
+    {
+        m_boardView->setBestGuess(analysis.getTb());
     }
 }
 
@@ -2659,7 +2649,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                             {
                                 if (AppSettings->getValue("/Board/AnnotateScore").toBool())
                                 {
-                                    game().prependAnnotation(scoreText(a));
+                                    game().prependAnnotation(scoreText(a), 0);
                                     UpdateGameText();
                                 }
                             }
@@ -2671,14 +2661,14 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                             addAutoNag(m.color(), score, lastScore, threashold, lastNode);
                             if (AppSettings->getValue("/Board/AnnotateScore").toBool())
                             {
-                                game().prependAnnotation(scoreText(a));
+                                game().prependAnnotation(scoreText(a), 0);
                             }
                             UpdateGameText();
                         }
                     }
                     else if (AppSettings->getValue("/Board/AnnotateScore").toBool())
                     {
-                        game().prependAnnotation(scoreText(a));
+                        game().prependAnnotation(scoreText(a), 0);
                         UpdateGameText();
                     }
                     lastScore = score;
@@ -2905,6 +2895,7 @@ void MainWindow::AutoMoveAtEndOfGame()
         {
             QString engineAnnotation = tr("Engine %1").arg(m_mainAnalysis->displayName());
             game().dbSetAnnotation(engineAnnotation, game().lastMove());
+            UpdateGameText();
 
             if (AppSettings->getValue("/Board/AutoSaveAndContinue").toBool())
             {
@@ -3084,7 +3075,7 @@ void MainWindow::copyGames(QString destination, QList<GameId> indexes, QString s
         {
             m_gameList->startUpdate();
         }
-        // TODO: Das Filtermodel muss vorher verst�ndigt werden
+        // TODO: Das Filtermodel muss vorher verstaendigt werden
         pDestDBInfo->filter()->resize(pDestDBInfo->database()->count() + static_cast<quint64>(indexes.count()), true);
         foreach (GameId index, indexes)
         {
@@ -3107,7 +3098,7 @@ void MainWindow::copyGames(QString destination, QList<GameId> indexes, QString s
     {
         if(pSrcDBInfo->database()->loadGame(index, g))
         {
-            success = writer.append(destination, g);
+            success = writer.append(destination, g, pDestDBInfo ? pDestDBInfo->IsUtf8() : false);
             m_databaseList->update(destination);
             if (!success) break;
         }
@@ -3148,53 +3139,61 @@ void MainWindow::copyDatabase(QString target, QString src)
 
             pDestDBInfo->filter()->resize(pDestDB->count(), true);
         }
-        else if((!pSrcDB || (pSrcDBInfo && !pSrcDBInfo->IsBook() && !pSrcDBInfo->modified())) && !pDestDB)
+        else if(!pSrcDB && !pDestDB)
         {
-            // Both databases are closed or the target is closed and the source unmodified (so that file can be used)
-            QFile fSrc(src);
-            QFile fDest(target);
-
-            if(fiDest.exists() && fiDest.suffix().toLower()=="pgn"
-                    && fiSrc.exists() && fiSrc.suffix().toLower()=="pgn"
-                    && fSrc.open(QIODevice::ReadOnly) &&
-                    fDest.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+            // Both databases are closed
+            bool utf8Src = m_databaseList->fileUtf8(src);
+            bool utf8Dest = m_databaseList->fileUtf8(target);
+            if (utf8Src == utf8Dest)
             {
-                done = true;
-                QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName(), fiDest.fileName());
-                slotStatusMessage(msg);
-                fDest.write("\r\n");
-                while(!fSrc.atEnd())
+                QFile fSrc(src);
+                QFile fDest(target); // If it does not exist, it will be created here
+
+                if(fiDest.suffix().toLower()=="pgn"
+                        && fiSrc.exists() && fiSrc.suffix().toLower()=="pgn"
+                        && fSrc.open(QIODevice::ReadOnly) &&
+                        fDest.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
                 {
-                    QByteArray line = fSrc.readLine();
-                    fDest.write(line);
+                    done = true;
+                    QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName(), fiDest.fileName());
+                    slotStatusMessage(msg);
+                    fDest.write("\r\n");
+                    while(!fSrc.atEnd())
+                    {
+                        QByteArray line = fSrc.readLine();
+                        fDest.write(line);
+                    }
+                    fSrc.close();
+                    fDest.close();
+                    m_databaseList->update(target);
                 }
-                fSrc.close();
-                fDest.close();
-                m_databaseList->update(target);
+            }
+            else
+            {
+                QString msg = tr("Appending games failed (UTF8 mismatch %1 to %2)").arg(fiSrc.fileName(), fiDest.fileName());
+                slotStatusMessage(msg);
             }
         }
-        else if (pSrcDB && pSrcDBInfo && !pSrcDBInfo->IsBook() && pSrcDBInfo->modified() && !pDestDB && fiDest.exists() && fiDest.suffix().toLower()=="pgn")
+        else if (pSrcDB && pSrcDBInfo && !pSrcDBInfo->IsBook() && !pDestDB && fiDest.exists() && fiDest.suffix().toLower()=="pgn")
         {
-            // Src is open and modified, target is closed
+            // Src is open and not a book, target is closed
             QFile fDest(target);
+            done = true;
+            bool utf8 = m_databaseList->fileUtf8(target);
+            Output output(Output::Pgn, &BoardView::renderImageForBoard);
+            output.append(target, *pSrcDB, utf8);
 
-            if(fDest.isWritable())
-            {
-                done = true;
-                Output output(Output::Pgn, &BoardView::renderImageForBoard);
-                output.append(target, *pSrcDB);
-
-                QString msg = tr("Append games from %1 to %2.").arg(pSrcDB->name(), fiDest.fileName());
-                slotStatusMessage(msg);
-                m_databaseList->update(target);
-            }
+            QString msg = tr("Append games from %1 to %2.").arg(pSrcDB->name(), fiDest.fileName());
+            slotStatusMessage(msg);
+            m_databaseList->update(target);
         }
         else if (!pSrcDB && fiSrc.exists() && fiSrc.suffix().toLower()=="pgn" && pDestDB)
         {
-            // Source is closed, target is open
+            // Source is closed and a pgn file, target is open
             StreamDatabase streamDb;
             streamDb.set64bit(true);
-            if (streamDb.open(src, pDestDB->isUtf8()))
+            bool utf8 = m_databaseList->fileUtf8(src);
+            if (streamDb.open(src, utf8))
             {
                 GameX g;
                 while (streamDb.loadNextGame(g))
@@ -3213,7 +3212,7 @@ void MainWindow::copyDatabase(QString target, QString src)
         }
         else if (!pSrcDB && fiSrc.exists() && fiSrc.suffix().toLower()=="abk" && pDestDB)
         {
-            // Source is closed, target is open
+            // Source is closed and an arena book, target is open
             ArenaBook abk;
             if (abk.open(src, false) && abk.parseFile())
             {
@@ -3456,9 +3455,9 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
     else
     {
         Output out(Output::Pgn);
-        QString s = out.output(dest);
+        QString s = out.outputUtf8(dest);
         QApplication::clipboard()->setText(s);
-        QString msg = tr("Set %d games into system clipboard.").arg(n);
+        QString msg = tr("Set %1 games into system clipboard.").arg(n);
         slotStatusMessage(msg);
         delete dest;
     }
@@ -3547,8 +3546,9 @@ void MainWindow::updateLastGameList()
     m_recentGames->clear();
     if (index)
     {
-        foreach(GameId n, gameList)
+        for(auto i = gameList.cbegin(); i!= gameList.cend(); i++)
         {
+            GameId n = *i;
             QString white = index->tagValue(TagNameWhite,n);
             QString black = index->tagValue(TagNameBlack,n);
             QAction* action = m_recentGames->addAction(QString::number(n+1)+" : "+white+"-"+black, this, SLOT(slotLoadRecentGame()));
@@ -3802,13 +3802,7 @@ void MainWindow::slotGetGameData(GameX& g)
 bool MainWindow::slotGameMoveNext()
 {
     Move m = game().move(game().nextMove());
-    if (AppSettings->getValue("/Sound/ScreenReader").toBool())
-    {
-        if (!announceMove(m))
-        {
-            playSound("move");
-        }
-    }
+    playNextMoveSound("move",m);
     m_currentFrom = m.from();
     m_currentTo = m.to();
     return gameMoveBy(1);
@@ -3816,8 +3810,8 @@ bool MainWindow::slotGameMoveNext()
 
 void MainWindow::slotNoColorSquare()
 {
-    m_lastColor = 0;
-    game().appendSquareAnnotation(m_annotationSquare, 0);
+    m_lastColor = '\0';
+    game().appendSquareAnnotation(m_annotationSquare, '\0');
 }
 
 void MainWindow::slotGreenSquare()
@@ -3840,8 +3834,8 @@ void MainWindow::slotRedSquare()
 
 void MainWindow::slotNoArrowHere()
 {
-    m_lastColor = 0;
-    game().appendArrowAnnotation(m_annotationSquare, m_annotationSquareFrom, 0);
+    m_lastColor = '\0';
+    game().appendArrowAnnotation(m_annotationSquare, m_annotationSquareFrom, '\0');
 }
 
 void MainWindow::slotGreenArrowHere()
@@ -4344,8 +4338,8 @@ void MainWindow::slotToggleBrush()
             const QAction* a = brushGroup->checkedAction();
             if (a && (a->data().toChar() == QChar(0)))
             {
-                game().setArrowAnnotation("");
-                game().setSquareAnnotation("");
+                game().setSpecAnnotation(ArrowAnnotation());
+                game().setSpecAnnotation(SquareAnnotation());
                 brushGroup->untrigger();
                 m_boardView->setBrushMode(false);
             }

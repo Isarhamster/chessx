@@ -9,6 +9,7 @@
  ***************************************************************************/
 
 #include "enginedata.h"
+#include "qt6compat.h"
 #include "uciengine.h"
 #include <QRegularExpression>
 
@@ -205,7 +206,7 @@ void UCIEngine::processMessage(const QString& message)
 
     if(message.startsWith("id"))
     {
-        QStringList list = message.split(" " ,Qt::SkipEmptyParts);
+        QStringList list = message.split(" " ,SkipEmptyParts);
         if (list.length()>2)
         {
             if (list[1] == "name")
@@ -459,7 +460,7 @@ void UCIEngine::parseOptions(const QString& message)
                    } phase;
 
     phase = EXPECT_OPTION;
-    QStringList list = message.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+    QStringList list = message.split(QRegularExpression("\\s+"), SkipEmptyParts);
 
     QStringList nameVals;
     QString defVal;

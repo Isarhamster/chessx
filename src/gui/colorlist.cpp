@@ -22,6 +22,8 @@
 #include <QPainter>
 #include <QPixmap>
 
+#include "qt6compat.h"
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -61,7 +63,7 @@ void ColorList::editItemColor(QListWidgetItem* item)
 
 void ColorList::mousePressEvent(QMouseEvent* event)
 {
-    QListWidgetItem* item = itemAt(event->pos());
+    QListWidgetItem* item = itemAt(EVENT_POSITION(event));
     if(event->button() != Qt::LeftButton || item == nullptr)
     {
         event->ignore();

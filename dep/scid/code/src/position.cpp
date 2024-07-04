@@ -2851,12 +2851,12 @@ Position::DumpHtmlBoard (DString * dstr, uint style, const char * dir, bool flip
             dstr->Append ("  <td><img border=0 ");
             if (width > 0) {
                 char temp[40];
-                sprintf (temp, "width=%u ", width);
+                snprintf (temp, 40, "width=%u ", width);
                 dstr->Append (temp);
             }
             if (height > 0) {
                 char temp[40];
-                sprintf (temp, "height=%u ", height);
+                snprintf (temp, 40, "height=%u ", height);
                 dstr->Append (temp);
             }
             dstr->Append ("src=\"");

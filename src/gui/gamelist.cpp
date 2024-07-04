@@ -21,6 +21,7 @@
 #include "gamelistsortmodel.h"
 #include "GameMimeData.h"
 #include "numbersearch.h"
+#include "qt6compat.h"
 #include "quicksearch.h"
 #include "settings.h"
 #include "tags.h"
@@ -35,6 +36,7 @@
 #include <QHeaderView>
 #include <QMenu>
 #include <QPixmap>
+#include <QRandomGenerator>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -68,11 +70,7 @@ GameList::GameList(FilterX* filter, QWidget* parent) : TableView(parent)
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(slotContextMenu(QPoint)));
     connect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(slotItemSelected(QModelIndex)));
-#if QT_VERSION < 0x050000
-    horizontalHeader()->setClickable(true);
-#else
     horizontalHeader()->setSectionsClickable(true);
-#endif
 
     horizontalHeader()->setSortIndicatorShown(true);
     setSortingEnabled(true);
@@ -265,7 +263,7 @@ void GameList::selectRandomGame()
     {
         QModelIndex sortIndex = currentIndex();
         int oldRow = sortIndex.row();
-        int randomSortRow = rand() % (m_model->filter()->count()-1); // The last game is represented by current game
+        int randomSortRow = QRandomGenerator::global()->bounded(0,m_model->filter()->count()-2); // The last game is represented by current game
         if (oldRow == randomSortRow)
         {
             randomSortRow = m_model->filter()->count()-1;
@@ -421,7 +419,7 @@ void GameList::simpleSearch(int tagid)
     }
     else
     {
-        QStringList list = value.split("-", Qt::SkipEmptyParts);
+        QStringList list = value.split("-", SkipEmptyParts);
         if ((list.size() > 1) && (dlg.tag() != 9)) // Tag 9 is the Result
         {
             // Filter a range

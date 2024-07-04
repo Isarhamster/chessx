@@ -214,3 +214,27 @@ void Database::setTagsToIndex(const GameX& game, GameId id)
         ++i;
     }
 }
+
+bool Database::hadBOM() const
+{
+    return m_hadBOM;
+}
+
+void Database::setHadBOM(bool newHadBOM)
+{
+    m_hadBOM = newHadBOM;
+}
+
+void Database::setMissingTagsToIndex(const GameX& game, GameId id)
+{
+    const TagMap& tags = game.tags();
+    TagMap::const_iterator i = tags.constBegin();
+    while(i != tags.constEnd())
+    {
+        if (!m_index.hasTag(i.key(), id))
+        {
+            m_index.setTag(i.key(), i.value(), id);
+        }
+        ++i;
+    }
+}

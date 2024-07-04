@@ -19,8 +19,9 @@ public:
     QList<DatabaseInfo*> databases() const { return m_databases; }
     DatabaseInfo* findDisplayName(QString path) const;
     void remove(DatabaseInfo* dbi);
+    void append(DatabaseInfo* dbi);
 
-public: // TODO: make private
+private:
     QList<DatabaseInfo*> m_databases;
 };
 
@@ -103,6 +104,7 @@ public:
 
     int getLastIndex(const QString& s) const;
     int stars(const QString& s) const;
+    bool exists(const QString& s) const;
 
 signals:
     void OnSelectIndex(const QModelIndex&);
@@ -140,6 +142,7 @@ protected:
     void checkFileFavorite();
 
     DatabaseListEntry* FindEntry(QString s);
+    const DatabaseListEntry* FindEntry(QString s) const;
     DatabaseRegistry* m_registry;
     QStringList m_columnNames;
     QList<DatabaseListEntry> m_databases;

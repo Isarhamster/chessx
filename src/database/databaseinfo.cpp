@@ -20,6 +20,7 @@
 #include "memorydatabase.h"
 #include "pgndatabase.h"
 #include "polyglotdatabase.h"
+#include "qt6compat.h"
 #include "settings.h"
 #include "tags.h"
 
@@ -39,6 +40,7 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, Database *db)
     m_filter = new FilterX(m_database);
     m_bLoaded = true;
     m_utf8 = false;
+    m_hadBOM = false;
     m_undoStack = new QUndoStack((QObject*)undoGroup);
     newGame();
     connect(m_undoStack, SIGNAL(cleanChanged(bool)), SLOT(dbCleanChanged(bool)));
@@ -52,6 +54,7 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filte
     m_filename = fname;
     m_bLoaded = false;
     m_utf8 = false;
+    m_hadBOM = false;
     m_undoStack = new QUndoStack((QObject*)undoGroup);
     connect(m_undoStack, SIGNAL(cleanChanged(bool)), SLOT(dbCleanChanged(bool)));
     connect(&m_game, SIGNAL(signalGameModified(bool,GameX,QString)),SLOT(setGameModified(bool,GameX,QString)));
@@ -104,6 +107,7 @@ void DatabaseInfo::doLoadFile(QString filename)
         emit LoadFinished(this);
         return;
     }
+    m_database->setHadBOM(m_hadBOM);
     m_database->parseFile();
     delete m_filter;
     m_filter = new FilterX(m_database);
@@ -119,8 +123,38 @@ void DatabaseInfo::run()
     if (!fname.isEmpty()) doLoadFile(fname);
 }
 
+bool DatabaseInfo::testBOM()
+{
+    QFileInfo fi = QFileInfo(m_filename);
+    QString fname = fi.canonicalFilePath();
+    QPointer<QFile> file = new QFile(fname);
+    if(file->exists())
+    {
+        if (file->open(QIODevice::ReadOnly))
+        {
+            QByteArray a = file->read(3);
+            if ((a.length() == 3) &&
+                ((unsigned char)a[0] == 0xEF) &&
+                ((unsigned char)a[1] == 0xBB) &&
+                ((unsigned char)a[2] == 0xBF))
+            {
+               return true;
+            }
+        }
+    }
+    return false;
+}
+
 bool DatabaseInfo::open(bool utf8)
 {
+    // Check for BOM and override utf8 in case of a UTF8-BOM is found
+    // Note: Does not detect UNICODE and other nasty BOMs
+    if (testBOM())
+    {
+        utf8 = true;
+        m_hadBOM = true;
+    }
+
     m_bLoaded = false;
     m_utf8 = utf8;
     start();
@@ -376,8 +410,7 @@ bool DatabaseInfo::IsUtf8() const
 
 QString DatabaseInfo::ficsPath()
 {
-    QString dir = AppSettings->commonDataPath();
-    return (dir + QDir::separator() + "FICS.pgn");
+    return AppSettings->commonDataFilePath("FICS.pgn");
 }
 
 bool DatabaseInfo::isNative() const

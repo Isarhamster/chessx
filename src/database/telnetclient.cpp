@@ -2,6 +2,7 @@
 *   Copyright (C) 2014 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
+#include "qt6compat.h"
 #include "settings.h"
 #include "telnetclient.h"
 
@@ -32,7 +33,11 @@ TelnetClient::TelnetClient(QObject *parent)
     m_extToolProcess = new QProcess(this);
     connect(m_extToolProcess, SIGNAL(readyRead()), SLOT(SlotReadTimesealData()));
     connect(m_extToolProcess, SIGNAL(readyReadStandardOutput()), SLOT(SlotReadTimesealData()));
+#if QT_VERSION < 0x060000
     connect(m_extToolProcess, SIGNAL(error(QProcess::ProcessError)), SLOT(SlotTimesealError()));
+#else
+    connect(m_extToolProcess, SIGNAL(errorOccurred(QProcess::ProcessError)), SLOT(SlotTimesealError()));
+#endif
 }
 
 TelnetClient::~TelnetClient()
@@ -113,7 +118,7 @@ void TelnetClient::DispatchReadData(QByteArray bytes)
         default:
         {
             bool endsWithCR = data.endsWith("\n");
-            QStringList lines = data.split("\n", Qt::SkipEmptyParts);
+            QStringList lines = data.split("\n", SkipEmptyParts);
             if (lines.count() && !endsWithCR)
             {
                 m_remainder = lines.back();

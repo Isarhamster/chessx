@@ -150,7 +150,11 @@ void EngineX::activate()
             m_process->setWorkingDirectory(m_directory);
         }
         connect(m_process, SIGNAL(started()), SLOT(protocolStart()));
+#if QT_VERSION < 0x060000
         connect(m_process, SIGNAL(error(QProcess::ProcessError)), SLOT(processError(QProcess::ProcessError)));
+#else
+        connect(m_process, SIGNAL(errorOccurred(QProcess::ProcessError)), SLOT(processError(QProcess::ProcessError)));
+#endif
         connect(m_process, SIGNAL(readyReadStandardOutput()), SLOT(pollProcess()));
         connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(processExited()));
         QStringList parameters = QProcess::splitCommand(m_command);

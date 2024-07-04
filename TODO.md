@@ -1,7 +1,6 @@
 ## TODO for 2.0 _(Stable Native-based version)_
 
 * Native database format
-* Game sorting
 * Spellchecking
 * Annotation/Blunder check
 * Tournament tables

@@ -41,6 +41,7 @@ bool StreamDatabase::loadNextGame(GameX& game)
                 m_count = 1+index;
                 parseTagsIntoIndex(); // This will parse the tags into memory
                 game.clear();
+                game.setResult(ResultUnknown);
                 loadGameHeaders(index, game);
                 QString fen = m_index.tagValue(TagNameFEN, index);
                 QString variant = m_index.tagValue(TagNameVariant, index).toLower();
@@ -49,10 +50,11 @@ bool StreamDatabase::loadNextGame(GameX& game)
                 {
                     game.dbSetStartingBoard(fen, chess960);
                 }
-                m_index.setValidFlag(index, parseMoves(&game));
+                bool ok = parseMoves(&game);
+                m_index.setValidFlag(index, ok);
                 QString valLength = QString::number((game.plyCount() + 1) / 2);
-                m_index.setTag(TagNameLength, valLength, index);
                 game.setTag(TagNameLength, valLength);
+                setMissingTagsToIndex(game, index);
                 return true;
             }
         }

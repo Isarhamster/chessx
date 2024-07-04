@@ -12,11 +12,13 @@
 
 #include "database.h"
 #include "filter.h"
+#include "qt6compat.h"
 #include "settings.h"
 #include "tags.h"
 
 #include <QtGui>
 #include <QRegularExpression>
+
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -104,7 +106,7 @@ void FilterModel::cacheTags()
 QStringList FilterModel::additionalTags()
 {
     QString addTags = AppSettings->getValue("/GameList/AdditionalTags").toString();
-    QStringList tags = addTags.split(QRegularExpression("[^a-zA-Z]"), Qt::SkipEmptyParts);
+    QStringList tags = addTags.split(QRegularExpression("[^a-zA-Z]"), SkipEmptyParts);
     return tags;
 }
 

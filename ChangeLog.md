@@ -1,13 +1,53 @@
-## May 2021: Version 1.5.8
+## June 2024: Version 1.6.0
 
+- Bugfix:#333 Accented letters in annotations in UTF8
+- Bugfix: #349 Incorrect Pinned Move in Analysis Window
+- Bugfix: Three fold repetition if ep was possible
+- Bugfix: Openings Summary in Player Info
+- Bugfix: Random number selection issues on some OS
+- Bugfix: #341 ChessX Draw Game by Insufficient Material
+- Bugfix: CR #336 Nalimov TB gives wrong evaluation
+- Bugfix: Jumping through sibling variations
+- Bugfix: CR #334 Pressing 'Pin engine' resets the analysis
+- Bugfix: Move indicator shows wrong line in case of Multi-PV, prefer TB
+- Bugfix: CR #320 (PGN Setup->SetUp tag)
+- New feature: Lichess Broadcasts
+- New feature: Repainting same arrow or square removes special annotation
+- New feature: Shift+Click opens first link in comment
+- New feature: Export as localized text
+- New feature: Workaround Chessable's tokenizer by adding space bf comment
+- New feature: Load range of games from online bases
+- New feature: Allows piece specific sounds
+- New feature: Add a volume slider for sounds
+- New feature: CR #209 Hide lines in Analysiswidget
+- New feature: Give coordinates a color setting of their own
+- New feature: Configurable Text to Speech 
+- Changed: AnalysisWidget toolbutton
+
+## January 2023: Version 1.5.8
+
+- New feature: Allow preserving existing ECO codes 
+- New Feature: Add optional source tag when merging databases
 - New Feature: Lichess Opening Databases
+- New feature: Copy text fragments from game browser
 - New feature: Boardview as drop target for databases and games
 - New feature: Edit tags from the game list view
+- Changed: Allow editing ECO codes in the game list view
+- Changed: Cycling through variations
 - Changed: Performance update PGN Parser
 - Changed: #290 Windows hides dialogs if off-screen
 - Changed: CR #185 Recognize and annotate draw conditions
 - Changed: CR #191 Engine analysis not inserted in notation
 - Changed: Transfer board rotation from Board Setup
+- Bugfix: Fix issue with sending UCI BOOLs
+- Bugfix: Fix error message when theme cannot be installed
+- Bugfix: Fix font issue in Qt for windows
+- Bugfix: Fix broken DB download URLs
+- Bugfix: Crash drawing a piece from the board
+- Bugfix: Fix issue #307 Board style resets after editing preferences (macOS)
+- Bugfix: Memory Leak while reading evaluations 
+- Bugfix: Tablebase evaluations 
+- Bugfix: Update chart widget during auto analysis 
 - Bugfix: Open Recent does not respect UTF8
 - Bugfix: Loading of large games
 - Bugfix: Fix dirty notification from database to GUI

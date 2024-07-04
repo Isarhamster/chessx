@@ -7,6 +7,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "QtWidgets/qmenu.h"
+#include "database.h"
 #include "settings.h"
 #include "analysis.h"
 #include "analysiswidget.h"
@@ -17,9 +19,10 @@
 #include "move.h"
 #include "movedata.h"
 #include "tablebase.h"
-#include "polyglotdatabase.h"
 
 #include <QMutexLocker>
+#include <QRandomGenerator>
+
 #include <algorithm>
 
 using namespace chessx;
@@ -34,10 +37,11 @@ AnalysisWidget::AnalysisWidget(QWidget *parent)
       m_moveTime(0),
       m_bUciNewGame(true),
       m_onHold(false),
-      m_gameMode(false)
+      m_gameMode(false),
+      m_hideLines(false)
 {
     ui.setupUi(this);
-    connect(ui.engineList, SIGNAL(activated(int)), SLOT(toggleAnalysis()));
+    connect(ui.engineList, SIGNAL(activated(int)), SLOT(slotSelectEngine()));
     connect(ui.bookList, SIGNAL(currentIndexChanged(int)), SLOT(bookActivated(int)));
     connect(ui.analyzeButton, SIGNAL(clicked(bool)), SLOT(toggleAnalysis()));
 
@@ -49,12 +53,40 @@ AnalysisWidget::AnalysisWidget(QWidget *parent)
 
     m_tablebase = new OnlineTablebase;
     connect(m_tablebase, SIGNAL(bestMove(QList<Move>,int)), this, SLOT(showTablebaseMove(QList<Move>,int)), Qt::QueuedConnection);
+
+    ui.variationText->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui.variationText,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(showContextMenu(const QPoint&)));
 }
 
 AnalysisWidget::~AnalysisWidget()
 {
     stopEngine();
     delete m_tablebase;
+}
+
+
+bool AnalysisWidget::hideLines() const
+{
+    return m_hideLines;
+}
+
+void AnalysisWidget::setHideLines(bool newHideLines)
+{
+    m_hideLines = newHideLines;
+    updateAnalysis();
+}
+
+void AnalysisWidget::showContextMenu(const QPoint &pt)
+{
+    QMenu* menu = ui.variationText->createStandardContextMenu(pt);
+    QAction* action = new QAction(tr("Hide lines"));
+    action->setVisible(true);
+    action->setCheckable(true);
+    action->setChecked(m_hideLines);
+    connect(action, SIGNAL(triggered(bool)),this,SLOT(setHideLines(bool)));
+    menu->addAction(action);
+    menu->exec(ui.variationText->mapToGlobal(pt));
+    delete menu;
 }
 
 void AnalysisWidget::startEngine()
@@ -124,7 +156,6 @@ bool AnalysisWidget::isEngineConfigured() const
 void AnalysisWidget::engineActivated()
 {
     ui.analyzeButton->setChecked(true);
-    ui.analyzeButton->setText(tr("Stop"));
     m_analyses.clear();
     updateBookMoves(); // Delay this to here so that engine process is up
     if (!sendBookMove())
@@ -147,7 +178,18 @@ void AnalysisWidget::engineError(QProcess::ProcessError e)
 void AnalysisWidget::engineDeactivated()
 {
     ui.analyzeButton->setChecked(false);
-    ui.analyzeButton->setText(tr("Analyze"));
+}
+
+void AnalysisWidget::slotSelectEngine()
+{
+    EngineX* ex = EngineX::newEngine(ui.engineList->currentIndex());
+    if (ex)
+    {
+        int empv = ex->m_mapOptionValues.value("MultiPV",1).toInt();
+        if(empv>1) ui.vpcount->setValue(empv);
+    }
+    delete ex;
+    toggleAnalysis();
 }
 
 void AnalysisWidget::toggleAnalysis()
@@ -172,19 +214,13 @@ void AnalysisWidget::bookActivated(int index)
 
 void AnalysisWidget::slotPinChanged(bool pinned)
 {
-    if (!pinned && isAnalysisEnabled())
+    if (pinned && isEngineRunning())
     {
-        if (m_board != m_NextBoard)
-        {
-            setPosition(m_NextBoard, m_NextLine);
-        }
+        m_engine->setMoveTime(0);
     }
-    else
+    if (m_board != m_NextBoard)
     {
-        if(isEngineRunning())
-        {
-            m_engine->setMoveTime(0);
-        }
+        setPosition(m_NextBoard, m_NextLine);
     }
 }
 
@@ -212,6 +248,20 @@ void AnalysisWidget::slotReconfigure()
         ui.engineList->setCurrentIndex(0);
         stopEngine();
     }
+
+    // Choose MPV from GUI
+    QString key = QString("/") + objectName() + "/mpv";
+    int mpv = AppSettings->value(key, 1).toInt();
+
+    // Look into engine settings if mpv != 1
+    EngineX* ex = EngineX::newEngine(index);
+    if (ex)
+    {
+        int empv = ex->m_mapOptionValues.value("MultiPV",1).toInt();
+        if (empv > 1) mpv = empv;
+    }
+    delete ex;
+    ui.vpcount->setValue(mpv);
 
     int fontSize = AppSettings->getValue("/General/ListFontSize").toInt();
     fontSize = std::max(fontSize, 8);
@@ -301,7 +351,7 @@ void AnalysisWidget::showAnalysis(Analysis analysis)
     updateComplexity();
     updateAnalysis();
     Analysis c = analysis;
-    if (bestMove && analysis.variation().count())
+    if (bestMove && analysis.variation().count()) // Some weird engines send a move twice - find the first (usually longer) line
     {
         foreach (Analysis a, m_analyses)
         {
@@ -317,21 +367,27 @@ void AnalysisWidget::showAnalysis(Analysis analysis)
         }
     }
 
-    c.setTb(m_tb);
-    c.setScoreTb(m_score_tb);
     if (bestMove)
     {
-        analysis.setElapsedTimeMS(elapsed);
-        emit receivedBestMove(c);
-        emit currentBestMove(c);
-    }
-    else if (c.getEndOfGame())
-    {
+        c.setElapsedTimeMS(elapsed);
         emit receivedBestMove(c);
     }
-    if (c.variation().count() && (m!=c.variation().at(0)))
+
+    if (m_tb.isNullMove())
     {
-        emit currentBestMove(c);
+        if (!bestMove && !c.getEndOfGame())
+        {
+            if (m_analyses.count()) // First line mostly is the best line
+            {
+                c = m_analyses.at(0);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        emit currentBestMove(c); // Do not overwrite TB move
     }
 }
 
@@ -405,12 +461,12 @@ void AnalysisWidget::sendBookMoveTimeout()
         int index = 0;
         if (m_moveTime.bookMove == 1)
         {
-            index = rand() % moveList.count();
+            index = QRandomGenerator::global()->bounded(0,moveList.count()-1);
         }
         else if (m_moveTime.bookMove == 2)
         {
             index = moveList.count() - 1;
-            int randomPos = rand() % games;
+            int randomPos = QRandomGenerator::global()->bounded(0,games-1);
             for (int i=0; i<moveList.count();++i)
             {
                 randomPos -= moveList.at(i).results.count();
@@ -492,6 +548,8 @@ void AnalysisWidget::slotMpvChanged(int mpv)
         }
         m_engine->setMpv(mpv);
     }
+    QString key = QString("/") + objectName() + "/mpv";
+    AppSettings->setValue(key, mpv);
 }
 
 bool AnalysisWidget::isAnalysisEnabled() const
@@ -567,16 +625,23 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                     }
                 }
                 Move move1 = m_board.prepareMove(move.from(), move.to());
-                if(move.isPromotion())
+                if (!m_hideLines)
                 {
-                    move1.setPromoted(pieceType(move.promotedPiece()));
+                     if(move.isPromotion())
+                    {
+                        move1.setPromoted(pieceType(move.promotedPiece()));
+                    }
+                    m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1,true), result);
                 }
-                m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1,true), result);
+                else
+                {
+                    m_tablebaseEvaluation = result;
+                }
                 m_tablebaseMove = m_board.moveToFullSan(move1);
                 m_tb = move1;
                 m_lastDepthAdded = 0;
             }
-            else
+            else if (!m_hideLines)
             {
                 Move move1 = m_board.prepareMove(move.from(), move.to());
                 if(move.isPromotion())
@@ -594,10 +659,14 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                 result = tr("White wins");
                 m_score_tb = 1;
             }
-            else
+            else if (score>0)
             {
                 result = tr("Black wins");
                 m_score_tb = -1;
+            }
+            else
+            {
+                result = tr("Draw");
             }
             m_tablebaseEvaluation = result;
         }
@@ -606,6 +675,10 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
             m_tablebaseEvaluation.append(QString(" === %1").arg(also.join(" ")));
         }
         updateAnalysis();
+        Analysis tbAnalysis;
+        tbAnalysis.setTb(m_tb);
+        tbAnalysis.setScoreTb(m_score_tb);
+        emit currentBestMove(tbAnalysis);
     }
 }
 
@@ -624,7 +697,7 @@ void AnalysisWidget::updateAnalysis()
     }
     foreach(Analysis a, m_analyses)
     {
-        QString s = a.toString(m_board);
+        QString s = a.toString(m_board, m_hideLines);
         if (!s.isEmpty()) text.append(s + "<br>");
     }
     if(!m_tablebaseEvaluation.isEmpty())

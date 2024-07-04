@@ -19,6 +19,9 @@
 #include <QWidget>
 #include <QMainWindow>
 #include <QSplitter>
+#ifdef USE_SPEECH
+#include <QTextToSpeech>
+#endif
 #include <QLayout>
 
 using namespace chessx;
@@ -123,7 +126,7 @@ bool ChessXSettings::layout(QWidget* w)
             if(m)
             {
                 QByteArray docks = value("Docks", QByteArray()).toByteArray();
-                if(docks.count())
+                if(docks.size())
                 {
                     m->restoreState(docks, 0);
                 }
@@ -159,6 +162,55 @@ bool ChessXSettings::layout(QWidget* w)
     }
     return valid;
 }
+
+#ifdef USE_SPEECH
+void ChessXSettings::configureSpeech(QTextToSpeech* speech)
+{
+    speech->setLocale(ChessXSettings::locale());
+
+    QVector<QVoice> voices = speech->availableVoices();
+    QString name = AppSettings->getValue("/Sound/Voice").toString();
+
+    for (const QVoice &voice : qAsConst(voices))
+    {
+        if (name == voice.name())
+        {
+            speech->setVoice(voice);
+
+            double volume = (double)AppSettings->getValue("/Sound/Volume").toInt();
+            speech->setVolume(volume/100.0);
+            break;
+        }
+    }
+}
+#endif
+
+QLocale ChessXSettings::locale()
+{
+    QString lang = AppSettings->getValue("/General/language").toString();
+    QLocale cxLocale(lang);
+    return cxLocale;
+}
+
+#ifdef USE_SPEECH
+QStringList ChessXSettings::availableVoices(QString lang)
+{
+    QStringList list;
+
+    QLocale cxLocale(lang);
+
+    QTextToSpeech* speech = new QTextToSpeech();
+    speech->setLocale(cxLocale);
+
+    QVector<QVoice> voices = speech->availableVoices();
+
+    for (const QVoice &voice : qAsConst(voices)) {
+        list << voice.name();
+    }
+
+    return list;
+}
+#endif
 
 void ChessXSettings::setLayout(const QWidget* w)
 {
@@ -234,6 +286,7 @@ void ChessXSettings::initWidgetValues(QMap<QString, QVariant>& map) const
     map.insert("/Board/darkColor", QColor(Qt::darkGray));
     map.insert("/Board/highlightColor", QColor(Qt::yellow));
     map.insert("/Board/frameColor", QColor(Qt::black));
+    map.insert("/Board/coordColor", QColor(Qt::black));
     map.insert("/Board/currentMoveColor", QColor(Qt::blue));
     map.insert("/Board/storedMoveColor", QColor(Qt::magenta));
     map.insert("/Board/variationMoveColor", QColor(Qt::darkMagenta));

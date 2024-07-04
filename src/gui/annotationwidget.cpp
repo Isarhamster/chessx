@@ -29,7 +29,7 @@ void AnnotationWidget::variationClicked(QModelIndex index)
 QString AnnotationWidget::getComment() const
 {
     QString s = ui->editComment->toPlainText();
-    if (AppSettings->getValue("HTMLComments").toBool())
+    if (AppSettings->getValue("/GameText/HTMLComments").toBool())
     {
         s.replace("\n","<br>");
     }
@@ -39,7 +39,7 @@ QString AnnotationWidget::getComment() const
 void AnnotationWidget::setComment(const QString &value)
 {
     QString s = value;
-    if (AppSettings->getValue("HTMLComments").toBool())
+    if (AppSettings->getValue("/GameText/HTMLComments").toBool())
     {
         s.replace("<br>","\n");
     }

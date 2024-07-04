@@ -14,6 +14,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "chessxsettings.h"
 #include "colorlist.h"
 #include "preferences.h"
 #include "settings.h"
@@ -78,6 +79,8 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     connect(ui.tbGermany, SIGNAL(clicked()), SLOT(slotChangePieceString()));
     connect(ui.tbFrance, SIGNAL(clicked()), SLOT(slotChangePieceString()));
     connect(ui.tbPoland, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbItaly, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbCzech, SIGNAL(clicked()), SLOT(slotChangePieceString()));
     connect(ui.tbSymbolic, SIGNAL(clicked()), SLOT(slotChangePieceString()));
 
     connect(ui.btLoadLang, SIGNAL(clicked()), SLOT(slotLoadLanguageFile()));
@@ -345,31 +348,7 @@ void PreferencesDialog::slotShowOptionDialog()
 
 void PreferencesDialog::slotChangePieceString()
 {
-    QString pieceString;
-    if((QToolButton*)sender() == ui.tbUK)
-    {
-        pieceString = " KQRBN";
-    }
-    else if((QToolButton*)sender() == ui.tbGermany)
-    {
-        pieceString = " KDTLS";
-    }
-    else if((QToolButton*)sender() == ui.tbFrance)
-    {
-        pieceString = " RDTFC";
-    }
-    else if((QToolButton*)sender() == ui.tbPoland)
-    {
-        pieceString = " KHWGS";
-    }
-    else if((QToolButton*)sender() == ui.tbSymbolic)
-    {
-        pieceString.clear();
-    }
-    else
-    {
-        pieceString = " KQRBN";
-    }
+    QString pieceString = ((QToolButton*)sender())->text();
     ui.pieceString->setText(pieceString);
 }
 
@@ -532,6 +511,7 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.boardColorsList, tr("Dark squares"), "darkColor");
     restoreColorItem(ui.boardColorsList, tr("Highlighted squares"), "highlightColor");
     restoreColorItem(ui.boardColorsList, tr("Frame"), "frameColor");
+    restoreColorItem(ui.boardColorsList, tr("Coordinates"), "coordColor");
     restoreColorItem(ui.boardColorsList, tr("Current move"), "currentMoveColor");
     restoreColorItem(ui.boardColorsList, tr("Stored move"), "storedMoveColor");
     restoreColorItem(ui.boardColorsList, tr("Variation move"), "variationMoveColor");
@@ -665,23 +645,32 @@ void PreferencesDialog::restoreSettings()
 
 #if defined(USE_SOUND) || defined(USE_SPEECH)
     ui.cbSoundOn->setCurrentIndex(AppSettings->getValue("Move").toInt());
+    ui.volume->setValue(AppSettings->getValue("Volume").toInt());
     ui.cbScreenReader->setChecked(AppSettings->getValue("ScreenReader").toBool());
+    ui.cbMoveSound->setChecked(AppSettings->getValue("MoveSound").toBool());
     ui.plyReadAhead->setValue(AppSettings->getValue("PlyReadAhead").toInt());
     ui.delayReadAhead->setValue(AppSettings->getValue("DelayReadAhead").toInt());
 
 #ifdef USE_SPEECH
+    QStringList voiceNames = ChessXSettings::availableVoices(lang);
+    ui.cbVoice->addItems(voiceNames);
+    ui.cbVoice->setCurrentText(AppSettings->getValue("Voice").toString());
     if (!QTextToSpeech::availableEngines().count())
     {
+        ui.cbVoice->setEnabled(false);
         ui.cbScreenReader->setChecked(false);
-        ui.cbScreenReader->setEnabled(false);
         ui.plyReadAhead->setEnabled(false);
         ui.delayReadAhead->setEnabled(false);
+        ui.cbScreenReader->setEnabled(false);
     }
 #endif
 
 #else
     ui.cbSoundOn->setCurrentIndex(0);
     ui.cbSoundOn->setEnabled(false);
+    ui.cbVoice->setEnabled(false);
+    ui.cbMoveSound->setEnabled(false);
+    ui.cbMoveSound->setChecked(false);
     ui.cbScreenReader->setChecked(false);
     ui.cbScreenReader->setEnabled(false);
     ui.plyReadAhead->setEnabled(false);
@@ -740,7 +729,7 @@ void PreferencesDialog::saveSettings()
     }
     QStringList colorNames;
     colorNames << "lightColor" << "darkColor" << "highlightColor"
-               << "frameColor" << "currentMoveColor" << "storedMoveColor" << "variationMoveColor" << "threatColor"
+               << "frameColor" << "coordColor" << "currentMoveColor" << "storedMoveColor" << "variationMoveColor" << "threatColor"
                << "targetColor" << "checkColor" << "wallColor" << "underprotectedColor" << "engineColor" ;
     saveColorList(ui.boardColorsList, colorNames);
     AppSettings->endGroup();
@@ -769,7 +758,9 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("ColumnStyle", ui.cbColumnStyle->isChecked());
     AppSettings->setValue("VariationIndentLevel", ui.variationIndentLevel->value());
     AppSettings->setValue("DiagramSize", ui.diagramSize->value());
-    AppSettings->setValue("PieceString", ui.pieceString->text());
+    QString ps = ui.pieceString->text();
+    if (!ps.isEmpty() && !ps.startsWith(" ")) ps.prepend(" ");
+    AppSettings->setValue("PieceString", ps);
     AppSettings->setValue("CommentIndent", ui.cbIndentComments->currentData().toString());
     AppSettings->setValue("FontBrowserText", ui.fontText->text());
     AppSettings->setValue("FontBrowserMove", ui.fontMove->text());
@@ -813,6 +804,9 @@ void PreferencesDialog::saveSettings()
 
     AppSettings->beginGroup("Sound");
     AppSettings->setValue("Move", ui.cbSoundOn->currentIndex());
+    AppSettings->setValue("Volume", ui.volume->value());
+    AppSettings->setValue("Voice", ui.cbVoice->currentText());
+    AppSettings->setValue("MoveSound", ui.cbMoveSound->isChecked());
     AppSettings->setValue("ScreenReader", ui.cbScreenReader->isChecked());
     AppSettings->setValue("PlyReadAhead", ui.plyReadAhead->value());
     AppSettings->setValue("DelayReadAhead", ui.delayReadAhead->value());

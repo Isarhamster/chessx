@@ -43,6 +43,10 @@ bool TestAdapter::dispatchTests()
     QCommandLineOption enOption(QStringList() << "en" << "eco-no-classify",
             QCoreApplication::translate("TestAdapter", "Never classify games."));
     parser.addOption(enOption);
+    QCommandLineOption lcOption(QStringList() << "lc" << "locale",
+                                   QCoreApplication::translate("TestAdapter", "Output Locale."),
+                                   QCoreApplication::translate("TestAdapter", "Locale"));
+    parser.addOption(lcOption);
 
     // Do not start the GUI after processing the files
     QCommandLineOption exitOption(QStringList() << "x" << "exit",
@@ -67,6 +71,7 @@ bool TestAdapter::dispatchTests()
 
     QString inputFile = parser.value(inputOption);
     QString outputFile = parser.value(outputOption);
+    QString lc = parser.value(lcOption);
 
     bool ec = parser.isSet("ec");
     bool ek = parser.isSet("ek");
@@ -79,6 +84,11 @@ bool TestAdapter::dispatchTests()
     {
         AppSettings->setValue("/General/automaticECO", true);
         AppSettings->setValue("/General/preserveECO", ek);
+    }
+
+    if (!lc.isEmpty())
+    {
+        AppSettings->setValue("/GameText/PieceString", lc);
     }
 
     if (!inputFile.isEmpty())
@@ -106,6 +116,7 @@ void TestAdapter::convertPgn(const QString& filename, const QString& outfile, QC
     bool rv = parser.isSet("rv");
     bool rc = parser.isSet("rc");
     bool rt = parser.isSet("rt");
+    bool lc = parser.isSet("lc");
 
     if (db.open(filename, true) && ((Database*)(&db))->parseFile())
     {
@@ -122,7 +133,7 @@ void TestAdapter::convertPgn(const QString& filename, const QString& outfile, QC
             }
         }
 
-        Output output(Output::Pgn);
+        Output output(lc ? Output::LocalPgn : Output::Pgn);
         output.output(outfile, db);
     }
 }

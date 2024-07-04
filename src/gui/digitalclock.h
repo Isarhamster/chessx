@@ -41,9 +41,6 @@ private slots:
 
 private:
     QTimer* timer;
-#ifdef USE_SOUND
-    QPointer<QSound> tockSound;
-#endif
     bool m_useTock;
     int m_tockToDo;
     bool m_bFirstTestForTock;

@@ -9,6 +9,7 @@
  ***************************************************************************/
 
 #include "networkhelper.h"
+#include "qt6compat.h"
 #include "settings.h"
 #include "tablebase.h"
 #include "version.h"
@@ -181,12 +182,13 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
 
                 if(ret[5] == 'w')
                 {
-                    ret.remove(QRegularExpression("NEXTCOLOR.*\\n"));
+                    ret.remove(QRegularExpression("NEXTCOLOR.*\\n", QRegularExpression::DotMatchesEverythingOption));
                 }
                 else
                 {
-                    ret.remove(QRegularExpression(".*NEXTCOLOR\\n"));
+                    ret.remove(QRegularExpression(".*NEXTCOLOR\\n", QRegularExpression::DotMatchesEverythingOption));
                 }
+
                 ret.remove(0, ret.indexOf("\n") + 1);
                 ret.remove(":");
                 ret.remove("Win in ");
@@ -194,7 +196,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                 ret.replace("Draw", "0");
                 ret.replace("Lose in ", "-");
 
-                QStringList moveList = ret.split('\n',Qt::SkipEmptyParts);
+                QStringList moveList = ret.split('\n',SkipEmptyParts);
                 if (moveList.size() >= 1)
                 {
                     QList<Move> bestMoves;
@@ -202,7 +204,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                     int bestScore = 0;
                     foreach(QString tbMove, moveList)
                     {
-                        QStringList fld = tbMove.split(' ',Qt::SkipEmptyParts);
+                        QStringList fld = tbMove.split(' ',SkipEmptyParts);
                         if(fld.size() < 3)
                         {
                             break;
@@ -246,7 +248,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                     if (s_allowEngineOutput && !first)
                     {
                         bestScore = bestScore*2; // Convert to half moves
-                        bestScore += ((bestScore>0)?1:-1) * 0x800;
+                        if (bestScore) bestScore += ((bestScore>0)?1:-1) * 0x800;
                         emit bestMove(bestMoves, bestScore);
                     }
                 }

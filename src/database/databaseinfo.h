@@ -160,6 +160,8 @@ private:
     CircularBuffer<GameId> m_lastGames;
     bool m_bLoaded;
     bool m_utf8;
+    bool m_hadBOM;
+    bool testBOM();
 };
 
 #endif

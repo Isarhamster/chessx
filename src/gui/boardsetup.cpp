@@ -24,9 +24,11 @@
 #include <QtGui>
 #include <QPixmap>
 #include <QPushButton>
+#include <QRandomGenerator>
 #include <QRegularExpression>
 #include <QSpacerItem>
 #include <QSizePolicy>
+#include "qt6compat.h"
 
 // Dummy change
 using namespace chessx;
@@ -147,7 +149,7 @@ void BoardSetupDialog::chess960posChanged(int value)
 
 void BoardSetupDialog::chess960randomPos()
 {
-    int randomPos = rand() % 960;
+    int randomPos = QRandomGenerator::global()->bounded(0,959);
     ui.chess960pos->setValue(randomPos);
 }
 
@@ -677,7 +679,7 @@ void BoardSetupDialog::startDrag(QWidget* w, QMouseEvent* event)
     }
     Piece p = child->piece();
 
-    QPoint hotSpot = event->pos();
+    QPoint hotSpot = EVENT_POSITION(event);
 
     BoardViewMimeData *mimeData = new BoardViewMimeData;
     mimeData->m_piece = p;

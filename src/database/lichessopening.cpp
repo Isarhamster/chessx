@@ -1,4 +1,5 @@
 #include "lichessopening.h"
+#include "lichesstransfer.h"
 #include "networkhelper.h"
 #include "settings.h"
 #include "version.h"
@@ -21,18 +22,6 @@ LichessOpening::LichessOpening()
 
 LichessOpening::~LichessOpening()
 {
-}
-
-QByteArray LichessOpening::sync_request( QNetworkRequest& request )
-{
-    QNetworkAccessManager manager;
-    QNetworkReply* reply;
-    QEventLoop connection_loop;
-    connect(&manager, SIGNAL( finished(QNetworkReply*) ), &connection_loop, SLOT( quit() ) );
-    reply = manager.get( request );
-    connection_loop.exec();
-    reply->deleteLater();
-    return reply->readAll();
 }
 
 QByteArray LichessOpening::queryPosition(const QString& fen)
@@ -67,7 +56,7 @@ QByteArray LichessOpening::queryPosition(const QString& fen)
         url.setScheme("http");
 
         QNetworkRequest request = NetworkHelper::Request(url);
-        reply = sync_request( request );
+        reply = LichessTransfer::sync_request( request );
         m_requested = requested;
         return reply;
     }

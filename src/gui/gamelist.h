@@ -19,6 +19,7 @@
 
 #include "tableview.h"
 #include "gamex.h"
+#include "gameid.h"
 
 #include <QPointer>
 #include <QSortFilterProxyModel>
