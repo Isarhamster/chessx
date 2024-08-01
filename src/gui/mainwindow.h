@@ -49,6 +49,7 @@ class GameList;
 class GameNotationWidget;
 class GameToolBar;
 class GameWindow;
+class DuplicatePositionsWidget;
 class HistoryLabel;
 class OpeningTreeWidget;
 class PlayerListWidget;
@@ -703,6 +704,7 @@ private:
     QLabel* m_sliderText;
     QPointer<QComboBox> m_comboEngine;
     GameWindow* m_gameWindow;
+    DuplicatePositionsWidget* m_duplicatePositionsWidget;
     GameToolBar* m_gameToolBar;
     QTabWidget* m_tabWidget;
     AnnotationWidget* annotationWidget;

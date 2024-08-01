@@ -296,6 +296,7 @@ HEADERS += src/database/board.h \
   src/gui/databaselistmodel.h \
   src/gui/digitalclock.h \
   src/gui/dockwidgetex.h \
+  src/gui/duplicatepositionswidget.h \
   src/gui/ecolistwidget.h \
   src/gui/ecothread.h \
   src/gui/engineoptiondialog.h \
@@ -466,6 +467,7 @@ SOURCES += \
   src/gui/databaselistmodel.cpp \
   src/gui/digitalclock.cpp \
   src/gui/dockwidgetex.cpp \
+  src/gui/duplicatepositionswidget.cpp \
   src/gui/ecolistwidget.cpp \
   src/gui/engineoptiondialog.cpp \
   src/gui/engineoptionlist.cpp \

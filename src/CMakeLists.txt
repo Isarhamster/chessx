@@ -355,6 +355,8 @@ add_library(gui STATIC
   gui/digitalclock.h
   gui/dockwidgetex.cpp
   gui/dockwidgetex.h
+  gui/duplicatepositionswidget.cpp
+  gui/duplicatepositionswidget.h
   gui/ecolistwidget.cpp
   gui/ecolistwidget.h
   gui/ecothread.h
