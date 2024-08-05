@@ -1874,7 +1874,7 @@ Move BitBoard::parseMove(const QString& algebraic) const
                 return createCastlingQ();
             }
         }
-        else if (strlen(san)==3)
+        else if (strlen(san)>=3)
         {
             if(strncmpi(san, "o-o", 3) == 0 || strncmp(san, "0-0", 3)  == 0)
             {
@@ -1884,8 +1884,16 @@ Move BitBoard::parseMove(const QString& algebraic) const
             {
                 return createCastlingQ();
             }
+            else if ((strncmp(san, "00", 2) == 0) || (strncmpi(san, "0K", 2) == 0))
+            {
+                return createCastlingK();
+            }
+            else if (strncmpi(san, "0Q", 2) == 0)
+            {
+                return createCastlingQ();
+            }
         }
-        else if (strlen(san)==2)
+        else if (strlen(san)>=2)
         {
             if ((strncmp(san, "00", 2) == 0) || (strncmpi(san, "0K", 2) == 0))
             {
