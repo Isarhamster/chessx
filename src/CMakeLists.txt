@@ -19,7 +19,7 @@ target_link_libraries(bitboard
   PRIVATE
     qt_config
   PUBLIC
-    Qt5::Core
+    Qt6::Core
 )
 
 if (cxx_std_11 IN_LIST CMAKE_CXX_COMPILE_FEATURES)
@@ -79,7 +79,7 @@ target_link_libraries(eco
   PUBLIC
     board
     gui
-    Qt5::Core
+    Qt6::Core
 )
 
 add_library(database-core STATIC
@@ -95,6 +95,8 @@ add_library(database-core STATIC
   database/gameid.h
   database/gamecursor.cpp
   database/gamecursor.h
+  database/gameevaluation.cpp
+  database/gameevaluation.h
   database/gamex.cpp
   database/gamex.h
   database/index.cpp
@@ -177,6 +179,8 @@ add_library(database STATIC
   database/lichessopening.h
   database/lichessopeningdatabase.cpp
   database/lichessopeningdatabase.h
+  database/lichesstransfer.cpp
+  database/lichesstransfer.h
   database/memorydatabase.cpp
   database/memorydatabase.h
   database/networkhelper.cpp
@@ -235,17 +239,20 @@ target_include_directories(database
     database
   PRIVATE
     gui
+
 )
 
 target_link_libraries(database
   PRIVATE
     qt_config
-    Qt5::Widgets
+    Qt6::Widgets
   PUBLIC
     database-core
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Network
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Network
+    Qt6::Core5Compat
+
 )
 
 if (ENABLE_SCID_SUPPORT)
@@ -318,6 +325,9 @@ add_library(gui STATIC
   dialogs/tagdialog.cpp
   dialogs/tagdialog.h
   dialogs/tagdialog.ui
+  dialogs/tournamentselectiondialog.cpp
+  dialogs/tournamentselectiondialog.h
+  dialogs/tournamentselectiondialog.ui
   gui/GameMimeData.h
   gui/analysiswidget.cpp
   gui/analysiswidget.h
@@ -339,6 +349,8 @@ add_library(gui STATIC
   gui/boardviewex.cpp
   gui/boardviewex.h
   gui/boardviewex.ui
+  gui/centipawngraph.cpp
+  gui/centipawngraph.h
   gui/chartwidget.cpp
   gui/chartwidget.h
   gui/chessbrowser.cpp
@@ -380,8 +392,6 @@ add_library(gui STATIC
   gui/gamelistsortmodel.h
   gui/gamenotationwidget.cpp
   gui/gamenotationwidget.h
-  gui/gametoolbar.cpp
-  gui/gametoolbar.h
   gui/gamewindow.cpp
   gui/gamewindow.h
   gui/gamewindow.ui
@@ -461,12 +471,12 @@ target_link_libraries(gui
     qt_config
     eco
     quazip
-    Qt5::PrintSupport
-    Qt5::Svg
+    Qt6::PrintSupport
+    Qt6::Svg
   PUBLIC
     database
-    Qt5::Widgets
-    Qt5::Xml
+    Qt6::Widgets
+    Qt6::Xml
 )
 
 if (ENABLE_SOUNDS)
@@ -474,7 +484,7 @@ if (ENABLE_SOUNDS)
     PRIVATE
       USE_SOUND
   )
-  target_link_libraries(gui PRIVATE Qt5::Multimedia)
+  target_link_libraries(gui PRIVATE Qt6::Multimedia)
   if (UNIX AND NOT APPLE)
     # on Linux QtMultimedia links to pulseaudio
     find_package(PulseAudio REQUIRED) 
@@ -491,6 +501,6 @@ if (ENABLE_TTS)
     PRIVATE
       USE_SPEECH
   )
-  target_link_libraries(gui PRIVATE Qt5::TextToSpeech)
+  target_link_libraries(gui PRIVATE Qt6::TextToSpeech)
 endif()
 
