@@ -6,7 +6,7 @@
 A free and open source chess database application for Linux, Mac OS X and
 Windows.
 
-[ChessX Web Site](http://chessx.sourceforge.net/)
+[ChessX Web Site](http://chessx.sourceforge.io/)
 
 # 2. Features
 
