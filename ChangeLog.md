@@ -1,4 +1,4 @@
-## June 2024: Version 1.6.0
+## July 2024: Version 1.6.2
 
 - Bugfix:#333 Accented letters in annotations in UTF8
 - Bugfix: #349 Incorrect Pinned Move in Analysis Window

@@ -7,9 +7,9 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#define VERSION_MAJOR   1
-#define VERSION_MINOR   6
-#define REVISION        1
+#define VERSION_MAJOR 1
+#define VERSION_MINOR 6
+#define REVISION 2
 
 #define XGLUE2(a,b) #a "," #b
 #define GLUE2(a,b)  XGLUE2(a,b)

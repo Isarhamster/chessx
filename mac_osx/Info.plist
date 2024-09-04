@@ -5,41 +5,41 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleTypeIconFile</key>
-			<string>chessx.icns</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>pgn</string>
 			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>chessx.icns</string>
 			<key>CFBundleTypeName</key>
 			<string>PGN Files</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>LSHandlerRank</key>
 			<string>Default</string>
 		</dict>
 	</array>
-	<key>CFBundleIconFile</key>
-	<string>chessx.icns</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleGetInfoString</key>
-        <string>ChessX for Mac OS 10.14</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
 	<key>CFBundleExecutable</key>
 	<string>chessx</string>
+	<key>CFBundleGetInfoString</key>
+	<string>ChessX for Mac OS 10.14</string>
+	<key>CFBundleIconFile</key>
+	<string>chessx.icns</string>
 	<key>CFBundleIdentifier</key>
-        <string>net.sourceforge.chessx</string>
-	<key>CFBundleVersion</key>
-        <string>1.6.0</string>
+	<string>net.sourceforge.chessx</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-        <string>1.6.0</string>
+	<string>1.6.2</string>
+	<key>CFBundleSignature</key>
+	<string></string>
+	<key>CFBundleVersion</key>
+	<string>1.6.2</string>
+	<key>NSHighResolutionCapable</key>
+	<string>True</string>
 	<key>NSHumanReadableCopyright</key>
-        <string>(C) 2005-2023 ChessX developers</string>
-        <key>NSPrincipalClass</key>
-        <string>NSApplication</string>
-        <key>NSHighResolutionCapable</key>
-        <string>True</string>
+	<string>(C) 2005-2024 ChessX developers</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
 </dict>
 </plist>
