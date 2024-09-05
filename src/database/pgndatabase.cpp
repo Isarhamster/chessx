@@ -1075,6 +1075,9 @@ void PgnDatabase::prepareNextLine()
     if(m_utf8)
     {
         QTextStream textStream(m_lineBuffer);
+#if QT_VERSION < 0x060000
+        textStream.setCodec("UTF-8");
+#endif
         m_currentLine = textStream.readLine().simplified();
     }
     else

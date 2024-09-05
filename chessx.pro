@@ -81,6 +81,9 @@ unix|!macx {
 
     binfiles.files = release/chessx
     binfiles.path = $$BINDIR
+
+    # Note: Compile SSL 1.1.1, uncomment the following line and put the lib path here
+    # LIBS += -L/home/parallels/openssl-1.1.1q -lcrypto -lssl
 }
 
 scid {
