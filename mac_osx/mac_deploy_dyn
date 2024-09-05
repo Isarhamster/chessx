@@ -1,23 +1,25 @@
 #!/bin/sh
 [ $# -eq 0 ] && { echo "Usage: $0 QT_INSTALL_PREFIX // Creator: %{Qt:QT_INSTALL_PREFIX} in %{buildDir}/release"; exit 1; }
+
 DIR=${0%/*}
 RELEASEDIR=`pwd`
 BUILDDIR=$RELEASEDIR/..
-DIR="/Users/jens/Documents/Programmieren/Projects/chessx-git/mac_osx"
+
 VERSION=$(awk '
     BEGIN { major="0"; minor="0"; patch="0" }
-    /#define VERSION_MAJOR/ {gsub(/[^0-9]/, "", $3); major=$3; print "Major found: " major > "/dev/stderr"}
-    /#define VERSION_MINOR/ {gsub(/[^0-9]/, "", $3); minor=$3; print "Minor found: " minor > "/dev/stderr"}
-    /#define REVISION/ {gsub(/[^0-9]/, "", $3); patch=$3; print "Patch found: " patch > "/dev/stderr"}
+    /#define VERSION_MAJOR/ {gsub(/[^0-9]/, "", $3); major=$3; }
+    /#define VERSION_MINOR/ {gsub(/[^0-9]/, "", $3); minor=$3; }
+    /#define REVISION/ {gsub(/[^0-9]/, "", $3); patch=$3; }
     END {
         print major "." minor "." patch
     }' ${DIR}/../src/database/version.h)
+    
 echo "Updating ${DIR}/info.plist to version ${VERSION}"
-
 /usr/libexec/PlistBuddy -c "delete :CFBundleVersion" ${DIR}/info.plist
 /usr/libexec/PlistBuddy -c "delete :CFBundleShortVersionString" ${DIR}/info.plist
 /usr/libexec/PlistBuddy -c "add :CFBundleVersion string ${VERSION}" ${DIR}/info.plist
 /usr/libexec/PlistBuddy -c "add :CFBundleShortVersionString string ${VERSION}" ${DIR}/info.plist
+
 echo "Build image for chessx-${VERSION} in ${RELEASEDIR}"
 QTBASE=$1
 QTBIN=$1/bin
