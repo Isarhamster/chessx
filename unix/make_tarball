@@ -1,5 +1,7 @@
 #!/bin/sh
-DIR=${0%/*}
+DIR=$( dirname -- "$( readlink -f -- "$0"; )"; )
+cd "$(DIR)"
+
 echo "Build archive from ${DIR} in ${DIR}/../Packages/"
 
 VERSION=$(awk '
@@ -14,15 +16,16 @@ VERSION=$(awk '
 echo "Building archive for version ${VERSION}"
     
 CNAME=chessx-${VERSION}
-__SCRIPTDIR="${0%/*}"
 
-if [ -d "$CNAME" ]; then
-   gtar -czf "${CNAME}.tgz" --exclude-from=$__SCRIPTDIR/tar_exclude.txt ./chessx
-   mv "${CNAME}.tgz" ${DIR}/../Packages/
+if [ -d chessx-master ]; then
+   gtar -czf "${CNAME}.tgz" --exclude-from="tar_exclude.txt" "chessx-master"
+   mv "${CNAME}.tgz" ../Packages/
    echo "Ready"
 else
-  echo "Directory not found"
+  echo 'Directory not found'
 fi
+
+cd -
 
 
 

@@ -26,6 +26,7 @@ AllowNoIcons=yes
 LicenseFile=.\COPYING.md
 InfoAfterFile=.\ChangeLog.md
 OutputBaseFilename=setup-chessx7-64
+OutputDir=Packages
 SetupIconFile=.\src\chessx.ico
 Compression=lzma
 SolidCompression=yes
