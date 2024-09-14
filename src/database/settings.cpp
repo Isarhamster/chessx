@@ -197,7 +197,7 @@ void Settings::setMap(const QString& key, const OptionValueMap& map)
 {
     QByteArray data;
     QDataStream * stream = new QDataStream(&data, QIODevice::WriteOnly);
-
+    stream->setVersion(QDataStream::Qt_5_12);
     (*stream) << map;
     delete stream;
 
@@ -208,6 +208,7 @@ void Settings::getMap(const QString& key, OptionValueMap& map)
 {
     QByteArray data = byteArray(key);
     QDataStream * stream = new QDataStream(&data, QIODevice::ReadOnly);
+    stream->setVersion(QDataStream::Qt_5_12);
     (*stream) >> map;
     delete stream;
 }
