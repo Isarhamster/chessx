@@ -21,7 +21,9 @@
 #ifdef USE_SPEECH
 #include <QTextToSpeech>
 #endif
+#ifdef USE_SOUND
 #include <QSoundEffect>
+#endif
 #include <QToolBar>
 #include <QUndoGroup>
 
@@ -778,7 +780,9 @@ private:
 #endif
     int m_readAhead;
     Move m_readNextMove;
+#ifdef USE_SOUND
     QPointer<QSoundEffect> effect;
+#endif
     QMap<QUrl, QString> copyFileNames;
 };
 

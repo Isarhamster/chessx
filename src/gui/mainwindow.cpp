@@ -70,13 +70,9 @@
 #include <QProgressBar>
 #include <QRegularExpression>
 #include <QSizePolicy>
-#include <QSoundEffect>
 #include <QSplitter>
 #include <QStatusBar>
 #include <QTabBar>
-#ifdef USE_SPEECH
-#include <QTextToSpeech>
-#endif
 #include <QTimer>
 #include <QToolBar>
 #include "qt6compat.h"
@@ -503,7 +499,9 @@ MainWindow::MainWindow() : QMainWindow(),
         connect(speech, SIGNAL(stateChanged(QTextToSpeech::State)), SLOT(speechStateChanged(QTextToSpeech::State)), Qt::QueuedConnection);
     }
 #endif
+#ifdef USE_SOUND
     effect = new QSoundEffect(this);
+#endif
 
     /* Setup the dimensions of all widgets and the main board */
     slotReconfigure();
