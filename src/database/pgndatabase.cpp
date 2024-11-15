@@ -669,6 +669,10 @@ void PgnDatabase::splitTokenList(QVector<QStringRef>& list)
             case '.': // Count dots to figure out which side is moving.
             if (!dots)
             {
+                if (m_currentLine[start].isDigit())
+                {
+                    list.push_back(QStringRef(&m_currentLine, start, n-1)); // Current move counter
+                }
                 start += (n-1);
                 n = 1;
             }
@@ -818,6 +822,17 @@ void PgnDatabase::parseLine(GameX* game)
 
 inline void PgnDatabase::parseMoveToken(GameX* game, QString token)
 {
+    QChar c = token.at(0);
+    if (c.isDigit())
+    {
+        int x = game->ply()+1;   // We still need to enter the next move
+        int n = 2*token.toInt(); // Convert move to ply
+        if (abs(n-x)>1)
+        {
+            m_variation = -1;
+        }
+        return;
+    }
     if (token.startsWith("..."))
     {
         white = false;
