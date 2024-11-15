@@ -99,7 +99,11 @@ is executed and the buffer is cleared.</p>
 typing &ldquo;e4&rdquo; in the starting position is fine, whereas a subsequent &ldquo;e2&rdquo; could
   either be Be2, Ne2, Ke2, Qe2 &mdash;  or f1e2&hellip; 
 </p>
-<p>By pressing [Enter] you can force ChessX to accept an entry or discard it, if ChessX cannot make anything reasonable of your entry.</p>
+<p>ChessX will recognize nags like '!' or '+-', a special nag is 'N' (Novelty) which needs to be entered as 'NN'.</p>
+<p>Pressing [ESC] clears the current nag text, [DEL] clears all nags from the current move.
+By pressing [Enter] you can force ChessX to accept an entry.</p>
+<p>In this case, ChessX will first try to detect Nags or Moves inside the entered text. Then it will consider special annotations: e.g. '+1:00:00' will enter a remaining
+time annotation, '-0:01:00' will result in a elapsed move time annotation. All other texts will replace the current comment.</p>
 <p>You can enter castling moves with 00, 0-0, 0k, O-O or 000, 0-0-0, 0q, O-O-O respectively. &lsquo;--&rsquo; will generate a null move.</p>
 <h3><a name="Annotate"></a>Annotating moves</h3>
 <p>Move annotations can be done by activating the context menu in the games text browser or by simply pressing the corresponding key sequence,
