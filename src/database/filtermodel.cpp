@@ -11,6 +11,7 @@
 #include "filtermodel.h"
 
 #include "database.h"
+#include "ecopositions.h"
 #include "filter.h"
 #include "qt6compat.h"
 #include "settings.h"
@@ -240,6 +241,14 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
                 }
                 QVariant v = qApp->palette().color(QPalette::Text);
                 return v;
+            }
+            else if (role == Qt::ToolTipRole)
+            {
+                if(index.column() == 10) // ECO
+                {
+                    QString eco = m_filter->database()->tagValue(i, m_columnTagIndex[index.column()]);
+                    return EcoPositions::findEcoNameDetailed(eco);
+                }
             }
         }
     }
