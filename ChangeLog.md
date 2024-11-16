@@ -1,3 +1,7 @@
+## September 2024: Version 1.6.4
+
+- Bugfix: Qt6 will not serialize Engine options 
+
 ## July 2024: Version 1.6.2
 
 - Bugfix:#333 Accented letters in annotations in UTF8
@@ -535,7 +539,7 @@
 - New feature: Toggle UTF8 flag in database list
 - New feature: Open compressed archives (from HTTP or local file)
 - New feature: Open a database from a URL (HTTP)
-- New Feature: Clear Nags from keyboard with <Del>
+- New Feature: Clear Nags from keyboard with *Del
 - New Feature: Create Index File thus accelerating re-loading of large PGN enormously
 - New Feature: Searching of ranges, e.g. ELO "2000-2300"
 - New Feature: Automatic classification with ECO of unclassified / new games

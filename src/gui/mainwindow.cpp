@@ -730,20 +730,44 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
                 Move m = game().move();
                 m_ficsConsole->SendMove(m.toAlgebraic());
             }
+            m_nagText.clear();
+            return;
         }
-        if (m_nagText.startsWith("T"))
+        if ((m_nagText.length()>=2) &&
+            (m_nagText.startsWith("+") || m_nagText.startsWith("-")))
         {
             // ChessX-Special - annotate a time comment
+            // + is remaining time, - is elapsed move time
+            // +/-0:30 is converted to 0:30:00
+            // +/-3 is converted into 0:03:00
+            // 3 seconds should be entered +/-0:00:03
+            char mode = m_nagText[0].toLatin1();
             m_nagText.remove(0,1);
-            if (m_nagText.count(":")==1) m_nagText.append(":00");
+            if (m_nagText.count(":")==0)
+            {
+                if (m_nagText.length()==1) m_nagText.prepend("0");
+                m_nagText.prepend("0:");
+            }
+            if (m_nagText.count(":")==1)
+            {
+                m_nagText.append(":00");
+            }
             if (m_nagText.count(":")==2)
             {
                 QTime t = QTime::fromString(m_nagText, "H:mm:ss");
                 QString ts = t.toString("H:mm:ss");
-                QString annot = ClockAnnotation(ts).asAnnotation();
+                QString annot = mode == '+' ? ClockAnnotation(ts).asAnnotation() : ElapsedMoveTimeAnnotation(ts).asAnnotation();
                 game().setTimeAnnotation(annot);
             }
+            m_nagText.clear();
+            return;
         }
+
+        if (!m_nagText.isEmpty())
+        {
+            game().setAnnotation(m_nagText); // Everything else is added as comment
+        }
+
         m_nagText.clear(); // Not a move and not a nag
         return;
     }
@@ -768,7 +792,7 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
         return;
     }
 
-    if (m_nagText == "n")
+    if (m_nagText == "NN")
     {
         m_nagText = "N";
     }

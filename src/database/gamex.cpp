@@ -1157,7 +1157,7 @@ QString GameX::arrowAnnotation(MoveId moveId) const
     return s;
 }
 
-QString GameX::specAnnotation(const QRegularExpression &r, MoveId moveId) const
+QString GameX::specAnnotation(const QRegularExpression &r, MoveId moveId, QString* found) const
 {
     MoveId node = m_moves.makeNodeIndex(moveId);
     if(node == NO_MOVE)
@@ -1176,6 +1176,7 @@ QString GameX::specAnnotation(const QRegularExpression &r, MoveId moveId) const
 
     if(pos >= 0)
     {
+        if (found) *found = match.captured(1);
         return match.captured(2);
     }
 
@@ -1193,9 +1194,10 @@ QString GameX::timeAnnotation(MoveId moveId, Position position) const
         }
         else return "";
     }
-
+    QString found;
     QString s = specAnnotation(TimeAnnotation().filter(), moveId);
     s = s.trimmed();
+    if (found == "emt" || found == "egt") s.prepend("-"); // Indicate elapsed times with a '-'
     return s;
 }
 
