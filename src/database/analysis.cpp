@@ -233,6 +233,8 @@ QString Analysis::toString(const BoardX& board, bool hideLines) const
     QString moveText;
     if(!hideLines)
     {
+        bool atLineStart = true;
+
         foreach(Move move, variation())
         {
             if(whiteToMove)
@@ -243,8 +245,22 @@ QString Analysis::toString(const BoardX& board, bool hideLines) const
             {
                 moveText += QString::number(moveNo++) + "... ";
             }
+
+            if(atLineStart)
+            {
+               moveText += "<b>";
+            }
+
             moveText += testBoard.moveToSan(move, true);
+
+            if(atLineStart)
+            {
+               moveText += "</b>";
+               atLineStart = false;
+            }
+
             moveText += " ";
+
             testBoard.doMove(move);
             whiteToMove = !whiteToMove;
         }
