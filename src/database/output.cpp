@@ -506,7 +506,8 @@ QString Output::writeMainLine(MoveId upToNode)
             m_dirtyBlack = true;
             m_game.dbMoveToId(m_game.parentMove());
         }
-        m_game.forward();
+        if (!m_game.forward())
+            break; // Just make sure we get out in case something went wrong
     } while(!m_game.atLineEnd());
 
     return text;
