@@ -69,7 +69,8 @@ GameCursor::~GameCursor()
 
 void GameCursor::initCursor()
 {
-    m_nodes.append(Node());
+    Node n = Node();
+    m_nodes.append(n);
     if (m_currentBoard)
     {
         m_currentNode = ROOT_NODE;
@@ -103,7 +104,7 @@ void GameCursor::clear(const QString& fen, bool chess960)
     m_nodes.clear();
     m_startingBoard.setChess960(chess960);
     m_startingBoard.fromFen(fen);
-    m_startPly = (m_startingBoard.moveNumber() - 1) * 2 + (m_startingBoard.toMove() == Black);
+    m_startPly = (m_startingBoard.moveNumber()) * 2 - 1 + ((m_startingBoard.toMove() == Black) ? 1:0);
     initCursor();
 }
 
@@ -210,7 +211,7 @@ bool GameCursor::atLineEnd(MoveId moveId) const
     MoveId node = makeNodeIndex(moveId);
     if (node == NO_MOVE)
     {
-        return false;
+        node = ROOT_NODE;
     }
     return m_nodes[node].nextNode == NO_MOVE;
 }
@@ -255,11 +256,8 @@ int GameCursor::moveNumber(MoveId moveId) const
     MoveId node = makeNodeIndex(moveId);
     if(node != NO_MOVE)
     {
-        if(int plyNum = plyNumber(node))
-        {
-            return (m_startPly + plyNum - 1) / 2 + 1;
-        }
-        return 0;
+        int plyNum = plyNumber(node);
+        return (m_startPly + plyNum - 1) / 2 + 1;
     }
     return -1;
 }

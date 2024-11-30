@@ -151,6 +151,7 @@ private:
     int percentDone;
     bool white;
     bool found;
+    int  moveNumberFound;
     bool bUse64bit {false};
 };
 

@@ -825,14 +825,10 @@ inline void PgnDatabase::parseMoveToken(GameX* game, QString token)
     QChar c = token.at(0);
     if (c.isDigit())
     {
-        int x = game->ply()+1;   // We still need to enter the next move
-        int n = 2*token.toInt(); // Convert move to ply
-        if (abs(n-x)>1)
-        {
-            m_variation = -1;
-        }
+        moveNumberFound = token.toInt();
         return;
     }
+
     if (token.startsWith("..."))
     {
         white = false;
@@ -847,6 +843,17 @@ inline void PgnDatabase::parseMoveToken(GameX* game, QString token)
     }
 
     if (token.isEmpty()) return;
+
+    if (found)
+    {
+        int currentMoveNumber = game->cursor().moveNumber();
+        if (m_newVariation && !white) currentMoveNumber--;
+        if (currentMoveNumber != moveNumberFound)
+        {
+            m_variation = -1;
+            return;
+        }
+    }
 
     if(m_newVariation)
     {
