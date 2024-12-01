@@ -207,6 +207,7 @@ HEADERS += src/database/board.h \
   src/database/filteroperator.h \
   src/database/filtersearch.h \
   src/database/gamecursor.h \
+  src/database/gameevaluation.h \
   src/database/gameid.h \
   src/database/gameundocommand.h \
   src/database/gamex.h \
@@ -311,7 +312,7 @@ HEADERS += src/database/board.h \
   src/gui/gamelist.h \
   src/gui/gamelistsortmodel.h \
   src/gui/gamenotationwidget.h \
-  src/gui/gametoolbar.h \
+  src/gui/centipawngraph.h \
   src/gui/gamewindow.h \
   src/gui/helpbrowser.h \
   src/gui/helpbrowsershell.h \
@@ -390,6 +391,7 @@ SOURCES += \
   src/database/filtermodel.cpp \
   src/database/filtersearch.cpp \
   src/database/gamecursor.cpp \
+  src/database/gameevaluation.cpp \
   src/database/gamex.cpp \
   src/database/historylist.cpp \
   src/database/index.cpp \
@@ -480,7 +482,7 @@ SOURCES += \
   src/gui/gamelist.cpp \
   src/gui/gamelistsortmodel.cpp \
   src/gui/gamenotationwidget.cpp \
-  src/gui/gametoolbar.cpp \
+  src/gui/centipawngraph.cpp \
   src/gui/gamewindow.cpp \
   src/gui/helpbrowser.cpp \
   src/gui/helpbrowsershell.cpp \
