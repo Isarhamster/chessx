@@ -23,7 +23,7 @@ jobs:
         path: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
         key: ${{ runner.os }}-Qt${{ env.QT_VERSION }}
     - name: Install Qt ${{ env.QT_VERSION }}
-      uses: jurplel/install-qt-action@v2.11.1
+      uses: jurplel/install-qt-action@v4
       with:
         version: ${{ env.QT_VERSION }}
         dir: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
@@ -84,7 +84,7 @@ jobs:
         path: ${{ runner.workspace }}/Qt${{ matrix.qt }}-${{ matrix.arch }}
         key: Qt-${{ runner.os }}-${{ matrix.qt }}-${{ matrix.arch }}
     - name: Install Qt ${{ matrix.qt }}
-      uses: jurplel/install-qt-action@v2.11.1
+      uses: jurplel/install-qt-action@v4
       with:
         version: ${{ matrix.qt }}
         arch: ${{ matrix.qt_arch }}
@@ -136,7 +136,7 @@ jobs:
         key: ${{ runner.os }}-Qt${{ env.QT_VERSION }}
 
     - name: Install Qt ${{ env.QT_VERSION }}
-      uses: jurplel/install-qt-action@v2.11.1
+      uses: jurplel/install-qt-action@v4
       with:
         version: ${{ env.QT_VERSION }}
         dir: ${{ runner.workspace }}/Qt${{ env.QT_VERSION }}
