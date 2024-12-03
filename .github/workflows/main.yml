@@ -13,7 +13,7 @@ jobs:
         os: [macos-latest]
     runs-on: ${{ matrix.os }}
     env:
-      QT_VERSION: '5.14.2'
+      QT_VERSION: '6.8.1'
   
     steps:
     - name: Look for cached Qt ${{ env.QT_VERSION }}
@@ -41,24 +41,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [macos-latest]
         arch: [x64, x86]
-        qt: ['5.14.2']
+        qt: ['6.8.1']
         exclude:
           - os: macos-latest
             arch: x86
-          - os: ubuntu-latest
-            arch: x86
+#          - os: ubuntu-latest
+#            arch: x86
 #          - os: windows-latest
 #            arch: x86
         include:
           - os: macos-latest
             triplet: x64-osx
             vcpkg_packages: 'zlib'
-          - os: ubuntu-latest
-            arch: x64
-            triplet: x64-linux
-            vcpkg_packages: 'zlib'
+#          - os: ubuntu-latest
+#            arch: x64
+#            triplet: x64-linux
+#            vcpkg_packages: 'zlib'
 #          - os: windows-latest
 #            arch: x64
 #            triplet: x64-windows
