@@ -1,8 +1,8 @@
 name: CI
 
 on:
-#  push:
-#    branches: [ master, ci-sandbox ]
+  push:
+    branches: [ master, ci-sandbox ]
 #  pull_request:
 #    branches: [ master ]
 
