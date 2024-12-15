@@ -9,7 +9,7 @@
 
 TestAdapter::TestAdapter(QObject *parent) : QObject(parent)
 {
-
+    result = 0;
 }
 
 bool TestAdapter::dispatchTests()

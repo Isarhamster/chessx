@@ -142,9 +142,14 @@ int OpeningTree::columnCount(const QModelIndex&) const
 
 OpeningTree::OpeningTree(QObject* parent) :
     QAbstractTableModel(parent),
+    m_bRequestPending(false),
+    m_games(0),
     m_sortcolumn(1),
     m_order(Qt::DescendingOrder),
     m_filter(nullptr),
+    m_updateFilter(false),
+    m_sourceIsDatabase(false),
+    m_bEnd(false),
     oupd(*new OpeningTreeThread)
 {
     m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating") << tr("Year");

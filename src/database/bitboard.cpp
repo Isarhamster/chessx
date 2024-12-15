@@ -1449,7 +1449,7 @@ int BitBoard::chess960Pos() const
     bool n0f = false;
     bool n1f = false;
     int rf = 0;
-    int n0s[] = { 0,4,7,9 };
+    const int n0s[] = { 0,4,7,9 };
     for (Square square=a1; square<=h1; ++square)
     {
         if (pieceAt(square) == WhiteQueen)
@@ -3246,7 +3246,7 @@ QString BitBoard::toHumanFen() const
             w.append(charLists[p].join(","));
         }
     }
-    for(Piece p = BlackKing; p != Empty; ++p)
+    for(Piece p = BlackKing; p <= BlackPawn; ++p)
     {
         if(charLists.contains(p))
         {

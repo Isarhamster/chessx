@@ -170,7 +170,7 @@ QString EcoInfo::formattedScore(const int result[4], int count) const
     QChar scoresign[4] = {'*', '+', '=', '-'};
     QStringList results;
     results << "\\*" << "1-0" << "1/2-1/2" << "0-1";
-    int order[] = { WhiteWin, Draw, BlackWin, ResultUnknown };
+    const int order[] = { WhiteWin, Draw, BlackWin, ResultUnknown };
     QString format = QString("<a href='result:%1'> &nbsp;%2%3</a>");
 
     for(int j=0;j<4;j++)

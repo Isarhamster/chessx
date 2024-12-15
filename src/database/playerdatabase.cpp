@@ -357,10 +357,7 @@ PartialDate PlayerDatabase::dateOfBirth() const
 void PlayerDatabase::setDateOfBirth(const PartialDate& date)
 {
     m_currentPlayer.setDateOfBirth(date);
-    if(!m_dirty)
-    {
-        m_dirty = true;
-    }
+    m_dirty = true;
 }
 
 PartialDate PlayerDatabase::dateOfDeath() const
@@ -370,10 +367,7 @@ PartialDate PlayerDatabase::dateOfDeath() const
 void PlayerDatabase::setDateOfDeath(const PartialDate & date)
 {
     m_currentPlayer.setDateOfDeath(date);
-    if(!m_dirty)
-    {
-        m_dirty = true;
-    }
+    m_dirty = true;
 }
 
 QString PlayerDatabase::country() const
@@ -383,10 +377,7 @@ QString PlayerDatabase::country() const
 void PlayerDatabase::setCountry(const QString& country)
 {
     m_currentPlayer.setCountry(country);
-    if(!m_dirty)
-    {
-        m_dirty = true;
-    }
+    m_dirty = true;
 }
 
 QString PlayerDatabase::title() const
@@ -396,10 +387,7 @@ QString PlayerDatabase::title() const
 void PlayerDatabase::setTitle(const QString& title)
 {
     m_currentPlayer.setTitle(title);
-    if(!m_dirty)
-    {
-        m_dirty = true;
-    }
+    m_dirty = true;
 }
 
 int PlayerDatabase::firstEloListIndex()
@@ -442,20 +430,13 @@ int PlayerDatabase::highestElo() const
 void PlayerDatabase::setElo(const int year, const int listIndex, const int elo)
 {
     m_currentPlayer.setElo(eloList(year, listIndex), elo);
-    if(!m_dirty)
-    {
-        m_dirty = true;
-    }
+    m_dirty = true;
 }
-
 
 void PlayerDatabase::setEstimatedElo(const int elo)
 {
     m_currentPlayer.setEstimatedElo(elo);
-    if(!m_dirty)
-    {
-        m_dirty = true;
-    }
+    m_dirty = true;
 }
 
 bool PlayerDatabase::hasPhoto() const
@@ -469,10 +450,7 @@ QImage PlayerDatabase::photo() const
 void PlayerDatabase::setPhoto(const QImage& img)
 {
     m_currentPlayer.setPhoto(img);
-    if(!m_dirty)
-    {
-        m_dirty = true;
-    }
+    m_dirty = true;
 }
 
 bool PlayerDatabase::hasBiography() const
@@ -486,18 +464,12 @@ QString PlayerDatabase::biography() const
 void PlayerDatabase::setBiography(const QString& s)
 {
     m_currentPlayer.setBiography(s);
-    if(!m_dirty)
-    {
-        m_dirty = true;
-    }
+    m_dirty = true;
 }
 void PlayerDatabase::appendToBiography(const QString& s)
 {
     m_currentPlayer.appendToBiography(s);
-    if(!m_dirty)
-    {
-        m_dirty = true;
-    }
+    m_dirty = true;
 }
 
 

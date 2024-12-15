@@ -30,7 +30,7 @@ static const int Infinity    = 32000;
 static const int KingValue   = 10000;
 static const int QueenValue  =   900;
 static const int RookValue   =   500;
-static const int BishopValue =   300;
+static const int BishopValue =   310;
 static const int KnightValue =   300;
 static const int PawnValue   =   100;
 

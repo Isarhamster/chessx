@@ -37,7 +37,6 @@ class Settings : public QSettings
 {
     Q_OBJECT
 public:
-    enum {Show = 1} LayoutFlags;
     Settings();
     Settings(const QString &fileName);
     void initialize();

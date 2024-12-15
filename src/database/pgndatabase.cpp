@@ -689,7 +689,7 @@ void PgnDatabase::splitTokenList(QVector<QStringRef>& list)
                     if (!c.isLetterOrNumber() && (c!='.'))
                     {
                         // It's a token, not part of a move
-                        if (n>1) list.push_back(t);
+                        list.push_back(t);
                         start += (n-1);
                         n = 1;
                         inNag = true;

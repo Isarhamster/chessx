@@ -806,7 +806,7 @@ bool PolyglotDatabase::get_move_entry(Move m, book_entry& entry) const
     if (m.isNullMove() || !m.isLegal())
         return false;
     int promote = get_promotion(m);
-    int move = MoveNone;
+    int move;
     if (m.isCastling())
     {
         move = make_castling_move(m);

@@ -11,7 +11,9 @@
 #endif // _MSC_VER
 
 EngineOptionModel::EngineOptionModel(QObject *parent) :
-    QStandardItemModel(parent)
+    QStandardItemModel(parent),
+    m_pValueMap(0),
+    m_pOptionDataList(0)
 {
     m_columnNames << tr("Name") << tr("Default") << tr("Min") << tr("Max") << tr("Value");
 }

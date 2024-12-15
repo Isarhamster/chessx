@@ -59,7 +59,8 @@ QTextCharFormat Style::textFormat() const {
 Converter::Converter() :
     m_TextDocument(nullptr),
     m_Cursor(nullptr),
-    m_StyleInformation(nullptr)
+    m_StyleInformation(nullptr),
+    firstTime(false)
 {
 }
 

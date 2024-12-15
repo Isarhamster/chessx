@@ -2382,7 +2382,7 @@ void MainWindow::slotHttpDone(QNetworkReply *reply)
             if(answer.indexOf(rx, 0, &match) >= 0)
             {
                 QStringList list = match.capturedTexts();
-                if (list.length() >= 3)
+                if (list.length() > 3)
                 {
                     int major = list.at(1).toInt();
                     int minor = list.at(2).toInt();

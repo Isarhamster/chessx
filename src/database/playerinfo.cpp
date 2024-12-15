@@ -226,7 +226,7 @@ QString PlayerInfo::formattedScore(const int result[4], int count, QString ref, 
     QString score = "<b>";
     QChar scoresign[4] = {'*', '+', '=', '-'};
     QString format = "%1%2'>%3%4</a>";
-    QStringList modes;
+
     score += format.arg(ref, (mode ? "1-0":"0-1")).arg(scoresign[WhiteWin]).arg(result[WhiteWin]);
     score += " &nbsp;";
     score += format.arg(ref, "1/2-1/2").arg(scoresign[Draw]).arg(result[Draw]);

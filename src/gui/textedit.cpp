@@ -862,10 +862,11 @@ bool PasteTextEdit::eventFilter(QObject *obj, QEvent *event)
 
 void PasteTextEdit::keyPressEvent(QKeyEvent* event)
 {
+    if (!event) return;
     // Pressing Return is ignored
-    if(event && event->type() == QEvent::KeyRelease &&
-            (event->key() == Qt::Key_Return ||
-            event->key() == Qt::Key_Enter))
+    if(event->type() == QEvent::KeyRelease &&
+        (event->key() == Qt::Key_Return ||
+         event->key() == Qt::Key_Enter))
     {
         QKeyEvent event2(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
         QTextEdit::keyPressEvent(&event2);
