@@ -457,6 +457,7 @@ void PgnDatabase::initialise()
     m_filename = QString();
     m_count = 0;
     m_allocated = 0;
+    m_endVariation = false;
 }
 
 void PgnDatabase::readLine()
@@ -846,14 +847,16 @@ inline void PgnDatabase::parseMoveToken(GameX* game, QString token)
 
     if (found)
     {
-        int currentMoveNumber = game->cursor().moveNumber();
-        if (m_newVariation && !white) currentMoveNumber--;
+        int currentMoveNumber = game->cursor().nextMoveNumber(m_newVariation, m_endVariation);
         if (currentMoveNumber != moveNumberFound)
         {
+            m_endVariation = false;
             m_variation = -1;
             return;
         }
     }
+
+    m_endVariation = false;
 
     if(m_newVariation)
     {
@@ -925,6 +928,7 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
         game->forward();
         m_newVariation = false;
         m_variation = 0;
+        m_endVariation = true;
         break;
     case '{':
         m_comment.clear();

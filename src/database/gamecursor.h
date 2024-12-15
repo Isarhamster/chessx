@@ -10,6 +10,7 @@
 #define CURRENT_MOVE -2
 #define PREV_MOVE -3
 #define NEXT_MOVE -4
+#define PARENT_MOVE -5
 
 typedef int MoveId;
 
@@ -18,9 +19,9 @@ class GameCursor
 public:
     struct Node
     {
-        MoveId previousNode;
-        MoveId nextNode;
-        MoveId parentNode;
+        MoveId previousNode; /* points to the previous node in a line, in case of a line start, it also points to the parent node */
+        MoveId nextNode; /* points to the next node in a line */
+        MoveId parentNode; /* points to the parent node when inside a line (all nodes in the line have this!) */
         short m_ply;
         Move move;
         QList<MoveId> variations;
@@ -122,6 +123,7 @@ public:
     int plyNumber(MoveId moveId = CURRENT_MOVE) const;
     /** @return current move. Equals to (ply-1)/2+1 for standard games, but may be different */
     int moveNumber(MoveId moveId = CURRENT_MOVE) const;
+    int nextMoveNumber(bool atStartOfLine, bool atEndOfLine) const;
     /** @return number of move nodes in the main line */
     int countMoves() const;
 
@@ -205,8 +207,6 @@ private:
     QList<Node> m_nodes;
     /** Keeps the current node in the game */
     MoveId m_currentNode;
-    /** Keeps the start ply of the game, 0 for standard starting position */
-    short m_startPly;
     /** Keeps the start position of the game */
     BoardX m_startingBoard;
 

@@ -10,10 +10,7 @@
 
 #include <QtDebug>
 #include <QFile>
-#include "annotation.h"
 #include "gamecursor.h"
-#include "settings.h"
-#include "tags.h"
 
 using namespace chessx;
 
@@ -26,7 +23,6 @@ GameCursor::GameCursor()
     : m_currentBoard(new BoardX)
     , m_nodes()
     , m_currentNode(0)
-    , m_startPly(0)
     , m_startingBoard()
 {
     m_startingBoard.setStandardPosition();
@@ -37,7 +33,6 @@ GameCursor::GameCursor(const GameCursor& rhs)
     : m_currentBoard(new BoardX)
     , m_nodes(rhs.m_nodes)
     , m_currentNode(rhs.m_currentNode)
-    , m_startPly(rhs.m_startPly)
     , m_startingBoard(rhs.m_startingBoard)
 {
     if (rhs.m_currentBoard)
@@ -52,7 +47,6 @@ GameCursor& GameCursor::operator=(const GameCursor& rhs)
     {
         m_nodes = rhs.m_nodes;
         m_currentNode = rhs.m_currentNode;
-        m_startPly = rhs.m_startPly;
         m_startingBoard = rhs.m_startingBoard;
         if (m_currentBoard && rhs.m_currentBoard)
         {
@@ -95,7 +89,6 @@ void GameCursor::clear()
 {
     m_nodes.clear();
     m_startingBoard.setStandardPosition();
-    m_startPly = 0;
     initCursor();
 }
 
@@ -104,7 +97,6 @@ void GameCursor::clear(const QString& fen, bool chess960)
     m_nodes.clear();
     m_startingBoard.setChess960(chess960);
     m_startingBoard.fromFen(fen);
-    m_startPly = (m_startingBoard.moveNumber()) * 2 - 1 + ((m_startingBoard.toMove() == Black) ? 1:0);
     initCursor();
 }
 
@@ -125,6 +117,11 @@ MoveId GameCursor::makeNodeIndex(MoveId moveId) const
     else if (moveId == NEXT_MOVE)
     {
         moveId = m_nodes[m_currentNode].nextNode;
+    }
+    else if (moveId == PARENT_MOVE)
+    {
+        MoveId p = m_nodes[m_currentNode].parentNode;
+        moveId = (p != NO_MOVE) ? p : m_currentNode;
     }
     bool rangeOk = 0 <= moveId && moveId < m_nodes.size();
     if (!rangeOk || m_nodes[moveId].Removed())
@@ -256,8 +253,26 @@ int GameCursor::moveNumber(MoveId moveId) const
     MoveId node = makeNodeIndex(moveId);
     if(node != NO_MOVE)
     {
+        int plyNum = plyNumber(node)-1;
+        if (m_startingBoard.blackToMove()) plyNum++;
+        return (m_startingBoard.moveNumber()+(plyNum/2));
+    }
+    return -1;
+}
+
+int GameCursor::nextMoveNumber(bool atStartOfLine, bool atEndOfLine) const
+{
+    int select = CURRENT_MOVE;
+    if (atEndOfLine && !atStartOfLine)
+        select = PARENT_MOVE;
+    else if (atStartOfLine)
+        select = PREV_MOVE;
+    MoveId node = makeNodeIndex(select);
+    if(node != NO_MOVE)
+    {
         int plyNum = plyNumber(node);
-        return (m_startPly + plyNum - 1) / 2 + 1;
+        if (m_startingBoard.blackToMove()) plyNum++;
+        return (m_startingBoard.moveNumber()+(plyNum/2));
     }
     return -1;
 }
@@ -853,6 +868,7 @@ void GameCursor::dumpMoveNode(MoveId moveId) const
         qDebug() << "   Move        : " << m_nodes.at(moveId).move.toAlgebraic()
                  << " (" << m_nodes.at(moveId).move.rawMove()
                  << ", " << m_nodes.at(moveId).move.rawUndo()
+                 << ", " << m_nodes.at(moveId).Ply()
                  << ")";
     }
 }

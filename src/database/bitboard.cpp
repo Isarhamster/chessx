@@ -3246,7 +3246,7 @@ QString BitBoard::toHumanFen() const
             w.append(charLists[p].join(","));
         }
     }
-    for(Piece p = BlackKing; p <= BlackPawn; ++p)
+    for(Piece p = BlackKing; p != Empty; ++p) // After BlackPawn there comes Empty!
     {
         if(charLists.contains(p))
         {
