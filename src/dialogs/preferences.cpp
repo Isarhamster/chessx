@@ -339,11 +339,12 @@ void PreferencesDialog::slotShowOptionDialog()
 {
     int index = ui.engineList->currentIndex().row();
     updateEngineData(index);
-    EngineOptionDialog dlg(this, engineList, index);
-    if(dlg.exec() == QDialog::Accepted)
+    QPointer<EngineOptionDialog> dlg = new EngineOptionDialog(this, engineList, index);
+    if(dlg && dlg->exec() == QDialog::Accepted)
     {
-        engineList[index].m_optionValues = dlg.GetResults();
+        engineList[index].m_optionValues = dlg->GetResults();
     }
+    delete dlg;
 }
 
 void PreferencesDialog::slotChangePieceString()

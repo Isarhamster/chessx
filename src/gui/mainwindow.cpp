@@ -1073,9 +1073,9 @@ void MainWindow::openWebFavorite()
 
 void MainWindow::openLichessBroadcast()
 {
-    TournamentSelectionDialog dlg;
-    dlg.run();
-    QList<QPair<QString, QString>> l = dlg.getTournaments();
+    QPointer<TournamentSelectionDialog> dlg = new TournamentSelectionDialog(this);
+    dlg->run();
+    QList<QPair<QString, QString>> l = dlg->getTournaments();
     QPair<QString, QString> p;
     foreach (p, l)
     {
@@ -1087,6 +1087,7 @@ void MainWindow::openLichessBroadcast()
         QString target = AppSettings->commonDataFilePath(name);
         appendDatabaseUrl(s, false, target);
     }
+    delete dlg;
 }
 
 void MainWindow::openLichess()
@@ -1550,34 +1551,33 @@ void MainWindow::gameEditComment(Output::CommentType type, bool checkModifier)
         }
     }
 
-    CommentDialog dlg(this);
-    dlg.setText(annotation);
-    if(!dlg.exec())
+    QPointer<CommentDialog> dlg = new CommentDialog(this);
+    dlg->setText(annotation);
+    if(dlg->exec() == QDialog::Accepted)
     {
-        return;
-    }
-
-    if((type == Output::Precomment) || (moves <= 0))
-    {
-        if(moves > 0)
+        if((type == Output::Precomment) || (moves <= 0))
         {
-            QString spec = game().specAnnotations(CURRENT_MOVE, GameX::BeforeMove);
-            spec = GameX::cleanAnnotation(spec, GameX::AnnotationFilter(GameX::FilterEval | GameX::FilterTan));
-            game().setAnnotation(dlg.text()+spec, CURRENT_MOVE, GameX::BeforeMove);
+            if(moves > 0)
+            {
+                QString spec = game().specAnnotations(CURRENT_MOVE, GameX::BeforeMove);
+                spec = GameX::cleanAnnotation(spec, GameX::AnnotationFilter(GameX::FilterEval | GameX::FilterTan));
+                game().setAnnotation(dlg->text()+spec, CURRENT_MOVE, GameX::BeforeMove);
+            }
+            else
+            {
+                QString spec = game().specAnnotations();
+                spec = GameX::cleanAnnotation(spec, GameX::AnnotationFilter(GameX::FilterEval | GameX::FilterTan));
+                game().setGameComment(dlg->text()+spec);
+            }
         }
         else
         {
             QString spec = game().specAnnotations();
             spec = GameX::cleanAnnotation(spec, GameX::AnnotationFilter(GameX::FilterEval | GameX::FilterTan));
-            game().setGameComment(dlg.text()+spec);
+            game().setAnnotation(dlg->text()+spec);
         }
     }
-    else
-    {
-        QString spec = game().specAnnotations();
-        spec = GameX::cleanAnnotation(spec, GameX::AnnotationFilter(GameX::FilterEval | GameX::FilterTan));
-        game().setAnnotation(dlg.text()+spec);
-    }
+    delete dlg;
 }
 
 QAction* MainWindow::createAction(QObject* parent, QString name, const char* slot, const QKeySequence& key, QToolBar* pToolBar, QString image,
@@ -2267,8 +2267,8 @@ bool MainWindow::QuerySaveGame(DatabaseInfo *dbInfo)
     }
     if(dbInfo->gameNeedsSaving())
     {
-        SaveDialog dlg(this);
-        int n = dlg.save(dbInfo->database(), dbInfo->currentGame());
+        QPointer<SaveDialog> dlg = new SaveDialog(this);
+        int n = dlg->save(dbInfo->database(), dbInfo->currentGame());
         if(n == QDialog::Accepted)
         {
             saveGame(dbInfo);
@@ -2282,7 +2282,7 @@ bool MainWindow::QuerySaveGame(DatabaseInfo *dbInfo)
         {
             emit databaseModified();
         }
-
+        delete dlg;
         return (n != QDialog::Rejected);
     }
     return true;

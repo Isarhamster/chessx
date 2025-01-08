@@ -20,6 +20,7 @@
 #include "movedata.h"
 #include "tablebase.h"
 
+#include <ASSERT.h>
 #include <QMutexLocker>
 #include <QRandomGenerator>
 
@@ -103,7 +104,9 @@ void AnalysisWidget::startEngine()
             parentWidget()->show();
         }
         ui.variationText->clear();
+        assert(m_engine.isNull());
         m_engine = EngineX::newEngine(index);
+        assert(!m_engine.isNull());
         ui.vpcount->setEnabled(m_engine->providesMpv());
         ui.label->setEnabled(m_engine->providesMpv());
         if(!m_engine->providesMpv())
@@ -129,7 +132,7 @@ void AnalysisWidget::stopEngine()
     if(m_engine)
     {
         m_engine->deactivate();
-        m_engine->deleteLater();
+        delete m_engine;
         m_engine.clear();
     }
 }
@@ -160,6 +163,7 @@ void AnalysisWidget::engineActivated()
     updateBookMoves(); // Delay this to here so that engine process is up
     if (!sendBookMove())
     {
+        assert(!m_engine.isNull());
         m_engine->setStartPos(m_startPos);
         m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime, true, m_line);
         m_lastEngineStart.start();
@@ -216,6 +220,7 @@ void AnalysisWidget::slotPinChanged(bool pinned)
 {
     if (pinned && isEngineRunning())
     {
+        assert(!m_engine.isNull());
         m_engine->setMoveTime(0);
     }
     if (m_board != m_NextBoard)
@@ -520,6 +525,7 @@ void AnalysisWidget::setMoveTime(EngineParameter mt)
     m_moveTime = mt;
     if(isEngineRunning() && !ui.btPin->isChecked())
     {
+        assert(!m_engine.isNull());
         m_engine->setMoveTime(mt);
     }
 }
@@ -546,6 +552,7 @@ void AnalysisWidget::slotMpvChanged(int mpv)
         {
             m_analyses.removeLast();
         }
+        assert(!m_engine.isNull());
         m_engine->setMpv(mpv);
     }
     QString key = QString("/") + objectName() + "/mpv";

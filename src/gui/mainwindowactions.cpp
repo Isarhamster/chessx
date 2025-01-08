@@ -337,11 +337,12 @@ void MainWindow::slotFileQuit()
 
 void MainWindow::slotConfigure(QString anchor)
 {
-    PreferencesDialog dlg(this);
-    dlg.setAnchor(anchor);
-    connect(&dlg, SIGNAL(reconfigure()), SLOT(slotReconfigure()));
-    connect(&dlg, SIGNAL(iconsizeSliderSetting(int)), this, SLOT(resizeToolBarIcons(int)));
-    dlg.exec();
+    QPointer<PreferencesDialog> dlg = new PreferencesDialog(this);
+    dlg->setAnchor(anchor);
+    connect(dlg, SIGNAL(reconfigure()), SLOT(slotReconfigure()));
+    connect(dlg, SIGNAL(iconsizeSliderSetting(int)), this, SLOT(resizeToolBarIcons(int)));
+    dlg->exec();
+    delete dlg;
 }
 
 void MainWindow::slotReconfigure()
@@ -640,15 +641,16 @@ void MainWindow::slotEditTruncateStart()
 
 void MainWindow::slotEditBoard()
 {
-    BoardSetupDialog dlg(this);
-    dlg.setBoard(game().board());
-    dlg.setFlipped(m_boardView->isFlipped());
-    if(dlg.exec() == QDialog::Accepted)
+    QPointer<BoardSetupDialog> dlg = new BoardSetupDialog(this);
+    dlg->setBoard(game().board());
+    dlg->setFlipped(m_boardView->isFlipped());
+    if(dlg->exec() == QDialog::Accepted)
     {
-        m_boardView->setFlipped(dlg.isFlipped());
-        game().setStartingBoard(dlg.board(),tr("Set starting board"),dlg.board().chess960());
+        m_boardView->setFlipped(dlg->isFlipped());
+        game().setStartingBoard(dlg->board(),tr("Set starting board"),dlg->board().chess960());
         emit signalGameLoaded(game().startingBoard());
     }
+    delete dlg;
 }
 
 bool MainWindow::addRemoteMoveFrom64Char(QString s)
@@ -1692,12 +1694,13 @@ void MainWindow::slotGameEditTags()
     DatabaseInfo* dbInfo = databaseInfo();
     if (VALID_INDEX(dbInfo->currentIndex()))
     {
-        TagDialog dlg(this);
-        if (dlg.editTags(database()->index(), game(),dbInfo->currentIndex()))
+        QPointer<TagDialog> dlg =  new TagDialog(this);
+        if (dlg->editTags(database()->index(), game(),dbInfo->currentIndex()))
         {
             saveGame(dbInfo);
             emit databaseModified();
         }
+        delete dlg;
     }
 }
 
@@ -2183,15 +2186,16 @@ void MainWindow::slotDatabaseEditTag()
     QStringList list = database()->index()->tagNames();
     if (!list.isEmpty())
     {
-        DatabaseTagDialog dlg;
-        dlg.setTagNames(list);
-        if (dlg.exec() == QDialog::Accepted)
+        QPointer<DatabaseTagDialog> dlg = new DatabaseTagDialog(this);
+        dlg->setTagNames(list);
+        if (dlg->exec() == QDialog::Accepted)
         {
-            QString tag = dlg.currentTag();
-            QString current = dlg.current();
-            QString replacement = dlg.replacement();
+            QString tag = dlg->currentTag();
+            QString current = dlg->current();
+            QString replacement = dlg->replacement();
             slotRenameRequest(tag, replacement, current);
         }
+        delete dlg;
     }
 }
 
@@ -3367,100 +3371,102 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
 
     QString players = game().tag(TagNameWhite)+"-"+game().tag(TagNameBlack);
 
-    CopyDialog dlg(this);
-    dlg.setCurrentGame(players, gameIndexList.count(), m_currentDatabase->filter()->count(), m_currentDatabase->database()->count());
-    dlg.setMode(static_cast<CopyDialog::SrcMode>(preselect));
-    dlg.setDatabases(db);
-    if(dlg.exec() != QDialog::Accepted)
+    QPointer<CopyDialog> dlg = new CopyDialog(this);
+    dlg->setCurrentGame(players, gameIndexList.count(), m_currentDatabase->filter()->count(), m_currentDatabase->database()->count());
+    dlg->setMode(static_cast<CopyDialog::SrcMode>(preselect));
+    dlg->setDatabases(db);
+    if(dlg->exec() == QDialog::Accepted)
     {
-        return;
-    }
-    int targetIndex = dlg.getDatabase()-1;
-    if (targetIndex<-1) return;
-
-    DatabaseInfo* targetDb = 0;
-    if (targetIndex >= 0)
-    {
-        targetDb = targets.at(targetIndex);
-    }
-
-    Database* dest;
-    if (targetDb)
-    {
-        dest = targetDb->database();
-    }
-    else
-    {
-        dest = new MemoryDatabase();
-    }
-
-    if (!dest) return;
-
-    int n = 0;
-    switch(dlg.getMode())
-    {
-    case CopyDialog::SingleGame:
+        int targetIndex = dlg->getDatabase()-1;
+        if (targetIndex >= -1)
         {
-            GameX g = game();
-            g.setSourceTag(m_currentDatabase->database()->name());
-            dest->appendGame(g);
-            n = 1;
-            break;
-        }
-    case CopyDialog::Selection:
-        foreach (GameId i, gameIndexList)
-        {
-            GameX g;
-            if(database()->loadGame(i, g))
+            DatabaseInfo* targetDb = 0;
+            if (targetIndex >= 0)
             {
-                ++n;
-                g.setSourceTag(m_currentDatabase->database()->name());
-                dest->appendGame(g);
+                targetDb = targets.at(targetIndex);
+            }
+
+            Database* dest;
+            if (targetDb)
+            {
+                dest = targetDb->database();
+            }
+            else
+            {
+                dest = new MemoryDatabase();
+            }
+
+            if (dest)
+            {
+                int n = 0;
+                switch(dlg->getMode())
+                {
+                case CopyDialog::SingleGame:
+                    {
+                        GameX g = game();
+                        g.setSourceTag(m_currentDatabase->database()->name());
+                        dest->appendGame(g);
+                        n = 1;
+                        break;
+                    }
+                case CopyDialog::Selection:
+                    foreach (GameId i, gameIndexList)
+                    {
+                        GameX g;
+                        if(database()->loadGame(i, g))
+                        {
+                            ++n;
+                            g.setSourceTag(m_currentDatabase->database()->name());
+                            dest->appendGame(g);
+                        }
+                    }
+                    break;
+                case CopyDialog::Filter:
+                    for(GameId i = 0; i < database()->count(); ++i)
+                    {
+                        GameX g;
+                        if(databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
+                        {
+                            ++n;
+                            g.setSourceTag(m_currentDatabase->database()->name());
+                            dest->appendGame(g);
+                        }
+                    }
+                    break;
+                case CopyDialog::AllGames:
+                    for(GameId i = 0; i < database()->count(); ++i)
+                    {
+                        GameX g;
+                        if(database()->loadGame(i, g))
+                        {
+                            ++n;
+                            g.setSourceTag(m_currentDatabase->database()->name());
+                            dest->appendGame(g);
+                        }
+                    }
+                    break;
+                default:
+                    break;
+                }
+                if (targetDb)
+                {
+                    targetDb->filter()->resize(targetDb->database()->count(), true);
+                    QString msg = tr("Append %1 games from %2 to %3.").arg(n).arg(database()->name(), targetDb->database()->name());
+                    slotStatusMessage(msg);
+                }
+                else
+                {
+                    Output out(Output::Pgn);
+                    QString s = out.outputUtf8(dest);
+                    QApplication::clipboard()->setText(s);
+                    QString msg = tr("Set %1 games into system clipboard.").arg(n);
+                    slotStatusMessage(msg);
+                    delete dest;
+                }
             }
         }
-        break;
-    case CopyDialog::Filter:
-        for(GameId i = 0; i < database()->count(); ++i)
-        {
-            GameX g;
-            if(databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
-            {
-                ++n;
-                g.setSourceTag(m_currentDatabase->database()->name());
-                dest->appendGame(g);
-            }
-        }
-        break;
-    case CopyDialog::AllGames:
-        for(GameId i = 0; i < database()->count(); ++i)
-        {
-            GameX g;
-            if(database()->loadGame(i, g))
-            {
-                ++n;
-                g.setSourceTag(m_currentDatabase->database()->name());
-                dest->appendGame(g);
-            }
-        }
-        break;
-    default:
-        break;
     }
-    if (targetDb)
-    {
-        targetDb->filter()->resize(targetDb->database()->count(), true);
-        QString msg = tr("Append %1 games from %2 to %3.").arg(n).arg(database()->name(), targetDb->database()->name());
-        slotStatusMessage(msg);
-    }
-    else
-    {
-        Output out(Output::Pgn);
-        QString s = out.outputUtf8(dest);
-        QApplication::clipboard()->setText(s);
-        QString msg = tr("Set %1 games into system clipboard.").arg(n);
-        slotStatusMessage(msg);
-        delete dest;
-    }
+    delete dlg;
 }
 
 void MainWindow::slotDatabaseClearClipboard()
@@ -3574,7 +3580,7 @@ void MainWindow::slotSearchTag()
 
 void MainWindow::slotSearchBoard()
 {
-    BoardSearchDialog dlg(this);
+    QPointer<BoardSearchDialog> dlg = new BoardSearchDialog(this);
     QList<BoardX> boardList;
 
     for(int i = 0; i < m_tabWidget->count(); ++i)
@@ -3601,15 +3607,17 @@ void MainWindow::slotSearchBoard()
         boardList.append(b); // Just append the starting board for completeness
     }
 
-    dlg.setBoardList(boardList);
+    dlg->setBoardList(boardList);
 
-    if (dlg.exec() == QDialog::Accepted)
+    if (dlg->exec() == QDialog::Accepted)
     {
-        Search* ps = new PositionSearch (databaseInfo()->filter()->database(), boardList.at(dlg.boardIndex()));
+        Search* ps = new PositionSearch (databaseInfo()->filter()->database(), boardList.at(dlg->boardIndex()));
         m_openingTreeWidget->cancel();
         slotBoardSearchStarted();
-        m_gameList->executeSearch(ps, FilterOperator(dlg.mode()));
+        m_gameList->executeSearch(ps, FilterOperator(dlg->mode()));
     }
+
+    delete dlg;
 }
 
 void MainWindow::slotBoardSearchUpdate(int progress)
@@ -3752,16 +3760,18 @@ void MainWindow::slotDatabaseDeleteGame(QList<GameId> gameIndexList)
 
 void MainWindow::slotRenameEvent(QString ts)
 {
-    RenameTagDialog dlg(this, ts, TagNameEvent);
-    connect(&dlg, SIGNAL(renameRequest(QString,QString,QString)), SLOT(slotRenameRequest(QString,QString,QString)));
-    dlg.exec();
+    QPointer<RenameTagDialog> dlg = new RenameTagDialog(this, ts, TagNameEvent);
+    connect(dlg, SIGNAL(renameRequest(QString,QString,QString)), SLOT(slotRenameRequest(QString,QString,QString)));
+    dlg->exec();
+    delete dlg;
 }
 
 void MainWindow::slotRenamePlayer(QString ts)
 {
-    RenameTagDialog dlg(this, ts, TagNameWhite);
-    connect(&dlg, SIGNAL(renameRequest(QString,QString,QString)), SLOT(slotRenameRequest(QString,QString,QString)));
-    dlg.exec();
+    QPointer<RenameTagDialog> dlg = new RenameTagDialog(this, ts, TagNameWhite);
+    connect(dlg, SIGNAL(renameRequest(QString,QString,QString)), SLOT(slotRenameRequest(QString,QString,QString)));
+    dlg->exec();
+    delete dlg;
 }
 
 void MainWindow::slotRenameRequest(QString tag, QString newValue, QString oldValue)

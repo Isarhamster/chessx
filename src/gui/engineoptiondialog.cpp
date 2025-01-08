@@ -24,8 +24,6 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent,
     ui->setupUi(this);
     setObjectName("EngineOptionDialog");
 
-    connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(buttonClicked(QAbstractButton*)));
-
     QString t = windowTitle();
     QString t1 = QString("%1 %2 (%3)").
                  arg(t,
@@ -44,9 +42,12 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent,
     }
     m_index = index;
     m_engine = EngineX::newEngine(engineList, index, true);
-    m_engine->activate();
+    assert(m_engine != 0);
 
     connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
+    connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(buttonClicked(QAbstractButton*)));
+
+    m_engine->activate();
 }
 
 void EngineOptionDialog::restoreLayout()
@@ -56,6 +57,7 @@ void EngineOptionDialog::restoreLayout()
 
 EngineOptionDialog::~EngineOptionDialog()
 {
+    assert(m_engine != 0);
     m_engine->deactivate();
     disconnect();
     delete m_engine;
@@ -78,6 +80,7 @@ void EngineOptionDialog::reject()
 
 void EngineOptionDialog::engineActivated()
 {
+    assert(m_engine != 0);
     ui->tableView->setDB(m_engine->m_options, m_engine->m_mapOptionValues);
 }
 
@@ -89,6 +92,7 @@ OptionValueMap EngineOptionDialog::GetResults() const
 
 void EngineOptionDialog::optionReset()
 {
+    assert(m_engine != 0);
     m_engine->m_mapOptionValues.clear();
     ui->tableView->resetModel();
 }

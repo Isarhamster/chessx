@@ -390,62 +390,61 @@ void GameList::executeSearch(Search* search, FilterOperator searchOperator)
 
 void GameList::simpleSearch(int tagid)
 {
-    QuickSearchDialog dlg(this);
+    QPointer<QuickSearchDialog> dlg = new QuickSearchDialog(this);
     for (int section = 0; section < m_model->columnCount(); ++section)
     {
         QString tag = m_model->headerData(section, Qt::Horizontal).toString();
-        dlg.addTag(tag);
+        dlg->addTag(tag);
     }
 
-    dlg.setTag(tagid);
-    dlg.setMode(1);
+    dlg->setTag(tagid);
+    dlg->setMode(1);
 
-    if(dlg.exec() != QDialog::Accepted)
+    if(dlg->exec() == QDialog::Accepted)
     {
-        return;
-    }
-
-    QString tag = m_model->GetColumnTags().at(dlg.tag());
-    QString value = dlg.value();
-    if(value.isEmpty())
-    {
-        m_model->filter()->setAll(1);
-    }
-    else if(dlg.tag() == 0)
-    {
-        // filter by number
-        Search* ns = new NumberSearch(m_model->filter()->database(), value);
-        m_model->executeSearch(ns, FilterOperator(dlg.mode()));
-    }
-    else
-    {
-        QStringList list = value.split("-", SkipEmptyParts);
-        if ((list.size() > 1) && (dlg.tag() != 9)) // Tag 9 is the Result
+        QString tag = m_model->GetColumnTags().at(dlg->tag());
+        QString value = dlg->value();
+        if(value.isEmpty())
         {
-            // Filter a range
-            Search* ts = (dlg.tag() == 11) ? // Tag 11 is number of moves
-                    new TagSearch(m_model->filter()->database(), tag, list.at(0).toInt(), list.at(1).toInt()) :
-                    new TagSearch(m_model->filter()->database(), tag, list.at(0), list.at(1));
-            if(dlg.mode())
-            {
-                m_model->executeSearch(ts, FilterOperator(dlg.mode()));
-            }
-            else
-            {
-                m_model->executeSearch(ts);
-            }
+            m_model->filter()->setAll(1);
+        }
+        else if(dlg->tag() == 0)
+        {
+            // filter by number
+            Search* ns = new NumberSearch(m_model->filter()->database(), value);
+            m_model->executeSearch(ns, FilterOperator(dlg->mode()));
         }
         else
         {
-            // Filter tag using partial values
-            Search* ts = new TagSearch(m_model->filter()->database(), tag, value);
-            m_model->executeSearch(ts, FilterOperator(dlg.mode()));
+            QStringList list = value.split("-", SkipEmptyParts);
+            if ((list.size() > 1) && (dlg->tag() != 9)) // Tag 9 is the Result
+            {
+                // Filter a range
+                Search* ts = (dlg->tag() == 11) ? // Tag 11 is number of moves
+                        new TagSearch(m_model->filter()->database(), tag, list.at(0).toInt(), list.at(1).toInt()) :
+                        new TagSearch(m_model->filter()->database(), tag, list.at(0), list.at(1));
+                if(dlg->mode())
+                {
+                    m_model->executeSearch(ts, FilterOperator(dlg->mode()));
+                }
+                else
+                {
+                    m_model->executeSearch(ts);
+                }
+            }
+            else
+            {
+                // Filter tag using partial values
+                Search* ts = new TagSearch(m_model->filter()->database(), tag, value);
+                m_model->executeSearch(ts, FilterOperator(dlg->mode()));
+            }
+        }
+        if (AppSettings->value("/MainWindow/AutoRaise").toBool())
+        {
+            emit raiseRequest();
         }
     }
-    if (AppSettings->value("/MainWindow/AutoRaise").toBool())
-    {
-        emit raiseRequest();
-    }
+    delete dlg;
 }
 
 void GameList::slotFilterListByPlayer(QString s)

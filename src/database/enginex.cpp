@@ -171,7 +171,7 @@ void EngineX::deactivate()
         protocolEnd();
         if(m_process)
         {
-            m_process->waitForFinished(200);
+            m_process->waitForFinished(500);
         }
     }
 }
