@@ -71,7 +71,7 @@ unix|!macx {
 
     appdata.files = unix/io.sourceforge.chessx.chessx.metainfo.xml
     appdata.path = $$DATADIR/metainfo
-    desktop.files = unix/chessx.desktop
+    desktop.files = unix/io.sourceforge.chessx.chessx.desktop
     desktop.path = $$DATADIR/applications
 
     icons.path = $$DATADIR/icons/hicolor

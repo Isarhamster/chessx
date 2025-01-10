@@ -41,5 +41,5 @@ browse, edit, add, organize, analyze, etc.
   </screenshots>
   <url type="homepage">https://chessx.sourceforge.io</url>
   <content_rating type="oars-1.1" />
-  <launchable type="desktop-id">chessx.desktop</launchable>
+  <launchable type="desktop-id">io.sourceforge.chessx.chessx.desktop</launchable>
 </component>
