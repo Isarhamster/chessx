@@ -69,7 +69,7 @@ unix|!macx {
 
     INSTALLS += appdata desktop icons binfiles
 
-    appdata.files = unix/io.sourceforge.ChessX.metainfo.xml
+    appdata.files = unix/io.sourceforge.chessx.chessx.metainfo.xml
     appdata.path = $$DATADIR/metainfo
     desktop.files = unix/chessx.desktop
     desktop.path = $$DATADIR/applications
