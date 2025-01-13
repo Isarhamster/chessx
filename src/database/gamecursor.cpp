@@ -121,7 +121,7 @@ MoveId GameCursor::makeNodeIndex(MoveId moveId) const
     else if (moveId == PARENT_MOVE)
     {
         MoveId p = m_nodes[m_currentNode].parentNode;
-        moveId = (p != NO_MOVE) ? p : m_currentNode;
+        moveId = (p != NO_MOVE) ? p : m_nodes[m_currentNode].previousNode;
     }
     bool rangeOk = 0 <= moveId && moveId < m_nodes.size();
     if (!rangeOk || m_nodes[moveId].Removed())
@@ -264,9 +264,9 @@ int GameCursor::nextMoveNumber(bool atStartOfLine, bool atEndOfLine) const
 {
     int select = CURRENT_MOVE;
     if (atEndOfLine && !atStartOfLine)
-        select = PARENT_MOVE;
+        select = CURRENT_MOVE;
     else if (atStartOfLine)
-        select = PREV_MOVE;
+        select = PARENT_MOVE;
     MoveId node = makeNodeIndex(select);
     if(node != NO_MOVE)
     {

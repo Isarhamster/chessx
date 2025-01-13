@@ -379,6 +379,8 @@ public :
     void setNeedsCleanup(bool value);
 
     bool needsCleanup() const;
+    /** Removes the node at @p moveId */
+    void removeNode(MoveId moveId = CURRENT_MOVE);
 
 protected:
     /** Find the point in the this game where @p otherGame fits in the next time.
@@ -386,8 +388,7 @@ protected:
     MoveId findMergePoint(const GameX &otherGame);
     /** Find the next illegal position in all variations and mainline moves after the current position, and cut the game from there */
     void truncateVariationAfterNextIllegalPosition();
-    /** Removes the node at @p moveId */
-    void removeNode(MoveId moveId = CURRENT_MOVE);
+
 
     void dbIndicateAnnotationsOnBoard();
     bool positionRepetition(const BoardX &board);

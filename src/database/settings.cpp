@@ -231,6 +231,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/General/BuiltinDbInstalled", false);
     map.insert("/General/mergeAddSource", false);
     map.insert("/General/mergeAddTag", "Source");
+    map.insert("/General/strictMoveCounter", false);
 
     map.insert("/GameText/FontSize", DEFAULT_FONTSIZE);
     map.insert("/GameText/ColumnStyle", false);

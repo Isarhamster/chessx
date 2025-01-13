@@ -471,6 +471,7 @@ void PreferencesDialog::restoreSettings()
     ui.cbAutoCommitDB->setChecked(AppSettings->getValue("autoCommitDB").toBool());
     ui.mergeAddSource->setChecked(AppSettings->getValue("mergeAddSource").toBool());
     ui.mergeAddTag->setText(AppSettings->getValue("mergeAddTag").toString());
+    ui.strictMoveCounter->setChecked(AppSettings->getValue("strictMoveCounter").toBool());
     QString lang = AppSettings->getValue("language").toString();
     AppSettings->endGroup();
     AppSettings->beginGroup("/Board/");
@@ -694,6 +695,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("language", QVariant(ui.cbLanguage->currentText()));
     AppSettings->setValue("mergeAddSource", QVariant(ui.mergeAddSource->isChecked()));
     AppSettings->setValue("mergeAddTag", QVariant(ui.mergeAddTag->text()));
+    AppSettings->setValue("strictMoveCounter", QVariant(ui.strictMoveCounter->isChecked()));
     AppSettings->endGroup();
     AppSettings->beginGroup("/Board/");
     AppSettings->setValue("showFrame", QVariant(ui.boardFrameCheck->isChecked()));

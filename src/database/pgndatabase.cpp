@@ -457,7 +457,6 @@ void PgnDatabase::initialise()
     m_filename = QString();
     m_count = 0;
     m_allocated = 0;
-    m_endVariation = false;
 }
 
 void PgnDatabase::readLine()
@@ -833,35 +832,22 @@ inline void PgnDatabase::parseMoveToken(GameX* game, QString token)
     if (token.startsWith("..."))
     {
         white = false;
-        found = true;
+        dotFound = true;
         token.remove(0,3);
     }
     else if (token.startsWith("."))
     {
         white = true;
-        found = true;
+        dotFound = true;
         token.remove(0,1);
     }
 
     if (token.isEmpty()) return;
 
-    if (found)
-    {
-        int currentMoveNumber = game->cursor().nextMoveNumber(m_newVariation, m_endVariation);
-        if (currentMoveNumber != moveNumberFound)
-        {
-            m_endVariation = false;
-            m_variation = -1;
-            return;
-        }
-    }
-
-    m_endVariation = false;
-
     if(m_newVariation)
     {
-        bool dummyNeeded = found && (((white && game->board().whiteToMove()) ||
-                                     (!white && game->board().blackToMove())));
+        bool dummyNeeded = dotFound && (((white && game->board().whiteToMove()) ||
+                                         (!white && game->board().blackToMove())));
         if (dummyNeeded)
         {
             if (!game->move(game->currentMove()).isDummyMove())
@@ -884,6 +870,7 @@ inline void PgnDatabase::parseMoveToken(GameX* game, QString token)
     else
     {
         m_variation = game->dbAddSanMove(token, QString());
+
         if(!m_precomment.isEmpty())
         {
             game->dbSetAnnotation(m_precomment, m_variation, GameX::BeforeMove);
@@ -892,7 +879,17 @@ inline void PgnDatabase::parseMoveToken(GameX* game, QString token)
         }
     }
 
-    found = false;
+    if (dotFound && AppSettings->getValue("/General/strictMoveCounter").toBool() && ( m_variation != NO_MOVE ))
+    {
+        int currentMoveNumber = game->moveNumber();
+        if (currentMoveNumber != moveNumberFound)
+        {
+            game->removeNode();
+            m_variation = NO_MOVE;
+        }
+    }
+
+    dotFound = false;
 }
 
 void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
@@ -928,7 +925,6 @@ void PgnDatabase::parseToken(GameX* game, const QStringRef& token)
         game->forward();
         m_newVariation = false;
         m_variation = 0;
-        m_endVariation = true;
         break;
     case '{':
         m_comment.clear();

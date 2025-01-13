@@ -20,7 +20,7 @@
 #include "movedata.h"
 #include "tablebase.h"
 
-#include <ASSERT.h>
+#include <assert.h>
 #include <QMutexLocker>
 #include <QRandomGenerator>
 

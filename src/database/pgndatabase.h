@@ -140,7 +140,6 @@ private:
     QString m_comment;
     QString m_precomment;
     bool m_newVariation;
-    bool m_endVariation;
     int m_variation;
 
     //game index
@@ -151,7 +150,7 @@ private:
     QStack<MoveId> m_variationStack;
     int percentDone;
     bool white;
-    bool found;
+    bool dotFound;
     int  moveNumberFound;
     bool bUse64bit {false};
 };
