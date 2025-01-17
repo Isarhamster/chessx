@@ -276,10 +276,23 @@ void EngineX::pollProcess()
     }
 }
 
+void EngineX::removeProcess()
+{
+    disconnect(m_process, SIGNAL(started()));
+#if QT_VERSION < 0x060000
+    disconnect(m_process, SIGNAL(error(QProcess::ProcessError)));
+#else
+    disconnect(m_process, SIGNAL(errorOccurred(QProcess::ProcessError)));
+#endif
+    disconnect(m_process, SIGNAL(readyReadStandardOutput()));
+    disconnect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)));
+    m_process = nullptr;
+}
+
 void EngineX::processError(QProcess::ProcessError errMsg)
 {
     setActive(false);
-    m_process = nullptr;
+    removeProcess();
     emit error(errMsg);
 }
 
@@ -329,6 +342,6 @@ void EngineX::setAllowEngineOutput(bool allow)
 void EngineX::processExited()
 {
     setActive(false);
-    m_process = nullptr;
+    removeProcess();
     emit deactivated();
 }

@@ -176,7 +176,6 @@ void AnalysisWidget::engineError(QProcess::ProcessError e)
     MessageDialog::warning(tr("There was an error (%1) running engine <b>%2</b>.")
                            .arg(e)
                            .arg(ui.engineList->currentText()));
-    stopEngine();
 }
 
 void AnalysisWidget::engineDeactivated()

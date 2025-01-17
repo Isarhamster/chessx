@@ -51,6 +51,8 @@ public:
     /** Virtual destructor */
     virtual ~EngineX();
 
+    void removeProcess();
+
     /** Launch and initialize engine, fire activated() signal when done*/
     void activate();
 
