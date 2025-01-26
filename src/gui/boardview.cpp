@@ -1282,7 +1282,7 @@ void BoardView::drawSquareAnnotations(QPaintEvent* event)
     if (isEnabled())
     {
         QString annotation = m_board.squareAnnotation();
-        QStringList list = annotation.split(",");
+        QStringList list = annotation.split(",", Qt::SkipEmptyParts);
 
         for(QStringList::ConstIterator it = list.constBegin(); it != list.constEnd(); it++)
         {
@@ -1296,7 +1296,7 @@ void BoardView::drawArrowAnnotations(QPaintEvent* event)
     if (isEnabled())
     {
         QString annotation = m_board.arrowAnnotation();
-        QStringList list = annotation.split(",");
+        QStringList list = annotation.split(",", Qt::SkipEmptyParts);
 
         for(QStringList::ConstIterator it = list.constBegin(); it != list.constEnd(); it++)
         {

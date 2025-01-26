@@ -7,14 +7,14 @@
 
 Annotation::Annotation(QString a)
 {
-    QStringList l = a.trimmed().split(',', SkipEmptyParts );
+    QStringList l = a.trimmed().split(',', Qt::SkipEmptyParts );
     l.removeDuplicates();
     annotation = l.join(',');
 }
 
 void Annotation::toggle(const QString& e)
 {
-    QStringList l = annotation.split(',');
+    QStringList l = annotation.split(',', Qt::SkipEmptyParts);
     int n = l.indexOf(e);
     if (n>=0)
     {
@@ -29,7 +29,7 @@ void Annotation::toggle(const QString& e)
 
 void Annotation::removeOne(const QRegularExpression& re)
 {
-    QStringList l = annotation.split(',');
+    QStringList l = annotation.split(',', Qt::SkipEmptyParts);
     int n = l.indexOf(re);
     if (n>=0)
     {
