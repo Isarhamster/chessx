@@ -79,6 +79,8 @@ public:
         {
             m_count += count;
             m_sum += static_cast<decltype(m_sum)>(count) * v;
+            m_max = std::max(m_max, (std::int16_t)v);
+            m_min = std::min(m_min, (std::int16_t)v);
         }
     }
 
@@ -88,13 +90,25 @@ public:
     /** Average over valid samples */
     int average() const
     {
-        return m_count? static_cast<int>(m_sum / static_cast<decltype(m_sum)>(m_count)): 0;
+        return m_count? static_cast<int>(m_sum / static_cast<decltype(m_sum)>(m_count)) : 0;
+    }
+
+    int first() const
+    {
+        return m_count? m_min : 0;
+    }
+
+    int last() const
+    {
+        return m_count? m_max : 0;
     }
 
     IntegralMetrics& operator+=(const IntegralMetrics& rhs)
     {
         m_count += rhs.m_count;
         m_sum += rhs.m_sum;
+        m_max = std::max(m_max, rhs.m_max);
+        m_min = std::min(m_min, rhs.m_min);
         return *this;
     }
 
@@ -106,6 +120,8 @@ public:
 private:
     size_t m_count = 0;
     std::int64_t m_sum = 0;
+    std::int16_t m_min = 9999;
+    std::int16_t m_max = 0;
 
     static constexpr int Min = MinValue;
     static constexpr int Max = MaxValue;
@@ -121,6 +137,7 @@ struct MoveData
     ResultsCounter results;
     RatingMetrics rating;
     YearMetrics year;
+    YearMetrics lastYear;
     Move move;
 };
 

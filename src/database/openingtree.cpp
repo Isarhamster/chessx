@@ -152,7 +152,7 @@ OpeningTree::OpeningTree(QObject* parent) :
     m_bEnd(false),
     oupd(*new OpeningTreeThread)
 {
-    m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating") << tr("Year");
+    m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating") << tr("Year") << tr("First") << tr("Last");
 }
 
 OpeningTree::~OpeningTree()
@@ -250,6 +250,10 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
             case 4:
                 return data.year.count() >= MinAveYear ?
                        data.year.average() : QVariant();
+            case 5:
+                return data.year.first() ? data.year.first() : QVariant();
+            case 6:
+                return data.year.last() ? data.year.last() : QVariant();
             default:
                 return QVariant();
             }
@@ -289,6 +293,8 @@ void OpeningTree::doSort(int column, Qt::SortOrder order)
         std::sort(m_moves.begin(), m_moves.end(), compareRating);
         break;
     case 4:
+    case 5:
+    case 6:
         std::sort(m_moves.begin(), m_moves.end(), compareYear);
         break;
     };
