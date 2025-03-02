@@ -84,7 +84,6 @@ GameList::GameList(FilterX* filter, QWidget* parent) : TableView(parent)
 
 GameList::~GameList()
 {
-    setModel(nullptr);
     delete sortModel;
     delete m_model;
 }

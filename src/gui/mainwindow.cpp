@@ -50,6 +50,7 @@
 #include "quazipfile.h"
 #include "savedialog.h"
 #include "settings.h"
+#include "studyselectiondialog.h"
 #include "tags.h"
 #include "textedit.h"
 #include "tournamentselectiondialog.h"
@@ -588,6 +589,7 @@ MainWindow::~MainWindow()
     }
     delete m_registry;
     delete m_progressBar;
+    m_gameList->setModel(nullptr);
     delete m_gameList;
 
     delete autoGroup;
@@ -1015,21 +1017,33 @@ QString MainWindow::ficsPath() const
     return DatabaseInfo::ficsPath();
 }
 
-void MainWindow::appendDatabaseUrl(QString fname, bool utf8, QString target)
+void MainWindow::appendDatabaseUrl(QUrl url, bool utf8, QString target)
 {
     if (!target.isEmpty())
     {
-        QUrl url = QUrl::fromUserInput(fname);
-        copyFileNames.insert(url.toString(QUrl::RemoveScheme),target);
+        QString s = url.toString(QUrl::RemoveScheme| QUrl::RemoveUserInfo);
+        if (s.startsWith(':')) s.removeFirst(); // Fixes a bug in Qt
+        copyFileNames.insert(s,target);
     }
-    openDatabaseUrl(fname, utf8);
+    openDatabaseUrl(url, utf8);
+}
+
+void MainWindow::appendDatabaseUrl(QString fname, bool utf8, QString target)
+{
+    QUrl url = QUrl::fromUserInput(fname);
+    appendDatabaseUrl(url, utf8, target);
 }
 
 void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
     QUrl url = QUrl::fromUserInput(fname);
     if (fname.startsWith("http")) url.setScheme("http");
-    if (fname == "Clipboard")
+    openDatabaseUrl(url, utf8);
+}
+
+void MainWindow::openDatabaseUrl(QUrl url, bool utf8)
+{
+    if (url.fileName() == "Clipboard")
     {
         ActivateDatabase("Clipboard");
     }
@@ -1041,7 +1055,10 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
             slotStatusMessage(tr("Start loading database..."));
             connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
             connect(downloadManager, SIGNAL(onDownloadFinished(QUrl,QString)), this, SLOT(loadReady(QUrl,QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
-            downloadManager->doDownload(url);
+            QString s = url.toString(QUrl::RemoveScheme| QUrl::RemoveUserInfo);
+            if (s.startsWith(':')) s.removeFirst(); // Fixes a bug in Qt
+            requestUtf8.insert(s,utf8);
+            downloadManager->doDownloadToPath(url, downloadManager->saveFileName(url));
         }
         else
         {
@@ -1071,6 +1088,29 @@ void MainWindow::openWebFavorite()
     }
 }
 
+void MainWindow::openLichessStudy()
+{
+    QPointer<StudySelectionDialog> dlg = new StudySelectionDialog(this);
+
+    dlg->run();
+    QList<QPair<QString, QString>> l = dlg->getStudies();
+    QPair<QString, QString> p;
+    foreach (p, l)
+    {
+        QString s = p.first;
+        s += ".pgn";
+        s.prepend("https://lichess.org/api/study/");
+        // QString name = p.second;
+        // name.append(".pgn");
+        QUrl url(s);
+        QString token = AppSettings->getValue("Lichess/passWord").toString();
+        url.setPassword(token);
+        // QString target = AppSettings->commonDataFilePath(name);
+        openDatabaseUrl(url, true);
+    }
+    delete dlg;
+}
+
 void MainWindow::openLichessBroadcast()
 {
     QPointer<TournamentSelectionDialog> dlg = new TournamentSelectionDialog(this);
@@ -1084,8 +1124,7 @@ void MainWindow::openLichessBroadcast()
         s.prepend("https://lichess.org/api/broadcast/");
         QString name = p.second;
         name.append(".pgn");
-        QString target = AppSettings->commonDataFilePath(name);
-        appendDatabaseUrl(s, false, target);
+        openDatabaseUrl(s, true);
     }
     delete dlg;
 }
@@ -1093,6 +1132,7 @@ void MainWindow::openLichessBroadcast()
 void MainWindow::openLichess()
 {
     QString account = AppSettings->getValue("/Lichess/userName").toString();
+    QString token = AppSettings->getValue("/Lichess/token").toString();
     QDate date = QDate::currentDate();
     QDate start(date.year(),date.month(),1);
     QDate end(date.year(),date.month(),1);
@@ -1108,12 +1148,14 @@ void MainWindow::openLichess()
     }
 
     db.setHandle(account);
+    db.setToken(token);
     db.setStartDate(start);
     db.setEndDate(end);
     if (db.exec() == QDialog::Accepted)
     {
         QString tournament = db.getTournament();
         account = db.getHandle();
+        token = db.getToken();
         start = db.getStartDate();
         end = db.getEndDate();
 
@@ -1123,7 +1165,8 @@ void MainWindow::openLichess()
             {
                 quint64 since= start.startOfDay().toMSecsSinceEpoch();
                 quint64 until= end.endOfDay().toMSecsSinceEpoch();
-                QString url = QString("https://lichess.org/api/games/user/%1?since=%2&until=%3").arg(account).arg(since).arg(until);
+                QUrl url = QString("https://lichess.org/api/games/user/%1?since=%2&until=%3").arg(account).arg(since).arg(until);
+                url.setPassword(token);
                 openDatabaseUrl(url);
             }
             else
@@ -1389,14 +1432,18 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
 
 void MainWindow::loadError(QUrl url)
 {
-    copyFileNames.remove(url);
+    QString targetName = url.toString(QUrl::RemoveScheme);
+    copyFileNames.remove(targetName);
+    requestUtf8.remove(targetName);
     QFileInfo fi = QFileInfo(url.toString());
     slotStatusMessage(tr("Database %1 cannot be accessed at the moment (%2).").arg(fi.fileName(), url.errorString()));
 }
 
-void MainWindow::loadReady(QUrl url, QString fileName)
+void MainWindow::loadReady(QUrl url, QString filename)
 {
-    QString target = copyFileNames.take(url.toString(QUrl::RemoveScheme));
+    QString targetName = url.toString(QUrl::RemoveScheme);
+    QString target = copyFileNames.take(targetName);
+    bool utf8 = requestUtf8.take(targetName);
 
     QString fav = favoriteUrl();
     QString favurl = AppSettings->getValue("Web/Favorite1").toString();
@@ -1410,17 +1457,17 @@ void MainWindow::loadReady(QUrl url, QString fileName)
     if (!target.isEmpty())
     {
         // Instead of opening database, append it to a target database
-        copyDatabaseArchive(fileName, target);
+        copyDatabaseArchive(filename, target);
         QFileInfo fi(target);
         if (fi.exists())
         {
             setFavoriteDatabase(target);
-            openDatabaseArchive(target, false);
+            openDatabaseArchive(target, utf8);
         }
     }
     else
     {
-        openDatabaseArchive(fileName, false);
+        openDatabaseArchive(filename, utf8);
     }
 }
 
@@ -1663,9 +1710,10 @@ void MainWindow::setupActions()
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
     file->addAction(createAction(tr("Open FICS"), SLOT(openFICS()), QKeySequence(), fileToolBar, ":/images/fics.png"));
-    file->addAction(createAction(tr("Open Lichess"), SLOT(openLichess()), QKeySequence(), fileToolBar, ":/images/lichess.png"));
-    file->addAction(createAction(tr("Open Lichess Broadcast"), SLOT(openLichessBroadcast()), QKeySequence(), fileToolBar, ":/images/lichessbroadcast.png"));
-    file->addAction(createAction(tr("Open chess.com"), SLOT(openChesscom()), QKeySequence(), fileToolBar, ":/images/chesscom.png"));
+    file->addAction(createAction(tr("Open Lichess..."), SLOT(openLichess()), QKeySequence(), fileToolBar, ":/images/lichess.png"));
+    file->addAction(createAction(tr("Open Lichess Broadcast..."), SLOT(openLichessBroadcast()), QKeySequence(), fileToolBar, ":/images/lichessbroadcast.png"));
+    file->addAction(createAction(tr("Open Lichess Study..."), SLOT(openLichessStudy()), QKeySequence())); // TODO: Image
+    file->addAction(createAction(tr("Open chess.com..."), SLOT(openChesscom()), QKeySequence(), fileToolBar, ":/images/chesscom.png"));
     file->addAction(createAction(tr("Web Favorite"), SLOT(openWebFavorite()), QKeySequence(), fileToolBar, ":/images/folder_web.png"));
 
     QMenu* menuRecent = file->addMenu(tr("Open recent"));

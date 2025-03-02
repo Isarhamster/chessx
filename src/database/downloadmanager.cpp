@@ -66,20 +66,11 @@ DownloadManager::DownloadManager(QObject *parent) :
 {
 }
 
-void DownloadManager::doDownload(const QUrl &url)
+void DownloadManager::doDownloadToPath(QUrl url, QString filename)
 {
-    QString filename = saveFileName(url);
-    if(QFile::exists(filename) && QFileInfo(filename).isFile())
-    {
-        emit onDownloadFinished(url, filename);
-        return;
-    }
+    QString token = url.password();
+    url = url.adjusted(QUrl::RemoveUserInfo);
 
-    doDownloadToPath(url, filename);
-}
-
-void DownloadManager::doDownloadToPath(const QUrl &url, const QString& filename)
-{
     if(url.isEmpty() || !url.isValid())
     {
         qDebug() << "Error: Invalid/Empty Url";
@@ -88,31 +79,39 @@ void DownloadManager::doDownloadToPath(const QUrl &url, const QString& filename)
     }
 
     QNetworkRequest request = NetworkHelper::Request(url);
-    QNetworkReply *reply = manager.get(request);
 
+    if (!token.isEmpty())
+    {
+        QString temp = "Bearer " + token;
+        request.setRawHeader("Authorization", temp.toLocal8Bit());
+        request.setRawHeader("Version", "2.0");
+    }
+
+    request.setAttribute(QNetworkRequest::User, filename);
+
+    QNetworkReply *reply = manager.get(request);
     connect(reply, SIGNAL(finished()), SLOT(downloadFinished()));
 
-    destinationPaths.insert(url, filename);
     currentDownloads.append(reply);
 }
 
 QString DownloadManager::saveFileName(const QUrl &url)
 {
-    QString path = url.path();
-    if (DatabaseInfo::IsLocalDatabase(path))
+    if (url.isLocalFile())
     {
-        QFileInfo fi = QFileInfo(path);
-        return AppSettings->commonDataFilePath(fi.fileName());
+        QString path = url.path();
+        if (DatabaseInfo::IsLocalDatabase(path))
+        {
+            QFileInfo fi = QFileInfo(path);
+            return AppSettings->commonDataFilePath(fi.fileName());
+        }
+        else if (DatabaseInfo::IsLocalArchive(path))
+        {
+            QFileInfo fi = QFileInfo(path);
+            return AppSettings->commonDataFilePath(fi.baseName());
+        }
     }
-    else if (DatabaseInfo::IsLocalArchive(path))
-    {
-        QFileInfo fi = QFileInfo(path);
-        return AppSettings->commonDataFilePath(fi.baseName());
-    }
-    else
-    {
-        return AppSettings->commonDataPath(); // Name will be determined after download
-    }
+    return AppSettings->commonDataPath(); // Name will be determined after download
 }
 
 bool DownloadManager::saveToDisk(const QString &filename, QIODevice *data)
@@ -127,20 +126,6 @@ bool DownloadManager::saveToDisk(const QString &filename, QIODevice *data)
     file.close();
 
     return true;
-}
-
-void DownloadManager::execute(QStringList args)
-{
-    if(args.isEmpty())
-    {
-        return;
-    }
-
-    foreach(QString arg, args)
-    {
-        QUrl url = QUrl::fromEncoded(arg.toLocal8Bit());
-        doDownload(url);
-    }
 }
 
 void DownloadManager::downloadFinished()
@@ -165,7 +150,7 @@ void DownloadManager::downloadFinished()
             }
             else
             {
-                QString filename = destinationPaths.value(url);
+                QString filename = reply->request().attribute(QNetworkRequest::User).toString();
                 if (filename.isEmpty() || QFileInfo(filename).isDir())
                 {
                     // Create a temporary file
@@ -179,7 +164,7 @@ void DownloadManager::downloadFinished()
                         s.remove("\"");
                         s = s.trimmed();
                     }
-                    if (s.isEmpty()) s = "download.pgn";
+                    if (s.isEmpty()) s = url.fileName();
 
                     if (filename.isEmpty())
                     {
@@ -189,11 +174,13 @@ void DownloadManager::downloadFinished()
                     {
                         filename = filename+QDir::separator()+s;
                     }
+                    // Delete existing file // TODO but what if append is requested??
                     if (QFile::exists(filename) && QFileInfo(filename).isFile())
                     {
                         QFile::remove(filename);
                     }
                 }
+
                 if(saveToDisk(filename, reply))
                 {
                     emit onDownloadFinished(url, filename);
@@ -206,7 +193,6 @@ void DownloadManager::downloadFinished()
             }
         }
         currentDownloads.removeAll(reply);
-        destinationPaths.remove(url);
         reply->deleteLater();
     }
     else

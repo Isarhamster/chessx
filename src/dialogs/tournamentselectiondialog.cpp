@@ -47,7 +47,7 @@ void TournamentSelectionDialog::fill()
                 qint64 vv = v.toLongLong();
                 startsAt = std::min(vv, startsAt);
             }
-            QTableWidget* w = ui->tournements;
+            QTableWidget* w = ui->tournaments;
             if ((startsAt <= now.toMSecsSinceEpoch()) && !name.isEmpty() && !id.isEmpty())
             {
                 int n = w->rowCount();
@@ -71,7 +71,7 @@ void TournamentSelectionDialog::closeEvent(QCloseEvent *e)
 {
     if (e->isAccepted() && tournaments.isEmpty())
     {
-        QTableWidget* w = ui->tournements;
+        QTableWidget* w = ui->tournaments;
         int n = w->rowCount();
         for (int i=0; i<n; i++)
         {
@@ -97,7 +97,7 @@ void TournamentSelectionDialog::accept()
 {
     if (tournaments.isEmpty())
     {
-        QTableWidget* w = ui->tournements;
+        QTableWidget* w = ui->tournaments;
         int n = w->rowCount();
         for (int i=0; i<n; i++)
         {
@@ -113,7 +113,7 @@ void TournamentSelectionDialog::accept()
     QDialog::accept();
 }
 
-void TournamentSelectionDialog::on_tournements_itemDoubleClicked(QTableWidgetItem *item)
+void TournamentSelectionDialog::on_tournaments_itemDoubleClicked(QTableWidgetItem *item)
 {
     if (item)
     {

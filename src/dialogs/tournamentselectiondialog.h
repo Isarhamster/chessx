@@ -23,7 +23,7 @@ protected:
     virtual void accept();
 
 private slots:
-    void on_tournements_itemDoubleClicked(QTableWidgetItem *item);
+    void on_tournaments_itemDoubleClicked(QTableWidgetItem *item);
 
 private:
     void fill();

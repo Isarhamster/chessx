@@ -24,7 +24,7 @@ QByteArray LichessTransfer::sync_request( QNetworkRequest& request )
     return reply->readAll();
 }
 
-QByteArray LichessTransfer::queryData(const QString& api_call)
+QByteArray LichessTransfer::queryData(const QString& api_call, QString token)
 {
     QUrl url;
     url = api_call;
@@ -32,6 +32,12 @@ QByteArray LichessTransfer::queryData(const QString& api_call)
     url.setScheme("https");
 
     QNetworkRequest request = NetworkHelper::Request(url);
+    if (!token.isEmpty())
+    {
+        QString temp = "Bearer " + token;
+        request.setRawHeader("Authorization", temp.toLocal8Bit());
+        request.setRawHeader("Version", "2.0");
+    }
     return sync_request( request );
 }
 
@@ -56,6 +62,11 @@ QByteArray LichessTransfer::queryTournaments(enum LichessTournamentType t, QStri
     if (t==LichessTournamentTypeBroadcast) nb = "nb";
     else nb = "max";
     return queryData(QString("/api/%1%2?%3=%4").arg(teamId).arg(stype).arg(nb).arg(maxLoad));
+}
+
+QByteArray LichessTransfer::queryStudies(QString name, QString token)
+{
+    return queryData(QString("/api/study/by/%1").arg(name), token);
 }
 
 QByteArray LichessTransfer::queryResults(enum LichessTournamentType t, const QString& tournamentId)

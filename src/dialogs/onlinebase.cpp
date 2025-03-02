@@ -51,6 +51,16 @@ void OnlineBase::setHandle(const QString &value)
     ui->userName->setText(value);
 }
 
+QString OnlineBase::getToken() const
+{
+    return ui->authToken->text();
+}
+
+void OnlineBase::setToken(const QString &value)
+{
+    ui->authToken->setText(value);
+}
+
 const QString OnlineBase::getTournament() const
 {
     return ui->tournament->text();

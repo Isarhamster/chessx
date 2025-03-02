@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TournamentSelectionDialog</class>
- <widget class="QDialog" name="TournamentSelectionDialog">
+ <class>StudySelectionDialog</class>
+ <widget class="QDialog" name="StudySelectionDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,39 +11,30 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Broadcasts</string>
+   <string>Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTableWidget" name="tournaments">
-     <property name="alternatingRowColors">
-      <bool>true</bool>
-     </property>
-     <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
-     </property>
-     <property name="columnCount">
-      <number>3</number>
-     </property>
-     <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>120</number>
-     </attribute>
+    <widget class="QTableWidget" name="studies">
      <attribute name="horizontalHeaderStretchLastSection">
       <bool>true</bool>
      </attribute>
+     <attribute name="verticalHeaderStretchLastSection">
+      <bool>false</bool>
+     </attribute>
      <column>
       <property name="text">
-       <string>Tournament</string>
+       <string>Study</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>Description</string>
+       <string>Created</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>Link</string>
+       <string>Updated</string>
       </property>
      </column>
     </widget>
@@ -65,7 +56,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>TournamentSelectionDialog</receiver>
+   <receiver>StudySelectionDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -81,7 +72,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>TournamentSelectionDialog</receiver>
+   <receiver>StudySelectionDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

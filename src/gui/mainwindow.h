@@ -148,7 +148,9 @@ protected:
     /** Open database */
     void openDatabase(QString fname);
     /** Open database from URL*/
+    void openDatabaseUrl(QUrl url, bool utf8=false);
     void openDatabaseUrl(QString fname, bool utf8=false);
+    void appendDatabaseUrl(QUrl url, bool utf8, QString target);
     void appendDatabaseUrl(QString fname, bool utf8, QString target);
     /** Open a list of databases from a ZIP archive */
     void openDatabaseArchive(QString fname, bool utf8);
@@ -451,7 +453,7 @@ protected slots:
     /** Receiver for a failed loading of a database */
     void loadError(QUrl url);
     /** Receiver for a successful loading of a database */
-    void loadReady(QUrl url, QString fileName);
+    void loadReady(QUrl url, QString filename);
     /** Remove Color of the square in m_annotationSquare */
     void slotNoColorSquare();
     /** Colorize the square in m_annotationSquare green */
@@ -495,6 +497,7 @@ protected slots:
     void HandleFicsRequestRemoveMove();
     void openLichess();
     void openLichessBroadcast();
+    void openLichessStudy();
     void openChesscom();
     void openFICS();
     void openWebFavorite();
@@ -783,7 +786,8 @@ private:
 #ifdef USE_SOUND
     QPointer<QSoundEffect> effect;
 #endif
-    QMap<QUrl, QString> copyFileNames;
+    QMap<QString, QString> copyFileNames;
+    QMap<QString, bool> requestUtf8;
 };
 
 #endif

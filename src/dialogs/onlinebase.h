@@ -28,6 +28,9 @@ public:
     const QString getTournament() const;
     void setTournament(const QString &newTournament);
 
+    QString getToken() const;
+    void setToken(const QString &value);
+
 private:
     Ui::OnlineBase *ui;
 };

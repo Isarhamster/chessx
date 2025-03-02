@@ -157,6 +157,7 @@ FORMS += \
   src/dialogs/recipientaddressdialog.ui \
   src/dialogs/renametagdialog.ui \
   src/dialogs/savedialog.ui \
+  src/dialogs/studyselectiondialog.ui \
   src/dialogs/tagdialog.ui \
   src/dialogs/tournamentselectiondialog.ui \
   src/gui/analysiswidget.ui \
@@ -266,6 +267,7 @@ HEADERS += src/database/board.h \
   src/dialogs/recipientaddressdialog.h \
   src/dialogs/renametagdialog.h \
   src/dialogs/savedialog.h \
+  src/dialogs/studyselectiondialog.h \
   src/dialogs/tagdialog.h \
   src/dialogs/tournamentselectiondialog.h \
   src/guess/guess.h \
@@ -444,6 +446,7 @@ SOURCES += \
   src/dialogs/recipientaddressdialog.cpp \
   src/dialogs/renametagdialog.cpp \
   src/dialogs/savedialog.cpp \
+  src/dialogs/studyselectiondialog.cpp \
   src/dialogs/tagdialog.cpp \
   src/dialogs/tournamentselectiondialog.cpp \
   src/guess/guess.cpp \
