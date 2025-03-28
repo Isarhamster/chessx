@@ -573,6 +573,10 @@ TARGET = chessx
 ICON = data/images/chessx.icns
 RC_FILE = src/chessx.rc
 
+ios {
+    QMAKE_INFO_PLIST = ios/Info.plist
+}
+
 macx {
   INSTALLATION_DATA.files = mac_osx/qt_menu.nib
   INSTALLATION_DATA.path = Contents/Resources/

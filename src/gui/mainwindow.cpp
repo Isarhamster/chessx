@@ -589,6 +589,7 @@ MainWindow::~MainWindow()
     }
     delete m_registry;
     delete m_progressBar;
+
     m_gameList->setModel(nullptr);
     delete m_gameList;
 
@@ -1022,7 +1023,6 @@ void MainWindow::appendDatabaseUrl(QUrl url, bool utf8, QString target)
     if (!target.isEmpty())
     {
         QString s = url.toString(QUrl::RemoveScheme| QUrl::RemoveUserInfo);
-        if (s.startsWith(':')) s.removeFirst(); // Fixes a bug in Qt
         copyFileNames.insert(s,target);
     }
     openDatabaseUrl(url, utf8);
@@ -1056,7 +1056,6 @@ void MainWindow::openDatabaseUrl(QUrl url, bool utf8)
             connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
             connect(downloadManager, SIGNAL(onDownloadFinished(QUrl,QString)), this, SLOT(loadReady(QUrl,QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
             QString s = url.toString(QUrl::RemoveScheme| QUrl::RemoveUserInfo);
-            if (s.startsWith(':')) s.removeFirst(); // Fixes a bug in Qt
             requestUtf8.insert(s,utf8);
             downloadManager->doDownloadToPath(url, downloadManager->saveFileName(url));
         }
@@ -1712,7 +1711,7 @@ void MainWindow::setupActions()
     file->addAction(createAction(tr("Open FICS"), SLOT(openFICS()), QKeySequence(), fileToolBar, ":/images/fics.png"));
     file->addAction(createAction(tr("Open Lichess..."), SLOT(openLichess()), QKeySequence(), fileToolBar, ":/images/lichess.png"));
     file->addAction(createAction(tr("Open Lichess Broadcast..."), SLOT(openLichessBroadcast()), QKeySequence(), fileToolBar, ":/images/lichessbroadcast.png"));
-    file->addAction(createAction(tr("Open Lichess Study..."), SLOT(openLichessStudy()), QKeySequence())); // TODO: Image
+    file->addAction(createAction(tr("Open Lichess Study..."), SLOT(openLichessStudy()), QKeySequence(), fileToolBar, ":/images/lichess_study.png"));
     file->addAction(createAction(tr("Open chess.com..."), SLOT(openChesscom()), QKeySequence(), fileToolBar, ":/images/chesscom.png"));
     file->addAction(createAction(tr("Web Favorite"), SLOT(openWebFavorite()), QKeySequence(), fileToolBar, ":/images/folder_web.png"));
 
