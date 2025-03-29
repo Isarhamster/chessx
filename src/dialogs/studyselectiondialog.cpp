@@ -26,6 +26,15 @@ void StudySelectionDialog::fill()
 {
     QString name = AppSettings->getValue("Lichess/userName").toString();
     QString token = AppSettings->getValue("Lichess/passWord").toString();
+    if (name.isEmpty())
+    {
+        QTableWidget* w = ui->studies;
+        w->insertRow(0);
+        w->setItem(0,0,new QTableWidgetItem(tr("Configure lichess account!")));
+        w->item(0,0)->setData(Qt::UserRole, "");
+        ui->studies->resizeColumnsToContents();
+        return;
+    }
     QByteArray reply = LichessTransfer::queryStudies(name, token);
     QList<QByteArray> l = reply.split('\n');
     foreach (QByteArray b, l)
@@ -36,9 +45,15 @@ void StudySelectionDialog::fill()
             QJsonObject it = doc.object();
             QString id = it.value("id").toString();
             QString name = it.value("name").toString();
+
+#if QT_VERSION < 0x060000
+            qint64 cc = (qint64) it.value("createdAt").toInt();
+            qint64 uu = (qint64) it.value("updatedAt").toInt();
+#else
             qint64 cc = it.value("createdAt").toInteger();
-            QDateTime ct = QDateTime::fromMSecsSinceEpoch(cc);
             qint64 uu = it.value("updatedAt").toInteger();
+#endif
+            QDateTime ct = QDateTime::fromMSecsSinceEpoch(cc);
             QDateTime ut = QDateTime::fromMSecsSinceEpoch(uu);
 
             QTableWidget* w = ui->studies;
@@ -71,8 +86,11 @@ void StudySelectionDialog::closeEvent(QCloseEvent *e)
             if (item->isSelected())
             {
                 QString id = item->data(Qt::UserRole).toString();
-                QString name = item->text();
-                studies<< QPair<QString,QString>(id,name);
+                if (!id.isEmpty())
+                {
+                    QString name = item->text();
+                    studies<< QPair<QString,QString>(id,name);
+                }
             }
         }
     }
@@ -97,8 +115,11 @@ void StudySelectionDialog::accept()
             if (item->isSelected())
             {
                 QString id = item->data(Qt::UserRole).toString();
-                QString name = item->text();
-                studies<< QPair<QString,QString>(id,name);
+                if (!id.isEmpty())
+                {
+                    QString name = item->text();
+                    studies<< QPair<QString,QString>(id,name);
+                }
             }
         }
     }
@@ -116,9 +137,12 @@ void StudySelectionDialog::on_studies_itemDoubleClicked(QTableWidgetItem *item)
         else
         {
             QString id = item->data(Qt::UserRole).toString();
-            QString name = item->text();
-            studies<< QPair<QString,QString>(id,name);
-            accept();
+            if (!id.isEmpty())
+            {
+                QString name = item->text();
+                studies<< QPair<QString,QString>(id,name);
+                accept();
+            }
         }
     }
 }
