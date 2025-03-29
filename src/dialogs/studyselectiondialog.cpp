@@ -24,9 +24,9 @@ StudySelectionDialog::~StudySelectionDialog()
 
 void StudySelectionDialog::fill()
 {
-    QString name = AppSettings->getValue("Lichess/userName").toString();
+    QString userName = AppSettings->getValue("Lichess/userName").toString();
     QString token = AppSettings->getValue("Lichess/passWord").toString();
-    if (name.isEmpty())
+    if (userName.isEmpty())
     {
         QTableWidget* w = ui->studies;
         w->insertRow(0);
@@ -35,7 +35,7 @@ void StudySelectionDialog::fill()
         ui->studies->resizeColumnsToContents();
         return;
     }
-    QByteArray reply = LichessTransfer::queryStudies(name, token);
+    QByteArray reply = LichessTransfer::queryStudies(userName, token);
     QList<QByteArray> l = reply.split('\n');
     foreach (QByteArray b, l)
     {
@@ -44,7 +44,7 @@ void StudySelectionDialog::fill()
             QJsonDocument doc = QJsonDocument::fromJson(b);
             QJsonObject it = doc.object();
             QString id = it.value("id").toString();
-            QString name = it.value("name").toString();
+            QString studyName = it.value("name").toString();
 
 #if QT_VERSION < 0x060000
             qint64 cc = (qint64) it.value("createdAt").toInt();
@@ -59,7 +59,7 @@ void StudySelectionDialog::fill()
             QTableWidget* w = ui->studies;
             int n = w->rowCount();
             w->insertRow(n);
-            w->setItem(n,0,new QTableWidgetItem(name));
+            w->setItem(n,0,new QTableWidgetItem(studyName));
             w->setItem(n,1,new QTableWidgetItem(ct.date().toString()));
             w->setItem(n,2,new QTableWidgetItem(ut.date().toString()));
             w->item(n,0)->setData(Qt::UserRole, id);
