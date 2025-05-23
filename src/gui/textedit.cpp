@@ -131,6 +131,13 @@ TextEdit::TextEdit(QWidget *parent, QMenu *menu)
     fileNew();
 }
 
+TextEdit::~TextEdit()
+{
+    disconnect(comboSize, SIGNAL(activated(int)), this, SLOT(textStyle(int)));
+    disconnect(comboSize, SIGNAL(textActivated(QString)), this, SLOT(textSize(QString)));
+    removeEventFilter(this);
+}
+
 void TextEdit::setupDocumentActions()
 {
     connect(textEdit->document(), SIGNAL(modificationChanged(bool)),
@@ -379,7 +386,7 @@ void TextEdit::setupStyleActions()
     addToolBarBreak(Qt::TopToolBarArea);
     addToolBar(tb);
 
-    QComboBox* comboStyle = new QComboBox(tb);
+    comboStyle = new QComboBox(tb);
     tb->addWidget(comboStyle);
     comboStyle->addItem("Standard");
     comboStyle->addItem("Bullet List (Disc)");
@@ -611,7 +618,7 @@ void TextEdit::textBold()
 {
     QTextCharFormat fmt;
     fmt.setFontWeight(actionTextBold->isChecked() ? QFont::Bold : QFont::Normal);
-    fmt.setBackground(Qt::white);
+    //fmt.setBackground(Qt::white);
     mergeFormatOnWordOrSelection(fmt);
 }
 
@@ -619,7 +626,7 @@ void TextEdit::textUnderline()
 {
     QTextCharFormat fmt;
     fmt.setFontUnderline(actionTextUnderline->isChecked());
-    fmt.setBackground(Qt::white);
+    //fmt.setBackground(Qt::white);
     mergeFormatOnWordOrSelection(fmt);
 }
 
@@ -627,7 +634,7 @@ void TextEdit::textItalic()
 {
     QTextCharFormat fmt;
     fmt.setFontItalic(actionTextItalic->isChecked());
-    fmt.setBackground(Qt::white);
+    //fmt.setBackground(Qt::white);
     mergeFormatOnWordOrSelection(fmt);
 }
 
@@ -635,7 +642,7 @@ void TextEdit::textFamily(const QString &f)
 {
     QTextCharFormat fmt;
     fmt.setFontFamilies(QStringList()<<f);
-    fmt.setBackground(Qt::white);
+    //fmt.setBackground(Qt::white);
     mergeFormatOnWordOrSelection(fmt);
 }
 
@@ -646,7 +653,7 @@ void TextEdit::textSize(const QString &p)
     {
         QTextCharFormat fmt;
         fmt.setFontPointSize(pointSize);
-        fmt.setBackground(Qt::white);
+        //fmt.setBackground(Qt::white);
         mergeFormatOnWordOrSelection(fmt);
     }
 }
@@ -705,7 +712,7 @@ void TextEdit::textStyle(int styleIndex)
         }
 
         listFmt.setStyle(style);
-        listFmt.setBackground(Qt::white);
+        //listFmt.setBackground(Qt::white);
         cursor.createList(listFmt);
 
         cursor.endEditBlock();
@@ -715,7 +722,7 @@ void TextEdit::textStyle(int styleIndex)
         // TODO: The list style cannot be removed at the moment
         QTextBlockFormat bfmt;
         bfmt.setObjectIndex(-1);
-        bfmt.setBackground(Qt::white);
+        //bfmt.setBackground(Qt::white);
         cursor.setBlockFormat(bfmt);
     }
 }
@@ -727,7 +734,7 @@ void TextEdit::textColor()
         return;
     QTextCharFormat fmt;
     fmt.setForeground(col);
-    fmt.setBackground(Qt::white);
+    //fmt.setBackground(Qt::white);
     mergeFormatOnWordOrSelection(fmt);
     colorChanged(col);
 }
@@ -979,7 +986,7 @@ void PasteTextEdit::dropImage(const QUrl& url, const QImage& image)
         imageFormat.setWidth( image.width() );
         imageFormat.setHeight( image.height() );
         imageFormat.setName( url.toString() );
-        imageFormat.setBackground(Qt::white);
+        //imageFormat.setBackground(Qt::white);
         textCursor().insertImage(imageFormat);
     }
 }

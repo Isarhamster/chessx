@@ -114,6 +114,7 @@ class TextEdit : public ToolMainWindow
 
 public:
     TextEdit(QWidget *parent = nullptr, QMenu* menu = nullptr);
+    virtual ~TextEdit();
     bool saveDocument();
 
 protected:
@@ -185,7 +186,7 @@ private:
     QAction *actionPaste;
     QAction *actionImageSize;
     QAction *actionPickBoard;
-
+    QComboBox* comboStyle;
     QFontComboBox *comboFont;
     QComboBox *comboSize;
     QSpinBox *imageSize;
