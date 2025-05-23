@@ -303,10 +303,10 @@ QString Output::writeMove(MoveToWrite moveToWrite)
     // Read comments
     if(m_game.canHaveStartAnnotation(moveId))
         precommentString = isPgnType(m_outputType) ? m_game.annotation(moveId, GameX::BeforeMove) :
-                           m_game.textAnnotation(moveId, GameX::BeforeMove, m_game.textFilter2());
+                           m_game.textAnnotation(moveId, GameX::BeforeMove, m_game.textFilter());
 
     QString commentString = isPgnType(m_outputType) ? m_game.annotation(moveId) :
-                                                    m_game.textAnnotation(moveId, GameX::AfterMove, m_game.textFilter2());
+                                                    m_game.textAnnotation(moveId, GameX::AfterMove, m_game.textFilter());
 
     // Write precomment if any
     text += writeComment(precommentString, mvno, Precomment);
