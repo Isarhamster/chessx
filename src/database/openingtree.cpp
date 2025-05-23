@@ -54,6 +54,7 @@ const unsigned MinAveRating = 5;
 
 bool OpeningTree::updateFilter(FilterX& f, const BoardX& b, bool updateFilter, bool sourceIsFilter, bool bEnd)
 {
+    if (m_bTerminated) return false;
     if((&f == m_filter) && (updateFilter == m_updateFilter) && (b == m_board) && (m_bEnd == bEnd) && (m_sourceIsDatabase != sourceIsFilter))
     {
         return true;
@@ -93,6 +94,12 @@ void OpeningTree::cancel()
     }
 }
 
+void OpeningTree::terminate()
+{
+    cancel();
+    m_bTerminated = true;
+}
+
 void OpeningTree::updateFinished(BoardX* b)
 {
     emit openingTreeUpdated();
@@ -104,6 +111,7 @@ void OpeningTree::updateFinished(BoardX* b)
 
 void OpeningTree::moveUpdated(BoardX* b, QList<MoveData> moveList)
 {
+    if (m_bTerminated) return;
     if (*b == m_board)
     {
         beginResetModel();
@@ -150,6 +158,7 @@ OpeningTree::OpeningTree(QObject* parent) :
     m_updateFilter(false),
     m_sourceIsDatabase(false),
     m_bEnd(false),
+    m_bTerminated(false),
     oupd(*new OpeningTreeThread)
 {
     m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating") << tr("Year") << tr("First") << tr("Last");

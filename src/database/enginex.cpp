@@ -339,6 +339,11 @@ void EngineX::setAllowEngineOutput(bool allow)
     s_allowEngineOutput = allow;
 }
 
+bool EngineX::engineOutputAllowed()
+{
+    return s_allowEngineOutput;
+}
+
 void EngineX::processExited()
 {
     setActive(false);

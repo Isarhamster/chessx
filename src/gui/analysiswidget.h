@@ -15,6 +15,7 @@
 #include "ui_analysiswidget.h"
 #include <QtGui>
 #include <QElapsedTimer>
+#include <QObject>
 #include <QPointer>
 
 /** @ingroup GUI

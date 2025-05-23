@@ -66,9 +66,6 @@ bool TestAdapter::dispatchTests()
     // Process the actual command line arguments given by the user
     parser.process(*qApp);
 
-    const QStringList args = parser.positionalArguments();
-        // source is args.at(0), destination is args.at(1)
-
     QString inputFile = parser.value(inputOption);
     QString outputFile = parser.value(outputOption);
     QString lc = parser.value(lcOption);

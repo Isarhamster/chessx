@@ -58,6 +58,7 @@ public:
 public slots:
     /** Cancel a running update */
     void cancel();
+    void terminate();
 protected slots:
     void updateFinished(BoardX*);
     void updateTerminated(BoardX*);
@@ -81,6 +82,7 @@ private:
     bool m_updateFilter;
     bool m_sourceIsDatabase;
     bool m_bEnd;
+    bool m_bTerminated;
 
     OpeningTreeThread& oupd;
 };

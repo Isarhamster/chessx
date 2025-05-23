@@ -180,7 +180,7 @@ bool BoardX::doIt(const Move& m, bool undo)
 
 void BoardX::hashPiece(Square s, Piece p)
 {
-    if((p > Empty) && (p < InvalidPiece))
+    if((p > Empty) && (p < ConstPieceTypes))
     {
         m_hashValue ^= RAND_VALUES[p - 1][s];
     }

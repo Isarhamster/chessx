@@ -41,11 +41,11 @@ public slots:
     virtual void ShowContextMenu(const QPoint&);
     void SlotDragTimer();
 protected: // overrides
-    void startDrag(Qt::DropActions supportedActions);
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dragMoveEvent(QDragMoveEvent *event);
-    void dragLeaveEvent(QDragLeaveEvent *event);
-    void dropEvent(QDropEvent *event);
+    void startDrag(Qt::DropActions supportedActions) override;
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
+    void dragLeaveEvent(QDragLeaveEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
 
 protected:
     QString renderHTMLitem(int row,int column) const;
@@ -54,7 +54,7 @@ protected:
     QStyleOptionViewItem viewOptions() const;
     virtual int minRowHeight() const { return 0; }
     /** Handle mouse wheel events */
-    virtual void wheelEvent(QWheelEvent* e);
+    void wheelEvent(QWheelEvent* e) override;
 private:
     void setFontSize(int fontSize);
     Qt::Alignment m_alignDecoration;

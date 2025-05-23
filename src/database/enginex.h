@@ -172,6 +172,7 @@ private:
 
 public:
     static void setAllowEngineOutput(bool allow);
+    static bool engineOutputAllowed();
     bool getSendHistory() const;
 
 protected:

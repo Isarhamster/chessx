@@ -80,10 +80,13 @@ public :
     };
     enum AnnotationFilter
     {
-        FilterNone = 0x00,
-        FilterTan  = 0x01,
-        FilterCan  = 0x02,
-        FilterEval = 0x04,
+        FilterNone    = 0x00,
+        FilterTan     = 0x01,
+        FilterCan     = 0x02,
+        FilterTanCan  = (FilterTan | FilterCan),
+        FilterEval    = 0x04,
+        FilterTanEval = (FilterTan | FilterEval),
+        FilterCanEval = (FilterCan | FilterEval),
         FilterAll  = (FilterTan | FilterCan | FilterEval),
     };
 

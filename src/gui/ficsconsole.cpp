@@ -160,7 +160,6 @@ FicsConsole::~FicsConsole()
     delete ui;
 }
 
-
 bool FicsConsole::canUsePremove() const
 {
     return (gameMode && !puzzleMode);
@@ -469,8 +468,8 @@ void FicsConsole::UpdateSayCompleter(QString msg)
     if (!words.contains(msg))
     {
         words.append(msg);
-        model->setStringList(words);
-        ui->sayMessage->setCompleter(completer);
+        QCompleter* nc = new QCompleter(words);
+        ui->sayMessage->setCompleter(nc);
     }
 }
 

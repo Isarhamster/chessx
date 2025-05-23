@@ -50,14 +50,14 @@ signals:
 
 protected: //Drag'n'Drop Support
     void startToDrag();
-    virtual int minRowHeight() const { return 24; }
+    int minRowHeight() const override { return 24; }
 
 protected:
-    void startDrag(Qt::DropActions supportedActions);
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dragMoveEvent(QDragMoveEvent *event);
-    void dragLeaveEvent(QDragLeaveEvent *event);
-    void dropEvent(QDropEvent *event);
+    void startDrag(Qt::DropActions supportedActions) override;
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
+    void dragLeaveEvent(QDragLeaveEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
 
     void appendGameToDataBase(QModelIndex index, QList<GameId> gameIndexList, QString source);
     void appendDataBaseToDataBase(QPoint pos, QString src);

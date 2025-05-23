@@ -15,6 +15,10 @@ ExclusiveActionGroup::ExclusiveActionGroup(QObject *parent) :
 {
 }
 
+ExclusiveActionGroup::~ExclusiveActionGroup()
+{
+}
+
 QAction * ExclusiveActionGroup::addAction ( QAction * action )
 {
     actions.push_back(action);

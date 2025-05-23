@@ -47,6 +47,7 @@ public slots:
     void updateFilterIndex(QStringList);
     /** Restore Book settings */
     void restoreBook();
+    void terminate();
 protected slots:
     /** Indicate end of tree update */
     void slotTreeUpdate();

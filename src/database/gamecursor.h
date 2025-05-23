@@ -55,7 +55,7 @@ public:
     GameCursor();
     GameCursor(const GameCursor& rhs);
     GameCursor& operator=(const GameCursor& rhs);
-    // TODO: maybe implement moving constructor/assignment later
+
     GameCursor(GameCursor&& rhs) = delete;
     GameCursor& operator=(GameCursor&& rhs) = delete;
     ~GameCursor();

@@ -57,7 +57,7 @@ Free Chess Database</string>
    <item>
     <layout class="QFormLayout" name="formLayout">
      <property name="fieldGrowthPolicy">
-      <enum>QFormLayout::FieldsStayAtSizeHint</enum>
+      <enum>QFormLayout::FieldGrowthPolicy::FieldsStayAtSizeHint</enum>
      </property>
      <property name="verticalSpacing">
       <number>-1</number>
@@ -84,10 +84,10 @@ Free Chess Database</string>
         </sizepolicy>
        </property>
        <property name="frameShape">
-        <enum>QFrame::Box</enum>
+        <enum>QFrame::Shape::Box</enum>
        </property>
        <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
+        <enum>QFrame::Shadow::Sunken</enum>
        </property>
        <property name="text">
         <string notr="true">vvv</string>
@@ -110,10 +110,10 @@ Free Chess Database</string>
         </sizepolicy>
        </property>
        <property name="frameShape">
-        <enum>QFrame::Box</enum>
+        <enum>QFrame::Shape::Box</enum>
        </property>
        <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
+        <enum>QFrame::Shadow::Sunken</enum>
        </property>
        <property name="text">
         <string notr="true">ccc</string>
@@ -136,10 +136,10 @@ Free Chess Database</string>
         </sizepolicy>
        </property>
        <property name="frameShape">
-        <enum>QFrame::Box</enum>
+        <enum>QFrame::Shape::Box</enum>
        </property>
        <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
+        <enum>QFrame::Shadow::Sunken</enum>
        </property>
        <property name="text">
         <string notr="true">GNU General Public License 2 - GPLv2</string>
@@ -151,7 +151,7 @@ Free Chess Database</string>
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabPath">
       <attribute name="title">
@@ -162,7 +162,7 @@ Free Chess Database</string>
         <widget class="QWidget" name="widget" native="true">
          <layout class="QFormLayout" name="formLayout_2">
           <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::ExpandingFieldsGrow</enum>
+           <enum>QFormLayout::FieldGrowthPolicy::ExpandingFieldsGrow</enum>
           </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label_19">
@@ -180,10 +180,10 @@ Free Chess Database</string>
              </sizepolicy>
             </property>
             <property name="frameShape">
-             <enum>QFrame::Panel</enum>
+             <enum>QFrame::Shape::Panel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
+             <enum>QFrame::Shadow::Sunken</enum>
             </property>
             <property name="text">
              <string notr="true">ttt</string>
@@ -209,10 +209,10 @@ Free Chess Database</string>
              </sizepolicy>
             </property>
             <property name="frameShape">
-             <enum>QFrame::Panel</enum>
+             <enum>QFrame::Shape::Panel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
+             <enum>QFrame::Shadow::Sunken</enum>
             </property>
             <property name="text">
              <string notr="true">ddd</string>
@@ -238,10 +238,10 @@ Free Chess Database</string>
              </sizepolicy>
             </property>
             <property name="frameShape">
-             <enum>QFrame::Panel</enum>
+             <enum>QFrame::Shape::Panel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
+             <enum>QFrame::Shadow::Sunken</enum>
             </property>
             <property name="text">
              <string notr="true">sss</string>
@@ -264,10 +264,10 @@ Free Chess Database</string>
              </sizepolicy>
             </property>
             <property name="frameShape">
-             <enum>QFrame::Panel</enum>
+             <enum>QFrame::Shape::Panel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
+             <enum>QFrame::Shadow::Sunken</enum>
             </property>
             <property name="text">
              <string>ddd</string>
@@ -290,10 +290,10 @@ Free Chess Database</string>
              </sizepolicy>
             </property>
             <property name="frameShape">
-             <enum>QFrame::Panel</enum>
+             <enum>QFrame::Shape::Panel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
+             <enum>QFrame::Shadow::Sunken</enum>
             </property>
             <property name="text">
              <string notr="true">fff</string>
@@ -323,10 +323,10 @@ Free Chess Database</string>
           <item row="0" column="1">
            <widget class="QLabel" name="lbSslQt">
             <property name="frameShape">
-             <enum>QFrame::Panel</enum>
+             <enum>QFrame::Shape::Panel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
+             <enum>QFrame::Shadow::Sunken</enum>
             </property>
             <property name="text">
              <string>vvv</string>
@@ -343,10 +343,10 @@ Free Chess Database</string>
           <item row="1" column="1">
            <widget class="QLabel" name="lbSslSupport">
             <property name="frameShape">
-             <enum>QFrame::Panel</enum>
+             <enum>QFrame::Shape::Panel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
+             <enum>QFrame::Shadow::Sunken</enum>
             </property>
             <property name="text">
              <string>vvv</string>
@@ -363,10 +363,10 @@ Free Chess Database</string>
           <item row="2" column="1">
            <widget class="QLabel" name="lbSslLibrary">
             <property name="frameShape">
-             <enum>QFrame::Panel</enum>
+             <enum>QFrame::Shape::Panel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
+             <enum>QFrame::Shadow::Sunken</enum>
             </property>
             <property name="text">
              <string>vvv</string>
@@ -402,10 +402,10 @@ Free Chess Database</string>
              </sizepolicy>
             </property>
             <property name="frameShape">
-             <enum>QFrame::Panel</enum>
+             <enum>QFrame::Shape::Panel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
+             <enum>QFrame::Shadow::Sunken</enum>
             </property>
             <property name="text">
              <string notr="true">Jens Nissen</string>
@@ -428,13 +428,13 @@ Free Chess Database</string>
              </sizepolicy>
             </property>
             <property name="frameShape">
-             <enum>QFrame::Panel</enum>
+             <enum>QFrame::Shape::Panel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
+             <enum>QFrame::Shadow::Sunken</enum>
             </property>
             <property name="text">
-             <string notr="true">&lt;a href=&quot;http://chessx.sourceforge.net&quot;&gt;http://chessx.sourceforge.net&lt;/a&gt;</string>
+             <string notr="true">&lt;a href=&quot;http://chessx.sourceforge.io&quot;&gt;http://chessx.sourceforge.io&lt;/a&gt;</string>
             </property>
             <property name="openExternalLinks">
              <bool>true</bool>
@@ -457,10 +457,10 @@ Free Chess Database</string>
              </sizepolicy>
             </property>
             <property name="frameShape">
-             <enum>QFrame::Panel</enum>
+             <enum>QFrame::Shape::Panel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
+             <enum>QFrame::Shadow::Sunken</enum>
             </property>
             <property name="text">
              <string notr="true">&lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net&lt;/a&gt;</string>
@@ -480,7 +480,7 @@ Free Chess Database</string>
    <item>
     <widget class="Line" name="line">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -489,10 +489,10 @@ Free Chess Database</string>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="standardButtons">
-        <set>QDialogButtonBox::Close</set>
+        <set>QDialogButtonBox::StandardButton::Close</set>
        </property>
       </widget>
      </item>

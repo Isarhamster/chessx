@@ -76,6 +76,11 @@ void OpeningTreeWidget::cancel()
     m_openingTree->cancel();
 }
 
+void OpeningTreeWidget::terminate()
+{
+    m_openingTree->terminate();
+}
+
 QString OpeningTreeWidget::move(QModelIndex index) const
 {
     return m_openingTree->move(index);

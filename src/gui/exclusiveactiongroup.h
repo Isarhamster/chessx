@@ -15,6 +15,7 @@ class ExclusiveActionGroup : public QObject
     Q_OBJECT
 public:
     explicit ExclusiveActionGroup(QObject *parent = nullptr);
+    ~ExclusiveActionGroup();
 
     QAction * addAction ( QAction * action );
 

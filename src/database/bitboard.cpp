@@ -1188,11 +1188,6 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
             return false;
         }
         m_moveNumber = fen.mid(i).toInt();
-        while(c >= '0' && c <= '9')
-        {
-            c = fen[++i];
-        }
-
         if(m_moveNumber == 0)
         {
             // Silently fix illegal movenumber
@@ -2621,7 +2616,7 @@ bool BitBoard::HasRookForCastling(int index) const
     {
         x = getFirstBitAndClear64<Square>(cr);
     }
-    return (m_rooks & SetBit(x));
+    return (x<64) ? (m_rooks & SetBit(x)) : 0;
 }
 
 Square BitBoard::CastlingRook(int index) const
