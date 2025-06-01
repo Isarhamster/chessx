@@ -10,11 +10,15 @@
 #include <QCloseEvent>
 #include <QDesktopServices>
 
-StudySelectionDialog::StudySelectionDialog(QWidget *parent)
+StudySelectionDialog::StudySelectionDialog(QWidget *parent, bool singleSelection)
     : QDialog(parent)
     , ui(new Ui::StudySelectionDialog)
 {
     ui->setupUi(this);
+    if (singleSelection)
+    {
+        ui->studies->setSelectionMode(QAbstractItemView::SingleSelection);
+    }
 }
 
 StudySelectionDialog::~StudySelectionDialog()

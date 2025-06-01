@@ -192,6 +192,14 @@ prevHook = _CrtSetReportHook(customReportHook);
     int result = 0;
     TestAdapter tests;
 
+    QObject::connect(qApp, &QCoreApplication::aboutToQuit, []() {
+        // Force all windows closed nicely
+        for (QWidget *w : QApplication::topLevelWidgets()) {
+            w->close();
+            w->deleteLater();
+        }
+    });
+
     bool exitOption = tests.dispatchTests();
     if (!exitOption)
     {

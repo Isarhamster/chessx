@@ -576,26 +576,7 @@ void MainWindow::setupAnalysisWidget(DockWidgetEx* analysisDock, AnalysisWidget*
 
 MainWindow::~MainWindow()
 {
-    m_autoPlayTimer->stop();
-    m_dragTimer->stop();
-    m_openingTreeWidget->cancel();
-    m_ficsConsole->Terminate();
-
-    foreach(DatabaseInfo* dbi, m_registry->databases())
-    {
-        // Avoid any GUI action if a database is closed
-        disconnect(dbi,SIGNAL(signalGameModified(bool)), this, SLOT(slotGameChanged(bool)));
-        dbi->close();
-    }
     delete m_registry;
-    delete m_progressBar;
-
-    m_gameList->setModel(nullptr);
-    delete m_gameList;
-
-    delete autoGroup;
-
-    EcoPositions::terminateEco();
 }
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
@@ -648,7 +629,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
         m_databaseList->saveConfig();
         m_openingTreeWidget->saveConfig();
         m_gameWindow->saveConfig();
-        m_scratchPad->saveConfig();
+        if (m_scratchPad) m_scratchPad->saveConfig();
         m_gameView->saveConfig();
         annotationWidget->saveConfig();
         m_ficsConsole->saveConfig();
@@ -662,6 +643,20 @@ void MainWindow::closeEvent(QCloseEvent* e)
         AppSettings->setValue("BoardSplit", m_boardSplitter->saveState());
         AppSettings->setValue("GameToolBar", m_gameToolBar->isVisible());
         AppSettings->endGroup();
+
+        m_autoPlayTimer->stop();
+        m_dragTimer->stop();
+        m_openingTreeWidget->terminate();
+        m_ficsConsole->Terminate();
+
+        foreach(DatabaseInfo* dbi, m_registry->databases())
+        {
+            // Avoid any GUI action if a database is closed
+            disconnect(dbi,SIGNAL(signalGameModified(bool)), this, SLOT(slotGameChanged(bool)));
+            dbi->close();
+        }
+        m_gameList->setModel(nullptr);
+        EcoPositions::terminateEco();
     }
     else
     {
@@ -1030,13 +1025,29 @@ void MainWindow::appendDatabaseUrl(QUrl url, bool utf8, QString target)
 
 void MainWindow::appendDatabaseUrl(QString fname, bool utf8, QString target)
 {
-    QUrl url = QUrl::fromUserInput(fname);
+    QUrl url;
+    if(DatabaseInfo::IsLocalDatabase(fname) || fname == "Clipboard")
+    {
+        url = QUrl::fromLocalFile(fname);
+    }
+    else
+    {
+        url = QUrl::fromUserInput(fname);
+    }
     appendDatabaseUrl(url, utf8, target);
 }
 
 void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
-    QUrl url = QUrl::fromUserInput(fname);
+    QUrl url;
+    if(DatabaseInfo::IsLocalDatabase(fname) || fname == "Clipboard")
+    {
+        url = QUrl::fromLocalFile(fname);
+    }
+    else
+    {
+        url = QUrl::fromUserInput(fname);
+    }
     if (fname.startsWith("http")) url.setScheme("http");
     openDatabaseUrl(url, utf8);
 }
@@ -1089,7 +1100,7 @@ void MainWindow::openWebFavorite()
 
 void MainWindow::openLichessStudy()
 {
-    QPointer<StudySelectionDialog> dlg = new StudySelectionDialog(this);
+    QPointer<StudySelectionDialog> dlg = new StudySelectionDialog(this, false);
 
     dlg->run();
     QList<QPair<QString, QString>> l = dlg->getStudies();
@@ -1099,12 +1110,9 @@ void MainWindow::openLichessStudy()
         QString s = p.first;
         s += ".pgn";
         s.prepend("https://lichess.org/api/study/");
-        // QString name = p.second;
-        // name.append(".pgn");
         QUrl url(s);
         QString token = AppSettings->getValue("Lichess/passWord").toString();
         url.setPassword(token);
-        // QString target = AppSettings->commonDataFilePath(name);
         openDatabaseUrl(url, true);
     }
     delete dlg;
@@ -1137,7 +1145,6 @@ void MainWindow::openLichess()
     QDate end(date.year(),date.month(),1);
 
     OnlineBase db;
-// TODO Debug Tournament handles - they don't work reliably db.setTournament("");
 
     QAction* action = qobject_cast<QAction*>(sender());
     if (action)
@@ -2130,6 +2137,7 @@ void MainWindow::setupActions()
     /* Scratchpad */
     QMenu* menuScratchPad = menuBar()->addMenu(tr("Scratch Pad"));
     /* Text Editor */
+
     DockWidgetEx* textEditDock = new DockWidgetEx(tr("Scratch Pad"), this);
     textEditDock->setObjectName("ScratchpadDock");
     m_scratchPad = new TextEdit(textEditDock,menuScratchPad);
@@ -2155,10 +2163,13 @@ void MainWindow::setupActions()
     helpAction->setIcon(QIcon(":/images/help.png"));
     helpAction->setShortcut(Qt::Key_F1);
     help->addAction(helpAction);
+    fileToolBar->addAction(helpAction);
 
     help->addAction(createAction(tr("Customize Keyboard..."), SLOT(slotEditActions())));
     help->addSeparator();
     help->addAction(createAction(tr("Load Sample Database"), SLOT(QueryLoadDatabase())));
+
+
     QAction* reportBugAction = createAction(tr("Report a bug..."), SLOT(slotHelpBug()));
     reportBugAction->setIcon(QIcon(":/images/bug.png"));
     help->addAction(reportBugAction);
@@ -2174,7 +2185,6 @@ void MainWindow::setupActions()
     debug->addAction(createAction("Compile ECO", SLOT(slotCompileECO())));
 #endif
 
-    fileToolBar->addAction(helpAction);
     toolbars->addAction(fileToolBar->toggleViewAction());
     toolbars->addAction(editToolBar->toggleViewAction());
     toolbars->addAction(dbToolBar->toggleViewAction());
@@ -2196,7 +2206,7 @@ bool MainWindow::confirmQuit()
 {
     QString modified;
 
-    if (!m_scratchPad->saveDocument())
+    if (m_scratchPad && !m_scratchPad->saveDocument())
         return false;
 
     const auto dbs = m_registry->databases();
@@ -2237,14 +2247,12 @@ bool MainWindow::confirmQuit()
 
     SwitchToClipboard();
     cancelPolyglotWriters();
-    m_openingTreeWidget->cancel(); // Make sure we are not grabbing into something that is closed now
+    m_openingTreeWidget->terminate(); // Make sure we are not grabbing into something that is closed now
 
     for (int i = dbs.size() - 1; i; --i)
     {
         slotFileCloseIndex(i, true);
     }
-
-    m_openingTreeWidget->cancel(); // Make sure that Clipboard tree update is terminated again
 
     return true;
 }

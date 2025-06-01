@@ -42,6 +42,7 @@
 #include "gamewindow.h"
 #include "GameMimeData.h"
 #include "historylabel.h"
+#include "lichesstransfer.h"
 #include "mainwindow.h"
 #include "matchparameterdlg.h"
 #include "messagedialog.h"
@@ -58,6 +59,7 @@
 #include "shellhelper.h"
 #include "settings.h"
 #include "streamdatabase.h"
+#include "studyselectiondialog.h"
 #include "tablebase.h"
 #include "tagdialog.h"
 #include "tags.h"
@@ -3085,7 +3087,9 @@ void MainWindow::copyGames(QString destination, QList<GameId> indexes, QString s
         {
             copyGame(pDestDBInfo, pSrcDBInfo, index);
         }
-        QString msg = tr("Appended %1 games from %2 to %3.").arg(indexes.count()).arg(source, destination);
+        QString msg = tr("Appended %n game(s) from %1 to %2.", "", indexes.count())
+                          .arg(source)
+                          .arg(destination);
         slotStatusMessage(msg);
         if (pDestDBInfo==m_currentDatabase)
         {
@@ -3107,8 +3111,8 @@ void MainWindow::copyGames(QString destination, QList<GameId> indexes, QString s
             if (!success) break;
         }
     }
-    QString msg = success ? tr("Appended %1 games to %2.").arg(indexes.count()).arg(destination) :
-                            tr("Error appending games to %1").arg(destination);
+    QString msg = success ? tr("Appended %n game(s) to %1.", "", indexes.count()).arg(destination) :
+                            tr("Error appending games to %1").arg(destination);    
     slotStatusMessage(msg);
 }
 
@@ -3355,6 +3359,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
 {
     QStringList db;
     db << tr("System Clipboard");
+    db << tr("Lichess Study");
     int cc = 1;
     QList<DatabaseInfo*> targets;
     const auto dbs = m_registry->databases();
@@ -3377,8 +3382,8 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
     dlg->setDatabases(db);
     if(dlg->exec() == QDialog::Accepted)
     {
-        int targetIndex = dlg->getDatabase()-1;
-        if (targetIndex >= -1)
+        int targetIndex = dlg->getDatabase()-2;
+        if (targetIndex >= -2)
         {
             DatabaseInfo* targetDb = 0;
             if (targetIndex >= 0)
@@ -3451,16 +3456,49 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
                 if (targetDb)
                 {
                     targetDb->filter()->resize(targetDb->database()->count(), true);
-                    QString msg = tr("Append %1 games from %2 to %3.").arg(n).arg(database()->name(), targetDb->database()->name());
+                    QString msg = tr("Append %n game(s) from %1 to %2.", "", n).arg(database()->name(), targetDb->database()->name());
                     slotStatusMessage(msg);
                 }
                 else
                 {
                     Output out(Output::Pgn);
                     QString s = out.outputUtf8(dest);
-                    QApplication::clipboard()->setText(s);
-                    QString msg = tr("Set %1 games into system clipboard.").arg(n);
-                    slotStatusMessage(msg);
+                    if (targetIndex==-2)
+                    {
+                        QApplication::clipboard()->setText(s);
+                        QString msg = tr("Set %n game(s) into system clipboard.", "", n);
+                        slotStatusMessage(msg);
+                    }
+                    else
+                    {
+                        // T
+                        QPointer<StudySelectionDialog> dlg = new StudySelectionDialog(this, true);
+
+                        dlg->run();
+                        QList<QPair<QString, QString>> l = dlg->getStudies();
+                        QPair<QString, QString> p;
+                        foreach (p, l)
+                        {
+                            QString studyId = p.first;
+                            QString token = AppSettings->getValue("Lichess/passWord").toString();
+                            GameX game;
+                            for(int i = 0; i < (int)dest->count(); ++i)
+                            {
+                                if(dest->loadGame(i, game))
+                                {
+                                    bool chess960 = game.isChess960();
+                                    Output out(Output::Pgn);
+                                    QString pgn = out.output(&game);
+                                    QByteArray reply = LichessTransfer::writeGameToStudy(studyId, token, pgn, chess960);
+                                    qDebug() << reply;
+                                }
+                            }
+                            QString msg = tr("Set %n game(s) into Lichess study.", "", n);
+                            slotStatusMessage(msg);
+                            break; // Only use first (and at most only) selection
+                        }
+                        delete dlg;
+                    }
                     delete dest;
                 }
             }

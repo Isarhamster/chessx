@@ -13,10 +13,11 @@ class StudySelectionDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit StudySelectionDialog(QWidget *parent = nullptr);
+    explicit StudySelectionDialog(QWidget *parent = nullptr, bool singleSelection = false);
     ~StudySelectionDialog();
     void run();
 
+    /** Get a list of studies, first item is the study id, second item is the study's name */
     QList<QPair<QString, QString>> getStudies() const;
 
 protected:
@@ -28,7 +29,7 @@ private slots:
 
 private:
     void fill();
-    QList<QPair<QString, QString>> studies;
+    QList<QPair<QString, QString>> studies; ///< List of (StudyID,StudyName)
     Ui::StudySelectionDialog *ui;
 };
 
