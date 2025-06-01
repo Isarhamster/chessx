@@ -166,6 +166,8 @@ bool ChessXSettings::layout(QWidget* w)
 #ifdef USE_SPEECH
 void ChessXSettings::configureSpeech(QTextToSpeech* speech)
 {
+    if (!speech) return;
+
     speech->setLocale(ChessXSettings::locale());
 
     QVector<QVoice> voices = speech->availableVoices();
@@ -200,14 +202,16 @@ QStringList ChessXSettings::availableVoices(QString lang)
     QLocale cxLocale(lang);
 
     QTextToSpeech* speech = new QTextToSpeech();
-    speech->setLocale(cxLocale);
+    if (speech)
+    {
+        speech->setLocale(cxLocale);
 
-    QVector<QVoice> voices = speech->availableVoices();
+        QVector<QVoice> voices = speech->availableVoices();
 
-    for (const QVoice &voice : qAsConst(voices)) {
-        list << voice.name();
+        for (const QVoice &voice : qAsConst(voices)) {
+            list << voice.name();
+        }
     }
-
     return list;
 }
 #endif
