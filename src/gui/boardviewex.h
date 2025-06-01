@@ -6,8 +6,7 @@
 #define BOARDVIEWEX_H
 
 #include <QWidget>
-
-#include "gamex.h"
+#include <QPixmap>
 
 namespace Ui {
 class BoardViewEx;
@@ -34,12 +33,16 @@ public slots:
     void configureTime(bool white, bool countDown);
     void stopTimes();
 
+protected:
+    void updateBackground();
+
 protected slots:
     void boardIsFlipped(bool, bool);
 
 private:
     void paintEvent(QPaintEvent *pe);
-
+    void resizeEvent(QResizeEvent* e);
+    QPixmap scaledBackground;
     Ui::BoardViewEx *ui;
 };
 

@@ -350,7 +350,8 @@ void MainWindow::slotConfigure(QString anchor)
 void MainWindow::slotReconfigure()
 {
     PreferencesDialog::setupIconInMenus(this);
-
+    BoardViewEx* frame = BoardViewFrame(m_boardView);
+    frame->slotReconfigure();
     if(AppSettings->getValue("/MainWindow/VerticalTabs").toBool())
     {
         setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks | QMainWindow::VerticalTabs);

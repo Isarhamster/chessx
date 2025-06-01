@@ -67,6 +67,7 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
             this, SLOT(showThreat(Guess::Result,BoardX)),Qt::QueuedConnection);
 
     setAcceptDrops(true);
+    setAutoFillBackground(false);
 }
 
 BoardView::~BoardView()

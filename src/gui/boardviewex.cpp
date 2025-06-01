@@ -31,33 +31,57 @@ BoardViewEx::~BoardViewEx()
     delete ui;
 }
 
+void BoardViewEx::resizeEvent(QResizeEvent* e)
+{
+    QWidget::resizeEvent(e);
+    updateBackground();
+}
+
+void BoardViewEx::updateBackground()
+{
+    bool backgroundEnabled = AppSettings->getValue("/Board/Background").toBool();
+
+    if (backgroundEnabled) {
+        QPixmap originalBackground = AppSettings->getPixmap("background.jpg");
+
+        // Pre-scale background to widget size, preserving aspect ratio
+        QSize winSize = size();
+        if (!winSize.isEmpty()) {
+            auto pixmapRatio = (float)originalBackground.width() / originalBackground.height();
+            auto windowRatio = (float)winSize.width() / winSize.height();
+
+            int drawWidth = winSize.width(), drawHeight = winSize.height();
+            if (pixmapRatio > windowRatio) {
+                drawWidth = (int)(winSize.height() * pixmapRatio);
+            } else {
+                drawHeight = (int)(winSize.width() / pixmapRatio);
+            }
+
+            scaledBackground = originalBackground.scaled(drawWidth, drawHeight, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        }
+    } else {
+        scaledBackground = QPixmap();
+    }
+
+    update();
+}
+
 void BoardViewEx::paintEvent(QPaintEvent *pe)
 {
-    QPainter paint(this);
     if (AppSettings->getValue("/Board/Background").toBool())
     {
-        QPixmap bkgnd = AppSettings->getPixmap("background.jpg");
         QPainter painter(this);
 
         auto winSize = size();
-        auto pixmapRatio = (float)bkgnd.width() / bkgnd.height();
-        auto windowRatio = (float)winSize.width() / winSize.height();
+        auto pixmapSize = scaledBackground.size();
 
-        if(pixmapRatio > windowRatio)
-        {
-          auto newWidth = (int)(winSize.height() * pixmapRatio);
-          auto offset = (newWidth - winSize.width()) / -2;
-          painter.drawPixmap(offset, 0, newWidth, winSize.height(), bkgnd);
-        }
-        else
-        {
-          auto newHeight = (int)(winSize.width() / pixmapRatio);
-          auto offset = (newHeight - winSize.height()) / -2;
-          painter.drawPixmap(0, offset, winSize.width(), newHeight, bkgnd);
-        }
+        int x = (winSize.width() - pixmapSize.width()) / 2;
+        int y = (winSize.height() - pixmapSize.height()) / 2;
+
+        painter.drawPixmap(x, y, scaledBackground);
     }
-    QWidget::paintEvent(pe);
 
+    QWidget::paintEvent(pe);
 }
 
 BoardView* BoardViewEx::boardView()
@@ -129,6 +153,7 @@ void BoardViewEx::slotReconfigure()
 {
     AppSettings->layout(this);
     AppSettings->layout(ui->annotationSplitter);
+    updateBackground();
 }
 
 void BoardViewEx::saveConfig()
