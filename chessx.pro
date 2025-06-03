@@ -47,10 +47,10 @@ DEFINES *= QT_USE_QSTRINGBUILDER
 
 macx {
   QMAKE_CXXFLAGS += -fvisibility=hidden
-  QMAKE_LFLAGS_RELEASE -= -O2
-  QMAKE_LFLAGS_RELEASE += -m64 -Ofast
-  QMAKE_CXXFLAGS_RELEASE -= -O2
-  QMAKE_CXXFLAGS_RELEASE *= -m64 -Ofast
+  QMAKE_LFLAGS_RELEASE -= -O3
+  QMAKE_LFLAGS_RELEASE += -m64
+  QMAKE_CXXFLAGS_RELEASE -= -O3
+  QMAKE_CXXFLAGS_RELEASE *= -m64
 
   QMAKE_LFLAGS_DEBUG += -m64 -O0
   QMAKE_CXXFLAGS_DEBUG *= -m64 -O0
@@ -619,6 +619,14 @@ TSQM.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_PATH}/${QMAKE
 TSQM.CONFIG += no_link target_predeps
 QMAKE_EXTRA_COMPILERS += TSQM
 PRE_TARGETDEPS += compiler_TSQM_make_all
+
+# Automatically run lupdate when building
+updateqm.commands = lupdate $$PWD/$$TARGET.pro && lrelease $$PWD/i18n/*.ts
+QMAKE_EXTRA_TARGETS += updateqm
+
+update_translations.commands = lupdate $$PWD -ts $$TRANSLATIONS
+QMAKE_EXTRA_TARGETS += update_translations
+PRE_TARGETDEPS += update_translations  # Optional: Run before build
 
 OTHER_FILES += \
   data/templates/pgn-default.template \
