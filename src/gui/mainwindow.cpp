@@ -204,6 +204,8 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameView, &GameNotationWidget::actionRequested, this, &MainWindow::slotGameModify);
     connect(m_gameView, &GameNotationWidget::queryActiveGame, this, &MainWindow::slotGetActiveGame);
     connect(m_gameView, &GameNotationWidget::signalMergeGame, this, &MainWindow::slotMergeActiveGame);
+    connect(m_gameView, &GameNotationWidget::swipeLeft, this, &MainWindow::slotGameMovePrevious);
+    connect(m_gameView, &GameNotationWidget::swipeRight, this, &MainWindow::slotGameMoveNext);
     connect(this, SIGNAL(signalGameLoaded(BoardX)), gameTextDock, SLOT(raise()));
     gameTextDock->setWidget(m_gameWindow);
     connect(this, &MainWindow::reconfigure, m_gameView, &GameNotationWidget::slotReconfigure);

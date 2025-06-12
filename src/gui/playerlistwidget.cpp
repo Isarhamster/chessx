@@ -46,8 +46,9 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
     QStringList words = AppSettings->getValue("/PlayerListWidget/FilterEditCompleter").toStringList();
     QCompleter* completer = new QCompleter(words, this);
     ui->filterEdit->setCompleter(completer);
+#ifndef QT_NO_TOOLTIP
     ui->labelFilter->setToolTip(words.join("\n"));
-
+#endif
     slotReconfigure();
 }
 
@@ -170,7 +171,9 @@ void PlayerListWidget::filterSelectedPlayer()
         while (words.count()>8) words.removeFirst();
         model->setStringList(words);
         AppSettings->setValue("/PlayerListWidget/FilterEditCompleter", words);
+#ifndef QT_NO_TOOLTIP
         ui->labelFilter->setToolTip(words.join("\n"));
+#endif
     }
 }
 
@@ -199,7 +202,9 @@ void PlayerListWidget::filterSelectedPlayerAdd()
         while (words.count()>8) words.removeFirst();
         model->setStringList(words);
         AppSettings->setValue("/PlayerListWidget/FilterEditCompleter", words);
+#ifndef QT_NO_TOOLTIP
         ui->labelFilter->setToolTip(words.join("\n"));
+#endif
     }
 }
 

@@ -25,6 +25,8 @@ ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p), m_gameMenu(nullptr), m
     setupMenu();
     setTextInteractionFlags(textInteractionFlags() | Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
     setAcceptDrops(true);
+    setAttribute(Qt::WA_AcceptTouchEvents);
+    grabGesture(Qt::SwipeGesture);
 }
 
 void ChessBrowser::doSetSource(const QUrl & /*name*/, QTextDocument::ResourceType /*type*/)
@@ -285,6 +287,30 @@ QAction* ChessBrowser::createNagAction(const Nag& nag)
     m_actions[action] = EditAction(EditAction::AddNag, (int)nag);
     return action;
 }
+
+void ChessBrowser::handleSwipe(QSwipeGesture *gesture) {
+    if (gesture->state() == Qt::GestureFinished) {
+        if (gesture->horizontalDirection() == QSwipeGesture::Left)
+            emit swipeLeft();
+        else if (gesture->horizontalDirection() == QSwipeGesture::Right)
+            emit swipeRight();
+    }
+}
+
+bool ChessBrowser::gestureEvent(QGestureEvent *event) {
+    if (QGesture *swipe = event->gesture(Qt::SwipeGesture)) {
+        handleSwipe(static_cast<QSwipeGesture *>(swipe));
+    }
+    return true;
+}
+
+bool ChessBrowser::event(QEvent *event) {
+    if (event->type() == QEvent::Gesture) {
+        return gestureEvent(static_cast<QGestureEvent *>(event));
+    }
+    return QWidget::event(event);
+}
+
 
 void ChessBrowser::dragEnterEvent(QDragEnterEvent *event)
 {

@@ -18,6 +18,7 @@
 #ifndef CHESSBROWSER_H_INCLUDED
 #define CHESSBROWSER_H_INCLUDED
 
+#include <QGestureEvent>
 #include <QtGui>
 #include <QTextBrowser>
 #include "editaction.h"
@@ -49,6 +50,8 @@ signals:
     void actionRequested(const EditAction& action);
     void queryActiveGame(const GameX** game);
     void signalMergeGame(GameId gameIndex, QString source);
+    void swipeRight();
+    void swipeLeft();
 
 protected:
     virtual bool selectAnchor(const QString& href);
@@ -66,6 +69,9 @@ protected: // Drag+Drop
     void mergeGame(GameId gameIndex);
 
     QStringList getAnchors(const QStringList &hrefs);
+    void handleSwipe(QSwipeGesture *gesture);
+    bool gestureEvent(QGestureEvent *event);
+    bool event(QEvent *event);
 private:
 
     QAction* m_copyHtml;
