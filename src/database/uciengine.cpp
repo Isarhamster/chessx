@@ -225,6 +225,8 @@ void UCIEngine::processMessage(const QString& message)
 
             if(!m_bTestMode)
             {
+                QString setHashOption;
+
                 OptionValueMap::const_iterator i = m_mapOptionValues.constBegin();
                 while(i != m_mapOptionValues.constEnd())
                 {
@@ -248,13 +250,33 @@ void UCIEngine::processMessage(const QString& message)
                             case OPT_TYPE_COMBO:
                                 if(dataSpec->m_defVal != value.toString() && !value.toString().isEmpty())
                                 {
-                                    send(QString("setoption name %1 value %2").arg(key, value.toString()));
+                                    // Defer sending 'Hash' until all other options have been sent. Certain engines initialize the
+                                    // hash immediately upon receiving the option instead of deferring initialization to 'isready'.
+                                    // This can result in slow engine startup when a large hash is specified. Example sequence
+                                    // with Stockfish 17 illustrating the issue:
+                                    // - setoption name Hash value 131072 -- performs a single-threaded 128 GiB TT initialization (very slow)
+                                    // - setoption name Threads value 64 -- performs another TT initialization, this time with 64 threads (fast)
+                                    // By sending 'Hash' last, we'll avoid the slow single-threaded TT initialization.
+                                    if (dataSpec->m_name != "Hash")
+                                    {
+                                        send(QString("setoption name %1 value %2").arg(key, value.toString()));
+                                    }
+                                    else
+                                    {
+                                        setHashOption = QString("setoption name %1 value %2").arg(key, value.toString());
+                                    }
                                 }
                                 break;
                             }
                         }
                     }
                     ++i;
+                }
+
+                if (setHashOption.size() > 0)
+                {
+                    // deferred: hash
+                    send(setHashOption);
                 }
             }
         }
