@@ -26,6 +26,7 @@
 #include "databasetagdialog.h"
 #include "dlgsavebook.h"
 #include "downloadmanager.h"
+#include "duplicatepositionswidget.h"
 #include "duplicatesearch.h"
 #include "ecolistwidget.h"
 #include "editaction.h"
@@ -1920,6 +1921,10 @@ void MainWindow::slotGameChanged(bool /*bModified*/)
     UpdateGameText();
     UpdateGameTitle();
     moveChanged();
+    if (m_duplicatePositionsWidget)
+    {
+        m_duplicatePositionsWidget->gameChanged(game());
+    }
 }
 
 void MainWindow::slotGameViewLinkUrl(const QUrl& url)
