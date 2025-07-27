@@ -215,7 +215,6 @@ void BoardView::drawCoordinates(QPaintEvent* event)
     if(m_coordinates)
     {
         QPainter p(this);
-        p.save();
         p.setPen(m_theme.color(BoardTheme::Coord));
         for(int i = 0; i<8; ++i)
         {
@@ -235,7 +234,6 @@ void BoardView::drawCoordinates(QPaintEvent* event)
             }
             p.drawText(rect, Qt::AlignCenter, QString("%1").arg(QChar('a' + i)));
         }
-        p.restore();
     }
 }
 
@@ -1320,7 +1318,6 @@ void BoardView::drawColorRect(QPaintEvent* event, Square square, QColor color, b
     int y = isFlipped() ? square / 8 : 7 - square / 8;
     QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
 
-    p.save();
     QPen pen(color);
     QBrush brush(color);
     p.setPen(pen);
@@ -1342,8 +1339,6 @@ void BoardView::drawColorRect(QPaintEvent* event, Square square, QColor color, b
 
         p.fillRect(coord + pos.x(), pos.y(), m_theme.size().width(), m_theme.size().height(), radialGrad);
     }
-
-    p.restore();
 }
 
 void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
@@ -1432,7 +1427,6 @@ void BoardView::drawArrow(QPaintEvent* event, Square square1, Square square2, QC
     QPointF pos3(px1, py1);
     QPointF pos4(px2- ((adjust * dX) / arrowLength), py2- ((adjust * dY) / arrowLength));
 
-    p.save();
     p.setRenderHint(QPainter::SmoothPixmapTransform);
 
     color.setAlpha(176-28*thin);
@@ -1446,8 +1440,6 @@ void BoardView::drawArrow(QPaintEvent* event, Square square1, Square square2, QC
     pen.setWidth(2);
     p.setPen(pen);
     p.drawPolygon(arrowPts, 4);
-
-    p.restore();
 }
 
 void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)

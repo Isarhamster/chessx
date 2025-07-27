@@ -57,6 +57,7 @@
 #include "translatingslider.h"
 #include "version.h"
 
+#include <QtWidgets/qmainwindow.h>
 #include <time.h>
 
 #include <QApplication>
@@ -595,7 +596,8 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
             QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
             if(keyEvent && (keyEvent->key() == Qt::Key_Escape ||
                             keyEvent->key() == Qt::Key_Return ||
-                            keyEvent->key() == Qt::Key_Enter))
+                            keyEvent->key() == Qt::Key_Enter ||
+                            keyEvent->key() == Qt::Key_Space ))
             {
                 if (obj == this ||
                     obj == m_boardView ||
@@ -604,12 +606,17 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                     obj == m_secondaryAnalysis)
                 {
                     keyPressEvent(keyEvent);
+                    if (keyEvent->key() == Qt::Key_Space)
+                    {
+                        keyEvent->setAccepted(true);
+                        return (obj == m_boardView);
+                    }
                     return (obj != m_boardView);
                 }
             }
         }
         // standard event processing
-        return QObject::eventFilter(obj, event);
+        return QMainWindow::eventFilter(obj, event);
     }
 }
 
@@ -670,7 +677,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
 {
     evaluateSanNag(e);
     emit enterText(m_nagText);
-    QWidget::keyPressEvent(e);
+    QMainWindow::keyPressEvent(e);
 }
 
 void MainWindow::evaluateSanNag(QKeyEvent *e)
@@ -681,9 +688,9 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
         return;
     }
 
-    if ((e->key() == Qt::Key_Backspace) && m_nagText.size())
+    if (e->key() == Qt::Key_Backspace)
     {
-        m_nagText = m_nagText.left(m_nagText.size()-1);
+        m_nagText.chop(1);
         return;
     }
 
