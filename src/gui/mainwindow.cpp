@@ -656,6 +656,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
         m_autoPlayTimer->stop();
         m_dragTimer->stop();
         m_openingTreeWidget->terminate();
+        disconnect(m_ficsClient, SIGNAL(disconnected()), this, SLOT(FicsDisconnected()));
         m_ficsConsole->Terminate();
 
         foreach(DatabaseInfo* dbi, m_registry->databases())
@@ -1261,10 +1262,8 @@ void MainWindow::copyDatabaseArchive(QString fname, QString destination)
     }
     else
     {
-        QFileInfo fi = QFileInfo(fname);
         QString dir = AppSettings->commonDataPath();
-
-        fname = fi.canonicalFilePath();
+        fname = DatabaseInfo::resolvedPath(fname);
 
         if(!fname.isEmpty())
         {
@@ -1313,10 +1312,8 @@ void MainWindow::openDatabaseArchive(QString fname, bool utf8)
     }
     else
     {
-        QFileInfo fi = QFileInfo(fname);
         QString dir = AppSettings->commonDataPath();
-
-        fname = fi.canonicalFilePath();
+        fname = DatabaseInfo::resolvedPath(fname);
 
         if(!fname.isEmpty())
         {
@@ -1401,7 +1398,7 @@ bool MainWindow::ActivateDatabase(QString fname)
 
 void MainWindow::openDatabaseFile(QString fname, bool utf8)
 {
-    QFileInfo fi = QFileInfo(fname);
+    fname = DatabaseInfo::resolvedPath(fname);
     QString s = ficsPath();
     if (fname == s)
     {
@@ -1411,7 +1408,6 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
         f.close();
     }
 
-    fname = fi.canonicalFilePath();
     if (fname.isEmpty())
     {
         slotStatusMessage("File not found.");
@@ -1425,7 +1421,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
 
     // Create database, connect progress bar and open file
     DatabaseInfo* db = new DatabaseInfo(&m_undoGroup,fname);
-    QString basefile = fi.completeBaseName();
+    QString basefile = QFileInfo(fname).completeBaseName();
 
     startOperation(tr("Opening %1...").arg(basefile));
     connect(db->database(), SIGNAL(progress(int)), SLOT(slotOperationProgress(int)), Qt::QueuedConnection);

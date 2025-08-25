@@ -47,6 +47,7 @@
 #include <QFontDatabase>
 #include <QImageReader>
 #include <QSpinBox>
+#include <QLabel>
 #include <QMenu>
 #include <QMenuBar>
 #include <QTextCodec>
@@ -133,9 +134,7 @@ TextEdit::TextEdit(QWidget *parent, QMenu *menu)
 
 TextEdit::~TextEdit()
 {
-    disconnect(comboSize, SIGNAL(activated(int)), this, SLOT(textStyle(int)));
-    disconnect(comboSize, SIGNAL(textActivated(QString)), this, SLOT(textSize(QString)));
-    removeEventFilter(this);
+    tb->clear();
 }
 
 void TextEdit::setupDocumentActions()
@@ -159,7 +158,7 @@ void TextEdit::setupDocumentActions()
 
 void TextEdit::setupFileActions(QMenu* xmenu)
 {
-    QToolBar *tb = new QToolBar(this);
+    tb = new QToolBar(this);
     tb->setObjectName("ScrpFileActions");
     tb->setWindowTitle(tr("File Actions"));
     addToolBar(tb);

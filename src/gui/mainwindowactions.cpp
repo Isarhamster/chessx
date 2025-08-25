@@ -2100,7 +2100,7 @@ void MainWindow::slotDatabaseUncomment()
 {
     if (MessageDialog::yesNo(tr("Delete all comments from all games?"), databaseInfo()->database()->name()))
     {
-        game().removeCommentsDb();
+        game().removeComments();
         slotGameChanged(true);
         SimpleSaveGame();
         GameX g;
@@ -2122,7 +2122,7 @@ void MainWindow::slotDatabaseRemoveTime()
 {
     if (MessageDialog::yesNo(tr("Delete all time annotations from all games?"), databaseInfo()->database()->name()))
     {
-        game().removeTimeCommentsDb();
+        game().removeTimeComments();
         slotGameChanged(true);
         SimpleSaveGame();
         GameX g;
@@ -2144,7 +2144,7 @@ void MainWindow::slotDatabaseRemoveNullLines()
 {
     if (MessageDialog::yesNo(tr("Prune null moves from all games?"), databaseInfo()->database()->name()))
     {
-        game().removeNullLinesDb();
+        game().removeNullLines();
         slotGameChanged(true);
         SimpleSaveGame();
         GameX g;
@@ -2166,7 +2166,7 @@ void MainWindow::slotDatabaseRemoveVariations()
 {
     if (MessageDialog::yesNo(tr("Delete all variations from all games?"), databaseInfo()->database()->name()))
     {
-        game().removeVariationsDb();
+        game().removeVariations();
         slotGameChanged(true);
         SimpleSaveGame();
         GameX g;

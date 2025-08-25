@@ -173,7 +173,7 @@ void ChessXSettings::configureSpeech(QTextToSpeech* speech)
     QVector<QVoice> voices = speech->availableVoices();
     QString name = AppSettings->getValue("/Sound/Voice").toString();
 
-    for (const QVoice &voice : qAsConst(voices))
+    for (const QVoice &voice : std::as_const(voices))
     {
         if (name == voice.name())
         {
@@ -208,7 +208,7 @@ QStringList ChessXSettings::availableVoices(QString lang)
 
         QVector<QVoice> voices = speech->availableVoices();
 
-        for (const QVoice &voice : qAsConst(voices)) {
+        for (const QVoice &voice : std::as_const(voices)) {
             list << voice.name();
         }
     }

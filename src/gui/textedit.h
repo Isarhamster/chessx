@@ -190,6 +190,7 @@ private:
     QFontComboBox *comboFont;
     QComboBox *comboSize;
     QSpinBox *imageSize;
+    QToolBar *tb;
 
     QString fileName;
     PasteTextEdit *textEdit;

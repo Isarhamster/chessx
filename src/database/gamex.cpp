@@ -1509,7 +1509,7 @@ void GameX::removeNode(MoveId moveId)
 {
     QList<MoveId> removed;
     m_moves.remove(moveId, &removed);
-    for (auto node: qAsConst(removed))
+    for (auto node: std::as_const(removed))
     {
         m_annotations.remove(node);
         m_variationStartAnnotations.remove(node);

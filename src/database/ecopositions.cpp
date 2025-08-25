@@ -6,6 +6,7 @@
 #include <QDataStream>
 #include <QFile>
 #include <QThread>
+#include <utility>
 
 using namespace chessx;
 
@@ -39,7 +40,7 @@ bool EcoPositions::loadEcoFile(const QString& ecoFile)
 
 QString EcoPositions::findEcoNameDetailed(QString eco)
 {
-    for (const auto& actualEco: qAsConst(*m_ecoPositions))
+    for (const auto& actualEco: std::as_const(*m_ecoPositions))
     {
         if (actualEco.startsWith(eco))
         {
@@ -52,7 +53,7 @@ QString EcoPositions::findEcoNameDetailed(QString eco)
 
 QString EcoPositions::findEcoName(QString eco)
 {
-    for (const auto& actualEco: qAsConst(*m_ecoPositions))
+    for (const auto& actualEco: std::as_const(*m_ecoPositions))
     {
         if (actualEco.startsWith(eco))
         {
