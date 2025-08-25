@@ -104,11 +104,15 @@ public:
     bool IsArenaBook() const;
     bool IsBook() const;
 
+
+
     static bool IsPolyglotBook(QString name);
     static bool IsChessbaseBook(QString s);
     static bool IsArenaBook(QString name);
     static bool IsOnlineBook(QString name);
     static bool IsBook(QString name);
+
+    static QString resolvedPath(const QString &fname);
     static bool IsLocalDatabase(QString name);
     static bool IsLocalArchive(QString name);
 

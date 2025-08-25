@@ -117,16 +117,14 @@ void DatabaseInfo::doLoadFile(QString filename)
 
 void DatabaseInfo::run()
 {
-    QFileInfo fi = QFileInfo(m_filename);
-    QString fname = fi.canonicalFilePath();
+    QString fname = resolvedPath(m_filename);
     if (fname.isEmpty()) fname = m_filename; // Support virtual databases
     if (!fname.isEmpty()) doLoadFile(fname);
 }
 
 bool DatabaseInfo::testBOM()
-{
-    QFileInfo fi = QFileInfo(m_filename);
-    QString fname = fi.canonicalFilePath();
+{   
+    QString fname = resolvedPath(m_filename);
     QPointer<QFile> file = new QFile(fname);
     if(file->exists())
     {
@@ -484,6 +482,22 @@ bool DatabaseInfo::IsBook() const
 {
     // Add here if more book formats come in
     return IsPolyglotBook(s) || IsChessbaseBook(s) || IsOnlineBook(s) ;
+}
+
+/* static */ QString DatabaseInfo::resolvedPath(const QString &fname) {
+    QUrl url(fname);
+    if (url.isValid() && !url.isRelative()) {
+        if (url.scheme() == "file") {
+            // Convert file:// URI to local file path
+            return QFileInfo(url.toLocalFile()).canonicalFilePath();
+        } else {
+            // For non-file schemes, return empty
+            return "";
+        }
+    } else {
+        // Treat as a plain local path
+        return QFileInfo(fname).canonicalFilePath();
+    }
 }
 
 /* static */ bool DatabaseInfo::IsLocalDatabase(QString s)
