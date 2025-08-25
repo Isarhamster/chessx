@@ -8,14 +8,15 @@
 ****************************************************************************/
 
 #include <QtCore>
+#include <QtEndian>
 #include "ctgdatabase.h"
 #include "ctg.h"
 #include "square.h"
 
 using namespace chessx;
 
-#ifndef ntohl
-#define ntohl(x) (x) // Hack for Linux which does not know ntohl
+#ifndef ntohl // Linux and Windows don't have ntohl
+#define ntohl(x) qFromBigEndian<quint32>(x);
 #endif
 
 #if defined(_MSC_VER) && defined(_DEBUG)
