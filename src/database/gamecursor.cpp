@@ -10,6 +10,7 @@
 
 #include <QtDebug>
 #include <QFile>
+#include <utility>
 #include "gamecursor.h"
 
 using namespace chessx;
@@ -516,7 +517,7 @@ void GameCursor::remove(MoveId moveId, QList<MoveId>* removed)
     {
         removed->append(node);
     }
-    for (auto v: qAsConst(m_nodes[node].variations))
+    for (auto v: std::as_const(m_nodes[node].variations))
     {
         remove(v, removed);
     }
@@ -538,7 +539,7 @@ void GameCursor::truncateFrom(MoveId moveId, QList<MoveId>* removed)
     if (node == NO_MOVE)
         return;
     remove(m_nodes[node].nextNode, removed);
-    for (auto v: qAsConst(m_nodes[node].variations))
+    for (auto v: std::as_const(m_nodes[node].variations))
     {
         remove(v, removed);
     }
@@ -677,7 +678,7 @@ bool GameCursor::removeVariation(MoveId variation)
 
     QList<MoveId> &vars = m_nodes[m_currentNode].variations;
     int n = vars.indexOf(variation);
-    vars.removeAt(n);
+    if (n>=0) vars.removeAt(n);
     return true;
 }
 
@@ -701,40 +702,8 @@ void GameCursor::removeNullLines()
         if (node.Removed()) continue;
         if (node.move.isNullMove())
         {
-            if (node.nextNode == NO_MOVE)
-            {
-                int self = iw-m_nodes.begin();
-                if (node.parentNode == node.previousNode)
-                {
-                    // This is the first move of an empty variation
-                    MoveId parentNode = m_nodes[self].parentNode;
-                    remove(self);
-                    QList<MoveId> &vars = m_nodes[parentNode].variations;
-                    int n = vars.indexOf(self);
-                    vars.removeAt(n);
-                 }
-                else
-                {
-                    MoveId previousNode = m_nodes[self].previousNode;
-                    QList<MoveId> &vars = m_nodes[previousNode].variations;
-                    if (vars.isEmpty())
-                    {
-                        // This is an empty move at the end of a line
-                        m_nodes[previousNode].nextNode = NO_MOVE;
-                        node.remove();
-                    }
-                    else
-                    {
-                        // There are siblings - swap with first sibling and remove
-                        MoveId parentNode = m_nodes[self].parentNode;
-                        int variation = vars.at(0);
-                        reparentVariation(variation, parentNode);
-                        node.remove();
-                        m_nodes[previousNode].nextNode = variation;
-                        vars.removeAt(0);
-                    }
-                }
-            }
+            int self = iw-m_nodes.begin();
+            removeVariation(self);
         }
     }
 }
