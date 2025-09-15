@@ -26,15 +26,13 @@ Windows.
 
 # 3. Requirements
   
-To compile ChessX, you need zlib, qmake and **Qt5 version 5.14.1** or above.
-
-**known issue:** FICS does not work properly with Qt4
+To compile ChessX, you need zlib, qmake and **Qt6 version 6** or above. (Last built on 6.6.2)
 
 # 4. Compilation
 
 Compiling the source is simple. Execute:
 
-     qmake
+     qmake6
 
 and then
 
@@ -43,17 +41,21 @@ and then
 If the compilation is successful you should be able to run ChessX
 executable in **bin** (or **release**) subdirectory. It is called: **chessx** on Linux, **chessx.app** on Mac OS, and **chessx.exe** on Windows
 
+On Windows you should then run the following to install the required dlls into the release directory:
+
+    windeployqt release
+
 ## 4.1 Compilation in Linux x64 systems
 
 On Linux x64, the  following commands are required for successful compilation:
 
 Build the translations
 
-     lrelease-qt5 chessx.pro
+     lrelease chessx.pro
 
-Run qmake, specifically qt5 version
+Run qmake, specifically qt6 version
 
-     qmake-qt5
+     qmake6
 
 Compile with
 
