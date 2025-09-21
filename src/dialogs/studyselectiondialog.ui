@@ -52,6 +52,25 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="arbitraryStudyBox">
+     <property name="title">
+      <string>Open Study by ID</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QLineEdit" name="arbitraryStudy">
+        <property name="placeholderText">
+         <string>Optional Study ID </string>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>

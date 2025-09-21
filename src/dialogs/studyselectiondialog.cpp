@@ -17,8 +17,10 @@ StudySelectionDialog::StudySelectionDialog(QWidget *parent, bool singleSelection
     ui->setupUi(this);
     if (singleSelection)
     {
+        ui->arbitraryStudyBox->hide();
         ui->studies->setSelectionMode(QAbstractItemView::SingleSelection);
     }
+    ui->arbitraryStudy->clear();
 }
 
 StudySelectionDialog::~StudySelectionDialog()
@@ -122,9 +124,19 @@ void StudySelectionDialog::accept()
                 if (!id.isEmpty())
                 {
                     QString name = item->text();
-                    studies<< QPair<QString,QString>(id,name);
+                    studies << QPair<QString,QString>(id,name);
                 }
             }
+        }
+        QString s = ui->arbitraryStudy->text();
+        if (!s.isEmpty())
+        {
+            if (s.contains("/"))
+            {
+                QFileInfo fi(s);
+                s = fi.fileName();
+            }
+            studies << QPair<QString,QString>(s,s);
         }
     }
     QDialog::accept();
