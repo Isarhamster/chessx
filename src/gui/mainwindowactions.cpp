@@ -66,6 +66,7 @@
 #include "translatingslider.h"
 #include "version.h"
 
+#include <QtCore/qjsonarray.h>
 #include <QtGui>
 #include <QAction>
 #include <QDesktopServices>
@@ -3483,6 +3484,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
                             QString studyId = p.first;
                             QString token = AppSettings->getValue("Lichess/passWord").toString();
                             GameX game;
+                            int k = 0;
                             for(int i = 0; i < (int)dest->count(); ++i)
                             {
                                 if(dest->loadGame(i, game))
@@ -3491,10 +3493,14 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
                                     Output out(Output::Pgn);
                                     QString pgn = out.output(&game);
                                     QByteArray reply = LichessTransfer::writeGameToStudy(studyId, token, pgn, chess960);
-                                    qDebug() << reply;
+                                    QJsonDocument rdoc = QJsonDocument::fromJson(reply);
+                                    QJsonObject it = rdoc.object();
+                                    QJsonArray rounds = it.value("chapters").toArray();
+                                    if (rounds.empty()) break; // Lichess Study probably full
+                                    k++;
                                 }
                             }
-                            QString msg = tr("Set %n game(s) into Lichess study.", "", n);
+                            QString msg = tr("Set %n game(s) out of %1 into Lichess study.", "", k).arg(n);
                             slotStatusMessage(msg);
                             break; // Only use first (and at most only) selection
                         }
