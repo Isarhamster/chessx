@@ -858,14 +858,16 @@ void Output::postProcessOutput(QString& text) const
 void Output::outputUtf8(QTextStream& out, FilterX& filter)
 {
     int percentDone = 0;
+    int doneCount = 0;
+    int totalCount = filter.count();
     GameX game;
     QString header = m_header;
     postProcessOutput(header);
     out << header;
 
-    for(int i = 0; i < filter.count(); ++i)
+    for(int i = 0, sz = filter.size(); i < sz; ++i)
     {
-        if(filter.database()->loadGame(i, game))
+        if(filter.contains(i) && filter.database()->loadGame(i, game))
         {
             QString tagText = outputTags(&game);
             out << tagText;
@@ -874,8 +876,10 @@ void Output::outputUtf8(QTextStream& out, FilterX& filter)
             postProcessOutput(outText);
             out << outText;
             out << "\n\n";
+            
+            doneCount++;
         }
-        int percentDone2 = (i + 1) * 100 / filter.count();
+        int percentDone2 = doneCount * 100 / totalCount;
         if(percentDone2 > percentDone)
         {
             emit progress((percentDone = percentDone2));
@@ -890,15 +894,17 @@ void Output::outputUtf8(QTextStream& out, FilterX& filter)
 void Output::outputLatin1(QDataStream& out, FilterX& filter)
 {
     int percentDone = 0;
+    int doneCount = 0;
+    int totalCount = filter.count();
     GameX game;
     QString header = m_header;
     postProcessOutput(header);
     QByteArray b = header.toLatin1();
     out.writeRawData(b, b.length());
 
-    for(int i = 0; i < filter.count(); ++i)
+    for(int i = 0, sz = filter.size(); i < sz; ++i)
     {
-        if(filter.database()->loadGame(i, game))
+        if(filter.contains(i) && filter.database()->loadGame(i, game))
         {
             QString tagText = outputTags(&game);
             b = tagText.toLatin1();
@@ -909,8 +915,10 @@ void Output::outputLatin1(QDataStream& out, FilterX& filter)
             outText.append("\n\n");
             b = outText.toLatin1();
             out.writeRawData(b, b.length());
+            
+            doneCount++;
         }
-        int percentDone2 = (i + 1) * 100 / filter.count();
+        int percentDone2 = doneCount * 100 / totalCount;
         if(percentDone2 > percentDone)
         {
             emit progress((percentDone = percentDone2));
