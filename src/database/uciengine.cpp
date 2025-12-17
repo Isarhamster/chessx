@@ -109,7 +109,9 @@ void UCIEngine::setMpv(int mpv)
 
 void UCIEngine::setMoveTime(const EngineParameter &mt)
 {
-    if ((m_moveTime.ms_totalTime != mt.ms_totalTime) || (m_moveTime.analysisMode != mt.analysisMode))
+    if ((m_moveTime.ms_totalTime != mt.ms_totalTime) ||
+        (m_moveTime.searchDepth != mt.searchDepth) ||
+        (m_moveTime.analysisMode != mt.analysisMode))
     {
         EngineX::setMoveTime(mt);
         if(isAnalyzing())
