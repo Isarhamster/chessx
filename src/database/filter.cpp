@@ -265,3 +265,16 @@ void FilterX::executeSearch(Search* search, FilterOperator searchOperator)
     currentSearchOperator = searchOperator;
     start();
 }
+
+QList<GameId> FilterX::selectedGames() const
+{
+    QList<GameId> gameIndexList;
+    for(int i = 0, sz = static_cast<int>(size()); i < sz; ++i)
+    {
+        if(contains(i))
+        {
+            gameIndexList.append(i);
+        }
+    }
+    return gameIndexList;
+}

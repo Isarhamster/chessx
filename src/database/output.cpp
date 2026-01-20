@@ -15,6 +15,7 @@
 #include <QTextStream>
 #include "board.h"
 #include "output.h"
+#include "gameid.h"
 #include "memorydatabase.h"
 #include "settings.h"
 #include "tags.h"
@@ -863,7 +864,8 @@ void Output::outputUtf8(QTextStream& out, FilterX& filter)
     postProcessOutput(header);
     out << header;
 
-    for(int i = 0; i < filter.count(); ++i)
+    QList<GameId> filterList = filter.selectedGames();
+    foreach(GameId i, filterList)
     {
         if(filter.database()->loadGame(i, game))
         {
@@ -896,7 +898,8 @@ void Output::outputLatin1(QDataStream& out, FilterX& filter)
     QByteArray b = header.toLatin1();
     out.writeRawData(b, b.length());
 
-    for(int i = 0; i < filter.count(); ++i)
+    QList<GameId> filterList = filter.selectedGames();
+    foreach(GameId i, filterList)
     {
         if(filter.database()->loadGame(i, game))
         {
