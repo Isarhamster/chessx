@@ -27,18 +27,19 @@ rm -rf chessx.app.original
 rm -rf chessx.modified.app
 cp -r chessx.app chessx.app-original
 ${DIR}/fix_paths.sh "${QTBASE}" chessx
-${QTBIN}/macdeployqt chessx.app -verbose=2
+${QTBIN}/macdeployqt chessx.app
 rm -f chessx.zip
 ditto -ck --rsrc --sequesterRsrc chessx.app chessx.zip
-rm -f chessx-installer.mpkg
-/usr/local/bin/packagesbuild -v -F ${RELEASEDIR} --package-version $VERSION ${DIR}/../Packages/ChessX.pkgproj
-rm -rf ${BUILDDIR}/dmg
-mkdir ${BUILDDIR}/dmg
-mv  ${BUILDDIR}/chessx-installer.mpkg ${BUILDDIR}/dmg/
-rm -f chessx-${VERSION}.dmg
-hdiutil create chessx-${VERSION}.dmg -volname chessx -fs HFS+ -srcfolder ${BUILDDIR}/dmg
-#codesign --deep -s "Apple Development: jens.nissen@gmx.net" --options runtime --timestamp chessx-${VERSION}.dmg
-#codesign -vvv --deep --strict chessx-${VERSION}.dmg
+
+# Fix owner and rights before
+chown -R $(whoami):staff chessx.app
+chmod -R u+rwX,go+rX chessx.app
+xattr -cr chessx.app
+
+rm -f ${DIR}/../Packages/chessx-${VERSION}.dmg
+
+${DIR}/make_dmg.sh
+
 mv chessx.app chessx.modified.app
 mv chessx.app-original chessx.app
-mv -v ${RELEASEDIR}/chessx-${VERSION}.dmg ${DIR}/../Packages/
+mv -v ${RELEASEDIR}/ChessX.dmg ${DIR}/../Packages/chessx-${VERSION}.dmg
