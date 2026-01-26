@@ -382,7 +382,17 @@ or by selecting a new premove.</p>
 
 <p><img src=":/images/lichess.png" width="42" align="left"><img src=":/images/chesscom.png" width="42">
 
-It fetches the games you played this month on lichess or chess.com. It requires an user name to be set in the preferences.</p>
+Fetch games you from lichess or chess.com.</p>
+
+<p><img src=":/images/lichess_study.png" width="42" align="left">
+You can read lichess studies into a local database. This requires a proper token to be setup in the Preferences if you
+want to read private studies. Otherwise, you are restricted to public studies.
+</p>
+<p>Writing to lichess studies can be achieved by the copy games dialog from the games list and selecting Lichess Study as target.
+You can copy from any database and you will be asked next for the target lichess study. Note that lichess studies can
+only hold 64 games. In case games cannot be saved, the count in the status bar will show that not all games could be transferred.</p>
+<p>Note: Reading and writing lichess databases does not automatically synchronize them, i.e., if you modify a loaded database, the changes will not be
+written back. Also Writing into a Lichess Study does always append a new chapter, it will not overwrite existing chapters.</p>
 
 <h3><a name="Variants"></a>Chess Variants</h3>
 <p>ChessX supports Chess960 games (also call Fisherandom).</p>

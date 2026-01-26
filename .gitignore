@@ -1,6 +1,7 @@
 *.DS_Store
 *.stash
 *.o
+.qtc_clangd/*
 debug/*
 */generated/*
 chessx.app
