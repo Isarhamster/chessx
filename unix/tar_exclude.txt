@@ -16,3 +16,5 @@ Packages
 .git*
 .qmake.stash
 copydll-m64.bat
+lcov*
+Doxyfile
