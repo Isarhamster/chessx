@@ -317,6 +317,9 @@ add_library(gui STATIC
   dialogs/savedialog.cpp
   dialogs/savedialog.h
   dialogs/savedialog.ui
+  dialogs/studyselectiondialog.cpp
+  dialogs/studyselectiondialog.h
+  dialogs/studyselectiondialog.ui
   dialogs/tagdialog.cpp
   dialogs/tagdialog.h
   dialogs/tagdialog.ui

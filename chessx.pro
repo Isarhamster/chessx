@@ -667,6 +667,7 @@ DISTFILES += \
   mac_osx/fix_paths.sh \
   mac_osx/mac_deploy_dyn \
   mac_osx/qt_menu.nib \
-  data/lang/readme-lang.txt
+  data/lang/readme-lang.txt \
+  unix/tar_exclude.txt
 
 
