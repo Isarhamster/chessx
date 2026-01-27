@@ -48,6 +48,28 @@ class SaveRestoreMove;
 typedef QHash<QString, QString> TagMap;
 typedef QHashIterator<QString, QString> TagMapIterator;
 
+class DuplicateMoveList
+{
+public:
+    std::vector<Move> moves;
+    MoveId lastMove;
+};
+
+class DuplicatedPosition final
+{
+public:
+    enum WarningLevel
+    {
+        // At most only one variation has moves after it
+        None,
+        // More than one variation has moves after
+        BothMove,
+    };
+    std::vector<DuplicateMoveList> moveLists;
+    WarningLevel warning;
+    QString fen;
+};
+
 class GameX : public QObject
 {
     Q_OBJECT
@@ -158,6 +180,9 @@ public :
     bool editAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Append to existing annotations associated with move at node @p moveId */
     bool appendAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
+    /** Finds duplicate positions within a game.
+     * Returns a set of positions that have more than one move list leading to that position. */
+    std::vector<DuplicatedPosition> getDuplicatePositions() const noexcept;
 
     /** Append a square to the existing lists of square annotations, if there is none, create one */
     bool appendSquareAnnotation(chessx::Square s, QChar colorCode);
