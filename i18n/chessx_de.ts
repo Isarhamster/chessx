@@ -2360,7 +2360,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="130"/>
         <source>Archives (*.zip;*.gz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Archive (*.zip;*.gz)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="214"/>
@@ -6233,13 +6233,13 @@ chessx.sourceforge.net</translation>
         <location filename="../src/dialogs/studyselectiondialog.ui" line="57"/>
         <location filename="../src/generated/ui_studyselectiondialog.h" line="98"/>
         <source>Open Study by ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Studie mit ID öffnen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/studyselectiondialog.ui" line="63"/>
         <location filename="../src/generated/ui_studyselectiondialog.h" line="99"/>
         <source>Optional Study ID </source>
-        <translation type="unfinished"></translation>
+        <translation>Optionale Studien ID </translation>
     </message>
     <message>
         <location filename="../src/dialogs/studyselectiondialog.cpp" line="39"/>
