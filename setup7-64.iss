@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ChessX"
-#define MyAppVersion "1.6.6"
+#define MyAppVersion "1.6.8"
 #define MyAppPublisher "chessx.sourceforge.net"
 #define MyAppURL "http://chessx.sourceforge.net"
 #define MyAppExeName "chessx.exe"

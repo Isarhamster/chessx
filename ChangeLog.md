@@ -1,3 +1,10 @@
+## January 2026: Version 1.6.8
+
+- Bugfix: Files won't open in Windows
+- Bugfix: Kept file handle open forever after BOM Test
+
+- Changed: Consistent handling of archives
+
 ## January 2026: Version 1.6.6
 
 - New feature: Read / Write Lichess Studies
