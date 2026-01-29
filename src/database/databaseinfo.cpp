@@ -519,7 +519,7 @@ bool DatabaseInfo::IsBook() const
     QString suffix = fi.suffix().toLower();
 
     return ((suffix == "zip") ||
-            (suffix == "tgz"));
+            (suffix == "gz"));
 }
 
 qint64 DatabaseInfo::GetDatabaseSize(QString filename)

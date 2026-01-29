@@ -126,7 +126,8 @@ void MainWindow::slotFileOpen()
 #endif
            << tr("Polyglot books (*.bin)")
            << tr("Arena books (*.abk)")
-           << tr("Chessbase books (*.ctg)");
+           << tr("Chessbase books (*.ctg)")
+           << tr("Archives (*.zip;*.gz)");
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Open database"),
                         AppSettings->value("/General/DefaultDataPath").toString(),
                         filters.join(";;"));
