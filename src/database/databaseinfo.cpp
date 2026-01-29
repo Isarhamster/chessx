@@ -492,6 +492,7 @@ bool DatabaseInfo::IsBook() const
             return QFileInfo(url.toLocalFile()).canonicalFilePath();
         } else {
             // For non-file schemes, return empty
+            if (QFileInfo::exists(fname)) return QFileInfo(fname).canonicalFilePath();
             qDebug() << "Rejected resolved path: " << fname << " : " << url;
             return "";
         }
