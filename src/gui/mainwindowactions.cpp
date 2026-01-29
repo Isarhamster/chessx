@@ -70,6 +70,7 @@
 #include <QtGui>
 #include <QAction>
 #include <QDesktopServices>
+#include <QFile>
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QMenu>

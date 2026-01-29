@@ -13,7 +13,6 @@
 #ifndef PGNDATABASE_H_INCLUDED
 #define PGNDATABASE_H_INCLUDED
 
-#include <QFile>
 #include <QByteArray>
 #include <QStringRef>
 #include <QVector>
@@ -43,7 +42,7 @@ public:
     virtual QString filename() const;
     /** Closes the database */
     void close();
-    virtual void clear();
+    virtual void clear() override;
 
     //game retrieval & storage
     /** Loads a game from the given position, returns true if successful */
@@ -119,7 +118,7 @@ protected:
 
 protected:
 	IndexBaseType m_count; // Should actually be a GameId - but cannot be changed due to serialization issues
-	QPointer<QIODevice> m_file;
+    QIODevice* m_file;
 	QString m_currentLine;
 
 private:

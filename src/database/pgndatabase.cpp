@@ -31,6 +31,7 @@ using namespace chessx;
 
 PgnDatabase::PgnDatabase() : Database()
 {
+    m_file = nullptr;
     initialise();
 }
 
@@ -389,6 +390,7 @@ void PgnDatabase::close()
         m_file->close();
     }
     delete m_file;
+    m_file = nullptr;
 
     //reset member variables
     initialise();
@@ -451,7 +453,6 @@ bool PgnDatabase::loadGame(GameId gameId, GameX& game)
 
 void PgnDatabase::initialise()
 {
-    m_file = nullptr;
     m_inComment = false;
     m_inPreComment = false;
     m_filename = QString();

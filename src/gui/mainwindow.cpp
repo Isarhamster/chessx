@@ -61,6 +61,7 @@
 #include <time.h>
 
 #include <QApplication>
+#include <QFile>
 #include <QFileDialog>
 #include <QLabel>
 #include <QLCDNumber>

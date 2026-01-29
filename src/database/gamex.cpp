@@ -9,7 +9,6 @@
  ***************************************************************************/
 
 #include <QtDebug>
-#include <QFile>
 #include <QRegularExpression>
 #include "annotation.h"
 #include "ecopositions.h"

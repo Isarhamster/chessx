@@ -34,7 +34,7 @@ public:
     /** Destructor */
     ~MemoryDatabase();
     /** Clear a memory database */
-    virtual void clear();
+    virtual void clear() override;
     /** Returns whether the database is read-only or not */
     virtual bool isReadOnly() const;
     /** @return whether the database was modified. */

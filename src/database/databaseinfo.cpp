@@ -125,12 +125,12 @@ void DatabaseInfo::run()
 bool DatabaseInfo::testBOM()
 {   
     QString fname = resolvedPath(m_filename);
-    QPointer<QFile> file = new QFile(fname);
-    if(file->exists())
+    QFile file(fname);
+    if(file.exists())
     {
-        if (file->open(QIODevice::ReadOnly))
+        if (file.open(QIODevice::ReadOnly))
         {
-            QByteArray a = file->read(3);
+            QByteArray a = file.read(3);
             if ((a.length() == 3) &&
                 ((unsigned char)a[0] == 0xEF) &&
                 ((unsigned char)a[1] == 0xBB) &&
@@ -492,6 +492,7 @@ bool DatabaseInfo::IsBook() const
             return QFileInfo(url.toLocalFile()).canonicalFilePath();
         } else {
             // For non-file schemes, return empty
+            qDebug() << "Rejected resolved path: " << fname << " : " << url;
             return "";
         }
     } else {
