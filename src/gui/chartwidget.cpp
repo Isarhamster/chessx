@@ -9,7 +9,6 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPalette>
-#include <QSharedPointer>
 #include <cmath>
 
 #include "qt6compat.h"

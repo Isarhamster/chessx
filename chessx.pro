@@ -624,6 +624,7 @@ OTHER_FILES += \
   ChangeLog.md \
   COPYING.md \
   ChangeLog.txt \
+  .gitignore \
   data/help/about.css \
   data/help/about-dark.css \
   data/help/about0.html \

@@ -36,34 +36,34 @@ public:
     /** Clear a memory database */
     virtual void clear() override;
     /** Returns whether the database is read-only or not */
-    virtual bool isReadOnly() const;
+    bool isReadOnly() const override;
     /** @return whether the database was modified. */
-    virtual bool isModified() const;
+    bool isModified() const override;
     /** Set database dirty flag */
-    void setModified(bool b);
+    void setModified(bool b) override;
     /** Set database dirty flag */
-    void startTransaction(bool b);
+    void startTransaction(bool b) override;
     /** Adds a game to the database */
-    bool appendGame(const GameX& game);
+    bool appendGame(const GameX& game) override;
     /** Removes a game from the database */
-    bool remove(GameId gameId);
+    bool remove(GameId gameId) override;
     /** Undo the deletion of a game */
-    bool undelete(GameId gameId);
+    bool undelete(GameId gameId) override;
     /** Saves a game at the given position, returns true if successful */
-    bool replace(GameId gameId, GameX& game);
+    bool replace(GameId gameId, GameX& game) override;
 
     /** Loads a game from the given position, returns true if successful */
-    bool loadGame(GameId gameId, GameX& game);
+    bool loadGame(GameId gameId, GameX& game) override;
     /** Loads only moves into a game from the given position */
-    void loadGameMoves(GameId gameId, GameX& game);
-    virtual int findPosition(GameId index, const BoardX& position);
+    void loadGameMoves(GameId gameId, GameX& game) override;
+    int findPosition(GameId index, const BoardX& position) override;
 
 protected:
-    virtual void parseGame();
-    virtual bool hasIndexFile() const { return false; }
+    void parseGame() override;
+    bool hasIndexFile() const override { return false; }
 
 private:
-    bool parseFile();
+    bool parseFile() override;
 
 private:
     QVector <GameX*> m_games;
