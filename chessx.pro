@@ -7,9 +7,10 @@ TEMPLATE = app
 
 greaterThan(QT_MAJOR_VERSION, 4) {
   QT += printsupport
-  QT += core gui widgets
+  QT += core gui widgets webenginewidgets webchannel
   QT += xml
   QT -= multimediawidgets
+  QT -= positioning
   # Comment out sound for Ubuntu with Qt5 if multimedia is not available (default in Ubuntu)
   CONFIG += sound
   # Comment out speech for Linux - there is a bug in Speech which will make ChessX crash (QTBUG-90626)
@@ -283,6 +284,7 @@ HEADERS += src/database/board.h \
   src/gui/boardviewex.h \
   src/gui/chartwidget.h \
   src/gui/chessbrowser.h \
+  src/gui/chessbrowserpage.h \
   src/gui/chessxsettings.h \
   src/gui/colorlist.h \
   src/gui/databaselist.h \
@@ -454,6 +456,7 @@ SOURCES += \
   src/gui/boardviewex.cpp \
   src/gui/chartwidget.cpp \
   src/gui/chessbrowser.cpp \
+  src/gui/chessbrowserpage.cpp \
   src/gui/chessxsettings.cpp \
   src/gui/colorlist.cpp \
   src/gui/databaselist.cpp \

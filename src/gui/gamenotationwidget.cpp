@@ -22,7 +22,7 @@ GameNotationWidget::GameNotationWidget(QWidget* parent)
 
     configureFont();
 
-    connect(m_browser, &QTextBrowser::anchorClicked, this, &GameNotationWidget::anchorClicked);
+    connect(m_browser, &ChessBrowser::anchorClicked, this, &GameNotationWidget::anchorClicked);
     connect(m_browser, &ChessBrowser::actionRequested, this, &GameNotationWidget::actionRequested);
     connect(m_browser, &ChessBrowser::queryActiveGame, this, &GameNotationWidget::queryActiveGame);
     connect(m_browser, &ChessBrowser::signalMergeGame, this, &GameNotationWidget::signalMergeGame);
@@ -37,17 +37,22 @@ GameNotationWidget::~GameNotationWidget()
 
 QString GameNotationWidget::getHtml() const
 {
-    return m_browser->toHtml();
+    QString html;
+    m_browser->page()->toHtml([&html](const QString &result){ html = result; });
+    return html;
 }
 
 QString GameNotationWidget::getText() const
 {
-    return m_browser->toPlainText();
+    QString text;
+    m_browser->page()->toPlainText([&text](const QString &result){ text = result; });
+    return text;
 }
 
 QString GameNotationWidget::getTextSelection() const
 {
-    return m_browser->textCursor().selection().toPlainText();
+    return "";
+    // return m_browser->textCursor().selection().toPlainText();
 }
 
 QString GameNotationWidget::generateText(const GameX &game, bool trainingMode)
@@ -58,7 +63,7 @@ QString GameNotationWidget::generateText(const GameX &game, bool trainingMode)
 void GameNotationWidget::reload(const GameX& game, bool trainingMode)
 {
     auto text = m_output->output(&game, trainingMode);
-    m_browser->setText(text);
+    m_browser->setHtml(text);
     m_browser->showMove(game.currentMove());
 }
 

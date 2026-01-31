@@ -56,8 +56,16 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
           content: counter(listenpunkt_ebene1) counter(listenpunkt_ebene2,lower-alpha) ". ";\n
           counter-increment:listenpunkt_ebene2;\n
         }\n
-</style>\n
-</head>\n
+  .move.active { background: #ffd; }\n
+</style>
+<script>
+  function highlightMove(id) {
+      document.querySelectorAll('.move').forEach(e => e.classList.remove('active'));
+      const el = document.getElementById('move-' + id);
+      if (el) el.classList.add('active');
+  }
+</script>
+</head>
 <body>
 [OUTPUTFOOTER]
 </body>
