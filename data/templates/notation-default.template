@@ -19,51 +19,129 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 <title>ChessX Output</title>
 <meta http-equiv="content-type" content="text/html; charset=windows-1252">
 <style type="text/css">
-  p             {margin-top: 0; margin-bottom: 0}\n
-  p.var1        {margin-left: 20px}\n
-  p.var2        {margin-left: 40px}\n
-  p.var3        {margin-left: 60px}\n
-  p.var4        {margin-left: 80px}\n
-  p.var5        {margin-left: 100px}\n
-  p.var6        {margin-left: 120px}\n
-  p.var7        {margin-left: 140px}\n
-  p.var8        {margin-left: 160px}\n
-  p.var9        {margin-left: 180px}\n
-  p.comment     {margin-left: 20px; margin-right: 10px}\n
-  p.precomment  {margin-right: 10px}\n
-  a             {text-decoration: none}\n
-  a.main        {font-family:"@FontBrowserMove@";color: @MainLineMoveColor@; font-weight: bold}\n
-  a.var         {font-family:"@FontBrowserMove@";color: @VariationColor@}\n
-  a.comment     {color: @CommentColor@}\n
-  a.nag         {color: @NagColor@}\n
-  td.mainline   {padding-left: 10px; padding-right: 10px; color: @MainLineMoveColor@; width:50%}\n
-  .diagram-indent {lfloat: right; margin-top: 8px;}\n
-  .mainline {margin-left: 20px; color: @MainLineMoveColor@}\n
-  table,th,td {border: 0px;}\n
-  ol.ebene1 {\n
-          counter-reset: listenpunkt_ebene1;\n
-          list-style-type: none;\n
-        }\n
-        ol.ebene1 li::before {\n
-          content: counter(listenpunkt_ebene1) ". ";\n
-          counter-increment: listenpunkt_ebene1;\n
-        }\n
-        ol.ebene2 {\n
-          counter-reset:listenpunkt_ebene2;\n
-          list-style-type:none;\n
-        }\n
-        ol.ebene2 li::before {\n
-          content: counter(listenpunkt_ebene1) counter(listenpunkt_ebene2,lower-alpha) ". ";\n
-          counter-increment:listenpunkt_ebene2;\n
-        }\n
-  .move.active { background: #ffd; }\n
+.move {
+    cursor: pointer;
+    margin-right: 0.25em;
+}
+
+.variation {
+    margin-left: calc(var(--depth) * 20px);
+}
+
+.move.path {
+    background: #e6f0ff;
+}
+
+.move.active {
+    background: #ffd966;
+    font-weight: bold;
+}
+
+.comment {
+    color: #666;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.precomment {
+    color: #666;
+    margin-right: 0.5em;
+}
+
+.nag {
+    color: #888;
+    font-weight: bold;
+    margin-left: -0.15em;
+}
+
+.diagram {
+    display: block;
+    margin-left: 0.5em;
+}
+
+.mainline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+table.mainline {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td.white, td.black {
+    width: 50%;
+    vertical-align: top;
+}
+
+.variation[data-collapsed="true"] .move {
+    display: none;
+}
+
+.toggle {
+    cursor: pointer;
+    color: #888;
+    margin-right: 4px;
+}
+.toggle:hover {
+    color: #000;
+}
+
 </style>
+<script src="qrc:///qtwebchannel/qwebchannel.js"></script>
 <script>
-  function highlightMove(id) {
-      document.querySelectorAll('.move').forEach(e => e.classList.remove('active'));
-      const el = document.getElementById('move-' + id);
-      if (el) el.classList.add('active');
-  }
+  let bridge = null;
+
+  new QWebChannel(qt.webChannelTransport, function(channel) {
+      bridge = channel.objects.bridge;
+  });
+</script>
+
+<script>
+    function highlightMove(id) {
+        document
+            .querySelectorAll(".move.active")
+            .forEach(m => m.classList.remove("active"));
+
+        const el = document.querySelector(
+            '.move[data-move-id="' + id + '"]'
+        );
+        if (el) el.classList.add("active");
+    }
+
+    document.addEventListener("click", e => {
+      const move = e.target.closest(".move");
+      if (!move) return;
+
+      bridge.moveClicked(parseInt(move.dataset.moveId));
+    });
+
+    function highlightPath(moveId) {
+        document
+            .querySelectorAll('.move.path')
+            .forEach(e => e.classList.remove('path'));
+
+        let current = document.querySelector('.move[data-move-id="' + moveId + '"]');
+
+        while (current) {
+            if (current.dataset.moveId != moveId) current.classList.add('path');
+
+            const parentId = current.dataset.parentId;
+            if (!parentId || parentId === "-1")
+                break;
+
+            current = document.querySelector('.move[data-move-id="' + parentId + '"]');
+        }
+    }
+    document.addEventListener("click", e => {
+        const toggle = e.target.closest(".toggle");
+        if (!toggle) return;
+
+        const variation = toggle.closest(".variation");
+        const collapsed = variation.dataset.collapsed === "true";
+        variation.dataset.collapsed = collapsed ? "false" : "true";
+    });
+
 </script>
 </head>
 <body>
@@ -71,33 +149,10 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 </body>
 </html>
 [MARKUPTAGS]
-MarkupHeaderBlock=,<br>\n
-MarkupNotationBlock=,
-MarkupResult=<b>,</b>
-MarkupDiagram=<br><br>,<br>
-MarkupMainLineMove=<a class="main" href="move:%1">,</a>
-MarkupVariationMove=<a class="var" href="move:%1">,</a>
-MarkupMainLine=,
-MarkupVariationInline=<span class="var">(,)</span>
-MarkupVariationIndent1=(,)\n
-MarkupVariationIndent=(,)\n
-MarkupVariationResume1=<p class="var1">,</p>\n
-MarkupVariationResume2=<p class="var2">,</p>\n
-MarkupVariationResume3=<p class="var3">,</p>\n
-MarkupVariationResume4=<p class="var4">,</p>\n
-MarkupVariationResume5=<p class="var5">,</p>\n
-MarkupVariationResume6=<p class="var6">,</p>\n
-MarkupVariationResume7=<p class="var7">,</p>\n
-MarkupVariationResume8=<p class="var8">,</p>\n
-MarkupVariationResume9=<p class="var9">,</p>\n
-MarkupNag=<a class="nag">,</a>
-MarkupColumnStyleMove=<td class="mainline">,</td>\n
-MarkupColumnStyleRow=<tr class="mainline">,</tr>\n
-MarkupColumnStyleMainline=<table>,</table>\n
-MarkupAnnotationInline=<a class="comment" href="cmt:%1">,</a>\n
-MarkupAnnotationIndent=<p class="comment"><a class="comment" href="cmt:%1">,</a></p>
-MarkupPreAnnotationInline= <a class="comment" href="precmt:%1">,</a>\n
-MarkupPreAnnotationIndent=<p class="precomment"><a class="comment" href="precmt:%1">,</a></p>
-MarkupHeaderLine=<b>,</b><br>\n
-MarkupHeaderTagName=[,
-MarkupHeaderTagValue=","]
+MarkupResult=<span class="result">,</span>
+MarkupDiagram=<span class="diagram">,</span>
+MarkupMainLineMove=<span class="move" data-move-id="%1" data-parent-id="%2" style="--depth:%3">,</span>
+MarkupVariationInline=<div class="variation" data-start-move="%1" data-collapsed="false"><span class="toggle">▶</span>,</div>
+MarkupNag=<span class="nag">,</span>
+MarkupAnnotationInline=<span class="comment" data-move-id="%1">,</span>
+MarkupPreAnnotationInline=<span class="precomment" data-move-id="%1">,</span>

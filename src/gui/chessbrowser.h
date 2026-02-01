@@ -19,8 +19,11 @@ public:
     QStringList getAnchors(const QList<MoveId> &list);
     QMap<QAction*, EditAction> m_actions;
 
+    void loadAtMove(QString html, int moveId);
+
 public slots:
     void showMove(int id);
+    void selectMove(int id);
     void slotAction(QAction *action);
     void slotContextMenu(const QPoint &pos);
 
@@ -33,9 +36,6 @@ signals:
     void swipeLeft();
 
 protected:
-    // Navigation interception (pseudo-links replacement)
-    void handleUrl(const QUrl &url);
-
     // Gestures
     bool event(QEvent *event) override;
     bool gestureEvent(QGestureEvent *event);

@@ -15,6 +15,7 @@
 #include <QTextStream>
 #include "board.h"
 #include "output.h"
+#include "gamecursor.h"
 #include "gameid.h"
 #include "memorydatabase.h"
 #include "settings.h"
@@ -178,23 +179,9 @@ void Output::readTemplateFile(const QString& path)
                     s_tagNames["MarkupVariationMove"] = MarkupVariationMove;
                     s_tagNames["MarkupMainLine"] = MarkupMainLine;
                     s_tagNames["MarkupVariationInline"] = MarkupVariationInline;
-                    s_tagNames["MarkupVariationResume"] = MarkupVariationResume;
-                    s_tagNames["MarkupVariationResume1"] = MarkupVariationResume1;
-                    s_tagNames["MarkupVariationResume2"] = MarkupVariationResume2;
-                    s_tagNames["MarkupVariationResume3"] = MarkupVariationResume3;
-                    s_tagNames["MarkupVariationResume4"] = MarkupVariationResume4;
-                    s_tagNames["MarkupVariationResume5"] = MarkupVariationResume5;
-                    s_tagNames["MarkupVariationResume6"] = MarkupVariationResume6;
-                    s_tagNames["MarkupVariationResume7"] = MarkupVariationResume7;
-                    s_tagNames["MarkupVariationResume8"] = MarkupVariationResume8;
-                    s_tagNames["MarkupVariationResume9"] = MarkupVariationResume9;
-                    s_tagNames["MarkupVariationIndent"] = MarkupVariationIndent;
-                    s_tagNames["MarkupVariationIndent1"] = MarkupVariationIndent1;
                     s_tagNames["MarkupNag"] = MarkupNag;
                     s_tagNames["MarkupAnnotationInline"] = MarkupAnnotationInline;
-                    s_tagNames["MarkupAnnotationIndent"] = MarkupAnnotationIndent;
                     s_tagNames["MarkupPreAnnotationInline"] = MarkupPreAnnotationInline;
-                    s_tagNames["MarkupPreAnnotationIndent"] = MarkupPreAnnotationIndent;
                     s_tagNames["MarkupHeaderLine"] = MarkupHeaderLine;
                     s_tagNames["MarkupHeaderTagName"] = MarkupHeaderTagName;
                     s_tagNames["MarkupHeaderTagValue"] = MarkupHeaderTagValue;
@@ -264,23 +251,28 @@ QString Output::writeMove(MoveToWrite moveToWrite)
 {
     QString text;
     QString mvno;
+    QString pno;
     QString nagString;
     QString imageString;
     QString precommentString;
 
     MoveId moveId;
+    MoveId pid;
     if(moveToWrite == NextMove)
     {
         moveId = m_game.nextMove();
+        pid = m_game.currentMove();
     }
     else
     {
         moveId = m_game.currentMove();
+        pid = m_game.previousMove();
     }
 
     if (moveId <= ROOT_NODE)  return text; // ?
 
     mvno = QString::number(moveId);
+    pno = QString::number(pid);
     if(m_game.nags(moveId).count() > 0)
     {
         if(m_options.getOptionAsBool("SymbolicNag"))
@@ -362,28 +354,7 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         m_dirtyBlack = false;
 
         // *** Markup for the move
-        if(m_currentVariationLevel > 0)
-        {
-            if(m_expandable[MarkupVariationMove])
-            {
-                text += m_startTagMap[MarkupVariationMove].arg(mvno);
-            }
-            else
-            {
-                text += m_startTagMap[MarkupVariationMove];
-            }
-        }
-        else
-        {
-            if(m_expandable[MarkupMainLineMove])
-            {
-                text += m_startTagMap[MarkupMainLineMove].arg(mvno);
-            }
-            else
-            {
-                text += m_startTagMap[MarkupMainLineMove];
-            }
-        }
+        text += m_startTagMap[MarkupMainLineMove].arg(mvno).arg(pno).arg(m_currentVariationLevel);
 
         // *** Write the actual move
         QString mate = m_startTagMap[MarkupMate] + "#" + m_endTagMap[MarkupMate];
@@ -391,14 +362,7 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         text += san;
 
         // *** End the markup for the move
-        if(m_currentVariationLevel > 0)
-        {
-            text += m_endTagMap[MarkupVariationMove];
-        }
-        else
-        {
-            text += m_endTagMap[MarkupMainLineMove];
-        }
+        text += m_endTagMap[MarkupMainLineMove];
         // *** Write the nags if there are any
         if(!nagString.isEmpty())
         {
@@ -518,33 +482,11 @@ QString Output::writeVariation()
 {
     QString text;
     m_currentVariationLevel++;
-    // allow up to 9 indentation levels
-    auto variationIndentLevel = qMin(m_options.getOptionAsInt("VariationIndentLevel"), 10);
-    bool indent = (m_currentVariationLevel < variationIndentLevel);
-    bool indentLastLevel = (m_currentVariationLevel + 1 == variationIndentLevel);
 
-    // try using `MarkupVariationResume<level>` tag ...
-    auto resumeTag = static_cast<MarkupType>(MarkupVariationResume + m_currentVariationLevel);
-    // ... but fallback to `MarkupVariationResume` if template does not define indent-specific tags
-    if (!m_startTagMap.contains(resumeTag) && !m_endTagMap.contains(resumeTag))
-    {
-        resumeTag = MarkupVariationResume;
-    }
-
-    if (indent)
-    {
-        text += m_startTagMap[resumeTag];
-        text += m_startTagMap[indentLastLevel ? MarkupVariationIndent : MarkupVariationIndent1];
-    }
-    else
-    {
-        text += m_startTagMap[MarkupVariationInline];
-    }
+    text += m_startTagMap[MarkupVariationInline].arg(PreviousMove);
     m_dirtyBlack = true;
 
     text += writeMove(PreviousMove);
-
-    bool mustAddStart = false;
 
     while(!m_game.atLineEnd())
     {
@@ -552,11 +494,6 @@ QString Output::writeVariation()
         text += writeMove();
         if(m_game.variationCount())
         {
-            if (indent && !indentLastLevel)
-            {
-                text += m_endTagMap[resumeTag];
-                mustAddStart = true;
-            }
             QList<MoveId> variations = m_game.variations();
             if(!variations.empty())
             {
@@ -573,24 +510,9 @@ QString Output::writeVariation()
             m_game.dbMoveToId(m_game.parentMove());
         }
         m_game.forward();
-
-        if (mustAddStart)
-        {
-            mustAddStart = false;
-            if (indent) text += m_startTagMap[resumeTag];
-        }
     }
 
-    if (indent)
-    {
-        text += m_endTagMap[indentLastLevel ? MarkupVariationIndent : MarkupVariationIndent1];
-        text += m_endTagMap[resumeTag];
-    }
-    else
-    {
-        text += m_endTagMap[MarkupVariationInline];
-    }
-
+    text += m_endTagMap[MarkupVariationInline];
     m_currentVariationLevel--;
     return text;
 }
@@ -616,24 +538,9 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
         return text;
     }
 
-    MarkupType markupIndent = type == Comment ? MarkupAnnotationIndent : MarkupPreAnnotationIndent;
-    MarkupType markupInline = type == Comment ? MarkupAnnotationInline : MarkupPreAnnotationInline;
-    bool useIndent = (m_options.getOptionAsString("CommentIndent") == "Always")
-        || ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline") && (m_currentVariationLevel == 0));
-    MarkupType markup = useIndent? markupIndent : markupInline;
+    MarkupType markup = type == Comment ? MarkupAnnotationInline : MarkupPreAnnotationInline;
 
-    if(m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0) && !useIndent)
-    {
-        text += m_endTagMap[MarkupColumnStyleMainline];
-    }
-    if (m_expandable[markup])
-    {
-        text += m_startTagMap[markup].arg(mvno);
-    }
-    else
-    {
-        text += m_startTagMap[markup];
-    }
+    text += m_startTagMap[markup].arg(mvno);
     if (!m_options.getOptionAsBool("HTMLComments") &&
         ((m_outputType == Html) || (m_outputType == NotationWidget)))
     {
@@ -644,10 +551,6 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
         text += comment;
     }
     text += m_endTagMap[markup];
-    if(m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0) && !useIndent)
-    {
-        text += m_startTagMap[MarkupColumnStyleMainline];
-    }
     m_dirtyBlack = true;
     return text;
 }
@@ -661,17 +564,7 @@ QString Output::writeGameComment(QString comment) const
         return text;
     }
 
-    MarkupType markupIndent = MarkupPreAnnotationIndent;
-    MarkupType markupInline = MarkupPreAnnotationInline;
-
-    bool useIndent = (m_options.getOptionAsString("CommentIndent") == "Always")
-        || ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline"));
-    MarkupType markup = useIndent? markupIndent : markupInline;
-
-    if(m_options.getOptionAsBool("ColumnStyle"))
-    {
-        text += m_endTagMap[MarkupColumnStyleMainline];
-    }
+    MarkupType markup = MarkupPreAnnotationInline;
 
     if (!m_options.getOptionAsBool("HTMLComments") &&
         ((m_outputType == Html) || (m_outputType == NotationWidget)))
@@ -683,10 +576,6 @@ QString Output::writeGameComment(QString comment) const
         text += m_startTagMap[markup] + comment + m_endTagMap[markup];
     }
 
-    if(m_options.getOptionAsBool("ColumnStyle"))
-    {
-        text += m_startTagMap[MarkupColumnStyleMainline];
-    }
     return text;
 }
 
@@ -1128,15 +1017,6 @@ void Output::setMarkupTag(MarkupType type, const QString& startTag, const QStrin
 {
     m_startTagMap[type] = startTag;
     m_endTagMap[type] = endTag;
-    if(startTag.contains("%1"))
-    {
-        m_expandable[type] = true;
-    }
-    else
-    {
-        m_expandable[type] = false;
-    }
-
 }
 void Output::markupTag(MarkupType type , QString& startTag, QString& endTag)
 {

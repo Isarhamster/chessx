@@ -190,6 +190,7 @@ public :
     MoveId previousMove() const { return m_moves.prevMove(); }
     MoveId nextMove() const { return m_moves.nextMove(); }
     MoveId parentMove() const { return m_moves.parentMove(); }
+
     int variationCount(MoveId moveId = CURRENT_MOVE) const { return m_moves.variationCount(moveId); }
     const QList<MoveId>& variations() const { return m_moves.variations(); }
 

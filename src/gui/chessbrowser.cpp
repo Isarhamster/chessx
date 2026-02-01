@@ -7,11 +7,12 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "chessbrowserbridge.h"
 #include "chessbrowser.h"
 #include "chessbrowserpage.h"
-#include "gamex.h"
 #include "GameMimeData.h"
 
+#include <QWebChannel>
 #include <QWebEnginePage>
 #include <QWebEngineProfile>
 #include <QWebEngineSettings>
@@ -32,46 +33,43 @@ ChessBrowser::ChessBrowser(QWidget *parent)
     auto *page = new ChessBrowserPage(this);
     setPage(page);
 
+    ChessBrowserBridge* bridge = new ChessBrowserBridge(this);
+    QWebChannel *channel = new QWebChannel(page);
+    channel->registerObject("bridge", bridge);
+    page->setWebChannel(channel);
+
     // Intercept navigation
-    connect(page, &ChessBrowserPage::chessLinkActivated,
-            this, &ChessBrowser::handleUrl);
+    connect(bridge, &ChessBrowserBridge::moveSelected,
+            this, &ChessBrowser::selectMove);
 
     // Sensible defaults
     settings()->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
     settings()->setAttribute(QWebEngineSettings::LocalContentCanAccessFileUrls, true);
 }
 
+void ChessBrowser::loadAtMove(QString html, int moveId)
+{
+    setHtml(html);
+    connect(page(), &QWebEnginePage::loadFinished,
+            this, [this, moveId](bool ok) {
+                if (ok)
+                    showMove(moveId);
+            });
+}
+
+void ChessBrowser::selectMove(int id)
+{
+    QString url = QString("move:%1").arg(id);
+    emit anchorClicked(url);
+}
+
 void ChessBrowser::showMove(int id)
 {
     m_currentMove = id;
-
-    page()->runJavaScript(
-        QString("highlightMove(%1);").arg(id)
-        );
-}
-
-void ChessBrowser::handleUrl(const QUrl &url)
-{
-    QStringList schemes = { "move", "cmt", "precmt", "egtb", "tag", "eco", "event" };
-
-    if (!schemes.contains(url.scheme()))
-    {
-        // Prevent browser navigation
-        // page()->triggerAction(QWebEnginePage::Stop);
-        return;
-    }
-
-    // move:42
-    if (url.scheme() == "move") {
-        bool ok = false;
-        int move = url.path().toInt(&ok);
-        if (ok)
-            showMove(move);
-    }
-
-    // Prevent browser navigation
-    page()->triggerAction(QWebEnginePage::Stop);
-    emit anchorClicked(url);
+    // Check necessary in case no game is loaded (yet)
+    page()->runJavaScript(QString("if (window.highlightMove) highlightMove(%1);").arg(id));
+    page()->runJavaScript(QString("if (window.highlightPath) highlightPath(%1);").arg(id));
+    //page()->runJavaScript(QString("document.body.classList.toggle(\"table-mainline\");"));
 }
 
 void ChessBrowser::setupMenu()

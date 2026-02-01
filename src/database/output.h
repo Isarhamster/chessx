@@ -53,23 +53,9 @@ public:
         MarkupMainLine,
         MarkupVariationMove,
         MarkupVariationInline,
-        MarkupVariationResume,
-        MarkupVariationResume1,
-        MarkupVariationResume2,
-        MarkupVariationResume3,
-        MarkupVariationResume4,
-        MarkupVariationResume5,
-        MarkupVariationResume6,
-        MarkupVariationResume7,
-        MarkupVariationResume8,
-        MarkupVariationResume9,
-        MarkupVariationIndent,
-        MarkupVariationIndent1,
         MarkupNag,
         MarkupAnnotationInline,
-        MarkupAnnotationIndent,
         MarkupPreAnnotationInline,
-        MarkupPreAnnotationIndent,
         MarkupHeaderLine,
         MarkupHeaderTagName,
         MarkupHeaderTagValue,
@@ -187,7 +173,6 @@ private:
     QMap<MarkupType, QString> m_startTagMap;
     /** Map containing the end markup tag for each markup type */
     QMap<MarkupType, QString> m_endTagMap;
-    QMap<MarkupType, bool> m_expandable;
 
     /* Setting and retrieving of option. Methods to inteface
      * with OutputOptions class.
