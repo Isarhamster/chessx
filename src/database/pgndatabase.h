@@ -13,7 +13,6 @@
 #ifndef PGNDATABASE_H_INCLUDED
 #define PGNDATABASE_H_INCLUDED
 
-#include <QFile>
 #include <QByteArray>
 #include <QStringRef>
 #include <QVector>
@@ -38,26 +37,26 @@ public:
     ~PgnDatabase();
     //database operations
     /** Opens the given database */
-    virtual bool open(const QString& filename, bool utf8);
+    bool open(const QString& filename, bool utf8) override;
     /** File-based database name */
-    virtual QString filename() const;
+    QString filename() const override;
     /** Closes the database */
     void close();
-    virtual void clear();
+    void clear() override;
 
     //game retrieval & storage
     /** Loads a game from the given position, returns true if successful */
-    bool loadGame(GameId gameId, GameX& game);
+    bool loadGame(GameId gameId, GameX& game) override;
     /** Loads only moves into a game from the given position */
-    void loadGameMoves(GameId gameId, GameX& game);
-    virtual int findPosition(GameId index, const BoardX& position);
+    void loadGameMoves(GameId gameId, GameX& game) override;
+    int findPosition(GameId index, const BoardX& position) override;
     /** Open a PGN Data File from a string */
     bool openString(const QString& content);
 
     /** Get the number of games from a database */
-    virtual quint64 count() const;
+    quint64 count() const override;
 
-    virtual bool parseFile();
+    bool parseFile() override;
     bool get64bit() const;
     void set64bit(bool value);
 
@@ -99,7 +98,7 @@ protected:
     // Open a PGN data File
     bool openFile(const QString& filename);
 
-    bool hasIndexFile() const;
+    bool hasIndexFile() const override;
 
     /** Resets/initialises important member variables. Called by constructor and close methods */
     void initialise();
@@ -119,7 +118,7 @@ protected:
 
 protected:
 	IndexBaseType m_count; // Should actually be a GameId - but cannot be changed due to serialization issues
-	QPointer<QIODevice> m_file;
+    QIODevice* m_file;
 	QString m_currentLine;
 
 private:

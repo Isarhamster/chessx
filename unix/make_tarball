@@ -1,31 +1,39 @@
 #!/bin/sh
-DIR=$( dirname -- "$( readlink -f -- "$0"; )"; )
-cd "$(DIR)"
+set -e
 
-echo "Build archive from ${DIR} in ${DIR}/../Packages/"
+DIR="$(cd -- "$(dirname -- "$0")" && pwd -P)"
+TMPDIR="$DIR/Packages"
+SRC="$TMPDIR/chessx-master"
+TAR=${TAR:-tar}
+
+mkdir -p "$TMPDIR"
+
+echo "Building archive from $DIR into $TMPDIR"
+
+rm -rf "$SRC"
+
+curl -fsSL https://github.com/Isarhamster/chessx/archive/refs/heads/master.tar.gz \
+  | tar -xz -C "$TMPDIR"
 
 VERSION=$(awk '
-    BEGIN { major="0"; minor="0"; patch="0" }
-    /#define VERSION_MAJOR/ {gsub(/[^0-9]/, "", $3); major=$3; }
-    /#define VERSION_MINOR/ {gsub(/[^0-9]/, "", $3); minor=$3; }
-    /#define REVISION/ {gsub(/[^0-9]/, "", $3); patch=$3; }
-    END {
-        print major "." minor "." patch
-    }' ${DIR}/../src/database/version.h)
-    
-echo "Building archive for version ${VERSION}"
-    
-CNAME=chessx-${VERSION}
+  BEGIN { major="0"; minor="0"; patch="0" }
+  /#define VERSION_MAJOR/ {gsub(/[^0-9]/, "", $3); major=$3}
+  /#define VERSION_MINOR/ {gsub(/[^0-9]/, "", $3); minor=$3}
+  /#define REVISION/      {gsub(/[^0-9]/, "", $3); patch=$3}
+  END { print major "." minor "." patch }
+' "$DIR/../src/database/version.h")
 
-if [ -d chessx-master ]; then
-   gtar -czf "${CNAME}.tgz" --exclude-from="tar_exclude.txt" "chessx-master"
-   mv "${CNAME}.tgz" ../Packages/
-   echo "Ready"
+echo "Building archive for version $VERSION"
+
+CNAME="chessx-$VERSION"
+TARGET="$TMPDIR/$CNAME.tgz"
+
+if [ -d "$SRC" ]; then
+  rm -f "$TARGET"
+  "$TAR" -czf "$TARGET" --exclude-from="tar_exclude.txt" \
+    -C "$TMPDIR" "$(basename "$SRC")"
+  echo "Ready: $TARGET"
 else
-  echo 'Directory not found'
+  echo "Directory not found: $SRC" >&2
+  exit 1
 fi
-
-cd -
-
-
-

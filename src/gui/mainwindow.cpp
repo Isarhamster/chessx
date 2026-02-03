@@ -61,6 +61,7 @@
 #include <time.h>
 
 #include <QApplication>
+#include <QFile>
 #include <QFileDialog>
 #include <QLabel>
 #include <QLCDNumber>
@@ -534,7 +535,6 @@ MainWindow::MainWindow() : QMainWindow(),
     qApp->installEventFilter(this);
     /* Activate clipboard */
     slotDatabaseChanged();
-    emit signalGameIsEmpty(true);
     emit signalGameLoaded(game().startingBoard());
 
     setAcceptDrops(true);

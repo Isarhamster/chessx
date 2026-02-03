@@ -9,7 +9,6 @@
  ***************************************************************************/
 
 #include <QtDebug>
-#include <QFile>
 #include <utility>
 #include "gamecursor.h"
 

@@ -15,6 +15,7 @@
  ***************************************************************************/
 
 #include <QApplication>
+#include <QFile>
 #include <QLocale>
 #include <QMessageBox>
 #include <QTranslator>

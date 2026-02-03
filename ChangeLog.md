@@ -1,3 +1,33 @@
+## January 2026: Version 1.6.8
+
+- Bugfix: Files won't open in Windows
+- Bugfix: Kept file handle open forever after BOM Test
+
+- Changed: Consistent handling of archives
+
+## January 2026: Version 1.6.6
+
+- New feature: Read / Write Lichess Studies
+- New feature: Add two columnes to Opening tree
+- New feature: Hover over ECO code in game list
+- New feature: Enter comments and special annotations w/o dialog
+
+- Bugfix: Exporting a filter picks the wrong games
+- Bugfix: Changing Search Depth does not restart engine
+- Bugfix: Refactoring multiple db left out active db
+- Bugfix: Removing null lines
+- Bugfix: Issue #360 CTG not read in Windows/Linux
+- Bugfix: Spaces in annotations if focus is on a table widget
+- Bugfix: Don't set background (issue in dark mode) in Scratchpad
+- Bugfix: Issue #357 Special CB annotations start with ','
+- Bugfix: Engine crash kills ChessX
+- Bugfix: Move Number in starting positions is not used
+- Bugfix: USE_SOUND not applied where it should
+
+- Changed: Cache bg image for better performance
+- Changed: Don't show computer evals in PGN output
+- Changed: PGN Parser checks move numbers
+
 ## September 2024: Version 1.6.4
 
 - Bugfix: Qt6 will not serialize Engine options 

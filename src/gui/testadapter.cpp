@@ -1,5 +1,6 @@
 #include "testadapter.h"
 #include <QCoreApplication>
+#include <QFileInfo>
 #include <QTemporaryDir>
 
 #include "ecothread.h"

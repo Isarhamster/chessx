@@ -24,8 +24,10 @@ using namespace chessx;
 
 MemoryDatabase::~MemoryDatabase()
 {
-    set64bit(false);
-    MemoryDatabase::clear();
+    for(int i = 0; i < m_games.count(); ++i)
+    {
+        delete m_games[i];
+    }
 }
 
 void MemoryDatabase::clear()

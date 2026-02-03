@@ -45,18 +45,6 @@ DEFINES += QUAZIP_STATIC
 DEFINES += QT_NO_CAST_TO_ASCII
 DEFINES *= QT_USE_QSTRINGBUILDER
 
-macx {
-  QMAKE_CXXFLAGS += -fvisibility=hidden
-  QMAKE_LFLAGS_RELEASE -= -O3
-  QMAKE_LFLAGS_RELEASE += -m64
-  QMAKE_CXXFLAGS_RELEASE -= -O3
-  QMAKE_CXXFLAGS_RELEASE *= -m64
-
-  QMAKE_LFLAGS_DEBUG += -m64 -O0
-  QMAKE_CXXFLAGS_DEBUG *= -m64 -O0
-}
-
-
 unix|!macx {
     isEmpty(PREFIX) {
         bsd {
@@ -636,6 +624,7 @@ OTHER_FILES += \
   ChangeLog.md \
   COPYING.md \
   ChangeLog.txt \
+  .gitignore \
   data/help/about.css \
   data/help/about-dark.css \
   data/help/about0.html \
@@ -668,11 +657,18 @@ DISTFILES += \
   Doxyfile \
   License.txt \
   README.developers.md \
+  mac_osx/make_dmg.sh \
+  mac_osx/qt_menu.nib/designable.nib \
+  mac_osx/qt_menu.nib/keyedobjects.nib \
+  mac_osx/uninstall/Info.plist \
+  mac_osx/uninstall/build_uninstall.sh \
+  mac_osx/uninstall/remove_chessx.sh \
   unix/make_tarball \
   mac_osx/svnlist \
   mac_osx/fix_paths.sh \
   mac_osx/mac_deploy_dyn \
   mac_osx/qt_menu.nib \
-  data/lang/readme-lang.txt
+  data/lang/readme-lang.txt \
+  unix/tar_exclude.txt
 
 

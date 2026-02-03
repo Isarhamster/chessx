@@ -21,6 +21,7 @@
 #include "tablebase.h"
 
 #include <assert.h>
+#include <QFileInfo>
 #include <QMutexLocker>
 #include <QRandomGenerator>
 

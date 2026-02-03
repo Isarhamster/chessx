@@ -125,12 +125,12 @@ void DatabaseInfo::run()
 bool DatabaseInfo::testBOM()
 {   
     QString fname = resolvedPath(m_filename);
-    QPointer<QFile> file = new QFile(fname);
-    if(file->exists())
+    QFile file(fname);
+    if(file.exists())
     {
-        if (file->open(QIODevice::ReadOnly))
+        if (file.open(QIODevice::ReadOnly))
         {
-            QByteArray a = file->read(3);
+            QByteArray a = file.read(3);
             if ((a.length() == 3) &&
                 ((unsigned char)a[0] == 0xEF) &&
                 ((unsigned char)a[1] == 0xBB) &&
@@ -492,6 +492,8 @@ bool DatabaseInfo::IsBook() const
             return QFileInfo(url.toLocalFile()).canonicalFilePath();
         } else {
             // For non-file schemes, return empty
+            if (QFileInfo::exists(fname)) return QFileInfo(fname).canonicalFilePath();
+            qDebug() << "Rejected resolved path: " << fname << " : " << url;
             return "";
         }
     } else {
@@ -518,7 +520,7 @@ bool DatabaseInfo::IsBook() const
     QString suffix = fi.suffix().toLower();
 
     return ((suffix == "zip") ||
-            (suffix == "tgz"));
+            (suffix == "gz"));
 }
 
 qint64 DatabaseInfo::GetDatabaseSize(QString filename)

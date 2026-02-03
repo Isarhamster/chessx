@@ -73,6 +73,7 @@ public:
        and modifies this filter with the results. */
     void executeSearch(Search *search, FilterOperator searchOperator=FilterOperator::NullOperator);
 
+    QList<GameId> selectedGames() const;
 signals:
     void searchProgress(int);
     void searchFinished();
