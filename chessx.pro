@@ -41,7 +41,6 @@ sound {
   QT += multimedia
 }
 
-DEFINES += QUAZIP_STATIC
 DEFINES += QT_NO_CAST_TO_ASCII
 DEFINES *= QT_USE_QSTRINGBUILDER
 
@@ -72,6 +71,57 @@ unix|!macx {
 
     # Note: Compile SSL 1.1.1, uncomment the following line and put the lib path here
     # LIBS += -L/home/parallels/openssl-1.1.1q -lcrypto -lssl
+}
+
+link_pkgconfig {
+  PKGCONFIG += quazip1-qt$$QT_MAJOR_VERSION zlib
+}
+else {
+  HEADERS += \
+      src/quazip/JlCompress.h \
+      src/quazip/crypt.h \
+      src/quazip/ioapi.h \
+      src/quazip/quaadler32.h \
+      src/quazip/quachecksum32.h \
+      src/quazip/quacrc32.h \
+      src/quazip/quagzipfile.h \
+      src/quazip/quaziodevice.h \
+      src/quazip/quazip.h \
+      src/quazip/quazip_global.h \
+      src/quazip/quazipdir.h \
+      src/quazip/quazipfile.h \
+      src/quazip/quazipfileinfo.h \
+      src/quazip/quazipnewinfo.h \
+      src/quazip/unzip.h \
+      src/quazip/zip.h
+
+  SOURCES += \
+      src/quazip/JlCompress.cpp \
+      src/quazip/qioapi.cpp \
+      src/quazip/quaadler32.cpp \
+      src/quazip/quacrc32.cpp \
+      src/quazip/quagzipfile.cpp \
+      src/quazip/quaziodevice.cpp \
+      src/quazip/quazip.cpp \
+      src/quazip/quazipdir.cpp \
+      src/quazip/quazipfile.cpp \
+      src/quazip/quazipnewinfo.cpp \
+      src/quazip/unzip.cpp \
+      src/quazip/zip.cpp
+
+  INCLUDEPATH += src/quazip
+  DEFINES += QUAZIP_STATIC
+
+  INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib
+  win32 {
+    # DEFINES += ZLIB_WINAPI
+    # LIBS += -lz
+    INCLUDEPATH += $$[QT_INSTALL_HEADERS]/QtZlib
+    win32-g++:LIBS += -lz
+  }
+  else {
+    LIBS += -lz
+  }
 }
 
 scid {
@@ -332,23 +382,7 @@ HEADERS += src/database/board.h \
   src/gui/textbrowserex.h \
   src/gui/textedit.h \
   src/gui/toolmainwindow.h \
-  src/gui/translatingslider.h \
-  src/quazip/JlCompress.h \
-  src/quazip/crypt.h \
-  src/quazip/ioapi.h \
-  src/quazip/quaadler32.h \
-  src/quazip/quachecksum32.h \
-  src/quazip/quacrc32.h \
-  src/quazip/quagzipfile.h \
-  src/quazip/quaziodevice.h \
-  src/quazip/quazip.h \
-  src/quazip/quazip_global.h \
-  src/quazip/quazipdir.h \
-  src/quazip/quazipfile.h \
-  src/quazip/quazipfileinfo.h \
-  src/quazip/quazipnewinfo.h \
-  src/quazip/unzip.h \
-  src/quazip/zip.h
+  src/gui/translatingslider.h
 
 SOURCES += \
   src/database/analysis.cpp \
@@ -503,33 +537,12 @@ SOURCES += \
   src/gui/testadapter.cpp \
   src/gui/textedit.cpp \
   src/gui/toolmainwindow.cpp \
-  src/gui/translatingslider.cpp \
-  src/quazip/JlCompress.cpp \
-  src/quazip/qioapi.cpp \
-  src/quazip/quaadler32.cpp \
-  src/quazip/quacrc32.cpp \
-  src/quazip/quagzipfile.cpp \
-  src/quazip/quaziodevice.cpp \
-  src/quazip/quazip.cpp \
-  src/quazip/quazipdir.cpp \
-  src/quazip/quazipfile.cpp \
-  src/quazip/quazipnewinfo.cpp \
-  src/quazip/unzip.cpp \
-  src/quazip/zip.cpp
+  src/gui/translatingslider.cpp
 
 INCLUDEPATH += src/database
 INCLUDEPATH += src/guess
 INCLUDEPATH += src/gui
 INCLUDEPATH += src/dialogs
-INCLUDEPATH += src/quazip
-INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib
-
-win32 {
-  # DEFINES += ZLIB_WINAPI
-  # LIBS += -lz
-  INCLUDEPATH += $$[QT_INSTALL_HEADERS]/QtZlib
-  win32-g++:LIBS += -lz
-}
 
 UI_DIR = src/generated
 MOC_DIR = src/generated
@@ -545,15 +558,6 @@ CONFIG(release, debug|release) {
   DESTDIR = "release"
   OBJECTS_DIR = "obj_rel"
   DEFINES += QT_NO_DEBUG_OUTPUT NDEBUG
-}
-
-!win32 {
-  CONFIG(debug, debug|release) {
-    LIBS += -lz
-  }
-  CONFIG(release, debug|release) {
-    LIBS += -lz
-  }
 }
 
 TARGET = chessx
