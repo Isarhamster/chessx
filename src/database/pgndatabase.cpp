@@ -342,9 +342,13 @@ bool PgnDatabase::openFile(const QString& filename)
         delete file;
         return false;
     }
-    file->open(QIODevice::ReadOnly);
-    m_file = file;
-    return true;
+    if (file->open(QIODevice::ReadOnly))
+    {
+        m_file = file;
+        return true;
+    }
+    delete file;
+    return false;
 }
 
 bool PgnDatabase::openString(const QString& content)
