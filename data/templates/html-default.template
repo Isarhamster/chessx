@@ -12,58 +12,49 @@
 #Name , Type  ,  Allow Values , Default  , Description
 MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 [OPTIONS]
-ColumnStyle=false
 SymbolicNag=true
 MainLineMoveColor=#000000
 VariationColor=#00008b
-VariationIndentLevel=1
 CommentColor=#006400
 NagColor=#8b0000
 HeaderColor=#00008b
 ShowDiagrams=true
 DiagramSize=200
 [OUTPUTHEADER]
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title>ChessX HTML Output</title>\n
-<style type="text/css">\n
-A:link, A:visited { text-decoration: none }\n
-A:active { text-decoration: underline }\n
-.mainline {font-weight: @MainLineFontWeight@; color: @MainLineMoveColor@}\n
-.variation-inline {font-weight: normal; color: @VariationColor@}\n
-.variation-indent {margin-left: 30px; font-weight: normal; color: @VariationColor@}\n
-.diagram-indent {lfloat:right; ; margin-top: 10px; }\n
-.comment-inline {font-weight: normal; text-decoration: none; color: @CommentColor@; font-style: normal}\n
-.comment-indent {margin-left: 30px; font-weight: normal; text-decoration: none; color: @CommentColor@; font-style: normal}\n
-.nag {font-weight: normal; text-decoration: none; color: @NagColor@; font-style: normal }\n
-.headerline {color : @HeaderColor@ }\n
-td.mainline {padding-left: 10px; padding-right: 10px; color: @MainLineMoveColor@; width:50%}\n
-</style>\n
-</head><body>\n
+<title>ChessX HTML Output</title>
+<style type="text/css">
+A:link, A:visited { text-decoration: none }
+A:active { text-decoration: underline }
+.mainline {font-weight: @MainLineFontWeight@; color: @MainLineMoveColor@}
+.variation-inline {font-weight: normal; color: @VariationColor@}
+.variation-indent {margin-left: 30px; font-weight: normal; color: @VariationColor@}
+.diagram-indent {lfloat:right; ; margin-top: 10px; }
+.comment-inline {font-weight: normal; text-decoration: none; color: @CommentColor@; font-style: normal}
+.comment-indent {margin-left: 30px; font-weight: normal; text-decoration: none; color: @CommentColor@; font-style: normal}
+.nag {font-weight: normal; text-decoration: none; color: @NagColor@; font-style: normal }
+.headerline {color : @HeaderColor@ }
+td.mainline {padding-left: 10px; padding-right: 10px; color: @MainLineMoveColor@; width:50%}
+</style>
+</head><body>
 [OUTPUTFOOTER]
-</body></html>\n
+</body></html>
 [MARKUPTAGS]
 MarkupHeaderBlock=,<br>\n
 MarkupNotationBlock=,
 MarkupResult=,<br><hr>\n
-MarkupDiagram=<div class="diagram-indent">,</div>
-MarkupMainLineMove=,
-MarkupVariationMove=,
+MarkupDiagram=<div class="diagram-indent">,</div>\n
+MarkupMove=,
 MarkupMainLine=<div class="mainline">,</div>\n
-MarkupVariationInline=<span class="variation-inline">(,)</span>\n
-MarkupVariationResume=,
-MarkupVariationIndent=<div class="variation-indent">(,)</div>\n
-MarkupVariationIndent1=<div class="variation-indent">,</div>\n
+MarkupVariationHead=<span class="variation-inline">(,)</span>\n
+MarkupVariationHead=<span class="variation-inline">(,)</span>\n
 MarkupNag=<span class="nag">,</span>\n
-MarkupColumnStyleMove=<td width=50%>,
-MarkupColumnStyleRow=<tr class="mainline">,
-MarkupColumnStyleMainline=<table border=0 width=50%>,</table>
 MarkupAnnotationInline=<span class="comment-inline">,</span>\n
 MarkupAnnotationIndent=<div class="comment-indent">,</div>\n
-MarkupPreAnnotationInline=<span class="comment-inline">,</span>\n
-MarkupPreAnnotationIndent=<div class="comment-indent">,</div>\n
+MarkupPreAnnotation=<span class="comment-inline">,</span>\n
 MarkupHeaderLine=<span class="headerline">,</span><br>\n
 MarkupHeaderTagName=,
 MarkupHeaderTagValue=","

@@ -70,22 +70,6 @@ Output::~Output()
 
 void Output::initialize()
 {
-    if(isPgnType(m_outputType))
-    {
-        m_newlineChar = "\n";
-    }
-    else if(m_outputType == Html)
-    {
-        m_newlineChar = "<br>\n";
-    }
-    else if(m_outputType == Latex)
-    {
-        m_newlineChar = "\n";
-    }
-    else if(m_outputType == NotationWidget)
-    {
-        m_newlineChar = "<br>\n";
-    }
     readTemplateFile(m_templateFilename);
 }
 
@@ -161,9 +145,11 @@ void Output::readTemplateFile(const QString& path)
                 break;
             case ReadingOutputHeader:
                 m_header += line;
+                m_header += "\n"; // Add newlines back, since we read line by line
                 break;
             case ReadingOutputFooter:
                 m_footer += line;
+                m_footer += "\n"; // Add newlines back, since we read line by line
                 break;
             case ReadingMarkupTags:
             {
@@ -175,13 +161,13 @@ void Output::readTemplateFile(const QString& path)
                     s_tagNames["MarkupNotationBlock"] = MarkupNotationBlock;
                     s_tagNames["MarkupResult"] = MarkupResult;
                     s_tagNames["MarkupDiagram"] = MarkupDiagram;
-                    s_tagNames["MarkupMainLineMove"] = MarkupMainLineMove;
-                    s_tagNames["MarkupVariationMove"] = MarkupVariationMove;
+                    s_tagNames["MarkupMove"] = MarkupMove;
                     s_tagNames["MarkupMainLine"] = MarkupMainLine;
-                    s_tagNames["MarkupVariationInline"] = MarkupVariationInline;
+                    s_tagNames["MarkupVariationHead"] = MarkupVariationHead;
+                    s_tagNames["MarkupVariationLine"] = MarkupVariationLine;
                     s_tagNames["MarkupNag"] = MarkupNag;
                     s_tagNames["MarkupAnnotationInline"] = MarkupAnnotationInline;
-                    s_tagNames["MarkupPreAnnotationInline"] = MarkupPreAnnotationInline;
+                    s_tagNames["MarkupPreAnnotation"] = MarkupPreAnnotation;
                     s_tagNames["MarkupHeaderLine"] = MarkupHeaderLine;
                     s_tagNames["MarkupHeaderTagName"] = MarkupHeaderTagName;
                     s_tagNames["MarkupHeaderTagValue"] = MarkupHeaderTagValue;
@@ -192,9 +178,6 @@ void Output::readTemplateFile(const QString& path)
                     s_tagNames["MarkupSiteTag"] = MarkupSiteTag;
                     s_tagNames["MarkupResultTag"] = MarkupResultTag;
                     s_tagNames["MarkupRoundTag"] = MarkupRoundTag;
-                    s_tagNames["MarkupColumnStyleMove"] = MarkupColumnStyleMove;
-                    s_tagNames["MarkupColumnStyleRow"] = MarkupColumnStyleRow;
-                    s_tagNames["MarkupColumnStyleMainline"] = MarkupColumnStyleMainline;
                     s_tagNames["MarkupMate"] = MarkupMate;
                 }
 
@@ -306,19 +289,6 @@ QString Output::writeMove(MoveToWrite moveToWrite)
 
     Color c = m_game.board().toMove();
 
-    if((m_options.getOptionAsBool("ColumnStyle")) &&
-            (m_currentVariationLevel == 0) &&
-            ((c == White) || m_dirtyBlack))
-    {
-        text += m_startTagMap[MarkupColumnStyleRow] + m_startTagMap[MarkupColumnStyleMove];
-    }
-    else if((m_options.getOptionAsBool("ColumnStyle")) &&
-            (m_currentVariationLevel == 0) &&
-            (c == Black))
-    {
-        text += m_startTagMap[MarkupColumnStyleMove];
-    }
-
     // *** Determine actual san
     QString san;
     GameX::MoveStringFlags flags = isLocalized(m_outputType) ? GameX::TranslatePiece : GameX::MoveOnly;
@@ -345,16 +315,11 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         else if(m_dirtyBlack)
         {
             text += QString::number(m_game.moveNumber(moveId)) + "...";
-            if((m_options.getOptionAsBool("ColumnStyle")) &&
-                    (m_currentVariationLevel == 0))
-            {
-                text += m_endTagMap[MarkupColumnStyleMove] + m_startTagMap[MarkupColumnStyleMove];
-            }
         }
         m_dirtyBlack = false;
 
         // *** Markup for the move
-        text += m_startTagMap[MarkupMainLineMove].arg(mvno).arg(pno).arg(m_currentVariationLevel);
+        text += m_startTagMap[MarkupMove].arg(mvno).arg(pno).arg(m_currentVariationLevel == 0 ? "mainline" : "in-variation");
 
         // *** Write the actual move
         QString mate = m_startTagMap[MarkupMate] + "#" + m_endTagMap[MarkupMate];
@@ -362,34 +327,12 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         text += san;
 
         // *** End the markup for the move
-        text += m_endTagMap[MarkupMainLineMove];
+        text += m_endTagMap[MarkupMove];
         // *** Write the nags if there are any
         if(!nagString.isEmpty())
         {
             text += m_startTagMap[MarkupNag] + nagString + m_endTagMap[MarkupNag];
         }
-    }
-
-    if((m_options.getOptionAsBool("ColumnStyle")) &&
-            (m_currentVariationLevel == 0) &&
-            (c == White))
-    {
-        text += m_endTagMap[MarkupColumnStyleMove];
-        if (m_game.forward())
-        {
-            if(m_game.atGameEnd())
-            {
-                text += m_endTagMap[MarkupColumnStyleRow];
-            }
-            m_game.backward();
-        }
-    }
-
-    if((m_options.getOptionAsBool("ColumnStyle")) &&
-            (m_currentVariationLevel == 0) &&
-            (c == Black))
-    {
-        text += m_endTagMap[MarkupColumnStyleMove] + m_endTagMap[MarkupColumnStyleRow];
     }
 
     text += imageString;
@@ -413,8 +356,7 @@ QString Output::writeMove(MoveToWrite moveToWrite)
 
     if (imageString.isEmpty() && commentString.isEmpty() && !san.isEmpty())
     {
-        if((!((m_options.getOptionAsBool("ColumnStyle")) &&
-               (m_currentVariationLevel == 0))) || isPgnType(m_outputType))
+        if(isPgnType(m_outputType))
         {
             if (m_game.hasNextMove())
             {
@@ -430,44 +372,32 @@ QString Output::writeMainLine(MoveId upToNode)
     QString text;
     do
     {
-        bool hasNext = false;
         if (!m_game.atLineEnd())
         {
             // Training mode: abort main line with current node
             if(m_game.currentMove() == upToNode)
             {
-                if(m_options.getOptionAsBool("ColumnStyle"))
-                {
-                    text += m_endTagMap[MarkupColumnStyleMainline];
-                }
                 text += "***";
                 break;
             }
             // *** Write moves in the main line
             text += writeMove();
-            hasNext = m_game.hasNextMove();
         }
 
         if(m_game.variationCount())
         {
             QList<MoveId> variations = m_game.variations();
+            text += m_startTagMap[MarkupVariationHead];
             if(variations.size())
             {
-                if(m_options.getOptionAsBool("ColumnStyle"))
-                {
-                    text += m_endTagMap[MarkupColumnStyleMainline];
-                }
                 for(int i = 0; i < variations.size(); ++i)
                 {
                     // *** Enter variation i, and write the rest of the moves
                     m_game.dbMoveToId(variations[i]);
                     text += writeVariation();
                 }
-                if(hasNext && m_options.getOptionAsBool("ColumnStyle"))
-                {
-                    text += m_startTagMap[MarkupColumnStyleMainline];
-                }
             }
+            text += m_endTagMap[MarkupVariationHead];
             m_dirtyBlack = true;
             m_game.dbMoveToId(m_game.parentMove());
         }
@@ -483,10 +413,11 @@ QString Output::writeVariation()
     QString text;
     m_currentVariationLevel++;
 
-    text += m_startTagMap[MarkupVariationInline].arg(PreviousMove);
     m_dirtyBlack = true;
+    QString s = writeMove(PreviousMove);
 
-    text += writeMove(PreviousMove);
+    text += m_startTagMap[MarkupVariationLine].arg(s);
+    text += s;
 
     while(!m_game.atLineEnd())
     {
@@ -495,6 +426,7 @@ QString Output::writeVariation()
         if(m_game.variationCount())
         {
             QList<MoveId> variations = m_game.variations();
+            text += m_startTagMap[MarkupVariationHead];
             if(!variations.empty())
             {
                 for(int i = 0; i < variations.size(); ++i)
@@ -506,13 +438,14 @@ QString Output::writeVariation()
                     }
                 }
             }
+            text += m_endTagMap[MarkupVariationHead];
             m_dirtyBlack = true;
             m_game.dbMoveToId(m_game.parentMove());
         }
         m_game.forward();
     }
 
-    text += m_endTagMap[MarkupVariationInline];
+    text += m_endTagMap[MarkupVariationLine];
     m_currentVariationLevel--;
     return text;
 }
@@ -538,7 +471,7 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
         return text;
     }
 
-    MarkupType markup = type == Comment ? MarkupAnnotationInline : MarkupPreAnnotationInline;
+    MarkupType markup = type == Comment ? MarkupAnnotationInline : MarkupPreAnnotation;
 
     text += m_startTagMap[markup].arg(mvno);
     if (!m_options.getOptionAsBool("HTMLComments") &&
@@ -564,7 +497,7 @@ QString Output::writeGameComment(QString comment) const
         return text;
     }
 
-    MarkupType markup = MarkupPreAnnotationInline;
+    MarkupType markup = MarkupPreAnnotation;
 
     if (!m_options.getOptionAsBool("HTMLComments") &&
         ((m_outputType == Html) || (m_outputType == NotationWidget)))
@@ -691,19 +624,11 @@ QString Output::outputGame(const GameX* g, bool upToCurrentMove)
     m_dirtyBlack = m_game.board().toMove() == Black;
     text += m_startTagMap[MarkupNotationBlock];
     text += m_startTagMap[MarkupMainLine];
-    if(m_options.getOptionAsBool("ColumnStyle"))
-    {
-        text += m_startTagMap[MarkupColumnStyleMainline];
-    }
 
     QString gameComment = isPgnType(m_outputType) ? m_game.annotation(0) : m_game.textAnnotation(0, GameX::AfterMove, m_game.textFilter2());
     text += writeGameComment(gameComment);
 
     text += writeMainLine(mainId);
-    if(m_options.getOptionAsBool("ColumnStyle"))
-    {
-        text += m_endTagMap[MarkupColumnStyleMainline];
-    }
     text += m_endTagMap[MarkupMainLine];
     text += m_endTagMap[MarkupNotationBlock];
     text += m_startTagMap[MarkupResult] + m_game.tag(TagNameResult) + m_endTagMap[MarkupResult];

@@ -17,15 +17,36 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 <html>
 <head>
 <title>ChessX Output</title>
-<meta http-equiv="content-type" content="text/html; charset=windows-1252">
-<style type="text/css">
+<meta http-equiv="content-type" content="text/html">
+<style>
 .move {
     cursor: pointer;
     margin-right: 0.25em;
 }
 
 .variation {
-    margin-left: calc(var(--depth) * 20px);
+    margin-left: 1.2em;
+    border-left: 2px solid #ddd;
+    padding-left: 0.5em;
+}
+
+.variation-head {
+    cursor: pointer;
+    color: #555;
+}
+
+.variation-head .toggle {
+  display: inline-block;
+  width: 1em;
+  transition: transform 0.15s ease;
+}
+
+.variation-head.collapsed .toggle {
+  transform: rotate(0deg);
+}
+
+.variation-head:not(.collapsed) .toggle {
+  transform: rotate(90deg);
 }
 
 .move.path {
@@ -59,22 +80,50 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
     margin-left: 0.5em;
 }
 
-.mainline {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+.mainline-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
 }
 
-table.mainline {
-    width: 100%;
-    border-collapse: collapse;
+.mainline-table th,
+.mainline-table td {
+  border: 1px solid #ccc;
+  padding: 4px 8px;
+  vertical-align: top;
 }
 
-td.white, td.black {
-    width: 50%;
-    vertical-align: top;
+.mainline-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  text-align: center;
 }
 
-.variation[data-collapsed="true"] .move {
+.mainline-table td.move-no {
+  width: 3em;
+  text-align: right;
+  color: #666;
+  background: #fafafa;
+}
+
+.mainline-table td.white {
+  width: 45%;
+}
+
+.mainline-table td.black {
+  width: 45%;
+}
+
+.variation.collapsed > .line {
+    display: none;
+}
+
+.line.collapsed {
+    display: none;
+}
+
+.variation-label:not(.collapsed) {
     display: none;
 }
 
@@ -86,73 +135,180 @@ td.white, td.black {
 .toggle:hover {
     color: #000;
 }
+body.view-table .variation {
+  display: none;
+}
+
+body.view-table .move {
+  display: inline-block;
+}
+
+body.view-mainline .variation {
+  display: none;
+}
 
 </style>
 <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+</head>
+<body>
+<p class="view-controls">
+    <button data-view="linear">Linear</button>
+    <button data-view="table">Table</button>
+    <button data-view="mainline">Main Line</button>
+</p>
+<div id="table-view" hidden></div>
+<div id="chess-content">
+[OUTPUTFOOTER]
+</div>
+
 <script>
-  let bridge = null;
+let bridge = null;
 
+if (window.qt && qt.webChannelTransport) {
   new QWebChannel(qt.webChannelTransport, function(channel) {
-      bridge = channel.objects.bridge;
+    bridge = channel.objects.bridge;
   });
+}
 </script>
-
 <script>
     function highlightMove(id) {
-        document
-            .querySelectorAll(".move.active")
-            .forEach(m => m.classList.remove("active"));
+        document.querySelectorAll(".move.active").forEach(m => m.classList.remove("active"));
 
-        const el = document.querySelector(
-            '.move[data-move-id="' + id + '"]'
-        );
-        if (el) el.classList.add("active");
+        document.querySelectorAll('.move[data-move-id="' + id + '"]').forEach(m => m.classList.add("active"));
+    }
+
+    function highlightPath(moveId) {
+        document.querySelectorAll('.move.path').forEach(e => e.classList.remove('path'));
+        if (document.body.classList.contains('view-linear'))
+        {
+            let current = document.querySelector('.move[data-move-id="' + moveId + '"]');
+            while (current) {
+                if (current.dataset.moveId != moveId) current.classList.add('path');
+
+                const parentId = current.dataset.parentId;
+                if (!parentId || parentId === "-1")
+                    break;
+
+                current = document.querySelector('.move[data-move-id="' + parentId + '"]');
+            }
+        }
     }
 
     document.addEventListener("click", e => {
       const move = e.target.closest(".move");
       if (!move) return;
 
-      bridge.moveClicked(parseInt(move.dataset.moveId));
-    });
-
-    function highlightPath(moveId) {
-        document
-            .querySelectorAll('.move.path')
-            .forEach(e => e.classList.remove('path'));
-
-        let current = document.querySelector('.move[data-move-id="' + moveId + '"]');
-
-        while (current) {
-            if (current.dataset.moveId != moveId) current.classList.add('path');
-
-            const parentId = current.dataset.parentId;
-            if (!parentId || parentId === "-1")
-                break;
-
-            current = document.querySelector('.move[data-move-id="' + parentId + '"]');
+        if (bridge?.moveClicked) {
+          bridge.moveClicked(parseInt(move.dataset.moveId));
         }
-    }
-    document.addEventListener("click", e => {
-        const toggle = e.target.closest(".toggle");
-        if (!toggle) return;
-
-        const variation = toggle.closest(".variation");
-        const collapsed = variation.dataset.collapsed === "true";
-        variation.dataset.collapsed = collapsed ? "false" : "true";
     });
 
+    document.addEventListener("click", e => {
+      const tg = e.target.closest(".toggle");
+      if (!tg) return;
+      const head = tg.parentElement;
+      if (!head.classList.contains("variation-head")) return;
+
+      head.classList.toggle("collapsed");
+      head.querySelector('.line').classList.toggle("collapsed");
+      head.querySelector('.variation-label').classList.toggle("collapsed");
+    });
+
+    function setView(mode) {
+      document.body.classList.remove(
+        'view-linear',
+        'view-table',
+        'view-mainline'
+      );
+      document.body.classList.add('view-' + mode);
+
+      const chess = document.getElementById('chess-content');
+      const table = document.getElementById('table-view');
+
+      if (mode === 'table') {
+        chess.hidden = true;
+        table.hidden = false;
+        buildTableView();
+      } else {
+        chess.hidden = false;
+        table.hidden = true;
+      }
+    }
+
+    function buildTableView() {
+      const container = document.getElementById('table-view');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const table = document.createElement('table');
+      table.className = 'mainline-table';
+
+      const header = document.createElement('tr');
+
+      const th1 = document.createElement('th');
+      th1.textContent = '#';
+
+      const th2 = document.createElement('th');
+      th2.textContent = 'White';
+
+      const th3 = document.createElement('th');
+      th3.textContent = 'Black';
+
+      header.appendChild(th1);
+      header.appendChild(th2);
+      header.appendChild(th3);
+
+      table.appendChild(header);
+
+      let row = null;
+      let moveNo = 1;
+
+      document.querySelectorAll('#chess-content .move.mainline').forEach((move, i) => {
+          if (i % 2 === 0) {
+            row = document.createElement('tr');
+
+            const no = document.createElement('td');
+            no.className = 'move-no';
+            no.textContent = moveNo++ + '.';
+
+            row.appendChild(no);
+            row.appendChild(td(move, 'white'));
+            row.appendChild(document.createElement('td'));
+
+            table.appendChild(row);
+          } else {
+            row.children[2].className = 'black';
+            row.children[2].appendChild(move.cloneNode(true));
+          }
+        });
+
+      container.appendChild(table);
+    }
+
+    function td(move, color) {
+      const td = document.createElement('td');
+      td.className = color;
+      td.appendChild(move.cloneNode(true));
+      return td;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.view-controls button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          setView(btn.dataset.view);
+        });
+      });
+    });
 </script>
-</head>
-<body>
-[OUTPUTFOOTER]
+
 </body>
 </html>
 [MARKUPTAGS]
-MarkupResult=<span class="result">,</span>
-MarkupDiagram=<span class="diagram">,</span>
-MarkupMainLineMove=<span class="move" data-move-id="%1" data-parent-id="%2" style="--depth:%3">,</span>
-MarkupVariationInline=<div class="variation" data-start-move="%1" data-collapsed="false"><span class="toggle">▶</span>,</div>
-MarkupNag=<span class="nag">,</span>
-MarkupAnnotationInline=<span class="comment" data-move-id="%1">,</span>
-MarkupPreAnnotationInline=<span class="precomment" data-move-id="%1">,</span>
+MarkupResult=<span class="result">,</span>\n
+MarkupDiagram=<span class="diagram">,</span>\n
+MarkupMove=<span class="move %3" data-move-id="%1" data-parent-id="%2">,</span>\n
+MarkupVariationHead=<div class="variation">,</div>\n
+MarkupVariationLine=<div class="variation-head"><span class="toggle">▶</span><span class="variation-label">%1</span><span class="line">,</span></div>\n
+MarkupNag=<span class="nag">,</span>\n
+MarkupAnnotationInline=<span class="comment" data-move-id="%1">,</span>\n
+MarkupPreAnnotation=<span class="precomment" data-move-id="%1">,</span>\n

@@ -67,7 +67,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -614,13 +614,6 @@
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="cbColumnStyle">
-              <property name="text">
-               <string>Column Style</string>
-              </property>
-             </widget>
-            </item>
-            <item>
              <widget class="QCheckBox" name="cbHTMLComments">
               <property name="text">
                <string>Enable HTML comments</string>
@@ -632,66 +625,6 @@
               <property name="text">
                <string>Hide special annotations</string>
               </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_8">
-            <item>
-             <widget class="QLabel" name="label_20">
-              <property name="text">
-               <string>Keep variations inline from level</string>
-              </property>
-              <property name="buddy">
-               <cstring>variationIndentLevel</cstring>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="variationIndentLevel">
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>200</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_24">
-            <item>
-             <widget class="QLabel" name="labelCommentsInline">
-              <property name="text">
-               <string>Indent Comments</string>
-              </property>
-              <property name="buddy">
-               <cstring>cbIndentComments</cstring>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="cbIndentComments">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <item>
-               <property name="text">
-                <string>Always</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Only Mainline</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Never</string>
-               </property>
-              </item>
              </widget>
             </item>
            </layout>

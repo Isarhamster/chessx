@@ -593,16 +593,8 @@ void PreferencesDialog::restoreSettings()
     ui.gameTextFontSizeSpin->setValue(AppSettings->getValue("FontSize").toInt());
     
     ui.cbShowDiagrams->setChecked(AppSettings->getValue("ShowDiagrams").toBool());
-    ui.cbColumnStyle->setChecked(AppSettings->getValue("ColumnStyle").toBool());
     ui.cbHTMLComments->setChecked(AppSettings->getValue("HTMLComments").toBool());
     ui.cbHideSpecAnnotations->setChecked(AppSettings->getValue("HideSpecAnnotations").toBool());
-    ui.variationIndentLevel->setValue(AppSettings->getValue("VariationIndentLevel").toInt());
-
-    ui.cbIndentComments->setItemData(0, "Always");
-    ui.cbIndentComments->setItemData(1, "OnlyMainline");
-    ui.cbIndentComments->setItemData(2, "Never");
-
-    selectInCombo(ui.cbIndentComments, AppSettings->getValue("CommentIndent").toString());
 
     ui.diagramSize->setValue(AppSettings->getValue("DiagramSize").toInt());
     ui.pieceString->setText(AppSettings->getValue("PieceString").toString());
@@ -758,13 +750,10 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("ShowDiagrams", ui.cbShowDiagrams->isChecked());
     AppSettings->setValue("HideSpecAnnotations", ui.cbHideSpecAnnotations->isChecked());
     AppSettings->setValue("HTMLComments", ui.cbHTMLComments->isChecked());
-    AppSettings->setValue("ColumnStyle", ui.cbColumnStyle->isChecked());
-    AppSettings->setValue("VariationIndentLevel", ui.variationIndentLevel->value());
     AppSettings->setValue("DiagramSize", ui.diagramSize->value());
     QString ps = ui.pieceString->text();
     if (!ps.isEmpty() && !ps.startsWith(" ")) ps.prepend(" ");
     AppSettings->setValue("PieceString", ps);
-    AppSettings->setValue("CommentIndent", ui.cbIndentComments->currentData().toString());
     AppSettings->setValue("FontBrowserText", ui.fontText->text());
     AppSettings->setValue("FontBrowserMove", ui.fontMove->text());
 
