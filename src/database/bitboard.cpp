@@ -2611,17 +2611,19 @@ void BitBoard::undoMove(const Move& m)
 bool BitBoard::HasRookForCastling(int index) const
 {
     quint64 cr = m_castlingRooks;
+    if (!cr) return false;
     Square x = InvalidSquare;
     for (int i=0; i<=index; ++i)
     {
         x = getFirstBitAndClear64<Square>(cr);
     }
-    return (x<64) ? (m_rooks & SetBit(x)) : 0;
+    return !!(m_rooks & SetBit(x));
 }
 
 Square BitBoard::CastlingRook(int index) const
 {
     quint64 cr = m_castlingRooks;
+    if (!cr) return InvalidSquare;
     Square x = InvalidSquare;
     for (int i=0; i<=index; ++i)
     {
@@ -2633,6 +2635,7 @@ Square BitBoard::CastlingRook(int index) const
 int BitBoard::CastlingRookIndex(Square rook) const
 {
     quint64 cr = m_castlingRooks;
+    if (!cr) return -1;
     for (int i=0; i<=3; ++i)
     {
         Square x = getFirstBitAndClear64<Square>(cr);
