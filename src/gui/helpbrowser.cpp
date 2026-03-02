@@ -33,8 +33,13 @@ QVariant HelpBrowser::loadResource(int type, const QUrl &name)
 
 void HelpBrowser::SetStartPage()
 {
-    setSource(QUrl("qrc:/help/about0.html"));
-    reload(); // Workaround bug in Qt
+  QString lang = AppSettings->getValue("/General/language").toString();
+  setSource(QUrl("qrc:/help/about0.html"));
+  //hardcodes Spanish help Pages if language is set to Spanish
+  if (lang=="es"){
+    setSource(QUrl("qrc:/help/ES/about0.html"));
+  }
+  reload(); // Workaround bug in Qt
 }
 
 void HelpBrowser::slotSourceChanged(const QUrl& url)

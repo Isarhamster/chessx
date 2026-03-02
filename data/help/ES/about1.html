@@ -1,0 +1,711 @@
+<html>
+
+<head>
+<link rel="stylesheet" type="text/css" href=":/help/about.css" />
+<link rel="stylesheet" type="text/css" href="../about.css" />
+<meta content="es" name="language" />
+<meta content="es" http-equiv="Content-Language" />
+<meta name="viewport" content="user-scalable=no, width=device-width" />
+
+<title>Manual de ChessX</title>
+
+<body>
+
+<div id="container">
+<div id="header">
+
+<h1>Ayuda de ChessX</h1>
+
+<div id="nav">
+<ul>
+
+<li><a href="about0.html">Informaci&oacute;n b&aacute;sica</a></li>
+<li><b>Manual</b></li>
+<li><a href="about1a.html">Personalizando ChessX</a></li>
+<li><a href="about2.html">Referencia</a></li>
+<li><a href="about3.html">Derechos de autor</a></li>
+
+</ul>
+</div>
+</div>
+
+<div id="content">
+  <h2><a name="Handbuch">Manual de ChessX</a></h2>
+  
+  <h3><a name="Open"></a>Abrir una base de datos</h3>
+  
+  <p>Se puede abrir una base de datos bien sea desde el men&uacute; Archivo o
+    arrastrando un archivo en la vista de &eacute;l explorador de base de datos</p>
+  
+  <p>Se puede anclar una base de datos permanentemente a la lista
+    seleccion&aacute;ndola como &ldquo;Favorita&rdquo; (Click derecho en &eacute;l archivo). Una base de
+    datos es abierta nuevamente al hacer click en el asterisco or nuevamente
+    desde el contexto de menu</p>
+  
+  <p>Se puede arrastrar archivos desde el navegador de internet a la lista de
+    la base de datos de ChessX. &Eacute;stos son decargados en la ruta por defecto
+    configurada por &eacute;l usuario (ver la entrada en el di&aacute;logo Preferencias / Base de datos / Ruta por defecto para bases de datos). Si el archivo esta compreso (*.zip), el archivo se
+    almacena en la ruta de datos por defecto y su contenido es autom&aacute;ticamente
+    extra&iacute;do. Nuevamente, si hay archivos PGN dentro, los archivos son
+    subsecuentemente cargardos en el programa</p>
+
+  <h3><a name="Web"></a>Abrir una base de datos periodica desde la Web</h3>
+  
+  <p><img class="button" src=":/images/folder_web.png" width="42"
+	  align="left">
+    Para cargar una base de datos actualizada peri&oacute;dicamente desde la Web,
+    entre la direcci&oacute;n URL referida en el di&aacute;logo de
+	  Preferencias / Base de datos / P&aacute;gina Web favorita, donde $1 puede reemplazar un contador de
+    incremento. Digamos, por ejemplo que revistadeAjedrezmensual.com
+    distribuye una base de datos mensual en <code>&ldquo;http://revistadeAjedrezmensual.com/zips/amic123g.zip&rdquo;</code> donde 123
+    corresponde a un n&uacute;mero de actualizaci&oacute;n que incrementa cada que una
+    nueva versi&oacute;n es actualizada, se entrar&aacute; en el campo de texto para
+    URL <code>&ldquo;http://revistadeAjedrezmensual.com/zips/amic$1g.zip&rdquo;</code>, y el
+    n&uacute;mero inicial se determina en el campo a la derecha de URL. Cada
+    vez que la base de datos se actualiza &eacute;xitosamente, $1 se incrementa
+    en uno y ChessX estar&aacute; listo para una pr&oacute;xima actualizaci&oacute;n.</p>
+
+  <h3><a name="Move"></a>Haciendo movidas</h3>
+  
+  <p>Una movida se hace arrastrandro una pieza de una casilla a otra.</p>
+  
+  <p>Dependiendo de los ajustes in el menu de Preferencias / Tablero, se
+    puede, bien sea:
+    <ul>
+      <li>Hacer click en una pieza y luego en una casilla destino (cuando sin
+      pistas en el modo entrenamiento  est&aacute; desactivado)
+      <li>Hacer click en una pieza y aceptar la movida sugerida (en caso de
+	que click derecho est&eacute; desactivado para la siguiente sugerencia)
+      <li>Hacer click derecho en una pieza y luego nuevamente hasta que la
+	casilla destino est&eacute; resaltada, y luego presionando el click
+	izquierdo para aceptar la movida (en caso de que click
+	derecho est&eacute; activado para la siguiente sugerencia).
+    </ul>
+  </p>
+  
+  <p>Retroceder una movida puede hacerse con click derecho (en caso de que
+    click derecho est&eacute; configurado para retroceder / remover una
+    movida) o presionando CTRL+click derecho si retroceder no est&aacute; asignado a el bot&oacute;n derecho del rat&oacute;n</p>
+  
+  <!-- Wouldnt it be the other way around? right click if its configured and
+  CTRL+right click if its not configured?
+
+  Going back a move can be done by a right-click (in case the right click is not configured for backtracking a move)
+  or by pressing CTRL+right click if backtracking is assigned to the right mouse key.-->
+
+  <p>Usualmente, hacer una nueva movida insertar&aacute; una variaci&oacute;n, a menos que
+    el juego se encuentre actualmente al final de &eacute;l juego o variaci&oacute;n
+    actual. Su no se desea crear una nueva variaci&oacute;n, se puede presionar CTRL
+    a la vez que se mueve, reemplazando as&iacute; la movida actual y todas las
+    movidas subsecuentes por la nueva movida</p>
+  
+  <p>Si se desea intercambiar una movida sin borrar las movidas subsecuentes,
+    se puede presionar CTRL+ALT a la vez que se ejecuta la movida. &Eacute;sto
+    intercambia la movida jugada por la nueva movida y verifica la
+    continuaci&oacute;n de juego para asegurarse que no existan posiciones
+    ilegales. El juego se corta en la posici&oacute;n ilegal, si es hallada.</p>
+
+  <p>Cuando se promueve un pe&oacute;n, ChessX muestra un di&aacute;logo de selecci&oacute;n para
+    determinar que pieza se desea escojer. &Eacute;sto puede deshabilitarse en el
+    di&aacute;logo de Preferencias / Juego / Promoci&oacute;n autom&aacute;tica. Cu&aacute;ndo la promoci&oacute;n aut&oacute;matica a Dama esta activa,
+    se puede forzar a &eacute;l dialogo de selecci&oacute;n presionando la tecla Meta a la
+    vez que se arr&aacute;stra el pe&oacute;n a la octava fila.</p>
+
+  <p>El enroque se ejecuta moviendo el Rey a la casilla de destino. Vea la
+    informaci&oacute;n sobre  <a href="#Variants">variantes de Ajedrez</a> para los
+    enroques en Ajedrez960</p>
+
+  <h3><a name="Replay"></a>ChessX reproduciendo el juego</h3>
+  <p><img src=":/images/replay.png" width="42" align="left"> 
+    Para permitir que ChessX reproduzca el juego autom&aacute;ticamente, seleccione
+    &ldquo;Juego &rarr; Jugador autom&aacute;tico&rdquo;. La velocidad a la que se desplaza el juego se
+    puede cambiar con el selector localizado en la esquina inferior derecha de
+    la barra de estado.</p>
+
+  <h3><a name="Enter"></a>Entrando movidas desde el teclado</h3>
+
+  <p>Cuando el enfoque est&aacute; o en el tablero o en la notaci&oacute;n, se puede
+    ingresar movidas simplemente escribiendo desde el teclado.  El texto
+    aparecer&aacute; en la barra de estado, indicando lo que se haya
+    ingresado. Cuando ChessX reconoce una movida completa, la movida se
+    ejecuta, y el campo de entrada de movida se reinicia</p>
+
+  <p>Se puede entrar cualquier notaci&oacute;n correspondiente a el est&aacute;ndar PGN,
+    mientras usted se asegure que la movida no es ambigua. Por ejemplo,
+    escribiendo &ldquo;e4&rdquo; en la posici&oacute;n inicial es correcto. Sin embargo, entrar
+    &ldquo;e2&rdquo; posteriormente puede corresponder a movidas tales como Be2, Ne2, Ke2,
+    Qe2 &mdash; &oacute; incluso f1e2&hellip;</p>
+
+  <p>Con [Enter] se puede forzar ChessX a aceptar una movida, o descartarla en
+    el caso que ChessX no pueda determinar nada razonable con su entrada</p>
+
+  <p>Se puede entrar el enroque con  00, 0-0, 0k, O-O or 000, 0-0-0, 0q, O-O-O
+    respectivamente.  &lsquo;--&rsquo; generar&iacute;a una movida nula.</p>
+
+  <h3><a name="Annotate"></a>Anotar movidas</h3>
+
+  <p>Las anotaciones de movidas se pueden hacer activando el men&uacute; de contexto en
+    el explorador de texto, o simplemente presionand la secuencia
+    correspondiente en el teclado, por ejemplo,
+    &lsquo;!?&rsquo;, &lsquo;!!&rsquo;, &lsquo;??&rsquo;, &lsquo;!&rsquo;,
+    &lsquo;?&rsquo;, &lsquo;=&rsquo;, &lsquo;+-&rsquo;, &lsquo;-+&rsquo; y as&iacute;.
+    Se puede presionar [Enter] (por ejemplo, para obtener &lsquo;!&rsquo;)</p>
+
+  <p>Adicionalmente &lsquo;n&rsquo; a&ntilde;ade la et&iacute;queta correspondiente a &lsquo;novedad&rsquo; y &lsquo;#&rsquo;
+    introduce la et&iacute;queta que introduce un di&aacute;grama.</p>
+
+  <p>Se pueden realizar anotaciones especiales tales como dibujar una flecha o
+    colorear casillas presionando SHIFT+click derecho del rat&oacute;n, y seleccionando
+    bien sea una casilla unica o haciendo un gesto de rat&oacute;n para obtener la
+    flecha.</p>
+
+  <p><img src=":/images/brush_green.png" width="42" align="left">
+    Con el l&aacute;piz verde, rojo, o amarillo presionado, no se pueden entrar
+    movidas. En vez, se puedes pintar casillas y flechas sin tener que
+    presionar simultan&eacute;amente SHIFT+bot&oacute;n derecho del rat&oacute;n.</p>
+
+  <p><img src=":/images/brush_erase.png" width="42" align="left">
+    con el l&aacute;piz gris seleccionado se pueden borrar las anotaciones. <br>
+    Presionando SHIFT cu&aacute;ndo el l&aacute;piz gris est&aacute; seleccionado borra todas las
+    marcaciones en el tablero a la vez</p>
+
+  <h3><a name="Save"></a>Salvando juegos</h3>
+  
+  <p>&iexcl;Salvar juegos puede ser lig&eacute;ramente confuso! Un juego debe ser salvado
+    primero en la base de datos (presionando CTRL+S, o en el men&uacute;
+    Juego / Guardar). luego, la base de datos debe ser salvada a el disco
+    presionando CTRL+SHIFT+S o en el men&uacute; Archivo / Guardar base de datos. &Eacute;ste proceso puede
+    parecer inconveniente pero por otro lado previene que juegos o archivos
+    sean escritos err&oacute;neamente.</p>
+  
+  <p>Si prefiere cometer a la base de datos e inmediatamente salvar a disco
+    aut&oacute;maticamente al guardar juego, la opci&oacute;n puede seleccionarse en
+    &ldquo;Someter la base de datos a disco al guardar juego&rdquo; en la pesta&ntilde;a de Base
+    de datos en el di&aacute;logo de Preferencias.</p>
+  
+  <p>Por defecto, una base de datos portapapeles se abre. &Eacute;sta no tiene
+    respaldo en disco. &iexcl;Una vez se cierra ChessX todo el contenido de el
+    tablero portapapeles se elimina! Es necesario abrir al menos una base de
+    datos adicional para escribir y transferir cualquier contenido desde el
+    portapapeles a esta base de datos arrastrando los juegos a la base de
+    datos, o usando el men&uacute; &ldquo;Copiar juegos&hellip;&rdquo; desde el men&uacute; Bases de datos</p>
+
+  <h3><a name="Switch"></a>Cambiando bases de datos</h3>
+  
+  <p>Cambiar entre bases de datos abiertas se logra bien sea desde el men&uacute; de
+    bases de datos, presionando CTRL+SHIFT+N&uacute;mero 0&hellip;9, haciendo click en el
+    bot&oacute;n derecho, haciendo doble click izquierdo en la lista de las bases de
+    datos, &oacute; haciendo click en la pesta&ntilde;a de tablero correspondiente a la base
+    de datos que se desea seleccionar. &iexcl;La base de datos seleccionada se resalta
+    en la lista de bases de datos!</p>
+  
+  <h3><a name="OpenGame"></a>Abrir o comenzar un juego nuevo</h3>
+  
+  <p>Una vez se ha abierto o seleccionado una base de datos como se describe
+    arriba, se puede comenzar un nuevo juego presonando CTRL+N o seleccionando
+    un juego de la lista de juegos presente en la base de datos</p>
+  
+  <p>Si se desea que el juego comienze en una posici&oacute;n dada, entrando
+    CTRL+SHIFT+E activa el editor de tablero. En este editor, se puede iniciar
+    una posici&oacute;n de juego arbitraria, o una posici&oacute;n inicial de Ajedrez960. El
+    editor verifica la posici&oacute;n por legalidad, y por lo tanto es posible que
+    se tengan que ajustar los derechos de enroque, o cambiar el lado al que
+    le corresponde turno, para hacer alguna posici&oacute;n legal.</p>
+
+  <!-- Information about engine instalation before usage makes sense, I moved
+  it up -->
+  <h3><a name="Engines"></a>Instalacion de motores de analisis</h3>
+
+  <p>En primer lugar, es necesario instalar el motor de an&aacute;lisis en alg&uacute;n
+    lugar del disco duro. Recuerde donde es instalado el programa o el
+    ejecutable de el motor de an&aacute;lisis, ya que &eacute;sta informaci&oacute;n es necesaria
+    posteriormente.</p>
+  
+  <p>En el di&aacute;logo de Preferencias, se seleciona la pesta&ntilde;a de &ldquo;Motores&rdquo; y se presiona el bot&oacute;n para &ldquo;A&ntilde;adir&hellip;&rdquo;, luego se busca la ruta
+    donde se haya instalado el motor de an&aacute;lisis y se selecciona, presionado
+    &ldquo;Abrir&rdquo;.</p>
+
+  <p>El ejecutable aparecer&aacute; en la lista de motores. En la mitad inferior de
+    la pesta&ntilde;a se encontrar&aacute;n algunas opciones.  La mayor&iacute;a de los motores
+    modernos son motores UCI, por lo tanto la opci&oacute;n &ldquo;UCI&rdquo; se mantendr&aacute;
+    seleccionada.  Sin embargo algunos motores (notablemente lc0 y Stockfish)
+    prefieren que la posici&oacute;n sea transmitida de manera particular, y en estos
+    casos seleccionar &ldquo;Enviar historia&rdquo; para Stockfish, lc0 y posiblemente otros
+    motores de an&aacute;lisis, ser&iacute;a lo apropiado.</p>
+  
+  <p>Para calibrar, es posible abrir el di&aacute;logo de &ldquo;Opciones&rdquo;.  Opciones
+    espec&iacute;ficas de cada motor se pueden optimizar ac&aacute;.  La opci&oacute;n m&aacute;s
+    interesante es usualmente el n&uacute;mero de bandas que se permite a el motor
+    usar simultane&aacute;mente. Un gran n&uacute;mero hace que el motor sea m&aacute;s poderoso,
+    pero a la vez requiere mayor poder de la computadora, y &eacute;sta puede
+    calentarse r&aacute;pidamente.</p>
+  
+  <p>Una nota para los usuarios de OS X: Intente abrir el di&aacute;logo de opciones
+    incluso si no se planea alterar las opciones. Esta es la forma m&aacute;s simple de
+    determinar si el motor de an&aacute;lisis est&aacute; funcionando. Si se recibe un mensaje
+    de error, intente iniciar el motor de an&aacute;lisis desde la consola de
+    comandos. Si la consola de comandos es incapaz de ejecutar el motor de
+    an&aacute;lisis, ChessX tampoco podr&aacute; usarlo.</p>
+
+  <p>En referencia a Stockfish: no es recomendable usar la distribuci&oacute;n de
+    Stockfish oficial en OS X, ya que &eacute;sta no funciona apropiadamente, ni
+    siquiera con la &uacute;ltima versi&oacute;n de OS X. El mensaje de
+    error generado usualmente contiene un texto similar a &ldquo;Instruction ilegal:
+    4&rdquo;. En &eacute;ste caso, es recomendable obtener el c&oacute;digo fuente y compilarlo en
+    la computadora directamente.</p>
+  
+  <h3><a name="Analyse"></a>Analisis de juegos</h3>
+  
+  <p>Hay dos ventanas disponibles de an&aacute;lisis de juego donde dos motores de
+    an&aacute;lisis de Ajedrez pueden configurarse para analisar la posici&oacute;n
+    actual.</p>
+  
+  <p>Motores de an&aacute;lisis deben ser configurados en el di&aacute;logo de Preferencias
+    antes de ser utilizados (ver <a href="#Engines">Instalacion de motores de an&aacute;lisis</a>).</p>
+  <!-- 
+  I do not think this is true any longer...
+
+  A default engine (Stockfish) comes with this installation
+  and will be configured as first engine, if no other entries exist.
+  -->
+
+  <p>Por ejemplo, Stockfish, es un motor de an&aacute;lisis de Ajedrez de c&oacute;digo
+    libre (vea la <a href="http://stockfishchess.org">P&aacute;gina Web de
+      Stockfish</a>). El c&oacute;digo fuente de Stockfish puede obtenerse a trav&eacute;s
+    de &eacute;sa p&aacute;gina Web. Cabe resaltar que Stockfish ha sido licenciado
+    con <a href="about5.html">GPLv3</a></p> 
+
+  <!-- about5.html, not about3.html     -->
+  
+  <p>El comportamiento de los motores de an&aacute;lisis puede ser calibrado
+    con los protocolos seleccionables en el di&aacute;logo de Motores, en
+    Preferencias (funciona &uacute;nicamente para UCI; Winboard se usa
+    raramente, ya que su especificaci&oacute;n carece de finura y es
+    d&iacute;ficil de implementar correctamente por los desarrolladores de
+    programas de interfaz gr&aacute;fica de usuario &mdash; GUI).</p>
+  
+  <p>La velocidad a la que ocurren movidas puede ser ajustada con el selector
+    localizado en la esquina inferior derecha de la barra de
+    estado. Arrastrando el selector a la extrema izquierda para an&aacute;lisis
+    infinitamente lento o a la extrema derecha para que el analsis tome entre
+    1 y 10 segundos por movida.</p>
+  
+  <p>Si el n&uacute;mero de l&iacute;neas est&aacute; ajustado al menos a 2, el valor de
+    complejidad Guid-Bratko es c&aacute;lculado  &mdash; vea la referencia para
+    detalles.</p>
+  
+  <p><em>Una pista</em> para los desarrolladores de motores: Es posible hacer
+    un <em>log</em> de la comunicaci&oacute;n desde y hacia el motor con la
+    casilla &ldquo;<em>Log</em>&rdquo; en Preferencias / Motores. Logging
+    envia el archivo llamado <code>&lsquo;nombre.log&rsquo;</code> donde 
+    el nombre es el indicado en la pesta&ntilde;a Motores. El
+    directorio de Logging es la <code>RutadeDatosdePrograma/log</code>. La
+    ruta de datos de programa puede determinarse en el di&aacute;logo sobre
+    ChessX.</p> 
+  
+  <p>Algunos motores de an&aacute;lisis (por ejemplo lc0) tienen problemas para
+    mantener un estado interno apropriado a travez de comandos de dos
+    posiciones, por lo tanto ChessX permite enviar la historia completa de un
+    juego en lugar de la posici&oacute;n actualizada. Esto se puede
+    deshabilitar dese la casilla &ldquo;Enviar historia&rdquo;</p>
+
+  <h3><a name="Game"></a>Jugando contra la maquina</h3>
+  
+  <p><img src=":/images/respond.png" width="42" align="left">Se puede iniciar
+    un juego contra la m&aacute;quina desde cualquier posici&oacute;n, activando el modo de
+    auto responder. Cada vez que &uacute;sted hace un movimiento, el motor de an&aacute;lisis
+    en el panel 1 comenzar&aacute; a analizar las posici&oacute;n por el tiempo que est&eacute;
+    definido en el selector en la esquina inferior derecha de la barra de
+    estado. Acabado el tiempo permitido, el motor de an&aacute;lisis har&aacute; la mejor
+    movida que haya encontrado hasta ese momento.</p>
+  
+  <p>Para jugar un juego con las reglas de Ajedrez960, se necesita un motor
+    que sea capaz de soportar esa variante. Por ejemplo, algunas versiones de Stockfish
+    incluyen esta funci&oacute;n.</p> <!-- There is no integrated stockfish anymore?
+  The integrated Stockfish is ready for Chess960. </p>  -->
+
+
+<h3><a name="Auto-Annotate"></a>Anotacion automatica de juegos</h3>
+<p><img src=":/images/annotate.png" width="42" align="left">Al activar el men&uacute;
+  &ldquo;Juego &rarr; An&aacute;lisis autom&aacute;tico&rdquo;, el motor de an&aacute;lisis comienza a moverse a
+  travez de &eacute;l juego actual, analisando cada posici&oacute;n por alg&uacute;n tiempo. Una
+  vez se acaba el tiempo permitido, las anotaciones son insertadas en el texto
+  de juego. ChessX continuar&aacute; con el an&aacute;lisis de la siguiente movida.</p>
+
+<p>Hay unas pocas opciones disponibles para modificar &eacute;ste comportamiento:
+  <ul>
+    <li>El selector en la barra de estado determina cu&aacute;nto tiempo la m&aacute;quina
+      utiliza para pensar cada posici&oacute;n
+    <li>Seleccionando en el men&uacute; Preferencias &rarr; Juego &rarr; guardar
+      juego autom&aacute;ticamente y continuar con el siguiente, el motor de an&aacute;lisis
+      progresar&aacute; por toda la base de datos. Seleccione &eacute;sta opci&oacute;n, inicie el
+      motor de an&aacute;lisis 1, abra el primer juego de la base de datos, y
+      finalmente seleccione la primera movida, para analisar la base de datos completamente.
+    <li>Seleccionando en el men&uacute; Preferencias &rarr; Base de datos &rarr;
+      Someter la base de datos a disco al guardar juego, es una opci&oacute;n
+      recomendada, ya que somete la base de datos al disco una vez termina el
+      an&aacute;lisis de cada uno de los juegos, especialmente cuando se analisa una
+      base de dato completa, &eacute;ste procedimiento prevendr&iacute;a que todo el
+      an&aacute;lisis se perder&iacute;a s&iacute;, por ejemplo, el computador se desconect&aacute; accidentalmente.
+    <li>La selecci&oacute;n en el men&uacute; Preferencias &rarr; Juego &rarr;
+      L&iacute;mite de verificaci&oacute;n de disparate (centi-pe&oacute;n), permite establecer un l&iacute;mite en centipeones
+    <li>Seleccionando en el men&uacute; Preferencias &rarr; Juego &rarr;
+      An&aacute;lisis retrogrado, entrar&aacute; variaciones en el juego,
+      &uacute;nicamente si la evaluaci&oacute;n de la movida es superior a el
+      l&iacute;mite en centipeones &iacute;ndicado. En este modo, el an&aacute;lisis hacia adelante solamente a&ntilde;ade s&iacute;mbolos (?, ??, !, !!)
+    <li>Seleccionando en el men&uacute; Preferencias &rarr; Juego &rarr;
+      A&ntilde;adir  anotaci&oacute;n en el final de l&iacute;nea, el texto &iacute;ndicado se adiciona a las l&iacute;neas o glifos NAG,
+      permiti&eacute;ndo que el an&aacute;lisis autom&aacute;tico sea distinguido de l&iacute;neas o
+      comentarios que ya est&eacute;n existentes
+    <li>Seleccionando en el men&uacute; Preferencias &rarr; Juego &rarr; &Uacute;nicamente
+    l&iacute;nea principal, previene a ChessX de explorar tambi&eacute;n las variaciones ya
+    existentes en los juegos.
+</ul>
+  Si no se establece un l&iacute;mite, todas las variaciones son a&ntilde;adidas a el texto
+  de juego.
+  
+  <h3><a name="Engine-Books"></a>Usando libros con los motores de analisis</h3>
+  
+<p>Los motores UCI puedes soportar libros. Simplemente ajuste el nombre de el
+  directorio donde se inicia el motor, y reinicie
+  el motor de an&aacute;lisis. El motor de an&aacute;lisis responder&aacute;
+  inmediatamente con una   movida existente en el libro cu&aacute;nd
+  est&eacute; jugando (ver arriba),  pero   dependiendo de la opci&oacute;n
+  &ldquo;Mejor movida en el libro&rdquo;, la movida realizada por 
+  el motor puede ser, o no ser, la mejor movida presente en el libro. En el
+  modo de an&aacute;lisis infinito, el motor no usar&aacute; la informaci&oacute;n presente en el
+  libro de aperturas.</p>
+
+<p>En el caso de que su motor de an&aacute;lisis no soporte libros (por ejemplo
+  Stockfish ya no soporta la opci&oacute;n de libros), la interfaz gr&aacute;fica de usuario
+  (GUI) puede servir como una alternativa sobre el uso de &eacute;l motor: Abra el
+  libro como se describe abajo y selecci&oacute;nelo usando el selector de libros
+  localizado en el panel de An&aacute;lisis. Si se comienza un juego contra el
+  motor o un juego motor contra motor, es posible usar la opci&oacute;n &ldquo;Permitir el
+  uso de libros&rdquo; y seleccionar un algoritmo,  indicando como la interfaz
+  gr&aacute;fica seleccionar&aacute; la movida dentro de un ab&aacute;nico de opciones para
+  cualquier posici&oacute;n dada.
+<ul>
+  <li>La mejor movidad tiene siempre prevalencia
+  <li>Selecci&oacute;n ale&aacute;toria escoger&aacute; una movida al azar con igual probabilidad
+  <li>Selecci&oacute;n ponderada har&aacute; una selecci&oacute;n parcialmente al azar, prefiriendo
+    movidas mejor evaluadas
+</ul>
+</p>
+
+<h3><a name="Books"></a>Usando libros con ChessX</h3>
+
+<p>ChessX soporta tres formatos de libors: Polyglot (*.bin), Arena (*.abk) y
+  Chessbase (*.ctg/*.ctb/*.cto).</p>
+
+<p>El c&oacute;digo original de Polyglot fue licenciado con GNU GPL versi&oacute;n 2.0.  El
+  soporte Chessbase es inspirado, en su mayor parte, por el c&oacute;digo de el motor
+  de an&aacute;lisis Daydreamer</p>
+
+<p>ChessX muestra libros de la misma manera que cualquier otra base de datos
+  en el explorador de el &aacute;rbol de aperturas. Arrastre un libro Polygot, Arena
+  &oacute; Chessbase en la lista de bases de datos, o a trav&eacute;z de el men&uacute; con la
+  opci&oacute;n Abrir libro. Una vez el libro se abre, estar&aacute; disponible, igual que
+  una base de datos normal, en la lista desplegable &ldquo;Fuente&rdquo; en la parte inferior de &eacute;l
+  &aacute;rbol de aperturas.</p>
+
+<p><em>Una nota sobre los libros Chessbase</em>: Tres archivos son necesarios,
+  con las extensiones  &lsquo;ctg&rsquo;, &lsquo;ctb&rsquo; y
+  &lsquo;cto&rsquo; respectivamente. Todos tienen que tene el mismo nombre
+  base y deben estar en el mismo directorio.</p>
+
+<p><em>Una nota sobre los libros Polyglot</em>: Estos pueden ser d&iacute;ficiles de
+  interpretar, ya que estan hechos, espec&iacute;ficamente para darle pistas a los
+  motores de an&aacute;lisis sobre las mejores movidas que la m&aacute;quina deber&iacute;a
+  hacer. Movidas que no tuvieron &eacute;xito, en la mayor&iacute;a de las veces no estan
+  incorporadas en los libors Polyglot.</p>
+
+<p>Por lo tanto, no es recomendado aprender aperturas usando libros Polyglot
+  &mdash; &iexcl;Puede haber movidas importantes ausentes!</p>
+
+<p><em>Una nota sobre los libros Arena</em>: A diferencia de los libros
+  Polyglot y Chessbase, los libros Arena consiste de una colecci&oacute;n de juegos,
+  y por lo tanto son utilizados de la misma manera que las bases de datos de
+  s&oacute;lo lectura. Se puede arrastrar juegos de un libro de Arena, tal como se
+  puede arrastrar juegos desde cualquier otra base de datos<p>
+  
+  <h3><a name="Create-Book"></a>Creando sus propios Libros</h3>
+  
+<p>Se pueden crear libros Polygot seleccionando una base de datos PGN o un
+  libro Arena (click en el bot&oacute;n derecho de &eacute;l rat&oacute;n) y seleccionando &ldquo;Hacer
+  libro Polyglot&rdquo;.</p>
+
+<p>ChessX preguntar&aacute; por los siguientes par&aacute;metros que son usados durante la
+  creaci&oacute;n de &eacute;l libro:
+  <ul>
+    <li>El n&uacute;mero de turnos (medio moviento) que son le&iacute;dos de cada uno de los
+      juegos. Por ejemplo, si se &iacute;ndica &ldquo;20&rdquo;, s&oacute;lamente las primeras 10
+      movidas de cada juego son escaneadas.
+    <li>El n&uacute;mero de veces una movida debe haber sido jugada para ser
+      mantenida en el libro. En otras palabras, movidas que son raramente
+      jugadas ser&aacute;n descartadas. Cuando se escanean juegos completos &ldquo;2&rdquo; es un
+      m&iacute;nimo sensible, pero si las movidas son seleccionadas manualmente &ldquo;1&rdquo;
+      tiene sentido.
+    <li>Se puede sobreescribir los resultados reales de los juegos
+      seleccionando el lado para el cual se desea construir el repertorio,
+      asumiendo que todos los juegos en la base de datos contienen l&iacute;neas que
+      usted desea jugar.
+    <li>Inicialmente, es posible filtrar los juegos no deseados.
+    <li>Por defecto, una probabilidad es calculada por ChessX Polyglot para
+      cada movida, dependiendo en que tan popular es (que tan a menudo aparece
+      como jugada en el archivo PGN) y cual es su &ldquo;calificaci&oacute;n&rdquo;.  &Eacute;sta opcion
+      altera el m&eacute;canismo por defecto y afecta la probabilidad de cada
+      movida. Esto permite mayor variedad en el juego.
+  </ul>
+</p>
+
+<h3><a name="Content"></a>Generando contenido</h3>
+
+<p>Se puede Copiar y pegar posiciones (FEN e imagenes) y juegos completos
+  (PGN) desde y hacia el portapapeles, y exportar juegos en LaTeX, HTML &oacute; PGN
+  nuevamente. Vea el men&uacute; Editar y el di&aacute;logo Archivo / Exportar.</p>
+
+<h3><a name="Merge"></a>Uniendo juegos</h3>
+
+<p>Al Arrastrar un juego de la lista de juegos hacia la notaci&oacute;n actual, el
+  juego arrastrado ser&aacute; unido con el juego actual en la primera posici&oacute;n desde
+  la posici&oacute;n actual, en la que ambos juegos sean diferentes. Si nada es
+  unido, es por que no se encuentra un lugar apropiado para la union. &Eacute;sto
+  puede pasar cuando,
+  <ul>
+    <li>No se encuentra ninguna posici&oacute;n donde ambos juegos sean id&eacute;nticos (&iexcl;a
+      partir de la posici&oacute;n actual!)
+    <li>El resto de el juego ya hab&iacute;a sido unido previamente
+  </ul>
+  Es posible seleccionar y unir varios juegos simultaneamente.</p>
+
+<h3><a name="Sort"></a>Organizando y filtrando juegos</h3>
+
+<p>La lista de juegos puede ser filtrada bien desde el &aacute;rbol de aperturas, la
+  ventanas de Evento o Jugador, &oacute; desde el men&uacute; de Contexto en el encabezado
+  de la lista. Multiples b&uacute;squedas pueden ser combinadas &oacute;
+  invertidas. Ocurrencias adicionales de la posici&oacute;n actual de &eacute;l tablero en
+  la base de datos actual puede ser encontrada a travez de el men&uacute; Encontrar /
+  Encontrar posici&oacute;n.</p>
+
+<p>Hacer click en los encabezads permite ordenar las listas</p>
+
+<p>Atajos de teclado en la lista de juegos:</p>
+<ul>
+  <li>Meta+A: Selecciona todos los juegos
+  <li>Meta+C: Eleva el di&aacute;logo de copiar para los juegos seleccionados
+  <li>Meta+H: Esconde los juegos seleccionados
+  <li>Meta+X: Borra los juegos seleccionados
+</ul>
+
+<h3><a name="Filter"></a>Filtrar bases de datos en un arbol de aperturas</h3>
+
+<p>El &aacute;rbol de apertura toma la posici&oacute;n de tablero actual y la compara con
+  cada juego en la base de datos seleccionada. El n&uacute;mero de movidas encontrada
+  en la base de datos es listada, junto con el n&uacute;mero de ocurrencias de cada
+  movida y el resultado logrado en cada movimento alternativo. La base de
+  datos se actualiza contin&uacute;amente, la barra de progreso &iacute;ndica que tanto de
+  la base de datos ha sido analizada.</p>
+
+<p>El resultado de la posici&oacute;n b&uacute;scada puede ser filtrado en la lista de
+  juegos. &Eacute;ste filtro puede ser usado otra vez como el input para la b&uacute;squeda
+  en el &aacute;rbol de apertura. Especialmente en bases de datos largas esto puede
+  acelerar el proceso de b&uacute;squeda futura (aunque naturalmente esto conlleva a
+  que se pierdan otras sucesiones de movidas desde la misma posici&oacute;n).</p>
+
+<p>Usualmente, haciendo click en una de las movidas de el &aacute;rbol de aperturas
+  &uacute;nicamente actualizar&aacute; la peque&ntilde;a vista en la ventana de &eacute;l &aacute;rbol de
+  aperturas. Si se presiona SHIFT mientras se hace click en la movida a&ntilde;adir&iacute;a
+  la movida a el juego actual (si la posici&oacute;n lo permite).</p>
+
+<h3><a name="Duplicate games"></a>Filtrando juegos duplicados</h3>
+
+<p>El filtro de Juegos duplicados busca por juegos id&eacute;nticos, y todas las
+  copias de un juego son filtradas, manteniendo el juego original. Por lo
+  tanto, todas loas copias en el filtro pueden ser marcadas para
+  eliminaci&oacute;n. </p>
+
+<p>El encabezado de filtro de duplicados busca por et&iacute;quetas id&eacute;nticas. Los
+  juegos mostrados son juegos que tienen pareja, que no esta inclu&iacute;da en la
+  lista, y en adici&oacute;n, la pareja invisible tiene al menos tantas movidas y
+  comentarios como los juegos en la lista.</p>
+
+<p>El men&uacute; contexto en la lista de juegos tiene una entrada &ldquo;Filtrar
+  id&eacute;nticos&rdquo; el cual para cada juego seleccionado busca toda la base de datos
+  por duplicados exactos. Ambos duplicados aparecen el la lista filtrada una
+  vez termina la b&uacute;squeda.</p>
+
+<h3><a name="Merge databases"></a>Unir bases de datos completas</h3>
+
+<p>Al Arrastrar una base de datos en la lista de hacia otra base de datos
+  diferente, or arastrandola hacia la lista de juegos, los juegos son
+  adicionados a la base de datos a donde se mueva, o en la base de datos
+  actualmente activa en el caso que se arraste en una lista de juegos.</p>
+
+<p>Es posible tambi&eacute;n arrastrar archivos de bases de datos desde el sistema de
+  archivos a la lista de juegos, para adicionar los juegos a la base de datos
+  actualmente activa</p>
+
+<p>Por lo contrario, si se arrastra un archivo de base de datos a la lista de
+  base de datos, la nueva base de datos es abierta, es decir, no sera unida a
+  la base de datos donde sea arrastrada o activa.</p>
+
+<h3><a name="Refactor"></a>Refactorizar juegos en la base de datos actual</h3>
+
+<p>Se puede limpiar juegos o bases de datos completas por variaciones,
+  anotaciones de tiempo y comentarios. Vea el men&uacute; de juegos o de base de
+  datos para cada uno de &eacute;stos m&eacute;todos de refactorizacion.</p>
+
+<p><em>Nota:</em> La refactoriazaci&oacute;n de un juego se puede deshacer, pero no
+  existe la opci&oacute;n de deshacer la refactorizaci&oacute;n de una base de datos completa.</p>
+
+<h3><a name="Training"></a>Modos de entrenamiento</h3>
+
+<p><img src=":/images/training.png" width="42" align="left">Seleccionando
+  &ldquo;Juego / Entrenamiento&rdquo; comienza el modo de entrenamiento. Las movidas, a
+  partir de la posici&oacute;n actual son esc&oacute;ndidas en la pesta&ntilde;a de notaci&oacute;n de
+  juego. En &eacute;ste modo no es posible modificar el juego, as&iacute; que es posible
+  hacer cualquier movida en la posici&oacute;n dada. Si la movida es la correcta (es
+  decir la que fue jugada o una variaci&oacute;n existente) entonces la movida se
+  ejecuta y el juego avanza un paso. La notaci&oacute;n de juego se actualiza y la
+  variaci&oacute;n de la movida ejecutada se vuelve visible. &Eacute;ste modo es ideal para
+  ser usado con una base de datos de t&aacute;cticas.</p>
+
+<p>En caso de que no se tenga una idea de que mover, se puede obtener pistas
+  al mover en rat&oacute;n sobre las piezas. &iexcl;Es posible que la m&oacute;vida correcta
+  aparezca!.  Vea el cap&iacute;tulo sobre hacer movidas y las preferencias
+  asociadas a la habilitaci&oacute;n de adivinanza de movientos.</p>
+
+<p><img src=":/images/training_both.png" width="42" align="left">
+  Seleccionando &ldquo;Juego / Entrenar ambos lados&rdquo; fuerza a que ambos lados
+  sean jugados, ocultando las movidas jugadas.</p>
+
+<!-- fixing duplicate a_tag-->
+<h3><a name="Training_kids"></a>Entrenando con ninos</h3>
+
+<p>Hay unas pocas caracter&iacute;sticas de ChessX dise&ntilde;adas para entrenar con ni&ntilde;os
+  o con jugadores a nivel de club.</p>
+
+<p><img src=":/images/black_wall.png" width="42" align="left">
+  Para ilustrar el poder de loas piezas, se puede hacer que ChessX marque
+  todos los cuadros cubiertos por las piezas blancas o negras. Es decir, por
+  ejemplo, que se   puede visualizar una red alrededor de &eacute;l Rey o la forma como un Alfil o un
+  Caballo bloquea todas las rutas de escape en el famoso fin de juego contra
+  el Rey solitario</p>
+
+<p><img src=":/images/threat_white.png" width="42" align="left">
+  El indicador de amenaza ayuda a la visualizaci&oacute;n de piezas con poca
+  protecci&oacute;n, de tal manera que los principiantes aprendan que las piezas
+  sueltas son vulnerables a la captura.</p>
+
+<p>Una opci&oacute;n mas avanzada permite a ChessX leer en voz alta la siguiente
+  movida que es hecha en el tablero. Los estudiantes, se espera, visualizen la
+  posici&oacute;n anunciada sin que esta sea a&uacute;n hecha sobre el tablero. Una vez la
+  movida es ejecutada, ChessX leer&iacute;a unas pocas movidas, nuevamente. Vea
+  &ldquo;Preferencias / App / Sonido / Hablar las movidas&rdquo; y &ldquo;App / Sonido / N&uacute;mero de turnos a revisar hacia adelante&rdquo;.</p>
+
+<h3><a name="Match"></a>Jugando partidas</h3>
+
+<p><img src=":/images/black_chess.png" width="42" align="left">
+  Modo partida permite a dos humanos jugar una partida de Ajedrez. El bot&oacute;n de
+  partida se asegura, que ChessX no de ning&uacute;n tipo de pista en la
+  posici&oacute;n. &Eacute;sta es la manera de efectivamente deshabilitar el output de los
+  motores de an&aacute;lisis, los output de las tablebase, moviento adelante y atras
+  en el juego, cambiar bases de datos, etc.</p>
+
+<p><img src=":/images/game_engine.png" width="42" align="left">Jugar una
+  partida contra el motor de an&aacute;lisis con tiempo l&iacute;mite.</p>
+
+<h3><a name="Engine-Match"></a>Partida de Ajedrez maquina contra maquina</h3>
+
+<p><img src=":/images/chip.png" width="42" align="left">
+  Con &ldquo;Juego / Partido de motores&rdquo; se puede organizar una partida m&aacute;quina
+  contra m&aacute;quina. El panel de an&aacute;lisis 1 juega las piezas blancas, y el panel
+  2 con las piezas negras. Comenzar una partida maquina contra m&aacute;quina eleva
+  el di&aacute;logo de parametro de partido. Si este modo es activado, el tiempo
+  transcurrido es anotado. Se puede activa en modo Gong, donde cada movimiento
+  tiene un tiempo l&iacute;mite, o el m&eacute;todo muerte s&uacute;bita, donde cada motor de
+  an&aacute;lisis tiene un timepo fijo para la totalidad de &eacute;l juego. ChessX
+  supervisa el juego y adjudica tablas en el caso de repetici&oacute;n, material
+  insuficiente, o regla de 50 movidas.</p>
+
+<h3><a name="FICS"></a>Ajedrez en linea</h3>
+
+<p><img src=":/images/fics_offline.png" width="64"></p>
+
+<p> <img src=":/images/fics_online.png" width="64" align="left">
+<img src=":/images/fics_online_timeseal.png" width="64" align="left"></p>
+
+<p>ChessX soporta la opci&oacute;n de jugar en l&iacute;nea con partidas jugadas o almacenadas
+en el Free Internet Chess Server (FICS).</p>
+
+<p>Si &uacute;sted tiene una cuenta FICS, puede entrar sus credentiales de registro
+  en el men&uacute; de Preferencias, de lo contrario, ChessX entrar&aacute; a el servidor
+  como usuario invitado.</p>
+
+<p>ChessX se conecta a FICS una vez es abierta la base de datos virtual
+  FICS. Una conecci&oacute;n exitosa se indica en el panel de mensajes de la consola
+  de FICS.</p>
+
+<p>Seleccionando la pesta&ntilde;a &ldquo;Juegos&rdquo; leer&aacute; la lista de juegos que est&aacute;n siendo
+  jugados al momento en FICS. Haciendo doble click en uno de los juegos
+  permite monitorear el juego.</p>
+
+<p>Seleccionando la pesta&ntilde;a &ldquo;Jugadores&rdquo; leera la lista de todos los jugadores
+  conectados al momento en FICS. Doble click en un jugador lee la historia de
+  ese jugador (los &uacute;ltimos 10 juegos). Doble click en un juego en el panel
+  &ldquo;Historia&rdquo; leer&aacute; el juego y lo incorporar&aacute; en la base de datos FICS.
+  Es finalmente posible guardar cualquier juego observado, jugado, o
+  examinado, y transferirlo a una base de datos persistente. &iexcl;Los juegos en la
+  base de datos FICS en ChessX no son persistentes!</p>
+
+<p>Para jugar en l&iacute;na, se recomienda usar el protocol Timeseal. Vea el panel
+  de mensajes una vez se haya conectado a FICS. Ahi se indica si la conecci&oacute;n
+  se ha establecido con Telnet, o con Timeseal. Telnet posee desventaja para
+  juegos, especialmente r&aacute;pidos, y por lo tanto no se recomienda.</p>
+
+<p>Se puede aceptar retos de otros jugadores presionando &ldquo;Aceptar&rdquo;, o se puede
+  buscar por un oponente en el panel de &ldquo;B&uacute;squeda&rdquo;.</p>
+
+<p>Mientras se espera que su oponente mueva, es posible tomar una pieza y
+  desplazarla sobre una casilla destino o es posible entrar una movida
+  anticipada si se descarga la pieza en alg&uacute;n lugar. La pieza y la casilla
+  destino de la movida anticipada son indicadas. La movida anticipada se puede
+  cancelar haciendo click en alg&uacute;n lugar de el tablero, o seleccionando una
+  nueva movida anticipada.</p>
+
+<p>Las variantes de Ajedrez no est&aacute;n soportadas por ChessX para el modo de
+  juego en l&iacute;nea.</p>
+
+<p><img src=":/images/lichess_fetch.png" width="64" align="left"><img src=":/images/chesscom_fetch.png" width="64">
+  Obtenga los juegos que &uacute;sted ha jugado el &uacute;ltimo mes en lichess.org &oacute; en
+  chess.com. Es necesario indicar el nombre de usuario en el di&aacute;logo de
+  Preferencias.</p> 
+
+<h3><a name="Variants"></a>Variantes de Ajedrez</h3>
+
+<p>ChessX soporta juegos Ajedrez960 (tambi&eacute;n conocido como Fisherandom).</p>
+
+<p>Se puede iniciar un juego de Ajedrez960 al iniciar el tablero
+  manualmente. El di&aacute;logo de ajuste manual de tablero inicial permite entrar
+  un identificador de posici&oacute;n, o escoger un identificador ale&aacute;torio.</p>
+
+<p>Cu&aacute;ndo se est&aacute; jugando Ajedrez960, el enroque se ejecuta arrastrando a &eacute;l
+  Rey hacia la posici&oacute;n de la Torre de enroque. Esto aplica, inclusive si el
+  Rey ya se encuentra en la casilla destino.</p>
+
+<h3><a name="EGTB"></a>Tablebase de final de juego</h3>
+
+<p>ChessX soporta dos Tablebase de fin de juego en l&iacute;nea, diferentes. Se
+  pueden seleccionar el acceso a bien sea la tablebase Nalimov &oacute; Syzgy en el
+  men&uacute; de preferencias, pesta&ntilde;a App.</p>
+
+<p>Las tablebase Syzgy soportan juegos finales de hasta siete piezas, pero son
+  menos precias que las bases de Nalimov. El Output de cada una de estas
+  tablebase son env&iacute;adas a el panel de an&aacute;lisis 1, en cualquier momento que la
+  posici&oacute;n final presente 6 &oacute; 7 piezas restantes en el tablero.</p>
+
+</div>
+</div>
+</body>
+</html>
