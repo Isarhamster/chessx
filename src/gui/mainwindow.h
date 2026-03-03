@@ -141,8 +141,6 @@ protected:
     void resizeToolBarIcons(int scale);
     /** Enter gaming mode */
     void slotToggleGameMode();
-    /** Flip the board view */
-    void slotFlipView(bool);
     void enterGameMode(bool gameMode);
     void enterNoHintMode(bool noHintMode);
     /** Open database */
@@ -198,6 +196,7 @@ protected:
     /** Display Tracker at ChessX SourceForge */
     void slotHelpBug();
     void slotConfigureFlip();
+    void slotHidePieces();
     /** Go to first move of the game */
     void slotGameMoveFirst();
     /** Go to next move of the game */

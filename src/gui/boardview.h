@@ -105,6 +105,10 @@ public:
     /** Reconfigure current theme. */
     void configure(bool allowErrorMessage=false);
 
+    bool hidePieces() const;
+    void setHidePieces(bool newHidePieces);
+    void toggleHidePieces();
+
 public slots:
 
     /** Flips/unflips board. */
@@ -232,6 +236,7 @@ private:
     BoardX m_board;
     BoardTheme m_theme;
     bool m_flipped;
+    bool m_hidePieces;
     bool m_showFrame;
     int m_showCurrentMove;
     bool m_guessMove;

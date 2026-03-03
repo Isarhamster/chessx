@@ -37,7 +37,7 @@ const int MoveIndicatorSize = 12;
 static const QMap<QChar, QColor> color_map{{'Y', Qt::yellow}, {'G', Qt::green}, {'B', Qt::blue}};
 
 BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
-    m_flipped(false), m_showFrame(false), m_showCurrentMove(2),
+    m_flipped(false), m_hidePieces(false), m_showFrame(false), m_showCurrentMove(2),
     m_guessMove(false), m_showThreat(false), m_showTargets(false), m_brushMode(false), m_selectedSquare(InvalidSquare),
     m_hoverSquare(InvalidSquare),
     m_hiFrom(InvalidSquare), m_hiTo(InvalidSquare),
@@ -239,6 +239,7 @@ void BoardView::drawCoordinates(QPaintEvent* event)
 
 void BoardView::drawDraggedPieces(QPaintEvent* /*event*/)
 {
+    if (m_hidePieces) return;
     // Draw dragged piece
     if(m_dragged != Empty)
     {
@@ -412,6 +413,7 @@ void BoardView::drawUnderProtection(QPaintEvent* event)
 
 void BoardView::drawPieces(QPaintEvent* event)
 {
+    if (m_hidePieces) return;
     QPainter p(this);
     p.setRenderHint(QPainter::SmoothPixmapTransform);
     for (Square square=a1; square<NumSquares; ++square)
@@ -891,6 +893,23 @@ void BoardView::startToDrag(QMouseEvent *event, Square s)
     update(squareRect(s));
     update(QRect(m_dragPoint, m_theme.size()));
     unselectSquare();
+}
+
+bool BoardView::hidePieces() const
+{
+    return m_hidePieces;
+}
+
+void BoardView::setHidePieces(bool newHidePieces)
+{
+    m_hidePieces = newHidePieces;
+    update();
+}
+
+void BoardView::toggleHidePieces()
+{
+    m_hidePieces = !m_hidePieces;
+    update();
 }
 
 Move BoardView::getBestGuess() const

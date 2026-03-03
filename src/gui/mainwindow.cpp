@@ -1976,6 +1976,7 @@ void MainWindow::setupActions()
 
     QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL | Qt::Key_B, gameToolBar, ":/images/flip_board.png");
     flip->setCheckable(true);
+
     connect(m_ficsConsole, SIGNAL(SignalPlayerIsBlack(bool,bool)), flip, SLOT(setChecked(bool)));
     gameToolBar->addSeparator();
 
@@ -2032,6 +2033,11 @@ void MainWindow::setupActions()
     gameMenu->addSeparator();
 
     gameMenu->addAction(flip);
+
+    QAction* hide = createAction(gameMenu, tr("Hide pieces"), SLOT(slotHidePieces()), Qt::META | Qt::Key_H);
+    hide->setCheckable(true);
+    hide->setChecked(false);
+    gameMenu->addAction(hide);
 
     /* Game->Go to submenu */
     QMenu* goMenu = gameMenu->addMenu(tr("&Go to"));

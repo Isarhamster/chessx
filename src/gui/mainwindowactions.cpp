@@ -431,6 +431,11 @@ void MainWindow::slotConfigureFlip()
     m_boardView->flip();
 }
 
+void MainWindow::slotHidePieces()
+{
+    m_boardView->toggleHidePieces();
+}
+
 void MainWindow::slotEditCopyFEN()
 {
     QApplication::clipboard()->setText(game().toFen());
@@ -4328,11 +4333,6 @@ void MainWindow::slotToggleGameMode()
 
         SlotShowTimer(gameMode());
     }
-}
-
-void MainWindow::slotFlipView(bool flip)
-{
-    m_boardView->setFlipped(flip);
 }
 
 void MainWindow::enterNoHintMode(bool noHintMode)
