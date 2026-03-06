@@ -66,6 +66,8 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     connect(&m_threatGuess, SIGNAL(guessFoundForBoard(Guess::Result,BoardX)),
             this, SLOT(showThreat(Guess::Result,BoardX)),Qt::QueuedConnection);
 
+    connect(&frameTimer, SIGNAL(timeout()), this, SLOT(update()));
+
     setAcceptDrops(true);
     setAutoFillBackground(false);
 }
@@ -117,6 +119,21 @@ void BoardView::setBoard(const BoardX& value, Square from, Square to, bool atLin
     m_alertSquare = value.kingInCheck();
     m_targets.clear();
     m_bestGuess.setNullMove();
+
+    int animTime = AppSettings->getValue("/Board/pieceAnimationTime").toInt();
+    if (from != InvalidSquare && to != InvalidSquare && animTime)
+    {
+        anim.durationMs = animTime;
+        anim.fromSq = from;
+        anim.toSq = to;
+        anim.startPos = posFromSquare(from);
+        anim.endPos = posFromSquare(to);
+        anim.timer.start();
+        anim.piece = value.pieceAt(to);
+        frameTimer.start(anim.durationMs/50);
+        anim.active = true;
+    }
+
     if(underMouse())
     {
         updateGuess(m_hoverSquare);
@@ -383,7 +400,7 @@ void BoardView::drawAttacks(QPaintEvent* event)
 
 void BoardView::drawUnderProtection(QPaintEvent* event)
 {
-    if (isEnabled() && Guess::guessAllowed())
+    if (isEnabled() && Guess::guessAllowed() && !anim.active)
     {
         if (m_showUnderProtection != NoColor)
         {
@@ -409,7 +426,27 @@ void BoardView::drawUnderProtection(QPaintEvent* event)
     }
 }
 
+void BoardView::drawAnimation(QPaintEvent* event)
+{
+    if (!anim.active) return;
 
+    float progress = anim.timer.elapsed() / float(anim.durationMs);
+    progress = QEasingCurve(QEasingCurve::OutCubic).valueForProgress(progress);
+    progress = std::min(progress, 1.0f);
+
+    if (progress >= 1.0f)
+    {
+        anim.active = false;
+        update(squareRect(anim.fromSq).united(squareRect(anim.toSq)));
+        frameTimer.stop();
+    }
+    else
+    {
+        QPointF pos = anim.startPos + (anim.endPos - anim.startPos) * progress;
+        QPainter p(this);
+        p.drawPixmap(pos, m_theme.piece(anim.piece));
+    }
+}
 
 void BoardView::drawPieces(QPaintEvent* event)
 {
@@ -441,6 +478,12 @@ void BoardView::drawPieces(QPaintEvent* event)
             }
         }
 
+        if (anim.active && (square == anim.fromSq || square == anim.toSq))
+        {
+            // Do not paint pieces that are currently animated
+            continue;
+        }
+
         p.drawPixmap(pos, m_theme.piece(m_board.pieceAt(square)));
     }
 
@@ -467,6 +510,7 @@ void BoardView::paintEvent(QPaintEvent* event)
     drawHiliting(event);
     drawMoveIndicator(event);
     drawArrowAnnotations(event);
+    drawAnimation(event);
     drawDraggedPieces(event);
 }
 

@@ -20,10 +20,12 @@
 #include "board.h"
 #include "boardtheme.h"
 #include "guess.h"
+#include "square.h"
 #include "threadedguess.h"
 
-#include <QWidget>
+#include <QElapsedTimer>
 #include <QPointer>
+#include <QWidget>
 
 using namespace chessx;
 
@@ -147,6 +149,21 @@ signals:
     void signalGamesDropped(QDropEvent*);
 
 protected:
+    // ----- animation -----
+    struct MoveAnimation {
+        bool active = false;
+        Square fromSq;
+        Square toSq;
+        QPointF startPos;
+        QPointF endPos;
+        Piece piece;
+        QElapsedTimer timer;
+        int durationMs;
+    };
+
+    MoveAnimation anim;
+    QTimer frameTimer;
+
     /** Redraws whole board if necessary. */
     virtual void paintEvent(QPaintEvent*);
     /** Automatically resizes pieces and redisplays board. */
@@ -219,6 +236,7 @@ private:
     void drawSquares(QPaintEvent* event);
     void drawTargets(QPaintEvent* event);
     void drawPieces(QPaintEvent* event);
+    void drawAnimation(QPaintEvent* event);
     void drawCheck(QPaintEvent* event);
     void drawAttacks(QPaintEvent *event);
     void drawUnderProtection(QPaintEvent *event);

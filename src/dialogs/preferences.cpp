@@ -483,6 +483,7 @@ void PreferencesDialog::restoreSettings()
     ui.editImageSize->setEnabled(AppSettings->getValue("fixedImageSize").toBool());
     ui.hilightCurrentMove->setCurrentIndex(AppSettings->getValue("showCurrentMove").toInt());
     ui.cbShowIndicator->setCurrentIndex(AppSettings->getValue("showMoveIndicator").toInt());
+    ui.sbPieceAnimationTime->setValue(AppSettings->getValue("pieceAnimationTime").toInt());
     ui.guessMoveCheck->setChecked(AppSettings->getValue("guessMove").toBool());
     ui.guessNextMove->setCurrentIndex(AppSettings->getValue("nextGuess").toInt());
     ui.minWheelCount->setValue(AppSettings->getValue("minWheelCount").toInt());
@@ -697,6 +698,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("copyImageSize", QVariant(ui.editImageSize->value()));
     AppSettings->setValue("showCurrentMove", QVariant(ui.hilightCurrentMove->currentIndex()));
     AppSettings->setValue("showMoveIndicator", QVariant(ui.cbShowIndicator->currentIndex()));
+    AppSettings->setValue("pieceAnimationTime", QVariant(ui.sbPieceAnimationTime->value()));
     AppSettings->setValue("guessMove", QVariant(ui.guessMoveCheck->isChecked()));
     AppSettings->setValue("noHints", QVariant(ui.btNoHints->isChecked()));
     AppSettings->setValue("nextGuess", QVariant(ui.guessNextMove->currentIndex()));

@@ -290,6 +290,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/copyImageSize", 400);
     map.insert("/Board/showCurrentMove", 2);
     map.insert("/Board/showMoveIndicator", 0);
+    map.insert("/Board/pieceAnimationTime", 100);
     map.insert("/Board/guessMove", true);
     map.insert("/Board/showThreat", true);
     map.insert("/Board/showVariationArrows", true);
