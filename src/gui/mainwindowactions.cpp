@@ -666,6 +666,7 @@ void MainWindow::slotEditBoard()
 
 bool MainWindow::addRemoteMoveFrom64Char(QString s)
 {
+    BoardX b = game().board();
     MoveId mId = game().addMoveFrom64Char(s);
     if (mId != NO_MOVE) // move is illegal
     {
@@ -674,6 +675,7 @@ bool MainWindow::addRemoteMoveFrom64Char(QString s)
             Move m = game().move(mId);
             m_currentFrom = m.from();
             m_currentTo = m.to();
+            m_currentPieceAtTo = b.pieceAt(m.to());
             moveChanged();
             playMoveSound("move",m);
         }
@@ -828,10 +830,12 @@ void MainWindow::triggerBoardMove()
 {
     if (!game().atLineEnd())
     {
+        BoardX b = game().board();
         game().forward();
         Move m = game().move();
         m_currentFrom = m.from();
         m_currentTo = m.to();
+        m_currentPieceAtTo = b.pieceAt(m.to());
         moveChanged(); // The move's currents where set after forward(), thus repair effects
         playMoveSound("move",m);
     }
@@ -1334,11 +1338,12 @@ void MainWindow::moveChanged()
     MoveId m = g.currentMove();
 
     // Set board first
-    m_boardView->setBoard(g.board(), m_currentFrom, m_currentTo, game().atLineEnd());
+    m_boardView->setBoard(g.board(), m_currentFrom, m_currentTo, m_currentPieceAtTo, game().atLineEnd());
     UpdateAnnotationView();
 
     m_currentFrom = InvalidSquare;
     m_currentTo = InvalidSquare;
+    m_currentPieceAtTo = Empty;
 
     auto timeThis = g.timeAnnotation(m, GameX::BeforeMove);
     auto timeThat = g.timeAnnotation(m, GameX::AfterMove);
@@ -2500,6 +2505,7 @@ bool MainWindow::doEngineMove(Move m, EngineParameter matchParameter)
 {
     m_currentFrom = m.from();
     m_currentTo = m.to();
+    m_currentPieceAtTo = game().board().pieceAt(m.to());
 
     QTime tm(0,0);
     tm = tm.addMSecs(game().board().toMove()==White ? matchParameter.ms_white : matchParameter.ms_black);
@@ -3867,6 +3873,7 @@ bool MainWindow::slotGameMoveNext()
     playNextMoveSound("move",m);
     m_currentFrom = m.from();
     m_currentTo = m.to();
+    m_currentPieceAtTo = game().board().pieceAt(m.to());
     return gameMoveBy(1);
 }
 

@@ -54,7 +54,7 @@ public:
     void setFlags(int flags);
     int flags() const;
     /** Update and shows current position. */
-    void setBoard(const BoardX& value, Square from = InvalidSquare, Square to = InvalidSquare, bool atLineEnd = true);
+    void setBoard(const BoardX& value, Square from = InvalidSquare, Square to = InvalidSquare, Piece pieceAtTo = Empty, bool atLineEnd = true);
     /** @return displayed position. */
     BoardX board() const;
     /** @return current theme */
@@ -157,8 +157,10 @@ protected:
         QPointF startPos;
         QPointF endPos;
         Piece piece;
+        Piece captured;
         QElapsedTimer timer;
         int durationMs;
+        int frames;
     };
 
     MoveAnimation anim;

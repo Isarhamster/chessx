@@ -733,6 +733,7 @@ private:
     QTimer* m_messageTimer;
     Square m_currentFrom;
     Square m_currentTo;
+    Piece m_currentPieceAtTo;
     AnalysisWidget* m_mainAnalysis;
     AnalysisWidget* m_secondaryAnalysis;
     bool m_bMainAnalyisIsNextEngine;

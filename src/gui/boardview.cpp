@@ -108,7 +108,7 @@ int BoardView::flags() const
     return m_flags;
 }
 
-void BoardView::setBoard(const BoardX& value, Square from, Square to, bool atLineEnd)
+void BoardView::setBoard(const BoardX& value, Square from, Square to, Piece pieceAtTo, bool atLineEnd)
 {
     m_clickUsed = true;
     m_board = value;
@@ -123,14 +123,24 @@ void BoardView::setBoard(const BoardX& value, Square from, Square to, bool atLin
     int animTime = AppSettings->getValue("/Board/pieceAnimationTime").toInt();
     if (from != InvalidSquare && to != InvalidSquare && animTime)
     {
-        anim.durationMs = animTime;
+        double dx = File(to) - File(from);
+        double dy = Rank(to) - Rank(from);
+        double dist = std::sqrt(dx*dx + dy*dy);
+
+        const float baseFactor = 0.3;
+        const int baseTime = baseFactor*animTime;
+        const int squareTime = ((1.0-baseFactor)/98) * animTime;
+
+        anim.durationMs = baseTime + squareTime*dist;
         anim.fromSq = from;
         anim.toSq = to;
         anim.startPos = posFromSquare(from);
         anim.endPos = posFromSquare(to);
         anim.timer.start();
         anim.piece = value.pieceAt(to);
-        frameTimer.start(anim.durationMs/50);
+        anim.captured = pieceAtTo;
+        frameTimer.start(20); // 50fps is the target
+        anim.frames = 0;
         anim.active = true;
     }
 
@@ -429,21 +439,36 @@ void BoardView::drawUnderProtection(QPaintEvent* event)
 void BoardView::drawAnimation(QPaintEvent* event)
 {
     if (!anim.active) return;
-
+    QPainter p(this);
+    anim.frames++;
     float progress = anim.timer.elapsed() / float(anim.durationMs);
-    progress = QEasingCurve(QEasingCurve::OutCubic).valueForProgress(progress);
     progress = std::min(progress, 1.0f);
 
-    if (progress >= 1.0f)
+    if (anim.captured != Empty)
+    {
+        float fadeStart = 0.8f;
+        if (progress > fadeStart)
+        {
+            float fade =  1.0f - (progress - fadeStart) / (1.0f - fadeStart);
+            p.setOpacity(fade);
+        }
+        // Draw captured piece on top of animation
+        QPoint pos = posFromSquare(anim.toSq);
+        p.drawPixmap(pos, m_theme.piece(anim.captured));
+
+        p.setOpacity(1.0);
+    }
+
+    if (progress >= 0.98f)
     {
         anim.active = false;
         update(squareRect(anim.fromSq).united(squareRect(anim.toSq)));
         frameTimer.stop();
+        qDebug() << "Framerate: " << (int)((1000.0 * anim.frames)/anim.durationMs) << " fps";
     }
     else
     {
         QPointF pos = anim.startPos + (anim.endPos - anim.startPos) * progress;
-        QPainter p(this);
         p.drawPixmap(pos, m_theme.piece(anim.piece));
     }
 }
