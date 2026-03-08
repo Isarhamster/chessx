@@ -15,8 +15,7 @@
 #include <QTextStream>
 #include "board.h"
 #include "output.h"
-#include "gameid.h"
-#include "memorydatabase.h"
+#include "filter.h"
 #include "settings.h"
 #include "tags.h"
 #include "partialdate.h"
@@ -171,7 +170,6 @@ void Output::readTemplateFile(const QString& path)
                 if (s_tagNames.empty())
                 {
                     s_tagNames["MarkupHeaderBlock"] = MarkupHeaderBlock;
-                    s_tagNames["MarkupNotationBlock"] = MarkupNotationBlock;
                     s_tagNames["MarkupResult"] = MarkupResult;
                     s_tagNames["MarkupDiagram"] = MarkupDiagram;
                     s_tagNames["MarkupMainLineMove"] = MarkupMainLineMove;
@@ -856,171 +854,123 @@ void Output::postProcessOutput(QString& text) const
     }
 }
 
-void Output::outputUtf8(QTextStream& out, FilterX& filter)
+template<typename Stream, typename Source>
+void Output::outputGames(Stream& out, Source& source)
 {
+    // --- Stream specific setup ---
+    if constexpr (std::is_same_v<Stream, QTextStream>)
+    {
+        if constexpr (std::is_same_v<Source, Database>)
+        {
+            SET_CODEC_UTF8(out);
+            out.setGenerateByteOrderMark(source.hadBOM());
+        }
+    }
+
+    // --- Writer lambda ---
+    auto write = [&](const QString& s)
+    {
+        if constexpr (std::is_same_v<Stream, QTextStream>)
+        {
+            out << s;
+        }
+        else // QDataStream
+        {
+            QByteArray b = s.toLatin1();
+            out.writeRawData(b.constData(), b.length());
+        }
+    };
+
     int percentDone = 0;
     GameX game;
+
+    // Header
     QString header = m_header;
     postProcessOutput(header);
-    out << header;
+    write(header);
 
-    QList<GameId> filterList = filter.selectedGames();
-    foreach(GameId i, filterList)
+    // Count helper
+    auto count = [&]() -> int
     {
-        if(filter.database()->loadGame(i, game))
+        if constexpr (std::is_same_v<Source, Database>)
+            return source.count();
+        else if constexpr (std::is_same_v<Source, FilterX>)
+            return source.selectedGames().size();
+        else return 1;
+    };
+
+    // Load helper
+    auto load = [&](int i) -> bool
+    {
+        if constexpr (std::is_same_v<Source, Database>)
+        {
+            return source.loadGame(i, game);
+        }
+        else if constexpr (std::is_same_v<Source, FilterX>)
+        {
+            auto list = source.selectedGames();
+            return source.database()->loadGame(list[i], game);
+        }
+        else
+        {
+            game = source;
+            return true;
+        }
+    };
+
+    int total = count();
+
+    for (int i = 0; i < total; ++i)
+    {
+        if (load(i))
         {
             QString tagText = outputTags(&game);
-            out << tagText;
+            write(tagText);
 
             QString outText = outputGame(&game, false);
             postProcessOutput(outText);
-            out << outText;
-            out << "\n\n";
+            write(outText);
+            write("\n\n");
         }
-        int percentDone2 = (i + 1) * 100 / filter.count();
-        if(percentDone2 > percentDone)
-        {
-            emit progress((percentDone = percentDone2));
-        }
+
+        int percentDone2 = (i + 1) * 100 / total;
+        if (percentDone2 > percentDone)
+            emit progress(percentDone = percentDone2);
     }
 
     QString footer = m_footer;
     postProcessOutput(footer);
-    out << footer;
-}
+    write(footer);
 
-void Output::outputLatin1(QDataStream& out, FilterX& filter)
-{
-    int percentDone = 0;
-    GameX game;
-    QString header = m_header;
-    postProcessOutput(header);
-    QByteArray b = header.toLatin1();
-    out.writeRawData(b, b.length());
-
-    QList<GameId> filterList = filter.selectedGames();
-    foreach(GameId i, filterList)
+    if constexpr (std::is_same_v<Source, Database>)
     {
-        if(filter.database()->loadGame(i, game))
-        {
-            QString tagText = outputTags(&game);
-            b = tagText.toLatin1();
-            out.writeRawData(b, b.length());
-
-            QString outText = outputGame(&game, false);
-            postProcessOutput(outText);
-            outText.append("\n\n");
-            b = outText.toLatin1();
-            out.writeRawData(b, b.length());
-        }
-        int percentDone2 = (i + 1) * 100 / filter.count();
-        if(percentDone2 > percentDone)
-        {
-            emit progress((percentDone = percentDone2));
-        }
+        source.setModified(false);
     }
-
-    QString footer = m_footer;
-    postProcessOutput(footer);
-    b = footer.toLatin1();
-    out.writeRawData(b, b.length());
 }
 
-void Output::outputUtf8(QTextStream& out, Database& database)
-{
-    SET_CODEC_UTF8(out);
-    out.setGenerateByteOrderMark(database.hadBOM());
-    QString header = m_header;
-    postProcessOutput(header);
-    out << header;
-
-    int percentDone = 0;
-    GameX game;
-    for(int i = 0; i < (int)database.count(); ++i)
-    {
-        if(database.loadGame(i, game))
-        {
-            QString tagText = outputTags(&game);
-            out << tagText;
-
-            QString outText = outputGame(&game, false);
-            postProcessOutput(outText);
-            out << outText;
-            out << "\n\n";
-        }
-        int percentDone2 = (i + 1) * 100 / database.count();
-        if(percentDone2 > percentDone)
-        {
-            emit progress((percentDone = percentDone2));
-        }
-    }
-
-    QString footer = m_footer;
-    postProcessOutput(footer);
-    out << footer;
-
-    database.setModified(false);
-}
-
-void Output::outputLatin1(QDataStream& out, Database& database)
-{
-    QString header = m_header;
-    postProcessOutput(header);
-    QByteArray b = header.toLatin1();
-    out.writeRawData(b, b.length());
-
-    int percentDone = 0;
-    GameX game;
-    for(int i = 0; i < (int)database.count(); ++i)
-    {
-        if(database.loadGame(i, game))
-        {
-            QString tagText = outputTags(&game);
-            b = tagText.toLatin1();
-            out.writeRawData(b, b.length());
-
-            QString outText = outputGame(&game, false);
-            postProcessOutput(outText);
-            outText.append("\n\n");
-            b = outText.toLatin1();
-            out.writeRawData(b, b.length());
-        }
-        int percentDone2 = (i + 1) * 100 / database.count();
-        if(percentDone2 > percentDone)
-        {
-            emit progress((percentDone = percentDone2));
-        }
-    }
-
-    QString footer = m_footer;
-    postProcessOutput(footer);
-    b = footer.toLatin1();
-    out.writeRawData(b, b.length());
-
-    database.setModified(false);
-}
-
-void Output::output(const QString& filename, FilterX& filter, bool utf8)
+bool Output::output(const QString& filename, FilterX& filter, bool utf8)
 {
     QFile f(filename);
     if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
     {
-        return;
+        return false;
     }
     if (utf8)
     {
         QTextStream out(&f);
-        outputUtf8(out, filter);
+        outputGames(out, filter);
     }
     else
     {
         QDataStream out(&f);
-        outputLatin1(out, filter);
+        outputGames(out, filter);
     }
     f.close();
+    return true;
 }
 
-bool Output::output(const QString& targetFilename, Database& database, bool utf8, bool append)
+template<typename Source>
+bool Output::output(const QString& targetFilename, Source& src, bool utf8, bool append)
 {
     QFile f(targetFilename);
     QFile::OpenMode mode = QIODevice::WriteOnly | QIODevice::Text;
@@ -1034,54 +984,39 @@ bool Output::output(const QString& targetFilename, Database& database, bool utf8
        (isPgnType(m_outputType) && utf8))
     {
         QTextStream out(&f);
-        outputUtf8(out, database);
+        outputGames(out, src);
     }
     else
     {
         QDataStream out(&f);
-        outputLatin1(out, database);
+        outputGames(out, src);
     }
 
     f.close();
     return true;
 }
 
-bool Output::output(const QString& targetFilename, Database& database, bool append)
+bool Output::output(const QString& targetFilename, Database& database)
 {
-    return output(targetFilename, database, database.isUtf8(), append);
-}
-
-void Output::outputLatin1(const QString& filename, Database& database)
-{
-    QFile f(filename);
-    if(!f.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        return;
-    }
-    QDataStream out(&f);
-    outputLatin1(out, database);
-    f.close();
+    return output(targetFilename, database, database.isUtf8(), false);
 }
 
 QString Output::outputUtf8(Database* database)
 {
     QString s;
     QTextStream out(&s);
-    outputUtf8(out, *database);
+    outputGames(out, *database);
     return s;
 }
 
-bool Output::append(const QString& filename, GameX& game, bool utf8)
-{
-    MemoryDatabase mdb;
-    mdb.setUtf8(utf8);
-    mdb.appendGame(game);
-    return append(filename, mdb, utf8);
-}
+template bool Output::append<Database>(const QString&, Database&, bool);
+template bool Output::append<FilterX>(const QString&, FilterX&, bool);
+template bool Output::append<GameX>(const QString&, GameX&, bool);
 
-bool Output::append(const QString& filename, Database& database, bool utf8)
+template<typename Source>
+bool Output::append(const QString& filename, Source& src, bool utf8)
 {
-    return output(filename, database, utf8, true);
+    return output(filename, src, utf8, true);
 }
 
 void Output::setTemplateFile(QString filename)

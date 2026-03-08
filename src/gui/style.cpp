@@ -11,6 +11,7 @@
 #include <QProxyStyle>
 #include <QStyleFactory>
 #include <QWidget>
+#include <QtGui/qstylehints.h>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -18,15 +19,6 @@
 #endif // _MSC_VER
 
 #include "style.h"
-
-#ifdef Q_OS_MACOS
-extern bool qt_mac_applicationIsInDarkMode();
-#else
-bool qt_mac_applicationIsInDarkMode()
-{
-    return false;
-}
-#endif
 
 Style::Style() : Style(styleBase()) {}
 
@@ -56,7 +48,8 @@ QStyle *Style::baseStyle() { return styleBase(); }
 
 void Style::modifyPalette(QPalette& palette)
 {
-    if (AppSettings->getValue("/MainWindow/DarkTheme").toBool() || qt_mac_applicationIsInDarkMode())
+    bool isDark = QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark;
+    if (AppSettings->getValue("/MainWindow/DarkTheme").toBool() || isDark)
     {
         palette.setColor(QPalette::Window,QColor(53,53,53));
         palette.setColor(QPalette::WindowText,Qt::white);

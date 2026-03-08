@@ -1404,8 +1404,10 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     {
         // Just touch FICS File to make sure it exists
         QFile f(s);
-        f.open(QFile::ReadWrite);
-        f.close();
+        if (f.open(QFile::ReadWrite))
+        {
+            f.close();
+        }
     }
 
     if (fname.isEmpty())

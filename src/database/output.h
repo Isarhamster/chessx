@@ -127,23 +127,23 @@ public:
      * @param filename The filename that the output will be written to.
      * @param filter A Filter object. All games in the filter will be output, one
      *               after the other, using the output(GameX* game) method */
-    void output(const QString& filename, FilterX& filter, bool utf8);
+    bool output(const QString& filename, FilterX& filter, bool utf8);
     /** Create the output for the given database
      * @param filename The filename that the output will be written to.
      * @param database A pointer to a database object. All games in the database will be output.
      * @note The source database also determines the UTF8 settings! */
-    bool output(const QString& filename, Database& database, bool append=false);
-    bool output(const QString& targetFilename, Database& database, bool utf8, bool append);
-    void outputLatin1(const QString& filename, Database& database);
+    bool output(const QString& filename, Database& database);
+    template<typename Source>
+    bool output(const QString& targetFilename, Source& src, bool utf8, bool append);
+
     /** Create the output for the given database
      * @param database A pointer to a database object. All games in the database will be output, one
      *               after the other, using the output(GameX* game) method */
     QString outputUtf8(Database* database);
 
     /** Append output to a closed file */
-    bool append(const QString& filename, GameX& game, bool utf8);
-    /** Append a database to a closed file */
-    bool append(const QString& filename, Database& database, bool utf8);
+    template<typename Source>
+    bool append(const QString& filename, Source& src, bool utf8);
 
     /** User definable settings.
      * Sets the filename of the file that contains the template that will be used
@@ -158,6 +158,10 @@ signals:
     void progress(int);
 protected:
     QString outputTags(const GameX *game);
+
+    template<typename Stream, typename Source>
+    void outputGames(Stream& out, Source& source);
+
 private:
     /* User definable settings */
     OutputOptions m_options;
