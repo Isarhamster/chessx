@@ -1,6 +1,5 @@
 #include "lichessopening.h"
 #include "lichesstransfer.h"
-#include "networkhelper.h"
 #include "settings.h"
 #include "version.h"
 
@@ -51,12 +50,8 @@ QByteArray LichessOpening::queryPosition(const QString& fen)
             return reply;
         }
 
-        url = requested;
-        url.setHost("explorer.lichess.ovh");
-        url.setScheme("http");
-
-        QNetworkRequest request = NetworkHelper::Request(url);
-        reply = LichessTransfer::sync_request( request );
+        QString token = AppSettings->getValue("Lichess/passWord").toString();
+        reply = LichessTransfer::queryExplorer(requested, token);
         m_requested = requested;
         return reply;
     }

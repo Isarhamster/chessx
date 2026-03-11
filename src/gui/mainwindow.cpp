@@ -329,7 +329,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_databaseList->setFileCurrent(pClipDB->database()->name());
 
     LichessOpeningDatabase* lichessBase = new LichessOpeningDatabase();
-    lichessBase->open("Lichess Master", false);
+    lichessBase->open("Lichess Masters", false);
     DatabaseInfo* pLichessDB = new DatabaseInfo(&m_undoGroup, lichessBase);
     pLichessDB->open(false);
     m_registry->append(pLichessDB);
