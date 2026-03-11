@@ -118,5 +118,5 @@ QByteArray LichessTransfer::writeGameToStudy(QString studyid, QString token, QSt
 QByteArray LichessTransfer::queryResults(enum LichessTournamentType t, const QString& tournamentId)
 {
     QString stype = lichessTournamentString(t);
-    return tournamentId.isEmpty() ? QByteArray() : queryData(QString("/api/%1/%2/results").arg(stype).arg(tournamentId));
+    return tournamentId.isEmpty() ? QByteArray() : queryData(QString("/api/%1/%2/results").arg(stype, tournamentId));
 }

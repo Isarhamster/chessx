@@ -1199,7 +1199,7 @@ void MainWindow::openLichess()
             }
             else
             {
-                url = QString("https://lichess.org/api/tournament/%1/games?player=%2").arg(tournament).arg(account);
+                url = QString("https://lichess.org/api/tournament/%1/games?player=%2").arg(tournament, account);
             }
             openDatabaseUrl(url);
         }
@@ -1229,7 +1229,7 @@ void MainWindow::openChesscom()
         account = db.getHandle();
         start = db.getStartDate();
         end = db.getEndDate();
-        QString s = QString("ChessCom_%1_%2-%3.pgn").arg(account).arg(start.toString("yyyyMM")).arg(end.toString("yyyyMM"));
+        QString s = QString("ChessCom_%1_%2-%3.pgn").arg(account, start.toString("yyyyMM"), end.toString("yyyyMM"));
         QString target = AppSettings->commonDataFilePath(s);
         if (!account.isEmpty())
         {
@@ -1237,7 +1237,7 @@ void MainWindow::openChesscom()
             while (fetchMonth <= end)
             {
                 QString s = fetchMonth.toString("yyyy/MM");
-                QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account).arg(s);
+                QString url = QString("https://api.chess.com/pub/player/%1/games/%2/pgn").arg(account, s);
                 appendDatabaseUrl(url, true, target);
                 fetchMonth = fetchMonth.addMonths(1);
             }

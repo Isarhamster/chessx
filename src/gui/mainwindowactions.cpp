@@ -3092,8 +3092,7 @@ void MainWindow::copyGames(QString destination, QList<GameId> indexes, QString s
             copyGame(pDestDBInfo, pSrcDBInfo, index);
         }
         QString msg = tr("Appended %n game(s) from %1 to %2.", "", indexes.count())
-                          .arg(source)
-                          .arg(destination);
+                          .arg(source, destination);
         slotStatusMessage(msg);
         if (pDestDBInfo==m_currentDatabase)
         {

@@ -29,7 +29,7 @@ QByteArray LichessOpening::queryPosition(const QString& fen)
 
     if (AppSettings->getValue("/General/onlineTablebases").toBool())
     {
-        QString requested = QString("/%1?fen=%2").arg(m_db).arg(fen);
+        QString requested = QString("/%1?fen=%2").arg(m_db, fen);
         if (!m_variant.isEmpty()) requested += QString("&variant=%1").arg(m_variant);
         foreach(QString interval, m_intervals)
         {
