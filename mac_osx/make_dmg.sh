@@ -36,7 +36,6 @@ hdiutil create \
   -size "${DMG_SIZE_MB}m" \
   -fs HFS+ \
   -volname "$VOL_NAME" \
-  -hfs-volume-creation-date "$(date)" \
   "$RW_DMG"
 
 # ---------------- mount ----------------
