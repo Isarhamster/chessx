@@ -1,3 +1,10 @@
+## March 2026: Version 1.6.10
+
+- Bugfix: SCID database files don't open
+
+- Changed: SCID loading with progress during tag reading
+- Changed: Lichess API changed explorer EP (Auth, Host, path)
+
 ## January 2026: Version 1.6.8
 
 - Bugfix: Files won't open in Windows

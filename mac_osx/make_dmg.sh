@@ -36,12 +36,24 @@ hdiutil create \
   -size "${DMG_SIZE_MB}m" \
   -fs HFS+ \
   -volname "$VOL_NAME" \
+  -hfs-volume-creation-date "$(date)" \
   "$RW_DMG"
 
 # ---------------- mount ----------------
 
 xattr -cr "$RW_DMG"
-DEV=$(hdiutil attach "$RW_DMG" -readwrite -noverify -noautoopen | awk '/^\/dev\// {print $1}')
+ATTACH_INFO=$(hdiutil attach "$RW_DMG" \
+  -readwrite \
+  -noverify \
+  -noautoopen \
+  -plist)
+
+DEV=$(echo "$ATTACH_INFO" | \
+  plutil -extract system-entities xml1 -o - - | \
+  xmllint --xpath \
+  "string(//dict[key='mount-point']/following-sibling::string[1]/../key[.='dev-entry']/following-sibling::string[1])" \
+  -)
+
 VOLUME="/Volumes/${VOL_NAME}"
 
 # ---------------- populate ----------------
@@ -61,11 +73,11 @@ ln -s /Applications "$VOLUME/Applications"
 SetFile -a V "$VOLUME/.background"
 
 # .fsevents may or may not exist yet — hide it if it does
-if [ -d "$VOLUME/.fsevents" ]; then
+if [ -d "$VOLUME/.fseventsd" ]; then
   SetFile -a V "$VOLUME/.fseventsd"
 fi
 
-# .fsevents may or may not exist yet — hide it if it does
+# .DS_Store may or may not exist yet — hide it if it does
 if [ -d "$VOLUME/.DS_Store" ]; then
   SetFile -a V "$VOLUME/.DS_Store"
 fi
