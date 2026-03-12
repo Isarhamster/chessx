@@ -28,18 +28,22 @@ rm -rf chessx.modified.app
 cp -r chessx.app chessx.app-original
 ${DIR}/fix_paths.sh "${QTBASE}" chessx
 ${QTBIN}/macdeployqt chessx.app
-rm -f chessx.zip
-ditto -ck --rsrc --sequesterRsrc chessx.app chessx.zip
 
-# Fix owner and rights before
+echo Fix owner and rights before
 chown -R $(whoami):staff chessx.app
 chmod -R u+rwX,go+rX chessx.app
 xattr -cr chessx.app
 
+echo Remove existing dmg
 rm -f ${DIR}/../Packages/chessx-${VERSION}.dmg
 
+echo Make new dmg
 ${DIR}/make_dmg.sh
 
+echo Restore modified app
 mv chessx.app chessx.modified.app
 mv chessx.app-original chessx.app
+
+echo Move output dmg to packages
+mkdir -p ${DIR}/../Packages/
 mv -v ${RELEASEDIR}/ChessX.dmg ${DIR}/../Packages/chessx-${VERSION}.dmg
