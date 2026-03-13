@@ -464,7 +464,6 @@ void BoardView::drawAnimation(QPaintEvent* event)
         anim.active = false;
         update(squareRect(anim.fromSq).united(squareRect(anim.toSq)));
         frameTimer.stop();
-        qDebug() << "Framerate: " << (int)((1000.0 * anim.frames)/anim.durationMs) << " fps";
     }
     else
     {

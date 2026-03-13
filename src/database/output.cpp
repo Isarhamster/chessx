@@ -319,7 +319,7 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         m_dirtyBlack = false;
 
         // *** Markup for the move
-        text += m_startTagMap[MarkupMove].arg(mvno).arg(pno).arg(m_currentVariationLevel == 0 ? "mainline" : "in-variation");
+        text += m_startTagMap[MarkupMove].arg(mvno, pno, (m_currentVariationLevel == 0) ? "mainline" : "in-variation");
 
         // *** Write the actual move
         QString mate = m_startTagMap[MarkupMate] + "#" + m_endTagMap[MarkupMate];
@@ -386,6 +386,7 @@ QString Output::writeMainLine(MoveId upToNode)
 
         if(m_game.variationCount())
         {
+            GameCursor varHead = m_game.cursor();
             QList<MoveId> variations = m_game.variations();
             text += m_startTagMap[MarkupVariationHead];
             if(variations.size())
@@ -393,13 +394,13 @@ QString Output::writeMainLine(MoveId upToNode)
                 for(int i = 0; i < variations.size(); ++i)
                 {
                     // *** Enter variation i, and write the rest of the moves
-                    m_game.dbMoveToId(variations[i]);
+                    m_game.enterVariation(variations[i]);
                     text += writeVariation();
+                    m_game.setCursor(varHead);
                 }
             }
             text += m_endTagMap[MarkupVariationHead];
             m_dirtyBlack = true;
-            m_game.dbMoveToId(m_game.parentMove());
         }
         if (!m_game.forward())
             break; // Just make sure we get out in case something went wrong
@@ -425,6 +426,7 @@ QString Output::writeVariation()
         text += writeMove();
         if(m_game.variationCount())
         {
+            GameCursor varHead = m_game.cursor();
             QList<MoveId> variations = m_game.variations();
             text += m_startTagMap[MarkupVariationHead];
             if(!variations.empty())
@@ -432,15 +434,13 @@ QString Output::writeVariation()
                 for(int i = 0; i < variations.size(); ++i)
                 {
                     // *** Enter variation i, and write the rest of the moves
-                    if (m_game.dbMoveToId(variations[i]))
-                    {
-                        text += writeVariation();
-                    }
+                    m_game.enterVariation(variations[i]);
+                    text += writeVariation();
+                    m_game.setCursor(varHead);
                 }
             }
             text += m_endTagMap[MarkupVariationHead];
             m_dirtyBlack = true;
-            m_game.dbMoveToId(m_game.parentMove());
         }
         m_game.forward();
     }
@@ -616,8 +616,8 @@ QString Output::outputGame(const GameX* g, bool upToCurrentMove)
 {
     QString text;
     m_game = *g;
-    int id = m_game.currentMove();
-    int mainId = upToCurrentMove ? m_game.cursor().mainLineMove() : NO_MOVE;
+    MoveId id = m_game.currentMove();
+    MoveId mainId = upToCurrentMove ? m_game.cursor().mainLineMove() : NO_MOVE;
     m_currentVariationLevel = 0;
 
     m_game.moveToStart();

@@ -51,8 +51,7 @@ QString GameNotationWidget::getText() const
 
 QString GameNotationWidget::getTextSelection() const
 {
-    return "";
-    // return m_browser->textCursor().selection().toPlainText();
+    return m_browser->page()->selectedText();
 }
 
 QString GameNotationWidget::generateText(const GameX &game, bool trainingMode)

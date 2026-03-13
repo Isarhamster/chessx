@@ -19,11 +19,12 @@
 #include <QLocale>
 #include <QMessageBox>
 #include <QTranslator>
-#include "mainwindow.h"
 #include "chessxsettings.h"
+#include "mainwindow.h"
 #include "style.h"
 #include "logstream.h"
 #include "testadapter.h"
+#include <QWebEngineUrlScheme>
 
 // Necessary includes and defines for memory leak detection:
 #ifdef _MSC_VER
@@ -105,6 +106,13 @@ prevHook = _CrtSetReportHook(customReportHook);
     // Workaround native dialog issues with Linux
     QCoreApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
 #endif
+
+    // Setup before QApplication is created, to ensure the scheme is registered before any QWebEngineView is created
+    QWebEngineUrlScheme scheme("mem");
+    scheme.setFlags(QWebEngineUrlScheme::LocalScheme |
+                    QWebEngineUrlScheme::LocalAccessAllowed);
+    scheme.setSyntax(QWebEngineUrlScheme::Syntax::Path);
+    QWebEngineUrlScheme::registerScheme(scheme);
 
     QApplication app(argc, argv);
 

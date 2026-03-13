@@ -13,6 +13,7 @@
 #include "annotation.h"
 #include "ecopositions.h"
 #include "gamex.h"
+#include "gamecursor.h"
 #include "settings.h"
 #include "tags.h"
 
@@ -1501,7 +1502,7 @@ int GameX::backward(int count)
 void GameX::enterVariation(const MoveId& moveId)
 {
     m_moves.moveIntoVariation(moveId);
-    indicateAnnotationsOnBoard();
+    // TODO: indicateAnnotationsOnBoard();
 }
 
 void GameX::removeNode(MoveId moveId)
@@ -1633,11 +1634,12 @@ QString GameX::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, M
     }
 
     // Save current node
-    MoveId saveNode = NO_MOVE;
+    bool saved = false;
     MoveId boardNode = m_moves.prevMove(node);
+    const GameCursor saveCursor = m_moves;
     if(boardNode != m_moves.currMove())
     {
-        saveNode = m_moves.currMove();
+        saved = true;
         dbMoveToId(boardNode);
     }
 
@@ -1669,9 +1671,9 @@ QString GameX::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, M
     }
 
     // Restore previous position
-    if(saveNode != NO_MOVE)
+    if(saved)
     {
-        dbMoveToId(saveNode);
+        m_moves = saveCursor;
     }
 
     return san;

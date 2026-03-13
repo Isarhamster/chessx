@@ -16,6 +16,7 @@
 #include <QWebEnginePage>
 #include <QWebEngineProfile>
 #include <QWebEngineSettings>
+#include <QtCore/qstringview.h>
 
 ChessBrowser::ChessBrowser(QWidget *parent)
     : QWebEngineView(parent)
@@ -25,6 +26,7 @@ ChessBrowser::ChessBrowser(QWidget *parent)
     // Enable gestures
     grabGesture(Qt::SwipeGesture);
 
+
     // Context menu
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &QWidget::customContextMenuRequested,
@@ -32,6 +34,9 @@ ChessBrowser::ChessBrowser(QWidget *parent)
 
     auto *page = new ChessBrowserPage(this);
     setPage(page);
+
+    handler = new MemoryHandler;
+    page->profile()->installUrlSchemeHandler("mem", handler);
 
     ChessBrowserBridge* bridge = new ChessBrowserBridge(this);
     QWebChannel *channel = new QWebChannel(page);
@@ -49,13 +54,17 @@ ChessBrowser::ChessBrowser(QWidget *parent)
 
 void ChessBrowser::loadAtMove(QString html, int moveId)
 {
-    setHtml(html);
+    handler->htmlData = html.toUtf8();
+
     connect(page(), &QWebEnginePage::loadFinished,
             this, [this, moveId](bool ok) {
                 if (ok)
                     showMove(moveId);
             });
+
+    page()->load(QUrl("mem://page"));
 }
+
 
 void ChessBrowser::selectMove(int id)
 {

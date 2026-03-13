@@ -101,6 +101,7 @@ public :
 
     const GameCursor& cursor() const { return m_moves; }
     GameCursor& cursor() { return m_moves; }
+    void setCursor(const GameCursor& c) { m_moves = c; }
 
     // **** Querying game information ****
     /** compare game moves and annotations */

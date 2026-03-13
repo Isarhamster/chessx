@@ -5,6 +5,9 @@
 #include <QAction>
 #include <QMenu>
 #include <QGestureEvent>
+#include <QWebEngineUrlSchemeHandler>
+#include <QWebEngineUrlRequestJob>
+#include <QBuffer>
 
 #include "editaction.h"
 #include "gameid.h"
@@ -12,6 +15,21 @@
 class ChessBrowser : public QWebEngineView
 {
     Q_OBJECT
+
+    class MemoryHandler : public QWebEngineUrlSchemeHandler
+    {
+    public:
+        QByteArray htmlData;
+
+        void requestStarted(QWebEngineUrlRequestJob *job) override
+        {
+            QBuffer *buffer = new QBuffer(job);
+            buffer->setData(htmlData);
+            buffer->open(QIODevice::ReadOnly);
+
+            job->reply("text/html; charset=UTF-8", buffer);
+        }
+    };
 
 public:
     explicit ChessBrowser(QWidget *parent = nullptr);
@@ -59,6 +77,7 @@ private:
     QMenu *m_mainMenu = nullptr;
 
     int m_currentMove = -1;
+    MemoryHandler *handler;
 };
 
 #endif // CHESSBROWSER_H
