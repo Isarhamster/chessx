@@ -67,7 +67,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -1698,20 +1698,9 @@
           <string>FICS</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="btUseTimeseal">
-            <property name="text">
-             <string>Try to use Timeseal</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QCheckBox" name="guestLogin">
-            <property name="text">
-             <string>Log in as guest</string>
-            </property>
-           </widget>
-          </item>
+          <property name="horizontalSpacing">
+           <number>-1</number>
+          </property>
           <item row="0" column="0">
            <layout class="QFormLayout" name="formLayout_2">
             <item row="0" column="0">
@@ -1742,7 +1731,42 @@
             </item>
            </layout>
           </item>
-          <item row="3" column="0">
+          <item row="2" column="0">
+           <layout class="QHBoxLayout" name="timeseal_layout">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QCheckBox" name="btUseTimeseal">
+              <property name="text">
+               <string>Try to use Timeseal</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="timesealPath">
+              <property name="placeholderText">
+               <string>Path to timeseal executable</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="timesealButton">
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="4" column="0">
+           <widget class="QCheckBox" name="guestLogin">
+            <property name="text">
+             <string>Log in as guest</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
            <widget class="QCheckBox" name="commandLine">
             <property name="text">
              <string>Show command line</string>
@@ -1763,7 +1787,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label_25">
               <property name="text">
-               <string>Login</string>
+               <string>User Name</string>
               </property>
               <property name="buddy">
                <cstring>userNameLichess</cstring>
@@ -1771,7 +1795,11 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QLineEdit" name="userNameLichess"/>
+             <widget class="QLineEdit" name="userNameLichess">
+              <property name="placeholderText">
+               <string>Optional</string>
+              </property>
+             </widget>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_26">

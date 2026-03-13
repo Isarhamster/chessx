@@ -52,14 +52,14 @@ QString Settings::dataPath()
     return m_dataPath;
 }
 
-QString Settings::logPath()
+QString Settings::logPath() const
 {
     QString logPath = AppSettings->dataPath() + "/log/";
     QDir().mkpath(logPath);
     return logPath;
 }
 
-QString Settings::programDataPath()
+QString Settings::programDataPath() const
 {
     QString programDataPath = QCoreApplication::applicationDirPath();
     programDataPath.append(QDir::separator());
@@ -67,7 +67,7 @@ QString Settings::programDataPath()
     return programDataPath;
 }
 
-QString Settings::uciPath()
+QString Settings::uciPath() const
 {
 #ifdef Q_OS_WIN
     QString path(AppSettings->programDataPath());
@@ -104,7 +104,7 @@ QString Settings::gtmPath() const
     return gtm;
 }
 
-QString Settings::winboardPath()
+QString Settings::winboardPath() const
 {
 #ifdef Q_OS_WIN
     QString path(AppSettings->programDataPath());
@@ -117,7 +117,7 @@ QString Settings::winboardPath()
 #endif
 }
 
-QString Settings::timesealFilePath()
+QString Settings::timesealDefaultFilePath() const
 {
 #ifdef Q_OS_WIN
     QString path(AppSettings->programDataPath());
@@ -130,13 +130,18 @@ QString Settings::timesealFilePath()
 #endif
 }
 
-QString Settings::commonDataFilePath(QString filename)
+QString Settings::timesealFilePath() const
+{
+    return AppSettings->getValue("/FICS/timesealPath").toString();
+}
+
+QString Settings::commonDataFilePath(QString filename) const
 {
     QString dir = commonDataPath();
     return (dir + QDir::separator() + filename);
 }
 
-QString Settings::commonDataPath()
+QString Settings::commonDataPath() const
 {
     QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QDir::separator() + "chessdata";
     QString dir = value("/General/DefaultDataPath", dataPath).toString();
@@ -273,6 +278,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/FICS/guestLogin", false);
     map.insert("/FICS/userName", "guest");
     map.insert("/FICS/passWord", "");
+    map.insert("/FICS/timesealPath", timesealDefaultFilePath());
     map.insert("/FICS/minutes", 1);
     map.insert("/FICS/increment", 0);
     map.insert("/FICS/eloLow", 0);

@@ -117,6 +117,7 @@ private slots:
     void SlotPieceEffectActivated(int index);
     void on_savePreferences_clicked();
     void on_toolSearchWebDestination_clicked();
+    void on_timesealButton_clicked();
 };
 
 #endif

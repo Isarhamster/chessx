@@ -630,6 +630,7 @@ void PreferencesDialog::restoreSettings()
     ui.passWord->setText(AppSettings->getValue("passWord").toString());
     ui.guestLogin->setChecked(AppSettings->getValue("guestLogin").toBool());
     ui.btUseTimeseal->setChecked(AppSettings->getValue("useTimeseal").toBool());
+    ui.timesealPath->setText(AppSettings->getValue("timesealPath").toString());
     ui.commandLine->setChecked(AppSettings->getValue("commandline").toBool());
     AppSettings->endGroup();
 
@@ -792,6 +793,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("passWord", ui.passWord->text());
     AppSettings->setValue("guestLogin", ui.guestLogin->isChecked());
     AppSettings->setValue("useTimeseal", ui.btUseTimeseal->isChecked());
+    AppSettings->setValue("timesealPath", ui.timesealPath->text());
     AppSettings->setValue("commandline", ui.commandLine->isChecked());
     AppSettings->endGroup();
 
@@ -948,3 +950,13 @@ void PreferencesDialog::on_toolSearchWebDestination_clicked()
         ui.editWebDestination->setText(file);
     }
 }
+
+void PreferencesDialog::on_timesealButton_clicked()
+{
+    QString dir = QFileDialog::getOpenFileName(this, tr("Select timeseal executable"), ui.timesealPath->text());
+    if(!dir.isEmpty() && QDir(dir).exists())
+    {
+        ui.timesealPath->setText(dir);
+    }
+}
+
