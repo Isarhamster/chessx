@@ -18,6 +18,7 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 <head>
 <title>ChessX Output</title>
 <meta http-equiv="content-type" content="text/html">
+<meta charset="utf-8">
 <style>
 .move {
     cursor: pointer;
@@ -35,19 +36,23 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
     color: #555;
 }
 
-.variation-head .toggle {
+.toggle::before {
+  content: "";
   display: inline-block;
-  width: 1em;
-  transition: transform 0.15s ease;
+  border-left: 6px solid currentColor;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  transition: transform .15s;
 }
 
-.variation-head.collapsed .toggle {
+.variation-head .toggle::before {
+  transform: rotate(90deg);
+}
+
+.variation-head.collapsed .toggle::before {
   transform: rotate(0deg);
 }
 
-.variation-head:not(.collapsed) .toggle {
-  transform: rotate(90deg);
-}
 
 .move.path {
     background: #e6f0ff;
@@ -206,13 +211,19 @@ if (window.qt && qt.webChannelTransport) {
     document.addEventListener("click", e => {
       const tg = e.target.closest(".toggle");
       if (!tg) return;
-      const head = tg.parentElement;
-      if (!head.classList.contains("variation-head")) return;
+
+      const head = tg.closest(".variation-head");
+      if (!head) return;
 
       head.classList.toggle("collapsed");
-      head.querySelector('.line').classList.toggle("collapsed");
-      head.querySelector('.variation-label').classList.toggle("collapsed");
+
+      head.querySelector(':scope > .line')
+          ?.classList.toggle("collapsed");
+
+      head.querySelector(':scope > .variation-label')
+          ?.classList.toggle("collapsed");
     });
+
 
     function setView(mode) {
       document.body.classList.remove(
@@ -308,7 +319,7 @@ MarkupResult=<span class="result">,</span>\n
 MarkupDiagram=<span class="diagram">,</span>\n
 MarkupMove=<span class="move %3" data-move-id="%1" data-parent-id="%2">,</span>\n
 MarkupVariationHead=<div class="variation">,</div>\n
-MarkupVariationLine=<div class="variation-head"><span class="toggle">▶</span><span class="variation-label">%1</span><span class="line">,</span></div>\n
+MarkupVariationLine=<div class="variation-head"><span class="toggle"></span><span class="variation-label">%1</span><span class="line">,</span></div>\n
 MarkupNag=<span class="nag">,</span>\n
 MarkupAnnotationInline=<span class="comment" data-move-id="%1">,</span>\n
 MarkupPreAnnotation=<span class="precomment" data-move-id="%1">,</span>\n
