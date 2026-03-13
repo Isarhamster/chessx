@@ -170,6 +170,7 @@ void Output::readTemplateFile(const QString& path)
                 if (s_tagNames.empty())
                 {
                     s_tagNames["MarkupHeaderBlock"] = MarkupHeaderBlock;
+                    s_tagNames["MarkupNotationBlock"] = MarkupNotationBlock;
                     s_tagNames["MarkupResult"] = MarkupResult;
                     s_tagNames["MarkupDiagram"] = MarkupDiagram;
                     s_tagNames["MarkupMainLineMove"] = MarkupMainLineMove;
