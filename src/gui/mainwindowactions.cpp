@@ -511,10 +511,24 @@ void MainWindow::slotEditVarRemove()
     }
 }
 
+void MainWindow::cleanPGN(QString& pgn) const
+{
+    pgn.replace(QChar(0x2013),QChar('-'));
+    pgn.replace(QChar(0x2654),QChar('K'));
+    pgn.replace(QChar(0x2655),QChar('Q'));
+    pgn.replace(QChar(0x2656),QChar('R'));
+    pgn.replace(QChar(0x2657),QChar('B'));
+    pgn.replace(QChar(0x2658),QChar('N'));
+    pgn.replace(QChar(0x265A),QChar('K'));
+    pgn.replace(QChar(0x265B),QChar('Q'));
+    pgn.replace(QChar(0x265C),QChar('R'));
+    pgn.replace(QChar(0x265D),QChar('B'));
+    pgn.replace(QChar(0x265E),QChar('N'));
+}
+
 bool MainWindow::pasteFen(QString& msg, QString fen, bool newGame)
 {
-    // Prepare Fen - clean up code like this:
-    // [FEN "***"] to ***
+    cleanPGN(fen);
 
     if(fen.contains("\""))
     {
@@ -566,9 +580,9 @@ void MainWindow::slotEditPasteFEN()
 bool MainWindow::slotEditPastePGN()
 {
     QString pgn = QApplication::clipboard()->text().trimmed();
-    pgn.replace(QChar(0x2013),QChar('-'));
     if(!pgn.isEmpty())
     {
+        cleanPGN(pgn);
         MemoryDatabase pgnDatabase;
         if(pgnDatabase.openString(pgn))
         {
@@ -588,7 +602,6 @@ bool MainWindow::slotEditPastePGN()
 void MainWindow::slotEditPaste()
 {
     QString fen = QApplication::clipboard()->text().simplified();
-    fen.replace(QChar(0x2013),QChar('-'));
     QString dummy;
     if(!pasteFen(dummy, fen, true))
     {
@@ -601,7 +614,6 @@ void MainWindow::slotEditMergePGN()
     if (game().isEmpty())
     {
         QString fen = QApplication::clipboard()->text().simplified();
-        fen.replace(QChar(0x2013),QChar('-'));
         QString dummy;
         if(pasteFen(dummy, fen))
         {
@@ -611,7 +623,7 @@ void MainWindow::slotEditMergePGN()
     QString pgn = QApplication::clipboard()->text().trimmed();
     if(!pgn.isEmpty())
     {
-        pgn.replace(QChar(0x2013),QChar('-'));
+        cleanPGN(pgn);
         if (pgn.startsWith("[") || (pgn.indexOf(QRegularExpression("\\d+\\."),0)==0)) // looks like something containing tags or starting with 1.xxx
         {
             MemoryDatabase pgnDatabase;

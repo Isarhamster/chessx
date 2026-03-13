@@ -690,6 +690,7 @@ private:
     bool handleGameEnd(const Analysis& analysis, QAction* action);
     bool gameAddAnalysis(const Analysis& analysis, QString annotation, bool forceLine=false);
     QString scoreText(const Analysis& analysis);
+    void cleanPGN(QString& pgn);
 
     /* Dialogs  */
     GameList* m_gameList;
