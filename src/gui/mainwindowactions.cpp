@@ -511,7 +511,7 @@ void MainWindow::slotEditVarRemove()
     }
 }
 
-void MainWindow::cleanPGN(QString& pgn) const
+void MainWindow::translateUTF8ToAlfa(QString& pgn) const
 {
     pgn.replace(QChar(0x2013),QChar('-'));
     pgn.replace(QChar(0x2654),QChar('K'));
@@ -528,7 +528,7 @@ void MainWindow::cleanPGN(QString& pgn) const
 
 bool MainWindow::pasteFen(QString& msg, QString fen, bool newGame)
 {
-    cleanPGN(fen);
+    translateUTF8ToAlfa(fen);
 
     if(fen.contains("\""))
     {
@@ -582,7 +582,7 @@ bool MainWindow::slotEditPastePGN()
     QString pgn = QApplication::clipboard()->text().trimmed();
     if(!pgn.isEmpty())
     {
-        cleanPGN(pgn);
+        translateUTF8ToAlfa(pgn);
         MemoryDatabase pgnDatabase;
         if(pgnDatabase.openString(pgn))
         {
@@ -623,7 +623,7 @@ void MainWindow::slotEditMergePGN()
     QString pgn = QApplication::clipboard()->text().trimmed();
     if(!pgn.isEmpty())
     {
-        cleanPGN(pgn);
+        translateUTF8ToAlfa(pgn);
         if (pgn.startsWith("[") || (pgn.indexOf(QRegularExpression("\\d+\\."),0)==0)) // looks like something containing tags or starting with 1.xxx
         {
             MemoryDatabase pgnDatabase;
