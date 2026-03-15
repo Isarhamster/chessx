@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id>io.sourceforge.ChessX.desktop</id>
+  <id>io.sourceforge.chessx.chessx</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0-or-later</project_license>
   <name>ChessX</name>
+  <developer id="io.sourceforce.chessx">
+    <name>ChessX authors</name>
+  </developer>
   <summary>Free Chess Database</summary>
   <description>
     <p>
@@ -32,9 +35,11 @@ browse, edit, add, organize, analyze, etc.
   </releases>
   <screenshots>
     <screenshot type="default">
-      <image>http://i1-win.softpedia-static.com/screenshots/ChessX_1.png</image>
+      <image>https://windows-cdn.softpedia.com/screenshots/ChessX_1.png</image>
+      <caption>Main window</caption>
     </screenshot>
   </screenshots>
   <url type="homepage">https://chessx.sourceforge.io</url>
   <content_rating type="oars-1.1" />
+  <launchable type="desktop-id">io.sourceforge.chessx.chessx.desktop</launchable>
 </component>
