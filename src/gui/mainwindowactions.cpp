@@ -804,7 +804,7 @@ void MainWindow::slotExportImage()
 
 void MainWindow::slotHelpBug()
 {
-    QDesktopServices::openUrl(QUrl("http://sourceforge.net/tracker/?group_id=163833&atid=829300"));
+  QDesktopServices::openUrl(QUrl("https://github.com/Isarhamster/chessx/issues"));
 }
 
 void MainWindow::slotBoardStoredMove()
