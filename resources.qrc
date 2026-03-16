@@ -11,6 +11,13 @@
         <file alias="help/about3.html">data/help/about3.html</file>
         <file alias="help/about4.html">data/help/about4.html</file>
         <file alias="help/about5.html">data/help/about5.html</file>
+	<file alias="help/ES/about0.html">data/help/ES/about0.html</file>
+	<file alias="help/ES/about1.html">data/help/ES/about1.html</file>
+        <file alias="help/ES/about1a.html">data/help/ES/about1a.html</file>
+        <file alias="help/ES/about2.html">data/help/ES/about2.html</file>
+        <file alias="help/ES/about3.html">data/help/ES/about3.html</file>
+        <file alias="help/ES/about4.html">data/help/ES/about4.html</file>
+        <file alias="help/ES/about5.html">data/help/ES/about5.html</file>
         <file alias="images/accept.png">data/images/accept.png</file>
         <file alias="images/annotate.png">data/images/annotate.png</file>
         <file alias="images/arrow_green.png">data/images/arrow_green.png</file>
