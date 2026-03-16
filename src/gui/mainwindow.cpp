@@ -21,6 +21,7 @@
 #include "databaselistmodel.h"
 #include "dockwidgetex.h"
 #include "downloadmanager.h"
+#include "duplicatepositionswidget.h"
 #include "ecolistwidget.h"
 #include "ecothread.h"
 #include "eventlistwidget.h"
@@ -92,6 +93,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_tabDragIndex(-1),
     m_pDragTabBar(nullptr),
     m_gameWindow(nullptr),
+    m_duplicatePositionsWidget(nullptr),
     m_gameToolBar(0),
     m_operationFlag(0),
     m_currentFrom(InvalidSquare),
@@ -213,6 +215,12 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(this, &MainWindow::reconfigure, m_gameView, &GameNotationWidget::slotReconfigure);
     addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
     connect(m_gameWindow, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
+
+    DockWidgetEx* duplicatePositionsDock = new DockWidgetEx("Duplicate Game Positions", this);
+    duplicatePositionsDock->setObjectName("Duplicate Positions Dock");
+    m_duplicatePositionsWidget = new DuplicatePositionsWidget{duplicatePositionsDock};
+    duplicatePositionsDock->setWidget(m_duplicatePositionsWidget);
+    connect(m_duplicatePositionsWidget, &DuplicatePositionsWidget::linkClicked, this, &MainWindow::slotGameViewLink);
 
     m_menuView->addAction(gameTextDock->toggleViewAction());
     gameTextDock->toggleViewAction()->setShortcut(Qt::CTRL | Qt::Key_E);
