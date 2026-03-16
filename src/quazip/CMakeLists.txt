@@ -46,6 +46,7 @@ target_link_libraries(quazip
     qt_config
   PUBLIC
     ZLIB::ZLIB
-    Qt5::Core
+    Qt6::Core
+    Qt6::Core5Compat
 )
 

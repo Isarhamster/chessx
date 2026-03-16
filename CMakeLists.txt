@@ -4,16 +4,15 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13)
 
 project(chessx LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-option(ENABLE_SOUNDS "Enable sounds (requires Qt5::Multimedia)" ON)
-option(ENABLE_TTS "Enable text-to-speech (requires Qt5::TextToSpeech)" ON)
+option(ENABLE_SOUNDS "Enable sounds (requires Qt6::Multimedia)" ON)
+option(ENABLE_TTS "Enable text-to-speech (requires Qt6::TextToSpeech)" ON)
 option(ENABLE_SCID_SUPPORT "Enable support for Scid database format (*.si4)" ON)
 
 add_subdirectory(dep)
-
 # common definitions to use with Qt
 add_library(qt_config INTERFACE)
 target_compile_definitions(qt_config INTERFACE
@@ -23,7 +22,7 @@ target_compile_definitions(qt_config INTERFACE
 )
 
 set(REQUIRED_QT_COMPONENTS
-  Core Xml DBus Network OpenGL Svg PrintSupport Gui Widgets
+  Core Xml DBus Network OpenGL Svg PrintSupport Gui Widgets Core5Compat
 )
 
 if (ENABLE_SOUNDS)
@@ -34,7 +33,7 @@ if (ENABLE_TTS)
   list(APPEND REQUIRED_QT_COMPONENTS TextToSpeech)
 endif()
 
-find_package(Qt5 REQUIRED
+find_package(Qt6 REQUIRED
   LinguistTools
   "${REQUIRED_QT_COMPONENTS}"
   Test
@@ -61,7 +60,7 @@ set_source_files_properties(${TRANSLATIONS_SRC_FILES}
   OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/i18n"
 )
 
-qt5_add_translation(TRANSLATIONS_BIN_FILES ${TRANSLATIONS_SRC_FILES})
+qt6_add_translation(TRANSLATIONS_BIN_FILES ${TRANSLATIONS_SRC_FILES})
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -110,6 +109,7 @@ target_link_libraries(chessx PRIVATE
   board
   eco
   gui
+  Qt6::Multimedia
 )
 
 if (CMAKE_HOST_APPLE)
@@ -148,4 +148,31 @@ if (ENABLE_TESTING)
   enable_testing()
   add_subdirectory(tests/unittests)
 endif()
+
+if (ENABLE_SOUNDS)
+  target_compile_definitions(chessx
+    PRIVATE
+      USE_SOUND
+  )
+  target_link_libraries(chessx PRIVATE Qt6::Multimedia)
+  if (UNIX AND NOT APPLE)
+    # on Linux QtMultimedia links to pulseaudio
+    find_package(PulseAudio REQUIRED) 
+    target_link_libraries(chessx
+      PRIVATE
+        ${PULSEAUDIO_LIBRARY}
+        ${PULSEAUDIO_MAINLOOP_LIBRARY}
+    )
+  endif()
+endif()
+
+if (ENABLE_TTS)
+  target_compile_definitions(chessx
+    PRIVATE
+      USE_SPEECH
+  )
+  target_link_libraries(chessx PRIVATE Qt6::TextToSpeech)
+endif()
+
+
 
