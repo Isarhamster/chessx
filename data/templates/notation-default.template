@@ -20,6 +20,7 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 <meta http-equiv="content-type" content="text/html">
 <meta charset="utf-8">
 <style>
+
 .move {
     cursor: pointer;
     margin-right: 0.25em;
@@ -53,9 +54,19 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
   transform: rotate(0deg);
 }
 
+.variation {
+    margin-left: 1.2em;
+    padding-left: 0.6em;
+    border-left: 3px solid hsl(var(--rainbow-hue, 210), 70%, 45%);
+    background: hsl(var(--rainbow-hue, 210), 80%, 96%);
+    transition: border-color 0.2s;
+}
 
 .move.path {
-    background: #e6f0ff;
+    background: transparent;
+    border-radius: 3px;
+    box-shadow: inset 0 -2px 0 #4a90e2;
+    transition: box-shadow 0.12s;
 }
 
 .move.active {
@@ -177,9 +188,17 @@ if (window.qt && qt.webChannelTransport) {
 </script>
 <script>
     function highlightMove(id) {
-        document.querySelectorAll(".move.active").forEach(m => m.classList.remove("active"));
 
-        document.querySelectorAll('.move[data-move-id="' + id + '"]').forEach(m => m.classList.add("active"));
+        document.querySelectorAll(".move.active")
+            .forEach(m => m.classList.remove("active"));
+
+        const move =
+            document.querySelector('.move[data-move-id="' + id + '"]');
+
+        if (!move) return;
+
+        move.classList.add("active");
+        move.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     function highlightPath(moveId) {
@@ -310,6 +329,30 @@ if (window.qt && qt.webChannelTransport) {
         });
       });
     });
+
+    function colorVariationsRainbow() {
+        document.querySelectorAll('.variation').forEach(v => {
+
+            // calculate nesting depth
+            let depth = 0;
+            let p = v.parentElement;
+
+            while (p) {
+                if (p.classList?.contains('variation'))
+                    depth++;
+                p = p.parentElement;
+            }
+
+            // rainbow progression
+            const hueStep = 38;        // spacing between colors
+            const hue = (depth * hueStep) % 360;
+
+            v.style.setProperty('--rainbow-hue', hue);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", colorVariationsRainbow);
+
 </script>
 
 </body>
