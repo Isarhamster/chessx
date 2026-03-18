@@ -21,20 +21,57 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 <meta charset="utf-8">
 <style>
 
+:root {
+  /* LIGHT THEME (default) */
+  --bg: #ffffff;
+  --text: #111;
+  --border: #ccc;
+  --soft-border: #ddd;
+  --table-header: #f5f5f5;
+  --move-active: #ffd966;
+  --move-path: #4a90e2;
+  --comment: #666;
+  --table-move: #666;
+  --variation-sat: 80%;
+  --variation-light: 96%;
+  --variation-head: #555;
+  --nag: #888;
+  --toggle-active: #888;
+  --toggle-hover: #000;
+}
+
+/* DARK THEME */
+body.theme-dark {
+  --bg: #1e1e1e;
+  --text: #e6e6e6;
+  --border: #444;
+  --soft-border: #333;
+  --table-header: #2a2a2a;
+  --move-active: #b59b2a;
+  --move-path: #6aa9ff;
+  --comment: #aaa;
+  --table-move: #aaa;
+  --variation-sat: 35%;
+  --variation-light: 18%;
+  --variation-head: #d0d0d0;
+  --nag: #777;
+  --toggle-active: #777;
+  --toggle-hover: #fff;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
 .move {
     cursor: pointer;
     margin-right: 0.25em;
 }
 
-.variation {
-    margin-left: 1.2em;
-    border-left: 2px solid #ddd;
-    padding-left: 0.5em;
-}
-
 .variation-head {
     cursor: pointer;
-    color: #555;
+    color: var(--variation-head);
 }
 
 .toggle::before {
@@ -54,13 +91,22 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
   transform: rotate(0deg);
 }
 
+
 .variation {
     margin-left: 1.2em;
     padding-left: 0.6em;
-    border-left: 3px solid hsl(var(--rainbow-hue, 210), 70%, 45%);
-    background: hsl(var(--rainbow-hue, 210), 80%, 96%);
-    transition: border-color 0.2s;
+
+    border-left: 3px solid
+        hsl(var(--rainbow-hue, 210), 70%, 45%);
+
+    background:
+        hsl(
+            var(--rainbow-hue, 210),
+            var(--variation-sat),
+            var(--variation-light)
+        );
 }
+
 
 .move.path {
     background: transparent;
@@ -70,23 +116,23 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 }
 
 .move.active {
-    background: #ffd966;
+    background: var(--move-active);
     font-weight: bold;
 }
 
 .comment {
-    color: #666;
+    color: var(--comment);
     margin-left: 0.5em;
     margin-right: 0.5em;
 }
 
 .precomment {
-    color: #666;
+    color: var(--comment);
     margin-right: 0.5em;
 }
 
 .nag {
-    color: #888;
+    color: var(--nag);
     font-weight: bold;
     margin-left: -0.15em;
 }
@@ -94,6 +140,11 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 .diagram {
     display: block;
     margin-left: 0.5em;
+}
+
+.mainline-table th,
+.mainline-table td {
+
 }
 
 .mainline-table {
@@ -105,13 +156,13 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 
 .mainline-table th,
 .mainline-table td {
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   padding: 4px 8px;
   vertical-align: top;
 }
 
 .mainline-table th {
-  background: #f5f5f5;
+  background: var(--table-header);
   font-weight: 600;
   text-align: center;
 }
@@ -119,8 +170,8 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 .mainline-table td.move-no {
   width: 3em;
   text-align: right;
-  color: #666;
-  background: #fafafa;
+  color: var(--table-move);
+  background: var(--table-header);
 }
 
 .mainline-table td.white {
@@ -145,11 +196,11 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 
 .toggle {
     cursor: pointer;
-    color: #888;
+    color: var(--toggle-active);
     margin-right: 4px;
 }
 .toggle:hover {
-    color: #000;
+    color: var(--toggle-hover);
 }
 body.view-table .variation {
   display: none;
@@ -168,9 +219,10 @@ body.view-mainline .variation {
 </head>
 <body>
 <p class="view-controls">
-    <button data-view="linear">Linear</button>
+    <button data-view="linear">Tree</button>
     <button data-view="table">Table</button>
     <button data-view="mainline">Main Line</button>
+    <button id="theme-toggle">Dark</button>
 </p>
 <div id="table-view" hidden></div>
 <div id="chess-content">
@@ -353,6 +405,18 @@ if (window.qt && qt.webChannelTransport) {
 
     document.addEventListener("DOMContentLoaded", colorVariationsRainbow);
 
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('theme-toggle');
+
+      btn.addEventListener('click', () => {
+        document.body.classList.toggle('theme-dark');
+
+        btn.textContent =
+          document.body.classList.contains('theme-dark')
+            ? 'Light'
+            : 'Dark';
+      });
+    });
 </script>
 
 </body>
