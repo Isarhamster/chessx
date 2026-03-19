@@ -1,6 +1,5 @@
 #include "lichessopening.h"
 #include "lichesstransfer.h"
-#include "networkhelper.h"
 #include "settings.h"
 #include "version.h"
 
@@ -30,7 +29,7 @@ QByteArray LichessOpening::queryPosition(const QString& fen)
 
     if (AppSettings->getValue("/General/onlineTablebases").toBool())
     {
-        QString requested = QString("/%1?fen=%2").arg(m_db).arg(fen);
+        QString requested = QString("/%1?fen=%2").arg(m_db, fen);
         if (!m_variant.isEmpty()) requested += QString("&variant=%1").arg(m_variant);
         foreach(QString interval, m_intervals)
         {
@@ -51,12 +50,8 @@ QByteArray LichessOpening::queryPosition(const QString& fen)
             return reply;
         }
 
-        url = requested;
-        url.setHost("explorer.lichess.ovh");
-        url.setScheme("http");
-
-        QNetworkRequest request = NetworkHelper::Request(url);
-        reply = LichessTransfer::sync_request( request );
+        QString token = AppSettings->getValue("Lichess/passWord").toString();
+        reply = LichessTransfer::queryExplorer(requested, token);
         m_requested = requested;
         return reply;
     }

@@ -48,7 +48,11 @@ QStyle *Style::baseStyle() { return styleBase(); }
 
 void Style::modifyPalette(QPalette& palette)
 {
+#if QT_VERSION >= 0x060500
     bool isDark = QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark;
+#else
+    bool isDark = false;
+#endif
     if (AppSettings->getValue("/MainWindow/DarkTheme").toBool() || isDark)
     {
         palette.setColor(QPalette::Window,QColor(53,53,53));

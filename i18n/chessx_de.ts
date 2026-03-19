@@ -409,7 +409,7 @@ b%2
 %3 am Zug.</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3212"/>
+        <location filename="../src/database/bitboard.cpp" line="3215"/>
         <source>w%1
 b%2
 %3 to move</source>
@@ -418,12 +418,12 @@ s%2
 %3 am Zug</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3229"/>
+        <location filename="../src/database/bitboard.cpp" line="3232"/>
         <source>White</source>
         <translation>Weiß</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3229"/>
+        <location filename="../src/database/bitboard.cpp" line="3232"/>
         <source>Black</source>
         <translation>Schwarz</translation>
     </message>
@@ -3070,6 +3070,11 @@ Shall I download a database?</source>
         <translation>Engine Match</translation>
     </message>
     <message>
+        <location filename="../src/gui/mainwindow.cpp" line="2038"/>
+        <source>Hide pieces</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/mainwindow.cpp" line="2093"/>
         <source>Refactor</source>
         <translation>Entferne</translation>
@@ -3332,11 +3337,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1947"/>
         <source>Load recent</source>
         <translation>Letzte laden</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow.cpp" line="2038"/>
-        <source>Hide pieces</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="2653"/>
@@ -4699,8 +4699,11 @@ chessx.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="428"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="299"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="428"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="299"/>
         <location filename="../src/dialogs/preferences.cpp" line="516"/>
-        <location filename="../src/generated/ui_preferences.h" line="1862"/>
+        <location filename="../src/generated/ui_preferences.h" line="1883"/>
         <source>Frame</source>
         <translation>Rahmen</translation>
     </message>
@@ -4810,14 +4813,19 @@ chessx.sourceforge.net</translation>
         <translation>Enginezug</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="934"/>
+        <location filename="../src/dialogs/preferences.cpp" line="936"/>
         <source>New database</source>
         <translation>Neue Datenbank</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="936"/>
+        <location filename="../src/dialogs/preferences.cpp" line="938"/>
         <source>PGN database (*.pgn)</source>
         <translation>PGN Datenbank (*.pgn)</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.cpp" line="947"/>
+        <source>Select timeseal executable</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="506"/>
@@ -4846,7 +4854,10 @@ chessx.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1634"/>
-        <location filename="../src/generated/ui_preferences.h" line="1954"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1681"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1634"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1681"/>
+        <location filename="../src/generated/ui_preferences.h" line="1975"/>
         <source>Use online tablebase servers</source>
         <translation>Online Tablebaseserver verwenden</translation>
     </message>
@@ -4856,13 +4867,19 @@ chessx.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="90"/>
-        <location filename="../src/generated/ui_preferences.h" line="1833"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="322"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="90"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="322"/>
+        <location filename="../src/generated/ui_preferences.h" line="1854"/>
         <source>&amp;Colors:</source>
         <translation>&amp;Farben:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="183"/>
-        <location filename="../src/generated/ui_preferences.h" line="1838"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="160"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="183"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="160"/>
+        <location filename="../src/generated/ui_preferences.h" line="1859"/>
         <source>Board &amp;style:</source>
         <translation>Brett &amp;Stil:</translation>
     </message>
@@ -4872,202 +4889,307 @@ chessx.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="362"/>
-        <location filename="../src/generated/ui_preferences.h" line="1852"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="194"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="362"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="194"/>
+        <location filename="../src/generated/ui_preferences.h" line="1873"/>
         <source>&amp;Draw frame between squares</source>
         <translation>&amp;Zeichne Rahmen zwischen Feldern</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="80"/>
-        <location filename="../src/generated/ui_preferences.h" line="1832"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="184"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="80"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="184"/>
+        <location filename="../src/generated/ui_preferences.h" line="1853"/>
         <source>&amp;Chess set:</source>
         <translation>&amp;Figuren:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1035"/>
-        <location filename="../src/generated/ui_preferences.h" line="1926"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1082"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1035"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1082"/>
+        <location filename="../src/generated/ui_preferences.h" line="1947"/>
         <source>Database</source>
         <translation>Datenbank</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1071"/>
-        <location filename="../src/generated/ui_preferences.h" line="1910"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1118"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1071"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1118"/>
+        <location filename="../src/generated/ui_preferences.h" line="1931"/>
         <source>Commit Database after saving Game</source>
         <translatorcomment>&quot;Save game&quot; is not an appropriate term and was translated as &quot;Partie-Änderungen anwenden&quot;</translatorcomment>
         <translation>Datenbank auf Festplatte speichern nach Anwenden von Partie-Änderungen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1118"/>
-        <location filename="../src/generated/ui_preferences.h" line="1914"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1165"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1118"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1165"/>
+        <location filename="../src/generated/ui_preferences.h" line="1935"/>
         <source>Number of recent files:</source>
         <translation>Anzahl der letzten Dateien:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1160"/>
-        <location filename="../src/generated/ui_preferences.h" line="1916"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1207"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1160"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1207"/>
+        <location filename="../src/generated/ui_preferences.h" line="1937"/>
         <source>Default Database Path:</source>
         <translation>Standard-Datenbank-Verzeichnis:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1102"/>
-        <location filename="../src/generated/ui_preferences.h" line="1913"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1149"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1102"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1149"/>
+        <location filename="../src/generated/ui_preferences.h" line="1934"/>
         <source>Default path for storing files</source>
         <translation>Standard-Pfad zum Speichern von Dateien</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1363"/>
-        <location filename="../src/generated/ui_preferences.h" line="1932"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1410"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1363"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1410"/>
+        <location filename="../src/generated/ui_preferences.h" line="1953"/>
         <source>Font with Chess Symbols (Unicode)</source>
         <translation>Font mit Schachsymbolen (Unicode)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1387"/>
         <location filename="../src/dialogs/preferences.ui" line="1478"/>
-        <location filename="../src/generated/ui_preferences.h" line="1934"/>
-        <location filename="../src/generated/ui_preferences.h" line="1942"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1434"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1525"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1387"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1478"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1434"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1525"/>
+        <location filename="../src/generated/ui_preferences.h" line="1955"/>
+        <location filename="../src/generated/ui_preferences.h" line="1963"/>
         <source>Font Size</source>
         <translation>Font Größe</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="788"/>
-        <location filename="../src/generated/ui_preferences.h" line="1891"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="835"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="788"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="835"/>
+        <location filename="../src/generated/ui_preferences.h" line="1912"/>
         <source>Colors:</source>
         <translation>Farben:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1641"/>
-        <location filename="../src/generated/ui_preferences.h" line="1955"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1688"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1641"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1688"/>
+        <location filename="../src/generated/ui_preferences.h" line="1976"/>
         <source>Check for updates (at startup) and language packs</source>
         <translation>Updateprüfung nach dem Start und Laden von Sprachpaketen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="19"/>
-        <location filename="../src/generated/ui_preferences.h" line="1831"/>
+        <location filename="../src/dialogs/preferences_BACKUP_87666.ui" line="19"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="19"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="19"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="19"/>
+        <location filename="../src/generated/ui_preferences.h" line="1852"/>
         <source>Preferences</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1298"/>
-        <location filename="../src/generated/ui_preferences.h" line="1949"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1345"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1298"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1345"/>
+        <location filename="../src/generated/ui_preferences.h" line="1970"/>
         <source>Appearance</source>
         <translation>Ansicht</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1304"/>
-        <location filename="../src/generated/ui_preferences.h" line="1927"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1351"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1304"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1351"/>
+        <location filename="../src/generated/ui_preferences.h" line="1948"/>
         <source>Fonts for notation</source>
         <translation>Fonts in der Notation</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1312"/>
-        <location filename="../src/generated/ui_preferences.h" line="1928"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1359"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1312"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1359"/>
+        <location filename="../src/generated/ui_preferences.h" line="1949"/>
         <source>Texts</source>
         <translation>Texte</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1351"/>
-        <location filename="../src/generated/ui_preferences.h" line="1931"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1398"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1351"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1398"/>
+        <location filename="../src/generated/ui_preferences.h" line="1952"/>
         <source>Moves</source>
         <translation>Züge</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="618"/>
         <location filename="../src/dialogs/preferences.ui" line="624"/>
-        <location filename="../src/generated/ui_preferences.h" line="1880"/>
-        <location filename="../src/generated/ui_preferences.h" line="1892"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="598"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="604"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="618"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="624"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="598"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="604"/>
+        <location filename="../src/generated/ui_preferences.h" line="1901"/>
+        <location filename="../src/generated/ui_preferences.h" line="1913"/>
         <source>Game Text</source>
         <translation>Notation</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="74"/>
-        <location filename="../src/generated/ui_preferences.h" line="1868"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="74"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="74"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="74"/>
+        <location filename="../src/generated/ui_preferences.h" line="1889"/>
         <source>Board</source>
         <translation>Brett</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="433"/>
-        <location filename="../src/generated/ui_preferences.h" line="1863"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="304"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="433"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="304"/>
+        <location filename="../src/generated/ui_preferences.h" line="1884"/>
         <source>Arrow</source>
         <translation>Pfeil</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="237"/>
-        <location filename="../src/generated/ui_preferences.h" line="1841"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="365"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="237"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="365"/>
+        <location filename="../src/generated/ui_preferences.h" line="1862"/>
         <source>On mouse over</source>
         <translation>Beim Überstreichen mit der Maus</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="243"/>
-        <location filename="../src/generated/ui_preferences.h" line="1842"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="371"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="243"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="371"/>
+        <location filename="../src/generated/ui_preferences.h" line="1863"/>
         <source>Show guess</source>
         <translation>Zeige Zugvorschlag</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="253"/>
-        <location filename="../src/generated/ui_preferences.h" line="1843"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="381"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="253"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="381"/>
+        <location filename="../src/generated/ui_preferences.h" line="1864"/>
         <source>Right mouse button</source>
         <translation>Rechte Maustaste</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="260"/>
-        <location filename="../src/generated/ui_preferences.h" line="1844"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="388"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="260"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="388"/>
+        <location filename="../src/generated/ui_preferences.h" line="1865"/>
         <source>Go back / remove one move</source>
         <translation>Gehe zurück / lösche einen Zug</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="265"/>
-        <location filename="../src/generated/ui_preferences.h" line="1845"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="393"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="265"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="393"/>
+        <location filename="../src/generated/ui_preferences.h" line="1866"/>
         <source>Next guess</source>
         <translation>Nächster Vorschlag</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="270"/>
-        <location filename="../src/generated/ui_preferences.h" line="1846"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="398"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="270"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="398"/>
+        <location filename="../src/generated/ui_preferences.h" line="1867"/>
         <source>Colorize square</source>
         <translation>Felder einfärben</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="632"/>
-        <location filename="../src/generated/ui_preferences.h" line="1881"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="612"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="632"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="612"/>
+        <location filename="../src/generated/ui_preferences.h" line="1902"/>
         <source>Show Diagrams</source>
         <translation>Diagramme anzeigen</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="619"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="619"/>
         <source>Column Style</source>
-        <translation type="vanished">Hauptvariante in Spalten</translation>
+        <translation>Hauptvariante in Spalten</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="639"/>
-        <location filename="../src/generated/ui_preferences.h" line="1882"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="626"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="639"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="626"/>
+        <location filename="../src/generated/ui_preferences.h" line="1903"/>
         <source>Enable HTML comments</source>
         <translation>HTML Kommentare in Anmerkungen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="646"/>
-        <location filename="../src/generated/ui_preferences.h" line="1883"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="633"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="646"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="633"/>
+        <location filename="../src/generated/ui_preferences.h" line="1904"/>
         <source>Hide special annotations</source>
         <translation>Verstecke spezielle Anmerkungen</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="644"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="644"/>
         <source>Keep variations inline from level</source>
-        <translation type="vanished">Varianten in Fliesstext ab Ebene</translation>
+        <translation>Varianten in Fliesstext ab Ebene</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="668"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="668"/>
         <source>Indent Comments</source>
-        <translation type="vanished">Kommentare einrücken</translation>
+        <translation>Kommentare einrücken</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="687"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="687"/>
         <source>Only Mainline</source>
-        <translation type="vanished">Nur Hauptvariante</translation>
+        <translation>Nur Hauptvariante</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="657"/>
-        <location filename="../src/generated/ui_preferences.h" line="1884"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="704"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="657"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="704"/>
+        <location filename="../src/generated/ui_preferences.h" line="1905"/>
         <source>Diagram Size</source>
         <translation>DIagrammgrösse</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="678"/>
-        <location filename="../src/generated/ui_preferences.h" line="1885"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="725"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="678"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="725"/>
+        <location filename="../src/generated/ui_preferences.h" line="1906"/>
         <source>Pieces</source>
         <translation></translation>
     </message>
@@ -5083,17 +5205,35 @@ chessx.sourceforge.net</translation>
         <location filename="../src/dialogs/preferences.ui" line="1268"/>
         <location filename="../src/dialogs/preferences.ui" line="1331"/>
         <location filename="../src/dialogs/preferences.ui" line="1370"/>
-        <location filename="../src/dialogs/preferences.ui" line="1933"/>
-        <location filename="../src/generated/ui_preferences.h" line="1925"/>
-        <location filename="../src/generated/ui_preferences.h" line="1930"/>
-        <location filename="../src/generated/ui_preferences.h" line="1933"/>
-        <location filename="../src/generated/ui_preferences.h" line="1979"/>
+        <location filename="../src/dialogs/preferences.ui" line="1709"/>
+        <location filename="../src/dialogs/preferences.ui" line="1961"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1315"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1378"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1417"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1980"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1268"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1331"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1370"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1933"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1315"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1378"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1417"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1756"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="2008"/>
+        <location filename="../src/generated/ui_preferences.h" line="1946"/>
+        <location filename="../src/generated/ui_preferences.h" line="1951"/>
+        <location filename="../src/generated/ui_preferences.h" line="1954"/>
+        <location filename="../src/generated/ui_preferences.h" line="1982"/>
+        <location filename="../src/generated/ui_preferences.h" line="2003"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="523"/>
-        <location filename="../src/generated/ui_preferences.h" line="1871"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="503"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="523"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="503"/>
+        <location filename="../src/generated/ui_preferences.h" line="1892"/>
         <source>Automatic Analysis</source>
         <translation>Autoanalyse</translation>
     </message>
@@ -5103,19 +5243,28 @@ chessx.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="550"/>
-        <location filename="../src/generated/ui_preferences.h" line="1875"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="530"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="550"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="530"/>
+        <location filename="../src/generated/ui_preferences.h" line="1896"/>
         <source>Always annotate engine score</source>
         <translation>Engine Bewertungen einfügen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="572"/>
-        <location filename="../src/generated/ui_preferences.h" line="1877"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="552"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="572"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="552"/>
+        <location filename="../src/generated/ui_preferences.h" line="1898"/>
         <source>Marks auto-generated move</source>
         <translation>Test markiert eingefügte Züge</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="579"/>
-        <location filename="../src/generated/ui_preferences.h" line="1878"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="559"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="579"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="559"/>
+        <location filename="../src/generated/ui_preferences.h" line="1899"/>
         <source>Blunder Check Limit (centi-pawn)</source>
         <translation>Grenzwert bei Fehlersuche (in Centi-Bauern)</translation>
     </message>
@@ -5125,7 +5274,10 @@ chessx.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="543"/>
-        <location filename="../src/generated/ui_preferences.h" line="1874"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="523"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="543"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="523"/>
+        <location filename="../src/generated/ui_preferences.h" line="1895"/>
         <source>Mainline only</source>
         <translation>Nur Hauptvariante</translation>
     </message>
@@ -5135,441 +5287,683 @@ chessx.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="562"/>
-        <location filename="../src/generated/ui_preferences.h" line="1876"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="542"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="562"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="542"/>
+        <location filename="../src/generated/ui_preferences.h" line="1897"/>
         <source>Add Annotation at end of line</source>
         <translation>Anmerkung am Ende einer Variante</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="810"/>
-        <location filename="../src/generated/ui_preferences.h" line="1905"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="857"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="810"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="857"/>
+        <location filename="../src/generated/ui_preferences.h" line="1926"/>
         <source>Engines</source>
         <translation>Schachprogramme</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1017"/>
-        <location filename="../src/generated/ui_preferences.h" line="1903"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1064"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1017"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1064"/>
+        <location filename="../src/generated/ui_preferences.h" line="1924"/>
         <source>Send History</source>
         <translation>Historie senden</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1415"/>
-        <location filename="../src/generated/ui_preferences.h" line="1935"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1462"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1415"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1462"/>
+        <location filename="../src/generated/ui_preferences.h" line="1956"/>
         <source>Application</source>
         <translation>Applikation</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1971"/>
-        <location filename="../src/generated/ui_preferences.h" line="1984"/>
+        <location filename="../src/dialogs/preferences.ui" line="1999"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="2018"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1971"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="2046"/>
+        <location filename="../src/generated/ui_preferences.h" line="2008"/>
         <source>Number of plies to read ahead</source>
         <translation>Anzahl der vorab zu lesenden Züge</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1999"/>
-        <location filename="../src/generated/ui_preferences.h" line="1985"/>
+        <location filename="../src/dialogs/preferences.ui" line="2027"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="2046"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1999"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="2074"/>
+        <location filename="../src/generated/ui_preferences.h" line="2009"/>
         <source>No sounds</source>
         <translation>Keine Klänge</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="2004"/>
-        <location filename="../src/generated/ui_preferences.h" line="1986"/>
+        <location filename="../src/dialogs/preferences.ui" line="2032"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="2051"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="2004"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="2079"/>
+        <location filename="../src/generated/ui_preferences.h" line="2010"/>
         <source>Indication sounds</source>
         <translation>Hinweistöne</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="2009"/>
-        <location filename="../src/generated/ui_preferences.h" line="1987"/>
+        <location filename="../src/dialogs/preferences.ui" line="2037"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="2056"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="2009"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="2084"/>
+        <location filename="../src/generated/ui_preferences.h" line="2011"/>
         <source>Speak moves</source>
         <translation>Züge vorlesen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="2027"/>
-        <location filename="../src/generated/ui_preferences.h" line="1990"/>
+        <location filename="../src/dialogs/preferences.ui" line="2055"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="2074"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="2027"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="2102"/>
+        <location filename="../src/generated/ui_preferences.h" line="2014"/>
         <source>Sound making moves</source>
         <translation>Klang beim Ziehen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="2034"/>
-        <location filename="../src/generated/ui_preferences.h" line="1991"/>
+        <location filename="../src/dialogs/preferences.ui" line="2062"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="2081"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="2034"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="2109"/>
+        <location filename="../src/generated/ui_preferences.h" line="2015"/>
         <source>Sound while moving through games</source>
         <translation>Klänge beim Durchgehen einer Partie</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="2017"/>
-        <location filename="../src/generated/ui_preferences.h" line="1989"/>
+        <location filename="../src/dialogs/preferences.ui" line="2045"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="2064"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="2017"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="2092"/>
+        <location filename="../src/generated/ui_preferences.h" line="2013"/>
         <source>Delay between moves [ms]</source>
         <translation>Zugverzögerung [ms]</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="2044"/>
-        <location filename="../src/generated/ui_preferences.h" line="1992"/>
+        <location filename="../src/dialogs/preferences.ui" line="2072"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="2091"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="2044"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="2119"/>
+        <location filename="../src/generated/ui_preferences.h" line="2016"/>
         <source>Volume</source>
         <translation>Lautstärke</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="2064"/>
-        <location filename="../src/generated/ui_preferences.h" line="1993"/>
+        <location filename="../src/dialogs/preferences.ui" line="2092"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="2111"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="2064"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="2139"/>
+        <location filename="../src/generated/ui_preferences.h" line="2017"/>
         <source>Portable Preferences</source>
         <translation>Einstellungsdatei</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="2070"/>
-        <location filename="../src/generated/ui_preferences.h" line="1994"/>
+        <location filename="../src/dialogs/preferences.ui" line="2098"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="2117"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="2070"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="2145"/>
+        <location filename="../src/generated/ui_preferences.h" line="2018"/>
         <source>Save to application folder</source>
         <translation>Speichern im Applikationsordner</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="379"/>
-        <location filename="../src/generated/ui_preferences.h" line="1854"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="312"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="379"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="312"/>
+        <location filename="../src/generated/ui_preferences.h" line="1875"/>
         <source>Show move indicator</source>
         <translation>Zuganzeiger einblenden</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="404"/>
-        <location filename="../src/generated/ui_preferences.h" line="1857"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="202"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="404"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="202"/>
+        <location filename="../src/generated/ui_preferences.h" line="1878"/>
         <source>Automatic</source>
         <translation>Automatisch</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="409"/>
-        <location filename="../src/generated/ui_preferences.h" line="1858"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="207"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="682"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="409"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="207"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="682"/>
+        <location filename="../src/generated/ui_preferences.h" line="1879"/>
         <source>Always</source>
         <translation>Immer</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="414"/>
         <location filename="../src/dialogs/preferences.ui" line="423"/>
-        <location filename="../src/generated/ui_preferences.h" line="1859"/>
-        <location filename="../src/generated/ui_preferences.h" line="1861"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="212"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="294"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="692"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="414"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="423"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="212"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="294"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="692"/>
+        <location filename="../src/generated/ui_preferences.h" line="1880"/>
+        <location filename="../src/generated/ui_preferences.h" line="1882"/>
         <source>Never</source>
         <translation>Nie</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="480"/>
-        <location filename="../src/generated/ui_preferences.h" line="1866"/>
-        <source>Piece Animation Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/dialogs/preferences.ui" line="487"/>
-        <location filename="../src/generated/ui_preferences.h" line="1867"/>
-        <source>ms</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/dialogs/preferences.ui" line="1421"/>
-        <location filename="../src/generated/ui_preferences.h" line="1936"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1468"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1421"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1468"/>
+        <location filename="../src/generated/ui_preferences.h" line="1957"/>
         <source>Icons visible in menus</source>
         <translation>Icons in Menüs anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1673"/>
-        <location filename="../src/dialogs/preferences.ui" line="1719"/>
-        <location filename="../src/dialogs/preferences.ui" line="1762"/>
-        <location filename="../src/generated/ui_preferences.h" line="1959"/>
-        <location filename="../src/generated/ui_preferences.h" line="1963"/>
-        <location filename="../src/generated/ui_preferences.h" line="1967"/>
+        <location filename="../src/dialogs/preferences.ui" line="1662"/>
+        <location filename="../src/dialogs/preferences.ui" line="1790"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1720"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1766"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1809"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1673"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1719"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1762"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1709"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1837"/>
+        <location filename="../src/generated/ui_preferences.h" line="1978"/>
+        <location filename="../src/generated/ui_preferences.h" line="1991"/>
         <source>Login</source>
         <translation>Login</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1817"/>
-        <location filename="../src/generated/ui_preferences.h" line="1970"/>
+        <location filename="../src/dialogs/preferences.ui" line="1845"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1864"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1817"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1892"/>
+        <location filename="../src/generated/ui_preferences.h" line="1994"/>
         <source>Localization</source>
         <translation>Sprachanpassung</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1862"/>
-        <location filename="../src/generated/ui_preferences.h" line="1973"/>
+        <location filename="../src/dialogs/preferences.ui" line="1890"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1909"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1862"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1937"/>
+        <location filename="../src/generated/ui_preferences.h" line="1997"/>
         <source>Load language file from Server:</source>
         <translation>Sprachpaket vom Server laden:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1872"/>
-        <location filename="../src/generated/ui_preferences.h" line="1974"/>
+        <location filename="../src/dialogs/preferences.ui" line="1900"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1919"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1872"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1947"/>
+        <location filename="../src/generated/ui_preferences.h" line="1998"/>
         <source>Load!</source>
         <translation>Laden!</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1438"/>
-        <location filename="../src/generated/ui_preferences.h" line="1938"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1485"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1438"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1485"/>
+        <location filename="../src/generated/ui_preferences.h" line="1959"/>
         <source>Use vertical Tabs</source>
         <translation>Vertikale Ausrichtung der Reiter</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="109"/>
-        <location filename="../src/generated/ui_preferences.h" line="1834"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="226"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="109"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="226"/>
+        <location filename="../src/generated/ui_preferences.h" line="1855"/>
         <source>Copy Images</source>
         <translation>Bilder kopieren</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="145"/>
-        <location filename="../src/generated/ui_preferences.h" line="1836"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="262"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="145"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="262"/>
+        <location filename="../src/generated/ui_preferences.h" line="1857"/>
         <source>Fixed Size</source>
         <translation>Feste Größe</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="208"/>
-        <location filename="../src/generated/ui_preferences.h" line="1839"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="92"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="208"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="92"/>
+        <location filename="../src/generated/ui_preferences.h" line="1860"/>
         <source>Always Scale</source>
         <translation>Immer skalieren</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="352"/>
-        <location filename="../src/generated/ui_preferences.h" line="1851"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="101"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="352"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="101"/>
+        <location filename="../src/generated/ui_preferences.h" line="1872"/>
         <source>Turn board for player:</source>
         <translation>Brett für folgende Spieler drehen:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="176"/>
-        <location filename="../src/generated/ui_preferences.h" line="1837"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="338"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="176"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="338"/>
+        <location filename="../src/generated/ui_preferences.h" line="1858"/>
         <source>Enter a name or expression like &quot;Me|You&quot;</source>
         <translation>Name oder Ausdruck wie &quot;Du|Ich&quot;</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1024"/>
-        <location filename="../src/generated/ui_preferences.h" line="1904"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1071"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1024"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1071"/>
+        <location filename="../src/generated/ui_preferences.h" line="1925"/>
         <source>Log</source>
         <translation>Log</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1202"/>
-        <location filename="../src/generated/ui_preferences.h" line="1919"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1249"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1202"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1249"/>
+        <location filename="../src/generated/ui_preferences.h" line="1940"/>
         <source>Web Favorite</source>
         <translation>Web Favorit</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1217"/>
-        <location filename="../src/generated/ui_preferences.h" line="1921"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1264"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1217"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1264"/>
+        <location filename="../src/generated/ui_preferences.h" line="1942"/>
         <source>URL, use $1 for auto-incrementing number</source>
         <translation>URL, $1 wird ersetzt durch die Nummer</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1220"/>
-        <location filename="../src/generated/ui_preferences.h" line="1923"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1267"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1220"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1267"/>
+        <location filename="../src/generated/ui_preferences.h" line="1944"/>
         <source>Use $1 for auto-incrementing number</source>
         <translation>Ersetze $1 mit automatisch inkrementierender Nummer</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1664"/>
-        <location filename="../src/generated/ui_preferences.h" line="1958"/>
+        <location filename="../src/dialogs/preferences.ui" line="1718"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1711"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1664"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1765"/>
+        <location filename="../src/generated/ui_preferences.h" line="1983"/>
         <source>Log in as guest</source>
         <translation>Als Gast einwählen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1686"/>
-        <location filename="../src/dialogs/preferences.ui" line="1775"/>
-        <location filename="../src/generated/ui_preferences.h" line="1960"/>
-        <location filename="../src/generated/ui_preferences.h" line="1968"/>
+        <location filename="../src/dialogs/preferences.ui" line="1675"/>
+        <location filename="../src/dialogs/preferences.ui" line="1803"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1733"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1822"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1686"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1775"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1722"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1850"/>
+        <location filename="../src/generated/ui_preferences.h" line="1979"/>
+        <location filename="../src/generated/ui_preferences.h" line="1992"/>
         <source>Password</source>
         <translation>Passwort</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1657"/>
-        <location filename="../src/generated/ui_preferences.h" line="1957"/>
+        <location filename="../src/dialogs/preferences.ui" line="1695"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1704"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1657"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1742"/>
+        <location filename="../src/generated/ui_preferences.h" line="1980"/>
         <source>Try to use Timeseal</source>
         <translation>Versuche timeseal zu verwenden</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="536"/>
-        <location filename="../src/generated/ui_preferences.h" line="1873"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="516"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="536"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="516"/>
+        <location filename="../src/generated/ui_preferences.h" line="1894"/>
         <source>Analyse backwards (forward only adds NAGs &apos;!&apos;,&apos;?&apos;&quot;)</source>
         <translation>Rückwärts analysieren (vorwärts werden nur NAGs (&apos;!&apos;,&apos;?&apos;) eingefügt)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1431"/>
-        <location filename="../src/generated/ui_preferences.h" line="1937"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1478"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1431"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1478"/>
+        <location filename="../src/generated/ui_preferences.h" line="1958"/>
         <source>Raise list of games after filtering</source>
         <translation>Partieliste nach Filtern in den Vordergrund bringen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1454"/>
-        <location filename="../src/generated/ui_preferences.h" line="1940"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1501"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1454"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1501"/>
+        <location filename="../src/generated/ui_preferences.h" line="1961"/>
         <source>Dark Theme</source>
         <translation>Dunkles Thema</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1469"/>
-        <location filename="../src/generated/ui_preferences.h" line="1941"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1516"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1469"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1516"/>
+        <location filename="../src/generated/ui_preferences.h" line="1962"/>
         <source>Changing the theme requires restarting the application!</source>
         <translation>Die Änderung des Themas wird nach einem Neustart wirksam!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1701"/>
-        <location filename="../src/generated/ui_preferences.h" line="1961"/>
+        <location filename="../src/dialogs/preferences.ui" line="1725"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1748"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1701"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1772"/>
+        <location filename="../src/generated/ui_preferences.h" line="1984"/>
         <source>Show command line</source>
         <translation>Kommandozeile anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1811"/>
-        <location filename="../src/generated/ui_preferences.h" line="1995"/>
+        <location filename="../src/dialogs/preferences.ui" line="1839"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1858"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1811"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1886"/>
+        <location filename="../src/generated/ui_preferences.h" line="2019"/>
         <source>App</source>
         <translation>App</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1611"/>
-        <location filename="../src/generated/ui_preferences.h" line="1950"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1658"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1611"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1658"/>
+        <location filename="../src/generated/ui_preferences.h" line="1971"/>
         <source>Internet</source>
         <translation>Internet</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="691"/>
+        <location filename="../src/dialogs/preferences.ui" line="480"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="480"/>
         <location filename="../src/generated/ui_preferences.h" line="1887"/>
+        <source>Piece Animation Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="487"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="487"/>
+        <location filename="../src/generated/ui_preferences.h" line="1888"/>
+        <source>ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="691"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="738"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="691"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="738"/>
+        <location filename="../src/generated/ui_preferences.h" line="1908"/>
         <source>Put the initials of the pieces here.</source>
         <translation>Initialen der Figuren eingeben.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="697"/>
-        <location filename="../src/generated/ui_preferences.h" line="1890"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="744"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="697"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="744"/>
+        <location filename="../src/generated/ui_preferences.h" line="1911"/>
         <source>KQRBN</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1041"/>
-        <location filename="../src/generated/ui_preferences.h" line="1906"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1088"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1041"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1088"/>
+        <location filename="../src/generated/ui_preferences.h" line="1927"/>
         <source>Local Databases</source>
         <translation>Lokale Datenbanken</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1054"/>
-        <location filename="../src/generated/ui_preferences.h" line="1908"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1101"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1054"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1101"/>
+        <location filename="../src/generated/ui_preferences.h" line="1929"/>
         <source>Preserve existing ECO Codes</source>
         <translation>Erhalte vorhandene ECO Codes</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1078"/>
-        <location filename="../src/generated/ui_preferences.h" line="1911"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1125"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1078"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1125"/>
+        <location filename="../src/generated/ui_preferences.h" line="1932"/>
         <source>Add source tag when merging files</source>
         <translation>Füge &apos;Source&apos;-Feld hinzu beim Zusammenführen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1085"/>
-        <location filename="../src/generated/ui_preferences.h" line="1912"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1132"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1085"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1132"/>
+        <location filename="../src/generated/ui_preferences.h" line="1933"/>
         <source>PGN: Strict checking of move counter</source>
         <translation>PGN: Strikte Prüfung des Zugzählers</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1180"/>
-        <location filename="../src/generated/ui_preferences.h" line="1918"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1227"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1180"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1227"/>
+        <location filename="../src/generated/ui_preferences.h" line="1939"/>
         <source>Source tag name</source>
         <translation>Source Feld Name</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1245"/>
-        <location filename="../src/generated/ui_preferences.h" line="1924"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1292"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1245"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1292"/>
+        <location filename="../src/generated/ui_preferences.h" line="1945"/>
         <source>Append to file</source>
         <translation>An Datei anhängen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1445"/>
-        <location filename="../src/generated/ui_preferences.h" line="1939"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1492"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1445"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1492"/>
+        <location filename="../src/generated/ui_preferences.h" line="1960"/>
         <source>Show background image</source>
         <translation>Zeige Hintergrundbild</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1505"/>
-        <location filename="../src/generated/ui_preferences.h" line="1943"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1552"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1505"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1552"/>
+        <location filename="../src/generated/ui_preferences.h" line="1964"/>
         <source>Icon Size</source>
         <translation>Icon Größe</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1528"/>
-        <location filename="../src/generated/ui_preferences.h" line="1944"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1575"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1528"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1575"/>
+        <location filename="../src/generated/ui_preferences.h" line="1965"/>
         <source>Tiny</source>
         <translation>Klein</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1560"/>
-        <location filename="../src/generated/ui_preferences.h" line="1945"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1607"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1560"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1607"/>
+        <location filename="../src/generated/ui_preferences.h" line="1966"/>
         <source>Huge</source>
         <translation>Groß</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1621"/>
-        <location filename="../src/generated/ui_preferences.h" line="1951"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1668"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1621"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1668"/>
+        <location filename="../src/generated/ui_preferences.h" line="1972"/>
         <source>Nalimov-6</source>
         <translation>Nalimov-6</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1626"/>
-        <location filename="../src/generated/ui_preferences.h" line="1952"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1673"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1626"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1673"/>
+        <location filename="../src/generated/ui_preferences.h" line="1973"/>
         <source>Syzygy-7</source>
         <translation>Syzygy-7</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1651"/>
-        <location filename="../src/generated/ui_preferences.h" line="1956"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1698"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1651"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1698"/>
+        <location filename="../src/generated/ui_preferences.h" line="1977"/>
         <source>FICS</source>
         <translation>FICS</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1711"/>
-        <location filename="../src/generated/ui_preferences.h" line="1962"/>
+        <location filename="../src/dialogs/preferences.ui" line="1702"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1749"/>
+        <location filename="../src/generated/ui_preferences.h" line="1981"/>
+        <source>Path to timeseal executable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="1735"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1758"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1711"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1782"/>
+        <location filename="../src/generated/ui_preferences.h" line="1985"/>
         <source>Lichess</source>
         <translation>Lichess</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1732"/>
-        <location filename="../src/generated/ui_preferences.h" line="1964"/>
+        <location filename="../src/dialogs/preferences.ui" line="1743"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1790"/>
+        <location filename="../src/generated/ui_preferences.h" line="1986"/>
+        <source>User Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="1760"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1779"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1732"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1807"/>
+        <location filename="../src/generated/ui_preferences.h" line="1988"/>
         <source>Auth Token</source>
         <translation>Authentifizierungs-Token</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1742"/>
-        <location filename="../src/generated/ui_preferences.h" line="1965"/>
+        <location filename="../src/dialogs/preferences.ui" line="1753"/>
+        <location filename="../src/dialogs/preferences.ui" line="1770"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1789"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1742"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1800"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1817"/>
+        <location filename="../src/generated/ui_preferences.h" line="1987"/>
+        <location filename="../src/generated/ui_preferences.h" line="1989"/>
         <source>Optional</source>
         <translation>Optional</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1785"/>
-        <location filename="../src/generated/ui_preferences.h" line="1969"/>
+        <location filename="../src/dialogs/preferences.ui" line="1813"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1832"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1785"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1860"/>
+        <location filename="../src/generated/ui_preferences.h" line="1993"/>
         <source>not required</source>
         <translation>nicht erforderlich</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1754"/>
-        <location filename="../src/generated/ui_preferences.h" line="1966"/>
+        <location filename="../src/dialogs/preferences.ui" line="1782"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1801"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1754"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1829"/>
+        <location filename="../src/generated/ui_preferences.h" line="1990"/>
         <source>chess.com</source>
         <translation>chess.com</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1825"/>
-        <location filename="../src/generated/ui_preferences.h" line="1971"/>
+        <location filename="../src/dialogs/preferences.ui" line="1853"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1872"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1825"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1900"/>
+        <location filename="../src/generated/ui_preferences.h" line="1995"/>
         <source>Language</source>
         <translation>Sprache</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1853"/>
-        <location filename="../src/generated/ui_preferences.h" line="1972"/>
+        <location filename="../src/dialogs/preferences.ui" line="1881"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1900"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1853"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1928"/>
+        <location filename="../src/generated/ui_preferences.h" line="1996"/>
         <source>Changing the language requires restarting the application!</source>
         <translation>Die Änderung der Sprache wird nach einem Neustart wirksam!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1907"/>
-        <location filename="../src/generated/ui_preferences.h" line="1976"/>
+        <location filename="../src/dialogs/preferences.ui" line="1935"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1954"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1907"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1982"/>
+        <location filename="../src/generated/ui_preferences.h" line="2000"/>
         <source>External Tools</source>
         <translation>Externe Tools</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1913"/>
-        <location filename="../src/generated/ui_preferences.h" line="1977"/>
+        <location filename="../src/dialogs/preferences.ui" line="1941"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1960"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1913"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1988"/>
+        <location filename="../src/generated/ui_preferences.h" line="2001"/>
         <source>Parameters</source>
         <translation>Parameter</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1923"/>
-        <location filename="../src/generated/ui_preferences.h" line="1978"/>
+        <location filename="../src/dialogs/preferences.ui" line="1951"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1970"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1923"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1998"/>
+        <location filename="../src/generated/ui_preferences.h" line="2002"/>
         <source>Path</source>
         <translation>Pfad</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1943"/>
-        <location filename="../src/generated/ui_preferences.h" line="1981"/>
+        <location filename="../src/dialogs/preferences.ui" line="1971"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1990"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1943"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="2018"/>
+        <location filename="../src/generated/ui_preferences.h" line="2005"/>
         <source>Path and filename of external program</source>
         <translation>Pfad und Name eines externen Programms</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1950"/>
-        <location filename="../src/generated/ui_preferences.h" line="1982"/>
+        <location filename="../src/dialogs/preferences.ui" line="1978"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1997"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1950"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="2025"/>
+        <location filename="../src/generated/ui_preferences.h" line="2006"/>
         <source>Command line, also $(InputPath), $(InputFile)</source>
         <translation>Kommandozeile, z.B. mit $(InputPath), $(InputFile)</translation>
     </message>
@@ -5597,31 +5991,46 @@ chessx.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="885"/>
-        <location filename="../src/generated/ui_preferences.h" line="1896"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="932"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="885"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="932"/>
+        <location filename="../src/generated/ui_preferences.h" line="1917"/>
         <source>Name:</source>
         <translation>Name:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="855"/>
-        <location filename="../src/generated/ui_preferences.h" line="1893"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="902"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="855"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="902"/>
+        <location filename="../src/generated/ui_preferences.h" line="1914"/>
         <source>Command:</source>
         <translation>Befehl:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="987"/>
-        <location filename="../src/generated/ui_preferences.h" line="1901"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1034"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="987"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1034"/>
+        <location filename="../src/generated/ui_preferences.h" line="1922"/>
         <source>Options:</source>
         <translation>Optionen:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="369"/>
-        <location filename="../src/generated/ui_preferences.h" line="1853"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="111"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="369"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="111"/>
+        <location filename="../src/generated/ui_preferences.h" line="1874"/>
         <source>Highlight current move:</source>
         <translation>Aktuellen Zug hervorheben:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="223"/>
-        <location filename="../src/generated/ui_preferences.h" line="1840"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="351"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="223"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="351"/>
+        <location filename="../src/generated/ui_preferences.h" line="1861"/>
         <source>Mouse Behaviour</source>
         <translation>Maustasten</translation>
     </message>
@@ -5631,25 +6040,37 @@ chessx.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="285"/>
-        <location filename="../src/generated/ui_preferences.h" line="1848"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="413"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="285"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="413"/>
+        <location filename="../src/generated/ui_preferences.h" line="1869"/>
         <source>Wheel sensitivity</source>
         <translation>Mausrad Geschwindigkeit</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="308"/>
-        <location filename="../src/generated/ui_preferences.h" line="1849"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="436"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="308"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="436"/>
+        <location filename="../src/generated/ui_preferences.h" line="1870"/>
         <source>Fast</source>
         <translation>Schnell</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="340"/>
-        <location filename="../src/generated/ui_preferences.h" line="1850"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="468"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="340"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="468"/>
+        <location filename="../src/generated/ui_preferences.h" line="1871"/>
         <source>Slow</source>
         <translation>Langsam</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="389"/>
-        <location filename="../src/generated/ui_preferences.h" line="1855"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="177"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="389"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="177"/>
+        <location filename="../src/generated/ui_preferences.h" line="1876"/>
         <source>Draw Coordinates</source>
         <translation>Zeichne Brettkoordinaten</translation>
     </message>
@@ -5659,19 +6080,28 @@ chessx.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="121"/>
-        <location filename="../src/generated/ui_preferences.h" line="1835"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="238"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="121"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="238"/>
+        <location filename="../src/generated/ui_preferences.h" line="1856"/>
         <source>Colored copies</source>
         <translation>Farbige Kopien</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="396"/>
-        <location filename="../src/generated/ui_preferences.h" line="1856"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="170"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="396"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="170"/>
+        <location filename="../src/generated/ui_preferences.h" line="1877"/>
         <source>No hints in training mode</source>
         <translation>Keine Hinweise im Training</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="501"/>
-        <location filename="../src/generated/ui_preferences.h" line="1879"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="481"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="501"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="481"/>
+        <location filename="../src/generated/ui_preferences.h" line="1900"/>
         <source>Game</source>
         <translation>Partie</translation>
     </message>
@@ -5681,7 +6111,10 @@ chessx.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="529"/>
-        <location filename="../src/generated/ui_preferences.h" line="1872"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="509"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="529"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="509"/>
+        <location filename="../src/generated/ui_preferences.h" line="1893"/>
         <source>Automatically save game and continue with next</source>
         <translation>Automatisch Partie-Änderungen anwenden und fortsetzen</translation>
     </message>
@@ -5691,73 +6124,109 @@ chessx.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="507"/>
-        <location filename="../src/generated/ui_preferences.h" line="1869"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="487"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="507"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="487"/>
+        <location filename="../src/generated/ui_preferences.h" line="1890"/>
         <source>Automatic Promotion</source>
         <translation>Automatische Bauernumwandlung</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="513"/>
-        <location filename="../src/generated/ui_preferences.h" line="1870"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="493"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="513"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="493"/>
+        <location filename="../src/generated/ui_preferences.h" line="1891"/>
         <source>Always queen a pawn</source>
         <translation>Immer in eine Dame verwandeln</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="901"/>
-        <location filename="../src/generated/ui_preferences.h" line="1897"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="948"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="901"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="948"/>
+        <location filename="../src/generated/ui_preferences.h" line="1918"/>
         <source>Path to executable</source>
         <translation>Programmpfad</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="940"/>
-        <location filename="../src/generated/ui_preferences.h" line="1899"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="987"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="940"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="987"/>
+        <location filename="../src/generated/ui_preferences.h" line="1920"/>
         <source>Path where engine is started - usually place of books</source>
         <translation>Verzeichnis, in dem Engine startet - normalerweise der Platz für Eröffnungsbücher</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="954"/>
-        <location filename="../src/generated/ui_preferences.h" line="1900"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1001"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="954"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1001"/>
+        <location filename="../src/generated/ui_preferences.h" line="1921"/>
         <source>Directory:</source>
         <translation>Verzeichnis:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="927"/>
-        <location filename="../src/generated/ui_preferences.h" line="1898"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="974"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="927"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="974"/>
+        <location filename="../src/generated/ui_preferences.h" line="1919"/>
         <source>Protocol:</source>
         <translation>Protokoll:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="997"/>
-        <location filename="../src/generated/ui_preferences.h" line="1902"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1044"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="997"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1044"/>
+        <location filename="../src/generated/ui_preferences.h" line="1923"/>
         <source>Command Line Options</source>
         <translation>Kommandozeilen-Optionen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="871"/>
-        <location filename="../src/generated/ui_preferences.h" line="1894"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="918"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="871"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="918"/>
+        <location filename="../src/generated/ui_preferences.h" line="1915"/>
         <source>Options</source>
         <translation>Optionen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="878"/>
-        <location filename="../src/generated/ui_preferences.h" line="1895"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="925"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="878"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="925"/>
+        <location filename="../src/generated/ui_preferences.h" line="1916"/>
         <source>Arbitrary name to identify engine </source>
         <translation>Bezeichnung </translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1572"/>
-        <location filename="../src/generated/ui_preferences.h" line="1946"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1619"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1572"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1619"/>
+        <location filename="../src/generated/ui_preferences.h" line="1967"/>
         <source>Additional PGN tags</source>
         <translation>Zusätzliche PGN Tags</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1581"/>
-        <location filename="../src/generated/ui_preferences.h" line="1948"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1628"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1581"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1628"/>
+        <location filename="../src/generated/ui_preferences.h" line="1969"/>
         <source>Additional tags, separate with blanks</source>
         <translation>Zusätzliche Tags, getrennt mit Leerzeichen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1965"/>
-        <location filename="../src/generated/ui_preferences.h" line="1983"/>
+        <location filename="../src/dialogs/preferences.ui" line="1993"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="2012"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1965"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="2040"/>
+        <location filename="../src/generated/ui_preferences.h" line="2007"/>
         <source>Sound</source>
         <translation>Ton</translation>
     </message>
@@ -5782,25 +6251,37 @@ chessx.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1047"/>
-        <location filename="../src/generated/ui_preferences.h" line="1907"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1094"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1047"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1094"/>
+        <location filename="../src/generated/ui_preferences.h" line="1928"/>
         <source>Automatic classification with ECO Codes</source>
         <translation>Partien automatisch mit ECO Codes klassifizieren</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1064"/>
-        <location filename="../src/generated/ui_preferences.h" line="1909"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1111"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1064"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1111"/>
+        <location filename="../src/generated/ui_preferences.h" line="1930"/>
         <source>Build index file</source>
         <translation>Indexdatei erstellen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1170"/>
-        <location filename="../src/generated/ui_preferences.h" line="1917"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1217"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1170"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1217"/>
+        <location filename="../src/generated/ui_preferences.h" line="1938"/>
         <source>&amp;Edit PGN files smaller than:</source>
         <translation>&amp;Nur PGN-Dateien kleiner als:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1128"/>
-        <location filename="../src/generated/ui_preferences.h" line="1915"/>
+        <location filename="../src/dialogs/preferences_BASE_87666.ui" line="1175"/>
+        <location filename="../src/dialogs/preferences_LOCAL_87666.ui" line="1128"/>
+        <location filename="../src/dialogs/preferences_REMOTE_87666.ui" line="1175"/>
+        <location filename="../src/generated/ui_preferences.h" line="1936"/>
         <source> MB</source>
         <translation></translation>
     </message>

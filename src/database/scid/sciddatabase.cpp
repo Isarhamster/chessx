@@ -116,7 +116,7 @@ class ScidStorage
 public:
     static std::unique_ptr<ScidStorage> open(QString path, Progress &progress);
 
-    bool readTags(IndexX& dst) const;
+    bool readTags(IndexX& dst, Progress &progress) const;
     bool readTags(IndexX& dst, gamenumT g) const;
     bool readGame(GameX& dst, gamenumT g, bool movesOnly = false) const;
 
@@ -154,11 +154,14 @@ std::unique_ptr<ScidStorage> ScidStorage::open(QString path, Progress &progress)
     return storage;
 }
 
-bool ScidStorage::readTags(IndexX& dst) const
+bool ScidStorage::readTags(IndexX& dst, Progress &progress) const
 {
     gamenumT n = m_index->GetNumGames();
+
     for (gamenumT g = 0; g < n; ++g)
     {
+        progress.report(g, n);
+
         if (!readTags(dst, g))
             return false;
     }
@@ -274,7 +277,11 @@ bool ScidDatabase::open(const QString& filename, bool /*utf8*/)
 
 bool ScidDatabase::parseFile()
 {
-    m_storage->readTags(m_index);
+    auto progressImpl = new ProgressImpl(&m_break);
+    Progress progress(progressImpl);
+
+    connect(progressImpl, SIGNAL(progressValueChanged(int)), this, SIGNAL(progress(int)));
+    m_storage->readTags(m_index, progress);
     return true;
 }
 

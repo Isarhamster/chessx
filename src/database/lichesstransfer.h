@@ -15,6 +15,7 @@ public:
 
     static QString lichessTournamentString(enum LichessTournamentType t);
     static QByteArray sync_request(QNetworkRequest& request , QByteArray postData = "");
+    static QByteArray queryExplorer(const QString& api_call, QString token = "");
     static QByteArray queryData(const QString& api_call, QString token = "");
     static QByteArray postData(const QString& api_call, QUrlQuery postData, QString token = "");
     static QByteArray queryTournaments(enum LichessTournamentType t, QString teamId="", int maxLoad=50);

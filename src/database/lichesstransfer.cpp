@@ -26,6 +26,23 @@ QByteArray LichessTransfer::sync_request( QNetworkRequest& request, QByteArray q
     return reply->readAll();
 }
 
+QByteArray LichessTransfer::queryExplorer(const QString& api_call, QString token)
+{
+    QUrl url;
+    url = api_call;
+    url.setHost("explorer.lichess.org");
+    url.setScheme("https");
+
+    QNetworkRequest request = NetworkHelper::Request(url);
+    if (!token.isEmpty())
+    {
+        QString temp = "Bearer " + token;
+        request.setRawHeader("Authorization", temp.toLocal8Bit());
+        request.setRawHeader("Version", "2.0");
+    }
+    return sync_request( request );
+}
+
 QByteArray LichessTransfer::queryData(const QString& api_call, QString token)
 {
     QUrl url;
@@ -101,5 +118,5 @@ QByteArray LichessTransfer::writeGameToStudy(QString studyid, QString token, QSt
 QByteArray LichessTransfer::queryResults(enum LichessTournamentType t, const QString& tournamentId)
 {
     QString stype = lichessTournamentString(t);
-    return tournamentId.isEmpty() ? QByteArray() : queryData(QString("/api/%1/%2/results").arg(stype).arg(tournamentId));
+    return tournamentId.isEmpty() ? QByteArray() : queryData(QString("/api/%1/%2/results").arg(stype, tournamentId));
 }

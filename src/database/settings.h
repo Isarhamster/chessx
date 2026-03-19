@@ -52,23 +52,24 @@ public:
     /** @return directory where data are stored. */
     QString dataPath();
     /** @return directory where executable sub programs are stored. */
-    QString programDataPath();
+    QString programDataPath() const;
     /** @return path where eco data are stored. */
     QString ecoPath() const;
     /** @return path where gtm data are stored. */
     QString gtmPath() const;
     /** @return directory where preinstalled uci engines are stored. */
-    QString uciPath();
+    QString uciPath() const;
     /** @return directory where preinstalled winboard engines are stored. */
-    QString winboardPath();
+    QString winboardPath() const;
     /** @return directory where common chess data are stored. */
-    QString commonDataPath();
+    QString commonDataPath() const;
     /** @return path of a file in the commonData directory. */
-    QString commonDataFilePath(QString filename);
+    QString commonDataFilePath(QString filename) const;
     /** @return directory where preinstalled timeseal is stored. */
-    QString timesealFilePath();
+    QString timesealDefaultFilePath() const;
+    QString timesealFilePath() const;
     /** @return directory where logging is sent to */
-    QString logPath();
+    QString logPath() const;
 
     /** Write integer list to configuration file. Does it by converting it to QString */
     void setList(const QString& key, QList<int> list);
