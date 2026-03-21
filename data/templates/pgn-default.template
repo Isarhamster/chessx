@@ -12,7 +12,6 @@ MarkupVariationHead=,
 MarkupVariationLine=(,)
 MarkupNag=,
 MarkupAnnotationInline= {,}
-MarkupAnnotationIndent= {,}
 MarkupPreAnnotation= {,}
 MarkupHeaderLine=[,]\n
 MarkupHeaderTagName=,

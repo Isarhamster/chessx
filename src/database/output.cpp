@@ -317,7 +317,14 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         m_dirtyBlack = false;
 
         // *** Markup for the move
-        text += m_startTagMap[MarkupMove].arg(mvno, pno, (m_currentVariationLevel == 0) ? "mainline" : "in-variation");
+        if (m_startTagMap[MarkupMove].contains("%1"))
+        {
+            text += m_startTagMap[MarkupMove].arg(mvno, pno, (m_currentVariationLevel == 0) ? "mainline" : "in-variation");
+        }
+        else
+        {
+            text += m_startTagMap[MarkupMove];
+        }
 
         // *** Write the actual move
         QString mate = m_startTagMap[MarkupMate] + "#" + m_endTagMap[MarkupMate];
@@ -413,10 +420,16 @@ QString Output::writeVariation()
     m_currentVariationLevel++;
 
     m_dirtyBlack = true;
-    QString s = writeMove(PreviousMove);
-
-    text += m_startTagMap[MarkupVariationLine].arg(s);
-    text += s;
+    if (m_startTagMap[MarkupVariationLine].contains("%1"))
+    {
+        QString s = writeMove(PreviousMove);
+        text += m_startTagMap[MarkupVariationLine].arg(s);
+        text += s;
+    }
+    else
+    {
+        text += m_startTagMap[MarkupVariationLine];
+    }
 
     while(!m_game.atLineEnd())
     {

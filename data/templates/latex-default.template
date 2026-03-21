@@ -43,7 +43,6 @@ MarkupMainLine=,
 MarkupVariationHead=\begin{variation},\end{variation}
 MarkupNag=,
 MarkupAnnotationInline=\begin{nochess}{\rm ,}\end{nochess}
-MarkupAnnotationIndent=\begin{nochess}{\rm ,}\end{nochess}
 MarkupPreAnnotation=\begin{nochess}{\rm ,}\end{nochess}
 MarkupHeaderLine=, \\\\
 MarkupHeaderTagName=,

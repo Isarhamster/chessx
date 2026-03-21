@@ -53,7 +53,6 @@ MarkupVariationHead=<span class="variation-inline">(,)</span>\n
 MarkupVariationHead=<span class="variation-inline">(,)</span>\n
 MarkupNag=<span class="nag">,</span>\n
 MarkupAnnotationInline=<span class="comment-inline">,</span>\n
-MarkupAnnotationIndent=<div class="comment-indent">,</div>\n
 MarkupPreAnnotation=<span class="comment-inline">,</span>\n
 MarkupHeaderLine=<span class="headerline">,</span><br>\n
 MarkupHeaderTagName=,
