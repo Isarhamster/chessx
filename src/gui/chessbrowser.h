@@ -71,6 +71,27 @@ private:
     void mergeGame(GameId gameIndex);
 
 private:
+    QAction* m_copyHtml;
+    QAction* m_copyText;
+    QAction* m_uncomment;
+    QAction* m_remove;
+    QAction* m_startComment;
+    QAction* m_gameComment;
+    QAction* m_gameComment2;
+    QAction* m_addComment;
+    QAction* m_removeVariation;
+    QAction* m_promoteVariation;
+    QAction* m_VariationUp;
+    QAction* m_VariationDown;
+    QAction* m_removePrevious;
+    QAction* m_removeNext;
+    QAction* m_addNullMove;
+    QAction* m_addNullMove2;
+    QAction* m_removeNags;
+    QAction* m_enumerateVariations1;
+    QAction* m_enumerateVariations2;
+    QAction* m_copyTextSelection;
+
 
     QMenu *m_gameMenu = nullptr;
     QMenu *m_browserMenu = nullptr;
