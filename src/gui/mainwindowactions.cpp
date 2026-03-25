@@ -1846,10 +1846,17 @@ void MainWindow::slotGameModify(const EditAction& action)
         }
         break;
     case EditAction::CopyHtml:
-        QApplication::clipboard()->setText(m_gameView->getHtml());
+        m_gameView->getHtml([](const QString &html)
+                {
+                    QApplication::clipboard()->setText(html);
+                });
         break;
     case EditAction::CopyText:
-        QApplication::clipboard()->setText(m_gameView->getText());
+        m_gameView->getText([](const QString &text)
+                {
+                    QApplication::clipboard()->setText(text);
+                });
+
         break;
     case EditAction::CopyTextSelection:
         QApplication::clipboard()->setText(m_gameView->getTextSelection());

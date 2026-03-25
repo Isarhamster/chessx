@@ -26,8 +26,6 @@ GameNotationWidget::GameNotationWidget(QWidget* parent)
     connect(m_browser, &ChessBrowser::actionRequested, this, &GameNotationWidget::actionRequested);
     connect(m_browser, &ChessBrowser::queryActiveGame, this, &GameNotationWidget::queryActiveGame);
     connect(m_browser, &ChessBrowser::signalMergeGame, this, &GameNotationWidget::signalMergeGame);
-    connect(m_browser, &ChessBrowser::swipeLeft, this, &GameNotationWidget::swipeLeft);
-    connect(m_browser, &ChessBrowser::swipeRight, this, &GameNotationWidget::swipeRight);
 }
 
 GameNotationWidget::~GameNotationWidget()
@@ -35,18 +33,24 @@ GameNotationWidget::~GameNotationWidget()
     delete m_output;
 }
 
-QString GameNotationWidget::getHtml() const
+void GameNotationWidget::getHtml(
+    std::function<void(const QString&)> callback) const
 {
-    QString html;
-    m_browser->page()->toHtml([&html](const QString &result){ html = result; });
-    return html;
+    m_browser->page()->toHtml(
+        [callback](const QString &html)
+        {
+            callback(html);
+        });
 }
 
-QString GameNotationWidget::getText() const
+void GameNotationWidget::getText(
+    std::function<void(const QString&)> callback) const
 {
-    QString text;
-    m_browser->page()->toPlainText([&text](const QString &result){ text = result; });
-    return text;
+    m_browser->page()->toPlainText(
+        [callback](const QString &result)
+        {
+            callback(result);
+        });
 }
 
 QString GameNotationWidget::getTextSelection() const

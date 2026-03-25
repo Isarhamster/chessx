@@ -21,8 +21,8 @@ public:
     GameNotationWidget(QWidget* parent = nullptr);
     ~GameNotationWidget();
 
-    QString getHtml() const;
-    QString getText() const;
+    void getHtml(std::function<void(const QString&)> callback) const;
+    void getText(std::function<void(const QString&)> callback) const;
     QString getTextSelection() const;
 
     QString generateText(const GameX& game, bool trainingMode);
@@ -43,8 +43,6 @@ signals:
     void actionRequested(const EditAction& action);
     void queryActiveGame(const GameX** game);
     void signalMergeGame(GameId gameIndex, QString source);
-    void swipeRight();
-    void swipeLeft();
 
 private:
     void configureFont();
