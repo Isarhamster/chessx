@@ -50,8 +50,6 @@ signals:
     void actionRequested(const EditAction &action);
     void queryActiveGame(const GameX **game);
     void signalMergeGame(GameId gameIndex, QString source);
-    void swipeRight();
-    void swipeLeft();
 
 protected:
     // Gestures

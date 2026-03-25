@@ -30,7 +30,7 @@ ChessBrowser::ChessBrowser(QWidget *parent)
     setAcceptDrops(true);
 
     // Enable gestures
-    grabGesture(Qt::SwipeGesture);
+    grabGesture(Qt::TapAndHoldGesture);
 
 
     // Context menu
@@ -282,13 +282,16 @@ bool ChessBrowser::event(QEvent *event)
 
 bool ChessBrowser::gestureEvent(QGestureEvent *event)
 {
-    if (auto *gesture = static_cast<QSwipeGesture*>(
-            event->gesture(Qt::SwipeGesture))) {
+    if (QGesture *g = event->gesture(Qt::TapAndHoldGesture))
+    {
+        auto *tap =
+            static_cast<QTapAndHoldGesture*>(g);
 
-        if (gesture->horizontalDirection() == QSwipeGesture::Left)
-            emit swipeLeft();
-        else if (gesture->horizontalDirection() == QSwipeGesture::Right)
-            emit swipeRight();
+        if (tap->state() == Qt::GestureFinished)
+        {
+            QPoint pos = tap->position().toPoint();
+            slotContextMenu(mapFromGlobal(pos));
+        }
 
         return true;
     }
