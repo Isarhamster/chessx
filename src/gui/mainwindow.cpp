@@ -1050,7 +1050,11 @@ void MainWindow::appendDatabaseUrl(QString fname, bool utf8, QString target)
 void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
     QUrl url;
-    if(DatabaseInfo::IsLocalDatabase(fname) || fname == "Clipboard")
+    if (DatabaseInfo::IsRemoteDatabase(fname))
+    {
+        url = QUrl::fromUserInput(fname);
+    }
+    else if(DatabaseInfo::IsLocalDatabase(fname) || fname == "Clipboard")
     {
         url = QUrl::fromLocalFile(fname);
     }
