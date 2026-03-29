@@ -502,9 +502,9 @@ bool DatabaseInfo::IsBook() const
     }
 }
 
-/* static */ bool DatabaseInfo::IsLocalDatabase(QString s)
+/* static */ bool DatabaseInfo::IsLocalDatabase(QString name)
 {
-    QFileInfo fi = QFileInfo(s);
+    QFileInfo fi = QFileInfo(name);
     QString suffix = fi.suffix().toLower();
 
     return ((suffix == "pgn") ||
@@ -512,6 +512,16 @@ bool DatabaseInfo::IsBook() const
             (suffix == "bin") ||
             (suffix == "abk") ||
             (suffix == "ctg"));
+}
+
+/* static */ bool DatabaseInfo::IsRemoteDatabase(QString name)
+{
+    QUrl url(name);
+    if (url.scheme() == "http" || url.scheme() == "https" || url.scheme() == "ftp")
+    {
+        return true;
+    }
+    return false;
 }
 
 /* static */ bool DatabaseInfo::IsLocalArchive(QString s)

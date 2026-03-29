@@ -137,7 +137,7 @@ void DownloadManager::downloadFinished()
         QUrl url = reply->request().url();
         if(reply->error())
         {
-            qDebug() << "Network Error " << reply->errorString();
+            qDebug() << "Network Error " << reply->errorString() << " for " << url.toString();
             emit downloadError(url);
         }
         else

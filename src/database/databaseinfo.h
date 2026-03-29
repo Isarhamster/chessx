@@ -115,6 +115,7 @@ public:
     static QString resolvedPath(const QString &fname);
     static bool IsLocalDatabase(QString name);
     static bool IsLocalArchive(QString name);
+    static bool IsRemoteDatabase(QString name);
 
     bool modified() const;
     bool gameNeedsSaving() const;
