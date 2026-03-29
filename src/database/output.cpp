@@ -51,6 +51,7 @@ Output::Output(OutputType output, BoardRenderingFunc renderer, const QString& pa
     case Latex:
         m_options.createDefaultOptions("");
         break;
+    case PDF:
     case NotationWidget:
         m_options.createDefaultOptions("GameText");
         break;
@@ -858,6 +859,7 @@ void Output::setTemplateFile(QString filename)
         case Latex:
             filename = DEFAULT_LATEX_TEMPLATE;
             break;
+        case PDF:
         case NotationWidget:
             filename = DEFAULT_NOTATION_TEMPLATE;
             break;

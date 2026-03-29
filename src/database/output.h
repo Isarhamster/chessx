@@ -72,7 +72,8 @@ public:
         Pgn, /**< Exports the game in PGN format */
         Latex, /**< Exports the game in Latex format */
         NotationWidget, /**< Exports the game in format appropriate for the notation widget */
-        LocalPgn
+        LocalPgn,
+        PDF
     };
     inline bool isPgnType(OutputType o) const { return ((o==Pgn) || (o==LocalPgn)); }
     inline bool isLocalized(OutputType o) const { return ((o==NotationWidget) || (o==LocalPgn)); }

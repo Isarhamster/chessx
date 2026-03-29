@@ -21,6 +21,12 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 <meta charset="utf-8">
 <style>
 
+@media print {
+    .game {
+        page-break-inside: avoid;
+    }
+}
+</style>
 :root {
   /* LIGHT THEME (default) */
   --bg: #ffffff;
