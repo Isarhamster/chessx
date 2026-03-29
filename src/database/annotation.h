@@ -80,7 +80,7 @@ class EvalAnnotation : public Annotation
 {
 public:
     EvalAnnotation(QString a=QString()) : Annotation(a) {};
-    virtual QRegularExpression filter() const { return QRegularExpression("\\[%(eval)\\s*((-?\\d?\\d(\\.\\d\\d?)?)|#\\d\\d?)\\]"); };
+    virtual QRegularExpression filter() const { return QRegularExpression("\\[%eval\\s*((-?\\d{1,2}(\\.\\d{1,2})?)|#-?\\d{1,2})\\]"); };
     virtual QString asAnnotation() const { return annotation.isEmpty() ? QString() : QString("[%eval %1]").arg(annotation); };
 };
 
