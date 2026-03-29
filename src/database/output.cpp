@@ -478,7 +478,7 @@ QString Output::writeTag(const QString& tagName, const QString& tagValue) const
 QString Output::writeComment(const QString& comment, const QString& mvno, CommentType type)
 {
     QString text;
-    if(comment.isEmpty())
+    if(comment.trimmed().isEmpty())
     {
         return text;
     }
