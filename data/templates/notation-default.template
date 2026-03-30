@@ -26,7 +26,7 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
         page-break-inside: avoid;
     }
 }
-</style>
+
 :root {
   /* LIGHT THEME (default) */
   --bg: #ffffff;
@@ -48,7 +48,7 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 
 /* DARK THEME */
 body.theme-dark {
-  --bg: #1e1e1e;
+  --bg: #2a2a2a;
   --text: #e6e6e6;
   --border: #444;
   --soft-border: #333;
@@ -97,7 +97,6 @@ body {
   transform: rotate(0deg);
 }
 
-
 .variation {
     margin-left: 1.2em;
     padding-left: 0.6em;
@@ -112,7 +111,6 @@ body {
             var(--variation-light)
         );
 }
-
 
 .move.path {
     background: transparent;
@@ -220,60 +218,64 @@ body.view-mainline .variation {
   display: none;
 }
 
+body.view-mainline .black-no {
+  display: none;
+}
+
 </style>
 <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
 </head>
 <body>
-<p class="view-controls">
-    <button data-view="linear">Tree</button>
-    <button data-view="table">Table</button>
-    <button data-view="mainline">Main Line</button>
-    <button id="theme-toggle">Dark</button>
-</p>
+
 <div id="table-view" hidden></div>
 <div id="chess-content">
 [OUTPUTFOOTER]
 </div>
 
 <script>
-let bridge = null;
-
-if (window.qt && qt.webChannelTransport) {
-  new QWebChannel(qt.webChannelTransport, function(channel) {
-    bridge = channel.objects.bridge;
-  });
-}
+  let bridge = null;
+  try {
+    if (window.qt && qt.webChannelTransport) {
+        new QWebChannel(qt.webChannelTransport, function(channel) {
+        bridge = channel.objects.bridge;
+      });
+    }
+  }
+  catch(error)
+  {
+    console.error("Failed to initialize Qt WebChannel:", error);
+  }
 </script>
 <script>
-    function highlightMove(id) {
 
+    function isVisible(el) {
+        return !!(el.offsetParent !== null);
+    }
+
+    function findVisibleMove(id) {
+        const scope =
+            document.body.classList.contains('view-mainline')
+            ? '#chess-content'
+            : 'body';
+
+        return [...document.querySelectorAll(
+            scope + ' .move[data-move-id="' + id + '"]'
+        )].find(isVisible);
+    }
+
+    function highlightMove(id) {
         document.querySelectorAll(".move.active")
             .forEach(m => m.classList.remove("active"));
 
-        const move =
-            document.querySelector('.move[data-move-id="' + id + '"]');
-
+        const move = findVisibleMove(id);
         if (!move) return;
 
         move.classList.add("active");
-        move.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
 
-    function highlightPath(moveId) {
-        document.querySelectorAll('.move.path').forEach(e => e.classList.remove('path'));
-        if (document.body.classList.contains('view-linear'))
-        {
-            let current = document.querySelector('.move[data-move-id="' + moveId + '"]');
-            while (current) {
-                if (current.dataset.moveId != moveId) current.classList.add('path');
-
-                const parentId = current.dataset.parentId;
-                if (!parentId || parentId === "-1")
-                    break;
-
-                current = document.querySelector('.move[data-move-id="' + parentId + '"]');
-            }
-        }
+        move.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
     }
 
     document.addEventListener("click", e => {
@@ -380,14 +382,6 @@ if (window.qt && qt.webChannelTransport) {
       return td;
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.view-controls button').forEach(btn => {
-        btn.addEventListener('click', () => {
-          setView(btn.dataset.view);
-        });
-      });
-    });
-
     function colorVariationsRainbow() {
         document.querySelectorAll('.variation').forEach(v => {
 
@@ -410,19 +404,6 @@ if (window.qt && qt.webChannelTransport) {
     }
 
     document.addEventListener("DOMContentLoaded", colorVariationsRainbow);
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const btn = document.getElementById('theme-toggle');
-
-      btn.addEventListener('click', () => {
-        document.body.classList.toggle('theme-dark');
-
-        btn.textContent =
-          document.body.classList.contains('theme-dark')
-            ? 'Light'
-            : 'Dark';
-      });
-    });
 </script>
 
 </body>
@@ -436,3 +417,5 @@ MarkupVariationLine=<div class="variation-head"><span class="toggle"></span><spa
 MarkupNag=<span class="nag">,</span>\n
 MarkupAnnotationInline=<span class="comment" data-move-id="%1">,</span>\n
 MarkupPreAnnotation=<span class="precomment" data-move-id="%1">,</span>\n
+MarkupWhiteNo=<span class="white-no">,</span>
+MarkupBlackNo=<span class="black-no">,</span>

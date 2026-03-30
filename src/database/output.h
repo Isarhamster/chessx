@@ -63,7 +63,9 @@ public:
         MarkupSiteTag,
         MarkupResultTag,
         MarkupRoundTag,
-        MarkupMate
+        MarkupMate,
+        MarkupWhiteNo,
+        MarkupBlackNo
     };
     /** The supported output types */
     enum OutputType

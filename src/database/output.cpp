@@ -178,6 +178,8 @@ void Output::readTemplateFile(const QString& path)
                     s_tagNames["MarkupResultTag"] = MarkupResultTag;
                     s_tagNames["MarkupRoundTag"] = MarkupRoundTag;
                     s_tagNames["MarkupMate"] = MarkupMate;
+                    s_tagNames["MarkupWhiteNo"] = MarkupWhiteNo;
+                    s_tagNames["MarkupBlackNo"] = MarkupBlackNo;
                 }
 
                 const auto name = line.mid(0, line.indexOf('='));
@@ -309,11 +311,15 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         }
         if(c == White)
         {
+            text += m_startTagMap[MarkupWhiteNo];
             text += QString::number(m_game.moveNumber(moveId)) + ".";
+            text += m_endTagMap[MarkupWhiteNo];
         }
         else if(m_dirtyBlack)
         {
+            text += m_startTagMap[MarkupBlackNo];
             text += QString::number(m_game.moveNumber(moveId)) + "...";
+            text += m_endTagMap[MarkupBlackNo];
         }
         m_dirtyBlack = false;
 
