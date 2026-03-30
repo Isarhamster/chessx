@@ -24,8 +24,14 @@ class Style : public QProxyStyle {
   void loadStyle(QApplication *app);
   void modifyPalette(QPalette& palette);
 
+  static bool isDarkTheme;
+
  private:
+  bool isDark() const;
   QStyle *styleBase();
+
 };
+
+
 
 #endif // STYLE_H

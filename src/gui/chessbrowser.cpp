@@ -11,6 +11,7 @@
 #include "chessbrowser.h"
 #include "chessbrowserpage.h"
 #include "GameMimeData.h"
+#include "style.h"
 
 #include <QWebChannel>
 #include <QWebEnginePage>
@@ -23,6 +24,8 @@
 #else
 #include <QWebEngineContextMenuData>
 #endif
+
+static const char* modeClass[] = { "'linear'", "'table'", "'mainline'" };
 
 ChessBrowser::ChessBrowser(QWidget *parent)
     : QWebEngineView(parent)
@@ -60,6 +63,10 @@ ChessBrowser::ChessBrowser(QWidget *parent)
 
 void ChessBrowser::loadAtMove(QString html, int moveId)
 {
+    if (Style::isDarkTheme)
+    {
+        html.replace("<body>", "<body class='theme-dark'>");
+    }
     handler->htmlData = html.toUtf8();
 
     connect(page(), &QWebEnginePage::loadFinished,
@@ -71,6 +78,11 @@ void ChessBrowser::loadAtMove(QString html, int moveId)
     page()->load(QUrl("mem://page"));
 }
 
+void ChessBrowser::toggleMode()
+{
+    m_mode = (m_mode+1)%3;
+    page()->runJavaScript(QString("if (window.setView) setView(%1);").arg(modeClass[m_mode]));
+}
 
 void ChessBrowser::selectMove(int id)
 {
@@ -82,9 +94,8 @@ void ChessBrowser::showMove(int id)
 {
     m_currentMove = id;
     // Check necessary in case no game is loaded (yet)
+    page()->runJavaScript(QString("if (window.setView) setView(%1);").arg(modeClass[m_mode]));
     page()->runJavaScript(QString("if (window.highlightMove) highlightMove(%1);").arg(id));
-    page()->runJavaScript(QString("if (window.highlightPath) highlightPath(%1);").arg(id));
-    //page()->runJavaScript(QString("document.body.classList.toggle(\"table-mainline\");"));
 }
 
 void ChessBrowser::setupMenu()

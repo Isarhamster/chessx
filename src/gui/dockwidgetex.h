@@ -5,9 +5,9 @@
 #ifndef DOCKWIDGETEX_H
 #define DOCKWIDGETEX_H
 
-#include <QDockWidget>
+#include "advanceddockwidget.h"
 
-class DockWidgetEx : public QDockWidget
+class DockWidgetEx : public AdvancedDockWidget
 {
     Q_OBJECT
 public:

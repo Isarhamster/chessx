@@ -36,6 +36,7 @@
 #include "gamenotationwidget.h"
 #include "helpbrowsershell.h"
 #include "historylabel.h"
+#include "IDockTitleBarExtension.h"
 #include "kbaction.h"
 #include "lichessopeningdatabase.h"
 #include "loadquery.h"
@@ -79,6 +80,51 @@
 #include <QTimer>
 #include <QToolBar>
 #include "qt6compat.h"
+
+class GameWidgetExtension : public IDockTitleBarExtension
+{
+public:
+    QList<QToolButton*> createButtons(QDockWidget *dock) override
+    {
+        QList<QToolButton*> buttons;
+
+        auto *b = new QToolButton;
+        b->setAutoRaise(true);
+        b->setIcon(dock->style()->standardIcon(QStyle::SP_FileDialogDetailedView));
+
+        QObject::connect(b, &QToolButton::clicked,
+                         [dock,b]{
+                            GameWindow *w = dynamic_cast<GameWindow*>(dock->widget());
+                            if (w) w->browser()->toggleMode();
+                            QColor c = dock->palette().color(QPalette::Dark);
+                            switch (w->browser()->mode())
+                            {
+                            case 0:
+                                c = c.darker(130);
+                                break;
+                            case 2:
+                                c = c.lighter(130);
+                                break;
+                            }
+                            QColor hover = c.lighter(115); // 115% brightness
+
+                            b->setStyleSheet(QString(
+                                                 "QToolButton {"
+                                                 " background-color: %1;"
+                                                 " border-radius: 3px;"
+                                                 " padding: 1px;"
+                                                 "}"
+                                                 "QToolButton:hover {"
+                                                 " background-color: %2;"
+                                                 "}"
+                                                 ).arg(c.name(QColor::HexRgb),
+                                                      hover.name(QColor::HexRgb)));
+                         });
+
+        buttons << b;
+        return buttons;
+    }
+};
 
 template< typename T, std::size_t N >
 inline constexpr std::size_t sizeofArray( const T(&)[N] ) noexcept { return N; }
@@ -192,6 +238,7 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Game view */
     DockWidgetEx* gameTextDock = new DockWidgetEx(tr("Notation"), this);
     gameTextDock->setObjectName("GameTextDock");
+    gameTextDock->addTitleBarExtension(new GameWidgetExtension);
 
     m_gameWindow = new GameWindow(gameTextDock);
     connect(this, SIGNAL(reconfigure()), m_gameWindow, SLOT(slotReconfigure()));

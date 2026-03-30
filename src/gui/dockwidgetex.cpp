@@ -3,6 +3,7 @@
 ****************************************************************************/
 
 #include "dockwidgetex.h"
+#include "advanceddockwidget.h"
 #include <QAction>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -11,7 +12,7 @@
 #endif // _MSC_VER
 
 DockWidgetEx::DockWidgetEx(const QString &title, QWidget *parent, Qt::WindowFlags flags) :
-    QDockWidget(title, parent, flags)
+    AdvancedDockWidget(title, parent, flags)
 {
 }
 

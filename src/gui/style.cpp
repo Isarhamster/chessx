@@ -20,6 +20,8 @@
 
 #include "style.h"
 
+bool Style::isDarkTheme = false;
+
 Style::Style() : Style(styleBase()) {}
 
 Style::Style(QStyle *style) : QProxyStyle(style) {}
@@ -44,17 +46,24 @@ QStyle *Style::styleBase()
     return base;
 }
 
+bool Style::isDark() const
+{
+#if QT_VERSION >= 0x060500
+    bool dark = QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark;
+#else
+    bool dark = false;
+#endif
+    dark = dark || AppSettings->getValue("/MainWindow/DarkTheme").toBool();
+    return dark;
+}
+
 QStyle *Style::baseStyle() { return styleBase(); }
 
 void Style::modifyPalette(QPalette& palette)
 {
-#if QT_VERSION >= 0x060500
-    bool isDark = QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark;
-#else
-    bool isDark = false;
-#endif
-    if (AppSettings->getValue("/MainWindow/DarkTheme").toBool() || isDark)
+    if (isDark())
     {
+        isDarkTheme = true;
         palette.setColor(QPalette::Window,QColor(53,53,53));
         palette.setColor(QPalette::WindowText,Qt::white);
         palette.setColor(QPalette::Disabled,QPalette::WindowText,QColor(127,127,127));

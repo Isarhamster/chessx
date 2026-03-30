@@ -27,6 +27,7 @@ public:
 
     QString generateText(const GameX& game, bool trainingMode);
     void reload(const GameX& game, bool trainingMode);
+    int mode();
 
     QMap<Nag, QAction*> nagActions() const;
 
@@ -37,6 +38,8 @@ public slots:
     void slotReconfigure();
     /** Scroll to show given mode. */
     void showMove(int id);
+    /** Toggle through modes once */
+    void toggleMode();
 
 signals:
     void anchorClicked(const QUrl& url);

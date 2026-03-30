@@ -105,6 +105,16 @@ void GameNotationWidget::showMove(int id)
     m_browser->showMove(id);
 }
 
+void GameNotationWidget::toggleMode()
+{
+    m_browser->toggleMode();
+}
+
+int GameNotationWidget::mode()
+{
+    return m_browser->mode();
+}
+
 void GameNotationWidget::configureFont()
 {
     QFont f = qApp->font();

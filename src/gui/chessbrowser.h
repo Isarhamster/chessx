@@ -38,9 +38,11 @@ public:
     QMap<QAction*, EditAction> m_actions;
 
     void loadAtMove(QString html, int moveId);
+    int mode() { return m_mode; };
 
 public slots:
     void showMove(int id);
+    void toggleMode();
     void selectMove(int id);
     void slotAction(QAction *action);
     void slotContextMenu(const QPoint &pos);
@@ -96,6 +98,7 @@ private:
     QMenu *m_mainMenu = nullptr;
 
     int m_currentMove = -1;
+    int m_mode = 0;
     MemoryHandler *handler;
 };
 
