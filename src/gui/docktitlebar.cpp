@@ -59,7 +59,7 @@ void DockTitleBar::setHoverVisible(bool v)
             b->graphicsEffect());
 
         if (eff)
-            eff->setOpacity(v ? 1.0 : 0.0);
+            eff->setOpacity(v ? 1.0 : 0.5);
     }
 }
 
@@ -77,6 +77,11 @@ void DockTitleBar::addExtension(IDockTitleBarExtension *ext)
         b->setFocusPolicy(Qt::NoFocus);
 
         mLayout->insertWidget(mLayout->count()-2, b);
+
+        QGraphicsOpacityEffect *effect = new QGraphicsOpacityEffect(this);
+        effect->setOpacity(0.5);
+        b->setGraphicsEffect(effect);
+
         mHoverButtons << b;
     }
  }
@@ -107,14 +112,12 @@ void DockTitleBar::addDefaultButtons()
 
 void DockTitleBar::enterEvent(QEnterEvent *)
 {
-    for (auto *b : mHoverButtons)
-        b->show();
+    setHoverVisible(true);
 }
 
 void DockTitleBar::leaveEvent(QEvent *)
 {
-    for (auto *b : mHoverButtons)
-        b->hide();
+    setHoverVisible(false);
 }
 
 void DockTitleBar::mousePressEvent(QMouseEvent *e)

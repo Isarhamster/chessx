@@ -274,6 +274,8 @@ HEADERS += src/database/board.h \
   src/guess/guess_sqmove.h \
   src/guess/guess_sqset.h \
   src/gui/GameMimeData.h \
+  src/gui/IDockTitleBarExtension.h \
+  src/gui/advanceddockwidget.h \
   src/gui/analysiswidget.h \
   src/gui/annotationtimeedit.h \
   src/gui/annotationwidget.h \
@@ -291,6 +293,7 @@ HEADERS += src/database/board.h \
   src/gui/databaselist.h \
   src/gui/databaselistmodel.h \
   src/gui/digitalclock.h \
+  src/gui/docktitlebar.h \
   src/gui/dockwidgetex.h \
   src/gui/ecolistwidget.h \
   src/gui/ecothread.h \
@@ -447,6 +450,7 @@ SOURCES += \
   src/guess/guess_movelist.cpp \
   src/guess/guess_position.cpp \
   src/guess/guess_recog.cpp \
+  src/gui/advanceddockwidget.cpp \
   src/gui/analysiswidget.cpp \
   src/gui/annotationtimeedit.cpp \
   src/gui/annotationwidget.cpp \
@@ -464,6 +468,7 @@ SOURCES += \
   src/gui/databaselist.cpp \
   src/gui/databaselistmodel.cpp \
   src/gui/digitalclock.cpp \
+  src/gui/docktitlebar.cpp \
   src/gui/dockwidgetex.cpp \
   src/gui/ecolistwidget.cpp \
   src/gui/engineoptiondialog.cpp \
