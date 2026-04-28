@@ -494,28 +494,50 @@ void AnalysisWidget::sendBookMoveTimeout()
 
 void AnalysisWidget::slotLinkClicked(const QUrl& url)
 {
-    if (m_NextBoard != m_board)
-    {
-        return; // Pinned and user moved somewhere else
+    if (m_NextBoard != m_board) 
+    { 
+        return; 
     }
-    int mpv = url.toString().toInt() - 1;
-    if(mpv >= 0 && mpv < m_analyses.count())
+
+    QString linkData = url.toString();
+
+    if (linkData.startsWith("all:")) 
     {
-        emit addVariation(m_analyses[mpv], "");
-    }
-    else if(mpv == -1)
-    {
-        emit addVariation(m_tablebaseMove);
-    }
-    else
-    {
-        mpv = (-mpv) - 2;
-        if(mpv < m_analyses.count())
+        int lineIdx = linkData.mid(4).toInt();
+        if(lineIdx >= 0 && lineIdx < m_analyses.count())
         {
-            if (!m_analyses[mpv].variation().isEmpty())
+            emit addVariation(m_analyses[lineIdx], "");
+        }
+    }
+    else if (linkData.startsWith("first:")) 
+    {
+        int lineIdx = linkData.mid(6).toInt();
+        if(lineIdx >= 0 && lineIdx < m_analyses.count())
+        {
+            if (!m_analyses[lineIdx].variation().isEmpty())
             {
-                emit addVariation(m_analyses[mpv].variation().at(0).toAlgebraic());
+                emit addVariation(m_analyses[lineIdx].variation().at(0).toAlgebraic());
             }
+        }
+    }
+    else if (linkData.contains(',')) 
+    {
+        QStringList parts = linkData.split(',');
+        int lineIdx = parts[0].toInt();
+        int moveIdx = parts[1].toInt();
+
+        if (lineIdx >= 0 && lineIdx < m_analyses.count()) 
+        {
+            Analysis a = m_analyses[lineIdx];
+            Move::List moves = a.variation();
+            Move::List truncatedMoves;
+            for (int i = 0; i <= moveIdx && i < moves.count(); ++i) 
+            {
+                truncatedMoves.append(moves[i]);
+            }
+            Analysis truncatedAnalysis = a;
+            truncatedAnalysis.setVariation(truncatedMoves);
+            emit addVariation(truncatedAnalysis, "");
         }
     }
 }
@@ -702,15 +724,62 @@ void AnalysisWidget::updateAnalysis()
         unsigned int moveNr = m_board.moveNumber();
         text = tr("Analysis pinned to move %1").arg(moveNr) + "<br>";
     }
+
+    int lineIdx = 0;
     foreach(Analysis a, m_analyses)
     {
-        QString s = a.toString(m_board, m_hideLines);
-        if (!s.isEmpty()) text.append(s + "<br>");
+        if (m_hideLines) 
+        {
+            QString s = a.toString(m_board, m_hideLines);
+            if (!s.isEmpty()) text.append(s + "<br>");
+        }
+        else 
+        {
+            QString s;
+            Move::List moves = a.variation();
+            if (!moves.isEmpty()) 
+            {
+                double scoreVal = a.score() / 100.0;
+                QString scoreStr = (a.score() > 0 ? "+" : "") + QString::number(scoreVal, 'f', 2);
+                if (a.isMate()) scoreStr = "#" + QString::number(a.score());
+
+                s += QString("<a href=\"first:%1\" title=\"%2\">[+]</a> ").arg(lineIdx).arg(tr("Add first move"));
+                s += QString("<b>%1</b> <a href=\"all:%2\">*</a> ").arg(scoreStr).arg(lineIdx);
+                
+                BoardX tempBoard = m_board;
+                for(int i = 0; i < moves.count(); ++i) 
+                {
+                    QString rawMove = tempBoard.moveToSan(moves[i]); 
+
+                    QString formattedMove;
+                    if (tempBoard.toMove() == White) 
+                    {
+                        formattedMove = QString("%1. %2").arg(tempBoard.moveNumber()).arg(rawMove);
+                    } 
+                    else if (i == 0) 
+                    {
+                        formattedMove = QString("%1... %2").arg(tempBoard.moveNumber()).arg(rawMove);
+                    } 
+                    else 
+                    {
+                        formattedMove = rawMove; 
+                    }
+
+                    s += QString("<a href=\"%1,%2\">%3</a> ").arg(lineIdx).arg(i).arg(formattedMove);
+                    
+                    tempBoard.doMove(moves[i]);
+                }
+                text.append(s + "<br>");
+            }
+        }
+        lineIdx++;
     }
+
     if(!m_tablebaseEvaluation.isEmpty())
     {
         text.append(QString("<a href=\"0\" title=\"%1\">[+]</a> <b>%2:</b> ").arg(tr("Click to add move to game"), tr("Tablebase")) + m_tablebaseEvaluation);
     }
+    
     if (m_lastDepthAdded == 17)
     {
         text.append(QString("<br><b>%1:</b> %2/%3<br>").arg(tr("Complexity")).arg(m_complexity).arg(m_complexity2));
