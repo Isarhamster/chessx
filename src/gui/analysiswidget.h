@@ -17,10 +17,7 @@
 #include <QElapsedTimer>
 #include <QObject>
 #include <QPointer>
-
-/** @ingroup GUI
-	The Analysis widget which shows engine output
-*/
+#include <QShortcut>
 
 class Tablebase;
 class Database;
@@ -32,77 +29,47 @@ public:
     AnalysisWidget(QWidget* parent);
     ~AnalysisWidget();
 
-    /** Get the main line */
     Analysis getMainLine() const;
-    /** Analysis has a main line */
     bool hasMainLine() const;
-    /** Get the name of this widget */
     QString displayName() const;
-    /** Unpin the analyis (if pinned) */
     void unPin();
-    /** Is any engine running. */
     bool isEngineRunning() const;
-    /** Is any engine configured. */
     bool isEngineConfigured() const;
-
     bool onHold() const;
     void setOnHold(bool onHold);
-
     QString engineName() const;
     void updateBookFile(Database*);
-
     void clear();
 
 public slots:
-    /** Sets new position. If analysis is active, the current content will be cleared and
-    new analysis will be performed. */
     void setPosition(const BoardX& board, QString line="");
-    /** Called when configuration was changed (either on startup or from Preferences dialog. */
     void slotReconfigure();
-    /** Store current configuration. */
     void saveConfig();
-    /** Start currently selected engine. */
     void startEngine();
-    /** Stop any running  engine. */
     void stopEngine();
-    /** Stop game analysis when analysis dock is hidden. */
     void slotVisibilityChanged(bool);
-    /** Change the movetime of the engine */
     void setMoveTime(EngineParameter mt);
-    /** Change the movetime of the engine */
     void setMoveTime(int);
-    /** Change the search depth of the engine */
     void setDepth(int n);
-    /** Must send ucinewgame next time */
     void slotUciNewGame(const BoardX& b);
-    /** Called when the list of databases changes */
     void slotUpdateBooks(QStringList);
-    /** Called upon entering or leaving game mode */
     void setGameMode(bool);
-    /** Restore Book settings */
     void restoreBook();
+
 private slots:
-    /** Stop if analysis is no longer visible. */
     void toggleAnalysis();
     void slotSelectEngine();
-    /** Displays given analysis received from an engine. */
     void showAnalysis(Analysis analysis);
-    /** The engine is now ready, as requested */
     void engineActivated();
-    /** The engine is now deactivated */
     void engineDeactivated();
-    /** There was an error while running engine. */
     void engineError(QProcess::ProcessError);
-    /** Add variation. */
     void slotLinkClicked(const QUrl& link);
-    /** Number of visible lines was changed. */
     void slotMpvChanged(int mpv);
-    /** Show tablebase move information. */
     void showTablebaseMove(QList<Move> move, int score);
-    /** The pin button was pressed or released */
     void slotPinChanged(bool);
     bool hideLines() const;
     void setHideLines(bool newHideLines);
+    void slotSpacebarPressed();
 
 signals:
     void addVariation(const Analysis& analysis, const QString&);
@@ -115,14 +82,11 @@ signals:
 protected slots:
     void bookActivated(int);
     void sendBookMoveTimeout();
-
     void showContextMenu(const QPoint &pt);
+
 private:
-    /** Should analysis be running. */
     bool isAnalysisEnabled() const;
-    /** Update analysis. */
     void updateAnalysis();
-    /** Update complexity. */
     void updateComplexity();
     void updateBookMoves();
     bool sendBookMove();
@@ -157,7 +121,7 @@ private:
 
     bool m_gameMode;
     bool m_hideLines;
- };
+};
 
-#endif // ANALYSIS_WIDGET_H_INCLUDED
+#endif
 
