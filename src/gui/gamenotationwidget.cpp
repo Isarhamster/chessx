@@ -115,6 +115,11 @@ int GameNotationWidget::mode()
     return m_browser->mode();
 }
 
+const char* GameNotationWidget::modeHint()
+{
+    return m_browser->modeHint();
+}
+
 void GameNotationWidget::configureFont()
 {
     QFont f = qApp->font();

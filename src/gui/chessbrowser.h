@@ -39,6 +39,7 @@ public:
 
     void loadAtMove(QString html, int moveId);
     int mode() { return m_mode; };
+    const char* modeHint() { return modeClass[m_mode]; };
 
 public slots:
     void showMove(int id);
@@ -100,6 +101,7 @@ private:
     int m_currentMove = -1;
     int m_mode = 0;
     MemoryHandler *handler;
+    static const char* modeClass[];
 };
 
 #endif // CHESSBROWSER_H

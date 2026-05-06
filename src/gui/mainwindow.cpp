@@ -95,20 +95,14 @@ public:
         QObject::connect(b, &QToolButton::clicked,
                          [dock,b]{
                             GameWindow *w = dynamic_cast<GameWindow*>(dock->widget());
-                            if (w) w->browser()->toggleMode();
-                            QColor c = dock->palette().color(QPalette::Dark);
-                            switch (w->browser()->mode())
-                            {
-                            case 0:
-                                c = c.darker(130);
-                                break;
-                            case 2:
-                                c = c.lighter(130);
-                                break;
-                            }
-                            QColor hover = c.lighter(115); // 115% brightness
+                            if (w) {
+                                w->browser()->toggleMode();
+                                QColor c = dock->palette().color(QPalette::Dark);
+                                b->setToolTip(w->browser()->modeHint());
 
-                            b->setStyleSheet(QString(
+                                QColor hover = c.lighter(115); // 115% brightness
+
+                                b->setStyleSheet(QString(
                                                  "QToolButton {"
                                                  " background-color: %1;"
                                                  " border-radius: 3px;"
@@ -119,6 +113,7 @@ public:
                                                  "}"
                                                  ).arg(c.name(QColor::HexRgb),
                                                       hover.name(QColor::HexRgb)));
+                            }
                          });
 
         buttons << b;

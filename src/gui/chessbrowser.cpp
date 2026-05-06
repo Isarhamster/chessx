@@ -18,6 +18,7 @@
 #include <QWebEngineProfile>
 #include <QWebEngineSettings>
 #include <QtCore/qstringview.h>
+#include <QtWidgets/qtoolbutton.h>
 
 #if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
 #include <QWebEngineContextMenuRequest>
@@ -25,7 +26,8 @@
 #include <QWebEngineContextMenuData>
 #endif
 
-static const char* modeClass[] = { "'linear'", "'table'", "'mainline'" };
+const char* ChessBrowser::modeClass[] = { "'linear'", "'table'", "'mainline'", "'training'" };
+#define NUM_ELEMENTS(a) (sizeof(a) / sizeof(a[0]))
 
 ChessBrowser::ChessBrowser(QWidget *parent)
     : QWebEngineView(parent)
@@ -80,8 +82,11 @@ void ChessBrowser::loadAtMove(QString html, int moveId)
 
 void ChessBrowser::toggleMode()
 {
-    m_mode = (m_mode+1)%3;
-    page()->runJavaScript(QString("if (window.setView) setView(%1);").arg(modeClass[m_mode]));
+    m_mode = (m_mode+1)%(NUM_ELEMENTS(modeClass));
+    showMove(m_currentMove); // This switches into the new mode as well
+    QToolButton* b = qobject_cast<QToolButton*>(sender());
+    if (b)
+        b->setToolTip(modeClass[m_mode]);
 }
 
 void ChessBrowser::selectMove(int id)

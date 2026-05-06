@@ -28,6 +28,7 @@ public:
     QString generateText(const GameX& game, bool trainingMode);
     void reload(const GameX& game, bool trainingMode);
     int mode();
+    const char* modeHint();
 
     QMap<Nag, QAction*> nagActions() const;
 
