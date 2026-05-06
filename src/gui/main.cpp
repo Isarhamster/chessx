@@ -114,6 +114,10 @@ prevHook = _CrtSetReportHook(customReportHook);
     scheme.setSyntax(QWebEngineUrlScheme::Syntax::Path);
     QWebEngineUrlScheme::registerScheme(scheme);
 
+    QLoggingCategory::setFilterRules(
+        "qt.webenginecontext.*=false"
+        );
+
     QApplication app(argc, argv);
 
     QApplication::setFont(QMessageBox().font()); // Workaround for severe bug in Qt5
