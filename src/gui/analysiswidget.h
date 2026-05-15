@@ -1,10 +1,10 @@
 /***************************************************************************
- *   (C) 2008-2010 Michal Rudolf <mrudolf@kdewebdev.org>                   *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ * (C) 2008-2010 Michal Rudolf <mrudolf@kdewebdev.org>                   *
+ * *
+ * This program is free software; you can redistribute it and/or modify  *
+ * it under the terms of the GNU General Public License as published by  *
+ * the Free Software Foundation; either version 2 of the License, or     *
+ * (at your option) any later version.                                   *
  ***************************************************************************/
 
 #ifndef ANALYSIS_WIDGET_H_INCLUDED
@@ -18,6 +18,10 @@
 #include <QObject>
 #include <QPointer>
 #include <QShortcut>
+
+/** @ingroup GUI
+    The Analysis widget which shows engine output
+*/
 
 class Tablebase;
 class Database;
@@ -69,6 +73,8 @@ private slots:
     void slotPinChanged(bool);
     bool hideLines() const;
     void setHideLines(bool newHideLines);
+    
+    /** Handle the Spacebar shortcut */
     void slotSpacebarPressed();
 
 signals:
@@ -123,5 +129,4 @@ private:
     bool m_hideLines;
 };
 
-#endif
-
+#endif // ANALYSIS_WIDGET_H_INCLUDED
