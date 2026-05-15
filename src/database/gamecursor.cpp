@@ -576,6 +576,10 @@ void GameCursor::truncateUpto(MoveId moveId, QList<MoveId>* removed)
     m_nodes[m_currentNode].previousNode = 0;
     backward();
     m_startingBoard = *m_currentBoard;
+
+    // FIX: Ensure the new starting position resets move numbers to 1
+    m_startingBoard.setMoveNumber(1);
+
     // TODO: looks like restoring is redundant
     moveToId(save);
 }
