@@ -576,6 +576,7 @@ ios {
 }
 
 macx {
+  QMAKE_APPLE_DEVICE_ARCHS = x86_64 arm64
   INSTALLATION_DATA.files = mac_osx/qt_menu.nib
   INSTALLATION_DATA.path = Contents/Resources/
   QMAKE_BUNDLE_DATA += INSTALLATION_DATA
