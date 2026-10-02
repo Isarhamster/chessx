@@ -35,7 +35,6 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
   --soft-border: #ddd;
   --table-header: #f5f5f5;
   --move-active: #ffd966;
-  --move-path: #4a90e2;
   --comment: #666;
   --table-move: #666;
   --variation-sat: 80%;
@@ -54,7 +53,6 @@ body.theme-dark {
   --soft-border: #333;
   --table-header: #2a2a2a;
   --move-active: #b59b2a;
-  --move-path: #6aa9ff;
   --comment: #aaa;
   --table-move: #aaa;
   --variation-sat: 35%;
@@ -110,13 +108,6 @@ body {
             var(--variation-sat),
             var(--variation-light)
         );
-}
-
-.move.path {
-    background: transparent;
-    border-radius: 3px;
-    box-shadow: inset 0 -2px 0 #4a90e2;
-    transition: box-shadow 0.12s;
 }
 
 .move.active {
@@ -222,6 +213,30 @@ body.view-mainline .black-no {
   display: none;
 }
 
+/* ================= TRAINING VIEW ================= */
+
+body.view-training .move.hidden-forward {
+    display: none;
+}
+
+.training-marker {
+    font-weight: bold;
+    color: var(--move-active);
+    margin-left: 0.3em;
+}
+
+body.view-training .training-marker {
+    display: inline !important;
+}
+
+/* hide numbers after active */
+body.view-training .move.active ~ .white-no,
+body.view-training .move.active ~ .black-no,
+body.view-training .move.active ~ .variation,
+body.view-training .move.active ~ .move {
+    display: none;
+}
+
 </style>
 <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
 </head>
@@ -248,43 +263,66 @@ body.view-mainline .black-no {
 </script>
 <script>
 
-    function isVisible(el) {
-        return !!(el.offsetParent !== null);
-    }
+    function findMove(id) {
+        const scope = document.body.classList.contains('view-table')
+            ? document.getElementById('table-view')
+            : document.getElementById('chess-content');
 
-    function findVisibleMove(id) {
-        const scope =
-            document.body.classList.contains('view-mainline')
-            ? '#chess-content'
-            : 'body';
+        if (!scope) return null;
 
-        return [...document.querySelectorAll(
-            scope + ' .move[data-move-id="' + id + '"]'
-        )].find(isVisible);
+        return scope.querySelector(
+            `.move[data-move-id="${id}"]`
+        );
     }
 
     function highlightMove(id) {
         document.querySelectorAll(".move.active")
             .forEach(m => m.classList.remove("active"));
 
-        const move = findVisibleMove(id);
+        document.querySelectorAll(".hidden-forward")
+            .forEach(m => m.classList.remove("hidden-forward"));
+
+        const move = findMove(id);
         if (!move) return;
 
         move.classList.add("active");
+        placeTrainingMarker();
 
         move.scrollIntoView({
             behavior: "smooth",
-            block: "center"
+            block: "nearest",
+            inline: "nearest"
         });
+    }
+
+    function placeTrainingMarker() {
+        document.querySelectorAll('.training-marker')
+            .forEach(e => e.remove());
+
+        if (!document.body.classList.contains('view-training')) return;
+        const active = document.querySelector('.move.active');
+        if (!active) return;
+
+        next = active.nextSibling;
+        while (next && !(next.classList?.contains('move'))) {
+            next = next.nextSibling;
+        }
+
+        if (next) {
+            const marker = document.createElement('span');
+            marker.className = 'training-marker';
+            marker.textContent = '***';
+            next.before(marker);
+        }
     }
 
     document.addEventListener("click", e => {
       const move = e.target.closest(".move");
       if (!move) return;
 
-        if (bridge?.moveClicked) {
-          bridge.moveClicked(parseInt(move.dataset.moveId));
-        }
+      if (bridge?.moveClicked) {
+        bridge.moveClicked(parseInt(move.dataset.moveId));
+      }
     });
 
     document.addEventListener("click", e => {
@@ -308,7 +346,8 @@ body.view-mainline .black-no {
       document.body.classList.remove(
         'view-linear',
         'view-table',
-        'view-mainline'
+        'view-mainline',
+        'view-training',
       );
       document.body.classList.add('view-' + mode);
 
