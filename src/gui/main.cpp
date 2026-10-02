@@ -118,6 +118,11 @@ prevHook = _CrtSetReportHook(customReportHook);
         "qt.webenginecontext.*=false"
         );
 
+    // Disable accessibility to prevent macOS from injecting speech/accessibility threads
+    // This should work around a bug in Mac OS which prevents apps from starting after a system update
+    qputenv("QT_LINUX_ACCESSIBILITY_ALWAYS_ON", "0");
+    qputenv("QT_ACCESSIBILITY", "0");
+
     QApplication app(argc, argv);
 
     QApplication::setFont(QMessageBox().font()); // Workaround for severe bug in Qt5
