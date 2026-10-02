@@ -435,7 +435,9 @@ QString Output::writeVariation()
     }
     else
     {
+        QString s = writeMove(PreviousMove);
         text += m_startTagMap[MarkupVariationLine];
+        text += s;
     }
 
     while(!m_game.atLineEnd())
