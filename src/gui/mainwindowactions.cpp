@@ -3888,11 +3888,15 @@ void MainWindow::slotGetGameData(GameX& g)
 bool MainWindow::slotGameMoveNext()
 {
     Move m = game().move(game().nextMove());
-    playNextMoveSound("move",m);
     m_currentFrom = m.from();
     m_currentTo = m.to();
     m_currentPieceAtTo = game().board().pieceAt(m.to());
-    return gameMoveBy(1);
+    bool result = gameMoveBy(1);
+    if (result) // Do not click at end of line
+    {
+        playNextMoveSound("move",m);
+    }
+    return result;
 }
 
 void MainWindow::slotNoColorSquare()
