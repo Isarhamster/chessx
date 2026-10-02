@@ -716,8 +716,24 @@ void MainWindow::closeEvent(QCloseEvent* e)
     }
 }
 
+static bool isPureModifier(QKeyEvent *event) {
+    switch (event->key()) {
+    case Qt::Key_Shift:
+    case Qt::Key_Control:
+    case Qt::Key_Alt:
+    case Qt::Key_Meta: // Windows key / Command key
+    case Qt::Key_AltGr:
+        return true;
+    default:
+        return false;
+    }
+}
+
+
 void MainWindow::keyPressEvent(QKeyEvent *e)
 {
+    if (isPureModifier(e)) return;
+    if (e->key() == 0) return;
     evaluateSanNag(e);
     emit enterText(m_nagText);
     QMainWindow::keyPressEvent(e);
@@ -744,11 +760,6 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
             game().clearNags();
         }
         m_nagText.clear();
-        return;
-    }
-
-    if(e->text().isEmpty())
-    {
         return;
     }
 
