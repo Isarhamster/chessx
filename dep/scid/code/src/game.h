@@ -151,7 +151,6 @@ enum gameFormatT {
 #define PGN_STYLE_UNICODE       4096   // Use U+2654..U+2659 for figurine
 
 
-void  game_printNag (byte nag, char * str, bool asSymbol, gameFormatT format);
 byte game_parseNag(std::pair<const char*, const char*> strview);
 
 uint strGetRatingType (const char * name);
@@ -202,7 +201,6 @@ private:
     moveT* NewMove(markerT marker);
     void ClearMoves();
     errorT DecodeVariation(ByteBuffer& buf);
-    errorT WritePGN(TextBuffer* tb);
 
     /**
      * Contains the information of the current position in the game, so that
@@ -407,13 +405,6 @@ public:
 
     // PGN conversion
     bool      CommentEmpty ( const char * comment);
-    void      WriteComment (TextBuffer * tb, const char * preStr,
-                            const char * comment, const char * postStr);
-    errorT    WriteMoveList(TextBuffer* tb, moveT* oldCurrentMove,
-                            bool printMoveNum, bool inComment);
-    std::pair<const char*, unsigned> WriteToPGN (uint lineWidth = 0,
-                                                 bool NewLineAtEnd = false,
-                                                 bool newLineToSpaces = true);
 
     void      ResetPgnStyle (void) { PgnStyle = 0; }
     void      ResetPgnStyle (uint flag) { PgnStyle = flag; }

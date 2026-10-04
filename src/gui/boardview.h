@@ -238,7 +238,7 @@ private:
     void drawSquares(QPaintEvent* event);
     void drawTargets(QPaintEvent* event);
     void drawPieces(QPaintEvent* event);
-    void drawAnimation(QPaintEvent* event);
+    void drawAnimation(QPaintEvent* /*event*/);
     void drawCheck(QPaintEvent* event);
     void drawAttacks(QPaintEvent *event);
     void drawUnderProtection(QPaintEvent *event);

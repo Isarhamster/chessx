@@ -11,7 +11,7 @@ class DockWidgetEx : public AdvancedDockWidget
 {
     Q_OBJECT
 public:
-    explicit DockWidgetEx(const QString &title, QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
+    explicit DockWidgetEx(const QString &title, QWidget *parent = nullptr);
 
 signals:
 

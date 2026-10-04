@@ -11,8 +11,8 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-DockWidgetEx::DockWidgetEx(const QString &title, QWidget *parent, Qt::WindowFlags flags) :
-    AdvancedDockWidget(title, parent, flags)
+DockWidgetEx::DockWidgetEx(const QString &title, QWidget *parent) :
+    AdvancedDockWidget(title, parent)
 {
 }
 

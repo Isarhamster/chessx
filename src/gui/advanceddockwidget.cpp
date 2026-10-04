@@ -2,7 +2,7 @@
 #include "docktitlebar.h"
 
 AdvancedDockWidget::AdvancedDockWidget(const QString& title,
-                                       QWidget *parent, Qt::WindowFlags flags)
+                                       QWidget *parent)
     : QDockWidget(title, parent)
 {
     mTitleBar = new DockTitleBar(this);

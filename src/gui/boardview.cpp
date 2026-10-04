@@ -436,7 +436,7 @@ void BoardView::drawUnderProtection(QPaintEvent* event)
     }
 }
 
-void BoardView::drawAnimation(QPaintEvent* event)
+void BoardView::drawAnimation(QPaintEvent* /*event*/)
 {
     if (!anim.active) return;
     QPainter p(this);

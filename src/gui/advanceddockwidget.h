@@ -14,7 +14,7 @@ class AdvancedDockWidget : public QDockWidget
 
 public:
     explicit AdvancedDockWidget(const QString& title,
-                                QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
+                                QWidget *parent = nullptr);
 
     void addTitleBarExtension(IDockTitleBarExtension *ext);
 
