@@ -580,9 +580,6 @@ macx {
   INSTALLATION_DATA.files = mac_osx/qt_menu.nib
   INSTALLATION_DATA.path = Contents/Resources/
   QMAKE_BUNDLE_DATA += INSTALLATION_DATA
-  TIMESEAL_DATA.files = data/timeseal/mac/timeseal
-  TIMESEAL_DATA.path = Contents/MacOS/data/timeseal/mac
-  QMAKE_BUNDLE_DATA += TIMESEAL_DATA
   QMAKE_INFO_PLIST = mac_osx/Info.plist
 }
 
