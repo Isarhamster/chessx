@@ -92,7 +92,7 @@ set(OTHER_FILES
   setup7-32.iss
   setupXP.iss
   data/styles/orange.css
-  unix/chessx.desktop
+  unix/io.sourceforge.chessx.chessx.desktop
   ]]
 )
 
