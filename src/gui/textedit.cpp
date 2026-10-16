@@ -50,7 +50,6 @@
 #include <QLabel>
 #include <QMenu>
 #include <QMenuBar>
-#include <QTextCodec>
 #include <QTextEdit>
 #include <QToolBar>
 #include <QTextCursor>
@@ -70,6 +69,7 @@
 #endif
 
 #include "GameMimeData.h"
+#include "qt6compat.h"
 #include "settings.h"
 #include "textedit.h"
 #include "ooo/converter.h"
@@ -434,8 +434,8 @@ bool TextEdit::load(const QString &f)
     else
     {
         QByteArray data = file.readAll();
-        QTextCodec *codec = Qt::codecForHtml(data);
-        QString str = codec->toUnicode(data);
+        QString str;
+        DECODE_HTML_DATA(data,str);
         if (Qt::mightBeRichText(str))
         {
             textEdit->setHtml(str);

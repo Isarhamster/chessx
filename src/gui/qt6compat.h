@@ -32,14 +32,29 @@ public:
 #include <QTextCodec>
 #define SET_CODEC_UTF8(s) \
     QTextCodec* textCodec = QTextCodec::codecForName("utf8"); \
-    if(textCodec) s.setCodec(textCodec);
+    if(textCodec) s.setCodec(textCodec)
 #define SET_CODEC_LATIN1(s) \
     QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1"); \
-    if(textCodec) s.setCodec(textCodec);
+    if(textCodec) s.setCodec(textCodec)
+
+    #define DECODE_HTML_DATA(data, outStr) \
+    do { \
+            QTextCodec *codec = QTextCodec::codecForHtml(data); \
+            if (codec) { \
+                outStr = codec->toUnicode(data); \
+        } else { \
+                outStr = QString::fromUtf8(data); \
+        } \
+    } while (0)
+
 #else
 #include <QStringConverter>
-#define SET_CODEC_UTF8(s)   s.setEncoding(QStringConverter::Utf8);
-#define SET_CODEC_LATIN1(s) s.setEncoding(QStringConverter::Latin1);
+#define SET_CODEC_UTF8(s)   s.setEncoding(QStringConverter::Utf8)
+#define SET_CODEC_LATIN1(s) s.setEncoding(QStringConverter::Latin1)
+#define DECODE_HTML_DATA(data, outStr) \
+do { \
+        outStr = QStringDecoder::decoderForHtml(data).decode(data); \
+} while (0)
 #endif
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
