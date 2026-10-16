@@ -39,6 +39,7 @@ target_compile_definitions(quazip
 target_include_directories(quazip
   PUBLIC
     .
+    ${CMAKE_SOURCE_DIR}/src/gui
 )
 
 target_link_libraries(quazip
