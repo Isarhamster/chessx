@@ -378,6 +378,10 @@ const unsigned int bb_ShiftL45[64] =
 
 inline bool BitBoard::isAttackedBy(const unsigned int color, chessx::Square square) const
 {
+    if(square == chessx::InvalidSquare)
+    {
+        return 0;
+    }
     if(bb_PawnAttacks[color ^ 1][square] & m_pawns & m_occupied_co[color])
     {
         return 1;
