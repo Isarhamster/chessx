@@ -1827,3 +1827,139 @@ int GameX::isBetterOrEqual(const GameX& game) const
             (m_annotations.count() >= game.m_annotations.count()) &&
             (m_variationStartAnnotations.count() >= game.m_variationStartAnnotations.count()));
 }
+
+// Given a game at a certain position, return all the moves that led to that position
+// starting with the first move.
+static DuplicateMoveList getMoves(GameX const & game) noexcept
+{
+    DuplicateMoveList ret;
+    ret.moves.reserve(game.plyCount());
+    MoveId currentSpot {game.currentMove()};
+    // Save the tip of this move list so that it can be linked in the frontend
+    ret.lastMove = currentSpot;
+    // Walk back toward the root node recording the moves on the way
+    while (currentSpot != NO_MOVE && currentSpot != ROOT_NODE)
+    {
+        ret.moves.push_back(game.move(currentSpot));
+        currentSpot = game.cursor().prevMove(currentSpot);
+    }
+    std::reverse(ret.moves.begin(), ret.moves.end());
+    return ret;
+}
+
+// Traverses all positions of all variations of the game recording the position (FEN) and the
+// move list that resulted in that position.
+// positions is a map from a position to the various sets of moves that resulted in that position
+static void getPositions(GameX & game, std::unordered_map<QString, DuplicatedPosition> & positions) noexcept
+{
+    if (game.nextMove() == NO_MOVE)
+    {
+        return;
+    }
+    game.forward();
+    DuplicateMoveList moves {getMoves(game)};
+    // If two positions are transpositionally equivalent but one of them ended with
+    // a double-advance of a pawn, they will be considered different because there
+    // may be an ability to capture en passant (even if there is no pawn that could
+    // capture en passant).
+    QString fenForBoard {game.board().toFen(true)};
+    // We don't care about the number of moves to reach this position. Id est,
+    // if the two positions were reachable in a different amount of moves,
+    // everything else being equal, it doesn't matter, they're still duplicates.
+    // The location of the space before the halfmove clock
+    qsizetype const ultimateSpace{fenForBoard.lastIndexOf(' ')};
+    if (ultimateSpace < 1)
+    {
+        // Unable to find the halfmove clock
+        return;
+    }
+    // The location of the space before the fullmove number
+    qsizetype const penultimateSpace{fenForBoard.lastIndexOf(' ', ultimateSpace-1)};
+    if (penultimateSpace < 1)
+    {
+        // Unable to find the fullmove number
+        return;
+    }
+    fenForBoard = fenForBoard.first(penultimateSpace);
+    // This will create an item in the positions map if it doesn't exist, or add to the
+    // set of move lists that resulted in that position.
+    positions[fenForBoard].moveLists.push_back(moves);
+    // We only get subsequent positions if this position isn't a duplicate.
+    // If this position is a duplicated position, then all the subsequent positions
+    // will also be duplicates. We short-circuit that duplicating of duplicates with this
+    // if statement.
+    if (positions[fenForBoard].moveLists.size() < 2)
+    {
+        getPositions(game, positions);
+    }
+    // Next we go back one step in the game to put it back where we found it
+    game.backward();
+    if (positions[fenForBoard].moveLists.size() > 1)
+    {
+        // We don't want subsequent duplicated positions, even if they're in variations
+        return;
+    }
+    if (!game.variationCount())
+    {
+        return;
+    }
+    for (MoveId const & variation_move : game.variations())
+    {
+        game.enterVariation(variation_move);
+        getPositions(game, positions);
+        game.backward();
+    }
+}
+
+// Duplicate positions are divided into classes:
+//   1. At most one move list that leads to a position continues
+//   2. Both move lists that lead to a position continue past the duplicated position
+static void addWarnings(GameX & game, std::vector<DuplicatedPosition> & positions) noexcept
+{
+    for (DuplicatedPosition & position : positions)
+    {
+        unsigned continuations{0};
+        for (DuplicateMoveList & moves : position.moveLists)
+        {
+            game.moveToStart();
+            // Get the game to the end of this move list
+            for (Move const & move : moves.moves)
+            {
+                if (!game.findNextMove(move))
+                {
+                    // This is an (fatal?) internal error.
+                    break;
+                }
+            }
+            // The game is at the end of the move list. Is there a continuation?
+            if (game.cursor().nextMove() != NO_MOVE)
+            {
+                ++continuations;
+            }
+        }
+        position.warning = (continuations > 1) ? DuplicatedPosition::BothMove : DuplicatedPosition::None;
+    }
+}
+
+std::vector<DuplicatedPosition> GameX::getDuplicatePositions() const noexcept
+{
+    std::unordered_map<QString, DuplicatedPosition> positions;
+    GameX copy {*this};
+    copy.moveToStart();
+    if (copy.nextMove() == NO_MOVE)
+    {
+        return {};
+    }
+    getPositions(copy, positions);
+    std::vector<DuplicatedPosition> duplicates;
+    for (auto it{positions.begin()}; it != positions.end(); ++it)
+    {
+        if (it->second.moveLists.size() > 1)
+        {
+            duplicates.emplace_back(std::move(it->second));
+            duplicates.back().fen = it->first;
+        }
+    }
+    addWarnings(copy, duplicates);
+    return duplicates;
+}
