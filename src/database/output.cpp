@@ -347,11 +347,11 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         }
         if(c == White)
         {
-            text += QString::number(m_game.moveNumber(moveId)) + ".";
+            text += QString::number((m_game.ply(moveId) + 1) / 2) + ".";
         }
         else if(m_dirtyBlack)
         {
-            text += QString::number(m_game.moveNumber(moveId)) + "...";
+            text += QString::number((m_game.ply(moveId) + 1) / 2) + "...";
             if((m_options.getOptionAsBool("ColumnStyle")) &&
                     (m_currentVariationLevel == 0))
             {
@@ -1114,4 +1114,3 @@ QStringList Output::getOptionList()
 {
     return m_options.getOptionList();
 }
-
