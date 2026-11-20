@@ -344,6 +344,10 @@ bool PgnDatabase::openFile(const QString& filename)
     }
     if (file->open(QIODevice::ReadOnly))
     {
+        if (file->peek(3) == "\xEF\xBB\xBF")
+        {
+            file->seek(3);
+        }
         m_file = file;
         return true;
     }
