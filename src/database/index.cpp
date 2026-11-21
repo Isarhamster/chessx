@@ -165,6 +165,11 @@ bool IndexX::replaceTagValue(const QStringList& tags, const QString& newValue, c
     }
     ValueIndex newIndex = getValueIndex(newValue);
 
+    if (newIndex == valueIndex)
+    {
+        return true;
+    }
+
     if (!m_tagValues.contains(newIndex))
     {
         (void) AddTagValue(newValue); // Adds newIndex-newValue pair, return must be newIndex
