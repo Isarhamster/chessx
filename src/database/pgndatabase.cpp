@@ -1184,7 +1184,7 @@ void PgnDatabase::skipMoves()
 
         QString gameText = " ";
 
-        while(!onlyWhitespace(m_lineBuffer) && !m_file->atEnd())
+        while(!onlyWhitespace(m_lineBuffer))
         {
             gameText += QString(m_lineBuffer) + " ";
             skipLine();
@@ -1193,7 +1193,7 @@ void PgnDatabase::skipMoves()
         gameText = gameText.remove(QRegularExpression("\\([^\\(\\)]*\\)"));
 
         QRegularExpressionMatch match;
-        if (gameText.lastIndexOf(gameNumber, 0, &match) >= 0)
+        if (gameText.lastIndexOf(gameNumber, -1, &match) >= 0)
         {
             m_index.setTag_nolock(TagNameLength, match.captured(1), m_count - 1);
         }
